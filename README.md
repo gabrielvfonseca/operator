@@ -1,4 +1,4 @@
-# 🦞 Operator — Personal AI Assistant
+# Operator — Personal AI Assistant
 
 <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/gabrielvfonseca/operator/main/docs/assets/operator-banner-light.png">
 <img src="https://raw.githubusercontent.com/gabrielvfonseca/operator/main/docs/assets/operator-banner-dark.png" alt="Operator — Your personal AI assistant, running on your own devices.">
@@ -7,7 +7,7 @@
 
 **Operator** is a _personal AI assistant_ you run on your own devices.
 
-[Website](https://operator.ai) · [Docs](https://docs.operator.ai) · [VISION.md](VISION.md) · [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) · [DeepWiki](https://deepwiki.com/gabrielvfonseca/operator) · [Getting Started](https://docs.operator.ai/start/getting-started) · [Updating](https://docs.operator.ai/install/updating) · [Showcase](https://docs.operator.ai/start/showcase) · [FAQ](https://docs.operator.ai/help/faq) · [Onboarding](https://docs.operator.ai/start/wizard) · [Nix](https://github.com/gabrielvfonseca/operator) · [Docker](https://docs.operator.ai/install/docker) · [Discord](https://discord.gg/operator) · [Core Extensions](https://github.com/gabrielvfonseca/operator/tree/main/extensions)
+[VISION.md](VISION.md) · [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) · [DeepWiki](https://deepwiki.com/gabrielvfonseca/operator) · [Getting Started](docs/start/getting-started.md) · [Updating](docs/install/updating.md) · [Showcase](docs/start/showcase.md) · [FAQ](docs/help/faq.md) · [Onboarding](docs/start/wizard.md) · [Nix](https://github.com/gabrielvfonseca/operator) · [Docker](docs/install/docker.md) · [Discord](https://discord.gg/operator) · [Core Extensions](https://github.com/gabrielvfonseca/operator/tree/main/extensions)
 
 Operator Onboard guides you step by step through setting up the gateway, workspace, channels, and skills. It is the recommended CLI setup path and works on **macOS, Linux, and Windows**.
 
@@ -65,28 +65,28 @@ Start using AI through your channels:
 
 ## Key Features
 
-### 🧠 **Intelligence**
+### **Intelligence**
 
 - Multiple model providers (OpenAI, Anthropic, Google, etc.)
 - Advanced reasoning and tool use
 - Memory management and context preservation
 - Subagent coordination
 
-### 🔧 **Tool Execution**
+### **Tool Execution**
 
 - Safe code execution in sandboxed environments
 - Web browsing and file access
 - System command execution
 - Custom plugins for specialized tasks
 
-### 🌐 **Communication**
+### **Communication**
 
 - Native support for popular messaging platforms
 - Discord, Slack, Telegram, WhatsApp, and more
 - Unified message interface across all channels
 - Local processing (no data leaves your devices)
 
-### 🛡️ **Privacy**
+### **Privacy**
 
 - Runs locally on your devices
 - No data is sent to third-party services
@@ -132,17 +132,17 @@ Operator follows a modular architecture:
 
 ## Quick Links
 
-- **[Start Here](https://docs.operator.ai/start/getting-started)** - Installation and basic setup
-- **[Onboard Guide](https://docs.operator.ai/start/wizard)** - Step-by-step setup wizard
-- **[Docs](https://docs.operator.ai)** - Comprehensive documentation
+- **[Start Here](docs/start/getting-started.md)** - Installation and basic setup
+- **[Onboard Guide](docs/start/wizard.md)** - Step-by-step setup wizard
+- **[Docs](docs/)** - Comprehensive documentation
 - **[Community](https://discord.gg/operator)** - Discord for support and discussions
 - **[Plugins](https://github.com/gabrielvfonseca/operator/tree/main/extensions)** - Available integrations
-- **[CLI Reference](https://docs.operator.ai/cli/commands)** - Command line interface
-- **[Troubleshooting](https://docs.operator.ai/help/troubleshooting)** - Common issues and solutions
+- **[CLI Reference](docs/cli/commands.md)** - Command line interface
+- **[Troubleshooting](docs/help/troubleshooting.md)** - Common issues and solutions
 
 ## Community
 
-Operator is actively developed and maintained by a community of contributors:
+Operator is actively developed and maintained by a community of contributors.
 
 <a href="https://github.com/sponsors/gabrielvfonseca/operator">
 <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/gabrielvfonseca/operator/main/docs/assets/sponsors/openai-light.svg">
@@ -151,31 +151,15 @@ Operator is actively developed and maintained by a community of contributors:
 <img src="https://raw.githubusercontent.com/gabrielvfonseca/operator/main/docs/assets/sponsors/github.svg" alt="GitHub" height="28">
 </a>
 
-## Learn More
+## Documentation
 
-### Documentation
+[Operator Documentation](docs/) - Complete guides and reference material
 
-[Operator Documentation](https://docs.operator.ai) - Complete guides and reference material
-
-### Development
+## Development
 
 [GitHub Repository](https://github.com/gabrielvfonseca/operator) - Source code and development
 
 [Discord Support](https://discord.gg/operator) - Real-time help and discussions
-
-## Get Help
-
-### Community Support
-
-- **Discord**: Join our Discord community for real-time help
-- **GitHub Issues**: Report bugs and request features
-- **Discussions**: Share experiences and best practices
-
-### Self-Service
-
-- **FAQ**: Common questions and solutions
-- **Documentation**: Comprehensive guides and tutorials
-- **CLI Commands**: Reference manual
 
 ## License
 
@@ -183,19 +167,9 @@ See [LICENSE.md](LICENSE.md) for license information.
 
 ---
 
-> **Note**: This project has been restructured from previous naming conventions. For historical context, see the [VISION.md](VISION.md) document.
-
-> **Support**: To contribute or discuss Operator, please join our community channels.
-
-> **Stay Updated**: Follow us for the latest news and updates.
-
----
-
-## ✅ Migration Guide
+## Migration Guide
 
 This repository has been updated to remove all references to the previous "OpenClaw" branding:
-
-### Removed/Migrated Items
 
 - **Repository Name**: `operator` (formerly `openclaw`)
 - **Organization**: `gabrielvfonseca` (formerly maintained under different branding)
@@ -234,7 +208,7 @@ If you've used OpenClaw before, here's what has changed:
 
 1. **Installation**: `operator onboard` (replaces OpenClaw setup)
 2. **Configuration**: `operator.json` (standard configuration)
-3. **Documentation**: Use `/start/getting-started` in docs operator.ai
+3. **Documentation**: Use `/start/getting-started` in docs
 4. **Community**: Join the new Discord server
 5. **Plugins**: Check `extensions/` for available integrations
 6. **Docker Image**: `ghcr.io/gabrielvfonseca/operator:latest`
