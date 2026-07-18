@@ -130,11 +130,11 @@ function formatNpmViewError(res: { stdout: string; stderr: string }): string {
 
 function packageTargetSpec(params: { target: string; spec?: string }): string {
   const spec = params.spec?.trim();
-  return spec || `openclaw@${params.target.trim() || "latest"}`;
+  return spec || `operator@${params.target.trim() || "latest"}`;
 }
 
 const PUBLIC_NPM_REGISTRY_URL = "https://registry.npmjs.org/";
-const PUBLIC_NPM_PACKAGE_NAME = "openclaw";
+const PUBLIC_NPM_PACKAGE_NAME = "operator";
 
 function isLoopbackNpmRegistry(raw: string): boolean {
   try {
@@ -154,7 +154,7 @@ function resolveExtendedStableRegistryTarget(params: {
 }): { registryUrl: string; packageName: string } {
   const env = params.env ?? process.env;
   const packageName = params.packageName?.trim() || PUBLIC_NPM_PACKAGE_NAME;
-  const packageSpecOverride = env.OPENCLAW_UPDATE_PACKAGE_SPEC?.trim();
+  const packageSpecOverride = env.OPERATOR_UPDATE_PACKAGE_SPEC?.trim();
   const registryOverride = env.NPM_CONFIG_REGISTRY?.trim() || env.npm_config_registry?.trim() || "";
 
   // A matching package override plus a loopback registry is the explicit local

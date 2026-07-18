@@ -10,7 +10,7 @@ import {
   reconcileOpenAICompletionsToolChoice,
   resolveOpenAIReasoningEffortForModel,
   type OpenAIReasoningEffort,
-} from "@openclaw/ai/internal/openai";
+} from "@operator/ai/internal/openai";
 import {
   applyProviderReportedUsageCost,
   calculateCost,
@@ -21,10 +21,10 @@ import {
   getFirstStreamEventTimeoutMs,
   parseStreamingJson,
   withFirstStreamEventTimeout,
-} from "@openclaw/ai/internal/runtime";
-import { stripSystemPromptCacheBoundary } from "@openclaw/ai/internal/shared";
-import { isRecord } from "@openclaw/normalization-core/record-coerce";
-import { uniqueStrings } from "@openclaw/normalization-core/string-normalization";
+} from "@operator/ai/internal/runtime";
+import { stripSystemPromptCacheBoundary } from "@operator/ai/internal/shared";
+import { isRecord } from "@operator/normalization-core/record-coerce";
+import { uniqueStrings } from "@operator/normalization-core/string-normalization";
 import OpenAI from "openai";
 import type { ChatCompletionChunk } from "openai/resources/chat/completions.js";
 import type { Context, Model } from "../llm/types.js";
@@ -305,8 +305,8 @@ export function createOpenAICompletionsTransportStreamFn(): StreamFn {
           params = nextParams as typeof params;
         }
         if (
-          (options as { openclawCodeModeToolSurface?: unknown } | undefined)
-            ?.openclawCodeModeToolSurface === true
+          (options as { operatorCodeModeToolSurface?: unknown } | undefined)
+            ?.operatorCodeModeToolSurface === true
         ) {
           enforceCodeModeResponsesToolSurface(params);
           assertCodeModeResponsesToolSurface(params);
@@ -605,7 +605,7 @@ async function processOpenAICompletionsStream(
     stage: "completions",
     abort: options?.abortFirstEventStream,
     onTimeout: options?.onFirstEventTimeout,
-    hint: "The provider may be stalled while parsing the tool payload; retry with a smaller tool surface or enable OPENCLAW_DEBUG_MODEL_PAYLOAD=tools to inspect exposed tools.",
+    hint: "The provider may be stalled while parsing the tool payload; retry with a smaller tool surface or enable OPERATOR_DEBUG_MODEL_PAYLOAD=tools to inspect exposed tools.",
   });
   for await (const rawChunk of guardedStream) {
     throwIfModelStreamAborted(options?.signal);
@@ -1928,10 +1928,10 @@ const completionsTesting = {
 };
 
 declare global {
-  var openclawOpenAICompletionsTransportTestApi: typeof completionsTesting | undefined;
+  var operatorOpenAICompletionsTransportTestApi: typeof completionsTesting | undefined;
 }
 
 if (process.env.VITEST || process.env.NODE_ENV === "test") {
-  globalThis.openclawOpenAICompletionsTransportTestApi = completionsTesting;
+  globalThis.operatorOpenAICompletionsTransportTestApi = completionsTesting;
 }
 /* oxlint-disable max-lines -- TODO: split this grandfathered oversized file. */

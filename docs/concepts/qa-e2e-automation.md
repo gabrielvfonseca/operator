@@ -1006,7 +1006,7 @@ heavier/blocking checks remain explicit by scenario id.
 The WhatsApp QA driver observes structured live events (`text`, `media`,
 `location`, `reaction`, and `poll`) and can actively send media, polls,
 contacts, locations, and stickers. QA Lab imports that driver through the
-`@openclaw/whatsapp/api.js` package surface instead of reaching into private
+`@operator/whatsapp/api.js` package surface instead of reaching into private
 WhatsApp runtime files. For group observations, `fromJid` is the group JID
 while `participantJid` and `fromPhoneE164` identify the participant sender.
 Message content is redacted by default. Direct Gateway poll, upload-file,

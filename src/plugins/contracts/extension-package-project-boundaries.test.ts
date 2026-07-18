@@ -170,7 +170,7 @@ describe("opt-in extension package boundaries", () => {
       expect(tsconfig.exclude).toEqual([...EXTENSION_PACKAGE_BOUNDARY_EXCLUDE]);
 
       const packageJson = readExtensionPackageBoundaryPackageJson(extensionName, REPO_ROOT);
-      expect(packageJson.devDependencies?.["@openclaw/plugin-sdk"]).toBe("workspace:*");
+      expect(packageJson.devDependencies?.["@operator/plugin-sdk"]).toBe("workspace:*");
     }
   });
 
@@ -190,7 +190,7 @@ describe("opt-in extension package boundaries", () => {
   });
 
   it("keeps plugin-sdk package types generated from the package build, not a hand-maintained types bridge", () => {
-    const tsconfig = readJsonFile<TsConfigJson>("packages/plugin-sdk/tsconfig.json");
+    const tsconfig = readJsonFile<TsConfigJson>("sdks/plugin-sdk/tsconfig.json");
     expect(tsconfig.extends).toBe("../../tsconfig.json");
     expect(tsconfig.compilerOptions?.declaration).toBe(true);
     expect(tsconfig.compilerOptions?.emitDeclarationOnly).toBe(true);
@@ -212,8 +212,8 @@ describe("opt-in extension package boundaries", () => {
       "../../src/types/**/*.d.ts",
     ]);
 
-    const packageJson = readJsonFile<PackageJson>("packages/plugin-sdk/package.json");
-    expect(packageJson.name).toBe("@openclaw/plugin-sdk");
+    const packageJson = readJsonFile<PackageJson>("sdks/plugin-sdk/package.json");
+    expect(packageJson.name).toBe("@operator/plugin-sdk");
     expect(packageJson.exports?.["./account-id"]?.types).toBe(
       "./dist/src/plugin-sdk/account-id.d.ts",
     );
@@ -295,7 +295,7 @@ describe("opt-in extension package boundaries", () => {
       "./dist/src/plugin-sdk/text-runtime.d.ts",
     );
     expect(packageJson.exports?.["./zod"]?.types).toBe("./dist/src/plugin-sdk/zod.d.ts");
-    expect(fs.existsSync(resolve(REPO_ROOT, "packages/plugin-sdk/types/plugin-entry.d.ts"))).toBe(
+    expect(fs.existsSync(resolve(REPO_ROOT, "sdks/plugin-sdk/types/plugin-entry.d.ts"))).toBe(
       false,
     );
   });
@@ -304,7 +304,7 @@ describe("opt-in extension package boundaries", () => {
     const packageJson = readJsonFile<PackageJson>("packages/memory-host-sdk/package.json");
     const packageExports = packageJson.exports as unknown as Record<string, string>;
 
-    expect(packageJson.name).toBe("@openclaw/memory-host-sdk");
+    expect(packageJson.name).toBe("@operator/memory-host-sdk");
     expect(packageJson.version).toBe("0.0.0-private");
     expect(packageJson.private).toBe(true);
     expect(packageJson.type).toBe("module");

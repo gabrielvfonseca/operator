@@ -59,7 +59,7 @@ export async function handlePortError(
     if (details) {
       runtime.error(info("Port listener details:"));
       runtime.error(details);
-      if (/openclaw|src\/index\.ts|dist\/index\.js/.test(details)) {
+      if (/operator|src\/index\.ts|dist\/index\.js/.test(details)) {
         runtime.error(
           warn(
             "It looks like another OpenClaw instance is already running. Stop it or pick a different port.",

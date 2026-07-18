@@ -1,6 +1,6 @@
 import type { DatabaseSync } from "node:sqlite";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../../infra/kysely-sync.js";
-import type { DB as StateDatabase } from "../../state/openclaw-state-db.generated.js";
+import type { DB as StateDatabase } from "../../state/operator-state-db.generated.js";
 import type { WorkerSessionTurnClaim } from "./placement-record.js";
 import { getRequired } from "./placement-row-codec.js";
 import type { PlacementStoreRuntime } from "./placement-runtime.js";

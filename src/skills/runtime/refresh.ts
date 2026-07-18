@@ -2,9 +2,9 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { normalizeOptionalString } from "@openclaw/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 import chokidar, { type FSWatcher } from "chokidar";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OpenClawConfig } from "../../config/types.operator.js";
 import { createSubsystemLogger } from "../../logging/subsystem.js";
 import { CONFIG_DIR, resolveUserPath } from "../../utils.js";
 import { resolvePluginSkillDirs } from "../loading/plugin-skills.js";
@@ -92,13 +92,13 @@ const DEFAULT_SKILLS_WATCH_IGNORED: RegExp[] = [
 function resolveWatchTargets(workspaceDir: string, config?: OpenClawConfig): WatchTarget[] {
   const baseRoots: Array<{ path: string; source: string }> = [];
   if (workspaceDir.trim()) {
-    baseRoots.push({ path: path.join(workspaceDir, "skills"), source: "openclaw-workspace" });
+    baseRoots.push({ path: path.join(workspaceDir, "skills"), source: "operator-workspace" });
     baseRoots.push({
       path: path.join(workspaceDir, ".agents", "skills"),
       source: "agents-skills-project",
     });
   }
-  baseRoots.push({ path: path.join(CONFIG_DIR, "skills"), source: "openclaw-managed" });
+  baseRoots.push({ path: path.join(CONFIG_DIR, "skills"), source: "operator-managed" });
   baseRoots.push({
     path: path.join(os.homedir(), ".agents", "skills"),
     source: "agents-skills-personal",
@@ -150,7 +150,7 @@ function resolveWatchTargets(workspaceDir: string, config?: OpenClawConfig): Wat
     addTrustedSymlinkSkillWatchTargets(
       targets,
       resolved,
-      "openclaw-extra",
+      "operator-extra",
       allowedSymlinkTargetRealPaths,
       rootDepth,
       resolved,
@@ -158,7 +158,7 @@ function resolveWatchTargets(workspaceDir: string, config?: OpenClawConfig): Wat
     addTrustedSymlinkSkillWatchTargets(
       targets,
       path.join(resolved, "skills"),
-      "openclaw-extra",
+      "operator-extra",
       allowedSymlinkTargetRealPaths,
       GROUPED_SKILLS_WATCH_DEPTH,
       resolved,
@@ -171,7 +171,7 @@ function resolveWatchTargets(workspaceDir: string, config?: OpenClawConfig): Wat
     addTrustedSymlinkSkillWatchTargets(
       targets,
       dir,
-      "openclaw-plugin",
+      "operator-plugin",
       allowedSymlinkTargetRealPaths,
       rootDepth,
       dir,
@@ -179,7 +179,7 @@ function resolveWatchTargets(workspaceDir: string, config?: OpenClawConfig): Wat
     addTrustedSymlinkSkillWatchTargets(
       targets,
       path.join(dir, "skills"),
-      "openclaw-plugin",
+      "operator-plugin",
       allowedSymlinkTargetRealPaths,
       GROUPED_SKILLS_WATCH_DEPTH,
       dir,
@@ -340,7 +340,7 @@ function isTrustedSymlinkSkillTarget(
   targetRealPath: string,
   allowedSymlinkTargetRealPaths: readonly string[],
 ): boolean {
-  if (source === "openclaw-managed" || source === "agents-skills-personal") {
+  if (source === "operator-managed" || source === "agents-skills-personal") {
     return true;
   }
   return (
@@ -735,7 +735,7 @@ async function resetSkillsRefreshForTest(): Promise<void> {
 }
 
 if (process.env.VITEST || process.env.NODE_ENV === "test") {
-  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("openclaw.skillsRefreshTestApi")] = {
+  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("operator.skillsRefreshTestApi")] = {
     resetSkillsRefreshForTest,
   };
 }

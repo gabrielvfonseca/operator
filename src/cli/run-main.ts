@@ -2,10 +2,10 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
-import { normalizeOptionalString } from "@openclaw/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 import type { Command as CommanderCommand, Option as CommanderOption } from "commander";
 import { resolveStateDir } from "../config/paths.js";
-import type { ConfigFileSnapshot, OpenClawConfig } from "../config/types.openclaw.js";
+import type { ConfigFileSnapshot, OpenClawConfig } from "../config/types.operator.js";
 import { isLoopbackAddress, isSecureWebSocketUrl } from "../gateway/net.js";
 import { FLAG_TERMINATOR, isValueToken } from "../infra/cli-root-options.js";
 import { isTruthyEnvValue, normalizeEnv } from "../infra/env.js";
@@ -174,7 +174,7 @@ async function tryRunGatewayRunFastPath(
     emitCliBanner(VERSION, { argv });
   }
   const program = new Command();
-  program.name("openclaw");
+  program.name("operator");
   program.enablePositionalOptions();
   program.option("--no-color", "Disable ANSI colors", false);
   program.exitOverride((err) => {
@@ -533,7 +533,7 @@ function isSafeGatewayProbeTarget(target: GatewayProbeTarget): boolean {
     return isSafeRemoteGatewayProbeUrl(target.url);
   }
   return isSecureWebSocketUrl(target.url, {
-    allowPrivateWs: process.env.OPENCLAW_ALLOW_INSECURE_PRIVATE_WS === "1",
+    allowPrivateWs: process.env.OPERATOR_ALLOW_INSECURE_PRIVATE_WS === "1",
   });
 }
 
@@ -556,7 +556,7 @@ function isSafeRemoteGatewayProbeUrl(url: string): boolean {
     return true;
   }
   return (
-    process.env.OPENCLAW_ALLOW_INSECURE_PRIVATE_WS === "1" &&
+    process.env.OPERATOR_ALLOW_INSECURE_PRIVATE_WS === "1" &&
     isSecureWebSocketUrl(url, { allowPrivateWs: true })
   );
 }
@@ -600,7 +600,7 @@ async function resolveLocalGatewayProbeTargets(
   ]);
   const gateway = config.gateway;
   const configuredPort = resolveGatewayPort(config);
-  const hasExplicitPort = Boolean(normalizeOptionalString(process.env.OPENCLAW_GATEWAY_PORT));
+  const hasExplicitPort = Boolean(normalizeOptionalString(process.env.OPERATOR_GATEWAY_PORT));
   const activePort = hasExplicitPort ? undefined : await readActiveGatewayLockPort();
   const port = activePort ?? configuredPort;
   // Supplying the selected local port keeps inherited remote URL overrides out
@@ -813,8 +813,8 @@ async function ensureCliEnvProxyDispatcher(): Promise<void> {
 
 function shouldBootstrapCliProxyBeforeFastPath(env: NodeJS.ProcessEnv = process.env): boolean {
   if (
-    isTruthyEnvValue(env.OPENCLAW_DEBUG_PROXY_ENABLED) ||
-    isTruthyEnvValue(env.OPENCLAW_DEBUG_PROXY_REQUIRE)
+    isTruthyEnvValue(env.OPERATOR_DEBUG_PROXY_ENABLED) ||
+    isTruthyEnvValue(env.OPERATOR_DEBUG_PROXY_REQUIRE)
   ) {
     return true;
   }
@@ -938,7 +938,7 @@ async function resolveUnownedCliPrimaryMessage(params: {
   }
   const suggestion = formatCliCommandSuggestions(params.primary);
   return [
-    `Unknown command: openclaw ${params.primary}. No built-in command or plugin CLI metadata owns "${params.primary}".`,
+    `Unknown command: operator ${params.primary}. No built-in command or plugin CLI metadata owns "${params.primary}".`,
     suggestion,
   ]
     .filter(Boolean)
@@ -980,7 +980,7 @@ export async function runCli(argv: string[] = process.argv) {
     applyCliProfileEnv({ profile: parsedProfile.profile });
   }
   const containerTargetName =
-    parsedContainer.container ?? normalizeOptionalString(process.env.OPENCLAW_CONTAINER) ?? null;
+    parsedContainer.container ?? normalizeOptionalString(process.env.OPERATOR_CONTAINER) ?? null;
   if (containerTargetName && parsedProfile.profile) {
     throw new Error("--container cannot be combined with --profile/--dev");
   }
@@ -1149,8 +1149,8 @@ export async function runCli(argv: string[] = process.argv) {
     }
 
     // Reject unowned command roots before help/version routing, so that
-    // `openclaw <typo> --help` surfaces the same Unknown command error as
-    // `openclaw <typo>` instead of silently showing generic top-level help.
+    // `operator <typo> --help` surfaces the same Unknown command error as
+    // `operator <typo>` instead of silently showing generic top-level help.
     // Runs after legitimate precomputed help fast paths so known help commands
     // still dispatch normally. See #81077.
     {
@@ -1178,7 +1178,7 @@ export async function runCli(argv: string[] = process.argv) {
       if (bareRootLaunchTarget.kind === "remote-gateway-inference") {
         if (!process.stdin.isTTY || !process.stdout.isTTY) {
           console.error(
-            "Remote Gateway inference setup needs an interactive TTY. Re-run `openclaw` in a terminal connected to this Gateway.",
+            "Remote Gateway inference setup needs an interactive TTY. Re-run `operator` in a terminal connected to this Gateway.",
           );
           process.exitCode = 1;
           return;
@@ -1192,8 +1192,8 @@ export async function runCli(argv: string[] = process.argv) {
         if (!process.stdin.isTTY || !process.stdout.isTTY) {
           console.error(
             bareRootLaunchTarget.classic
-              ? "OpenClaw config is invalid. Run `openclaw doctor --fix` before onboarding."
-              : "Onboarding needs an interactive TTY. Use `openclaw onboard --non-interactive --accept-risk ...` for automation.",
+              ? "OpenClaw config is invalid. Run `operator doctor --fix` before onboarding."
+              : "Onboarding needs an interactive TTY. Use `operator onboard --non-interactive --accept-risk ...` for automation.",
           );
           process.exitCode = 1;
           return;
@@ -1205,7 +1205,7 @@ export async function runCli(argv: string[] = process.argv) {
       if (bareRootLaunchTarget.kind === "tui") {
         if (!process.stdin.isTTY || !process.stdout.isTTY) {
           console.error(
-            "OpenClaw TUI needs an interactive TTY. Use `openclaw agent --local ...` for automation.",
+            "OpenClaw TUI needs an interactive TTY. Use `operator agent --local ...` for automation.",
           );
           process.exitCode = 1;
           return;
@@ -1316,7 +1316,7 @@ export async function runCli(argv: string[] = process.argv) {
         }
         if (isBenignUncaughtExceptionError(error)) {
           console.warn(
-            "[openclaw] Non-fatal uncaught exception (continuing):",
+            "[operator] Non-fatal uncaught exception (continuing):",
             formatUncaughtError(error),
           );
           return;
@@ -1329,7 +1329,7 @@ export async function runCli(argv: string[] = process.argv) {
           console.error(line);
         }
         for (const message of runFatalErrorHooks({ reason: "uncaught_exception", error })) {
-          console.error("[openclaw]", message);
+          console.error("[operator]", message);
         }
         restoreTerminalState("uncaught exception", { resumeStdinIfPaused: false });
         process.exit(1);

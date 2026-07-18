@@ -5,8 +5,8 @@ import {
   resolveDefaultAgentId,
 } from "../agents/agent-scope.js";
 import {
-  OPENCLAW_DOCS_URL,
-  OPENCLAW_SOURCE_URL,
+  OPERATOR_DOCS_URL,
+  OPERATOR_SOURCE_URL,
   resolveOpenClawReferencePaths,
 } from "../agents/docs-path.js";
 import {
@@ -131,7 +131,7 @@ function buildAgentSummaries(cfg: OpenClawConfig): SystemAgentSummary[] {
 }
 
 function resolveFastTestReferences(env: NodeJS.ProcessEnv): OpenClawReferencePaths | undefined {
-  if (env.OPENCLAW_TEST_FAST !== "1") {
+  if (env.OPERATOR_TEST_FAST !== "1") {
     return undefined;
   }
   const sourcePath = process.cwd();
@@ -211,9 +211,9 @@ export async function loadSystemAgentOverview(
     },
     references: {
       docsPath: references.docsPath ?? undefined,
-      docsUrl: OPENCLAW_DOCS_URL,
+      docsUrl: OPERATOR_DOCS_URL,
       sourcePath: references.sourcePath ?? undefined,
-      sourceUrl: OPENCLAW_SOURCE_URL,
+      sourceUrl: OPERATOR_SOURCE_URL,
     },
   };
 }
@@ -266,7 +266,7 @@ export function formatSystemAgentOverview(overview: SystemAgentOverview): string
     `AI: ${
       overview.defaultModel
         ? `conversation runs on ${overview.defaultModel}`
-        : "inference unavailable; run openclaw onboard before starting OpenClaw"
+        : "inference unavailable; run operator onboard before starting OpenClaw"
     }`,
     `Docs: ${overview.references.docsPath ?? overview.references.docsUrl}`,
     overview.references.sourcePath
@@ -283,13 +283,13 @@ export function formatSystemAgentOverview(overview: SystemAgentOverview): string
 
 function recommendSystemAgentNextStep(overview: SystemAgentOverview): string {
   if (!overview.config.exists) {
-    return 'run "openclaw onboard" to establish inference';
+    return 'run "operator onboard" to establish inference';
   }
   if (!overview.config.valid) {
     return 'run "validate config" or "doctor" to inspect the config';
   }
   if (!overview.defaultModel) {
-    return 'run "openclaw onboard" to establish inference';
+    return 'run "operator onboard" to establish inference';
   }
   if (!overview.gateway.reachable) {
     return 'run "gateway status" or "restart gateway"';
@@ -308,7 +308,7 @@ function formatStartupUse(overview: SystemAgentOverview): string {
   if (overview.defaultModel) {
     return `Using: ${overview.defaultModel} — just tell me what you want.`;
   }
-  return "Inference unavailable: run `openclaw onboard` and complete a live model check first.";
+  return "Inference unavailable: run `operator onboard` and complete a live model check first.";
 }
 
 function formatStartupGatewayStatus(overview: SystemAgentOverview): string {
@@ -326,7 +326,7 @@ function formatStartupAction(overview: SystemAgentOverview): string {
     return "OpenClaw needs working inference before it can help with the rest of setup.";
   }
   if (!overview.config.exists) {
-    return "Run `openclaw onboard` to establish inference before starting OpenClaw.";
+    return "Run `operator onboard` to establish inference before starting OpenClaw.";
   }
   if (!overview.gateway.reachable) {
     return "I can start debugging with `gateway status`, or queue `restart gateway` for approval.";

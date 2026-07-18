@@ -36,7 +36,7 @@ For local embeddings with no API key, install the official llama.cpp provider
 plugin and set `provider: "local"`:
 
 ```bash
-openclaw plugins install @openclaw/llama-cpp-provider
+openclaw plugins install @operator/llama-cpp-provider
 ```
 
 Source checkouts still need native build approval: `pnpm approve-builds`, then

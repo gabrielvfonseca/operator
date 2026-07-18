@@ -54,7 +54,7 @@ channel is the communication surface.
 
 ## Requirements
 
-- The official `@openclaw/codex` plugin installed. Include `codex` in
+- The official `@operator/codex` plugin installed. Include `codex` in
   `plugins.allow` if your config uses an allowlist.
 - Codex app-server `0.143.0` or newer. The plugin manages a compatible
   binary by default, so a `codex` command on `PATH` does not affect normal
@@ -72,7 +72,7 @@ model discovery, and the full config field list, see
 Install the official plugin, then sign in with Codex OAuth:
 
 ```bash
-openclaw plugins install @openclaw/codex
+openclaw plugins install @operator/codex
 openclaw models auth login --provider openai
 ```
 

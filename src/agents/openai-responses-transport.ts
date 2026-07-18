@@ -19,7 +19,7 @@ import {
   type OpenAIReasoningEffort,
   type OpenAIToolProjection,
   type ResponsesToolCallState,
-} from "@openclaw/ai/internal/openai";
+} from "@operator/ai/internal/openai";
 import {
   calculateCost,
   createFirstStreamEventAbortController,
@@ -28,15 +28,15 @@ import {
   getFirstStreamEventTimeoutMs,
   parseStreamingJson,
   withFirstStreamEventTimeout,
-} from "@openclaw/ai/internal/runtime";
+} from "@operator/ai/internal/runtime";
 import {
   describeToolResultMediaPlaceholder,
   extractToolResultText,
   isImageWithMediaPayload,
   stripSystemPromptCacheBoundary,
-} from "@openclaw/ai/internal/shared";
-import { isRecord } from "@openclaw/normalization-core/record-coerce";
-import { truncateUtf16Safe } from "@openclaw/normalization-core/utf16-slice";
+} from "@operator/ai/internal/shared";
+import { isRecord } from "@operator/normalization-core/record-coerce";
+import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
 import OpenAI, { AzureOpenAI } from "openai";
 import type {
   FunctionTool,
@@ -107,8 +107,8 @@ const OPENAI_CODEX_RESPONSES_EMPTY_INPUT_TEXT = " ";
 const OPENAI_CODEX_RESPONSES_DEFAULT_INSTRUCTIONS = "Follow the user request.";
 const AZURE_RESPONSES_FIRST_EVENT_TIMEOUT_MS = 30_000;
 const RESPONSE_FAILED_NO_DETAILS_MESSAGE = "Unknown error (no error details in response)";
-const OPENAI_RESPONSES_REASONING_REPLAY_META_KEY = "__openclaw_replay";
-const OPENAI_RESPONSES_REASONING_REPLAY_BLOCK_META_KEY = "openclawReasoningReplay";
+const OPENAI_RESPONSES_REASONING_REPLAY_META_KEY = "__operator_replay";
+const OPENAI_RESPONSES_REASONING_REPLAY_BLOCK_META_KEY = "operatorReasoningReplay";
 const OPENAI_RESPONSES_REPLAY_ITEM_ID_MAX_LENGTH = 64;
 
 type ReplayableResponseOutputMessage = Omit<ResponseOutputMessage, "id"> & { id?: string };
@@ -1390,7 +1390,7 @@ async function processResponsesStream(
     stage: "responses",
     abort: options?.abortFirstEventStream,
     onTimeout: options?.onFirstEventTimeout,
-    hint: "The provider may be stalled while parsing the tool payload; retry with a smaller tool surface or enable OPENCLAW_DEBUG_MODEL_PAYLOAD=tools to inspect exposed tools.",
+    hint: "The provider may be stalled while parsing the tool payload; retry with a smaller tool surface or enable OPERATOR_DEBUG_MODEL_PAYLOAD=tools to inspect exposed tools.",
   });
   const cooperativeScheduler = createModelStreamCooperativeScheduler(options?.signal);
   for await (const rawEvent of guardedStream) {
@@ -1928,8 +1928,8 @@ export function createOpenAIResponsesTransportStreamFn(): StreamFn {
         ) as typeof params;
         params = sanitizeResponsesImagePayload(params as Record<string, unknown>) as typeof params;
         if (
-          (options as { openclawCodeModeToolSurface?: unknown } | undefined)
-            ?.openclawCodeModeToolSurface === true
+          (options as { operatorCodeModeToolSurface?: unknown } | undefined)
+            ?.operatorCodeModeToolSurface === true
         ) {
           enforceCodeModeResponsesToolSurface(params);
           assertCodeModeResponsesToolSurface(params);
@@ -2329,8 +2329,8 @@ export function createAzureOpenAIResponsesTransportStreamFn(): StreamFn {
         ) as typeof params;
         params = sanitizeResponsesImagePayload(params as Record<string, unknown>) as typeof params;
         if (
-          (options as { openclawCodeModeToolSurface?: unknown } | undefined)
-            ?.openclawCodeModeToolSurface === true
+          (options as { operatorCodeModeToolSurface?: unknown } | undefined)
+            ?.operatorCodeModeToolSurface === true
         ) {
           enforceCodeModeResponsesToolSurface(params);
           assertCodeModeResponsesToolSurface(params);
@@ -2493,10 +2493,10 @@ const responsesTesting = {
 };
 
 declare global {
-  var openclawOpenAIResponsesTransportTestApi: typeof responsesTesting | undefined;
+  var operatorOpenAIResponsesTransportTestApi: typeof responsesTesting | undefined;
 }
 
 if (process.env.VITEST || process.env.NODE_ENV === "test") {
-  globalThis.openclawOpenAIResponsesTransportTestApi = responsesTesting;
+  globalThis.operatorOpenAIResponsesTransportTestApi = responsesTesting;
 }
 /* oxlint-disable max-lines -- TODO: split this grandfathered oversized file. */

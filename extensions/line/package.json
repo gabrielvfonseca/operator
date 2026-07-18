@@ -1,5 +1,5 @@
 {
-  "name": "@openclaw/line",
+  "name": "@operator/line",
   "version": "2026.7.2",
   "description": "OpenClaw LINE channel plugin for LINE Bot API chats.",
   "repository": {
@@ -12,7 +12,7 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@openclaw/plugin-sdk": "workspace:*",
+    "@operator/plugin-sdk": "workspace:*",
     "openclaw": "workspace:*"
   },
   "peerDependencies": {
@@ -41,7 +41,7 @@
       "quickstartAllowFrom": true
     },
     "install": {
-      "npmSpec": "@openclaw/line",
+      "npmSpec": "@operator/line",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.4.10"
     },

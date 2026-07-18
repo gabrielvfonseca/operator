@@ -28,7 +28,7 @@ import {
   uiProtocolFreshnessIssueToRepairEffects,
 } from "../commands/doctor-ui.js";
 import { collectDisabledCodexPluginRouteIssues } from "../commands/doctor/shared/codex-route-warnings.js";
-import type { ConfigValidationIssue, OpenClawConfig } from "../config/types.openclaw.js";
+import type { ConfigValidationIssue, OpenClawConfig } from "../config/types.operator.js";
 import { resolveSecretInputRef, type SecretRef } from "../config/types.secrets.js";
 import { hasAmbiguousGatewayAuthModeConfig } from "../gateway/auth-mode-policy.js";
 import { resolveGatewayAuthToken } from "../gateway/auth-token-resolution.js";
@@ -176,7 +176,7 @@ export function configValidationIssuesToHealthFindings(
 const gatewayConfigCheck: HealthCheck = {
   id: "core/doctor/gateway-config",
   kind: "core",
-  description: "openclaw.jsonc gateway block is set and unambiguous.",
+  description: "operator.jsonc gateway block is set and unambiguous.",
   source: "doctor",
   async detect(ctx) {
     const findings: HealthFinding[] = [];
@@ -187,7 +187,7 @@ const gatewayConfigCheck: HealthCheck = {
         message: "gateway.mode is unset; gateway start will be blocked.",
         path: "gateway.mode",
         fixHint:
-          "Run `openclaw configure` and set Gateway mode (local/remote), or `openclaw config set gateway.mode local`.",
+          "Run `operator configure` and set Gateway mode (local/remote), or `operator config set gateway.mode local`.",
       });
     }
     if (ctx.cfg.gateway?.mode !== "remote" && hasAmbiguousGatewayAuthModeConfig(ctx.cfg)) {
@@ -198,7 +198,7 @@ const gatewayConfigCheck: HealthCheck = {
           "gateway.auth.token and gateway.auth.password are both configured while gateway.auth.mode is unset; auth selection is ambiguous.",
         path: "gateway.auth.mode",
         fixHint:
-          "Set an explicit mode: `openclaw config set gateway.auth.mode token` or `... password`.",
+          "Set an explicit mode: `operator config set gateway.auth.mode token` or `... password`.",
       });
     }
     return findings;
@@ -222,7 +222,7 @@ const commandOwnerCheck: HealthCheck = {
           "No command owner is configured. Owner-only commands (/diagnostics, /export-trajectory, /config, exec approvals) have no allowed sender.",
         path: "commands.ownerAllowFrom",
         fixHint:
-          "Set commands.ownerAllowFrom to your channel user id, e.g. `openclaw config set commands.ownerAllowFrom '[\"telegram:123456789\"]'`.",
+          "Set commands.ownerAllowFrom to your channel user id, e.g. `operator config set commands.ownerAllowFrom '[\"telegram:123456789\"]'`.",
       },
     ];
   },
@@ -279,7 +279,7 @@ export function buildGatewayTokenSecretRefUnavailableMessage(params: {
 
 export function buildGatewayTokenSecretRefFixHint(ref: SecretRef): string {
   if (ref.source === "exec") {
-    return "Run `openclaw doctor --allow-exec` to verify exec SecretRefs during doctor, or `openclaw secrets audit --allow-exec` to audit all exec SecretRefs.";
+    return "Run `operator doctor --allow-exec` to verify exec SecretRefs during doctor, or `operator secrets audit --allow-exec` to audit all exec SecretRefs.";
   }
   return "Resolve or rotate the external secret source, then rerun doctor.";
 }
@@ -362,7 +362,7 @@ const gatewayAuthCheck: HealthCheck = {
         severity: "warning",
         message: "Gateway auth is off or missing a token.",
         path: "gateway.auth",
-        fixHint: "Run `openclaw doctor --fix --generate-gateway-token` to generate a token.",
+        fixHint: "Run `operator doctor --fix --generate-gateway-token` to generate a token.",
       },
     ];
   },
@@ -450,7 +450,7 @@ const legacyStateCheck: HealthCheck & { readonly defaultEnabled: false } = {
           severity: "warning",
           message: line.replace(/^- /, ""),
           path: detected.stateDir,
-          fixHint: "Run `openclaw doctor --fix` to migrate legacy state.",
+          fixHint: "Run `operator doctor --fix` to migrate legacy state.",
         }),
       ),
       ...detected.warnings.map(
@@ -459,7 +459,7 @@ const legacyStateCheck: HealthCheck & { readonly defaultEnabled: false } = {
           severity: "warning",
           message: warning,
           path: detected.stateDir,
-          fixHint: "Resolve the warning, then rerun `openclaw doctor --fix`.",
+          fixHint: "Resolve the warning, then rerun `operator doctor --fix`.",
         }),
       ),
     ];
@@ -763,7 +763,7 @@ const codexSessionRoutesCheck: HealthCheck = {
               "or set the affected OpenAI models to an OpenClaw runtime policy.",
             ].join(" ")
           : [
-              "Run `openclaw doctor --fix`: it enables plugins.entries.codex,",
+              "Run `operator doctor --fix`: it enables plugins.entries.codex,",
               "or set the affected OpenAI models to an OpenClaw runtime policy.",
             ].join(" "),
       }),
@@ -933,7 +933,7 @@ function unavailableSkillToFinding(skill: SkillStatusEntry): HealthFinding {
     message: `${skill.name} is allowed but unavailable: ${formatMissingSkillSummary(skill)}.`,
     path: skillReadinessPath(skill),
     fixHint:
-      "Install/configure the missing requirement, or run `openclaw doctor --fix` to disable unused unavailable skills.",
+      "Install/configure the missing requirement, or run `operator doctor --fix` to disable unused unavailable skills.",
   };
 }
 
@@ -966,7 +966,7 @@ function browserResidueFinding(residue: LegacyClawdBrowserProfileResidue): Healt
     path: residue.legacyProfileDir,
     ocPath: "oc://state/browser/clawd",
     fixHint:
-      "Run `openclaw doctor --fix` to archive the stale clawd profile safely instead of deleting it in place.",
+      "Run `operator doctor --fix` to archive the stale clawd profile safely instead of deleting it in place.",
   };
 }
 
@@ -1043,7 +1043,7 @@ const browserClawdProfileResidueCheck: HealthCheck = {
 const finalConfigValidationCheck: HealthCheck = {
   id: FINAL_CONFIG_VALIDATION_CHECK_ID,
   kind: "core",
-  description: "Active openclaw.jsonc parses and conforms to the config schema.",
+  description: "Active operator.jsonc parses and conforms to the config schema.",
   source: "doctor",
   async detect() {
     const { readConfigFileSnapshot } = await import("../config/config.js");

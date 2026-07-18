@@ -4,7 +4,7 @@
  * This registers a patched Google stream API that keeps the normal Google
  * backend but sanitizes unsupported thinking payload options for simple models.
  */
-import { clampThinkingLevel } from "@openclaw/ai/internal/runtime";
+import { clampThinkingLevel } from "@operator/ai/internal/runtime";
 import { streamSimple } from "../llm/stream.js";
 import type { Api, Model, ModelThinkingLevel } from "../llm/types.js";
 import {
@@ -16,7 +16,7 @@ import { ensureCustomApiRegistered } from "./custom-api-registry.js";
 import type { StreamFn } from "./runtime/index.js";
 
 /** Custom API id for the Google simple-completion stream adapter. */
-const GOOGLE_SIMPLE_COMPLETION_API: Api = "openclaw-google-generative-ai-simple";
+const GOOGLE_SIMPLE_COMPLETION_API: Api = "operator-google-generative-ai-simple";
 
 const SOURCE_API: Api = "google-generative-ai";
 

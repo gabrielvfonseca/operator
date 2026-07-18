@@ -144,7 +144,7 @@ async function writeFakePlugin(params: {
     path.join(pluginDir, "package.json"),
     `${JSON.stringify(
       {
-        name: "@openclaw/tool-search-e2e-fixture",
+        name: "@operator/tool-search-e2e-fixture",
         version: "0.0.0",
         type: "module",
         openclaw: {
@@ -157,7 +157,7 @@ async function writeFakePlugin(params: {
     "utf8",
   );
   await fs.writeFile(
-    path.join(pluginDir, "openclaw.plugin.json"),
+    path.join(pluginDir, "operator.plugin.json"),
     `${JSON.stringify(
       {
         id: FAKE_PLUGIN_ID,

@@ -1,8 +1,8 @@
 /**
  * Resolves provider stream functions and API keys for embedded agents.
  */
-import { getApiProvider } from "@openclaw/ai/internal/runtime";
-import { stripSystemPromptCacheBoundary } from "@openclaw/ai/internal/shared";
+import { getApiProvider } from "@operator/ai/internal/runtime";
+import { stripSystemPromptCacheBoundary } from "@operator/ai/internal/shared";
 import { streamSimple } from "../../llm/stream.js";
 import { createAnthropicVertexStreamFnForModel } from "../anthropic-vertex-stream.js";
 import { createBoundaryAwareStreamFnForModel } from "../provider-transport-stream.js";
@@ -82,7 +82,7 @@ export function describeEmbeddedAgentStreamStrategy(params: {
       currentStreamFn: params.currentStreamFn,
     })
   ) {
-    return "openclaw-native-codex-responses";
+    return "operator-native-codex-responses";
   }
   if (isDefaultOpenClawStreamFnForModel(params.model, params.currentStreamFn)) {
     return createBoundaryAwareStreamFnForModel(params.model)

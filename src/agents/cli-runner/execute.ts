@@ -255,7 +255,7 @@ const CLI_ENV_AUTH_LOG_KEYS = [
 
 const CLI_ENV_RUNTIME_LOG_KEYS = ["GEMINI_CLI_HOME", "GEMINI_CLI_SYSTEM_SETTINGS_PATH"] as const;
 
-const CLI_BACKEND_PRESERVE_ENV = "OPENCLAW_LIVE_CLI_BACKEND_PRESERVE_ENV";
+const CLI_BACKEND_PRESERVE_ENV = "OPERATOR_LIVE_CLI_BACKEND_PRESERVE_ENV";
 
 function parseCliBackendPreserveEnv(raw: string | undefined): Set<string> {
   const trimmed = raw?.trim();
@@ -302,8 +302,8 @@ function formatCliEnvKeyList(keys: readonly string[]): string {
 
 function buildCliEnvMcpLog(childEnv: Record<string, string>): string {
   return [
-    `token=${childEnv.OPENCLAW_MCP_TOKEN ? "set" : "missing"}`,
-    `capture=${childEnv.OPENCLAW_MCP_CLI_CAPTURE_KEY ? "set" : "missing"}`,
+    `token=${childEnv.OPERATOR_MCP_TOKEN ? "set" : "missing"}`,
+    `capture=${childEnv.OPERATOR_MCP_CLI_CAPTURE_KEY ? "set" : "missing"}`,
   ].join(" ");
 }
 
@@ -376,7 +376,7 @@ function buildCliEnvAuthLog(childEnv: Record<string, string>): string {
 }
 
 if (process.env.VITEST || process.env.NODE_ENV === "test") {
-  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("openclaw.cliRunnerExecuteTestApi")] = {
+  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("operator.cliRunnerExecuteTestApi")] = {
     buildCliEnvAuthLog,
     buildCliExecLogLine,
     setCliRunnerExecuteTestDeps: (overrides: Record<string, unknown>) => {
@@ -977,7 +977,7 @@ export async function executePreparedCliRun(
           });
           cliBackendLog.info(`cli argv: ${executionCommand} ${logArgs.join(" ")}`);
           cliBackendLog.info(`cli env auth: ${buildCliEnvAuthLog(env)}`);
-          if (env.OPENCLAW_MCP_TOKEN) {
+          if (env.OPERATOR_MCP_TOKEN) {
             cliBackendLog.info(`cli env mcp: ${buildCliEnvMcpLog(env)}`);
           }
         }

@@ -24,7 +24,7 @@ import type {
   SessionTranscriptDeliveryMirror,
   SessionTranscriptUpdateMode,
 } from "../config/sessions/transcript.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import { normalizeAgentId } from "../routing/session-key.js";
 import { extractAssistantVisibleText } from "../shared/chat-message-content.js";
 import type { AgentMessage } from "./agent-core.js";
@@ -331,7 +331,7 @@ function createAssistantMirrorMessage(params: {
     role: "assistant",
     content: [{ type: "text", text: params.text }],
     api: "openai-responses",
-    provider: "openclaw",
+    provider: "operator",
     model: "delivery-mirror",
     usage: {
       input: 0,
@@ -344,7 +344,7 @@ function createAssistantMirrorMessage(params: {
     stopReason: "stop",
     timestamp: Date.now(),
     ...(params.idempotencyKey ? { idempotencyKey: params.idempotencyKey } : {}),
-    ...(params.deliveryMirror ? { openclawDeliveryMirror: params.deliveryMirror } : {}),
+    ...(params.deliveryMirror ? { operatorDeliveryMirror: params.deliveryMirror } : {}),
   };
 }
 
@@ -391,7 +391,7 @@ function extractAssistantMirrorComparableText(
 }
 
 function isDeliveryMirrorAssistantMessage(message: SessionTranscriptAssistantMessage): boolean {
-  return message.provider === "openclaw" && message.model === "delivery-mirror";
+  return message.provider === "operator" && message.model === "delivery-mirror";
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

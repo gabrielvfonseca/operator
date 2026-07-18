@@ -1,4 +1,4 @@
-import { expectDefined } from "@openclaw/normalization-core";
+import { expectDefined } from "@operator/normalization-core";
 // Proxy environment helpers mirror undici EnvHttpProxyAgent selection while
 // adding OpenClaw NO_PROXY CIDR/wildcard bypass checks.
 import { readTrimmedStringAlias } from "../../utils/string-readers.js";
@@ -144,7 +144,7 @@ export function shouldUseEnvHttpProxyForUrl(
  * Undici does not export its matcher, so this is a targeted reimplementation
  * kept in sync with the upstream file above. Paired with
  * `hasEnvHttpProxyConfigured` this gates the trusted-env-proxy auto-upgrade
- * in provider HTTP helpers; see openclaw#64974 review thread on NO_PROXY
+ * in provider HTTP helpers; see operator#64974 review thread on NO_PROXY
  * SSRF bypass.
  */
 export function matchesNoProxy(targetUrl: string, env: NodeJS.ProcessEnv = process.env): boolean {

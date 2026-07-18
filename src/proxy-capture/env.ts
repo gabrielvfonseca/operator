@@ -2,7 +2,7 @@
 import { randomUUID } from "node:crypto";
 import type { Agent } from "node:http";
 import process from "node:process";
-import { createAmbientNodeProxyAgent } from "@openclaw/proxyline";
+import { createAmbientNodeProxyAgent } from "@operator/proxyline";
 import {
   resolveDebugProxyBlobDir,
   resolveDebugProxyCertDir,
@@ -11,15 +11,15 @@ import {
 
 // Environment contract for debug proxy capture. These vars are passed to child
 // processes and provider transports so capture sessions share one store/proxy.
-const OPENCLAW_DEBUG_PROXY_ENABLED = "OPENCLAW_DEBUG_PROXY_ENABLED";
-const OPENCLAW_DEBUG_PROXY_URL = "OPENCLAW_DEBUG_PROXY_URL";
+const OPERATOR_DEBUG_PROXY_ENABLED = "OPERATOR_DEBUG_PROXY_ENABLED";
+const OPERATOR_DEBUG_PROXY_URL = "OPERATOR_DEBUG_PROXY_URL";
 /** @deprecated Capture storage now lives in the shared state database. */
-const OPENCLAW_DEBUG_PROXY_DB_PATH = "OPENCLAW_DEBUG_PROXY_DB_PATH";
+const OPERATOR_DEBUG_PROXY_DB_PATH = "OPERATOR_DEBUG_PROXY_DB_PATH";
 /** @deprecated Capture payloads now live in the shared state database. */
-const OPENCLAW_DEBUG_PROXY_BLOB_DIR = "OPENCLAW_DEBUG_PROXY_BLOB_DIR";
-const OPENCLAW_DEBUG_PROXY_CERT_DIR = "OPENCLAW_DEBUG_PROXY_CERT_DIR";
-const OPENCLAW_DEBUG_PROXY_SESSION_ID = "OPENCLAW_DEBUG_PROXY_SESSION_ID";
-const OPENCLAW_DEBUG_PROXY_REQUIRE = "OPENCLAW_DEBUG_PROXY_REQUIRE";
+const OPERATOR_DEBUG_PROXY_BLOB_DIR = "OPERATOR_DEBUG_PROXY_BLOB_DIR";
+const OPERATOR_DEBUG_PROXY_CERT_DIR = "OPERATOR_DEBUG_PROXY_CERT_DIR";
+const OPERATOR_DEBUG_PROXY_SESSION_ID = "OPERATOR_DEBUG_PROXY_SESSION_ID";
+const OPERATOR_DEBUG_PROXY_REQUIRE = "OPERATOR_DEBUG_PROXY_REQUIRE";
 
 export type DebugProxySettings = {
   enabled: boolean;
@@ -43,20 +43,20 @@ function isTruthy(value: string | undefined): boolean {
 export function resolveDebugProxySettings(
   env: NodeJS.ProcessEnv = process.env,
 ): DebugProxySettings {
-  const enabled = isTruthy(env[OPENCLAW_DEBUG_PROXY_ENABLED]);
-  const explicitSessionId = env[OPENCLAW_DEBUG_PROXY_SESSION_ID]?.trim() || undefined;
+  const enabled = isTruthy(env[OPERATOR_DEBUG_PROXY_ENABLED]);
+  const explicitSessionId = env[OPERATOR_DEBUG_PROXY_SESSION_ID]?.trim() || undefined;
   // Local implicit sessions stay stable within one process so repeated callers
   // write to the same capture session until an explicit id overrides it.
   const sessionId = explicitSessionId ?? (cachedImplicitSessionId ??= randomUUID());
   return {
     enabled,
-    required: isTruthy(env[OPENCLAW_DEBUG_PROXY_REQUIRE]),
-    proxyUrl: env[OPENCLAW_DEBUG_PROXY_URL]?.trim() || undefined,
-    dbPath: env[OPENCLAW_DEBUG_PROXY_DB_PATH]?.trim() || resolveDebugProxyDbPath(env),
-    blobDir: env[OPENCLAW_DEBUG_PROXY_BLOB_DIR]?.trim() || resolveDebugProxyBlobDir(env),
-    certDir: env[OPENCLAW_DEBUG_PROXY_CERT_DIR]?.trim() || resolveDebugProxyCertDir(env),
+    required: isTruthy(env[OPERATOR_DEBUG_PROXY_REQUIRE]),
+    proxyUrl: env[OPERATOR_DEBUG_PROXY_URL]?.trim() || undefined,
+    dbPath: env[OPERATOR_DEBUG_PROXY_DB_PATH]?.trim() || resolveDebugProxyDbPath(env),
+    blobDir: env[OPERATOR_DEBUG_PROXY_BLOB_DIR]?.trim() || resolveDebugProxyBlobDir(env),
+    certDir: env[OPERATOR_DEBUG_PROXY_CERT_DIR]?.trim() || resolveDebugProxyCertDir(env),
     sessionId,
-    sourceProcess: "openclaw",
+    sourceProcess: "operator",
   };
 }
 
@@ -71,15 +71,15 @@ export function applyDebugProxyEnv(
   // Child process env forces proxy capture and standard proxy variables while
   // preserving unrelated environment values.
   const baseEnv = { ...env };
-  delete baseEnv.OPENCLAW_DEBUG_PROXY_DB_PATH;
-  delete baseEnv.OPENCLAW_DEBUG_PROXY_BLOB_DIR;
+  delete baseEnv.OPERATOR_DEBUG_PROXY_DB_PATH;
+  delete baseEnv.OPERATOR_DEBUG_PROXY_BLOB_DIR;
   return {
     ...baseEnv,
-    [OPENCLAW_DEBUG_PROXY_ENABLED]: "1",
-    [OPENCLAW_DEBUG_PROXY_REQUIRE]: "1",
-    [OPENCLAW_DEBUG_PROXY_URL]: params.proxyUrl,
-    [OPENCLAW_DEBUG_PROXY_CERT_DIR]: params.certDir ?? resolveDebugProxyCertDir(env),
-    [OPENCLAW_DEBUG_PROXY_SESSION_ID]: params.sessionId,
+    [OPERATOR_DEBUG_PROXY_ENABLED]: "1",
+    [OPERATOR_DEBUG_PROXY_REQUIRE]: "1",
+    [OPERATOR_DEBUG_PROXY_URL]: params.proxyUrl,
+    [OPERATOR_DEBUG_PROXY_CERT_DIR]: params.certDir ?? resolveDebugProxyCertDir(env),
+    [OPERATOR_DEBUG_PROXY_SESSION_ID]: params.sessionId,
     HTTP_PROXY: params.proxyUrl,
     HTTPS_PROXY: params.proxyUrl,
     ALL_PROXY: params.proxyUrl,

@@ -5,7 +5,7 @@ Official OpenClaw plugin for SearXNG.
 ## Install
 
 ```sh
-openclaw plugins install @openclaw/searxng-plugin
+openclaw plugins install @operator/searxng-plugin
 ```
 
 ## Docs

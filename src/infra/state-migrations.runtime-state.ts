@@ -1,9 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
-import { normalizeLowercaseStringOrEmpty } from "@openclaw/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
 import { resolveAgentIdFromSessionKey } from "../routing/session-key.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
-import { runOpenClawStateWriteTransaction } from "../state/openclaw-state-db.js";
+import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import { runOpenClawStateWriteTransaction } from "../state/operator-state-db.js";
 import { resolveRequiredHomeDir } from "./home-dir.js";
 import {
   executeSqliteQuerySync,
@@ -32,7 +32,7 @@ type LegacyCurrentConversationBindingsImportDatabase = Pick<
 >;
 
 const VOICEWAKE_CONFIG_KEY = "default";
-const DEFAULT_VOICEWAKE_TRIGGERS = ["openclaw", "claude", "computer"];
+const DEFAULT_VOICEWAKE_TRIGGERS = ["operator", "claude", "computer"];
 
 export function resolveLegacyVoiceWakeTriggersPath(stateDir: string): string {
   return path.join(stateDir, "settings", "voicewake.json");
@@ -140,7 +140,7 @@ export function migrateLegacyVoiceWakeSettings(params: {
 }): { changes: string[]; warnings: string[] } {
   const changes: string[] = [];
   const warnings: string[] = [];
-  const env = { ...process.env, OPENCLAW_STATE_DIR: params.stateDir };
+  const env = { ...process.env, OPERATOR_STATE_DIR: params.stateDir };
   if (fileExists(params.detected.triggersPath)) {
     let triggers: string[];
     try {
@@ -508,7 +508,7 @@ export function migrateLegacyConfigHealth(params: {
           reconciledCount: transactionReconciledCount,
         };
       },
-      { env: { ...process.env, OPENCLAW_STATE_DIR: params.stateDir } },
+      { env: { ...process.env, OPERATOR_STATE_DIR: params.stateDir } },
     );
     importedCount = result.importedCount;
     reconciledCount = result.reconciledCount;
@@ -556,7 +556,7 @@ export function resolveLegacyPluginBindingApprovalsPath(
 ): string {
   return path.join(
     resolveRequiredHomeDir(env, homedir),
-    ".openclaw",
+    ".operator",
     "plugin-binding-approvals.json",
   );
 }
@@ -732,7 +732,7 @@ export function migrateLegacyPluginBindingApprovals(params: {
           );
         }
       },
-      { env: { ...process.env, OPENCLAW_STATE_DIR: params.stateDir } },
+      { env: { ...process.env, OPERATOR_STATE_DIR: params.stateDir } },
     );
   } catch (err) {
     warnings.push(`Failed migrating legacy plugin binding approvals: ${String(err)}`);
@@ -939,7 +939,7 @@ export function migrateLegacyCurrentConversationBindings(params: {
           );
         }
       },
-      { env: { ...process.env, OPENCLAW_STATE_DIR: params.stateDir } },
+      { env: { ...process.env, OPERATOR_STATE_DIR: params.stateDir } },
     );
   } catch (err) {
     warnings.push(`Failed migrating legacy current-conversation bindings: ${String(err)}`);

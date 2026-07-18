@@ -1,11 +1,11 @@
-import { expectDefined } from "@openclaw/normalization-core";
+import { expectDefined } from "@operator/normalization-core";
 /**
  * Shared queue overflow, debounce, and collection helpers.
  *
  * Queue owners use these helpers to cap pending work, summarize dropped items,
  * debounce drains, and force individual collection when cross-channel ordering matters.
  */
-import { truncateUtf16Safe } from "@openclaw/normalization-core/utf16-slice";
+import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
 
 /** Mutable summary state for a capped queue. */
 type QueueSummaryState = {
@@ -167,7 +167,7 @@ export function waitForQueueDebounce(
   },
   abortSignal?: AbortSignal,
 ): Promise<void> {
-  if (process.env.OPENCLAW_TEST_FAST === "1") {
+  if (process.env.OPERATOR_TEST_FAST === "1") {
     // Tests use this escape hatch so debounce logic does not slow deterministic queue specs.
     return Promise.resolve();
   }

@@ -13,7 +13,7 @@ function resolveDefaultExecApprovalsStateDir(
   env: NodeJS.ProcessEnv,
   homedir: () => string,
 ): string {
-  return path.join(resolveRequiredHomeDir(env, homedir), ".openclaw");
+  return path.join(resolveRequiredHomeDir(env, homedir), ".operator");
 }
 
 function resolveDefaultExecApprovalsPath(env: NodeJS.ProcessEnv, homedir: () => string): string {
@@ -39,7 +39,7 @@ export function detectLegacyExecApprovalsMigration(params: {
     sourcePath,
     targetPath,
     hasLegacy:
-      Boolean(params.env.OPENCLAW_STATE_DIR?.trim()) &&
+      Boolean(params.env.OPERATOR_STATE_DIR?.trim()) &&
       !isNamedProfile(params.env) &&
       path.resolve(sourcePath) !== path.resolve(targetPath) &&
       fileExists(sourcePath) &&

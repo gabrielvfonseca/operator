@@ -3,7 +3,7 @@ import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@openclaw/normalization-core";
+import { expectDefined } from "@operator/normalization-core";
 import { describe, expect, it, vi } from "vitest";
 import {
   BUILD_ALL_PROFILES,
@@ -561,7 +561,7 @@ describe("resolveBuildAllSteps", () => {
       expect.arrayContaining([
         "dist/plugin-sdk/webhook-path.js",
         "dist/plugin-sdk/.boundary-entry-shims.stamp",
-        "packages/plugin-sdk/dist/src/plugin-sdk/provider-entry.d.ts",
+        "sdks/plugin-sdk/dist/src/plugin-sdk/provider-entry.d.ts",
       ]),
     );
     expect(step.cache?.outputs).not.toContainEqual(

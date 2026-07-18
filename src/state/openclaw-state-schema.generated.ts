@@ -3,7 +3,7 @@
  * Please do not edit it manually.
  */
 
-export const OPENCLAW_STATE_SCHEMA_SQL = `CREATE TABLE IF NOT EXISTS auth_profile_stores (
+export const OPERATOR_STATE_SCHEMA_SQL = `CREATE TABLE IF NOT EXISTS auth_profile_stores (
   store_key TEXT NOT NULL PRIMARY KEY,
   store_json TEXT NOT NULL,
   updated_at INTEGER NOT NULL
@@ -1591,7 +1591,7 @@ CREATE TABLE IF NOT EXISTS worker_environments (
     )
   ),
   bootstrap_bundle_hash TEXT,
-  bootstrap_openclaw_version TEXT,
+  bootstrap_operator_version TEXT,
   bootstrap_protocol_features_json TEXT,
   owner_epoch INTEGER NOT NULL DEFAULT 0 CHECK (owner_epoch >= 0),
   teardown_terminal_state TEXT CHECK (teardown_terminal_state IN ('destroyed', 'failed')),

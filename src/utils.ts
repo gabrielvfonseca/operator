@@ -11,7 +11,7 @@ import {
 import { isPlainObject } from "./infra/plain-object.js";
 export { escapeRegExp } from "./shared/regexp.js";
 export { sleep } from "./utils/sleep.js";
-export { isRecord } from "@openclaw/normalization-core/record-coerce";
+export { isRecord } from "@operator/normalization-core/record-coerce";
 export { resolveUserPath };
 
 /** Creates a directory tree if it does not already exist. */
@@ -56,22 +56,22 @@ export function normalizeE164(number: string): string {
 // Surrogate-safe slicing helpers live in a node-free leaf module so browser/UI
 // bundles can import them without pulling in filesystem code. Re-exported here
 // to preserve the historical `utils.ts` import surface.
-export { sliceUtf16Safe, truncateUtf16Safe } from "@openclaw/normalization-core/utf16-slice";
+export { sliceUtf16Safe, truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
 
 /** Resolves the OpenClaw config directory from state/config env overrides or home. */
 export function resolveConfigDir(
   env: NodeJS.ProcessEnv = process.env,
   homedir: () => string = os.homedir,
 ): string {
-  const override = env.OPENCLAW_STATE_DIR?.trim();
+  const override = env.OPERATOR_STATE_DIR?.trim();
   if (override) {
     return resolveUserPath(override, env, homedir);
   }
-  const configPath = env.OPENCLAW_CONFIG_PATH?.trim();
+  const configPath = env.OPERATOR_CONFIG_PATH?.trim();
   if (configPath) {
     return path.dirname(resolveUserPath(configPath, env, homedir));
   }
-  const newDir = path.join(resolveRequiredHomeDir(env, homedir), ".openclaw");
+  const newDir = path.join(resolveRequiredHomeDir(env, homedir), ".operator");
   try {
     const hasNew = fs.existsSync(newDir);
     if (hasNew) {
@@ -93,14 +93,14 @@ function resolveHomeDisplayPrefix(): { home: string; prefix: string } | undefine
   if (!home) {
     return undefined;
   }
-  const explicitHome = process.env.OPENCLAW_HOME?.trim();
+  const explicitHome = process.env.OPERATOR_HOME?.trim();
   if (explicitHome) {
-    return { home, prefix: "$OPENCLAW_HOME" };
+    return { home, prefix: "$OPERATOR_HOME" };
   }
   return { home, prefix: "~" };
 }
 
-/** Replaces the leading home directory in a path with `~` or `$OPENCLAW_HOME`. */
+/** Replaces the leading home directory in a path with `~` or `$OPERATOR_HOME`. */
 export function shortenHomePath(input: string): string {
   if (!input) {
     return input;

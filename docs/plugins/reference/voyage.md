@@ -11,7 +11,7 @@ Adds memory embedding provider support.
 
 ## Distribution
 
-- Package: `@openclaw/voyage-provider`
+- Package: `@operator/voyage-provider`
 - Install route: included in OpenClaw
 
 ## Surface

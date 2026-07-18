@@ -2442,8 +2442,8 @@ describe("doctor legacy state migrations", () => {
     await writeExistingPluginInstallIndex(root, {
       discord: {
         source: "npm",
-        spec: "@openclaw/discord@latest",
-        resolvedName: "@openclaw/discord",
+        spec: "@operator/discord@latest",
+        resolvedName: "@operator/discord",
         resolvedVersion: "2026.6.16",
         integrity: "sha512-current",
         installedAt: "2026-06-16T12:00:00.000Z",
@@ -2452,7 +2452,7 @@ describe("doctor legacy state migrations", () => {
     const sourcePath = writeLegacyPluginInstallIndex(root, {
       discord: {
         source: "npm",
-        spec: "@openclaw/discord@2026.6.16",
+        spec: "@operator/discord@2026.6.16",
         version: "2026.6.16",
         installedAt: "2026-06-01T12:00:00.000Z",
       },
@@ -2467,8 +2467,8 @@ describe("doctor legacy state migrations", () => {
       installRecords: {
         discord: {
           source: "npm",
-          spec: "@openclaw/discord@latest",
-          resolvedName: "@openclaw/discord",
+          spec: "@operator/discord@latest",
+          resolvedName: "@operator/discord",
           resolvedVersion: "2026.6.16",
           integrity: "sha512-current",
         },
@@ -2655,11 +2655,11 @@ describe("doctor legacy state migrations", () => {
       label: "name different packages",
       current: {
         source: "npm",
-        spec: "@openclaw/demo@1.0.0",
+        spec: "@operator/demo@1.0.0",
         version: "1.0.0",
-        resolvedName: "@openclaw/demo",
+        resolvedName: "@operator/demo",
         resolvedVersion: "1.0.0",
-        resolvedSpec: "@openclaw/demo@1.0.0",
+        resolvedSpec: "@operator/demo@1.0.0",
       },
       legacy: {
         source: "npm",

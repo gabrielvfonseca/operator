@@ -1,8 +1,8 @@
 // Extracts media attachment references from reply history entries.
-import { mimeTypeFromFilePath } from "@openclaw/media-core/mime";
-import { expectDefined } from "@openclaw/normalization-core";
-import { asFiniteNumber } from "@openclaw/normalization-core/number-coercion";
-import { normalizeOptionalString } from "@openclaw/normalization-core/string-coerce";
+import { mimeTypeFromFilePath } from "@operator/media-core/mime";
+import { expectDefined } from "@operator/normalization-core";
+import { asFiniteNumber } from "@operator/normalization-core/number-coercion";
+import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 import type { MsgContext } from "../templating.js";
 import type { HistoryEntry, HistoryMediaEntry } from "./history.types.js";
 

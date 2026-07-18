@@ -1,5 +1,5 @@
 {
-  "name": "@openclaw/cerebras-provider",
+  "name": "@operator/cerebras-provider",
   "version": "2026.7.2",
   "description": "OpenClaw Cerebras provider plugin.",
   "repository": {
@@ -8,15 +8,15 @@
   },
   "type": "module",
   "devDependencies": {
-    "@openclaw/plugin-sdk": "workspace:*"
+    "@operator/plugin-sdk": "workspace:*"
   },
   "openclaw": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "clawhubSpec": "clawhub:@openclaw/cerebras-provider",
-      "npmSpec": "@openclaw/cerebras-provider",
+      "clawhubSpec": "clawhub:@operator/cerebras-provider",
+      "npmSpec": "@operator/cerebras-provider",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.6.8"
     },

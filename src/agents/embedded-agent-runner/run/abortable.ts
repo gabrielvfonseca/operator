@@ -8,14 +8,14 @@ function getAbortReason(signal: AbortSignal): unknown {
 }
 
 /** Marks AbortErrors produced by abortable() so provider aborts stay retryable. */
-const OPENCLAW_ABORTABLE_WRAPPER = Symbol.for("openclaw.abortable.wrapper");
+const OPERATOR_ABORTABLE_WRAPPER = Symbol.for("operator.abortable.wrapper");
 
 export function isOpenClawAbortableWrapper(err: unknown): boolean {
-  return err !== null && typeof err === "object" && OPENCLAW_ABORTABLE_WRAPPER in err;
+  return err !== null && typeof err === "object" && OPERATOR_ABORTABLE_WRAPPER in err;
 }
 
 function tagAsAbortableWrapper(err: Error): Error {
-  (err as Error & { [OPENCLAW_ABORTABLE_WRAPPER]?: true })[OPENCLAW_ABORTABLE_WRAPPER] = true;
+  (err as Error & { [OPERATOR_ABORTABLE_WRAPPER]?: true })[OPERATOR_ABORTABLE_WRAPPER] = true;
   return err;
 }
 

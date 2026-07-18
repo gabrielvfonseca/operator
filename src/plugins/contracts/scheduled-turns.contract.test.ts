@@ -1,5 +1,5 @@
 // Scheduled turn contract tests cover plugin scheduled turn metadata and timestamp bounds.
-import { MAX_DATE_TIMESTAMP_MS } from "@openclaw/normalization-core/number-coercion";
+import { MAX_DATE_TIMESTAMP_MS } from "@operator/normalization-core/number-coercion";
 import {
   createPluginRegistryFixture,
   registerTestPlugin,
@@ -92,7 +92,7 @@ function createMockCronService(): CronServiceContract {
       enabled: true,
       storePath: "/tmp/openclaw-test-cron.json",
       storage: "sqlite" as const,
-      sqlitePath: "/tmp/openclaw-test-state/state/openclaw.sqlite",
+      sqlitePath: "/tmp/operator-test-state/state/openclaw.sqlite",
       jobs: 0,
       nextWakeAtMs: null,
     })),

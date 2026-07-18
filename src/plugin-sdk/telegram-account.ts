@@ -3,7 +3,7 @@ import type { OpenClawConfig } from "./config-types.js";
 import { loadBundledPluginPublicSurfaceModuleSync } from "./facade-loader.js";
 
 /**
- * @deprecated Compatibility type for the `openclaw/plugin-sdk/telegram-account` facade.
+ * @deprecated Compatibility type for the `operator/plugin-sdk/telegram-account` facade.
  * New channel plugins should prefer injected runtime helpers and generic SDK subpaths.
  */
 export type TelegramAccountConfig = NonNullable<
@@ -11,7 +11,7 @@ export type TelegramAccountConfig = NonNullable<
 >;
 
 /**
- * @deprecated Compatibility type for the `openclaw/plugin-sdk/telegram-account` facade.
+ * @deprecated Compatibility type for the `operator/plugin-sdk/telegram-account` facade.
  * New channel plugins should prefer injected runtime helpers and generic SDK subpaths.
  */
 export type ResolvedTelegramAccount = {

@@ -3,10 +3,10 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { inspect } from "node:util";
 import { cancel, isCancel } from "@clack/prompts";
-import { resolveTimerTimeoutMs } from "@openclaw/normalization-core/number-coercion";
-import { normalizeOptionalString } from "@openclaw/normalization-core/string-coerce";
-import { uniqueStrings } from "@openclaw/normalization-core/string-normalization";
-import { truncateUtf16Safe } from "@openclaw/normalization-core/utf16-slice";
+import { resolveTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
+import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
 import {
   ConnectErrorDetailCodes,
   readConnectErrorDetailCode,
@@ -24,7 +24,7 @@ import { resolveAgentModelPrimaryValue } from "../config/model-input.js";
 import { resolveConfigPath } from "../config/paths.js";
 import { resolveSessionTranscriptsDirForAgent } from "../config/sessions/paths.js";
 import type { OptionalBootstrapFileName } from "../config/types.agent-defaults.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import {
   resolveAdvertisedControlUiLinks,
   resolveControlUiLinks,
@@ -212,8 +212,8 @@ export function formatControlUiSshHint(params: {
     "BYOH note: lan, tailnet, and custom bind are currently IPv4-only.",
     "If your host is IPv6-only, use an IPv4 sidecar or proxy in front of the Gateway.",
     "Docs:",
-    "https://docs.openclaw.ai/gateway/remote",
-    "https://docs.openclaw.ai/web/control-ui",
+    "https://docs.operator.ai/gateway/remote",
+    "https://docs.operator.ai/web/control-ui",
   ]
     .filter(Boolean)
     .join("\n");

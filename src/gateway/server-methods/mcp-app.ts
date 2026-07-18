@@ -11,7 +11,7 @@ import {
   getMcpAppViewLease,
   type McpAppViewLease,
 } from "../../agents/mcp-ui-resource.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OpenClawConfig } from "../../config/types.operator.js";
 import { formatErrorMessage } from "../../infra/errors.js";
 import { logWarn } from "../../logger.js";
 import { restoreMcpAppView } from "../mcp-app-reconstruction.js";

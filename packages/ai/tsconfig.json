@@ -1,8 +1,12 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "rootDir": "../..",
     "outDir": "dist"
   },
-  "include": ["src/**/*", "../../src/agents/**/*", "../../src/shared/**/*"]
+  "include": [
+    "src/**/*",
+    "../../src/agents/**/*",
+    "../../src/shared/**/*"
+  ],
+  "extends": "@operator/typescript-config/core"
 }

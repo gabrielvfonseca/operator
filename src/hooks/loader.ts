@@ -8,7 +8,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { sanitizeForLog } from "../../packages/terminal-core/src/ansi.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import { openRootFile } from "../infra/boundary-file-read.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
@@ -25,7 +25,7 @@ import { loadWorkspaceHookEntries } from "./workspace.js";
 
 const log = createSubsystemLogger("hooks:loader");
 const LOADED_INTERNAL_HOOK_REGISTRATIONS_KEY = Symbol.for(
-  "openclaw.loadedInternalHookRegistrations",
+  "operator.loadedInternalHookRegistrations",
 );
 const loadedHookRegistrations = resolveGlobalSingleton<
   Array<{ event: string; handler: InternalHookHandler }>
@@ -45,13 +45,13 @@ function isNonEmptyRelativePathInsideRoot(relativePath: string): boolean {
 }
 
 function maybeWarnTrustedHookSource(source: string): void {
-  if (source === "openclaw-workspace") {
+  if (source === "operator-workspace") {
     log.warn(
       "Loading workspace hook code into the gateway process. Workspace hooks are trusted local code.",
     );
     return;
   }
-  if (source === "openclaw-managed") {
+  if (source === "operator-managed") {
     log.warn(
       "Loading managed hook code into the gateway process. Managed hooks are trusted local code.",
     );
@@ -179,7 +179,7 @@ export async function loadInternalHooks(
             `Hook '${safeLogValue(entry.hook.name)}' subscribes to event${unknownEvents.length === 1 ? "" : "s"} ` +
               `${unknownEvents.map((event) => safeLogValue(event)).join(", ")} not emitted by OpenClaw core — ` +
               `likely a typo; unless a plugin emits it, the hook never fires. ` +
-              `Known events: https://docs.openclaw.ai/automation/hooks`,
+              `Known events: https://docs.operator.ai/automation/hooks`,
           );
         }
 
@@ -257,7 +257,7 @@ export async function loadInternalHooks(
       );
 
       // Legacy handlers are always workspace-relative, so use mtime-based cache busting
-      const importUrl = buildImportUrl(safeModulePath, "openclaw-workspace");
+      const importUrl = buildImportUrl(safeModulePath, "operator-workspace");
       const mod = (await import(importUrl)) as Record<string, unknown>;
 
       // Get the handler function
@@ -280,7 +280,7 @@ export async function loadInternalHooks(
           `Legacy hook handler ${safeLogValue(rawModule)} subscribes to event ` +
             `${safeLogValue(handlerConfig.event)} not emitted by OpenClaw core — ` +
             `likely a typo; unless a plugin emits it, the hook never fires. ` +
-            `Known events: https://docs.openclaw.ai/automation/hooks`,
+            `Known events: https://docs.operator.ai/automation/hooks`,
         );
       }
       registerInternalHook(handlerConfig.event, handler);

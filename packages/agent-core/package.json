@@ -1,5 +1,5 @@
 {
-  "name": "@openclaw/agent-core",
+  "name": "@operator/agent-core",
   "version": "0.0.0-private",
   "private": true,
   "files": [
@@ -95,8 +95,8 @@
     }
   },
   "dependencies": {
-    "@openclaw/ai": "workspace:*",
-    "@openclaw/normalization-core": "workspace:*",
+    "@operator/ai": "workspace:*",
+    "@operator/normalization-core": "workspace:*",
     "typebox": "1.3.3"
   }
 }

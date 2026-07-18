@@ -3,12 +3,12 @@ import type { DatabaseSync } from "node:sqlite";
 import type { Insertable, Selectable } from "kysely";
 import { executeSqliteQuerySync, getNodeSqliteKysely } from "../infra/kysely-sync.js";
 import { normalizeSqliteNumber } from "../infra/sqlite-number.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
   closeOpenClawStateDatabase,
   openOpenClawStateDatabase,
   runOpenClawStateWriteTransaction,
-} from "../state/openclaw-state-db.js";
+} from "../state/operator-state-db.js";
 import type { TaskFlowRegistryStoreSnapshot } from "./task-flow-registry.store.types.js";
 import {
   parseOptionalTaskFlowSyncMode,
@@ -34,7 +34,7 @@ type FlowRegistryDatabase = {
   path: string;
 };
 
-// SQLite-backed task-flow store mirrors the in-process registry into openclaw-state.db.
+// SQLite-backed task-flow store mirrors the in-process registry into operator-state.db.
 let cachedDatabase: FlowRegistryDatabase | null = null;
 
 function serializeJson(value: unknown): string | null {
@@ -118,7 +118,7 @@ function getFlowRegistryKysely(db: DatabaseSync) {
 }
 
 function pruneFlowsNotInSnapshot(params: { db: DatabaseSync; ids: readonly string[] }) {
-  const tempTableName = "openclaw_live_flow_ids";
+  const tempTableName = "operator_live_flow_ids";
   params.db.exec(`CREATE TEMP TABLE IF NOT EXISTS ${tempTableName} (id TEXT PRIMARY KEY)`);
   params.db.exec(`DELETE FROM ${tempTableName}`);
   const insert = params.db.prepare(`INSERT OR IGNORE INTO ${tempTableName} (id) VALUES (?)`);

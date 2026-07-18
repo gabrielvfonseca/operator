@@ -11,7 +11,7 @@ Agent-composable Workspaces document and control-plane backend.
 
 ## Distribution
 
-- Package: `@openclaw/workspaces-plugin`
+- Package: `@operator/workspaces-plugin`
 - Install route: included in OpenClaw
 
 ## Surface

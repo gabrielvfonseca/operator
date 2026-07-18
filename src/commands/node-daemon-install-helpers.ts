@@ -24,8 +24,8 @@ function buildNodeInstallEnvironmentValueSources(): Record<
   GatewayServiceEnvironmentValueSource | undefined
 > {
   return {
-    OPENCLAW_GATEWAY_TOKEN: "file",
-    OPENCLAW_GATEWAY_PASSWORD: "file", // pragma: allowlist secret
+    OPERATOR_GATEWAY_TOKEN: "file",
+    OPERATOR_GATEWAY_PASSWORD: "file", // pragma: allowlist secret
   };
 }
 
@@ -78,7 +78,7 @@ export async function buildNodeInstallPlan(params: {
     extraPathDirs: resolveDaemonNodeBinDir(nodePath),
   });
   const description = formatNodeServiceDescription({
-    version: environment.OPENCLAW_SERVICE_VERSION,
+    version: environment.OPERATOR_SERVICE_VERSION,
   });
 
   return {

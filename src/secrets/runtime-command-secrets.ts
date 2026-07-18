@@ -1,7 +1,7 @@
 /** Resolves command-scoped secrets, including web provider override credentials. */
-import { normalizeOptionalString } from "@openclaw/normalization-core/string-coerce";
-import { uniqueStrings } from "@openclaw/normalization-core/string-normalization";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { uniqueStrings } from "@operator/normalization-core/string-normalization";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import { resolveSecretInputRef } from "../config/types.secrets.js";
 import { resolveManifestContractOwnerPluginId } from "../plugins/plugin-registry.js";
 import { resolveBundledExplicitWebSearchProvidersFromPublicArtifacts } from "../plugins/web-provider-public-artifacts.explicit.js";
@@ -81,7 +81,7 @@ function webSearchProviderUsesSharedSearchCredential(params: {
   config: OpenClawConfig;
   provider: string;
 }): boolean {
-  const sentinel = "__openclaw_shared_web_search_probe__";
+  const sentinel = "__operator_shared_web_search_probe__";
   const pluginId = resolveManifestContractOwnerPluginId({
     contract: "webSearchProviders",
     value: params.provider,

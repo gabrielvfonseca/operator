@@ -11,7 +11,7 @@ Adds Mistral model provider support to OpenClaw.
 
 ## Distribution
 
-- Package: `@openclaw/mistral-provider`
+- Package: `@operator/mistral-provider`
 - Install route: included in OpenClaw
 
 ## Surface

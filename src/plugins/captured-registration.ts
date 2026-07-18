@@ -1,6 +1,6 @@
 // Captures plugin registrations for controlled registry assembly.
-import { normalizeStringEntries } from "@openclaw/normalization-core/string-normalization";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import type {
   AgentToolResultMiddleware,
   AgentToolResultMiddlewareOptions,

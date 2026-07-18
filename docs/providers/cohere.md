@@ -37,7 +37,7 @@ Reasoning-capable Cohere models support two Compatibility API reasoning modes. O
 1. Cohere ships with current OpenClaw packages. If it is missing, install the external package and restart the Gateway:
 
 ```bash
-openclaw plugins install @openclaw/cohere-provider
+openclaw plugins install @operator/cohere-provider
 openclaw gateway restart
 ```
 

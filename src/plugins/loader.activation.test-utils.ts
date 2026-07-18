@@ -45,10 +45,10 @@ describe("loadOpenClawPlugins", () => {
       name: "does not reuse cached registries when env-resolved install paths change",
       setup: () => {
         useNoBundledPlugins();
-        const openclawHome = makeTempDir();
+        const operatorHome = makeTempDir();
         const ignoredHome = makeTempDir();
         const stateDir = makeTempDir();
-        const pluginDir = path.join(openclawHome, "plugins", "tracked-install-cache");
+        const pluginDir = path.join(operatorHome, "plugins", "tracked-install-cache");
         mkdirSafe(pluginDir);
         const plugin = writePlugin({
           id: "tracked-install-cache",
@@ -84,10 +84,10 @@ describe("loadOpenClawPlugins", () => {
               ...options,
               env: {
                 ...process.env,
-                OPENCLAW_HOME: openclawHome,
+                OPERATOR_HOME: operatorHome,
                 HOME: ignoredHome,
-                OPENCLAW_STATE_DIR: stateDir,
-                OPENCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
+                OPERATOR_STATE_DIR: stateDir,
+                OPERATOR_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
               },
             }),
           loadVariant: () =>
@@ -95,10 +95,10 @@ describe("loadOpenClawPlugins", () => {
               ...options,
               env: {
                 ...process.env,
-                OPENCLAW_HOME: secondHome,
+                OPERATOR_HOME: secondHome,
                 HOME: ignoredHome,
-                OPENCLAW_STATE_DIR: stateDir,
-                OPENCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
+                OPERATOR_STATE_DIR: stateDir,
+                OPERATOR_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
               },
             }),
         };
@@ -189,8 +189,8 @@ describe("loadOpenClawPlugins", () => {
       env: {
         ...process.env,
         HOME: homeDir,
-        OPENCLAW_HOME: undefined,
-        OPENCLAW_BUNDLED_PLUGINS_DIR: override,
+        OPERATOR_HOME: undefined,
+        OPERATOR_BUNDLED_PLUGINS_DIR: override,
       },
       config: {
         plugins: {
@@ -207,34 +207,34 @@ describe("loadOpenClawPlugins", () => {
     ).toBe(fs.realpathSync(plugin.file));
   });
 
-  it("prefers OPENCLAW_HOME over HOME for env-expanded load paths", () => {
+  it("prefers OPERATOR_HOME over HOME for env-expanded load paths", () => {
     const ignoredHome = makeTempDir();
-    const openclawHome = makeTempDir();
+    const operatorHome = makeTempDir();
     const stateDir = makeTempDir();
     const bundledDir = makeTempDir();
     const plugin = writePlugin({
-      id: "openclaw-home-demo",
-      dir: path.join(openclawHome, "plugins", "openclaw-home-demo"),
+      id: "operator-home-demo",
+      dir: path.join(operatorHome, "plugins", "operator-home-demo"),
       filename: "index.cjs",
-      body: `module.exports = { id: "openclaw-home-demo", register() {} };`,
+      body: `module.exports = { id: "operator-home-demo", register() {} };`,
     });
 
     const registry = loadOpenClawPlugins({
       env: {
         ...process.env,
         HOME: ignoredHome,
-        OPENCLAW_HOME: openclawHome,
-        OPENCLAW_STATE_DIR: stateDir,
-        OPENCLAW_BUNDLED_PLUGINS_DIR: bundledDir,
+        OPERATOR_HOME: operatorHome,
+        OPERATOR_STATE_DIR: stateDir,
+        OPERATOR_BUNDLED_PLUGINS_DIR: bundledDir,
       },
       config: {
         plugins: {
-          allow: ["openclaw-home-demo"],
+          allow: ["operator-home-demo"],
           entries: {
-            "openclaw-home-demo": { enabled: true },
+            "operator-home-demo": { enabled: true },
           },
           load: {
-            paths: ["~/plugins/openclaw-home-demo"],
+            paths: ["~/plugins/operator-home-demo"],
           },
         },
       },
@@ -242,7 +242,7 @@ describe("loadOpenClawPlugins", () => {
 
     expect(
       fs.realpathSync(
-        registry.plugins.find((entry) => entry.id === "openclaw-home-demo")?.source ?? "",
+        registry.plugins.find((entry) => entry.id === "operator-home-demo")?.source ?? "",
       ),
     ).toBe(fs.realpathSync(plugin.file));
   });
@@ -425,7 +425,7 @@ describe("loadOpenClawPlugins", () => {
       body: `module.exports = { default: { default: { id: "missing-register-shape" } } };`,
     });
 
-    const registry = withEnv({ OPENCLAW_PLUGIN_LOAD_DEBUG: "1" }, () =>
+    const registry = withEnv({ OPERATOR_PLUGIN_LOAD_DEBUG: "1" }, () =>
       loadRegistryFromSinglePlugin({
         plugin,
         pluginConfig: {
@@ -1066,8 +1066,8 @@ describe("loadOpenClawPlugins", () => {
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          name: "@openclaw/nested-default-channel",
-          openclaw: {
+          name: "@operator/nested-default-channel",
+          operator: {
             extensions: ["./index.cjs"],
           },
         },
@@ -1077,7 +1077,7 @@ describe("loadOpenClawPlugins", () => {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(pluginDir, "openclaw.plugin.json"),
+      path.join(pluginDir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "nested-default-channel",
@@ -1161,7 +1161,7 @@ describe("loadOpenClawPlugins", () => {
       body: `module.exports = { id: "unrelated-plugin", register() { throw new Error("unrelated plugin should not load"); } };`,
     });
     fs.writeFileSync(
-      path.join(unrelated.dir, "openclaw.plugin.json"),
+      path.join(unrelated.dir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "unrelated-plugin",
@@ -1224,7 +1224,7 @@ describe("loadOpenClawPlugins", () => {
   };`,
     });
     fs.writeFileSync(
-      path.join(plugin.dir, "openclaw.plugin.json"),
+      path.join(plugin.dir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "lazy-channel-plugin",
@@ -1316,7 +1316,7 @@ describe("loadOpenClawPlugins", () => {
   };`,
     });
     fs.writeFileSync(
-      path.join(workspacePluginDir, "openclaw.plugin.json"),
+      path.join(workspacePluginDir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "workspace-shadow",
@@ -1382,7 +1382,7 @@ describe("loadOpenClawPlugins", () => {
   };`,
     });
     fs.writeFileSync(
-      path.join(workspacePluginDir, "openclaw.plugin.json"),
+      path.join(workspacePluginDir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "trusted-workspace-shadow",
@@ -1451,7 +1451,7 @@ describe("loadOpenClawPlugins", () => {
   };`,
     });
     fs.writeFileSync(
-      path.join(plugin.dir, "openclaw.plugin.json"),
+      path.join(plugin.dir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "untrusted-load-path-channel",
@@ -1516,7 +1516,7 @@ describe("loadOpenClawPlugins", () => {
   };`,
     });
     fs.writeFileSync(
-      path.join(plugin.dir, "openclaw.plugin.json"),
+      path.join(plugin.dir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "denylisted-load-path-channel",
@@ -1586,7 +1586,7 @@ describe("loadOpenClawPlugins", () => {
         "utf-8",
       );
       fs.writeFileSync(
-        path.join(globalDir, "openclaw.plugin.json"),
+        path.join(globalDir, "operator.plugin.json"),
         JSON.stringify(
           {
             id: "untrusted-global-channel",
@@ -1602,10 +1602,10 @@ describe("loadOpenClawPlugins", () => {
         path.join(globalDir, "package.json"),
         JSON.stringify(
           {
-            name: "@openclaw/untrusted-global-channel",
+            name: "@operator/untrusted-global-channel",
             version: "0.0.0-test",
             main: "./index.cjs",
-            openclaw: {
+            operator: {
               extensions: ["./index.cjs"],
             },
           },

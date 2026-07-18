@@ -61,7 +61,7 @@ describe("loadOpenClawPlugins", () => {
         "utf-8",
       );
       fs.writeFileSync(
-        path.join(globalDir, "openclaw.plugin.json"),
+        path.join(globalDir, "operator.plugin.json"),
         JSON.stringify(
           {
             id: "trusted-global-channel",
@@ -77,10 +77,10 @@ describe("loadOpenClawPlugins", () => {
         path.join(globalDir, "package.json"),
         JSON.stringify(
           {
-            name: "@openclaw/trusted-global-channel",
+            name: "@operator/trusted-global-channel",
             version: "0.0.0-test",
             main: "./index.cjs",
-            openclaw: {
+            operator: {
               extensions: ["./index.cjs"],
             },
           },
@@ -146,7 +146,7 @@ describe("loadOpenClawPlugins", () => {
   };`,
     });
     fs.writeFileSync(
-      path.join(plugin.dir, "openclaw.plugin.json"),
+      path.join(plugin.dir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "auto-enabled-load-path-channel",
@@ -190,7 +190,7 @@ describe("loadOpenClawPlugins", () => {
       fixture: {
         id: "setup-entry-test",
         label: "Setup Entry Test",
-        packageName: "@openclaw/setup-entry-test",
+        packageName: "@operator/setup-entry-test",
         fullBlurb: "full entry should not run in setup-only mode",
         setupBlurb: "setup entry",
         configured: false,
@@ -220,7 +220,7 @@ describe("loadOpenClawPlugins", () => {
       fixture: {
         id: "setup-only-bundled-contract-test",
         label: "Setup Only Bundled Contract Test",
-        packageName: "@openclaw/setup-only-bundled-contract-test",
+        packageName: "@operator/setup-only-bundled-contract-test",
         fullBlurb: "full entry should not run in setup-only mode",
         setupBlurb: "setup-only bundled contract",
         configured: false,
@@ -251,7 +251,7 @@ describe("loadOpenClawPlugins", () => {
       fixture: {
         id: "setup-runtime-test",
         label: "Setup Runtime Test",
-        packageName: "@openclaw/setup-runtime-test",
+        packageName: "@operator/setup-runtime-test",
         fullBlurb: "full entry should not run while unconfigured",
         setupBlurb: "setup runtime",
         configured: false,
@@ -275,7 +275,7 @@ describe("loadOpenClawPlugins", () => {
       fixture: {
         id: "setup-runtime-bundled-contract-test",
         label: "Setup Runtime Bundled Contract Test",
-        packageName: "@openclaw/setup-runtime-bundled-contract-test",
+        packageName: "@operator/setup-runtime-bundled-contract-test",
         fullBlurb: "full entry should not run while unconfigured",
         setupBlurb: "setup runtime bundled contract",
         configured: false,
@@ -300,7 +300,7 @@ describe("loadOpenClawPlugins", () => {
       fixture: {
         id: "setup-runtime-bundled-contract-secrets-test",
         label: "Setup Runtime Bundled Contract Secrets Test",
-        packageName: "@openclaw/setup-runtime-bundled-contract-secrets-test",
+        packageName: "@operator/setup-runtime-bundled-contract-secrets-test",
         fullBlurb: "full entry should not run while unconfigured",
         setupBlurb: "setup runtime bundled contract secrets",
         configured: false,
@@ -327,7 +327,7 @@ describe("loadOpenClawPlugins", () => {
       fixture: {
         id: "setup-runtime-bundled-contract-runtime-test",
         label: "Setup Runtime Bundled Contract Runtime Test",
-        packageName: "@openclaw/setup-runtime-bundled-contract-runtime-test",
+        packageName: "@operator/setup-runtime-bundled-contract-runtime-test",
         fullBlurb: "full entry should not run while unconfigured",
         setupBlurb: "setup runtime bundled contract runtime",
         configured: false,
@@ -354,7 +354,7 @@ describe("loadOpenClawPlugins", () => {
       fixture: {
         id: "setup-runtime-bundled-route-test",
         label: "Setup Runtime Bundled Route Test",
-        packageName: "@openclaw/setup-runtime-bundled-route-test",
+        packageName: "@operator/setup-runtime-bundled-route-test",
         fullBlurb: "full entry should defer while configured",
         setupBlurb: "setup runtime route",
         configured: true,
@@ -389,7 +389,7 @@ describe("loadOpenClawPlugins", () => {
       fixture: {
         id: "setup-runtime-bundled-runtime-merge-test",
         label: "Setup Runtime Bundled Runtime Merge Test",
-        packageName: "@openclaw/setup-runtime-bundled-runtime-merge-test",
+        packageName: "@operator/setup-runtime-bundled-runtime-merge-test",
         fullBlurb: "full runtime plugin",
         setupBlurb: "setup runtime override",
         configured: false,
@@ -417,7 +417,7 @@ describe("loadOpenClawPlugins", () => {
       fixture: {
         id: "setup-runtime-external-deferred-test",
         label: "Setup Runtime External Deferred Test",
-        packageName: "@openclaw/setup-runtime-external-deferred-test",
+        packageName: "@operator/setup-runtime-external-deferred-test",
         fullBlurb: "full entry should defer while configured",
         setupBlurb: "setup runtime external deferred",
         configured: true,
@@ -451,7 +451,7 @@ describe("loadOpenClawPlugins", () => {
       fixture: {
         id: "setup-runtime-not-preferred-test",
         label: "Setup Runtime Not Preferred Test",
-        packageName: "@openclaw/setup-runtime-not-preferred-test",
+        packageName: "@operator/setup-runtime-not-preferred-test",
         fullBlurb: "full entry should still load without explicit startup opt-in",
         setupBlurb: "setup runtime not preferred",
         configured: true,
@@ -536,7 +536,7 @@ describe("loadOpenClawPlugins", () => {
     const built = createSetupEntryChannelPluginFixture({
       id: "setup-runtime-order-test",
       label: "Setup Runtime Order Test",
-      packageName: "@openclaw/setup-runtime-order-test",
+      packageName: "@operator/setup-runtime-order-test",
       fullBlurb: "full runtime plugin",
       setupBlurb: "setup runtime override",
       configured: false,
@@ -566,7 +566,7 @@ describe("loadOpenClawPlugins", () => {
     const built = createSetupEntryChannelPluginFixture({
       id: "setup-runtime-error-test",
       label: "Setup Runtime Error Test",
-      packageName: "@openclaw/setup-runtime-error-test",
+      packageName: "@operator/setup-runtime-error-test",
       fullBlurb: "full runtime plugin",
       setupBlurb: "setup runtime override",
       configured: false,
@@ -604,7 +604,7 @@ describe("loadOpenClawPlugins", () => {
     const built = createSetupEntryChannelPluginFixture({
       id: "setup-runtime-route-error-test",
       label: "Setup Runtime Route Error Test",
-      packageName: "@openclaw/setup-runtime-route-error-test",
+      packageName: "@operator/setup-runtime-route-error-test",
       fullBlurb: "full runtime plugin",
       setupBlurb: "setup runtime route",
       configured: true,
@@ -654,7 +654,7 @@ describe("loadOpenClawPlugins", () => {
     const built = createSetupEntryChannelPluginFixture({
       id: "setup-runtime-late-route-test",
       label: "Setup Runtime Late Route Test",
-      packageName: "@openclaw/setup-runtime-late-route-test",
+      packageName: "@operator/setup-runtime-late-route-test",
       fullBlurb: "full runtime plugin",
       setupBlurb: "setup runtime route",
       configured: true,
@@ -697,7 +697,7 @@ describe("loadOpenClawPlugins", () => {
       id: "setup-runtime-mismatch-test",
       bundledFullEntryId: "wrong-runtime-id",
       label: "Setup Runtime Mismatch Test",
-      packageName: "@openclaw/setup-runtime-mismatch-test",
+      packageName: "@operator/setup-runtime-mismatch-test",
       fullBlurb: "full runtime plugin",
       setupBlurb: "setup runtime override",
       configured: false,
@@ -732,7 +732,7 @@ describe("loadOpenClawPlugins", () => {
       id: "setup-export-mismatch-test",
       bundledSetupEntryId: "wrong-setup-id",
       label: "Setup Export Mismatch Test",
-      packageName: "@openclaw/setup-export-mismatch-test",
+      packageName: "@operator/setup-export-mismatch-test",
       fullBlurb: "full runtime plugin",
       setupBlurb: "setup runtime override",
       configured: false,
@@ -771,8 +771,8 @@ describe("loadOpenClawPlugins", () => {
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          name: "@openclaw/setup-entry-throws-test",
-          openclaw: {
+          name: "@operator/setup-entry-throws-test",
+          operator: {
             extensions: ["./index.cjs"],
             setupEntry: "./setup-entry.cjs",
           },
@@ -783,7 +783,7 @@ describe("loadOpenClawPlugins", () => {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(pluginDir, "openclaw.plugin.json"),
+      path.join(pluginDir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "setup-entry-throws-test",
@@ -838,8 +838,8 @@ describe("loadOpenClawPlugins", () => {
       path.join(brokenDir, "package.json"),
       JSON.stringify(
         {
-          name: "@openclaw/setup-entry-throws-sibling-test",
-          openclaw: {
+          name: "@operator/setup-entry-throws-sibling-test",
+          operator: {
             extensions: ["./index.cjs"],
             setupEntry: "./setup-entry.cjs",
           },
@@ -850,7 +850,7 @@ describe("loadOpenClawPlugins", () => {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(brokenDir, "openclaw.plugin.json"),
+      path.join(brokenDir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "setup-entry-throws-sibling-test",
@@ -936,8 +936,8 @@ describe("loadOpenClawPlugins", () => {
       path.join(brokenDir, "package.json"),
       JSON.stringify(
         {
-          name: "@openclaw/register-channel-throws-test",
-          openclaw: {
+          name: "@operator/register-channel-throws-test",
+          operator: {
             extensions: ["./index.cjs"],
             setupEntry: "./setup-entry.cjs",
           },
@@ -948,7 +948,7 @@ describe("loadOpenClawPlugins", () => {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(brokenDir, "openclaw.plugin.json"),
+      path.join(brokenDir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "register-channel-throws-test",
@@ -1060,7 +1060,7 @@ describe("loadOpenClawPlugins", () => {
     mkdirSafe(sourceDir);
     mkdirSafe(runtimeDir);
     fs.writeFileSync(
-      path.join(sourceDir, "openclaw.plugin.json"),
+      path.join(sourceDir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "startup-artifact-test",
@@ -1084,9 +1084,9 @@ describe("loadOpenClawPlugins", () => {
 
     const registry = withEnv(
       {
-        OPENCLAW_BUNDLED_PLUGINS_DIR: path.join(repoRoot, "extensions"),
-        OPENCLAW_TEST_TRUST_BUNDLED_PLUGINS_DIR: "1",
-        OPENCLAW_DISABLE_BUNDLED_PLUGINS: undefined,
+        OPERATOR_BUNDLED_PLUGINS_DIR: path.join(repoRoot, "extensions"),
+        OPERATOR_TEST_TRUST_BUNDLED_PLUGINS_DIR: "1",
+        OPERATOR_DISABLE_BUNDLED_PLUGINS: undefined,
       },
       () =>
         loadOpenClawPlugins({
@@ -1118,7 +1118,7 @@ describe("loadOpenClawPlugins", () => {
     mkdirSafe(sourceDir);
     mkdirSafe(runtimeDir);
     fs.writeFileSync(
-      path.join(sourceDir, "openclaw.plugin.json"),
+      path.join(sourceDir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "startup-package-artifact-test",
@@ -1133,7 +1133,7 @@ describe("loadOpenClawPlugins", () => {
       path.join(sourceDir, "package.json"),
       JSON.stringify(
         {
-          openclaw: {
+          operator: {
             extensions: ["./index.ts"],
           },
         },
@@ -1155,9 +1155,9 @@ describe("loadOpenClawPlugins", () => {
 
     const registry = withEnv(
       {
-        OPENCLAW_BUNDLED_PLUGINS_DIR: path.join(repoRoot, "extensions"),
-        OPENCLAW_TEST_TRUST_BUNDLED_PLUGINS_DIR: "1",
-        OPENCLAW_DISABLE_BUNDLED_PLUGINS: undefined,
+        OPERATOR_BUNDLED_PLUGINS_DIR: path.join(repoRoot, "extensions"),
+        OPERATOR_TEST_TRUST_BUNDLED_PLUGINS_DIR: "1",
+        OPERATOR_DISABLE_BUNDLED_PLUGINS: undefined,
       },
       () =>
         loadOpenClawPlugins({
@@ -1194,7 +1194,7 @@ describe("loadOpenClawPlugins", () => {
     mkdirSafe(builtPluginDir);
     fs.writeFileSync(path.join(repoRoot, "pnpm-workspace.yaml"), "packages: []\n", "utf-8");
     fs.writeFileSync(
-      path.join(sourceDir, "openclaw.plugin.json"),
+      path.join(sourceDir, "operator.plugin.json"),
       JSON.stringify(
         { id: "source-only-artifact-test", configSchema: EMPTY_PLUGIN_SCHEMA },
         null,
@@ -1205,7 +1205,7 @@ describe("loadOpenClawPlugins", () => {
     fs.writeFileSync(
       path.join(sourceDir, "package.json"),
       JSON.stringify({
-        openclaw: {
+        operator: {
           extensions: ["./index.ts"],
           build: { bundledDist: false },
         },
@@ -1223,12 +1223,12 @@ describe("loadOpenClawPlugins", () => {
       "utf-8",
     );
     fs.copyFileSync(
-      path.join(sourceDir, "openclaw.plugin.json"),
-      path.join(builtPluginDir, "openclaw.plugin.json"),
+      path.join(sourceDir, "operator.plugin.json"),
+      path.join(builtPluginDir, "operator.plugin.json"),
     );
     fs.writeFileSync(
       path.join(builtPluginDir, "package.json"),
-      JSON.stringify({ openclaw: { extensions: ["./index.js"] } }),
+      JSON.stringify({ operator: { extensions: ["./index.js"] } }),
       "utf-8",
     );
     fs.writeFileSync(
@@ -1257,9 +1257,9 @@ describe("loadOpenClawPlugins", () => {
     };
     const registry = withEnv(
       {
-        OPENCLAW_BUNDLED_PLUGINS_DIR: path.join(repoRoot, "dist", "extensions"),
-        OPENCLAW_TEST_TRUST_BUNDLED_PLUGINS_DIR: "1",
-        OPENCLAW_DISABLE_BUNDLED_PLUGINS: undefined,
+        OPERATOR_BUNDLED_PLUGINS_DIR: path.join(repoRoot, "dist", "extensions"),
+        OPERATOR_TEST_TRUST_BUNDLED_PLUGINS_DIR: "1",
+        OPERATOR_DISABLE_BUNDLED_PLUGINS: undefined,
       },
       () => {
         const manifestRegistry = loadPluginManifestRegistry({ config });
@@ -1288,7 +1288,7 @@ describe("loadOpenClawPlugins", () => {
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          openclaw: {
+          operator: {
             extensions: ["./src/index.mts"],
           },
         },
@@ -1298,7 +1298,7 @@ describe("loadOpenClawPlugins", () => {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(pluginDir, "openclaw.plugin.json"),
+      path.join(pluginDir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "workspace-artifact-test",
@@ -1351,7 +1351,7 @@ describe("loadOpenClawPlugins", () => {
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          openclaw: {
+          operator: {
             extensions: ["./src/index.ts"],
           },
         },
@@ -1361,7 +1361,7 @@ describe("loadOpenClawPlugins", () => {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(pluginDir, "openclaw.plugin.json"),
+      path.join(pluginDir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "workspace-artifact-extension-test",
@@ -1413,7 +1413,7 @@ describe("loadOpenClawPlugins", () => {
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          openclaw: {
+          operator: {
             extensions: ["./index.js"],
           },
         },
@@ -1423,7 +1423,7 @@ describe("loadOpenClawPlugins", () => {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(pluginDir, "openclaw.plugin.json"),
+      path.join(pluginDir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "workspace-explicit-js-test",
@@ -1475,7 +1475,7 @@ describe("loadOpenClawPlugins", () => {
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          openclaw: {
+          operator: {
             extensions: ["./src/index.mts"],
           },
         },
@@ -1485,7 +1485,7 @@ describe("loadOpenClawPlugins", () => {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(pluginDir, "openclaw.plugin.json"),
+      path.join(pluginDir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "workspace-artifact-symlink-test",

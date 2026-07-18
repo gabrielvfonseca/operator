@@ -162,7 +162,7 @@ vi.mock("ws", () => ({
   WebSocket: MockWebSocket,
 }));
 
-vi.mock("@openclaw/proxyline", () => ({
+vi.mock("@operator/proxyline", () => ({
   installGlobalProxy: installGlobalProxyMock,
 }));
 

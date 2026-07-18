@@ -48,13 +48,13 @@ const USE_CANONICAL_DECLARATIONS = process.env.OPENCLAW_PLUGIN_SDK_CANONICAL_DTS
 
 function isBareImportSpecifier(id: string): boolean {
   if (
-    id === "@openclaw/llm-core" ||
-    id.startsWith("@openclaw/llm-core/") ||
-    id === "@openclaw/model-catalog-core/model-catalog-types" ||
-    id === "@openclaw/retry" ||
-    id.startsWith("@openclaw/normalization-core/") ||
-    id.startsWith("@openclaw/media-core/") ||
-    id.startsWith("@openclaw/acp-core/")
+    id === "@operator/llm-core" ||
+    id.startsWith("@operator/llm-core/") ||
+    id === "@operator/model-catalog-core/model-catalog-types" ||
+    id === "@operator/retry" ||
+    id.startsWith("@operator/normalization-core/") ||
+    id.startsWith("@operator/media-core/") ||
+    id.startsWith("@operator/acp-core/")
   ) {
     return false;
   }
@@ -136,7 +136,7 @@ for (const entry of pluginSdkEntrypoints) {
 
   const packageTypeOut = path.join(
     process.cwd(),
-    `packages/plugin-sdk/dist/src/plugin-sdk/${entry}.d.ts`,
+    `sdks/plugin-sdk/dist/src/plugin-sdk/${entry}.d.ts`,
   );
   fs.mkdirSync(path.dirname(packageTypeOut), { recursive: true });
   fs.writeFileSync(

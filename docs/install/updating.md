@@ -53,7 +53,7 @@ non-`latest` tags, third-party plugins, and non-npm sources remain unchanged.
 Catalog installs created by current OpenClaw versions retain that default
 intent. Older records that contain only an exact version remain pinned because
 OpenClaw cannot safely distinguish an old automatic pin from a user pin; run
-`openclaw plugins update @openclaw/name` once on the extended-stable channel
+`openclaw plugins update @operator/name` once on the extended-stable channel
 to opt that plugin back into exact-core tracking.
 
 `--channel dev` gives a persistent moving GitHub `main` checkout. For a one-off

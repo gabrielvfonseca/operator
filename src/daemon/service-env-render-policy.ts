@@ -12,7 +12,7 @@ function isLaunchAgentServiceEnvironment(params: {
 }): boolean {
   return (
     params.platform === "darwin" &&
-    Boolean(params.serviceEnvironment.OPENCLAW_LAUNCHD_LABEL?.trim())
+    Boolean(params.serviceEnvironment.OPERATOR_LAUNCHD_LABEL?.trim())
   );
 }
 
@@ -46,11 +46,11 @@ export function applyManagedServiceEnvRenderPolicy(params: {
 }): void {
   const launchAgent = isLaunchAgentServiceEnvironment(params);
   writeManagedServiceEnvKeysToEnvironment(params.plan.environment, params.managedServiceEnvKeys);
-  if (params.plan.environment.OPENCLAW_SERVICE_MANAGED_ENV_KEYS) {
-    params.plan.environmentValueSources.OPENCLAW_SERVICE_MANAGED_ENV_KEYS = "inline";
+  if (params.plan.environment.OPERATOR_SERVICE_MANAGED_ENV_KEYS) {
+    params.plan.environmentValueSources.OPERATOR_SERVICE_MANAGED_ENV_KEYS = "inline";
   }
   const managedKeys = readManagedServiceEnvKeysFromEnvironment({
-    OPENCLAW_SERVICE_MANAGED_ENV_KEYS: params.managedServiceEnvKeys,
+    OPERATOR_SERVICE_MANAGED_ENV_KEYS: params.managedServiceEnvKeys,
   });
   if (managedKeys.size === 0) {
     return;

@@ -3,9 +3,9 @@ import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import type { DatabaseSync } from "node:sqlite";
-import { root, type Root } from "@openclaw/fs-safe";
-import { isRecord } from "@openclaw/normalization-core/record-coerce";
-import { runOpenClawStateWriteTransaction } from "../state/openclaw-state-db.js";
+import { root, type Root } from "@operator/fs-safe";
+import { isRecord } from "@operator/normalization-core/record-coerce";
+import { runOpenClawStateWriteTransaction } from "../state/operator-state-db.js";
 import { formatErrorMessage } from "./errors.js";
 import { acquireGatewayLock, GatewayLockError } from "./gateway-lock.js";
 import {
@@ -255,7 +255,7 @@ function parseLegacyVapidKeys(raw: string): VapidKeyPair {
   assertOnlyKeys(parsed, VAPID_KEYS, "legacy Web Push VAPID keys");
   const subject =
     parsed.subject === undefined || parsed.subject === ""
-      ? process.env.OPENCLAW_VAPID_SUBJECT || DEFAULT_WEB_PUSH_VAPID_SUBJECT
+      ? process.env.OPERATOR_VAPID_SUBJECT || DEFAULT_WEB_PUSH_VAPID_SUBJECT
       : parsed.subject;
   if (
     !isValidWebPushKey(parsed.publicKey) ||
@@ -484,7 +484,7 @@ function migrateIntoDatabase(params: {
         }
       }
     },
-    { env: { ...process.env, OPENCLAW_STATE_DIR: params.stateDir } },
+    { env: { ...process.env, OPERATOR_STATE_DIR: params.stateDir } },
   );
   return { importedSubscriptions, importedVapidKeys };
 }
@@ -680,7 +680,7 @@ export async function migrateLegacyWebPush(params: {
     return { changes: [], warnings: [] };
   }
 
-  const env = { ...(params.env ?? process.env), OPENCLAW_STATE_DIR: params.stateDir };
+  const env = { ...(params.env ?? process.env), OPERATOR_STATE_DIR: params.stateDir };
   let lock: Awaited<ReturnType<typeof acquireGatewayLock>>;
   try {
     lock = await acquireGatewayLock({
@@ -698,7 +698,7 @@ export async function migrateLegacyWebPush(params: {
     return {
       changes: [],
       warnings: [
-        `Failed migrating legacy Web Push state: ${detail}. Stop the Gateway and run \`openclaw doctor --fix\` again.`,
+        `Failed migrating legacy Web Push state: ${detail}. Stop the Gateway and run \`operator doctor --fix\` again.`,
       ],
     };
   }

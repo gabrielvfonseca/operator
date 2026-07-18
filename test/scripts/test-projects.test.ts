@@ -744,7 +744,7 @@ describe("scripts/test-projects changed-target routing", () => {
       ["scripts/e2e/cron-mcp-cleanup-seed.ts", ["test/scripts/docker-e2e-seeds.test.ts"]],
       [
         "scripts/e2e/lib/onboard/scenario.sh",
-        ["test/scripts/e2e-shell-tempfiles.test.ts", "test/scripts/openclaw-test-state.test.ts"],
+        ["test/scripts/e2e-shell-tempfiles.test.ts", "test/scripts/operator-test-state.test.ts"],
       ],
       [
         "scripts/e2e/lib/onboard/assert-config.mjs",
@@ -844,7 +844,7 @@ describe("scripts/test-projects changed-target routing", () => {
           "test/scripts/package-acceptance-workflow.test.ts",
           "test/scripts/upgrade-survivor-probe-gateway.test.ts",
           "test/scripts/upgrade-survivor-assertions.test.ts",
-          "test/scripts/openclaw-test-state.test.ts",
+          "test/scripts/operator-test-state.test.ts",
         ],
       ],
       [
@@ -2534,7 +2534,7 @@ describe("scripts/test-projects changed-target routing", () => {
         includePatterns: [
           "test/scripts/plugin-prerelease-test-plan.test.ts",
           "test/scripts/kitchen-sink-rpc-walk.test.ts",
-          "test/scripts/openclaw-test-state.test.ts",
+          "test/scripts/operator-test-state.test.ts",
           "test/scripts/plugin-lifecycle-measure.test.ts",
           "test/scripts/docker-e2e-plan.test.ts",
           "test/scripts/release-media-memory-scenario.test.ts",
@@ -3382,13 +3382,13 @@ describe("scripts/test-projects changed-target routing", () => {
 
   it("narrows default-lane changed source files to affected tests", () => {
     const plans = buildVitestRunPlans(["--changed", "origin/main"], process.cwd(), () => [
-      "packages/sdk/src/index.ts",
+      "sdks/operator-sdk/src/index.ts",
     ]);
 
     expect(plans).toEqual([
       {
         config: "test/vitest/vitest.unit.config.ts",
-        forwardedArgs: ["packages/sdk/src/index.test.ts"],
+        forwardedArgs: ["sdks/operator-sdk/src/index.test.ts"],
         includePatterns: null,
         watchMode: false,
       },

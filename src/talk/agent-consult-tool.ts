@@ -7,11 +7,11 @@
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@openclaw/normalization-core/string-coerce";
+} from "@operator/normalization-core/string-coerce";
 import type { RealtimeVoiceTool } from "./provider-types.js";
 
 /** Stable provider-facing tool name for realtime voice agent delegation. */
-export const REALTIME_VOICE_AGENT_CONSULT_TOOL_NAME = "openclaw_agent_consult";
+export const REALTIME_VOICE_AGENT_CONSULT_TOOL_NAME = "operator_agent_consult";
 /** Closed policy set controlling whether the consult tool is exposed. */
 export const REALTIME_VOICE_AGENT_CONSULT_TOOL_POLICIES = [
   "safe-read-only",
@@ -154,7 +154,7 @@ export function buildRealtimeVoiceAgentConsultPolicyInstructions(config: {
   if (config.consultPolicy === "always") {
     return [
       "Consult behavior:",
-      "- Call openclaw_agent_consult before every substantive answer.",
+      "- Call operator_agent_consult before every substantive answer.",
       "- You may answer directly only for greetings, acknowledgements, brief latency tests, or filler while waiting for the consult result.",
       "- After the consult result arrives, speak that result concisely.",
     ].join("\n");
@@ -162,7 +162,7 @@ export function buildRealtimeVoiceAgentConsultPolicyInstructions(config: {
   return [
     "Consult behavior:",
     "- Answer directly for greetings, acknowledgements, simple conversational glue, and brief latency tests.",
-    "- Call openclaw_agent_consult before answering requests that need facts, memory, current information, tools, workspace state, or the user's OpenClaw-specific context.",
+    "- Call operator_agent_consult before answering requests that need facts, memory, current information, tools, workspace state, or the user's OpenClaw-specific context.",
     "- Keep spoken replies concise and natural.",
   ].join("\n");
 }

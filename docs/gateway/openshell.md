@@ -18,7 +18,7 @@ workspace sync mode.
 
 ## Prerequisites
 
-- OpenShell plugin installed (`openclaw plugins install @openclaw/openshell-sandbox`)
+- OpenShell plugin installed (`openclaw plugins install @operator/openshell-sandbox`)
 - `openshell` CLI on `PATH` (or a custom path via
   `plugins.entries.openshell.config.command`)
 - An OpenShell account with sandbox access
@@ -27,7 +27,7 @@ workspace sync mode.
 ## Quick start
 
 ```bash
-openclaw plugins install @openclaw/openshell-sandbox
+openclaw plugins install @operator/openshell-sandbox
 ```
 
 ```json5

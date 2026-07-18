@@ -1,0 +1,23 @@
+{
+  "name": "Operator Development",
+  "dockerFile": "Dockerfile",
+  "context": "..",
+  "workspaceFolder": "/workspace",
+  "forwardPorts": [18789, 18790, 3978],
+  "postCreateCommand": "pnpm build",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "typescript.tsdk": "node_modules/typescript/lib"
+      }
+    }
+  },
+  "mounts": [
+    "source=operator-node_modules,target=/workspace/node_modules,type=volume"
+  ]
+}

@@ -123,12 +123,12 @@ describe("OCM npm workspace dependency adapter", () => {
   it("builds a manifest with the root and local workspace tarballs", () => {
     expect(
       buildInstallManifest("/tmp/openclaw.tgz", [
-        { name: "@openclaw/ai", tarball: "/tmp/openclaw-ai.tgz" },
+        { name: "@operator/ai", tarball: "/tmp/openclaw-ai.tgz" },
       ]),
     ).toEqual({
       private: true,
       dependencies: {
-        "@openclaw/ai": "file:///tmp/openclaw-ai.tgz",
+        "@operator/ai": "file:///tmp/openclaw-ai.tgz",
         openclaw: "file:///tmp/openclaw.tgz",
       },
     });
@@ -137,7 +137,7 @@ describe("OCM npm workspace dependency adapter", () => {
   it("rewrites packed workspace protocols to the local package version", () => {
     const packageJson = {
       dependencies: {
-        "@openclaw/ai": "workspace:*",
+        "@operator/ai": "workspace:*",
         chalk: "5.6.2",
       },
     };
@@ -145,14 +145,14 @@ describe("OCM npm workspace dependency adapter", () => {
     expect(
       rewriteWorkspaceDependencyVersions(packageJson, [
         {
-          name: "@openclaw/ai",
+          name: "@operator/ai",
           version: "2026.7.1-beta.3",
           tarball: "/tmp/openclaw-ai.tgz",
         },
       ]),
     ).toBe(1);
     expect(packageJson.dependencies).toEqual({
-      "@openclaw/ai": "2026.7.1-beta.3",
+      "@operator/ai": "2026.7.1-beta.3",
       chalk: "5.6.2",
     });
   });
@@ -172,13 +172,13 @@ describe("OCM npm workspace dependency adapter", () => {
         `${JSON.stringify({
           name: "openclaw",
           version: "1.0.0",
-          dependencies: { "@openclaw/ai": "workspace:*" },
+          dependencies: { "@operator/ai": "workspace:*" },
         })}\n`,
       );
       writeFileSync(
         join(workspaceDir, "package.json"),
         `${JSON.stringify({
-          name: "@openclaw/ai",
+          name: "@operator/ai",
           version: "1.0.0",
           main: "index.js",
         })}\n`,
@@ -216,7 +216,7 @@ describe("OCM npm workspace dependency adapter", () => {
           .version,
       ).toBe("1.0.0");
       expect(
-        JSON.parse(readFileSync(join(installDir, "node_modules/@openclaw/ai/package.json"), "utf8"))
+        JSON.parse(readFileSync(join(installDir, "node_modules/@operator/ai/package.json"), "utf8"))
           .version,
       ).toBe("1.0.0");
     } finally {

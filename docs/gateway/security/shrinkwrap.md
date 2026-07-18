@@ -32,7 +32,7 @@ OpenClaw is a gateway, plugin host, model router, and agent runtime, so a defaul
 
 ## Generating and checking
 
-The root `openclaw` npm package, OpenClaw-owned npm plugin packages (for example `@openclaw/discord`), and publishable workspace packages such as [`@openclaw/ai`](/reference/openclaw-ai) include `npm-shrinkwrap.json` when they publish. Workspace dependencies are omitted from the root shrinkwrap because they publish beside the root package; each publishable workspace package pins its own transitive tree instead. Suitable plugin packages can also publish with explicit `bundledDependencies`, carrying their runtime dependency files in the plugin tarball instead of relying only on install-time resolution.
+The root `openclaw` npm package, OpenClaw-owned npm plugin packages (for example `@operator/discord`), and publishable workspace packages such as [`@operator/ai`](/reference/openclaw-ai) include `npm-shrinkwrap.json` when they publish. Workspace dependencies are omitted from the root shrinkwrap because they publish beside the root package; each publishable workspace package pins its own transitive tree instead. Suitable plugin packages can also publish with explicit `bundledDependencies`, carrying their runtime dependency files in the plugin tarball instead of relying only on install-time resolution.
 
 ```bash
 # All shrinkwrap-managed packages (root + publishable plugins)
@@ -71,7 +71,7 @@ tar -tf /tmp/openclaw-pack/openclaw-<version>.tgz | grep '^package/npm-shrinkwra
 Plugin package:
 
 ```bash
-npm pack @openclaw/discord@<version> --json --pack-destination /tmp/openclaw-plugin-pack
+npm pack @operator/discord@<version> --json --pack-destination /tmp/openclaw-plugin-pack
 tar -tf /tmp/openclaw-plugin-pack/openclaw-discord-<version>.tgz | grep '^package/npm-shrinkwrap.json$'
 tar -tf /tmp/openclaw-plugin-pack/openclaw-discord-<version>.tgz | grep '^package/node_modules/'
 ```

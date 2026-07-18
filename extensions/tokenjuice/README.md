@@ -1,4 +1,4 @@
-# @openclaw/tokenjuice
+# @operator/tokenjuice
 
 Official Tokenjuice output compaction plugin for OpenClaw.
 
@@ -7,7 +7,7 @@ Tokenjuice compacts noisy `exec` and `bash` tool results after commands run, bef
 ## Install
 
 ```bash
-openclaw plugins install @openclaw/tokenjuice
+openclaw plugins install @operator/tokenjuice
 ```
 
 Restart the Gateway after installing or updating the plugin.
@@ -31,5 +31,5 @@ openclaw plugins enable tokenjuice
 ## Package
 
 - Plugin id: `tokenjuice`
-- Package: `@openclaw/tokenjuice`
+- Package: `@operator/tokenjuice`
 - Minimum OpenClaw host: `2026.5.28`

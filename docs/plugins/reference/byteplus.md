@@ -11,7 +11,7 @@ Adds BytePlus, BytePlus Plan model provider support to OpenClaw.
 
 ## Distribution
 
-- Package: `@openclaw/byteplus-provider`
+- Package: `@operator/byteplus-provider`
 - Install route: included in OpenClaw
 
 ## Surface

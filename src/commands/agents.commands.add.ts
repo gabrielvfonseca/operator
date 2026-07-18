@@ -1,10 +1,10 @@
-// Implements `openclaw agents add`, including config mutation, workspace setup, auth copy, and route binding setup.
+// Implements `operator agents add`, including config mutation, workspace setup, auth copy, and route binding setup.
 import fs from "node:fs/promises";
 import path from "node:path";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "@openclaw/normalization-core/string-coerce";
+} from "@operator/normalization-core/string-coerce";
 import {
   resolveAgentDir,
   resolveAgentWorkspaceDir,
@@ -125,14 +125,14 @@ export async function agentsAddCommand(
   if (nonInteractive) {
     if (!workspaceFlag) {
       runtime.error(
-        `Non-interactive agent creation requires --workspace. Re-run ${formatCliCommand("openclaw agents add <id> --workspace <path>")} or omit flags to use the wizard.`,
+        `Non-interactive agent creation requires --workspace. Re-run ${formatCliCommand("operator agents add <id> --workspace <path>")} or omit flags to use the wizard.`,
       );
       runtime.exit(1);
       return;
     }
     if (!nameInput) {
       runtime.error(
-        `Agent name is required in non-interactive mode. Run ${formatCliCommand("openclaw agents add <id> --workspace <path>")}.`,
+        `Agent name is required in non-interactive mode. Run ${formatCliCommand("operator agents add <id> --workspace <path>")}.`,
       );
       runtime.exit(1);
       return;
@@ -140,7 +140,7 @@ export async function agentsAddCommand(
     const agentId = normalizeAgentId(nameInput);
     if (agentId === DEFAULT_AGENT_ID || isReservedSystemAgentId(agentId)) {
       runtime.error(
-        `"${agentId}" is reserved. Choose another name, or run ${formatCliCommand("openclaw agents list")} to inspect configured agents.`,
+        `"${agentId}" is reserved. Choose another name, or run ${formatCliCommand("operator agents list")} to inspect configured agents.`,
       );
       runtime.exit(1);
       return;
@@ -150,7 +150,7 @@ export async function agentsAddCommand(
     }
     if (findAgentEntryIndex(listAgentEntries(cfg), agentId) >= 0) {
       runtime.error(
-        `Agent "${agentId}" already exists. Run ${formatCliCommand("openclaw agents list")} to inspect configured agents.`,
+        `Agent "${agentId}" already exists. Run ${formatCliCommand("operator agents list")} to inspect configured agents.`,
       );
       runtime.exit(1);
       return;
@@ -464,7 +464,7 @@ export async function agentsAddCommand(
         await prompter.note(
           [
             "Routing unchanged. Add bindings when you're ready.",
-            "Docs: https://docs.openclaw.ai/concepts/multi-agent",
+            "Docs: https://docs.operator.ai/concepts/multi-agent",
           ].join("\n"),
           "Routing",
         );

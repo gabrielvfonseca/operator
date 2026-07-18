@@ -1,10 +1,10 @@
 /** Doctor repairs for stale plugin registry entries, managed npm shadows, and peer links. */
 import fs from "node:fs";
 import path from "node:path";
-import { isRecord } from "@openclaw/normalization-core/record-coerce";
+import { isRecord } from "@operator/normalization-core/record-coerce";
 import { note } from "../../packages/terminal-core/src/note.js";
 import { formatCliCommand } from "../cli/command-format.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import type { HealthFinding, HealthRepairEffect } from "../flows/health-checks.js";
 import { saveJsonFile } from "../infra/json-file.js";
 import { tryReadJsonSync } from "../infra/json-files.js";
@@ -76,7 +76,7 @@ type PluginRegistryHealthIssue =
       stalePath: string;
     }
   | {
-      kind: "managed-npm-openclaw-peer-link";
+      kind: "managed-npm-operator-peer-link";
       packageName: string;
       packageDir: string;
       reason: string;
@@ -125,7 +125,7 @@ function readPackageVersion(packageDir: string): string | undefined {
 }
 
 function readPluginManifestId(packageDir: string): string | undefined {
-  const manifest = readJsonObject(path.join(packageDir, "openclaw.plugin.json"));
+  const manifest = readJsonObject(path.join(packageDir, "operator.plugin.json"));
   const id = manifest?.id;
   return typeof id === "string" && id.trim() ? id.trim() : undefined;
 }
@@ -148,7 +148,7 @@ function listStaleManagedNpmBundledPlugins(
     for (const packageName of Object.keys(dependencies).toSorted((left, right) =>
       left.localeCompare(right),
     )) {
-      if (!packageName.startsWith("@openclaw/")) {
+      if (!packageName.startsWith("@operator/")) {
         continue;
       }
       const bundled = bundledByPackage.get(packageName);
@@ -297,7 +297,7 @@ export function maybeRepairStaleManagedNpmBundledPlugins(
           (plugin) =>
             `- ${plugin.pluginId}: ${plugin.packageName}${plugin.version ? `@${plugin.version}` : ""}`,
         ),
-        `Repair with ${formatCliCommand("openclaw doctor --fix")} to remove stale managed npm packages and rebuild the plugin registry.`,
+        `Repair with ${formatCliCommand("operator doctor --fix")} to remove stale managed npm packages and rebuild the plugin registry.`,
       ].join("\n"),
       "Plugin registry",
     );
@@ -334,7 +334,7 @@ async function maybeRepairStaleLocalBundledPluginInstallRecords(
       [
         "Local bundled plugin install records shadow bundled plugins:",
         ...stale.map((record) => `- ${record.pluginId}: ${shortenHomePath(record.stalePath)}`),
-        `Repair with ${formatCliCommand("openclaw doctor --fix")} to remove stale local install records and rebuild the plugin registry.`,
+        `Repair with ${formatCliCommand("operator doctor --fix")} to remove stale local install records and rebuild the plugin registry.`,
       ].join("\n"),
       "Plugin registry",
     );
@@ -366,7 +366,7 @@ export async function maybeRepairManagedNpmOpenClawPeerLinks(
         [
           "Managed npm OpenClaw host peer links need repair:",
           ...issues.map((issue) => `- ${issue.packageName}: ${issue.reason}`),
-          `Repair with ${formatCliCommand("openclaw doctor --fix")} to relink managed npm plugin packages.`,
+          `Repair with ${formatCliCommand("operator doctor --fix")} to relink managed npm plugin packages.`,
         ].join("\n"),
         "Plugin registry",
       );
@@ -460,7 +460,7 @@ export async function detectPluginRegistryHealthIssues(
   }
   for (const issue of await listManagedNpmOpenClawPeerLinkIssues(params)) {
     issues.push({
-      kind: "managed-npm-openclaw-peer-link",
+      kind: "managed-npm-operator-peer-link",
       packageName: issue.packageName,
       packageDir: issue.packageDir,
       reason: issue.reason,
@@ -479,7 +479,7 @@ export function pluginRegistryIssueToHealthFinding(
         severity: "warning",
         message: "Persisted plugin registry is missing or stale.",
         path: issue.path,
-        fixHint: "Run `openclaw doctor --fix` to rebuild the plugin registry from enabled plugins.",
+        fixHint: "Run `operator doctor --fix` to rebuild the plugin registry from enabled plugins.",
       };
     case "stale-managed-npm-bundled-plugin":
       return {
@@ -491,7 +491,7 @@ export function pluginRegistryIssueToHealthFinding(
         path: issue.packageDir,
         target: issue.pluginId,
         fixHint:
-          "Run `openclaw doctor --fix` to remove stale managed npm packages and rebuild the plugin registry.",
+          "Run `operator doctor --fix` to remove stale managed npm packages and rebuild the plugin registry.",
       };
     case "stale-local-bundled-plugin-install-record":
       return {
@@ -501,16 +501,16 @@ export function pluginRegistryIssueToHealthFinding(
         path: issue.stalePath,
         target: issue.pluginId,
         fixHint:
-          "Run `openclaw doctor --fix` to remove stale local install records and rebuild the plugin registry.",
+          "Run `operator doctor --fix` to remove stale local install records and rebuild the plugin registry.",
       };
-    case "managed-npm-openclaw-peer-link":
+    case "managed-npm-operator-peer-link":
       return {
         checkId: PLUGIN_REGISTRY_CHECK_ID,
         severity: "warning",
         message: `Managed npm package ${issue.packageName} has a broken OpenClaw peer link: ${issue.reason}.`,
         path: issue.packageDir,
         target: issue.packageName,
-        fixHint: "Run `openclaw doctor --fix` to relink managed npm plugin packages.",
+        fixHint: "Run `operator doctor --fix` to relink managed npm plugin packages.",
       };
   }
   return assertNeverPluginRegistryIssue(issue);
@@ -541,10 +541,10 @@ export function pluginRegistryIssueToRepairEffect(
         target: issue.pluginId,
         dryRunSafe: false,
       };
-    case "managed-npm-openclaw-peer-link":
+    case "managed-npm-operator-peer-link":
       return {
         kind: "package",
-        action: "would-relink-managed-npm-openclaw-peer",
+        action: "would-relink-managed-npm-operator-peer",
         target: issue.packageDir,
         dryRunSafe: false,
       };
@@ -601,7 +601,7 @@ export async function maybeRepairPluginRegistryState(
       note(
         [
           "Persisted plugin registry is missing or stale.",
-          `Repair with ${formatCliCommand("openclaw doctor --fix")} to rebuild ${shortenHomePath(preflight.filePath)} from enabled plugins.`,
+          `Repair with ${formatCliCommand("operator doctor --fix")} to rebuild ${shortenHomePath(preflight.filePath)} from enabled plugins.`,
         ].join("\n"),
         "Plugin registry",
       );

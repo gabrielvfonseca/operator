@@ -4,8 +4,8 @@ import {
   assertOpenClawStateDatabaseForMaintenance,
   ensureOpenClawStatePermissions,
   isOpenClawStateDatabaseOpen,
-} from "../state/openclaw-state-db.js";
-import { resolveOpenClawStateSqlitePath } from "../state/openclaw-state-db.paths.js";
+} from "../state/operator-state-db.js";
+import { resolveOpenClawStateSqlitePath } from "../state/operator-state-db.paths.js";
 import {
   compactDoctorSqliteFile,
   type DoctorSqliteCompactSnapshot,

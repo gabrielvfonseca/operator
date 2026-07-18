@@ -2,11 +2,11 @@
 import { createHash, randomUUID } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
   openOpenClawStateDatabase,
   runOpenClawStateWriteTransaction,
-} from "../state/openclaw-state-db.js";
+} from "../state/operator-state-db.js";
 import {
   executeSqliteQuerySync,
   executeSqliteQueryTakeFirstSync,
@@ -273,7 +273,7 @@ export function migrateLegacyTuiLastSessions(params: {
           importedCount += 1;
         }
       },
-      { env: { ...process.env, OPENCLAW_STATE_DIR: params.stateDir } },
+      { env: { ...process.env, OPERATOR_STATE_DIR: params.stateDir } },
     );
   } catch (error) {
     warnings.push(`Failed migrating legacy TUI last-session state: ${String(error)}`);
@@ -283,7 +283,7 @@ export function migrateLegacyTuiLastSessions(params: {
   try {
     params.beforeVerify?.();
     const database = openOpenClawStateDatabase({
-      env: { ...process.env, OPENCLAW_STATE_DIR: params.stateDir },
+      env: { ...process.env, OPERATOR_STATE_DIR: params.stateDir },
     });
     const tuiDb = getNodeSqliteKysely<TuiLastSessionMigrationDatabase>(database.db);
     for (const expected of expectedRows.values()) {

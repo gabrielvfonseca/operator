@@ -13,24 +13,6 @@ import { formatTimeMs } from "../../../lib/format.ts";
 import { isPluginEnabledInConfigSnapshot } from "../../../lib/plugin-activation.ts";
 import { OpenClawLightDomElement } from "../../../lit/openclaw-element.ts";
 import { SubscriptionsController } from "../../../lit/subscriptions-controller.ts";
-import {
-  backfillDreamDiary,
-  copyDreamingArchivePath,
-  createDreamingState,
-  dedupeDreamDiary,
-  loadDreamDiary,
-  loadDreamingStatus,
-  loadWikiImportInsights,
-  loadWikiMemoryPalace,
-  repairDreamingArtifacts,
-  resetGroundedShortTerm,
-  resetDreamDiary,
-  resolveConfiguredDreaming,
-  updateDreamingEnabled,
-  type DreamingState,
-} from "./dreaming.ts";
-import { renderDreamingRestartConfirmation } from "./restart-confirmation.ts";
-import { createDreamingViewState, renderDreaming, type DreamingViewState } from "./view.ts";
 
 type WikiPagePreview = {
   title: string;

@@ -1,5 +1,5 @@
 import { ContextProvider } from "@lit/context";
-import type { RouteLocation, RouterState } from "@openclaw/uirouter";
+import type { RouteLocation, RouterState } from "@operator/uirouter";
 import { html, nothing } from "lit";
 import { property, query, state } from "lit/decorators.js";
 import { hasStoredGatewayAuth, type GatewayBrowserClient } from "../api/gateway.ts";

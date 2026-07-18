@@ -1,4 +1,4 @@
-import { uniqueStrings } from "@openclaw/normalization-core/string-normalization";
+import { uniqueStrings } from "@operator/normalization-core/string-normalization";
 import { sql } from "kysely";
 import {
   executeSqliteQuerySync,
@@ -9,7 +9,7 @@ import {
   openOpenClawAgentDatabase,
   runOpenClawAgentWriteTransaction,
   type OpenClawAgentDatabase,
-} from "../../state/openclaw-agent-db.js";
+} from "../../state/operator-agent-db.js";
 import type { SessionDiskBudgetSweepResult } from "./disk-budget.js";
 import {
   materializeSqliteSessionStateDeletePlans,

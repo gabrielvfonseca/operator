@@ -1,7 +1,7 @@
 // Formats port probe results for diagnostics and CLI output.
 import net from "node:net";
-import { expectDefined } from "@openclaw/normalization-core";
-import { normalizeLowercaseStringOrEmpty } from "@openclaw/normalization-core/string-coerce";
+import { expectDefined } from "@operator/normalization-core";
+import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
 import { formatCliCommand } from "../cli/command-format.js";
 import type { PortListener, PortListenerKind, PortUsage } from "./ports-types.js";
 
@@ -10,7 +10,7 @@ export function classifyPortListener(listener: PortListener, _port: number): Por
   const raw = normalizeLowercaseStringOrEmpty(
     `${listener.commandLine ?? ""} ${listener.command ?? ""}`,
   );
-  if (raw.includes("openclaw")) {
+  if (raw.includes("operator")) {
     return "gateway";
   }
   const command = normalizeLowercaseStringOrEmpty(listener.command ?? "");
@@ -211,7 +211,7 @@ export function buildPortHints(listeners: PortListener[], port: number): string[
   const expectedGatewayListeners = isExpectedGatewayListeners(listeners, port);
   if (kinds.has("gateway") && !expectedGatewayListeners) {
     hints.push(
-      `Gateway already running locally. Stop it (${formatCliCommand("openclaw gateway stop")}) or use a different port.`,
+      `Gateway already running locally. Stop it (${formatCliCommand("operator gateway stop")}) or use a different port.`,
     );
   }
   if (kinds.has("ssh")) {

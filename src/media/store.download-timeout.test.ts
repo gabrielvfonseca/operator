@@ -10,7 +10,7 @@ import { createPinnedLookup } from "../infra/net/ssrf.js";
 import {
   createOpenClawTestState,
   type OpenClawTestState,
-} from "../test-utils/openclaw-test-state.js";
+} from "../test-utils/operator-test-state.js";
 import { setMediaStoreDownloadDepsForTest } from "./store.download.js";
 import { saveMediaSource } from "./store.js";
 

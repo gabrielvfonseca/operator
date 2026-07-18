@@ -4,7 +4,7 @@
 import { statSync } from "node:fs";
 import path from "node:path";
 import { resolveRuntimeConfigCacheKey } from "../../config/runtime-snapshot.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OpenClawConfig } from "../../config/types.operator.js";
 import type { PluginMetadataSnapshot } from "../../plugins/plugin-metadata-snapshot.types.js";
 import {
   resolveRuntimeExternalAuthProviderRefs,
@@ -59,8 +59,8 @@ function normalizeCacheDir(dirname: string | undefined): string | undefined {
 
 function authFingerprint(agentDir: string): object {
   return {
-    authProfilesSqlite: fileFingerprint(path.join(agentDir, "openclaw-agent.sqlite")),
-    authProfilesSqliteWal: fileFingerprint(path.join(agentDir, "openclaw-agent.sqlite-wal")),
+    authProfilesSqlite: fileFingerprint(path.join(agentDir, "operator-agent.sqlite")),
+    authProfilesSqliteWal: fileFingerprint(path.join(agentDir, "operator-agent.sqlite-wal")),
   };
 }
 
@@ -203,6 +203,6 @@ function resetModelDiscoveryCacheForTest(): void {
 }
 
 if (process.env.VITEST || process.env.NODE_ENV === "test") {
-  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("openclaw.modelDiscoveryCacheTestApi")] =
+  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("operator.modelDiscoveryCacheTestApi")] =
     { resetModelDiscoveryCacheForTest };
 }

@@ -31,12 +31,12 @@ import {
 import type { AuthProfileStore } from "../../../agents/auth-profiles/types.js";
 import { resolveProviderIdForAuth } from "../../../agents/provider-auth-aliases.js";
 import { resolveStateDir } from "../../../config/paths.js";
-import type { OpenClawConfig } from "../../../config/types.openclaw.js";
+import type { OpenClawConfig } from "../../../config/types.operator.js";
 import { DEFAULT_AGENT_ID, normalizeAgentId } from "../../../routing/session-key.js";
 import {
   inspectOpenClawAgentDatabaseOwner,
   listOpenClawRegisteredAgentDatabases,
-} from "../../../state/openclaw-agent-db.js";
+} from "../../../state/operator-agent-db.js";
 import { isRecord, resolveUserPath } from "../../../utils.js";
 
 type StaleConfiguredAuthOrder = {
@@ -306,7 +306,7 @@ function loadConfiguredAgentAuthStores(
     addExpectedAgentDir(agentDir, agentId);
   }
   const envAgentDir =
-    env.OPENCLAW_AGENT_DIR?.trim() || env.PI_CODING_AGENT_DIR?.trim() || undefined;
+    env.OPERATOR_AGENT_DIR?.trim() || env.PI_CODING_AGENT_DIR?.trim() || undefined;
   if (envAgentDir) {
     const agentDir = path.resolve(resolveUserPath(envAgentDir, env));
     activeAgentDirs.add(agentDir);
@@ -618,7 +618,7 @@ export function collectStaleConfiguredAuthOrderWarnings(params: {
 }
 
 if (process.env.VITEST || process.env.NODE_ENV === "test") {
-  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("openclaw.staleAuthOrderTestApi")] = {
+  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("operator.staleAuthOrderTestApi")] = {
     repairStaleConfiguredAuthOrders,
   };
 }

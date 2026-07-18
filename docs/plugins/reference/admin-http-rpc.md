@@ -11,7 +11,7 @@ OpenClaw admin HTTP RPC endpoint.
 
 ## Distribution
 
-- Package: `@openclaw/admin-http-rpc`
+- Package: `@operator/admin-http-rpc`
 - Install route: included in OpenClaw
 
 ## Surface

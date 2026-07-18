@@ -11,7 +11,7 @@ Adds SGLang model provider support to OpenClaw.
 
 ## Distribution
 
-- Package: `@openclaw/sglang-provider`
+- Package: `@operator/sglang-provider`
 - Install route: included in OpenClaw
 
 ## Surface

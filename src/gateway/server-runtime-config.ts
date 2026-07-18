@@ -5,7 +5,7 @@ import type {
   GatewayBindMode,
   GatewayTailscaleConfig,
 } from "../config/types.gateway.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import {
   formatUnsafeGatewayTailscaleNoAuthMessage,
   isUnsafeGatewayTailscaleNoAuth,
@@ -118,6 +118,11 @@ export async function resolveGatewayRuntimeConfig(params: {
     typeof controlUiRootRaw === "string" && controlUiRootRaw.trim().length > 0
       ? controlUiRootRaw.trim()
       : undefined;
+  const controlUiMode = (params.cfg.gateway?.controlUi?.mode as "static" | "next") ?? "static";
+  const controlUiNextUrl =
+    typeof params.cfg.gateway?.controlUi?.next?.url === "string"
+      ? params.cfg.gateway?.controlUi?.next.url
+      : undefined;
   const tailscaleBase = params.cfg.gateway?.tailscale ?? {};
   const tailscaleOverrides = params.tailscale ?? {};
   const tailscaleConfig = mergeGatewayTailscaleConfig(tailscaleBase, tailscaleOverrides);
@@ -147,7 +152,7 @@ export async function resolveGatewayRuntimeConfig(params: {
   assertGatewayAuthConfigured(resolvedAuth, params.cfg.gateway?.auth);
   if (tailscaleMode === "funnel" && authMode !== "password") {
     throw new Error(
-      "tailscale funnel requires gateway auth mode=password (set gateway.auth.password or OPENCLAW_GATEWAY_PASSWORD)",
+      "tailscale funnel requires gateway auth mode=password (set gateway.auth.password or OPERATOR_GATEWAY_PASSWORD)",
     );
   }
   if (isUnsafeGatewayTailscaleNoAuth({ authMode, tailscaleMode })) {
@@ -158,7 +163,7 @@ export async function resolveGatewayRuntimeConfig(params: {
   }
   if (!isLoopbackHost(bindHost) && !hasSharedSecret && authMode !== "trusted-proxy") {
     throw new Error(
-      `refusing to bind gateway to ${bindHost}:${params.port} without auth (set gateway.auth.token/password, or set OPENCLAW_GATEWAY_TOKEN/OPENCLAW_GATEWAY_PASSWORD; legacy CLAWDBOT_* and MOLTBOT_* environment variables are ignored)`,
+      `refusing to bind gateway to ${bindHost}:${params.port} without auth (set gateway.auth.token/password, or set OPERATOR_GATEWAY_TOKEN/OPERATOR_GATEWAY_PASSWORD; legacy CLAWDBOT_* and MOLTBOT_* environment variables are ignored)`,
     );
   }
   if (
@@ -198,6 +203,8 @@ export async function resolveGatewayRuntimeConfig(params: {
     strictTransportSecurityHeader,
     controlUiBasePath,
     controlUiRoot,
+    controlUiMode,
+    controlUiNextUrl,
     resolvedAuth,
     authMode,
     tailscaleConfig,

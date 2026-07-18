@@ -108,8 +108,8 @@ describe("loadOpenClawPlugins", () => {
 
           return withEnv(
             {
-              OPENCLAW_DISABLE_BUNDLED_PLUGINS: "1",
-              OPENCLAW_BUNDLED_PLUGINS_DIR: undefined,
+              OPERATOR_DISABLE_BUNDLED_PLUGINS: "1",
+              OPERATOR_BUNDLED_PLUGINS_DIR: undefined,
             },
             () =>
               loadOpenClawPlugins({
@@ -151,7 +151,7 @@ describe("loadOpenClawPlugins", () => {
             body: memoryPluginBody("memory-b"),
           });
           fs.writeFileSync(
-            path.join(memoryADir, "openclaw.plugin.json"),
+            path.join(memoryADir, "operator.plugin.json"),
             JSON.stringify(
               {
                 id: "memory-a",
@@ -164,7 +164,7 @@ describe("loadOpenClawPlugins", () => {
             "utf-8",
           );
           fs.writeFileSync(
-            path.join(memoryBDir, "openclaw.plugin.json"),
+            path.join(memoryBDir, "operator.plugin.json"),
             JSON.stringify(
               {
                 id: "memory-b",
@@ -176,7 +176,7 @@ describe("loadOpenClawPlugins", () => {
             ),
             "utf-8",
           );
-          process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
+          process.env.OPERATOR_BUNDLED_PLUGINS_DIR = bundledDir;
 
           return loadOpenClawPlugins({
             cache: false,
@@ -368,7 +368,7 @@ describe("loadOpenClawPlugins", () => {
           });
           const openSchema = { type: "object", additionalProperties: true };
           fs.writeFileSync(
-            path.join(memoryCoreDir, "openclaw.plugin.json"),
+            path.join(memoryCoreDir, "operator.plugin.json"),
             JSON.stringify(
               { id: "memory-core", kind: "memory", configSchema: EMPTY_PLUGIN_SCHEMA },
               null,
@@ -377,7 +377,7 @@ describe("loadOpenClawPlugins", () => {
             "utf-8",
           );
           fs.writeFileSync(
-            path.join(memoryLanceDir, "openclaw.plugin.json"),
+            path.join(memoryLanceDir, "operator.plugin.json"),
             JSON.stringify(
               { id: "memory-lancedb", kind: "memory", configSchema: openSchema },
               null,
@@ -385,7 +385,7 @@ describe("loadOpenClawPlugins", () => {
             ),
             "utf-8",
           );
-          process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
+          process.env.OPERATOR_BUNDLED_PLUGINS_DIR = bundledDir;
 
           return loadOpenClawPlugins({
             cache: false,
@@ -431,7 +431,7 @@ describe("loadOpenClawPlugins", () => {
             body: memoryPluginBody("memory-lancedb"),
           });
           fs.writeFileSync(
-            path.join(memoryCoreDir, "openclaw.plugin.json"),
+            path.join(memoryCoreDir, "operator.plugin.json"),
             JSON.stringify(
               { id: "memory-core", kind: "memory", configSchema: EMPTY_PLUGIN_SCHEMA },
               null,
@@ -440,7 +440,7 @@ describe("loadOpenClawPlugins", () => {
             "utf-8",
           );
           fs.writeFileSync(
-            path.join(memoryLanceDir, "openclaw.plugin.json"),
+            path.join(memoryLanceDir, "operator.plugin.json"),
             JSON.stringify(
               { id: "memory-lancedb", kind: "memory", configSchema: EMPTY_PLUGIN_SCHEMA },
               null,
@@ -448,7 +448,7 @@ describe("loadOpenClawPlugins", () => {
             ),
             "utf-8",
           );
-          process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
+          process.env.OPERATOR_BUNDLED_PLUGINS_DIR = bundledDir;
 
           return loadOpenClawPlugins({
             cache: false,
@@ -484,7 +484,7 @@ describe("loadOpenClawPlugins", () => {
             body: `throw new Error("memory-core should not load when memory slot is none");`,
           });
           fs.writeFileSync(
-            path.join(memoryCoreDir, "openclaw.plugin.json"),
+            path.join(memoryCoreDir, "operator.plugin.json"),
             JSON.stringify(
               { id: "memory-core", kind: "memory", configSchema: EMPTY_PLUGIN_SCHEMA },
               null,
@@ -492,7 +492,7 @@ describe("loadOpenClawPlugins", () => {
             ),
             "utf-8",
           );
-          process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
+          process.env.OPERATOR_BUNDLED_PLUGINS_DIR = bundledDir;
 
           return loadOpenClawPlugins({
             cache: false,
@@ -522,8 +522,8 @@ describe("loadOpenClawPlugins", () => {
 
           return withEnv(
             {
-              OPENCLAW_DISABLE_BUNDLED_PLUGINS: "1",
-              OPENCLAW_BUNDLED_PLUGINS_DIR: undefined,
+              OPERATOR_DISABLE_BUNDLED_PLUGINS: "1",
+              OPERATOR_BUNDLED_PLUGINS_DIR: undefined,
             },
             () =>
               loadOpenClawPlugins({
@@ -698,8 +698,8 @@ describe("loadOpenClawPlugins", () => {
             body: simplePluginBody("demo-dev-source-duplicate"),
             bundledDir: path.join(bundledPluginsDir, "demo-dev-source-duplicate"),
           });
-          process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledPluginsDir;
-          return withEnv({ OPENCLAW_DEV_SOURCE_ROOT: devSourceRoot }, () =>
+          process.env.OPERATOR_BUNDLED_PLUGINS_DIR = bundledPluginsDir;
+          return withEnv({ OPERATOR_DEV_SOURCE_ROOT: devSourceRoot }, () =>
             withStateDir((stateDir) => {
               const globalDir = path.join(stateDir, "extensions", "demo-dev-source-duplicate");
               mkdirSafe(globalDir);
@@ -748,7 +748,7 @@ describe("loadOpenClawPlugins", () => {
             body: memoryPluginBody("memory-lancedb"),
           });
           return withStateDir((stateDir) => {
-            const globalDir = path.join(stateDir, "node_modules", "@openclaw", "memory-lancedb");
+            const globalDir = path.join(stateDir, "node_modules", "@operator", "memory-lancedb");
             mkdirSafe(globalDir);
             const globalPlugin = writePlugin({
               id: "memory-lancedb",
@@ -775,9 +775,9 @@ describe("loadOpenClawPlugins", () => {
               path.join(globalDir, "package.json"),
               JSON.stringify(
                 {
-                  name: "@openclaw/memory-lancedb",
+                  name: "@operator/memory-lancedb",
                   version: "2026.5.12-beta.1",
-                  openclaw: { extensions: ["./index.cjs"] },
+                  operator: { extensions: ["./index.cjs"] },
                 },
                 null,
                 2,
@@ -797,8 +797,8 @@ describe("loadOpenClawPlugins", () => {
                   installs: {
                     "memory-lancedb": {
                       source: "npm",
-                      spec: "@openclaw/memory-lancedb",
-                      resolvedName: "@openclaw/memory-lancedb",
+                      spec: "@operator/memory-lancedb",
+                      resolvedName: "@operator/memory-lancedb",
                       resolvedVersion: "2026.5.12-beta.1",
                       installPath: globalDir,
                     },
@@ -1036,14 +1036,14 @@ describe("loadOpenClawPlugins", () => {
     expect(openAllowWarning).toBeDefined();
     expect(openAllowWarning).toContain('"warn-open-allow-remediation"');
     expect(openAllowWarning).toContain('"plugins": { "allow": [');
-    expect(openAllowWarning).toContain("openclaw plugins list --enabled --verbose");
-    expect(openAllowWarning).toContain("openclaw plugins inspect warn-open-allow-remediation");
+    expect(openAllowWarning).toContain("operator plugins list --enabled --verbose");
+    expect(openAllowWarning).toContain("operator plugins inspect warn-open-allow-remediation");
   });
 
   it("includes actionable plugins.allow remediation hints in the untracked-provenance warning", () => {
     useNoBundledPlugins();
     const stateDir = makeTempDir();
-    withEnv({ OPENCLAW_STATE_DIR: stateDir }, () => {
+    withEnv({ OPERATOR_STATE_DIR: stateDir }, () => {
       const globalDir = path.join(stateDir, "extensions", "warn-untracked-remediation");
       mkdirSafe(globalDir);
       writePlugin({
@@ -1071,7 +1071,7 @@ describe("loadOpenClawPlugins", () => {
       );
       expect(untrackedWarning).toBeDefined();
       expect(untrackedWarning).toContain('"warn-untracked-remediation"');
-      expect(untrackedWarning).toContain("openclaw plugins inspect warn-untracked-remediation");
+      expect(untrackedWarning).toContain("operator plugins inspect warn-untracked-remediation");
       expect(untrackedWarning).toContain("reinstall from a trusted source");
 
       const diagnostic = registry.diagnostics.find(
@@ -1080,7 +1080,7 @@ describe("loadOpenClawPlugins", () => {
           entry.message.includes("loaded without install/load-path provenance"),
       );
       expect(diagnostic?.message).toContain('"warn-untracked-remediation"');
-      expect(diagnostic?.message).toContain("openclaw plugins inspect warn-untracked-remediation");
+      expect(diagnostic?.message).toContain("operator plugins inspect warn-untracked-remediation");
       expect(diagnostic?.message).toContain("reinstall from a trusted source");
     });
   });
@@ -1112,8 +1112,8 @@ describe("loadOpenClawPlugins", () => {
     expect(message).toContain("plugins.allow is empty");
     expect(message).toContain("(+2 more)");
     expect(message).not.toContain('"plugins": { "allow": [');
-    expect(message).toContain("openclaw plugins list --enabled --verbose");
-    expect(message).toContain("openclaw plugins inspect <id>");
+    expect(message).toContain("operator plugins list --enabled --verbose");
+    expect(message).toContain("operator plugins inspect <id>");
   });
 
   it("handles workspace-discovered plugins according to trust and precedence", () => {
@@ -1226,7 +1226,7 @@ describe("loadOpenClawPlugins", () => {
       body: simplePluginBody("profile-aware"),
     });
     fs.writeFileSync(
-      path.join(plugin.dir, "openclaw.plugin.json"),
+      path.join(plugin.dir, "operator.plugin.json"),
       JSON.stringify(
         {
           id: "profile-aware",
@@ -1317,7 +1317,7 @@ describe("loadOpenClawPlugins", () => {
         label: "warns when loaded non-bundled plugin has no provenance and no allowlist is set",
         loadRegistry: () => {
           const stateDir = makeTempDir();
-          return withEnv({ OPENCLAW_STATE_DIR: stateDir }, () => {
+          return withEnv({ OPERATOR_STATE_DIR: stateDir }, () => {
             const globalDir = path.join(stateDir, "extensions", "rogue");
             mkdirSafe(globalDir);
             writePlugin({
@@ -1413,7 +1413,7 @@ describe("loadOpenClawPlugins", () => {
 
           const pluginDir = path.join(
             realHome,
-            ".openclaw",
+            ".operator",
             "npm",
             "node_modules",
             "@example",
@@ -1433,7 +1433,7 @@ describe("loadOpenClawPlugins", () => {
                 spec: "@example/tracked-symlink-install@1.0.0",
                 installPath: path.join(
                   linkedHome,
-                  ".openclaw",
+                  ".operator",
                   "npm",
                   "node_modules",
                   "@example",
@@ -1451,8 +1451,8 @@ describe("loadOpenClawPlugins", () => {
             logger: createWarningLogger(warnings),
             env: {
               ...process.env,
-              OPENCLAW_STATE_DIR: stateDir,
-              OPENCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
+              OPERATOR_STATE_DIR: stateDir,
+              OPERATOR_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
             },
             config: {
               plugins: {
@@ -1488,7 +1488,7 @@ describe("loadOpenClawPlugins", () => {
   it("uses the source runtime snapshot allowlist for plugin trust checks", () => {
     useNoBundledPlugins();
     const stateDir = makeTempDir();
-    withEnv({ OPENCLAW_STATE_DIR: stateDir }, () => {
+    withEnv({ OPERATOR_STATE_DIR: stateDir }, () => {
       const globalDir = path.join(stateDir, "extensions", "trusted-plugin");
       mkdirSafe(globalDir);
       writePlugin({
@@ -1597,7 +1597,7 @@ describe("loadOpenClawPlugins", () => {
       throw err;
     }
 
-    process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
+    process.env.OPERATOR_BUNDLED_PLUGINS_DIR = bundledDir;
     const registry = loadOpenClawPlugins({
       cache: false,
       workspaceDir: bundledDir,
@@ -1639,7 +1639,7 @@ describe("loadOpenClawPlugins", () => {
   } };`,
     });
 
-    const registry = withEnv({ OPENCLAW_STATE_DIR: stateDir }, () =>
+    const registry = withEnv({ OPERATOR_STATE_DIR: stateDir }, () =>
       loadRegistryFromSinglePlugin({
         plugin,
         pluginConfig: {
@@ -1662,12 +1662,12 @@ describe("loadOpenClawPlugins", () => {
       filename: "legacy-root-import.cjs",
       body: `module.exports = {
     id: "legacy-root-import",
-    configSchema: (require("openclaw/plugin-sdk").emptyPluginConfigSchema)(),
+    configSchema: (require("operator/plugin-sdk").emptyPluginConfigSchema)(),
           register() {},
         };`,
     });
 
-    const registry = withEnv({ OPENCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins" }, () =>
+    const registry = withEnv({ OPERATOR_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins" }, () =>
       loadOpenClawPlugins({
         cache: false,
         workspaceDir: plugin.dir,
@@ -1688,7 +1688,7 @@ describe("loadOpenClawPlugins", () => {
 
   it("supports legacy plugins subscribing to diagnostic events from the root sdk", async () => {
     useNoBundledPlugins();
-    const seenKey = "__openclawLegacyRootDiagnosticSeen";
+    const seenKey = "__operatorLegacyRootDiagnosticSeen";
     delete (globalThis as Record<string, unknown>)[seenKey];
 
     const plugin = writePlugin({
@@ -1696,9 +1696,9 @@ describe("loadOpenClawPlugins", () => {
       filename: "legacy-root-diagnostic-listener.cjs",
       body: `module.exports = {
     id: "legacy-root-diagnostic-listener",
-    configSchema: (require("openclaw/plugin-sdk").emptyPluginConfigSchema)(),
+    configSchema: (require("operator/plugin-sdk").emptyPluginConfigSchema)(),
     register() {
-      const { onDiagnosticEvent } = require("openclaw/plugin-sdk");
+      const { onDiagnosticEvent } = require("operator/plugin-sdk");
       if (typeof onDiagnosticEvent !== "function") {
         throw new Error("missing onDiagnosticEvent root export");
       }
@@ -1715,7 +1715,7 @@ describe("loadOpenClawPlugins", () => {
 
     try {
       const registry = withEnv(
-        { OPENCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins" },
+        { OPERATOR_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins" },
         () =>
           loadOpenClawPlugins({
             cache: false,
@@ -1757,7 +1757,7 @@ describe("loadOpenClawPlugins", () => {
   it("suppresses trust warning logs for non-activating snapshot loads", () => {
     useNoBundledPlugins();
     const stateDir = makeTempDir();
-    withEnv({ OPENCLAW_STATE_DIR: stateDir }, () => {
+    withEnv({ OPERATOR_STATE_DIR: stateDir }, () => {
       const globalDir = path.join(stateDir, "extensions", "rogue");
       mkdirSafe(globalDir);
       writePlugin({

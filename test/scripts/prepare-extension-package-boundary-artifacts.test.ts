@@ -7,7 +7,7 @@ import os from "node:os";
 import path from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 import { pathToFileURL } from "node:url";
-import { MAX_TIMER_TIMEOUT_MS } from "@openclaw/normalization-core/number-coercion";
+import { MAX_TIMER_TIMEOUT_MS } from "@operator/normalization-core/number-coercion";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { resolveWindowsTaskkillPath } from "../../scripts/lib/windows-taskkill.mjs";
 import {
@@ -568,7 +568,7 @@ describe("prepare-extension-package-boundary-artifacts", () => {
         outputPaths: [
           "dist/plugin-sdk/.boundary-entry-shims.stamp",
           "dist/plugin-sdk/index.d.ts",
-          "packages/plugin-sdk/dist/src/plugin-sdk/index.d.ts",
+          "sdks/plugin-sdk/dist/src/plugin-sdk/index.d.ts",
         ],
       }),
     ).toBe(true);
@@ -582,13 +582,13 @@ describe("prepare-extension-package-boundary-artifacts", () => {
         outputPaths: [
           "dist/plugin-sdk/.boundary-entry-shims.stamp",
           "dist/plugin-sdk/index.d.ts",
-          "packages/plugin-sdk/dist/src/plugin-sdk/index.d.ts",
+          "sdks/plugin-sdk/dist/src/plugin-sdk/index.d.ts",
         ],
       }),
     ).toBe(false);
     expect(resolveBoundaryEntryShimRequiredOutputs({})).toContain("dist/plugin-sdk/index.d.ts");
     expect(resolveBoundaryEntryShimRequiredOutputs({})).toContain(
-      "packages/plugin-sdk/dist/src/plugin-sdk/index.d.ts",
+      "sdks/plugin-sdk/dist/src/plugin-sdk/index.d.ts",
     );
   });
 

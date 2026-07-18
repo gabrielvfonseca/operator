@@ -513,12 +513,12 @@ export const coreGatewayHandlers: GatewayRequestHandlers = {
   }),
   ...createLazyCoreHandlers({
     methods: [
-      "openclaw.chat",
-      "openclaw.approval.list",
-      "openclaw.setup.detect",
-      "openclaw.setup.verify",
-      "openclaw.setup.activate",
-      "openclaw.setup.auth.start",
+      "operator.chat",
+      "operator.approval.list",
+      "operator.setup.detect",
+      "operator.setup.verify",
+      "operator.setup.activate",
+      "operator.setup.auth.start",
     ],
     loadHandlers: loadSystemAgentHandlers,
   }),

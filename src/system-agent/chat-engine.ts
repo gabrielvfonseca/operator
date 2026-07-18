@@ -42,7 +42,7 @@ import {
 } from "./verified-inference.js";
 /**
  * One conversation with OpenClaw, independent of transport. The TUI backend
- * and the gateway `openclaw.chat` RPC both drive this engine, so onboarding
+ * and the gateway `operator.chat` RPC both drive this engine, so onboarding
  * behaves the same in a terminal and in the macOS app.
  *
  * The conversation is AI-backed: free-form messages run through the agent loop
@@ -138,7 +138,7 @@ function defaultChannelSetupWizardRunner(
     const snapshot = await readSetupConfigFileSnapshot();
     if (!snapshot.exists || !snapshot.valid || !snapshot.hash) {
       throw new Error(
-        "Channel setup requires a valid saved config snapshot. Run `openclaw doctor --fix`, then retry.",
+        "Channel setup requires a valid saved config snapshot. Run `operator doctor --fix`, then retry.",
       );
     }
     const baseConfig = snapshot.sourceConfig ?? snapshot.config;
@@ -606,7 +606,7 @@ export class SystemAgentChatEngine {
           this.pending
             ? // Hand a host-seeded proposal (onboarding welcome) to the loop so
               // the conversation can reshape it through the tool handshake.
-              `[pending-proposal] Awaiting the user's approval: ${formatPendingOperationForAssistant(this.pending)}. It is already host-seeded; if they want it (or a variant), drive it through the openclaw tool yourself.\n${text}`
+              `[pending-proposal] Awaiting the user's approval: ${formatPendingOperationForAssistant(this.pending)}. It is already host-seeded; if they want it (or a variant), drive it through the operator tool yourself.\n${text}`
             : text
         }`,
         overview,
@@ -778,7 +778,7 @@ export class SystemAgentChatEngine {
     if (operation.kind === "open-tui") {
       this.clearPendingProposals();
       return {
-        text: "Opening your normal agent TUI. Use /openclaw there to come back.",
+        text: "Opening your normal agent TUI. Use /operator there to come back.",
         action: "open-tui",
         handoff: operation,
       };
@@ -791,13 +791,13 @@ export class SystemAgentChatEngine {
       this.clearPendingProposals();
       if (this.opts.surface === "gateway") {
         return {
-          text: "The app owns the setup screens here — use Settings, or run `openclaw onboard` in a terminal.",
+          text: "The app owns the setup screens here — use Settings, or run `operator onboard` in a terminal.",
           action: "none",
         };
       }
       if (operation.target !== "channels") {
         return {
-          text: "Setup can replace the inference route powering this session. Exit OpenClaw and run `openclaw onboard`; it saves only a route that passes a live test. Then start OpenClaw again.",
+          text: "Setup can replace the inference route powering this session. Exit OpenClaw and run `operator onboard`; it saves only a route that passes a live test. Then start OpenClaw again.",
           action: "none",
         };
       }
@@ -949,7 +949,7 @@ export class SystemAgentChatEngine {
   }
 
   /**
-   * Post-write hook: re-validate openclaw.json after every applied operation.
+   * Post-write hook: re-validate operator.json after every applied operation.
    * On failure the exact schema issues go straight back into the conversation
    * (and to the AI, which proposes one corrective command) so a bad write is
    * caught and fixed in the same chat instead of surfacing at gateway start.
@@ -982,7 +982,7 @@ export class SystemAgentChatEngine {
     }
     return [
       "No usable inference route is configured, so OpenClaw cannot continue.",
-      "Exit and run `openclaw onboard`; it saves only a route that passes a live test.",
+      "Exit and run `operator onboard`; it saves only a route that passes a live test.",
     ].join("\n");
   }
 
@@ -1013,7 +1013,7 @@ export class SystemAgentChatEngine {
     return {
       text: [
         "Changing provider credentials would replace the inference route powering this session.",
-        "Exit OpenClaw and run `openclaw onboard`; it stages credentials, live-tests the new route, and saves only a passing setup. Then start OpenClaw again.",
+        "Exit OpenClaw and run `operator onboard`; it stages credentials, live-tests the new route, and saves only a passing setup. Then start OpenClaw again.",
       ].join("\n"),
       action: "none",
     };
@@ -1088,7 +1088,7 @@ export class SystemAgentChatEngine {
         this.lastSensitiveChannel = bridge.label;
         return [
           "Sensitive input is not accepted in the OpenClaw chat because terminal input is visible.",
-          `Say \`open channel wizard\` and I'll hand you to the masked terminal wizard for ${bridge.label}, or run \`openclaw channels add --channel ${bridge.label}\` yourself later.`,
+          `Say \`open channel wizard\` and I'll hand you to the masked terminal wizard for ${bridge.label}, or run \`operator channels add --channel ${bridge.label}\` yourself later.`,
         ].join("\n");
       }
       if (bridge.step.type === "note" || bridge.step.type === "progress") {

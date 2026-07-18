@@ -12,7 +12,7 @@ const checker = createExtensionImportBoundaryChecker({
   inventoryTitle: "SDK/package extension import boundary inventory:",
   skipSourcesWithoutBundledPluginPrefix: true,
   shouldSkipFile(relativeFile) {
-    return relativeFile.startsWith("packages/plugin-sdk/dist/");
+    return relativeFile.startsWith("sdks/plugin-sdk/dist/");
   },
 });
 

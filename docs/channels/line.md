@@ -20,7 +20,7 @@ Reactions and threads are not supported.
 Install LINE before configuring the channel:
 
 ```bash
-openclaw plugins install @openclaw/line
+openclaw plugins install @operator/line
 ```
 
 Local checkout (when running from a git repo):

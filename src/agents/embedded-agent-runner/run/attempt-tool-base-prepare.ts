@@ -301,7 +301,7 @@ export function prepareEmbeddedAttemptToolBase(params: {
           conversationCapabilityProfile: runtimeCapabilityProfile,
           onYield: params.onYield,
         });
-        params.markCoreToolStage("attempt:create-openclaw-coding-tools");
+        params.markCoreToolStage("attempt:create-operator-coding-tools");
         const filteredTools = applyEmbeddedAttemptToolsAllow(allTools, effectiveToolsAllow, {
           toolMeta: (tool) => getPluginToolMeta(tool),
         });

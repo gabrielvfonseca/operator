@@ -2,7 +2,7 @@ import { randomInt } from "node:crypto";
 // Inference backend detection shared by onboarding bootstrap and OpenClaw setup.
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@openclaw/normalization-core";
+import { expectDefined } from "@operator/normalization-core";
 import { resolveAgentConfig, resolveDefaultAgentId } from "../agents/agent-scope-config.js";
 import {
   readClaudeCliCredentialsCached,
@@ -10,7 +10,7 @@ import {
 } from "../agents/cli-credentials.js";
 import { resolveDefaultModelForAgent } from "../agents/model-selection.js";
 import { resolveAgentModelPrimaryValue } from "../config/model-input.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import { probeLocalCommand, type LocalCommandProbe } from "../system-agent/probes.js";
 
 /**
@@ -19,6 +19,7 @@ import { probeLocalCommand, type LocalCommandProbe } from "../system-agent/probe
  * asking the user anything. The ladder order is a documented contract
  * (docs/cli/setup.md "Setup bootstrap") — change docs when changing it.
  */
+export const OPENROUTER_API_DEFAULT_MODEL_REF = "openrouter/auto";
 export const OPENAI_API_DEFAULT_MODEL_REF = "openai/gpt-5.6";
 export const ANTHROPIC_API_DEFAULT_MODEL_REF = "anthropic/claude-opus-4-8";
 export const CLAUDE_CLI_DEFAULT_MODEL_REF = "claude-cli/claude-opus-4-8";
@@ -27,6 +28,7 @@ export const GEMINI_CLI_DEFAULT_MODEL_REF = "google-gemini-cli/gemini-3.1-pro-pr
 
 export type InferenceBackendKind =
   | "existing-model"
+  | "openrouter-api-key"
   | "openai-api-key"
   | "anthropic-api-key"
   | "claude-cli"
@@ -166,7 +168,7 @@ async function detectNativeCodexAppServer(
 }
 
 if (process.env.VITEST || process.env.NODE_ENV === "test") {
-  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("openclaw.onboardInferenceTestApi")] = {
+  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("operator.onboardInferenceTestApi")] = {
     detectNativeCodexAppServer,
   };
 }
@@ -209,6 +211,15 @@ export async function detectInferenceBackends(
       modelRef: `${resolved.provider}/${resolved.model}`,
       label: "Current model",
       detail: "already configured",
+      credentials: true,
+    });
+  }
+  if (env.OPENROUTER_API_KEY?.trim()) {
+    candidates.push({
+      kind: "openrouter-api-key",
+      modelRef: OPENROUTER_API_DEFAULT_MODEL_REF,
+      label: "OpenRouter API key",
+      detail: "OPENROUTER_API_KEY set",
       credentials: true,
     });
   }

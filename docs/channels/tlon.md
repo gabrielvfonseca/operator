@@ -19,10 +19,10 @@ Tlon ships bundled in current OpenClaw releases; packaged builds do not need a s
 On an older build or custom install that excludes it, install from npm:
 
 ```bash
-openclaw plugins install @openclaw/tlon
+openclaw plugins install @operator/tlon
 ```
 
-Use the bare package name to track the current release tag. Pin a version (`@openclaw/tlon@x.y.z`)
+Use the bare package name to track the current release tag. Pin a version (`@operator/tlon@x.y.z`)
 only for reproducible installs.
 
 From a local checkout:

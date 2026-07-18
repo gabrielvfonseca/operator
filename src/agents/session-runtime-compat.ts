@@ -4,7 +4,7 @@
  * Resolves persisted runtime overrides without leaking provider-specific CLI runtime bindings across model routes.
  */
 import type { SessionEntry } from "../config/sessions.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import { isDefaultAgentRuntimeId } from "./agent-runtime-id.js";
 import { normalizeOptionalAgentRuntimeId } from "./agent-runtime-id.js";
 import { isCliRuntimeAliasForProvider } from "./model-runtime-aliases.js";
@@ -47,7 +47,7 @@ export function resolveCompatibleAgentRuntimeForProvider(params: {
   if (!runtime || isDefaultAgentRuntimeId(runtime)) {
     return undefined;
   }
-  if (runtime === "openclaw") {
+  if (runtime === "operator") {
     return runtime;
   }
   const provider = params.provider?.trim().toLowerCase() ?? "";

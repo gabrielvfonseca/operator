@@ -7,7 +7,7 @@ import {
   runSessionStartupMigration,
   type SessionStartupMigrationLogger,
 } from "../config/sessions/startup-migration.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 
 type SessionSqliteStartupImportRunner = (params: {
   allAgents: true;
@@ -79,7 +79,7 @@ async function runStartupSessionSqliteImport(params: {
       throw new Error(
         [
           `session SQLite migration failed during startup because an agent SQLite database could not be opened: ${String(error)}`,
-          'Run "openclaw doctor --session-sqlite recover --session-sqlite-all-agents" to move the corrupt database aside and preserve it for support.',
+          'Run "operator doctor --session-sqlite recover --session-sqlite-all-agents" to move the corrupt database aside and preserve it for support.',
         ].join("\n"),
         { cause: error },
       );
@@ -94,7 +94,7 @@ async function runStartupSessionSqliteImport(params: {
       [
         `session SQLite migration failed during startup with ${blockingIssues.length} blocking issue(s).`,
         ...formatStartupIssueLines(blockingIssues).map((line) => `- ${line}`),
-        'Run "openclaw doctor --session-sqlite inspect --session-sqlite-all-agents" for details.',
+        'Run "operator doctor --session-sqlite inspect --session-sqlite-all-agents" for details.',
         ...(recovery.length > 0 ? recovery : []),
       ].join("\n"),
     );

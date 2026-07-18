@@ -3,9 +3,9 @@ import { spawn, spawnSync } from "node:child_process";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@openclaw/normalization-core";
-import { normalizeLowercaseStringOrEmpty } from "@openclaw/normalization-core/string-coerce";
-import { uniqueStrings } from "@openclaw/normalization-core/string-normalization";
+import { expectDefined } from "@operator/normalization-core";
+import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { uniqueStrings } from "@operator/normalization-core/string-normalization";
 import { isGatewayArgv } from "../infra/gateway-process-argv.js";
 import { findVerifiedGatewayListenerPidsOnPortSync } from "../infra/gateway-processes.js";
 import { inspectPortUsage, type PortListener } from "../infra/ports.js";
@@ -45,11 +45,11 @@ import type {
 } from "./service-types.js";
 
 function resolveTaskName(env: GatewayServiceEnv): string {
-  const override = env.OPENCLAW_WINDOWS_TASK_NAME?.trim();
+  const override = env.OPERATOR_WINDOWS_TASK_NAME?.trim();
   if (override) {
     return override;
   }
-  return resolveGatewayWindowsTaskName(env.OPENCLAW_PROFILE);
+  return resolveGatewayWindowsTaskName(env.OPERATOR_PROFILE);
 }
 
 function shouldFallbackToStartupEntry(params: { code: number; detail: string }): boolean {
@@ -197,7 +197,7 @@ function buildScheduledTaskXml(params: {
 }
 
 async function writeTaskXmlTempFile(xml: string): Promise<string> {
-  const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-task-xml-"));
+  const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-task-xml-"));
   const xmlPath = path.join(tmpDir, "task.xml");
   // schtasks /XML expects UTF-16 LE with BOM; Node's "utf16le" Buffer plus a
   // manual FFFE BOM matches what Task Scheduler import accepts on all locales.
@@ -236,7 +236,7 @@ function resolveSchtasksCreateUser(env: GatewayServiceEnv, taskUser: string | nu
 }
 
 function shouldUseHiddenWindowsTaskLauncher(env: GatewayServiceEnv): boolean {
-  const value = normalizeLowercaseStringOrEmpty(env.OPENCLAW_WINDOWS_TASK_HIDDEN_LAUNCHER);
+  const value = normalizeLowercaseStringOrEmpty(env.OPERATOR_WINDOWS_TASK_HIDDEN_LAUNCHER);
   return value === "1" || value === "true" || value === "yes";
 }
 
@@ -554,7 +554,7 @@ async function launchFallbackTaskScript(
 }
 
 function resolveConfiguredGatewayPort(env: GatewayServiceEnv): number | null {
-  return parseTcpPort(env.OPENCLAW_GATEWAY_PORT);
+  return parseTcpPort(env.OPERATOR_GATEWAY_PORT);
 }
 
 function parsePositivePort(raw: string | undefined): number | null {
@@ -649,7 +649,7 @@ async function resolveScheduledTaskProcess(
   }
   const port =
     parsePortFromProgramArguments(installedArguments) ??
-    parsePositivePort(command?.environment?.OPENCLAW_GATEWAY_PORT) ??
+    parsePositivePort(command?.environment?.OPERATOR_GATEWAY_PORT) ??
     resolveConfiguredGatewayPort(env);
   if (!port) {
     return null;
@@ -684,14 +684,14 @@ async function resolveScheduledTaskGatewayProcess(env: GatewayServiceEnv): Promi
 }
 
 function shouldManageGatewayListenerPort(env: GatewayServiceEnv): boolean {
-  return normalizeLowercaseStringOrEmpty(env.OPENCLAW_SERVICE_KIND) !== NODE_SERVICE_KIND;
+  return normalizeLowercaseStringOrEmpty(env.OPERATOR_SERVICE_KIND) !== NODE_SERVICE_KIND;
 }
 
 async function resolveScheduledTaskPort(env: GatewayServiceEnv): Promise<number | null> {
   const command = await readScheduledTaskCommand(env).catch(() => null);
   return (
     parsePortFromProgramArguments(command?.programArguments) ??
-    parsePositivePort(command?.environment?.OPENCLAW_GATEWAY_PORT) ??
+    parsePositivePort(command?.environment?.OPERATOR_GATEWAY_PORT) ??
     resolveConfiguredGatewayPort(env)
   );
 }
@@ -949,7 +949,7 @@ async function resolveFallbackRuntime(
     const installedArguments = command?.programArguments;
     const port =
       parsePortFromProgramArguments(installedArguments) ??
-      parsePositivePort(command?.environment?.OPENCLAW_GATEWAY_PORT) ??
+      parsePositivePort(command?.environment?.OPERATOR_GATEWAY_PORT) ??
       resolveConfiguredGatewayPort(env);
     if (!port) {
       return {
@@ -981,7 +981,7 @@ async function resolveFallbackRuntime(
   }
   const port =
     parsePortFromProgramArguments(command?.programArguments) ??
-    parsePositivePort(command?.environment?.OPENCLAW_GATEWAY_PORT) ??
+    parsePositivePort(command?.environment?.OPERATOR_GATEWAY_PORT) ??
     resolveConfiguredGatewayPort(env);
   if (!port) {
     return {
@@ -1079,7 +1079,7 @@ async function assertReplacementPortAvailableForTakeover(params: {
   }
   const port =
     parsePortFromProgramArguments(params.programArguments) ??
-    parsePositivePort(params.environment?.OPENCLAW_GATEWAY_PORT) ??
+    parsePositivePort(params.environment?.OPERATOR_GATEWAY_PORT) ??
     resolveConfiguredGatewayPort(params.env);
   if (!port) {
     throw new Error("Could not verify the replacement Windows Scheduled Task port.");
@@ -1216,9 +1216,9 @@ async function restartStartupEntry(
 }
 
 const CALLER_OWNED_SERVICE_IDENTITY_KEYS = [
-  "OPENCLAW_LAUNCHD_LABEL",
-  "OPENCLAW_SYSTEMD_UNIT",
-  "OPENCLAW_WINDOWS_TASK_NAME",
+  "OPERATOR_LAUNCHD_LABEL",
+  "OPERATOR_SYSTEMD_UNIT",
+  "OPERATOR_WINDOWS_TASK_NAME",
 ] as const;
 
 function resolveScheduledTaskRenderEnv(
@@ -1253,13 +1253,13 @@ function resolveScheduledTaskScriptEnvironment(
 }
 
 const SCHEDULED_TASK_ACTIVATION_KEYS = [
-  "OPENCLAW_WINDOWS_TASK_HIDDEN_LAUNCHER",
-  "OPENCLAW_TASK_SCRIPT_NAME",
-  "OPENCLAW_TASK_SCRIPT",
-  "OPENCLAW_SERVICE_KIND",
-  "OPENCLAW_GATEWAY_PORT",
-  "OPENCLAW_STATE_DIR",
-  "OPENCLAW_PROFILE",
+  "OPERATOR_WINDOWS_TASK_HIDDEN_LAUNCHER",
+  "OPERATOR_TASK_SCRIPT_NAME",
+  "OPERATOR_TASK_SCRIPT",
+  "OPERATOR_SERVICE_KIND",
+  "OPERATOR_GATEWAY_PORT",
+  "OPERATOR_STATE_DIR",
+  "OPERATOR_PROFILE",
 ] as const;
 
 function resolveScheduledTaskActivationEnv(
@@ -1435,7 +1435,7 @@ async function shouldFallbackScheduledTaskLaunch(params: {
     const installedArguments = command?.programArguments;
     const taskPort =
       parsePortFromProgramArguments(installedArguments) ??
-      parsePositivePort(command?.environment?.OPENCLAW_GATEWAY_PORT) ??
+      parsePositivePort(command?.environment?.OPERATOR_GATEWAY_PORT) ??
       resolveConfiguredGatewayPort(params.env);
     const manageGatewayPort = shouldManageGatewayListenerPort(params.env);
     if (manageGatewayPort && taskPort) {

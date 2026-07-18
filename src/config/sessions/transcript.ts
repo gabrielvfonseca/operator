@@ -10,12 +10,12 @@ import {
   extractFirstTextBlock,
 } from "../../shared/chat-message-content.js";
 import {
-  OPENCLAW_DELIVERY_MIRROR_MODEL,
-  OPENCLAW_TRANSCRIPT_ARTIFACT_API,
-  OPENCLAW_TRANSCRIPT_ARTIFACT_PROVIDER,
+  OPERATOR_DELIVERY_MIRROR_MODEL,
+  OPERATOR_TRANSCRIPT_ARTIFACT_API,
+  OPERATOR_TRANSCRIPT_ARTIFACT_PROVIDER,
   isTranscriptOnlyOpenClawAssistantModel,
-} from "../../shared/transcript-only-openclaw-assistant.js";
-import type { OpenClawConfig } from "../types.openclaw.js";
+} from "../../shared/transcript-only-operator-assistant.js";
+import type { OpenClawConfig } from "../types.operator.js";
 import {
   resolveDefaultSessionStorePath,
   resolveSessionFilePath,
@@ -177,7 +177,7 @@ function parseRecentConversationText(
         provenance?: unknown;
         provider?: unknown;
         model?: unknown;
-        __openclaw?: unknown;
+        __operator?: unknown;
       }
     | undefined;
   if (
@@ -402,7 +402,7 @@ export async function readTailAssistantTextFromSessionTranscript(
   for await (const line of streamSessionTranscriptLinesReverse(sessionFile)) {
     try {
       const parsed = JSON.parse(line) as { message?: unknown };
-      // Skip non-message entries (e.g. `openclaw.cache-ttl` custom events) so
+      // Skip non-message entries (e.g. `operator.cache-ttl` custom events) so
       // a metadata line emitted after the canonical assistant turn doesn't
       // make the tail reader fall through to "no assistant tail" and cause
       // persistTextTurnTranscript to append a duplicate. Stop at any real
@@ -474,9 +474,9 @@ export async function appendAssistantMessageToSessionTranscript(params: {
     message: {
       role: "assistant" as const,
       content: [{ type: "text", text: mirrorText }],
-      api: OPENCLAW_TRANSCRIPT_ARTIFACT_API,
-      provider: OPENCLAW_TRANSCRIPT_ARTIFACT_PROVIDER,
-      model: OPENCLAW_DELIVERY_MIRROR_MODEL,
+      api: OPERATOR_TRANSCRIPT_ARTIFACT_API,
+      provider: OPERATOR_TRANSCRIPT_ARTIFACT_PROVIDER,
+      model: OPERATOR_DELIVERY_MIRROR_MODEL,
       usage: {
         input: 0,
         output: 0,
@@ -493,7 +493,7 @@ export async function appendAssistantMessageToSessionTranscript(params: {
       },
       stopReason: "stop" as const,
       timestamp: Date.now(),
-      ...(params.deliveryMirror ? { openclawDeliveryMirror: params.deliveryMirror } : {}),
+      ...(params.deliveryMirror ? { operatorDeliveryMirror: params.deliveryMirror } : {}),
     } as SessionTranscriptAssistantMessage,
   });
 }
@@ -717,8 +717,8 @@ async function touchSqliteAssistantAppendSessionEntry(params: {
 
 function isRedundantDeliveryMirror(message: SessionTranscriptAssistantMessage): boolean {
   return (
-    message.provider === OPENCLAW_TRANSCRIPT_ARTIFACT_PROVIDER &&
-    message.model === OPENCLAW_DELIVERY_MIRROR_MODEL
+    message.provider === OPERATOR_TRANSCRIPT_ARTIFACT_PROVIDER &&
+    message.model === OPERATOR_DELIVERY_MIRROR_MODEL
   );
 }
 
@@ -754,8 +754,8 @@ async function readLatestVisibleTranscriptMessage(scope: {
 }
 
 function isIdentifiedDeliveryMirror(message: SessionTranscriptAssistantMessage): boolean {
-  const marker = (message as { openclawDeliveryMirror?: InternalSessionTranscriptDeliveryMirror })
-    .openclawDeliveryMirror;
+  const marker = (message as { operatorDeliveryMirror?: InternalSessionTranscriptDeliveryMirror })
+    .operatorDeliveryMirror;
   return (
     isRedundantDeliveryMirror(message) &&
     (marker?.kind === "channel-final" ||

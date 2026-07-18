@@ -35,7 +35,7 @@ declare module "*scripts/ui.js" {
   ): boolean;
 }
 
-declare module "*openclaw-changelog-update/scripts/verify-release-notes.mjs" {
+declare module "*operator-changelog-update/scripts/verify-release-notes.mjs" {
   type ContributionRecord = {
     externalReferences?: string[];
     references: number[];

@@ -5,8 +5,8 @@
  */
 import os from "node:os";
 import path from "node:path";
-import { addTimerTimeoutGraceMs } from "@openclaw/normalization-core/number-coercion";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import { addTimerTimeoutGraceMs } from "@operator/normalization-core/number-coercion";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import type { ToolLoopDetectionConfig } from "../config/types.tools.js";
 import { GatewayClientRequestError } from "../gateway/client.js";
 import {
@@ -378,7 +378,7 @@ class BeforeToolCallBlockedError extends Error {
 
 if (process.env.VITEST || process.env.NODE_ENV === "test") {
   (globalThis as Record<PropertyKey, unknown>)[
-    Symbol.for("openclaw.beforeToolCallBlockedErrorTestApi")
+    Symbol.for("operator.beforeToolCallBlockedErrorTestApi")
   ] = {
     create(message: string): Error {
       return new BeforeToolCallBlockedError(message);

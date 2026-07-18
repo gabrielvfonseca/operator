@@ -15,7 +15,7 @@ embeddings. It registers embedding provider id `local` and owns the
 Install it before using local memory embeddings:
 
 ```bash
-openclaw plugins install @openclaw/llama-cpp-provider
+openclaw plugins install @operator/llama-cpp-provider
 ```
 
 The main `openclaw` npm package does not include `node-llama-cpp`. Keeping the
@@ -79,7 +79,7 @@ does not load a model just to collect diagnostics.
 If `node-llama-cpp` is missing or fails to load, OpenClaw reports the failure
 with:
 
-1. Install the plugin: `openclaw plugins install @openclaw/llama-cpp-provider`.
+1. Install the plugin: `openclaw plugins install @operator/llama-cpp-provider`.
 2. Use Node 24 for native installs/updates.
 3. From a pnpm source checkout: `pnpm approve-builds`, then `pnpm rebuild node-llama-cpp`.
 

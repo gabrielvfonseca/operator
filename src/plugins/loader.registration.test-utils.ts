@@ -116,7 +116,7 @@ describe("loadOpenClawPlugins", () => {
     });
     for (const plugin of [first, second]) {
       fs.writeFileSync(
-        path.join(plugin.dir, "openclaw.plugin.json"),
+        path.join(plugin.dir, "operator.plugin.json"),
         JSON.stringify(
           {
             id: plugin.id,
@@ -349,8 +349,8 @@ describe("loadOpenClawPlugins", () => {
     fs.writeFileSync(
       path.join(scopedDir, "package.json"),
       JSON.stringify({
-        name: "@openclaw/scoped-provider",
-        openclaw: { extensions: ["./index.cjs"] },
+        name: "@operator/scoped-provider",
+        operator: { extensions: ["./index.cjs"] },
       }),
       "utf-8",
     );
@@ -376,8 +376,8 @@ describe("loadOpenClawPlugins", () => {
     fs.writeFileSync(
       path.join(unscopedDir, "package.json"),
       JSON.stringify({
-        name: "@openclaw/unscoped-provider",
-        openclaw: { extensions: ["./index.cjs"] },
+        name: "@operator/unscoped-provider",
+        operator: { extensions: ["./index.cjs"] },
       }),
       "utf-8",
     );
@@ -396,8 +396,8 @@ describe("loadOpenClawPlugins", () => {
       enabledByDefault: true,
       providers: ["unscoped-provider"],
     });
-    process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
-    delete process.env.OPENCLAW_DISABLE_BUNDLED_PLUGINS;
+    process.env.OPERATOR_BUNDLED_PLUGINS_DIR = bundledDir;
+    delete process.env.OPERATOR_DISABLE_BUNDLED_PLUGINS;
 
     const scoped = loadOpenClawPlugins({
       cache: false,
@@ -423,8 +423,8 @@ describe("loadOpenClawPlugins", () => {
     fs.writeFileSync(
       path.join(bundledPluginDir, "package.json"),
       JSON.stringify({
-        name: "@openclaw/notify-host",
-        openclaw: { extensions: ["./index.cjs"] },
+        name: "@operator/notify-host",
+        operator: { extensions: ["./index.cjs"] },
       }),
       "utf-8",
     );
@@ -443,8 +443,8 @@ describe("loadOpenClawPlugins", () => {
         };`,
     });
     updatePluginManifest(bundled, { enabledByDefault: true });
-    process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
-    delete process.env.OPENCLAW_DISABLE_BUNDLED_PLUGINS;
+    process.env.OPERATOR_BUNDLED_PLUGINS_DIR = bundledDir;
+    delete process.env.OPERATOR_DISABLE_BUNDLED_PLUGINS;
 
     const bundledRegistry = loadOpenClawPlugins({
       cache: false,
@@ -1145,7 +1145,7 @@ describe("loadOpenClawPlugins", () => {
 
   it("uses discovery registration mode for non-activating loads", () => {
     useNoBundledPlugins();
-    const marker = "__openclawDiscoveryModeTest";
+    const marker = "__operatorDiscoveryModeTest";
     const plugin = writePlugin({
       id: "discovery-mode-test",
       filename: "discovery-mode-test.cjs",
@@ -1330,7 +1330,7 @@ describe("loadOpenClawPlugins", () => {
   it("caches non-activating snapshots without restoring global side effects", () => {
     useNoBundledPlugins();
     clearPluginCommands();
-    const marker = "__openclawSnapshotCacheRegisterCount";
+    const marker = "__operatorSnapshotCacheRegisterCount";
     const plugin = writePlugin({
       id: "snapshot-cache",
       filename: "snapshot-cache.cjs",
@@ -1385,7 +1385,7 @@ describe("loadOpenClawPlugins", () => {
 
   it("does not re-register non-bundled plugins after gateway-bindable boot loads", () => {
     useNoBundledPlugins();
-    const marker = "__openclawGatewayBootRegisterCount";
+    const marker = "__operatorGatewayBootRegisterCount";
     const plugin = writePlugin({
       id: "costclaw-boot-cache",
       filename: "costclaw-boot-cache.cjs",
@@ -1425,7 +1425,7 @@ describe("loadOpenClawPlugins", () => {
 
   it("reuses a gateway-bindable cache entry for later default-mode loads", () => {
     useNoBundledPlugins();
-    const marker = "__openclawGatewayBindableCacheRegisterCount";
+    const marker = "__operatorGatewayBindableCacheRegisterCount";
     const plugin = writePlugin({
       id: "gateway-bindable-cache",
       filename: "gateway-bindable-cache.cjs",
@@ -1648,7 +1648,7 @@ describe("loadOpenClawPlugins", () => {
               ...options,
               env: {
                 ...process.env,
-                OPENCLAW_BUNDLED_PLUGINS_DIR: bundledA,
+                OPERATOR_BUNDLED_PLUGINS_DIR: bundledA,
               },
             }),
           loadSecond: () =>
@@ -1656,7 +1656,7 @@ describe("loadOpenClawPlugins", () => {
               ...options,
               env: {
                 ...process.env,
-                OPENCLAW_BUNDLED_PLUGINS_DIR: bundledB,
+                OPERATOR_BUNDLED_PLUGINS_DIR: bundledB,
               },
             }),
         };
@@ -1706,9 +1706,9 @@ describe("loadOpenClawPlugins", () => {
               env: {
                 ...process.env,
                 HOME: homeA,
-                OPENCLAW_HOME: undefined,
-                OPENCLAW_STATE_DIR: stateDir,
-                OPENCLAW_BUNDLED_PLUGINS_DIR: bundledDir,
+                OPERATOR_HOME: undefined,
+                OPERATOR_STATE_DIR: stateDir,
+                OPERATOR_BUNDLED_PLUGINS_DIR: bundledDir,
               },
             }),
           loadSecond: () =>
@@ -1717,9 +1717,9 @@ describe("loadOpenClawPlugins", () => {
               env: {
                 ...process.env,
                 HOME: homeB,
-                OPENCLAW_HOME: undefined,
-                OPENCLAW_STATE_DIR: stateDir,
-                OPENCLAW_BUNDLED_PLUGINS_DIR: bundledDir,
+                OPERATOR_HOME: undefined,
+                OPERATOR_STATE_DIR: stateDir,
+                OPERATOR_BUNDLED_PLUGINS_DIR: bundledDir,
               },
             }),
         };

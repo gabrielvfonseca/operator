@@ -11,20 +11,20 @@ type SpawnGh = (
   options: { input: string },
 ) => Pick<SpawnSyncReturns<Buffer>, "error" | "status" | "stderr" | "stdout">;
 
-/** Creates an openclaw/openclaw issue through the GitHub CLI using sanitized stdin. */
+/** Creates an operator/operator issue through the GitHub CLI using sanitized stdin. */
 export function createSessionSqliteGithubIssue(
   issue: SessionSqliteMigrationFailureIssue,
   spawnGh: SpawnGh = defaultSpawnGh,
 ): SessionSqliteGithubIssueCreateResult {
   const result = spawnGh(
-    ["issue", "create", "--repo", "openclaw/openclaw", "--title", issue.title, "--body-file", "-"],
+    ["issue", "create", "--repo", "operator/operator", "--title", issue.title, "--body-file", "-"],
     { input: issue.body },
   );
   if (!result.error && result.status === 0) {
     const url = String(result.stdout).trim().split(/\r?\n/).at(-1);
     return {
       ok: true,
-      url: url && url.length > 0 ? url : "https://github.com/openclaw/openclaw/issues",
+      url: url && url.length > 0 ? url : "https://github.com/operator/operator/issues",
     };
   }
   const stderr = String(result.stderr).trim();

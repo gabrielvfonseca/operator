@@ -11,7 +11,7 @@ Adds GitHub Copilot model provider support to OpenClaw.
 
 ## Distribution
 
-- Package: `@openclaw/github-copilot-provider`
+- Package: `@operator/github-copilot-provider`
 - Install route: included in OpenClaw
 
 ## Surface

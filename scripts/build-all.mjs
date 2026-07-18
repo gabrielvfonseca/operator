@@ -30,7 +30,7 @@ const PLUGIN_SDK_ENTRY_DTS_CACHE_INPUTS = [
 const PLUGIN_SDK_ENTRY_DTS_CACHE_OUTPUTS = [
   "dist/plugin-sdk/webhook-path.js",
   "dist/plugin-sdk/.boundary-entry-shims.stamp",
-  ...pluginSdkEntrypoints.map((entry) => `packages/plugin-sdk/dist/src/plugin-sdk/${entry}.d.ts`),
+  ...pluginSdkEntrypoints.map((entry) => `sdks/plugin-sdk/dist/src/plugin-sdk/${entry}.d.ts`),
 ];
 const PNPM_STEP_NODE_FALLBACKS = new Map([
   ["plugins:assets:build", ["scripts/bundled-plugin-assets.mjs", "--phase", "build"]],

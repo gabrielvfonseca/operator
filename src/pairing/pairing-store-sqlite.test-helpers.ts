@@ -1,4 +1,4 @@
-import { runOpenClawStateWriteTransaction } from "../state/openclaw-state-db.js";
+import { runOpenClawStateWriteTransaction } from "../state/operator-state-db.js";
 import {
   readChannelPairingState,
   sqliteOptionsForEnv,

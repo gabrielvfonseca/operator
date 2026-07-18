@@ -103,7 +103,7 @@ export function readStateDirDotEnvFromStateDir(stateDir: string): ParsedStateDir
 }
 
 /**
- * Read and parse `~/.openclaw/.env` (or `$OPENCLAW_STATE_DIR/.env`), returning
+ * Read and parse `~/.operator/.env` (or `$OPERATOR_STATE_DIR/.env`), returning
  * a filtered record of key-value pairs suitable for a managed service
  * environment source.
  */

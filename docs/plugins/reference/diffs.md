@@ -11,7 +11,7 @@ OpenClaw read-only diff viewer plugin and file renderer for agents.
 
 ## Distribution
 
-- Package: `@openclaw/diffs`
+- Package: `@operator/diffs`
 - Install route: npm; ClawHub
 
 ## Surface

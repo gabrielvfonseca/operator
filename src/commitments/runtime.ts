@@ -1,7 +1,7 @@
 // Runs commitment extraction, scheduling, and follow-up lifecycle work.
 import { randomUUID } from "node:crypto";
-import { resolveExpiresAtMsFromDurationMs } from "@openclaw/normalization-core/number-coercion";
-import { normalizeOptionalString } from "@openclaw/normalization-core/string-coerce";
+import { resolveExpiresAtMsFromDurationMs } from "@operator/normalization-core/number-coercion";
+import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 import { resolveAgentWorkspaceDir } from "../agents/agent-scope.js";
 import type { OpenClawConfig } from "../config/config.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
@@ -361,9 +361,9 @@ async function drainCommitmentExtractionQueue(): Promise<number> {
 if (
   process.env.VITEST ||
   process.env.NODE_ENV === "test" ||
-  process.env.OPENCLAW_COMMITMENTS_SAFETY_E2E === "1"
+  process.env.OPERATOR_COMMITMENTS_SAFETY_E2E === "1"
 ) {
-  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("openclaw.commitmentRuntimeTestApi")] = {
+  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("operator.commitmentRuntimeTestApi")] = {
     configureCommitmentExtractionRuntime,
     drainCommitmentExtractionQueue,
     resetCommitmentExtractionRuntimeForTests,

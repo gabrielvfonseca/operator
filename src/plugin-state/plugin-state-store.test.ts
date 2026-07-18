@@ -1,7 +1,7 @@
 // Plugin state store tests cover per-plugin persisted state reads and writes.
 import { rmSync, statSync } from "node:fs";
 import path from "node:path";
-import { MAX_DATE_TIMESTAMP_MS } from "@openclaw/normalization-core/number-coercion";
+import { MAX_DATE_TIMESTAMP_MS } from "@operator/normalization-core/number-coercion";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { openOpenClawStateDatabase } from "../state/openclaw-state-db.js";
 import { resolveOpenClawStateSqlitePath } from "../state/openclaw-state-db.paths.js";
@@ -9,7 +9,7 @@ import {
   createOpenClawTestState,
   withOpenClawTestState,
   type OpenClawTestState,
-} from "../test-utils/openclaw-test-state.js";
+} from "../test-utils/operator-test-state.js";
 import {
   closePluginStateDatabase,
   createCorePluginStateSyncKeyedStore,

@@ -22,7 +22,7 @@ import {
 
 /**
  * OpenClaw is a real agent: same loop, session transcript, and tool pipeline
- * as regular agents — restricted to the single ring-zero `openclaw` tool.
+ * as regular agents — restricted to the single ring-zero `operator` tool.
  * Embedded runtimes enforce that restriction with toolsAllow. CLI harnesses
  * must explicitly support per-run native-tool selection, then receive the tool
  * over a dedicated stdio MCP server that replaces the normal bundle surface.
@@ -30,7 +30,7 @@ import {
  * multi-turn memory. Inference setup must succeed before this runner is entered.
  */
 const AGENT_TURN_TIMEOUT_MS = 120_000;
-const SYSTEM_AGENT_MCP_TOOL_NAME = "mcp__openclaw__openclaw";
+const SYSTEM_AGENT_MCP_TOOL_NAME = "mcp__operator__operator";
 
 export type SystemAgentTurnDirective =
   import("../agents/tools/system-agent-tool.js").SystemAgentToolDirective;
@@ -71,7 +71,7 @@ export function createSystemAgentSession(
     throw new SystemAgentInferenceUnavailableError("agent-turn");
   }
   return {
-    sessionId: `openclaw-${randomUUID()}`,
+    sessionId: `operator-${randomUUID()}`,
     verifiedInference,
     proposalRef: {},
   };
@@ -121,7 +121,7 @@ function extractRunText(result: EmbeddedRunResult): string | undefined {
 async function ensureSystemAgentDirs(
   sessionId: string,
 ): Promise<{ workspaceDir: string; sessionFile: string }> {
-  const base = path.join(resolveStateDir(), "openclaw");
+  const base = path.join(resolveStateDir(), "operator");
   const workspaceDir = path.join(base, "workspace");
   await fs.mkdir(workspaceDir, { recursive: true });
   await fs.mkdir(path.join(base, "sessions"), { recursive: true });
@@ -131,7 +131,7 @@ async function ensureSystemAgentDirs(
 export async function cleanupSystemAgentSession(session: SystemAgentSession): Promise<void> {
   const sessionFile = path.join(
     resolveStateDir(),
-    "openclaw",
+    "operator",
     "sessions",
     `${session.sessionId}.jsonl`,
   );
@@ -220,7 +220,7 @@ function resolveSystemAgentCliToolAvailability(
 }
 
 /**
- * CLI harnesses run the openclaw tool in a stdio MCP subprocess, so the
+ * CLI harnesses run the operator tool in a stdio MCP subprocess, so the
  * in-process proposalRef/directiveRef cannot be shared with the host. Mirror
  * the tool's transitions from the harness tool events instead: a denial
  * registers the exact-operation hash, a mismatch voids it, an executed
@@ -246,8 +246,8 @@ async function mirrorSystemAgentToolStateFromEvents(params: {
       return;
     }
     const name = typeof evt.data.name === "string" ? evt.data.name : "";
-    // CLI harnesses report MCP tools with transport prefixes (mcp__openclaw__openclaw).
-    if (name !== "openclaw" && !name.endsWith("__openclaw")) {
+    // CLI harnesses report MCP tools with transport prefixes (mcp__operator__operator).
+    if (name !== "operator" && !name.endsWith("__operator")) {
       return;
     }
     const args =
@@ -312,7 +312,7 @@ async function runSystemAgentTurnWithDeps(
     });
   }
 
-  const runId = `openclaw-turn-${randomUUID()}`;
+  const runId = `operator-turn-${randomUUID()}`;
   const shared = {
     sessionId: params.session.sessionId,
     sessionKey: buildAgentMainSessionKey({ agentId: SYSTEM_AGENT_ID }),
@@ -324,8 +324,8 @@ async function runSystemAgentTurnWithDeps(
     prompt: params.input,
     timeoutMs: AGENT_TURN_TIMEOUT_MS,
     runId,
-    messageChannel: "openclaw",
-    messageProvider: "openclaw",
+    messageChannel: "operator",
+    messageProvider: "operator",
   };
   // Directives are per-turn: the tool records at most one interactive handoff
   // and the engine executes it after the reply.
@@ -393,7 +393,7 @@ async function runSystemAgentTurnWithDeps(
       result = (await runEmbedded({
         ...shared,
         extraSystemPrompt: SYSTEM_AGENT_SYSTEM_PROMPT,
-        toolsAllow: ["openclaw"],
+        toolsAllow: ["operator"],
         systemAgentTool,
         disableMessageTool: true,
         provider: plan.provider,
@@ -437,7 +437,7 @@ export const runSystemAgentTurn: SystemAgentTurnRunner = (params) =>
   runSystemAgentTurnWithDeps(params);
 
 if (process.env.VITEST || process.env.NODE_ENV === "test") {
-  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("openclaw.systemAgentTurnTestApi")] = {
+  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("operator.systemAgentTurnTestApi")] = {
     runSystemAgentTurnWithDeps,
   };
 }

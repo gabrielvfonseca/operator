@@ -2,7 +2,7 @@
 import { randomUUID } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
-import { expectDefined } from "@openclaw/normalization-core";
+import { expectDefined } from "@operator/normalization-core";
 import { resolveStateDir } from "../config/paths.js";
 import { createLazyRuntimeModule } from "../shared/lazy-runtime.js";
 import {
@@ -65,7 +65,7 @@ function assertLegacyWebPushMigrationComplete(baseDir?: string): void {
   });
   if (pendingLegacyPath) {
     throw new Error(
-      `legacy Web Push state requires migration; run \`openclaw doctor --fix\` before using Web Push`,
+      `legacy Web Push state requires migration; run \`operator doctor --fix\` before using Web Push`,
     );
   }
 }
@@ -109,15 +109,15 @@ export async function resolveVapidKeys(baseDir?: string): Promise<VapidKeyPair> 
 }
 
 function resolveVapidSubjectFromEnv(): string {
-  return process.env.OPENCLAW_VAPID_SUBJECT || DEFAULT_WEB_PUSH_VAPID_SUBJECT;
+  return process.env.OPERATOR_VAPID_SUBJECT || DEFAULT_WEB_PUSH_VAPID_SUBJECT;
 }
 
 function resolveVapidPublicKeyFromEnv(): string | undefined {
-  return process.env.OPENCLAW_VAPID_PUBLIC_KEY || undefined;
+  return process.env.OPERATOR_VAPID_PUBLIC_KEY || undefined;
 }
 
 function resolveVapidPrivateKeyFromEnv(): string | undefined {
-  return process.env.OPENCLAW_VAPID_PRIVATE_KEY || undefined;
+  return process.env.OPERATOR_VAPID_PRIVATE_KEY || undefined;
 }
 
 // --- Subscription CRUD ---

@@ -3,7 +3,7 @@ import { createHash, randomUUID } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import type { DatabaseSync } from "node:sqlite";
-import { isRecord } from "@openclaw/normalization-core/record-coerce";
+import { isRecord } from "@operator/normalization-core/record-coerce";
 import {
   coerceCommitmentRecord,
   commitmentImmutableIdentity,
@@ -18,7 +18,7 @@ import type { CommitmentRecord } from "../commitments/types.js";
 import {
   openOpenClawStateDatabase,
   runOpenClawStateWriteTransaction,
-} from "../state/openclaw-state-db.js";
+} from "../state/operator-state-db.js";
 import {
   executeSqliteQuerySync,
   executeSqliteQueryTakeFirstSync,
@@ -287,7 +287,7 @@ export function migrateLegacyCommitments(params: {
           importedCount += 1;
         }
       },
-      { env: { ...process.env, OPENCLAW_STATE_DIR: params.stateDir } },
+      { env: { ...process.env, OPERATOR_STATE_DIR: params.stateDir } },
     );
   } catch (error) {
     warnings.push(`Failed migrating legacy commitments state: ${String(error)}`);
@@ -297,7 +297,7 @@ export function migrateLegacyCommitments(params: {
   try {
     params.beforeVerify?.();
     const database = openOpenClawStateDatabase({
-      env: { ...process.env, OPENCLAW_STATE_DIR: params.stateDir },
+      env: { ...process.env, OPERATOR_STATE_DIR: params.stateDir },
     });
     const commitmentsDb = getNodeSqliteKysely<CommitmentsDatabase>(database.db);
     for (const expected of expectedRows.values()) {

@@ -52,7 +52,7 @@ describe("resolveSessionFilePath cross-root reroot", () => {
 
 describe("resolveStorePath", () => {
   it("uses the default agent store when session.store is absent or blank", () => {
-    const stateDir = path.join(path.parse(process.cwd()).root, "openclaw-test-state");
+    const stateDir = path.join(path.parse(process.cwd()).root, "operator-test-state");
     const env = {
       ...process.env,
       OPENCLAW_STATE_DIR: stateDir,

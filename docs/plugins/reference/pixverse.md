@@ -11,8 +11,8 @@ OpenClaw PixVerse video generation provider plugin.
 
 ## Distribution
 
-- Package: `@openclaw/pixverse-provider`
-- Install route: npm; ClawHub: `clawhub:@openclaw/pixverse-provider`
+- Package: `@operator/pixverse-provider`
+- Install route: npm; ClawHub: `clawhub:@operator/pixverse-provider`
 
 ## Surface
 

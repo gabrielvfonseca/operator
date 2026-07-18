@@ -23,8 +23,8 @@ const CMD_ANSI_EQUALS_OEM_ENCODINGS = new Set([
 // readback never has to guess: some code-page byte sequences are also valid
 // UTF-8 (GBK "隆" is C2 A1, which UTF-8 reads as "¡"), so content sniffing
 // silently corrupts paths.
-const LAUNCHER_ENCODING_MARKER_PREFIX = "@rem openclaw-launcher-encoding=";
-const LAUNCHER_ENCODING_MARKER_RE = /^@rem openclaw-launcher-encoding=(\S+)\s*$/;
+const LAUNCHER_ENCODING_MARKER_PREFIX = "@rem operator-launcher-encoding=";
+const LAUNCHER_ENCODING_MARKER_RE = /^@rem operator-launcher-encoding=(\S+)\s*$/;
 
 function isAsciiOnly(value: string): boolean {
   for (let index = 0; index < value.length; index += 1) {

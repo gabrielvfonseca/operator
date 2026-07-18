@@ -1,4 +1,4 @@
-import { cleanupSessionResources } from "@openclaw/ai/internal/runtime";
+import { cleanupSessionResources } from "@operator/ai/internal/runtime";
 import { streamSimple } from "../../llm/stream.js";
 import type { AssistantMessage, Model } from "../../llm/types.js";
 import type {

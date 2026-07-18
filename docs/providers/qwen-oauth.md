@@ -8,7 +8,7 @@ title: "Qwen OAuth / Portal"
 ---
 
 `qwen-oauth` is the Qwen Portal provider id, registered by the Qwen plugin
-(`@openclaw/qwen-provider`). It targets the Qwen Portal endpoint at
+(`@operator/qwen-provider`). It targets the Qwen Portal endpoint at
 `https://portal.qwen.ai/v1` and keeps older Qwen OAuth / portal setups
 addressable through a distinct provider id, separate from the canonical `qwen`
 provider.
@@ -25,7 +25,7 @@ and the full Qwen plugin catalog.
 Install the Qwen plugin if you have not already:
 
 ```bash
-openclaw plugins install @openclaw/qwen-provider
+openclaw plugins install @operator/qwen-provider
 openclaw gateway restart
 ```
 

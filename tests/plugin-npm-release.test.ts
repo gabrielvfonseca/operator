@@ -1,0 +1,841 @@
+// Plugin npm release tests validate plugin npm release artifacts.
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+import {
+  bundledPluginFile,
+  bundledPluginRoot,
+} from "@gabrielvfonseca/operator/plugin-sdk/test-fixtures";
+import { afterEach, describe, expect, it } from "vitest";
+import { collectClawHubPublishablePluginPackages } from "../scripts/lib/plugin-clawhub-release.ts";
+import {
+  collectChangedExtensionIdsFromPaths,
+  collectPluginReleaseDependencyFreshnessErrors,
+  collectPluginReleaseVersionFloorErrors,
+  collectPublishablePluginPackages,
+  collectPublishablePluginPackageErrors,
+  OPERATOR_PLUGIN_NPM_REPOSITORY_URL,
+  parsePluginReleaseArgs,
+  parsePluginNpmReleaseArgs,
+  parsePluginReleaseSelection,
+  parsePluginReleaseSelectionMode,
+  resolveChangedPublishablePluginPackages,
+  resolveSelectedPublishablePluginPackages,
+  type PublishablePluginPackage,
+} from "../scripts/lib/plugin-npm-release.ts";
+import { cleanupTempDirs, makeTempRepoRoot, writeJsonFile } from "./helpers/temp-repo.js";
+
+const tempDirs: string[] = [];
+
+afterEach(() => {
+  cleanupTempDirs(tempDirs);
+});
+
+describe("parsePluginReleaseSelection", () => {
+  it("returns an empty list for blank input", () => {
+    expect(parsePluginReleaseSelection("")).toStrictEqual([]);
+    expect(parsePluginReleaseSelection("   ")).toStrictEqual([]);
+    expect(parsePluginReleaseSelection(undefined)).toStrictEqual([]);
+  });
+
+  it("dedupes and sorts comma or whitespace separated package names", () => {
+    expect(
+      parsePluginReleaseSelection(
+        " @gabrielvfonseca/zalo, @gabrielvfonseca/feishu  @gabrielvfonseca/zalo ",
+      ),
+    ).toEqual(["@gabrielvfonseca/feishu", "@gabrielvfonseca/zalo"]);
+  });
+});
+
+describe("parsePluginReleaseSelectionMode", () => {
+  it("accepts the supported explicit selection modes", () => {
+    expect(parsePluginReleaseSelectionMode("selected")).toBe("selected");
+    expect(parsePluginReleaseSelectionMode("all-publishable")).toBe("all-publishable");
+  });
+
+  it("rejects unsupported selection modes", () => {
+    expect(() => parsePluginReleaseSelectionMode("all")).toThrowError(
+      'Unknown selection mode: all. Expected "selected" or "all-publishable".',
+    );
+  });
+});
+
+describe("parsePluginReleaseArgs", () => {
+  it("rejects blank explicit plugin selections", () => {
+    expect(() => parsePluginReleaseArgs(["--plugins", "   "])).toThrowError(
+      "`--plugins` must include at least one package name.",
+    );
+  });
+
+  it("rejects flags where option values are required", () => {
+    for (const { args, message } of [
+      { args: ["--plugins", "--base-ref"], message: "--plugins requires a value." },
+      {
+        args: ["--selection-mode", "--plugins"],
+        message: "--selection-mode requires a value.",
+      },
+      {
+        args: ["--base-ref", "--head-ref", "main"],
+        message: "--base-ref requires a value.",
+      },
+      {
+        args: ["--head-ref", "--base-ref", "main"],
+        message: "--head-ref requires a value.",
+      },
+    ]) {
+      expect(() => parsePluginReleaseArgs(args)).toThrowError(message);
+    }
+  });
+
+  it("requires plugin names for selected explicit publish mode", () => {
+    expect(() => parsePluginReleaseArgs(["--selection-mode", "selected"])).toThrowError(
+      "`--selection-mode selected` requires `--plugins`.",
+    );
+  });
+
+  it("rejects plugin names when all-publishable mode is selected", () => {
+    expect(() =>
+      parsePluginReleaseArgs([
+        "--selection-mode",
+        "all-publishable",
+        "--plugins",
+        "@gabrielvfonseca/zalo",
+      ]),
+    ).toThrowError("`--selection-mode all-publishable` must not be combined with `--plugins`.");
+  });
+
+  it("parses explicit all-publishable mode", () => {
+    expect(parsePluginReleaseArgs(["--selection-mode", "all-publishable"])).toEqual({
+      baseRef: undefined,
+      headRef: undefined,
+      selectionMode: "all-publishable",
+      selection: [],
+      pluginsFlagProvided: false,
+    });
+  });
+
+  it("accepts only the closed extended-stable npm tag override", () => {
+    expect(
+      parsePluginNpmReleaseArgs([
+        "--selection-mode",
+        "all-publishable",
+        "--npm-dist-tag",
+        "extended-stable",
+      ]),
+    ).toMatchObject({ npmDistTag: "extended-stable" });
+    expect(() => parsePluginNpmReleaseArgs(["--npm-dist-tag", "latest"])).toThrow(
+      'Unknown npm dist-tag override: latest. Expected "extended-stable".',
+    );
+  });
+
+  it("requires extended-stable publication to use all-publishable without a plugin list", () => {
+    expect(() => parsePluginNpmReleaseArgs(["--npm-dist-tag", "extended-stable"])).toThrow(
+      "extended-stable requires --selection-mode all-publishable",
+    );
+    expect(() =>
+      parsePluginNpmReleaseArgs([
+        "--selection-mode",
+        "selected",
+        "--plugins",
+        "@gabrielvfonseca/slack",
+        "--npm-dist-tag",
+        "extended-stable",
+      ]),
+    ).toThrow("extended-stable requires --selection-mode all-publishable");
+  });
+});
+
+function externalPluginContract(version: string) {
+  return {
+    compat: {
+      pluginApi: `>=${version}`,
+    },
+    build: {
+      openclawVersion: version,
+    },
+  };
+}
+
+function writePluginReadme(repoDir: string, extensionId: string): void {
+  const packageDir = join(repoDir, "extensions", extensionId);
+  mkdirSync(packageDir, { recursive: true });
+  writeFileSync(join(packageDir, "README.md"), `# ${extensionId}\n`);
+}
+
+describe("collectPublishablePluginPackageErrors", () => {
+  it("accepts a valid publishable plugin package candidate", () => {
+    expect(
+      collectPublishablePluginPackageErrors({
+        extensionId: "zalo",
+        packageDir: bundledPluginRoot("zalo"),
+        readmeText: "# Zalo\n",
+        packageJson: {
+          name: "@gabrielvfonseca/zalo",
+          version: "2026.3.15",
+          type: "module",
+          repository: {
+            type: "git",
+            url: OPERATOR_PLUGIN_NPM_REPOSITORY_URL,
+          },
+          operator: {
+            extensions: ["./index.ts"],
+            ...externalPluginContract("2026.3.15"),
+            install: {
+              npmSpec: "@gabrielvfonseca/zalo",
+            },
+            release: {
+              publishToNpm: true,
+            },
+          },
+        },
+      }),
+    ).toStrictEqual([]);
+  });
+
+  it("flags invalid publishable plugin metadata", () => {
+    expect(
+      collectPublishablePluginPackageErrors({
+        extensionId: "broken",
+        packageDir: bundledPluginRoot("broken"),
+        readmeText: "# Broken\n",
+        packageJson: {
+          name: "broken",
+          version: "latest",
+          private: true,
+          operator: {
+            extensions: [""],
+            ...externalPluginContract("2026.3.15"),
+            install: {
+              npmSpec: "   ",
+            },
+            release: {
+              publishToNpm: true,
+            },
+          },
+        },
+      }),
+    ).toEqual([
+      'package name must start with "@gabrielvfonseca/"; found "broken".',
+      "package.json private must not be true.",
+      'package.json type must be "module" so built .js runtime entries load as ESM.',
+      `package.json repository.url must be "${OPERATOR_PLUGIN_NPM_REPOSITORY_URL}" so npm provenance can validate GitHub trusted publishing; found "<missing>".`,
+      'package.json version must match YYYY.M.PATCH, YYYY.M.PATCH-N, YYYY.M.PATCH-alpha.N, or YYYY.M.PATCH-beta.N; found "latest".',
+      "operator.extensions must contain only non-empty strings.",
+      "operator.install.npmSpec must be a non-empty string for publishable plugins.",
+    ]);
+  });
+
+  it("requires the GitHub repository URL npm provenance validates for trusted publishing", () => {
+    expect(
+      collectPublishablePluginPackageErrors({
+        extensionId: "twitch",
+        packageDir: bundledPluginRoot("twitch"),
+        readmeText: "# Twitch\n",
+        packageJson: {
+          name: "@gabrielvfonseca/twitch",
+          version: "2026.5.1-beta.1",
+          type: "module",
+          operator: {
+            extensions: ["./index.ts"],
+            ...externalPluginContract("2026.5.1-beta.1"),
+            install: {
+              npmSpec: "@gabrielvfonseca/twitch",
+            },
+            release: {
+              publishToNpm: true,
+            },
+          },
+        },
+      }),
+    ).toEqual([
+      `package.json repository.url must be "${OPERATOR_PLUGIN_NPM_REPOSITORY_URL}" so npm provenance can validate GitHub trusted publishing; found "<missing>".`,
+    ]);
+  });
+
+  it("requires npm install metadata for publishable plugins", () => {
+    expect(
+      collectPublishablePluginPackageErrors({
+        extensionId: "voice-call",
+        packageDir: bundledPluginRoot("voice-call"),
+        readmeText: "# Voice call\n",
+        packageJson: {
+          name: "@gabrielvfonseca/voice-call",
+          version: "2026.5.1-beta.1",
+          type: "module",
+          repository: {
+            type: "git",
+            url: OPERATOR_PLUGIN_NPM_REPOSITORY_URL,
+          },
+          operator: {
+            extensions: ["./index.ts"],
+            ...externalPluginContract("2026.5.1-beta.1"),
+            release: {
+              publishToNpm: true,
+            },
+          },
+        },
+      }),
+    ).toEqual(["operator.install.npmSpec must be a non-empty string for publishable plugins."]);
+  });
+
+  it("requires the external plugin package compatibility contract for npm publish", () => {
+    expect(
+      collectPublishablePluginPackageErrors({
+        extensionId: "voice-call",
+        packageDir: bundledPluginRoot("voice-call"),
+        readmeText: "# Voice call\n",
+        packageJson: {
+          name: "@gabrielvfonseca/voice-call",
+          version: "2026.5.1-beta.1",
+          type: "module",
+          repository: {
+            type: "git",
+            url: OPERATOR_PLUGIN_NPM_REPOSITORY_URL,
+          },
+          operator: {
+            extensions: ["./index.ts"],
+            install: {
+              npmSpec: "@gabrielvfonseca/voice-call",
+            },
+            release: {
+              publishToNpm: true,
+            },
+          },
+        },
+      }),
+    ).toEqual([
+      "operator.compat.pluginApi is required for external code plugin packages.",
+      "operator.build.operatorVersion is required for external code plugin packages.",
+    ]);
+  });
+
+  it("requires package documentation before publishing", () => {
+    expect(
+      collectPublishablePluginPackageErrors({
+        extensionId: "zalo",
+        packageDir: bundledPluginRoot("zalo"),
+        readmeText: " \n",
+        packageJson: {
+          name: "@gabrielvfonseca/zalo",
+          version: "2026.3.15",
+          type: "module",
+          repository: {
+            type: "git",
+            url: OPERATOR_PLUGIN_NPM_REPOSITORY_URL,
+          },
+          operator: {
+            extensions: ["./index.ts"],
+            ...externalPluginContract("2026.3.15"),
+            install: {
+              npmSpec: "@gabrielvfonseca/zalo",
+            },
+            release: {
+              publishToNpm: true,
+            },
+          },
+        },
+      }),
+    ).toEqual(["README.md must exist and contain package documentation."]);
+  });
+
+  it("requires latest-release dependencies to name exact runtime dependencies", () => {
+    expect(
+      collectPublishablePluginPackageErrors({
+        extensionId: "codex",
+        packageDir: bundledPluginRoot("codex"),
+        readmeText: "# Codex\n",
+        packageJson: {
+          name: "@gabrielvfonseca/codex",
+          version: "2026.6.11",
+          type: "module",
+          repository: {
+            type: "git",
+            url: OPERATOR_PLUGIN_NPM_REPOSITORY_URL,
+          },
+          dependencies: {
+            "@openai/codex": "0.142.5",
+          },
+          operator: {
+            extensions: ["./index.ts"],
+            ...externalPluginContract("2026.6.11"),
+            install: {
+              npmSpec: "@gabrielvfonseca/codex",
+            },
+            release: {
+              publishToNpm: true,
+              requireLatestDependencies: ["@openai/codex", "@openai/codex", "missing"],
+            },
+          },
+        },
+      }),
+    ).toEqual([
+      'operator.release.requireLatestDependencies must not contain duplicate package names; found "@openai/codex".',
+      'operator.release.requireLatestDependencies must reference package.json dependencies or optionalDependencies; "missing" is not a runtime dependency.',
+    ]);
+  });
+});
+
+describe("collectPluginReleaseVersionFloorErrors", () => {
+  it("blocks selected plugin stable and beta releases below the June 2026 floor", () => {
+    expect(
+      collectPluginReleaseVersionFloorErrors([
+        {
+          packageName: "@gabrielvfonseca/demo",
+          version: "2026.6.4-beta.1",
+        },
+      ]),
+    ).toEqual([
+      '@gabrielvfonseca/demo@2026.6.4-beta.1: June 2026 stable and beta release trains must use patch 5 or higher because 2026.6.5-beta.1 is already published; found "2026.6.4-beta.1".',
+    ]);
+  });
+
+  it("allows alpha compatibility and patch-floor plugin releases", () => {
+    expect(
+      collectPluginReleaseVersionFloorErrors([
+        {
+          packageName: "@gabrielvfonseca/demo",
+          version: "2026.6.4-alpha.1",
+        },
+        {
+          packageName: "@gabrielvfonseca/demo",
+          version: "2026.6.5-beta.2",
+        },
+      ]),
+    ).toEqual([]);
+  });
+});
+
+describe("collectPluginReleaseDependencyFreshnessErrors", () => {
+  const plugin: PublishablePluginPackage = {
+    extensionId: "codex",
+    packageDir: "extensions/codex",
+    packageName: "@gabrielvfonseca/codex",
+    version: "2026.6.11",
+    channel: "stable",
+    publishTag: "latest",
+    requiredLatestDependencies: [
+      {
+        packageName: "@openai/codex",
+        version: "0.139.0",
+      },
+    ],
+  };
+
+  it("rejects release dependencies older than the npm latest dist-tag", () => {
+    expect(collectPluginReleaseDependencyFreshnessErrors([plugin], () => "0.142.5")).toEqual([
+      '@gabrielvfonseca/codex@2026.6.11: @openai/codex must match npm latest for release; found "0.139.0", latest is "0.142.5".',
+    ]);
+  });
+
+  it("accepts release dependencies matching the npm latest dist-tag", () => {
+    expect(
+      collectPluginReleaseDependencyFreshnessErrors(
+        [
+          {
+            ...plugin,
+            requiredLatestDependencies: [
+              {
+                packageName: "@openai/codex",
+                version: "0.142.5",
+              },
+            ],
+          },
+        ],
+        () => "0.142.5",
+      ),
+    ).toEqual([]);
+  });
+
+  it("fails closed when npm latest cannot be resolved", () => {
+    expect(
+      collectPluginReleaseDependencyFreshnessErrors([plugin], () => {
+        throw new Error("registry unavailable");
+      }),
+    ).toEqual([
+      "@gabrielvfonseca/codex@2026.6.11: could not resolve npm latest for @openai/codex: registry unavailable",
+    ]);
+  });
+});
+
+describe("collectPublishablePluginPackages", () => {
+  it("keeps publishable plugin dist trees out of the core npm package unless bundled", () => {
+    const corePackageRuntimePluginIds = new Set(["discord"]);
+    const rootPackage = JSON.parse(readFileSync("package.json", "utf8")) as {
+      files?: unknown;
+    };
+    const packageFiles = new Set(Array.isArray(rootPackage.files) ? rootPackage.files : []);
+    const publishablePlugins = [
+      ...collectPublishablePluginPackages(),
+      ...collectClawHubPublishablePluginPackages(),
+    ];
+    for (const plugin of publishablePlugins) {
+      const packageJson = JSON.parse(
+        readFileSync(join(plugin.packageDir, "package.json"), "utf8"),
+      ) as {
+        operator?: {
+          build?: {
+            bundledDist?: unknown;
+          };
+        };
+      };
+      if (packageJson.operator?.build?.bundledDist === true) {
+        corePackageRuntimePluginIds.add(plugin.extensionId);
+      }
+    }
+    const missingExclusions = Array.from(
+      new Set(
+        publishablePlugins
+          .filter((plugin) => !corePackageRuntimePluginIds.has(plugin.extensionId))
+          .map((plugin) => `!dist/extensions/${plugin.extensionId}/**`),
+      ),
+    ).filter((entry) => !packageFiles.has(entry));
+
+    expect(missingExclusions).toStrictEqual([]);
+  });
+
+  it("collects publishable npm plugins from extension package manifests", () => {
+    const repoDir = makeTempRepoRoot(tempDirs, "operator-plugin-npm-release-");
+    mkdirSync(join(repoDir, "extensions", "demo-plugin"), { recursive: true });
+    writePluginReadme(repoDir, "demo-plugin");
+    writeJsonFile(join(repoDir, "extensions", "demo-plugin", "package.json"), {
+      name: "@gabrielvfonseca/demo-plugin",
+      version: "2026.4.10",
+      type: "module",
+      repository: {
+        type: "git",
+        url: OPERATOR_PLUGIN_NPM_REPOSITORY_URL,
+      },
+      operator: {
+        extensions: ["./index.ts"],
+        ...externalPluginContract("2026.4.10"),
+        install: {
+          npmSpec: "@gabrielvfonseca/demo-plugin",
+        },
+        release: {
+          publishToNpm: true,
+        },
+      },
+    });
+
+    expect(collectPublishablePluginPackages(repoDir)).toEqual([
+      {
+        extensionId: "demo-plugin",
+        packageDir: "extensions/demo-plugin",
+        packageName: "@gabrielvfonseca/demo-plugin",
+        version: "2026.4.10",
+        channel: "stable",
+        publishTag: "latest",
+        installNpmSpec: "@gabrielvfonseca/demo-plugin",
+      },
+    ]);
+  });
+
+  it("uses extended-stable for every publishable plugin at the exact root version", () => {
+    const repoDir = makeTempRepoRoot(tempDirs, "operator-plugin-npm-release-");
+    writeJsonFile(join(repoDir, "package.json"), { version: "2026.7.33" });
+    writePluginReadme(repoDir, "demo-plugin");
+    writeJsonFile(join(repoDir, "extensions", "demo-plugin", "package.json"), {
+      name: "@gabrielvfonseca/demo-plugin",
+      version: "2026.7.33",
+      type: "module",
+      repository: { type: "git", url: OPERATOR_PLUGIN_NPM_REPOSITORY_URL },
+      operator: {
+        extensions: ["./index.ts"],
+        ...externalPluginContract("2026.7.33"),
+        install: { npmSpec: "@gabrielvfonseca/demo-plugin" },
+        release: { publishToNpm: true },
+      },
+    });
+
+    expect(
+      collectPublishablePluginPackages(repoDir, { npmDistTag: "extended-stable" }),
+    ).toMatchObject([{ version: "2026.7.33", publishTag: "extended-stable" }]);
+  });
+
+  it("rejects extended-stable plugins whose version differs from core", () => {
+    const repoDir = makeTempRepoRoot(tempDirs, "operator-plugin-npm-release-");
+    writeJsonFile(join(repoDir, "package.json"), { version: "2026.7.34" });
+    writePluginReadme(repoDir, "demo-plugin");
+    writeJsonFile(join(repoDir, "extensions", "demo-plugin", "package.json"), {
+      name: "@gabrielvfonseca/demo-plugin",
+      version: "2026.7.33",
+      type: "module",
+      repository: { type: "git", url: OPERATOR_PLUGIN_NPM_REPOSITORY_URL },
+      operator: {
+        extensions: ["./index.ts"],
+        ...externalPluginContract("2026.7.33"),
+        install: { npmSpec: "@gabrielvfonseca/demo-plugin" },
+        release: { publishToNpm: true },
+      },
+    });
+
+    expect(() =>
+      collectPublishablePluginPackages(repoDir, { npmDistTag: "extended-stable" }),
+    ).toThrow("must match root package version 2026.7.34");
+  });
+
+  it("collects exact release dependencies that must match npm latest", () => {
+    const repoDir = makeTempRepoRoot(tempDirs, "operator-plugin-npm-release-");
+    mkdirSync(join(repoDir, "extensions", "demo-plugin"), { recursive: true });
+    writePluginReadme(repoDir, "demo-plugin");
+    writeJsonFile(join(repoDir, "extensions", "demo-plugin", "package.json"), {
+      name: "@gabrielvfonseca/demo-plugin",
+      version: "2026.4.10",
+      type: "module",
+      repository: {
+        type: "git",
+        url: OPERATOR_PLUGIN_NPM_REPOSITORY_URL,
+      },
+      dependencies: {
+        "demo-runtime": "1.2.3",
+      },
+      operator: {
+        extensions: ["./index.ts"],
+        ...externalPluginContract("2026.4.10"),
+        install: {
+          npmSpec: "@gabrielvfonseca/demo-plugin",
+        },
+        release: {
+          publishToNpm: true,
+          requireLatestDependencies: ["demo-runtime"],
+        },
+      },
+    });
+
+    expect(collectPublishablePluginPackages(repoDir)).toEqual([
+      {
+        extensionId: "demo-plugin",
+        packageDir: "extensions/demo-plugin",
+        packageName: "@gabrielvfonseca/demo-plugin",
+        version: "2026.4.10",
+        channel: "stable",
+        publishTag: "latest",
+        installNpmSpec: "@gabrielvfonseca/demo-plugin",
+        requiredLatestDependencies: [
+          {
+            packageName: "demo-runtime",
+            version: "1.2.3",
+          },
+        ],
+      },
+    ]);
+  });
+
+  it("does not validate unselected publishable plugin manifests", () => {
+    const repoDir = makeTempRepoRoot(tempDirs, "operator-plugin-npm-release-");
+    mkdirSync(join(repoDir, "extensions", "demo-plugin"), { recursive: true });
+    writePluginReadme(repoDir, "demo-plugin");
+    writeJsonFile(join(repoDir, "extensions", "demo-plugin", "package.json"), {
+      name: "@gabrielvfonseca/demo-plugin",
+      version: "2026.4.10-beta.1",
+      type: "module",
+      repository: {
+        type: "git",
+        url: OPERATOR_PLUGIN_NPM_REPOSITORY_URL,
+      },
+      operator: {
+        extensions: ["./index.ts"],
+        ...externalPluginContract("2026.4.10-beta.1"),
+        install: {
+          npmSpec: "@gabrielvfonseca/demo-plugin",
+        },
+        release: {
+          publishToNpm: true,
+        },
+      },
+    });
+    mkdirSync(join(repoDir, "extensions", "private-plugin"), { recursive: true });
+    writeJsonFile(join(repoDir, "extensions", "private-plugin", "package.json"), {
+      name: "@gabrielvfonseca/private-plugin",
+      version: "2026.4.10-beta.1",
+      private: true,
+      operator: {
+        extensions: ["./index.ts"],
+        ...externalPluginContract("2026.4.10-beta.1"),
+        install: {
+          npmSpec: "@gabrielvfonseca/private-plugin",
+        },
+        release: {
+          publishToNpm: true,
+        },
+      },
+    });
+
+    expect(
+      collectPublishablePluginPackages(repoDir, {
+        packageNames: ["@gabrielvfonseca/demo-plugin"],
+      }),
+    ).toEqual([
+      {
+        extensionId: "demo-plugin",
+        packageDir: "extensions/demo-plugin",
+        installNpmSpec: "@gabrielvfonseca/demo-plugin",
+        channel: "beta",
+        packageName: "@gabrielvfonseca/demo-plugin",
+        publishTag: "beta",
+        version: "2026.4.10-beta.1",
+      },
+    ]);
+  });
+
+  it("treats an explicit empty extension filter as no candidates", () => {
+    const repoDir = makeTempRepoRoot(tempDirs, "operator-plugin-npm-release-");
+    mkdirSync(join(repoDir, "extensions", "private-plugin"), { recursive: true });
+    writeJsonFile(join(repoDir, "extensions", "private-plugin", "package.json"), {
+      name: "@gabrielvfonseca/private-plugin",
+      version: "2026.4.10-beta.1",
+      private: true,
+      operator: {
+        extensions: ["./index.ts"],
+        ...externalPluginContract("2026.4.10-beta.1"),
+        release: {
+          publishToNpm: true,
+        },
+      },
+    });
+
+    expect(
+      collectPublishablePluginPackages(repoDir, {
+        extensionIds: [],
+      }),
+    ).toStrictEqual([]);
+  });
+
+  it("publishes alpha plugin packages to the alpha dist-tag", () => {
+    const repoDir = makeTempRepoRoot(tempDirs, "operator-plugin-npm-release-");
+    mkdirSync(join(repoDir, "extensions", "demo-plugin"), { recursive: true });
+    writePluginReadme(repoDir, "demo-plugin");
+    writeJsonFile(join(repoDir, "extensions", "demo-plugin", "package.json"), {
+      name: "@gabrielvfonseca/demo-plugin",
+      version: "2026.4.10-alpha.1",
+      type: "module",
+      repository: {
+        type: "git",
+        url: OPERATOR_PLUGIN_NPM_REPOSITORY_URL,
+      },
+      operator: {
+        extensions: ["./index.ts"],
+        ...externalPluginContract("2026.4.10-alpha.1"),
+        install: {
+          npmSpec: "@gabrielvfonseca/demo-plugin",
+        },
+        release: {
+          publishToNpm: true,
+        },
+      },
+    });
+
+    expect(collectPublishablePluginPackages(repoDir)).toEqual([
+      {
+        extensionId: "demo-plugin",
+        packageDir: "extensions/demo-plugin",
+        installNpmSpec: "@gabrielvfonseca/demo-plugin",
+        packageName: "@gabrielvfonseca/demo-plugin",
+        channel: "alpha",
+        publishTag: "alpha",
+        version: "2026.4.10-alpha.1",
+      },
+    ]);
+  });
+});
+
+describe("resolveSelectedPublishablePluginPackages", () => {
+  const publishablePlugins: PublishablePluginPackage[] = [
+    {
+      extensionId: "feishu",
+      packageDir: bundledPluginRoot("feishu"),
+      packageName: "@gabrielvfonseca/feishu",
+      version: "2026.3.15",
+      channel: "stable",
+      publishTag: "latest",
+    },
+    {
+      extensionId: "zalo",
+      packageDir: bundledPluginRoot("zalo"),
+      packageName: "@gabrielvfonseca/zalo",
+      version: "2026.3.15-beta.1",
+      channel: "beta",
+      publishTag: "beta",
+    },
+  ];
+
+  it("returns all publishable plugins when no selection is provided", () => {
+    expect(
+      resolveSelectedPublishablePluginPackages({
+        plugins: publishablePlugins,
+        selection: [],
+      }),
+    ).toEqual(publishablePlugins);
+  });
+
+  it("filters by selected publishable package names", () => {
+    expect(
+      resolveSelectedPublishablePluginPackages({
+        plugins: publishablePlugins,
+        selection: ["@gabrielvfonseca/zalo"],
+      }),
+    ).toEqual([publishablePlugins[1]]);
+  });
+
+  it("throws when the selection contains an unknown package name", () => {
+    expect(() =>
+      resolveSelectedPublishablePluginPackages({
+        plugins: publishablePlugins,
+        selection: ["@gabrielvfonseca/missing"],
+      }),
+    ).toThrowError(
+      "Unknown or non-publishable plugin package selection: @gabrielvfonseca/missing.",
+    );
+  });
+});
+
+describe("collectChangedExtensionIdsFromPaths", () => {
+  it("extracts unique extension ids from changed extension paths", () => {
+    expect(
+      collectChangedExtensionIdsFromPaths([
+        bundledPluginFile("zalo", "index.ts"),
+        bundledPluginFile("zalo", "package.json"),
+        bundledPluginFile("feishu", "src/client.ts"),
+        "docs/reference/RELEASING.md",
+      ]),
+    ).toEqual(["feishu", "zalo"]);
+  });
+});
+
+describe("resolveChangedPublishablePluginPackages", () => {
+  const publishablePlugins: PublishablePluginPackage[] = [
+    {
+      extensionId: "feishu",
+      packageDir: bundledPluginRoot("feishu"),
+      packageName: "@gabrielvfonseca/feishu",
+      version: "2026.3.15",
+      channel: "stable",
+      publishTag: "latest",
+    },
+    {
+      extensionId: "zalo",
+      packageDir: bundledPluginRoot("zalo"),
+      packageName: "@gabrielvfonseca/zalo",
+      version: "2026.3.15-beta.1",
+      channel: "beta",
+      publishTag: "beta",
+    },
+  ];
+
+  it("returns only changed publishable plugins", () => {
+    expect(
+      resolveChangedPublishablePluginPackages({
+        plugins: publishablePlugins,
+        changedExtensionIds: ["zalo"],
+      }),
+    ).toEqual([publishablePlugins[1]]);
+  });
+
+  it("returns an empty list when no publishable plugins changed", () => {
+    expect(
+      resolveChangedPublishablePluginPackages({
+        plugins: publishablePlugins,
+        changedExtensionIds: [],
+      }),
+    ).toStrictEqual([]);
+  });
+});

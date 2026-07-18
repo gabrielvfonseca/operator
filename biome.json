@@ -1,0 +1,30 @@
+{
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": true,
+    "indentWidth": 2,
+    "indentStyle": "space",
+    "lineWidth": 80
+  },
+  "linter": {
+    "enabled": true,
+    "lintAllUnmatched": false
+  },
+  "ignore": ["dist/**", "node_modules/**", "bun.lockb", ".artifacts/**", "**/*.min.js", "**/*.d.ts"],
+  "override": [
+    {
+      "files": "*.{ts,tsx}",
+      "linter": {
+        "rules": {
+          "style": {
+            "noImplicitAny": "off",
+            "preferForEach": "off"
+          },
+          "correctness": {
+            "noUnusedVariables": "off"
+          }
+        }
+      }
+    }
+  ]
+}

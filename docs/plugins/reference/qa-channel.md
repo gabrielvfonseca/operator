@@ -11,7 +11,7 @@ Adds the QA Channel surface for sending and receiving OpenClaw messages.
 
 ## Distribution
 
-- Package: `@openclaw/qa-channel`
+- Package: `@operator/qa-channel`
 - Install route: source checkout only
 
 ## Surface

@@ -1,8 +1,8 @@
 /** Doctor repairs for legacy auth profile JSON stores and OpenAI provider-id migrations. */
 import fs from "node:fs";
 import path from "node:path";
-import { collectConfiguredModelRefs } from "@openclaw/model-catalog-core/configured-model-refs";
-import { isRecord } from "@openclaw/normalization-core/record-coerce";
+import { collectConfiguredModelRefs } from "@operator/model-catalog-core/configured-model-refs";
+import { isRecord } from "@operator/normalization-core/record-coerce";
 import { note } from "../../packages/terminal-core/src/note.js";
 import { resolveAgentDir, resolveDefaultAgentDir, listAgentIds } from "../agents/agent-scope.js";
 import { AUTH_STORE_VERSION } from "../agents/auth-profiles/constants.js";
@@ -31,7 +31,7 @@ import { splitTrailingAuthProfile } from "../agents/model-ref-profile.js";
 import { formatCliCommand } from "../cli/command-format.js";
 import { resolveStateDir } from "../config/paths.js";
 import type { AuthProfileConfig } from "../config/types.auth.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import { coerceSecretRef } from "../config/types.secrets.js";
 import { loadJsonFile } from "../infra/json-file.js";
 import { shortenHomePath } from "../utils.js";
@@ -311,7 +311,7 @@ function listAuthProfileRepairCandidates(
   const candidates = new Map<string, AuthProfileRepairCandidate>();
   addCandidate(candidates, resolveDefaultAgentDir(cfg, env));
   const envAgentDir =
-    readNonEmptyString(env.OPENCLAW_AGENT_DIR) ?? readNonEmptyString(env.PI_CODING_AGENT_DIR);
+    readNonEmptyString(env.OPERATOR_AGENT_DIR) ?? readNonEmptyString(env.PI_CODING_AGENT_DIR);
   if (envAgentDir) {
     addCandidate(candidates, envAgentDir);
   }
@@ -828,7 +828,7 @@ export async function maybeMigrateAuthProfileJsonStoresToSqlite(params: {
         (candidate) =>
           `- ${shortenHomePath(candidate.authPath)} / ${shortenHomePath(candidate.statePath)}`,
       ),
-      `- ${formatCliCommand("openclaw doctor --fix")} imports legacy auth profile JSON into the per-agent SQLite database and removes the old files after backup.`,
+      `- ${formatCliCommand("operator doctor --fix")} imports legacy auth profile JSON into the per-agent SQLite database and removes the old files after backup.`,
     ].join("\n"),
     "Auth profile SQLite migration",
   );
@@ -855,7 +855,7 @@ export async function maybeMigrateAuthProfileJsonStoresToSqlite(params: {
         // Sidecar-backed OAuth entries cannot move into SQLite until their secret material exists.
         pruneRawAuthProfileIds(rawStore, unresolvedSidecarProfileIds);
         result.warnings.push(
-          `Left ${unresolvedSidecarProfileIds.size} legacy OAuth sidecar profile${unresolvedSidecarProfileIds.size === 1 ? "" : "s"} in ${shortenHomePath(candidate.authPath)}; rerun ${formatCliCommand("openclaw doctor --fix")} after sidecar migration or re-authenticate those profiles.`,
+          `Left ${unresolvedSidecarProfileIds.size} legacy OAuth sidecar profile${unresolvedSidecarProfileIds.size === 1 ? "" : "s"} in ${shortenHomePath(candidate.authPath)}; rerun ${formatCliCommand("operator doctor --fix")} after sidecar migration or re-authenticate those profiles.`,
         );
       }
       const awsSdkMarkerStore =
@@ -1173,17 +1173,17 @@ export async function maybeRepairLegacyFlatAuthProfileStores(params: {
     ),
     ...awsSdkMarkerStores.map(
       (entry) =>
-        `- ${shortenHomePath(entry.authPath)} contains aws-sdk profile markers that belong in openclaw.json auth.profiles.`,
+        `- ${shortenHomePath(entry.authPath)} contains aws-sdk profile markers that belong in operator.json auth.profiles.`,
     ),
   ];
   if (legacyStores.length > 0) {
     noteLines.push(
-      `- The gateway expects the canonical version/profiles store; ${formatCliCommand("openclaw doctor --fix")} rewrites this legacy shape with a backup.`,
+      `- The gateway expects the canonical version/profiles store; ${formatCliCommand("operator doctor --fix")} rewrites this legacy shape with a backup.`,
     );
   }
   if (awsSdkMarkerStores.length > 0) {
     noteLines.push(
-      `- AWS SDK profile markers are routing metadata, not stored credentials; ${formatCliCommand("openclaw doctor --fix")} moves them to config with a backup.`,
+      `- AWS SDK profile markers are routing metadata, not stored credentials; ${formatCliCommand("operator doctor --fix")} moves them to config with a backup.`,
     );
   }
   note(noteLines.join("\n"), "Auth profiles");
@@ -1317,7 +1317,7 @@ export async function maybeRepairCanonicalApiKeyFieldAlias(params: {
       `- ${shortenHomePath(entry.authPath)} has ${entry.profileIds.length} profile(s) using the non-canonical "api_key" field; the canonical field is "key".`,
   );
   noteLines.push(
-    `- Runtime auth parsing only reads canonical "key" and "keyRef" fields, so these profiles are silently skipped; ${formatCliCommand("openclaw doctor --fix")} rewrites "api_key" to "key" with a backup.`,
+    `- Runtime auth parsing only reads canonical "key" and "keyRef" fields, so these profiles are silently skipped; ${formatCliCommand("operator doctor --fix")} rewrites "api_key" to "key" with a backup.`,
   );
   note(noteLines.join("\n"), "Auth profiles");
 

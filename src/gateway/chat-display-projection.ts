@@ -1,15 +1,15 @@
 // Projects raw transcript messages into bounded Control UI/history display records.
 import { createHash } from "node:crypto";
-import { estimateBase64DecodedBytes } from "@openclaw/media-core/base64";
-import { expectDefined } from "@openclaw/normalization-core";
+import { estimateBase64DecodedBytes } from "@operator/media-core/base64";
+import { expectDefined } from "@operator/normalization-core";
 import {
   asFiniteNumber,
   asPositiveSafeInteger,
-} from "@openclaw/normalization-core/number-coercion";
-import { asOptionalRecord as readRecord } from "@openclaw/normalization-core/record-coerce";
-import { normalizeOptionalString } from "@openclaw/normalization-core/string-coerce";
-import { truncateUtf16Safe } from "@openclaw/normalization-core/utf16-slice";
-import { OPENCLAW_RUNTIME_CONTEXT_CUSTOM_TYPE } from "../agents/internal-runtime-context.js";
+} from "@operator/normalization-core/number-coercion";
+import { asOptionalRecord as readRecord } from "@operator/normalization-core/record-coerce";
+import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
+import { OPERATOR_RUNTIME_CONTEXT_CUSTOM_TYPE } from "../agents/internal-runtime-context.js";
 import { STREAM_ERROR_FALLBACK_TEXT } from "../agents/stream-message-shared.js";
 import { isHeartbeatOkResponse, isHeartbeatUserMessage } from "../auto-reply/heartbeat-filter.js";
 import { HEARTBEAT_PROMPT } from "../auto-reply/heartbeat.js";
@@ -24,7 +24,7 @@ import {
   parseAssistantTextSignature,
   resolveAssistantMessagePhase,
 } from "../shared/chat-message-content.js";
-import { isOpenClawDeliveryMirrorAssistantMessage } from "../shared/transcript-only-openclaw-assistant.js";
+import { isOpenClawDeliveryMirrorAssistantMessage } from "../shared/transcript-only-operator-assistant.js";
 import { stripInlineDirectiveTagsForDisplay } from "../utils/directive-tags.js";
 import { stripEnvelopeFromMessages } from "./chat-sanitize.js";
 import { isSuppressedControlReplyText } from "./control-reply-text.js";
@@ -420,8 +420,8 @@ function sanitizeChatHistoryContentBlock(
     delete entry.thinkingSignature;
     changed = true;
   }
-  if ("openclawReasoningReplay" in entry) {
-    delete entry.openclawReasoningReplay;
+  if ("operatorReasoningReplay" in entry) {
+    delete entry.operatorReasoningReplay;
     changed = true;
   }
   const type = typeof entry.type === "string" ? entry.type : "";
@@ -1061,11 +1061,11 @@ function readMessageToolSourceReplySink(
 function buildMessageToolVisibleReplyMirror(
   pending: PendingMessageToolVisibleReply,
 ): Record<string, unknown> {
-  const sourceMessageSeq = asPositiveSafeInteger(readRecord(pending.anchor["__openclaw"])?.seq);
+  const sourceMessageSeq = asPositiveSafeInteger(readRecord(pending.anchor["__operator"])?.seq);
   const mirror: Record<string, unknown> = {
     role: "assistant",
     content: [{ type: "text", text: pending.text }],
-    openclawMessageToolMirror: {
+    operatorMessageToolMirror: {
       toolName: "message",
       ...(pending.toolCallId ? { toolCallId: pending.toolCallId } : {}),
       ...(pending.sourceReplySink ? { sourceReplySink: pending.sourceReplySink } : {}),
@@ -1077,9 +1077,9 @@ function buildMessageToolVisibleReplyMirror(
       mirror[field] = pending.anchor[field];
     }
   }
-  const transcriptMeta = readRecord((pending.completionAnchor ?? pending.anchor)["__openclaw"]);
+  const transcriptMeta = readRecord((pending.completionAnchor ?? pending.anchor)["__operator"]);
   if (transcriptMeta) {
-    mirror["__openclaw"] = { ...transcriptMeta };
+    mirror["__operator"] = { ...transcriptMeta };
   }
   return mirror;
 }
@@ -1349,7 +1349,7 @@ function digestTtsSupplementText(text: string): string {
 function readTtsSupplementMarker(
   message: Record<string, unknown>,
 ): { textSha256?: string; spokenText?: string } | undefined {
-  const marker = message.openclawTtsSupplement;
+  const marker = message.operatorTtsSupplement;
   if (!marker || typeof marker !== "object" || Array.isArray(marker)) {
     return undefined;
   }
@@ -1491,7 +1491,7 @@ function isSubagentAnnounceInterSessionUserMessage(message: Record<string, unkno
 }
 
 function readChatHistoryRecordTimestampMs(message: unknown): number | undefined {
-  const meta = readRecord(readRecord(message)?.["__openclaw"]);
+  const meta = readRecord(readRecord(message)?.["__operator"]);
   const value = meta?.recordTimestampMs;
   if (typeof value === "number" && Number.isFinite(value)) {
     return value;
@@ -1575,7 +1575,7 @@ function isDisplayHiddenProjectedMessage(message: Record<string, unknown>): bool
   if (message.display === false) {
     return true;
   }
-  return message.role === "custom" && message.customType === OPENCLAW_RUNTIME_CONTEXT_CUSTOM_TYPE;
+  return message.role === "custom" && message.customType === OPERATOR_RUNTIME_CONTEXT_CUSTOM_TYPE;
 }
 
 function shouldHideProjectedHistoryMessage(message: Record<string, unknown>): boolean {
@@ -1619,13 +1619,13 @@ export function isHeartbeatHistoryTurnBoundaryMessage(message: unknown): boolean
 }
 
 function attachProjectedTurnBoundary(message: Record<string, unknown>): Record<string, unknown> {
-  const metadata = readRecord(message["__openclaw"]);
+  const metadata = readRecord(message["__operator"]);
   if (metadata?.turnBoundary === true) {
     return message;
   }
   return {
     ...message,
-    __openclaw: {
+    __operator: {
       ...metadata,
       turnBoundary: true,
     },
@@ -1636,9 +1636,9 @@ function canCarryProjectedTurnBoundary(message: RoleContentMessage | null): bool
   return Boolean(message && message.role !== "system" && message.role !== "custom");
 }
 
-function openclawAssistantModel(message: Record<string, unknown>): string | undefined {
+function operatorAssistantModel(message: Record<string, unknown>): string | undefined {
   return message.role === "assistant" &&
-    message.provider === "openclaw" &&
+    message.provider === "operator" &&
     typeof message.model === "string"
     ? message.model
     : undefined;
@@ -1657,8 +1657,8 @@ function isDuplicateAcpGatewayInjectedMessage(
     return false;
   }
   if (
-    openclawAssistantModel(previousVisible) !== "acp-runtime" ||
-    openclawAssistantModel(current) !== "gateway-injected"
+    operatorAssistantModel(previousVisible) !== "acp-runtime" ||
+    operatorAssistantModel(current) !== "gateway-injected"
   ) {
     return false;
   }
@@ -1677,7 +1677,7 @@ function isDuplicateChannelFinalDeliveryMirror(
   if (!previousVisible || !isOpenClawDeliveryMirrorAssistantMessage(current)) {
     return false;
   }
-  const deliveryMirror = readRecord(current.openclawDeliveryMirror);
+  const deliveryMirror = readRecord(current.operatorDeliveryMirror);
   if (deliveryMirror?.kind !== "channel-final") {
     return false;
   }
@@ -1690,7 +1690,7 @@ function isDuplicateChannelFinalDeliveryMirror(
   if (isProjectedSessionsSendForwardedMessage(previousVisible)) {
     return false;
   }
-  const previousMeta = readRecord(previousVisible["__openclaw"]);
+  const previousMeta = readRecord(previousVisible["__operator"]);
   if (typeof previousMeta?.mirrorIdentity !== "string" || !previousMeta.mirrorIdentity.trim()) {
     return false;
   }

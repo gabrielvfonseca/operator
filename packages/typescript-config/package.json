@@ -1,0 +1,49 @@
+{
+  "name": "@operator/typescript-config",
+  "version": "0.0.0-private",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./base": {
+      "types": "./dist/base.d.ts",
+      "default": "./dist/base.json"
+    },
+    "./core": {
+      "types": "./dist/core.d.ts",
+      "default": "./dist/core.json"
+    },
+    "./extensions": {
+      "types": "./dist/extensions.d.ts",
+      "default": "./dist/extensions.json"
+    },
+    "./package": {
+      "types": "./dist/package.d.ts",
+      "default": "./dist/package.json"
+    },
+    "./test": {
+      "types": "./dist/test.d.ts",
+      "default": "./dist/test.json"
+    },
+    "./e2e": {
+      "types": "./dist/e2e.d.ts",
+      "default": "./dist/e2e.json"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "typescript": "6.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "26.1.0"
+  }
+}

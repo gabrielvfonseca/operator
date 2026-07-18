@@ -22,7 +22,7 @@ export type SystemAgentOperationResult = {
   exitsInteractive?: boolean;
   message?: string;
   nextInput?: string;
-  /** Agent TUI exited via /openclaw: re-enter the shell even without a request. */
+  /** Agent TUI exited via /operator: re-enter the shell even without a request. */
   returnToShell?: boolean;
   followUp?: Extract<SystemAgentOperation, { kind: "model-setup" }>;
 };
@@ -95,7 +95,7 @@ const CONFIG_SET_REF_RE = new RegExp(
   "i",
 );
 const SETUP_RE = new RegExp(
-  String.raw`^(?:setup|set\s+me\s+up|set\s+up\s+openclaw|onboard(?:\s+me)?|bootstrap|first\s+run)(?:\s+workspace\s+(?<workspace>${ARG_WORD}))?(?:\s+model\s+(?<model>\S+))?$`,
+  String.raw`^(?:setup|set\s+me\s+up|set\s+up\s+operator|onboard(?:\s+me)?|bootstrap|first\s+run)(?:\s+workspace\s+(?<workspace>${ARG_WORD}))?(?:\s+model\s+(?<model>\S+))?$`,
   "i",
 );
 const MODEL_SETUP_RE = new RegExp(
@@ -383,7 +383,7 @@ export function describeSystemAgentPersistentOperation(operation: SystemAgentOpe
     case "model-setup":
       return "configure a model provider and default model";
     case "doctor-fix":
-      return "exit OpenClaw and run openclaw doctor --fix";
+      return "exit OpenClaw and run operator doctor --fix";
     case "plugin-install":
       return `install plugin ${operation.spec}`;
     case "plugin-uninstall":

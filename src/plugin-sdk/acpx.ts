@@ -17,7 +17,7 @@ export type {
   AcpRuntimeTurnResult,
   AcpRuntimeTurnResultError,
   AcpSessionUpdateTag,
-} from "@openclaw/acp-core/runtime/types";
+} from "@operator/acp-core/runtime/types";
 export type {
   OpenClawPluginApi,
   OpenClawPluginConfigSchema,

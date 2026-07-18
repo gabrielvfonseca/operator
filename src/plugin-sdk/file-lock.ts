@@ -4,7 +4,7 @@ import {
   acquireFileLock as acquireFsSafeFileLock,
   drainFileLockManagerForTest,
   resetFileLockManagerForTest,
-} from "@openclaw/fs-safe/file-lock";
+} from "@operator/fs-safe/file-lock";
 import {
   isLockOwnerDefinitelyStale,
   shouldRemoveDeadOwnerOrExpiredLock,
@@ -56,7 +56,7 @@ export type FileLockStaleError = Error & {
   lockPath: string;
 };
 
-const FILE_LOCK_MANAGER_KEY = "openclaw.plugin-sdk.file-lock";
+const FILE_LOCK_MANAGER_KEY = "operator.plugin-sdk.file-lock";
 let currentProcessStartTime: number | null | undefined;
 
 function getCurrentProcessStartTime(): number | null {

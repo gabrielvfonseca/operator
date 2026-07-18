@@ -1,6 +1,6 @@
-import { expectDefined } from "@openclaw/normalization-core";
+import { expectDefined } from "@operator/normalization-core";
 // Shares direct-message policy normalization for channel audits.
-import { normalizeStringEntries } from "@openclaw/normalization-core/string-normalization";
+import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
 import { resolveGroupAllowFromSources } from "../channels/allow-from.js";
 import { resolveControlCommandGate } from "../channels/command-gating.js";
 import { resolveDmAllowAuditState } from "../channels/message-access/dm-allow-state.js";
@@ -38,7 +38,7 @@ export function resolvePinnedMainDmOwnerFromAllowlist(params: {
     : null;
 }
 
-/** @deprecated Use `resolveChannelMessageIngress` from `openclaw/plugin-sdk/channel-ingress-runtime`. */
+/** @deprecated Use `resolveChannelMessageIngress` from `operator/plugin-sdk/channel-ingress-runtime`. */
 export function resolveEffectiveAllowFromLists(params: {
   allowFrom?: Array<string | number> | null;
   groupAllowFrom?: Array<string | number> | null;
@@ -86,7 +86,7 @@ const dmGroupAccess = (
  * Resolve sender access for `dmPolicy=open`, where `*` means fully open and a configured
  * allowlist still restricts the accepted sender set.
  *
- * @deprecated Use `resolveChannelMessageIngress` from `openclaw/plugin-sdk/channel-ingress-runtime`.
+ * @deprecated Use `resolveChannelMessageIngress` from `operator/plugin-sdk/channel-ingress-runtime`.
  */
 export function resolveOpenDmAllowlistAccess(params: {
   effectiveAllowFrom: Array<string | number>;
@@ -145,7 +145,7 @@ const GROUP_ACCESS_RESULT: Record<
   ),
 };
 
-/** @deprecated Use `resolveChannelMessageIngress` or `readChannelIngressStoreAllowFromForDmPolicy` from `openclaw/plugin-sdk/channel-ingress-runtime`. */
+/** @deprecated Use `resolveChannelMessageIngress` or `readChannelIngressStoreAllowFromForDmPolicy` from `operator/plugin-sdk/channel-ingress-runtime`. */
 export async function readStoreAllowFromForDmPolicy(params: {
   provider: ChannelId;
   accountId: string;
@@ -160,7 +160,7 @@ export async function readStoreAllowFromForDmPolicy(params: {
  * Resolve legacy DM/group sender admission from already-computed allowlists.
  * Group messages are evaluated against group policy first; DM policy applies only outside groups.
  *
- * @deprecated Use `resolveChannelMessageIngress` from `openclaw/plugin-sdk/channel-ingress-runtime`.
+ * @deprecated Use `resolveChannelMessageIngress` from `operator/plugin-sdk/channel-ingress-runtime`.
  */
 export function resolveDmGroupAccessDecision(params: {
   isGroup: boolean;
@@ -237,7 +237,7 @@ export function resolveDmGroupAccessDecision(params: {
 /**
  * Resolve legacy DM/group sender admission and return the effective allowlists used.
  *
- * @deprecated Use `resolveChannelMessageIngress` from `openclaw/plugin-sdk/channel-ingress-runtime`.
+ * @deprecated Use `resolveChannelMessageIngress` from `operator/plugin-sdk/channel-ingress-runtime`.
  */
 export function resolveDmGroupAccessWithLists(params: DmGroupAccessInputParams): {
   decision: DmGroupAccessDecision;
@@ -272,7 +272,7 @@ export function resolveDmGroupAccessWithLists(params: DmGroupAccessInputParams):
  * Resolve legacy sender admission plus control-command authorization.
  * Control commands use configured allowlists, not pairing-store state, for group safety.
  *
- * @deprecated Use `resolveChannelMessageIngress` from `openclaw/plugin-sdk/channel-ingress-runtime`.
+ * @deprecated Use `resolveChannelMessageIngress` from `operator/plugin-sdk/channel-ingress-runtime`.
  */
 export function resolveDmGroupAccessWithCommandGate(
   params: DmGroupAccessInputParams & {
@@ -340,7 +340,7 @@ export function resolveDmGroupAccessWithCommandGate(
   };
 }
 
-/** @deprecated Use `resolveChannelMessageIngress` from `openclaw/plugin-sdk/channel-ingress-runtime`. */
+/** @deprecated Use `resolveChannelMessageIngress` from `operator/plugin-sdk/channel-ingress-runtime`. */
 export async function resolveDmAllowState(params: {
   provider: ChannelId;
   accountId: string;

@@ -15,7 +15,7 @@ import { listAgentIds, resolveAgentWorkspaceDir } from "../../agents/agent-scope
 import { stableStringify } from "../../agents/stable-stringify.js";
 import { runMigrationApply } from "../../commands/migrate/apply.js";
 import { buildMigrationContext } from "../../commands/migrate/context.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OpenClawConfig } from "../../config/types.operator.js";
 import { bindMemoryMigrationPlanSources } from "../../plugin-sdk/memory-migration-source.js";
 import { summarizeMigrationItems } from "../../plugin-sdk/migration.js";
 import {

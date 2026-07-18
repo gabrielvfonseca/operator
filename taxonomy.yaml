@@ -4397,7 +4397,7 @@ surfaces:
     family: core
     level: alpha
     level_code: M2
-    rationale: OpenClaw App SDK is a distinct external app contract separate from Gateway runtime and Plugin SDK. Current scoring shows a real `@openclaw/sdk` path with gaps around public packaging, auto-discovery, approvals, helpers, and compatibility.
+    rationale: OpenClaw App SDK is a distinct external app contract separate from Gateway runtime and Plugin SDK. Current scoring shows a real `@operator/operator-sdk` path with gaps around public packaging, auto-discovery, approvals, helpers, and compatibility.
     completeness_instructions: references/completeness/openclaw-app-sdk.md
     categories:
       - name: Client API

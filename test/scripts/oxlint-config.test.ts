@@ -192,7 +192,7 @@ describe("oxlint config", () => {
           "packages/media-core/**/*.ts",
           "packages/media-generation-core/**/*.ts",
           "packages/plugin-package-contract/**/*.ts",
-          "packages/sdk/**/*.ts",
+          "sdks/operator-sdk/**/*.ts",
         ],
         rules: {
           "typescript/no-non-null-assertion": "error",

@@ -2,7 +2,7 @@
 import { resolveStateDir } from "../config/paths.js";
 import { redactConfigObject } from "../config/redact-snapshot.js";
 import type { SessionSystemPromptReport } from "../config/sessions/types.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import { resolveCommitHash } from "../infra/git-commit.js";
 import { resolveOsSummary } from "../infra/os-summary.js";
 import {
@@ -241,7 +241,7 @@ export function buildTrajectoryRunMetadata(
   return {
     capturedAt: new Date().toISOString(),
     harness: {
-      type: "openclaw",
+      type: "operator",
       name: "OpenClaw",
       version: VERSION,
       gitSha:

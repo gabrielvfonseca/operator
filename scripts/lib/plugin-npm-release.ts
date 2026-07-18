@@ -363,9 +363,9 @@ export function collectPublishablePluginPackageErrors(
   const extensions = packageJson.openclaw?.extensions ?? [];
   const requiredLatestDependencies = collectRequiredLatestDependencies(packageJson);
 
-  if (!packageName.startsWith("@openclaw/")) {
+  if (!packageName.startsWith("@operator/")) {
     errors.push(
-      `package name must start with "@openclaw/"; found "${packageName || "<missing>"}".`,
+      `package name must start with "@operator/"; found "${packageName || "<missing>"}".`,
     );
   }
   if (packageJson.private === true) {

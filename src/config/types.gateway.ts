@@ -20,7 +20,7 @@ export type GatewayTlsConfig = {
 export type WideAreaDiscoveryConfig = {
   /** Enable DNS-SD style wide-area discovery. */
   enabled?: boolean;
-  /** Optional unicast DNS-SD domain (e.g. "openclaw.internal"). */
+  /** Optional unicast DNS-SD domain (e.g. "operator.internal"). */
   domain?: string;
 };
 
@@ -127,10 +127,21 @@ export type TalkConfigResponse = TalkConfig & {
 export type GatewayControlUiConfig = {
   /** If false, the Gateway will not serve the Control UI (default /). */
   enabled?: boolean;
-  /** Optional base path prefix for the Control UI (e.g. "/openclaw"). */
+  /** Optional base path prefix for the Control UI (e.g. "/operator"). */
   basePath?: string;
   /** Optional filesystem root for Control UI assets (defaults to dist/control-ui). */
   root?: string;
+  /**
+   * Mode for serving the Control UI.
+   * - "static": serve from filesystem (default)
+   * - "next": proxy to a Next.js server at `next?.url`
+   */
+  mode?: "static" | "next";
+  /** Configuration for Next.js server when mode is "next". */
+  next?: {
+    /** URL of the Next.js server (e.g. "http://localhost:3000"). */
+    url: string;
+  };
   /**
    * Opt-in AI purpose titles for tool calls in Control UI chat (default false).
    * When enabled, chat.toolTitles generates short titles through standard
@@ -146,7 +157,7 @@ export type GatewayControlUiConfig = {
   embedSandbox?: "strict" | "scripts" | "trusted";
   /**
    * DANGEROUS: Allow hosted embeds to load absolute external http(s) URLs.
-   * Default off; prefer hosted /__openclaw__/canvas or /__openclaw__/a2ui content.
+   * Default off; prefer hosted /__operator__/canvas or /__operator__/a2ui content.
    */
   allowExternalEmbedUrls?: boolean;
   /** Optional max-width for grouped Control UI chat messages (default: min(900px, 68%)). */
@@ -239,7 +250,7 @@ export type GatewayTailscaleConfig = {
   mode?: GatewayTailscaleMode;
   /** Reset serve/funnel configuration on shutdown. */
   resetOnExit?: boolean;
-  /** Optional Tailscale Service name, such as `svc:openclaw`, for Serve mode. */
+  /** Optional Tailscale Service name, such as `svc:operator`, for Serve mode. */
   serviceName?: string;
   /**
    * When `mode="serve"` and an externally configured Tailscale Funnel route
@@ -310,7 +321,7 @@ export type GatewayReloadConfig = {
    * before forcing a restart. Absent uses the gateway's default bounded wait;
    * 0 waits indefinitely and logs periodic still-pending warnings.
    * Lower positive values risk aborting active subagent LLM calls.
-   * @see https://github.com/openclaw/openclaw/issues/65485
+   * @see https://github.com/operator/operator/issues/65485
    */
   deferralTimeoutMs?: number;
 };
@@ -480,7 +491,7 @@ export type GatewayNodePairingConfig = {
   /**
    * SSH-verified auto-approval for first-time node-role pairing (default: enabled).
    * The gateway connects back to the pairing host over SSH (BatchMode, strict
-   * host keys) and approves only when the remote `openclaw node identity`
+   * host keys) and approves only when the remote `operator node identity`
    * output matches the pending request's device key. Set false to disable SSH
    * verification; this is independent of autoApproveCidrs, so unset that too for
    * manual-only node pairing. The object form tunes the probe:
@@ -578,7 +589,7 @@ export type GatewayConfig = {
   tools?: GatewayToolsConfig;
   /**
    * Pre-auth Gateway WebSocket handshake timeout in milliseconds.
-   * Env var OPENCLAW_HANDSHAKE_TIMEOUT_MS takes precedence. Default: 15000.
+   * Env var OPERATOR_HANDSHAKE_TIMEOUT_MS takes precedence. Default: 15000.
    */
   handshakeTimeoutMs?: number;
   /**

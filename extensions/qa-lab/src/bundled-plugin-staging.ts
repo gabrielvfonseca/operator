@@ -89,7 +89,7 @@ function findQaBundledPluginDirsByManifestId(params: {
         continue;
       }
       const candidate = path.join(sourceRoot, entry.name);
-      const manifestId = readQaBundledManifestId(path.join(candidate, "openclaw.plugin.json"));
+      const manifestId = readQaBundledManifestId(path.join(candidate, "operator.plugin.json"));
       if (manifestId === params.pluginId) {
         candidates.push(candidate);
       }
@@ -108,7 +108,7 @@ function resolveQaBundledPluginManifestPath(params: {
     (candidate) => path.dirname(candidate) === sourceExtensionsRoot,
   );
   const manifestDir = sourceDir ?? manifestDirs[0];
-  return manifestDir ? path.join(manifestDir, "openclaw.plugin.json") : null;
+  return manifestDir ? path.join(manifestDir, "operator.plugin.json") : null;
 }
 
 export async function resolveQaOwnerPluginIdsForProviderIds(params: {
@@ -128,7 +128,7 @@ export async function resolveQaOwnerPluginIdsForProviderIds(params: {
       if (!entry.isDirectory()) {
         continue;
       }
-      const manifestPath = path.join(sourceRoot, entry.name, "openclaw.plugin.json");
+      const manifestPath = path.join(sourceRoot, entry.name, "operator.plugin.json");
       if (!existsSync(manifestPath)) {
         continue;
       }
@@ -437,7 +437,7 @@ export async function createQaBundledPluginsDir(params: {
       pluginId,
     });
     if (manifestPath) {
-      await fs.copyFile(manifestPath, path.join(targetDir, "openclaw.plugin.json"));
+      await fs.copyFile(manifestPath, path.join(targetDir, "operator.plugin.json"));
     }
   }
   await symlinkQaStagedDirEntry({

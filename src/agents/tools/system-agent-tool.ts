@@ -1,5 +1,5 @@
 /**
- * openclaw built-in tool: ring-zero setup/repair actions for the OpenClaw
+ * operator built-in tool: ring-zero setup/repair actions for the OpenClaw
  * agent. Never exposed to normal agents — construction is bound to a host-owned
  * per-run scope, and every action funnels through OpenClaw's typed operation
  * union with approval assertions and the audit log.
@@ -200,7 +200,7 @@ const SystemAgentToolSchema = Type.Object({
   target: Type.Optional(
     stringEnum(["guided", "classic", "channels"], {
       description:
-        "Setup target for open_setup. channels runs in this chat; guided/classic require exiting OpenClaw and running openclaw onboard.",
+        "Setup target for open_setup. channels runs in this chat; guided/classic require exiting OpenClaw and running operator onboard.",
     }),
   ),
   query: Type.Optional(Type.String({ description: "Search query for plugin_search" })),
@@ -220,7 +220,7 @@ function createCaptureRuntime(): RuntimeEnv & { read: () => string } {
     log: (...args) => lines.push(args.join(" ")),
     error: (...args) => lines.push(args.join(" ")),
     exit: (code) => {
-      throw new Error(`openclaw operation exited with code ${String(code)}`);
+      throw new Error(`operator operation exited with code ${String(code)}`);
     },
     read: () => lines.join("\n").trim(),
   };
@@ -229,7 +229,7 @@ function createCaptureRuntime(): RuntimeEnv & { read: () => string } {
 function requireParam(params: Record<string, unknown>, name: string): string {
   const value = readStringParam(params, name);
   if (!value?.trim()) {
-    throw new ToolInputError(`openclaw: "${name}" is required for this action`);
+    throw new ToolInputError(`operator: "${name}" is required for this action`);
   }
   return value.trim();
 }
@@ -239,7 +239,7 @@ function readSetupTarget(params: Record<string, unknown>): "guided" | "classic" 
   if (target === "guided" || target === "classic" || target === "channels") {
     return target;
   }
-  throw new ToolInputError(`openclaw: unknown setup target "${target}"`);
+  throw new ToolInputError(`operator: unknown setup target "${target}"`);
 }
 
 function operationForAction(params: Record<string, unknown>): SystemAgentOperation {
@@ -305,7 +305,7 @@ function operationForAction(params: Record<string, unknown>): SystemAgentOperati
       const spec = requireParam(params, "spec");
       const validationError = validateSystemAgentPluginInstallSpec(spec);
       if (validationError) {
-        throw new ToolInputError(`openclaw: ${validationError}`);
+        throw new ToolInputError(`operator: ${validationError}`);
       }
       return { kind: "plugin-install", spec };
     }
@@ -346,13 +346,13 @@ function operationForAction(params: Record<string, unknown>): SystemAgentOperati
         id: requireParam(params, "envVar"),
       };
     default:
-      throw new ToolInputError(`openclaw: unknown action "${action}"`);
+      throw new ToolInputError(`operator: unknown action "${action}"`);
   }
 }
 
 export function createSystemAgentTool(options: SystemAgentToolOptions): AnyAgentTool {
   return {
-    name: "openclaw",
+    name: "operator",
     label: "OpenClaw",
     // Setup authority is never discoverable through tool catalogs: the host
     // scopes it to this run and the model must receive it directly.
@@ -361,7 +361,7 @@ export function createSystemAgentTool(options: SystemAgentToolOptions): AnyAgent
       "System agent. Setup, config, channels, plugins, agents, repair.",
       "Read now: status, models, agents, channels, channel_info, config_get, config_schema, gateway_status, plugin_search, validate_config, doctor, audit.",
       "Handoff: connect_channel; open_setup target=channels; open_agent.",
-      "Inference, provider, auth, credentials: exit; run `openclaw onboard`. Never request credentials.",
+      "Inference, provider, auth, credentials: exit; run `operator onboard`. Never request credentials.",
       "Write: setup, set_default_model, config_set, config_set_ref, create_agent, gateway_*, plugin_install. Exact user approval required; then approved=true. Host applies after turn; rechecks inference owner.",
       "plugin_install: ClawHub/bundled/official only. Arbitrary source: exit, trusted shell.",
       "Unknown config: config_schema first. Secrets: config_set_ref env. No plaintext. No raw auth/models/env/secrets/plugins/tools/agent-route/$include; typed workflows.",
@@ -382,12 +382,12 @@ export function createSystemAgentTool(options: SystemAgentToolOptions): AnyAgent
           directive.kind === "channel-setup"
             ? `${SYSTEM_AGENT_DIRECTIVE_PREFIX} the host chat now starts the guided ${directive.channel} setup with the user. Tell the user the setup questions come next; do not describe steps yourself.`
             : directive.kind === "model-setup"
-              ? `${SYSTEM_AGENT_DIRECTIVE_PREFIX} the active inference route cannot be changed inside OpenClaw. Tell the user to exit OpenClaw and run \`openclaw onboard\`; do not ask for provider credentials here.`
+              ? `${SYSTEM_AGENT_DIRECTIVE_PREFIX} the active inference route cannot be changed inside OpenClaw. Tell the user to exit OpenClaw and run \`operator onboard\`; do not ask for provider credentials here.`
               : directive.kind === "open-tui"
                 ? `${SYSTEM_AGENT_DIRECTIVE_PREFIX} the host now hands the user over to their normal agent. Say goodbye briefly.`
                 : directive.target === "channels"
                   ? `${SYSTEM_AGENT_DIRECTIVE_PREFIX} the host now opens channel setup${directive.channel ? ` for ${directive.channel}` : ""}. Tell the user the channel setup questions come next.`
-                  : `${SYSTEM_AGENT_DIRECTIVE_PREFIX} ${directive.target} setup cannot run inside OpenClaw because it may change the active inference route. Tell the user to exit OpenClaw and run \`openclaw onboard\`.`,
+                  : `${SYSTEM_AGENT_DIRECTIVE_PREFIX} ${directive.target} setup cannot run inside OpenClaw because it may change the active inference route. Tell the user to exit OpenClaw and run \`operator onboard\`.`,
           {},
         );
       }

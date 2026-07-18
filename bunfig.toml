@@ -1,0 +1,44 @@
+[install]
+nodeModules = "bun"
+
+[install.scopes]
+"@operator" = "bun"
+"@ui" = "bun"
+
+[test]
+coverage = false
+
+[run]
+bun = true
+
+[node_modules]
+nodeLinker = "hoisted"
+
+[transpile]
+loader = "ts"
+exclude = ["node_modules/**/*", "tests/**/*", "skills/**/*", ".git/**/*"]
+
+[build]
+sourcemap = true
+minify = false
+external = ["@opentelemetry", "@aws-sdk", "@sentry"]
+
+[dev]
+port = 3000
+hmr = true
+allowedHosts = [".*"]
+
+[alias]
+"@operator/*" = "./src/*"
+"@operator" = "./src"
+"@extensions/*" = "./extensions/*"
+"@sdk/*" = "./sdks/*"
+"@packages/*" = "./packages/*"
+
+[tasks]
+build = "bun run scripts/build-all.mjs"
+"check:all" = "bun run scripts/check-all.mjs"
+
+[packageManager]
+name = "bun"
+version = "1.2.0"

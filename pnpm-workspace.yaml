@@ -1,6 +1,8 @@
 packages:
   - .
   - ui
+  - apps/console
+  - design-system
   - packages/*
   - extensions/*
   - examples/*

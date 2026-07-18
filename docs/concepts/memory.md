@@ -141,13 +141,31 @@ heartbeat. Explicit reminders still use [scheduled tasks](/automation/cron-jobs)
 
 ## Memory tools
 
-The agent has two tools for working with memory:
+The bundled `memory-tiered` plugin (the default `plugins.slots.memory`
+selection) exposes the real 3-tier memory system to the agent:
 
-- **`memory_search`** — finds relevant notes using semantic search, even when
-  the wording differs from the original.
-- **`memory_get`** — reads a specific memory file or line range.
+### Working memory (Redis)
 
-Both tools are provided by the active memory plugin (default: `memory-core`).
+- **`memory_set`** — write or update a short-lived working-memory entry with an optional TTL (seconds).
+- **`memory_get`** — read a working-memory entry by key.
+- **`memory_delete`** — delete a working-memory entry by key, or a prefix of keys.
+
+### Semantic memory (Qdrant)
+
+- **`memory_store`** — persist a durable fact/concept with an embedding for later similarity search.
+- **`memory_search`** — semantic similarity search over stored durable memory; returns ranked matches with scores.
+- **`memory_forget`** — delete a stored semantic chunk by id.
+
+### Procedural memory (Neo4j + Temporal)
+
+- **`procedure_recall`** — find reusable procedures by tags or description.
+- **`procedure_register`** — register a reusable procedure (workflow) for later recall/execution.
+- **`procedure_execute`** — execute a stored procedural workflow by id with an input payload.
+
+The prior SQLite/Markdown memory layer (`MEMORY.md`, `memory/*.md`,
+`DREAMS.md`) and the `memory-wiki` knowledge-vault plugin have been removed.
+Legacy Markdown memory can be migrated into semantic memory with
+`/memory migrate` (or `openclaw memory migrate`).
 
 ## Memory search
 

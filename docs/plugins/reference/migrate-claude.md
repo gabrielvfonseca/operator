@@ -11,7 +11,7 @@ Imports Claude Code and Claude Desktop instructions, MCP servers, skills, and sa
 
 ## Distribution
 
-- Package: `@openclaw/migrate-claude`
+- Package: `@operator/migrate-claude`
 - Install route: included in OpenClaw
 
 ## Surface

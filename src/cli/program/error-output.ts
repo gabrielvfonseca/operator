@@ -22,13 +22,13 @@ function quote(value: string): string {
 
 function resolveHelpCommand(argv: string[] | undefined, options?: { root?: boolean }): string {
   if (options?.root || !argv) {
-    return formatCliCommand("openclaw --help");
+    return formatCliCommand("operator --help");
   }
   const commandPath = getCommandPathWithRootOptions(argv, 2);
   if (commandPath.length === 0) {
-    return formatCliCommand("openclaw --help");
+    return formatCliCommand("operator --help");
   }
-  return formatCliCommand(`openclaw ${commandPath.join(" ")} --help`);
+  return formatCliCommand(`operator ${commandPath.join(" ")} --help`);
 }
 
 function lines(...items: Array<string | undefined>): string {
@@ -40,7 +40,7 @@ function formatHelpHint(argv: string[] | undefined, options?: { root?: boolean }
 }
 
 function formatDocsHint(): string {
-  return `${theme.muted("Docs:")} ${formatDocsLink("/cli", "docs.openclaw.ai/cli")}`;
+  return `${theme.muted("Docs:")} ${formatDocsLink("/cli", "docs.operator.ai/cli")}`;
 }
 
 /** Convert Commander parse errors into OpenClaw-specific help and docs guidance. */
@@ -56,7 +56,7 @@ export function formatCliParseErrorOutput(
       theme.error(`OpenClaw does not know the command ${quote(command)}.`),
       formatCliCommandSuggestions(command),
       formatHelpHint(options.argv, { root: true }),
-      `${theme.muted("Plugin command?")} ${theme.command(formatCliCommand("openclaw plugins list"))}`,
+      `${theme.muted("Plugin command?")} ${theme.command(formatCliCommand("operator plugins list"))}`,
       formatDocsHint(),
     );
   }

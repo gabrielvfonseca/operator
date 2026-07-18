@@ -11,7 +11,7 @@ OpenClaw Discord channel plugin for channels, DMs, commands, and app events.
 
 ## Distribution
 
-- Package: `@openclaw/discord`
+- Package: `@operator/discord`
 - Install route: npm; ClawHub
 
 ## Surface

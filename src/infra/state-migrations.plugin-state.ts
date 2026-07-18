@@ -11,8 +11,8 @@ import {
   resolveLegacyInstalledPluginIndexStorePath,
   writePersistedInstalledPluginIndexSync,
 } from "../plugins/installed-plugin-index-store.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
-import { runOpenClawStateWriteTransaction } from "../state/openclaw-state-db.js";
+import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import { runOpenClawStateWriteTransaction } from "../state/operator-state-db.js";
 import {
   executeSqliteQuerySync,
   executeSqliteQueryTakeFirstSync,
@@ -130,7 +130,7 @@ export async function migrateLegacyPluginStateSidecar(params: {
           imported += 1;
         }
       },
-      { env: { ...process.env, OPENCLAW_STATE_DIR: params.stateDir } },
+      { env: { ...process.env, OPERATOR_STATE_DIR: params.stateDir } },
     );
     if (imported > 0) {
       changes.push(
@@ -249,15 +249,15 @@ async function withPluginStateImportEnv<T>(
   if (!plan.stateDir) {
     return await run();
   }
-  const previous = process.env.OPENCLAW_STATE_DIR;
-  process.env.OPENCLAW_STATE_DIR = plan.stateDir;
+  const previous = process.env.OPERATOR_STATE_DIR;
+  process.env.OPERATOR_STATE_DIR = plan.stateDir;
   try {
     return await run();
   } finally {
     if (previous === undefined) {
-      delete process.env.OPENCLAW_STATE_DIR;
+      delete process.env.OPERATOR_STATE_DIR;
     } else {
-      process.env.OPENCLAW_STATE_DIR = previous;
+      process.env.OPERATOR_STATE_DIR = previous;
     }
   }
 }

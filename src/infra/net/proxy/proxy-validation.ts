@@ -2,7 +2,7 @@
 // APNs destinations through an explicit HTTP(S) forward proxy.
 import { randomUUID } from "node:crypto";
 import { createServer, type Server } from "node:http";
-import { isHttpUrl } from "@openclaw/net-policy/url-protocol";
+import { isHttpUrl } from "@operator/net-policy/url-protocol";
 import type { ProxyConfig } from "../../../config/zod-schema.proxy.js";
 import { probeApnsHttp2ReachabilityViaProxy } from "../../push-apns-http2.js";
 import { fetchWithRuntimeDispatcher } from "../runtime-fetch.js";
@@ -17,7 +17,7 @@ const DEFAULT_PROXY_VALIDATION_ALLOWED_URLS = ["https://example.com/"] as const;
 const DEFAULT_PROXY_VALIDATION_APNS_AUTHORITY = "https://api.sandbox.push.apple.com";
 
 const DEFAULT_PROXY_VALIDATION_TIMEOUT_MS = 5000;
-const DENIED_CANARY_HEADER = "x-openclaw-proxy-validation-canary";
+const DENIED_CANARY_HEADER = "x-operator-proxy-validation-canary";
 const APNS_REACHABILITY_REASON = "InvalidProviderToken";
 
 /** Describes where the effective proxy validation URL came from. */
@@ -95,7 +95,7 @@ type ProxyValidationApnsCheck = (
 /** Inputs used to resolve proxy validation config before network probes run. */
 type ResolveProxyValidationConfigOptions = {
   config?: ProxyConfig;
-  env?: NodeJS.ProcessEnv | Partial<Record<"OPENCLAW_PROXY_URL", string | undefined>>;
+  env?: NodeJS.ProcessEnv | Partial<Record<"OPERATOR_PROXY_URL", string | undefined>>;
   proxyUrlOverride?: string;
   proxyCaFileOverride?: string;
 };
@@ -118,7 +118,7 @@ function normalizeProxyUrl(value: string | undefined): string | undefined {
 
 function validateProxyUrl(value: string | undefined): string[] {
   if (!value) {
-    return ["proxy validation requires proxy.proxyUrl, --proxy-url, or OPENCLAW_PROXY_URL"];
+    return ["proxy validation requires proxy.proxyUrl, --proxy-url, or OPERATOR_PROXY_URL"];
   }
   if (!isHttpUrl(value)) {
     return ["proxyUrl must use http:// or https://"];
@@ -131,7 +131,7 @@ function validateProxyEnabled(source: ProxyValidationConfigSource, enabled: bool
     return [];
   }
   if (source === "env") {
-    return ["proxy validation requires proxy.enabled to be true for OPENCLAW_PROXY_URL"];
+    return ["proxy validation requires proxy.enabled to be true for OPERATOR_PROXY_URL"];
   }
   return ["proxy validation requires proxy.enabled to be true for configured proxy URLs"];
 }
@@ -179,7 +179,7 @@ function resolveProxyValidationConfig(
     };
   }
 
-  const envUrl = normalizeProxyUrl(options.env?.OPENCLAW_PROXY_URL);
+  const envUrl = normalizeProxyUrl(options.env?.OPERATOR_PROXY_URL);
   if (envUrl) {
     const proxyCaFile = resolveManagedProxyCaFileForUrl({
       proxyUrl: envUrl,
@@ -207,7 +207,7 @@ function resolveProxyValidationConfig(
     enabled: false,
     source: "disabled",
     errors: [
-      "proxy validation requires proxy.enabled=true with proxy.proxyUrl or OPENCLAW_PROXY_URL, or --proxy-url",
+      "proxy validation requires proxy.enabled=true with proxy.proxyUrl or OPERATOR_PROXY_URL, or --proxy-url",
     ],
   };
 }

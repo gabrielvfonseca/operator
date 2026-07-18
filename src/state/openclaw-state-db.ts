@@ -33,19 +33,19 @@ import {
 } from "../infra/sqlite-wal.js";
 import { migrateLegacyCronRunLogsToTaskRuns } from "../infra/state-migrations.cron-run-logs.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
-import * as operatorApprovalMigration from "./openclaw-state-db-operator-approval-migration.js";
+import * as operatorApprovalMigration from "./operator-state-db-operator-approval-migration.js";
 import {
   ensureColumn,
   tableExists,
   tableHasColumn,
   tablePrimaryKeyColumns,
-} from "./openclaw-state-db-schema-helpers.js";
-import type { DB as OpenClawStateKyselyDatabase } from "./openclaw-state-db.generated.js";
+} from "./operator-state-db-schema-helpers.js";
+import type { DB as OpenClawStateKyselyDatabase } from "./operator-state-db.generated.js";
 import {
   resolveOpenClawStateSqliteDir,
   resolveOpenClawStateSqlitePath,
-} from "./openclaw-state-db.paths.js";
-import { OPENCLAW_STATE_SCHEMA_SQL } from "./openclaw-state-schema.generated.js";
+} from "./operator-state-db.paths.js";
+import { OPERATOR_STATE_SCHEMA_SQL } from "./operator-state-schema.generated.js";
 
 /**
  * Shared OpenClaw SQLite state database lifecycle and metadata writers.
@@ -55,12 +55,12 @@ import { OPENCLAW_STATE_SCHEMA_SQL } from "./openclaw-state-schema.generated.js"
  * migrations/backups that operate on local state.
  */
 // v3 rebuilds every OpenClaw-owned table with SQLite STRICT type enforcement.
-export const OPENCLAW_STATE_SCHEMA_VERSION = 3;
+export const OPERATOR_STATE_SCHEMA_VERSION = 3;
 /** Maximum time one synchronous SQLite call may wait for a lock. */
-export const OPENCLAW_SQLITE_BUSY_TIMEOUT_MS = 5_000;
-const OPENCLAW_STATE_DIR_MODE = 0o700;
-const OPENCLAW_STATE_FILE_MODE = 0o600;
-const OPENCLAW_STATE_CANONICAL_UNIQUE_INDEXES = [
+export const OPERATOR_SQLITE_BUSY_TIMEOUT_MS = 5_000;
+const OPERATOR_STATE_DIR_MODE = 0o700;
+const OPERATOR_STATE_FILE_MODE = 0o600;
+const OPERATOR_STATE_CANONICAL_UNIQUE_INDEXES = [
   {
     name: "idx_operator_approvals_resolution_ref",
     definition: "ON operator_approvals(resolution_ref)",
@@ -73,7 +73,7 @@ const OPENCLAW_STATE_CANONICAL_UNIQUE_INDEXES = [
     `,
   },
 ] as const satisfies readonly CanonicalSqliteUniqueIndex[];
-const OPENCLAW_STATE_MAINTENANCE_SCHEMA_COMPATIBILITY = {
+const OPERATOR_STATE_MAINTENANCE_SCHEMA_COMPATIBILITY = {
   allowedColumnDefinitions: {
     "commitments.attempts": ["attempts INTEGER NOT NULL DEFAULT 0"],
     "commitments.confidence": ["confidence REAL NOT NULL DEFAULT 0"],
@@ -124,12 +124,12 @@ const cachedDatabases = new Map<string, OpenClawStateDatabase>();
 type OpenClawStateMetadataDatabase = Pick<OpenClawStateKyselyDatabase, "schema_meta">;
 function assertSupportedSchemaVersion(db: DatabaseSync, pathname: string): void {
   const userVersion = readSqliteUserVersion(db);
-  if (userVersion > OPENCLAW_STATE_SCHEMA_VERSION) {
+  if (userVersion > OPERATOR_STATE_SCHEMA_VERSION) {
     throw createNewerSqliteSchemaVersionError(
       "OpenClaw state database",
       pathname,
       userVersion,
-      OPENCLAW_STATE_SCHEMA_VERSION,
+      OPERATOR_STATE_SCHEMA_VERSION,
     );
   }
 }
@@ -139,17 +139,17 @@ export function assertOpenClawStateDatabaseForMaintenance(
   options: { pathname: string },
 ): void {
   const userVersion = readSqliteUserVersion(database);
-  if (userVersion > OPENCLAW_STATE_SCHEMA_VERSION) {
+  if (userVersion > OPERATOR_STATE_SCHEMA_VERSION) {
     throw createNewerSqliteSchemaVersionError(
       "OpenClaw state database",
       options.pathname,
       userVersion,
-      OPENCLAW_STATE_SCHEMA_VERSION,
+      OPERATOR_STATE_SCHEMA_VERSION,
     );
   }
-  if (userVersion !== OPENCLAW_STATE_SCHEMA_VERSION) {
+  if (userVersion !== OPERATOR_STATE_SCHEMA_VERSION) {
     throw new Error(
-      `OpenClaw state database ${options.pathname} uses schema version ${userVersion}; run openclaw doctor --fix before compacting it.`,
+      `OpenClaw state database ${options.pathname} uses schema version ${userVersion}; run operator doctor --fix before compacting it.`,
     );
   }
 
@@ -162,18 +162,18 @@ export function assertOpenClawStateDatabaseForMaintenance(
       `OpenClaw state database ${options.pathname} has schema role ${role}; expected global.`,
     );
   }
-  if (metadata.schema_version !== OPENCLAW_STATE_SCHEMA_VERSION) {
+  if (metadata.schema_version !== OPERATOR_STATE_SCHEMA_VERSION) {
     const schemaVersion =
       typeof metadata.schema_version === "number" ? metadata.schema_version : "invalid";
     throw new Error(
-      `OpenClaw state database ${options.pathname} metadata schema version ${schemaVersion} does not match ${OPENCLAW_STATE_SCHEMA_VERSION}; run openclaw doctor --fix before compacting it.`,
+      `OpenClaw state database ${options.pathname} metadata schema version ${schemaVersion} does not match ${OPERATOR_STATE_SCHEMA_VERSION}; run operator doctor --fix before compacting it.`,
     );
   }
   assertSqliteSchemaContains(
     database,
     options.pathname,
-    OPENCLAW_STATE_SCHEMA_SQL,
-    OPENCLAW_STATE_MAINTENANCE_SCHEMA_COMPATIBILITY,
+    OPERATOR_STATE_SCHEMA_SQL,
+    OPERATOR_STATE_MAINTENANCE_SCHEMA_COMPATIBILITY,
   );
 }
 
@@ -204,14 +204,14 @@ export function ensureOpenClawStatePermissions(pathname: string, env: NodeJS.Pro
     throw new Error(`OpenClaw state database path resolved outside its state dir: ${pathname}`);
   }
   const dirExisted = existsSync(dir);
-  mkdirSync(dir, { recursive: true, mode: OPENCLAW_STATE_DIR_MODE });
+  mkdirSync(dir, { recursive: true, mode: OPERATOR_STATE_DIR_MODE });
   // Default state contains credentials-adjacent metadata; custom existing dirs keep caller modes.
   if (isDefaultStateDatabase || !dirExisted) {
-    bestEffortChmodSync(dir, OPENCLAW_STATE_DIR_MODE);
+    bestEffortChmodSync(dir, OPERATOR_STATE_DIR_MODE);
   }
   for (const candidate of resolveSqliteDatabaseFilePaths(pathname)) {
     if (existsSync(candidate)) {
-      bestEffortChmodSync(candidate, OPENCLAW_STATE_FILE_MODE);
+      bestEffortChmodSync(candidate, OPERATOR_STATE_FILE_MODE);
     }
   }
 }
@@ -726,7 +726,7 @@ function markCurrentStateSchemaVersion(db: DatabaseSync): void {
   if (!tableExists(db, "audit_events")) {
     return;
   }
-  db.exec(`PRAGMA user_version = ${OPENCLAW_STATE_SCHEMA_VERSION};`);
+  db.exec(`PRAGMA user_version = ${OPERATOR_STATE_SCHEMA_VERSION};`);
   if (
     tableExists(db, "schema_meta") &&
     ["meta_key", "schema_version", "updated_at"].every((column) =>
@@ -735,7 +735,7 @@ function markCurrentStateSchemaVersion(db: DatabaseSync): void {
   ) {
     db.prepare(
       "UPDATE schema_meta SET schema_version = ?, updated_at = ? WHERE meta_key = 'primary'",
-    ).run(OPENCLAW_STATE_SCHEMA_VERSION, Date.now());
+    ).run(OPERATOR_STATE_SCHEMA_VERSION, Date.now());
   }
 }
 
@@ -743,13 +743,13 @@ function assertCanonicalStateSchemaShape(db: DatabaseSync, pathname: string): vo
   operatorApprovalMigration.assertCanonicalOperatorApprovalKinds(db, pathname);
   if (!hasCanonicalAgentDatabasesPrimaryKey(db)) {
     throw new Error(
-      `OpenClaw state database ${pathname} has a legacy agent database registry schema; run openclaw doctor --fix to migrate it.`,
+      `OpenClaw state database ${pathname} has a legacy agent database registry schema; run operator doctor --fix to migrate it.`,
     );
   }
   if (!hasCanonicalAuditEventsSchema(db)) {
     if (canRepairLegacyAuditEventsSchema(db)) {
       throw new Error(
-        `OpenClaw state database ${pathname} has a legacy audit event schema; run openclaw doctor --fix to migrate it.`,
+        `OpenClaw state database ${pathname} has a legacy audit event schema; run operator doctor --fix to migrate it.`,
       );
     }
     throw new Error(
@@ -776,7 +776,7 @@ export function detectOpenClawStateDatabaseSchemaMigrations(
     }
     if (
       tableExists(db, "audit_events") &&
-      readSqliteUserVersion(db) < OPENCLAW_STATE_SCHEMA_VERSION
+      readSqliteUserVersion(db) < OPERATOR_STATE_SCHEMA_VERSION
     ) {
       migrations.push({ kind: "strict-tables-v3", path: pathname });
     }
@@ -821,10 +821,10 @@ export function repairOpenClawStateDatabaseSchema(options: OpenClawStateDatabase
         assertCanonicalStateSchemaShape(db, pathname);
         if (tableExists(db, "audit_events")) {
           ensureAdditiveStateColumns(db);
-          db.exec(OPENCLAW_STATE_SCHEMA_SQL);
+          db.exec(OPERATOR_STATE_SCHEMA_SQL);
           const strictMigration = migrateSqliteSchemaToStrictInTransaction(
             db,
-            OPENCLAW_STATE_SCHEMA_SQL,
+            OPERATOR_STATE_SCHEMA_SQL,
             { databaseLabel: pathname },
           );
           if (strictMigration.migratedTables.length > 0) {
@@ -837,7 +837,7 @@ export function repairOpenClawStateDatabaseSchema(options: OpenClawStateDatabase
         return applied;
       },
       {
-        busyTimeoutMs: OPENCLAW_SQLITE_BUSY_TIMEOUT_MS,
+        busyTimeoutMs: OPERATOR_SQLITE_BUSY_TIMEOUT_MS,
         databaseLabel: pathname,
         operationLabel: "state.schema.repair",
       },
@@ -892,7 +892,7 @@ function ensureStartupMigrationCheckpointSchema(db: DatabaseSync, pathname: stri
       ensureColumn(db, "schema_meta", "app_version TEXT");
     },
     {
-      busyTimeoutMs: OPENCLAW_SQLITE_BUSY_TIMEOUT_MS,
+      busyTimeoutMs: OPERATOR_SQLITE_BUSY_TIMEOUT_MS,
       databaseLabel: pathname,
       operationLabel: "state.schema.ensure-startup-checkpoint",
     },
@@ -1539,7 +1539,7 @@ function ensureAdditiveStateColumns(db: DatabaseSync): void {
   ensureColumn(db, "task_runs", "detail_json TEXT");
   ensureColumn(db, "subagent_runs", "task_name TEXT");
   ensureColumn(db, "worker_environments", "bootstrap_bundle_hash TEXT");
-  ensureColumn(db, "worker_environments", "bootstrap_openclaw_version TEXT");
+  ensureColumn(db, "worker_environments", "bootstrap_operator_version TEXT");
   ensureColumn(db, "worker_environments", "bootstrap_protocol_features_json TEXT");
   ensureColumn(
     db,
@@ -1568,21 +1568,21 @@ function ensureSchema(db: DatabaseSync, pathname: string): void {
         const previousVersion = readSqliteUserVersion(db);
         ensureAdditiveStateColumns(db);
         assertCanonicalStateSchemaShape(db, pathname);
-        db.exec(OPENCLAW_STATE_SCHEMA_SQL);
+        db.exec(OPERATOR_STATE_SCHEMA_SQL);
         migrateLegacyCronRunLogsToTaskRuns(db);
-        if (previousVersion < OPENCLAW_STATE_SCHEMA_VERSION) {
-          migrateSqliteSchemaToStrictInTransaction(db, OPENCLAW_STATE_SCHEMA_SQL, {
+        if (previousVersion < OPERATOR_STATE_SCHEMA_VERSION) {
+          migrateSqliteSchemaToStrictInTransaction(db, OPERATOR_STATE_SCHEMA_SQL, {
             databaseLabel: pathname,
           });
         }
-        repairCanonicalSqliteUniqueIndexes(db, pathname, OPENCLAW_STATE_CANONICAL_UNIQUE_INDEXES);
+        repairCanonicalSqliteUniqueIndexes(db, pathname, OPERATOR_STATE_CANONICAL_UNIQUE_INDEXES);
         // Retired node_pairing_* tables were created by earlier schema revisions but
         // never had a shipped writer (the node surface lives on device_pairing_paired
         // records), so dropping the always-empty tables is safe, not destructive.
         db.exec(
           "DROP TABLE IF EXISTS node_pairing_pending; DROP TABLE IF EXISTS node_pairing_paired;",
         );
-        db.exec(`PRAGMA user_version = ${OPENCLAW_STATE_SCHEMA_VERSION};`);
+        db.exec(`PRAGMA user_version = ${OPERATOR_STATE_SCHEMA_VERSION};`);
         executeSqliteQuerySync(
           db,
           kysely
@@ -1590,7 +1590,7 @@ function ensureSchema(db: DatabaseSync, pathname: string): void {
             .values({
               meta_key: "primary",
               role: "global",
-              schema_version: OPENCLAW_STATE_SCHEMA_VERSION,
+              schema_version: OPERATOR_STATE_SCHEMA_VERSION,
               agent_id: null,
               app_version: null,
               created_at: now,
@@ -1599,7 +1599,7 @@ function ensureSchema(db: DatabaseSync, pathname: string): void {
             .onConflict((conflict) =>
               conflict.column("meta_key").doUpdateSet({
                 role: "global",
-                schema_version: OPENCLAW_STATE_SCHEMA_VERSION,
+                schema_version: OPERATOR_STATE_SCHEMA_VERSION,
                 agent_id: null,
                 app_version: null,
                 updated_at: now,
@@ -1608,7 +1608,7 @@ function ensureSchema(db: DatabaseSync, pathname: string): void {
         );
       },
       {
-        busyTimeoutMs: OPENCLAW_SQLITE_BUSY_TIMEOUT_MS,
+        busyTimeoutMs: OPERATOR_SQLITE_BUSY_TIMEOUT_MS,
         databaseLabel: pathname,
         operationLabel: "state.schema.ensure",
       },
@@ -1626,7 +1626,7 @@ function assertStateDatabaseIntegrityBeforeMutation(
   database: DatabaseSync,
   pathname: string,
 ): void {
-  database.exec(`PRAGMA busy_timeout = ${OPENCLAW_SQLITE_BUSY_TIMEOUT_MS};`);
+  database.exec(`PRAGMA busy_timeout = ${OPERATOR_SQLITE_BUSY_TIMEOUT_MS};`);
   // A writable handle lets SQLite recover a hot journal or WAL after an
   // interrupted writer. OpenClaw mutations start only after recovery and a
   // full table/index consistency check both succeed.
@@ -1658,11 +1658,11 @@ export function openOpenClawStateDatabase(
     try {
       assertStateDatabaseIntegrityBeforeMutation(db, pathname);
       configureSqlitePreSchemaPragmas(db, {
-        busyTimeoutMs: OPENCLAW_SQLITE_BUSY_TIMEOUT_MS,
+        busyTimeoutMs: OPERATOR_SQLITE_BUSY_TIMEOUT_MS,
       });
       maintenance = configureSqliteConnectionPragmas(db, {
-        busyTimeoutMs: OPENCLAW_SQLITE_BUSY_TIMEOUT_MS,
-        databaseLabel: "openclaw-state",
+        busyTimeoutMs: OPERATOR_SQLITE_BUSY_TIMEOUT_MS,
+        databaseLabel: "operator-state",
         databasePath: pathname,
         foreignKeys: true,
         synchronous: "NORMAL",
@@ -1688,7 +1688,7 @@ export function runOpenClawStateWriteTransaction<T>(
 ): T {
   const database = openOpenClawStateDatabase(options);
   const result = runSqliteImmediateTransactionSync(database.db, () => operation(database), {
-    busyTimeoutMs: OPENCLAW_SQLITE_BUSY_TIMEOUT_MS,
+    busyTimeoutMs: OPERATOR_SQLITE_BUSY_TIMEOUT_MS,
     databaseLabel: database.path,
     operationLabel: "state.write",
   });

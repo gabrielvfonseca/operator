@@ -11,8 +11,8 @@ Adds agent-callable tools. Adds web fetch provider support. Adds web search prov
 
 ## Distribution
 
-- Package: `@openclaw/firecrawl-plugin`
-- Install route: npm; ClawHub: `clawhub:@openclaw/firecrawl-plugin`
+- Package: `@operator/firecrawl-plugin`
+- Install route: npm; ClawHub: `clawhub:@operator/firecrawl-plugin`
 
 ## Surface
 

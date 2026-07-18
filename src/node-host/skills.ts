@@ -90,7 +90,7 @@ export function scanNodeHostedSkills(
   for (const candidate of candidates) {
     const loaded = loadSkillsFromDirSafe({
       dir: path.dirname(candidate),
-      source: "openclaw-node",
+      source: "operator-node",
       maxBytes: NODE_SKILL_MAX_CONTENT_BYTES,
     });
     const skill = loaded.skills.find(

@@ -11,7 +11,7 @@ Adds Together model provider support to OpenClaw.
 
 ## Distribution
 
-- Package: `@openclaw/together-provider`
+- Package: `@operator/together-provider`
 - Install route: included in OpenClaw
 
 ## Surface

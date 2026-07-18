@@ -326,7 +326,7 @@ export function isBoundaryCompileFresh(extensionId, params = {}) {
       collectNewestMtime(resolve(rootDir, "dist/plugin-sdk"), {
         skipDistDirectories: false,
       }),
-      collectNewestMtime(resolve(rootDir, "packages/plugin-sdk/dist"), {
+      collectNewestMtime(resolve(rootDir, "sdks/plugin-sdk/dist"), {
         skipDistDirectories: false,
       }),
     );
@@ -819,7 +819,7 @@ async function runCompileCheck(extensionIds) {
     collectNewestMtime(resolve(repoRoot, "dist/plugin-sdk"), {
       skipDistDirectories: false,
     }),
-    collectNewestMtime(resolve(repoRoot, "packages/plugin-sdk/dist"), {
+    collectNewestMtime(resolve(repoRoot, "sdks/plugin-sdk/dist"), {
       skipDistDirectories: false,
     }),
   );

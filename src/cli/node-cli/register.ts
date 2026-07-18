@@ -1,5 +1,5 @@
 // Commander registration for foreground node host and node service lifecycle commands.
-import { normalizeOptionalString } from "@openclaw/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 import type { Command } from "commander";
 import { formatDocsLink } from "../../../packages/terminal-core/src/links.js";
 import { theme } from "../../../packages/terminal-core/src/theme.js";
@@ -37,14 +37,14 @@ export function registerNodeCli(program: Command) {
       () =>
         `\n${theme.heading("Examples:")}\n${formatHelpExamples([
           [
-            "openclaw node run --host 127.0.0.1 --port 18789",
+            "operator node run --host 127.0.0.1 --port 18789",
             "Run the node host in the foreground.",
           ],
-          ["openclaw node status", "Check node host service status."],
-          ["openclaw node install", "Install the node host service."],
-          ["openclaw node start", "Start the installed node host service."],
-          ["openclaw node restart", "Restart the installed node host service."],
-        ])}\n\n${theme.muted("Docs:")} ${formatDocsLink("/cli/node", "docs.openclaw.ai/cli/node")}\n`,
+          ["operator node status", "Check node host service status."],
+          ["operator node install", "Install the node host service."],
+          ["operator node start", "Start the installed node host service."],
+          ["operator node restart", "Restart the installed node host service."],
+        ])}\n\n${theme.muted("Docs:")} ${formatDocsLink("/cli/node", "docs.operator.ai/cli/node")}\n`,
     );
 
   node
@@ -59,7 +59,7 @@ export function registerNodeCli(program: Command) {
     .description("Run the headless node host (foreground)")
     .option("--host <host>", "Gateway host")
     .option("--port <port>", "Gateway port")
-    .option("--context-path <path>", "Gateway WebSocket context path (e.g. /openclaw-gw)")
+    .option("--context-path <path>", "Gateway WebSocket context path (e.g. /operator-gw)")
     .option("--tls", "Use TLS for the gateway connection")
     .option("--no-tls", "Disable TLS for the gateway connection")
     .option("--tls-fingerprint <sha256>", "Expected TLS certificate fingerprint (sha256)")
@@ -125,7 +125,7 @@ export function registerNodeCli(program: Command) {
     .description("Install the node host service (launchd/systemd/schtasks)")
     .option("--host <host>", "Gateway host")
     .option("--port <port>", "Gateway port")
-    .option("--context-path <path>", "Gateway WebSocket context path (e.g. /openclaw-gw)")
+    .option("--context-path <path>", "Gateway WebSocket context path (e.g. /operator-gw)")
     .option("--tls", "Use TLS for the gateway connection", false)
     .option("--tls-fingerprint <sha256>", "Expected TLS certificate fingerprint (sha256)")
     .option("--node-id <id>", "Override the generated node instance id")

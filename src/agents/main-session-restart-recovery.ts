@@ -4,7 +4,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { normalizeOptionalString } from "@openclaw/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 import { isSilentReplyPayloadText, SILENT_REPLY_TOKEN } from "../auto-reply/tokens.js";
 import { resolveStateDir } from "../config/paths.js";
 import {
@@ -24,7 +24,7 @@ import {
   type SessionTranscriptTurnLifecyclePatch,
 } from "../config/sessions/session-accessor.js";
 import { appendAssistantMessageToSessionTranscript } from "../config/sessions/transcript.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import type { GatewayRecoveryRuntime } from "../gateway/server-instance-runtime.types.js";
 import { readSessionMessagesAsync } from "../gateway/session-transcript-readers.js";
 import { resolveGatewaySessionStoreTarget } from "../gateway/session-utils.js";
@@ -191,7 +191,7 @@ export async function markRestartAbortedMainSessions(params: {
   const env =
     params.stateDir === undefined
       ? process.env
-      : { ...process.env, OPENCLAW_STATE_DIR: params.stateDir };
+      : { ...process.env, OPERATOR_STATE_DIR: params.stateDir };
   const stateDir = resolveStateDir(env);
   const configs = [params.cfg, ...(params.additionalCfgs ?? [])].filter(
     (cfg): cfg is OpenClawConfig => Boolean(cfg),
@@ -559,7 +559,7 @@ function isExactMessageToolDeliveryMirror(params: {
   if (!params.message || typeof params.message !== "object") {
     return false;
   }
-  const marker = (params.message as { openclawDeliveryMirror?: unknown }).openclawDeliveryMirror;
+  const marker = (params.message as { operatorDeliveryMirror?: unknown }).operatorDeliveryMirror;
   if (!marker || typeof marker !== "object") {
     return false;
   }
@@ -680,7 +680,7 @@ function readDeliveredTerminalSourceReplyToolCallId(
     if (!message || typeof message !== "object" || getMessageRole(message) !== "assistant") {
       continue;
     }
-    const marker = (message as { openclawDeliveryMirror?: unknown }).openclawDeliveryMirror;
+    const marker = (message as { operatorDeliveryMirror?: unknown }).operatorDeliveryMirror;
     if (!marker || typeof marker !== "object") {
       continue;
     }
@@ -1825,7 +1825,7 @@ async function resolveRestartRecoveryStorePaths(params: {
     storePaths.add(path.join(sessionsDir, "sessions.json"));
   }
   if (params.cfg) {
-    const env = { ...process.env, OPENCLAW_STATE_DIR: stateDir };
+    const env = { ...process.env, OPERATOR_STATE_DIR: stateDir };
     for (const target of resolveAllAgentSessionStoreTargetsSync(params.cfg, { env })) {
       storePaths.add(path.resolve(target.storePath));
     }

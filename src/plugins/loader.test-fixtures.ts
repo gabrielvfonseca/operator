@@ -32,10 +32,10 @@ export function mkdirSafe(dir: string) {
   chmodSafeDir(dir);
 }
 
-const fixtureRoot = mkdtempSafe(path.join(os.tmpdir(), "openclaw-plugin-"));
+const fixtureRoot = mkdtempSafe(path.join(os.tmpdir(), "operator-plugin-"));
 let tempDirIndex = 0;
-const prevBundledDir = process.env.OPENCLAW_BUNDLED_PLUGINS_DIR;
-const prevDisableBundledPlugins = process.env.OPENCLAW_DISABLE_BUNDLED_PLUGINS;
+const prevBundledDir = process.env.OPERATOR_BUNDLED_PLUGINS_DIR;
+const prevDisableBundledPlugins = process.env.OPERATOR_DISABLE_BUNDLED_PLUGINS;
 
 export const EMPTY_PLUGIN_SCHEMA = {
   type: "object",
@@ -93,7 +93,7 @@ export function writePlugin(params: {
   const file = path.join(dir, filename);
   fs.writeFileSync(file, params.body, "utf-8");
   fs.writeFileSync(
-    path.join(dir, "openclaw.plugin.json"),
+    path.join(dir, "operator.plugin.json"),
     JSON.stringify(
       {
         id: params.id,
@@ -108,8 +108,8 @@ export function writePlugin(params: {
 }
 
 export function useNoBundledPlugins() {
-  process.env.OPENCLAW_DISABLE_BUNDLED_PLUGINS = "1";
-  delete process.env.OPENCLAW_BUNDLED_PLUGINS_DIR;
+  process.env.OPERATOR_DISABLE_BUNDLED_PLUGINS = "1";
+  delete process.env.OPERATOR_BUNDLED_PLUGINS_DIR;
 }
 
 export function loadBundleFixture(params: {
@@ -121,9 +121,9 @@ export function loadBundleFixture(params: {
   useNoBundledPlugins();
   const workspaceDir = makeTempDir();
   const stateDir = makeTempDir();
-  const bundleRoot = path.join(workspaceDir, ".openclaw", "extensions", params.pluginId);
+  const bundleRoot = path.join(workspaceDir, ".operator", "extensions", params.pluginId);
   params.build(bundleRoot);
-  return withEnv({ OPENCLAW_STATE_DIR: stateDir, ...params.env }, () =>
+  return withEnv({ OPERATOR_STATE_DIR: stateDir, ...params.env }, () =>
     loadOpenClawPlugins({
       workspaceDir,
       onlyPluginIds: params.onlyPluginIds ?? [params.pluginId],
@@ -146,14 +146,14 @@ export function resetPluginLoaderTestStateForTest() {
   resetPluginRuntimeStateForTest();
   resetDiagnosticEventsForTest();
   if (prevBundledDir === undefined) {
-    delete process.env.OPENCLAW_BUNDLED_PLUGINS_DIR;
+    delete process.env.OPERATOR_BUNDLED_PLUGINS_DIR;
   } else {
-    process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = prevBundledDir;
+    process.env.OPERATOR_BUNDLED_PLUGINS_DIR = prevBundledDir;
   }
   if (prevDisableBundledPlugins === undefined) {
-    delete process.env.OPENCLAW_DISABLE_BUNDLED_PLUGINS;
+    delete process.env.OPERATOR_DISABLE_BUNDLED_PLUGINS;
   } else {
-    process.env.OPENCLAW_DISABLE_BUNDLED_PLUGINS = prevDisableBundledPlugins;
+    process.env.OPERATOR_DISABLE_BUNDLED_PLUGINS = prevDisableBundledPlugins;
   }
 }
 
@@ -171,8 +171,8 @@ export function cleanupPluginLoaderFixturesForTest() {
     // ignore cleanup failures in tests
   }
   if (prevDisableBundledPlugins === undefined) {
-    delete process.env.OPENCLAW_DISABLE_BUNDLED_PLUGINS;
+    delete process.env.OPERATOR_DISABLE_BUNDLED_PLUGINS;
   } else {
-    process.env.OPENCLAW_DISABLE_BUNDLED_PLUGINS = prevDisableBundledPlugins;
+    process.env.OPERATOR_DISABLE_BUNDLED_PLUGINS = prevDisableBundledPlugins;
   }
 }

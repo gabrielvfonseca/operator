@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { KeyedAsyncQueue } from "openclaw/plugin-sdk/keyed-async-queue";
+import { KeyedAsyncQueue } from "operator/plugin-sdk/keyed-async-queue";
 // OpenClaw gateway methods host the setup/repair conversation for clients.
 import {
   ErrorCodes,
@@ -34,8 +34,8 @@ import type { GatewayRequestContext, GatewayRequestHandlers } from "./types.js";
 import { assertValidParams } from "./validation.js";
 
 /**
- * `openclaw.chat` lets clients (macOS app onboarding, future UIs) run the
- * same conversational setup as `openclaw setup`. Structured setup owns
+ * `operator.chat` lets clients (macOS app onboarding, future UIs) run the
+ * same conversational setup as `operator setup`. Structured setup owns
  * the pre-inference phase; a new chat session starts only after a live model
  * turn succeeds.
  *
@@ -169,7 +169,7 @@ function queueDelegatedApproval(params: {
     decisionPromise,
     respond: () => undefined,
     context: params.context,
-    requestEventName: "openclaw.approval.requested",
+    requestEventName: "operator.approval.requested",
     requestEvent,
     twoPhase: true,
     deliverRequest: () => false,
@@ -190,7 +190,7 @@ function queueDelegatedApproval(params: {
 }
 
 export const systemAgentHandlers: GatewayRequestHandlers = {
-  "openclaw.approval.list": async ({ respond, client, context }) => {
+  "operator.approval.list": async ({ respond, client, context }) => {
     const manager = context.systemAgentApprovalManager;
     respond(
       true,
@@ -199,12 +199,12 @@ export const systemAgentHandlers: GatewayRequestHandlers = {
     );
   },
   /** Structured onboarding: list reusable AI access on this host. */
-  "openclaw.setup.detect": async ({ params, respond }) => {
+  "operator.setup.detect": async ({ params, respond }) => {
     if (
       !assertValidParams(
         params,
         validateSystemAgentSetupDetectParams,
-        "openclaw.setup.detect",
+        "operator.setup.detect",
         respond,
       )
     ) {
@@ -216,12 +216,12 @@ export const systemAgentHandlers: GatewayRequestHandlers = {
     });
   },
   /** Re-run the exact current default-agent inference route without mutating setup. */
-  "openclaw.setup.verify": async ({ params, respond }) => {
+  "operator.setup.verify": async ({ params, respond }) => {
     if (
       !assertValidParams(
         params,
         validateSystemAgentSetupVerifyParams,
-        "openclaw.setup.verify",
+        "operator.setup.verify",
         respond,
       )
     ) {
@@ -233,12 +233,12 @@ export const systemAgentHandlers: GatewayRequestHandlers = {
     });
   },
   /** Start one provider-owned OAuth/device-code login over the shared wizard transport. */
-  "openclaw.setup.auth.start": async ({ params, respond, context }) => {
+  "operator.setup.auth.start": async ({ params, respond, context }) => {
     if (
       !assertValidParams(
         params,
         validateSystemAgentSetupAuthStartParams,
-        "openclaw.setup.auth.start",
+        "operator.setup.auth.start",
         respond,
       )
     ) {
@@ -293,12 +293,12 @@ export const systemAgentHandlers: GatewayRequestHandlers = {
    * queueing work that could outlive their RPC timeout. A failed attempt never
    * commits a broken model, managed plugin install, or setup state.
    */
-  "openclaw.setup.activate": async ({ params, respond }) => {
+  "operator.setup.activate": async ({ params, respond }) => {
     if (
       !assertValidParams(
         params,
         validateSystemAgentSetupActivateParams,
-        "openclaw.setup.activate",
+        "operator.setup.activate",
         respond,
       )
     ) {
@@ -339,8 +339,8 @@ export const systemAgentHandlers: GatewayRequestHandlers = {
       );
     }
   },
-  "openclaw.chat": async ({ params, respond, context }) => {
-    if (!assertValidParams(params, validateSystemAgentChatParams, "openclaw.chat", respond)) {
+  "operator.chat": async ({ params, respond, context }) => {
+    if (!assertValidParams(params, validateSystemAgentChatParams, "operator.chat", respond)) {
       return;
     }
     await runSystemAgentGatewayTask(async () => {

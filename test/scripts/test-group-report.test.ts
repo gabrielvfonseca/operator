@@ -4,7 +4,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { expectDefined } from "@openclaw/normalization-core";
+import { expectDefined } from "@operator/normalization-core";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import {
   buildGroupedTestComparison,
@@ -133,7 +133,7 @@ describe("scripts/test-group-report grouping", () => {
   it("groups repo files by stable product area", () => {
     expect(resolveTestArea("extensions/discord/src/send.test.ts")).toBe("extensions/discord");
     expect(resolveTestArea("src/commands/agent.test.ts")).toBe("src/commands");
-    expect(resolveTestArea("packages/plugin-sdk/src/index.test.ts")).toBe("packages/plugin-sdk");
+    expect(resolveTestArea("sdks/plugin-sdk/src/index.test.ts")).toBe("sdks/plugin-sdk");
     expect(resolveTestArea("ui/src/ui/views/chat.test.ts")).toBe("ui/views");
     expect(resolveTestArea("test/scripts/test-group-report.test.ts")).toBe("test/scripts");
   });

@@ -24,28 +24,28 @@ type PublishablePluginPackage = {
 
 const execFileAsync = promisify(execFile);
 const REQUIRED_REVIEWED_PUBLISHABLE_CRITICAL_FINDINGS = new Set([
-  "@openclaw/acpx:dangerous-exec:src/codex-auth-bridge.ts",
-  "@openclaw/acpx:dangerous-exec:src/runtime-internals/mcp-proxy.mjs",
-  "@openclaw/codex:dangerous-exec:src/app-server/sandbox-exec-server/http.ts",
-  "@openclaw/codex:dangerous-exec:src/app-server/sandbox-exec-server/processes.ts",
-  "@openclaw/codex:dangerous-exec:src/app-server/transport-stdio.ts",
-  "@openclaw/codex:dangerous-exec:src/node-cli-sessions.ts",
-  "@openclaw/discord:dangerous-exec:src/voice/audio.ts",
-  "@openclaw/google-meet:dangerous-exec:src/node-host.ts",
-  "@openclaw/google-meet:dangerous-exec:src/realtime.ts",
-  "@openclaw/mxc-sandbox:dangerous-exec:src/readiness.ts",
-  "@openclaw/raft:dangerous-exec:src/gateway.ts",
-  "@openclaw/signal:dangerous-exec:src/daemon.ts",
-  "@openclaw/voice-call:dangerous-exec:src/tunnel.ts",
+  "@operator/acpx:dangerous-exec:src/codex-auth-bridge.ts",
+  "@operator/acpx:dangerous-exec:src/runtime-internals/mcp-proxy.mjs",
+  "@operator/codex:dangerous-exec:src/app-server/sandbox-exec-server/http.ts",
+  "@operator/codex:dangerous-exec:src/app-server/sandbox-exec-server/processes.ts",
+  "@operator/codex:dangerous-exec:src/app-server/transport-stdio.ts",
+  "@operator/codex:dangerous-exec:src/node-cli-sessions.ts",
+  "@operator/discord:dangerous-exec:src/voice/audio.ts",
+  "@operator/google-meet:dangerous-exec:src/node-host.ts",
+  "@operator/google-meet:dangerous-exec:src/realtime.ts",
+  "@operator/mxc-sandbox:dangerous-exec:src/readiness.ts",
+  "@operator/raft:dangerous-exec:src/gateway.ts",
+  "@operator/signal:dangerous-exec:src/daemon.ts",
+  "@operator/voice-call:dangerous-exec:src/tunnel.ts",
 ]);
 
 const OPTIONAL_REVIEWED_PUBLISHABLE_DIST_CRITICAL_FINDINGS = new Set([
-  "@openclaw/acpx:dangerous-exec:dist/mcp-proxy.mjs",
-  "@openclaw/acpx:dangerous-exec:dist/service-<hash>.js",
-  "@openclaw/codex:dangerous-exec:dist/client-<hash>.js",
-  "@openclaw/google-meet:dangerous-exec:dist/index.js",
-  "@openclaw/slack:dynamic-code-execution:dist/outbound-payload.test-harness-<hash>.js",
-  "@openclaw/voice-call:dangerous-exec:dist/runtime-entry-<hash>.js",
+  "@operator/acpx:dangerous-exec:dist/mcp-proxy.mjs",
+  "@operator/acpx:dangerous-exec:dist/service-<hash>.js",
+  "@operator/codex:dangerous-exec:dist/client-<hash>.js",
+  "@operator/google-meet:dangerous-exec:dist/index.js",
+  "@operator/slack:dynamic-code-execution:dist/outbound-payload.test-harness-<hash>.js",
+  "@operator/voice-call:dangerous-exec:dist/runtime-entry-<hash>.js",
 ]);
 
 function parseNpmPackFiles(raw: string, packageName: string): string[] {

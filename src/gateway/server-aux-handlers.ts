@@ -1,7 +1,7 @@
 // Gateway auxiliary method handlers.
 // Wires reload, secrets, exec approval, and plugin approval RPC handlers.
 import { randomUUID } from "node:crypto";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import { isTruthyEnvValue } from "../infra/env.js";
 import { createExecApprovalForwarder } from "../infra/exec-approval-forwarder.js";
 import {
@@ -355,8 +355,8 @@ export function createGatewayAuxHandlers(params: {
                 if (plan.restartChannels.size > 0) {
                   const restartChannels = [...plan.restartChannels];
                   if (
-                    isTruthyEnvValue(process.env.OPENCLAW_SKIP_CHANNELS) ||
-                    isTruthyEnvValue(process.env.OPENCLAW_SKIP_PROVIDERS)
+                    isTruthyEnvValue(process.env.OPERATOR_SKIP_CHANNELS) ||
+                    isTruthyEnvValue(process.env.OPERATOR_SKIP_PROVIDERS)
                   ) {
                     throw new Error(
                       `secrets.reload requires restarting channels: ${restartChannels.join(", ")}`,

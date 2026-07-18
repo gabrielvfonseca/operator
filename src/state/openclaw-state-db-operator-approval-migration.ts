@@ -1,8 +1,8 @@
 // Doctor-only repair for the operator approval kind constraint.
 import type { DatabaseSync } from "node:sqlite";
 import { runSqliteImmediateTransactionSync } from "../infra/sqlite-transaction.js";
-import { tableExists } from "./openclaw-state-db-schema-helpers.js";
-import { OPENCLAW_STATE_SCHEMA_SQL } from "./openclaw-state-schema.generated.js";
+import { tableExists } from "./operator-state-db-schema-helpers.js";
+import { OPERATOR_STATE_SCHEMA_SQL } from "./operator-state-schema.generated.js";
 
 const COLUMNS = [
   "approval_id",
@@ -53,7 +53,7 @@ function hasCanonicalOperatorApprovalKinds(db: DatabaseSync): boolean {
 export function assertCanonicalOperatorApprovalKinds(db: DatabaseSync, pathname: string): void {
   if (!hasCanonicalOperatorApprovalKinds(db)) {
     throw new Error(
-      `OpenClaw state database ${pathname} has a legacy operator approval schema; run openclaw doctor --fix to migrate it.`,
+      `OpenClaw state database ${pathname} has a legacy operator approval schema; run operator doctor --fix to migrate it.`,
     );
   }
 }
@@ -78,15 +78,15 @@ function normalizeDdl(sql: string): string {
 function canonicalOperatorApprovalCreateSql(): string {
   const marker = "CREATE TABLE IF NOT EXISTS operator_approvals (";
   const tableTerminator = "\n) STRICT;";
-  const start = OPENCLAW_STATE_SCHEMA_SQL.indexOf(marker);
-  const end = OPENCLAW_STATE_SCHEMA_SQL.indexOf(
+  const start = OPERATOR_STATE_SCHEMA_SQL.indexOf(marker);
+  const end = OPERATOR_STATE_SCHEMA_SQL.indexOf(
     `${tableTerminator}\n\nCREATE INDEX IF NOT EXISTS idx_operator_approvals_status_expiry`,
     start,
   );
   if (start < 0 || end < 0) {
     throw new Error("canonical operator approval schema is unavailable");
   }
-  return OPENCLAW_STATE_SCHEMA_SQL.slice(start, end + tableTerminator.length);
+  return OPERATOR_STATE_SCHEMA_SQL.slice(start, end + tableTerminator.length);
 }
 
 // The only legacy shape this repair may destructively replace is the exact
@@ -136,7 +136,7 @@ function repairOperatorApprovalKinds(db: DatabaseSync): boolean {
       DROP TABLE operator_approvals;
       ALTER TABLE operator_approvals_migration_new RENAME TO operator_approvals;
     `);
-    db.exec(OPENCLAW_STATE_SCHEMA_SQL);
+    db.exec(OPERATOR_STATE_SCHEMA_SQL);
   });
   return true;
 }

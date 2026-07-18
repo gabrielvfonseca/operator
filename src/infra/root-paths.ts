@@ -6,5 +6,5 @@ import "./fs-safe-defaults.js";
 export {
   resolveExistingPathsWithinRoot,
   resolveStrictExistingPathsWithinRoot,
-} from "@openclaw/fs-safe/advanced";
-export { pathScope } from "@openclaw/fs-safe/advanced";
+} from "@operator/fs-safe/advanced";
+export { pathScope } from "@operator/fs-safe/advanced";

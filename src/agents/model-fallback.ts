@@ -1,14 +1,14 @@
 /**
  * Runs model and image fallback chains across provider/model candidates.
  */
-import { normalizeOptionalString } from "@openclaw/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 import { TRANSCRIPT_NOT_CONTINUABLE_ERROR_CODE } from "../../packages/agent-core/src/errors.js";
 import { sanitizeForLog } from "../../packages/terminal-core/src/ansi.js";
 import {
   resolveAgentModelFallbackValues,
   resolveAgentModelPrimaryValue,
 } from "../config/model-input.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import { isCronTerminalAbortReasonText } from "../cron/service/execution-errors.js";
 import { emitFailoverEvent } from "../infra/diagnostic-events.js";
 import { formatErrorMessage, toErrorObject } from "../infra/errors.js";
@@ -595,7 +595,7 @@ async function resolveModelFallbackCandidateHarnessAuthPrecheck(
   });
   const agentRuntime = explicitAgentRuntime ?? harnessPolicy.runtime;
   const agentRuntimeSource = explicitAgentRuntime ? "model" : harnessPolicy.runtimeSource;
-  if (agentRuntime === "openclaw") {
+  if (agentRuntime === "operator") {
     return result(false);
   }
   if (agentRuntime === "auto" || (agentRuntime === "codex" && agentRuntimeSource === "implicit")) {
@@ -1405,7 +1405,7 @@ function shouldDiscardDeferredSessionSuspension(params: {
 }
 
 if (process.env.VITEST || process.env.NODE_ENV === "test") {
-  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("openclaw.modelFallbackTestApi")] = {
+  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("operator.modelFallbackTestApi")] = {
     resolveCooldownDecision,
     shouldDiscardDeferredSessionSuspension,
   };

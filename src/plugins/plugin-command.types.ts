@@ -1,5 +1,5 @@
 import type { ReplyPayload } from "../auto-reply/reply-payload.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import type { OperatorScope } from "../gateway/operator-scopes.js";
 import type {
   PluginConversationBinding,
@@ -130,8 +130,8 @@ type PluginCommandHandler = (
  * Definition for a plugin-registered command.
  */
 export const AGENT_PROMPT_SURFACE_KINDS = [
-  "openclaw_main",
-  /** @deprecated Use openclaw_main. */
+  "operator_main",
+  /** @deprecated Use operator_main. */
   "pi_main",
   "codex_app_server",
   "cli_backend",

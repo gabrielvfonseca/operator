@@ -1,4 +1,4 @@
-import { expectDefined } from "@openclaw/normalization-core";
+import { expectDefined } from "@operator/normalization-core";
 import {
   readPairingQrReplyChannelData,
   type ReplyPayload,
@@ -51,7 +51,7 @@ async function buildPairingQrAssistantContentBlock(
     renderQrTerminal(qr.setupCode, { small: true }),
   ]);
   return {
-    type: "openclaw_pairing_qr",
+    type: "operator_pairing_qr",
     image_url: imageUrl,
     terminalText,
     alt: "OpenClaw pairing QR code",
