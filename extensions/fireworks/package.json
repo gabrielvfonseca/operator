@@ -1,18 +1,18 @@
 {
-  "name": "@openclaw/fireworks-provider",
+  "name": "@operator/fireworks-provider",
   "version": "2026.7.2",
   "description": "OpenClaw Fireworks provider plugin",
   "type": "module",
   "devDependencies": {
-    "@openclaw/plugin-sdk": "workspace:*"
+    "@operator/plugin-sdk": "workspace:*"
   },
   "openclaw": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "clawhubSpec": "clawhub:@openclaw/fireworks-provider",
-      "npmSpec": "@openclaw/fireworks-provider",
+      "clawhubSpec": "clawhub:@operator/fireworks-provider",
+      "npmSpec": "@operator/fireworks-provider",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.6.9"
     },

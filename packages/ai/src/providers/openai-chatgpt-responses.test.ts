@@ -181,7 +181,7 @@ describe("streamOpenAICodexResponses transport", () => {
       })
       .result();
 
-    expect(userAgent).toBe(`openclaw (${platform()} ${release()}; ${arch()})`);
+    expect(userAgent).toBe(`operator (${platform()} ${release()}; ${arch()})`);
   });
 
   it("zstd-compresses SSE bodies without overriding an existing encoding", async () => {
@@ -766,7 +766,7 @@ describe("streamOpenAICodexResponses transport", () => {
 
     expect(result.stopReason).toBe("error");
     expect(capturedPayload?.instructions).toBe("Stable\nDynamic");
-    expect(JSON.stringify(capturedPayload)).not.toContain("OPENCLAW_CACHE_BOUNDARY");
+    expect(JSON.stringify(capturedPayload)).not.toContain("operator_CACHE_BOUNDARY");
   });
 
   it("falls back to the default instructions when no system prompt is set", async () => {

@@ -1,6 +1,6 @@
 // Discord tests cover manager plugin behavior.
 import { PassThrough, type Readable } from "node:stream";
-import { expectDefined } from "@openclaw/normalization-core";
+import { expectDefined } from "@operator/normalization-core";
 import type {
   RealtimeVoiceAgentControlResult,
   RealtimeVoiceForcedConsultCoordinator,

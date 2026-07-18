@@ -5,7 +5,7 @@ Official OpenClaw plugin for Perplexity.
 Install from OpenClaw:
 
 ```bash
-openclaw plugins install @openclaw/perplexity-plugin
+openclaw plugins install @operator/perplexity-plugin
 openclaw gateway restart
 ```
 

@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 // Memory Core plugin module implements dreaming behavior.
 import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
 import {
@@ -384,7 +384,7 @@ function hasPendingManagedDreamingCronEvent(sessionKey?: string): boolean {
 
 export function resolveShortTermPromotionDreamingConfig(params: {
   pluginConfig?: Record<string, unknown>;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
 }): ShortTermPromotionDreamingConfig {
   const resolved = resolveMemoryDeepDreamingConfig(params);
   return {
@@ -495,7 +495,7 @@ async function runShortTermDreamingPromotionIfTriggered(params: {
   cleanedBody: string;
   trigger?: string;
   workspaceDir?: string;
-  cfg?: OpenClawConfig;
+  cfg?: OperatorConfig;
   config: ShortTermPromotionDreamingConfig;
   logger: Logger;
   subagent?: OpenClawPluginApi["runtime"]["subagent"];
@@ -735,8 +735,8 @@ export function registerShortTermPromotionDreaming(api: OpenClawPluginApi): void
   let startupCronRetryAttempts = 0;
   let disposed = false;
 
-  const resolveCurrentConfig = (): OpenClawConfig =>
-    (api.runtime.config?.current?.() ?? api.config) as OpenClawConfig;
+  const resolveCurrentConfig = (): OperatorConfig =>
+    (api.runtime.config?.current?.() ?? api.config) as OperatorConfig;
 
   const clearStartupCronRetry = (): void => {
     if (startupCronRetryTimer) {
@@ -786,7 +786,7 @@ export function registerShortTermPromotionDreaming(api: OpenClawPluginApi): void
 
   const reconcileManagedDreamingCron = async (params: {
     reason: "startup" | "startup_retry" | "runtime";
-    startupConfig?: OpenClawConfig;
+    startupConfig?: OperatorConfig;
     startupCron?: (() => CronServiceLike | null) | null;
   }): Promise<ShortTermPromotionDreamingConfig> => {
     const startupCfg =

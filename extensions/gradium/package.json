@@ -1,5 +1,5 @@
 {
-  "name": "@openclaw/gradium-speech",
+  "name": "@operator/gradium-speech",
   "version": "2026.7.2",
   "description": "OpenClaw Gradium speech plugin.",
   "repository": {
@@ -8,15 +8,15 @@
   },
   "type": "module",
   "devDependencies": {
-    "@openclaw/plugin-sdk": "workspace:*"
+    "@operator/plugin-sdk": "workspace:*"
   },
   "openclaw": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "clawhubSpec": "clawhub:@openclaw/gradium-speech",
-      "npmSpec": "@openclaw/gradium-speech",
+      "clawhubSpec": "clawhub:@operator/gradium-speech",
+      "npmSpec": "@operator/gradium-speech",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.6.8"
     },

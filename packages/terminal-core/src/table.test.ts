@@ -125,7 +125,7 @@ describe("renderTable", () => {
             `\x1b[2mGet current weather and forecasts via wttr.in or Open-Meteo. ` +
             `Use when: user asks about weather, temperature, or forecasts for any location.` +
             `\x1b[0m`,
-          Source: "openclaw-bundled",
+          Source: "operator-bundled",
         },
       ],
     });
@@ -280,7 +280,7 @@ describe("renderTable", () => {
         { key: "K", header: "K", minWidth: 3 },
         { key: "V", header: "V", flex: true, minWidth: 10 },
       ],
-      rows: [{ K: "X", V: `${open}OpenClaw${close}` }],
+      rows: [{ K: "X", V: `${open}operator${close}` }],
     });
 
     expectIntroducersToStartCompleteSequences(out, "\x1b", [open, close]);
@@ -320,7 +320,7 @@ describe("renderTable", () => {
         { key: "K", header: "K", minWidth: 3 },
         { key: "V", header: "V", flex: true, minWidth: 10 },
       ],
-      rows: [{ K: "X", V: `${open}OpenClaw${close}` }],
+      rows: [{ K: "X", V: `${open}operator${close}` }],
     });
 
     expectIntroducersToStartCompleteSequences(out, "\x9d", [open, close]);
@@ -336,10 +336,10 @@ describe("renderTable", () => {
         { key: "K", header: "K", minWidth: 3 },
         { key: "V", header: "V", flex: true, minWidth: 10 },
       ],
-      rows: [{ K: "X", V: `${open}${"OpenClaw".repeat(5)}${close} after` }],
+      rows: [{ K: "X", V: `${open}${"operator".repeat(5)}${close} after` }],
     });
 
-    const linkLines = out.split("\n").filter((line) => line.includes("OpenClaw"));
+    const linkLines = out.split("\n").filter((line) => line.includes("operator"));
     expect(linkLines.length).toBeGreaterThan(1);
     for (const line of linkLines) {
       expect(line).toContain(open);
@@ -364,7 +364,7 @@ describe("renderTable", () => {
   ])(
     "closes and reopens embedded OSC-8 links at wrap boundaries (%s)",
     (_label, openSeq, closeSeq) => {
-      const link = `${openSeq}OpenClaw${closeSeq}`;
+      const link = `${openSeq}operator${closeSeq}`;
       const out = renderTable({
         width: 20,
         columns: [
@@ -405,7 +405,7 @@ describe("renderTable", () => {
   ])(
     "does not reopen a leading OSC-8 link onto wrapped suffix lines (%s)",
     (_label, openSeq, closeSeq) => {
-      const link = `${openSeq}OpenClaw${closeSeq}`;
+      const link = `${openSeq}operator${closeSeq}`;
       const out = renderTable({
         width: 20,
         columns: [
@@ -424,8 +424,8 @@ describe("renderTable", () => {
       for (const line of afterLines) {
         expect(line.includes(openSeq)).toBe(false);
       }
-      // The link itself stays intact on the OpenClaw line: open + close present.
-      const linkLine = lines.find((line) => line.includes("OpenClaw"));
+      // The link itself stays intact on the operator line: open + close present.
+      const linkLine = lines.find((line) => line.includes("operator"));
       expect(linkLine).toBeDefined();
       expect(linkLine?.includes(openSeq)).toBe(true);
       expect(linkLine?.includes(closeSeq)).toBe(true);
@@ -453,7 +453,7 @@ describe("renderTable", () => {
     const home = path.resolve("test-home", "alice");
     vi.stubEnv("HOME", home);
     vi.stubEnv("USERPROFILE", "");
-    vi.stubEnv("OPENCLAW_HOME", "");
+    vi.stubEnv("operator_HOME", "");
 
     const out = renderTable({
       border: "none",
@@ -488,7 +488,7 @@ describe("renderTable", () => {
           Status: "✗ missing",
           Skill: "📸 peekaboo",
           Description: "Capture screenshots from macOS windows and keep table wrapping stable.",
-          Source: "openclaw-bundled",
+          Source: "operator-bundled",
         },
       ],
     });
@@ -684,7 +684,7 @@ describe("wrapNoteMessage", () => {
 
   it("preserves long Windows paths without inserting spaces/newlines", () => {
     // No spaces: wrapNoteMessage splits on whitespace, so a "Program Files" style path would wrap.
-    const input = "C:\\\\State\\\\OpenClaw\\\\bin\\\\openclaw.exe";
+    const input = "C:\\\\State\\\\operator\\\\bin\\\\operator.exe";
     const wrapped = wrapNoteMessage(input, { maxWidth: 10, columns: 80 });
     expect(wrapped).toBe(input);
   });
@@ -707,7 +707,7 @@ describe("wrapNoteMessage", () => {
     const wrapped = wrapNoteMessage(
       [
         "- Found 1 session lock file.",
-        "- ~/.openclaw/agents/main/sessions/9c2acae5-841f-4aea-936b-fdb513b60202.jsonl.lock pid=86519 (alive) age=2m47s stale=no",
+        "- ~/.operator/agents/main/sessions/9c2acae5-841f-4aea-936b-fdb513b60202.jsonl.lock pid=86519 (alive) age=2m47s stale=no",
       ].join("\n"),
       { columns: 80 },
     );
@@ -726,7 +726,7 @@ describe("wrapNoteMessage", () => {
     expect(rendered).toContain(".jsonl.lock");
     expect(rendered).not.toContain(".js\n");
     expect(rendered).toContain(
-      "- ~/.openclaw/agents/main/sessions/9c2acae5-841f-4aea-936b-fdb513b60202.jsonl.lock",
+      "- ~/.operator/agents/main/sessions/9c2acae5-841f-4aea-936b-fdb513b60202.jsonl.lock",
     );
   });
 

@@ -1,7 +1,7 @@
 // Memory Wiki doctor contract migrates shipped source-sync state.
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/plugin-entry";
+import type { OperatorConfig } from "openclaw/plugin-sdk/plugin-entry";
 import {
   archiveLegacyStateSource,
   legacyStateFileExists,
@@ -38,7 +38,7 @@ function resolveHomeDir(env: NodeJS.ProcessEnv): string | undefined {
   return env.HOME?.trim() || env.USERPROFILE?.trim() || undefined;
 }
 
-function readConfiguredPluginConfig(config: OpenClawConfig): MemoryWikiPluginConfig | undefined {
+function readConfiguredPluginConfig(config: OperatorConfig): MemoryWikiPluginConfig | undefined {
   const entries = config.plugins?.entries;
   const pluginEntry = isRecord(entries) ? entries["memory-wiki"] : undefined;
   if (!isRecord(pluginEntry) || !isRecord(pluginEntry.config)) {
@@ -48,7 +48,7 @@ function readConfiguredPluginConfig(config: OpenClawConfig): MemoryWikiPluginCon
 }
 
 function resolveConfiguredVaultRoots(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   env: NodeJS.ProcessEnv;
 }): string[] {
   const homeDir = resolveHomeDir(params.env);

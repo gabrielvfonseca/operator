@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { expectDefined } from "@openclaw/normalization-core";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { RequestScopedSubagentRuntimeError } from "openclaw/plugin-sdk/error-runtime";
 import { resolveSessionTranscriptsDirForAgent } from "openclaw/plugin-sdk/memory-core-host-runtime-core";
 import { resolveMemoryCorePluginConfig } from "openclaw/plugin-sdk/memory-core-host-status";
@@ -39,7 +39,7 @@ const originalDreamingTestFast = process.env.OPENCLAW_TEST_FAST;
 const originalDreamingStateDir = process.env.OPENCLAW_STATE_DIR;
 const EMPTY_SESSION_CONTENT_HASH =
   "75a11da44c802486bc6f65640aa48a730f0f684c5c07a42ba3cd1735eb3fb070";
-const LIGHT_DREAMING_TEST_CONFIG: OpenClawConfig = {
+const LIGHT_DREAMING_TEST_CONFIG: OperatorConfig = {
   plugins: {
     entries: {
       "memory-core": {
@@ -204,7 +204,7 @@ async function seedDreamingSessionTranscript(params: {
 }
 
 function createHarness(
-  config: OpenClawConfig,
+  config: OperatorConfig,
   workspaceDir?: string,
   subagent?: Parameters<typeof runDreamingSweepPhases>[0]["subagent"],
 ) {
@@ -388,7 +388,7 @@ describe("memory-core dreaming phases", () => {
       "- Move backups to S3 Glacier.",
       "- Keep retention at 365 days.",
     ]);
-    const testConfig: OpenClawConfig = {
+    const testConfig: OperatorConfig = {
       ...LIGHT_DREAMING_TEST_CONFIG,
       agents: {
         defaults: {
@@ -453,7 +453,7 @@ describe("memory-core dreaming phases", () => {
       "- Move backups to S3 Glacier.",
       "- Keep retention at 365 days.",
     ]);
-    const testConfig: OpenClawConfig = {
+    const testConfig: OperatorConfig = {
       ...LIGHT_DREAMING_TEST_CONFIG,
       agents: {
         defaults: {
@@ -695,7 +695,7 @@ describe("memory-core dreaming phases", () => {
       "utf-8",
     );
     const subagent = createMockNarrativeSubagent("A later routing note finally took the page.");
-    const testConfig: OpenClawConfig = {
+    const testConfig: OperatorConfig = {
       agents: {
         defaults: {
           workspace: workspaceDir,
@@ -2839,7 +2839,7 @@ describe("memory-core dreaming phases", () => {
       "utf-8",
     );
 
-    const configForTest: OpenClawConfig = {
+    const configForTest: OperatorConfig = {
       plugins: {
         entries: {
           "memory-core": {

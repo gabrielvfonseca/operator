@@ -15,7 +15,7 @@ import {
   resolveGlobalSingleton,
   resolveStateDir,
   truncateUtf16Safe,
-  type OpenClawConfig,
+  type OperatorConfig,
 } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
 import {
   deriveQmdScopeChannel,
@@ -267,7 +267,7 @@ type QmdManagerRuntimeConfig = {
 };
 export class QmdMemoryManager implements MemorySearchManager {
   static async create(params: {
-    cfg: OpenClawConfig;
+    cfg: OperatorConfig;
     agentId: string;
     resolved: ResolvedMemoryBackendConfig;
     mode?: QmdManagerMode;
@@ -2168,7 +2168,7 @@ export class QmdMemoryManager implements MemorySearchManager {
 }
 
 function resolveQmdManagerRuntimeConfig(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   agentId: string,
 ): QmdManagerRuntimeConfig {
   return {

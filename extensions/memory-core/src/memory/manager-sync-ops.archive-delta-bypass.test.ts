@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import type { DatabaseSync } from "node:sqlite";
 import type {
-  OpenClawConfig,
+  OperatorConfig,
   ResolvedMemorySearchConfig,
 } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
 import type {
@@ -32,7 +32,7 @@ type SyncParams = {
 };
 
 class SessionDeltaHarness extends MemoryManagerSyncOps {
-  protected readonly cfg = {} as OpenClawConfig;
+  protected readonly cfg = {} as OperatorConfig;
   protected readonly agentId = "main";
   protected readonly workspaceDir = "/tmp/openclaw-test-workspace";
   protected readonly settings = {

@@ -1,5 +1,5 @@
 // Memory Wiki plugin entrypoint registers its OpenClaw integration.
-import { definePluginEntry, type OpenClawConfig } from "./api.js";
+import { definePluginEntry, type OperatorConfig } from "./api.js";
 import { registerWikiCli } from "./src/cli.js";
 import {
   memoryWikiConfigSchema,
@@ -35,7 +35,7 @@ export default definePluginEntry({
   register(api) {
     const config = resolveMemoryWikiConfig(api.pluginConfig);
     const getAppConfig = () =>
-      (api.runtime.config?.current?.() ?? api.config) as OpenClawConfig | undefined;
+      (api.runtime.config?.current?.() ?? api.config) as OperatorConfig | undefined;
     const resolveConfig: MemoryWikiConfigResolver = (agentId, appConfig = getAppConfig()) =>
       resolveMemoryWikiAgentConfig({ config, appConfig, agentId });
     const resolveToolContext = (agentId?: string) => {

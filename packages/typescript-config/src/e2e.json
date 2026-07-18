@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@operator/typescript-config/base",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": ".",
+    "lib": ["DOM", "DOM.Iterable", "ES2023", "ES2022"],
+    "types": ["vitest/globals", "node"]
+  },
+  "include": ["src/**/*", "**/*.test.ts", "**/*.tests.ts", "tests/**/*"],
+  "exclude": ["node_modules", "dist", "**/dist/**"]
+}

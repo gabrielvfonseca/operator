@@ -10,7 +10,7 @@ export const CODEX_PLUGIN_ID = "codex";
 
 export const CODEX_PLUGIN_LIFECYCLE_MESSAGES = Object.freeze({
   missingPlugin:
-    'Codex plugin is required for Codex runtime. Run "openclaw doctor --fix" to install @openclaw/codex, then retry.',
+    'Codex plugin is required for Codex runtime. Run "openclaw doctor --fix" to install @operator/codex, then retry.',
 });
 
 export type CodexPluginFixtureVersion = "missing" | "current" | "head" | (string & {});
@@ -32,7 +32,7 @@ export type CodexPluginLifecycleResult = {
 };
 
 type CodexPluginPackageJson = {
-  name: "@openclaw/codex";
+  name: "@operator/codex";
   version: string;
   openclaw: {
     install: {
@@ -63,7 +63,7 @@ function resolveFixtureVersion(version: CodexPluginFixtureVersion): string {
 
 function buildPackageJson(version: string): CodexPluginPackageJson {
   return {
-    name: "@openclaw/codex",
+    name: "@operator/codex",
     version,
     openclaw: {
       install: {
@@ -159,7 +159,7 @@ export async function seedCodexPluginAt(
     "utf8",
   );
   await fs.writeFile(
-    path.join(targetDir, "openclaw.plugin.json"),
+    path.join(targetDir, "operator.plugin.json"),
     `${JSON.stringify({ id: CODEX_PLUGIN_ID, name: "Codex" }, null, 2)}\n`,
     "utf8",
   );

@@ -1,5 +1,5 @@
 // Memory Core tests cover generic embedding provider.bridge plugin behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import type {
   EmbeddingInput,
   EmbeddingProviderCallOptions,
@@ -31,7 +31,7 @@ type CapturedCall = {
 let embeddingProvidersSnapshot: RegisteredEmbeddingProvider[];
 let memoryEmbeddingProvidersSnapshot: RegisteredMemoryEmbeddingProvider[];
 
-function createOptions(config: OpenClawConfig) {
+function createOptions(config: OperatorConfig) {
   return {
     config,
     agentDir: "/tmp/openclaw-agent",
@@ -61,7 +61,7 @@ describe("memory-core generic embedding provider bridge", () => {
       plugins: {
         enabled: false,
       },
-    } as OpenClawConfig);
+    } as OperatorConfig);
 
     registerVirtualTestPlugin({
       registry,

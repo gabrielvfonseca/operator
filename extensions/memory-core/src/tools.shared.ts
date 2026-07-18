@@ -7,7 +7,7 @@ import {
   resolveSessionAgentIds,
   type MemoryCorpusSearchResult,
   type AnyAgentTool,
-  type OpenClawConfig,
+  type OperatorConfig,
 } from "openclaw/plugin-sdk/memory-core-host-runtime-core";
 import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
 import { Type } from "typebox";
@@ -16,8 +16,8 @@ type MemorySearchManagerResult = Awaited<
   ReturnType<(typeof import("./memory/index.js"))["getMemorySearchManager"]>
 >;
 type MemoryToolOptions = {
-  config?: OpenClawConfig;
-  getConfig?: () => OpenClawConfig | undefined;
+  config?: OperatorConfig;
+  getConfig?: () => OperatorConfig | undefined;
   agentId?: string;
   agentSessionKey?: string;
   sandboxed?: boolean;
@@ -58,7 +58,7 @@ function resolveMemoryToolContext(options: MemoryToolOptions) {
 }
 
 export async function getMemoryManagerContextWithPurpose(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId: string;
   purpose?: "default" | "status" | "cli";
   acquireLocalService?: MemoryCoreAcquireLocalService;
@@ -96,7 +96,7 @@ export function createMemoryTool(params: {
   name: string;
   description: string;
   parameters: typeof MemorySearchSchema | typeof MemoryGetSchema;
-  execute: (ctx: { cfg: OpenClawConfig; agentId: string }) => AnyAgentTool["execute"];
+  execute: (ctx: { cfg: OperatorConfig; agentId: string }) => AnyAgentTool["execute"];
 }): AnyAgentTool | null {
   const ctx = resolveMemoryToolContext(params.options);
   if (!ctx) {

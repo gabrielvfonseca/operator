@@ -4,7 +4,7 @@ import type {
   ModelDefinitionConfig,
   ModelProviderConfig,
 } from "openclaw/plugin-sdk/provider-model-shared";
-import manifest from "./openclaw.plugin.json" with { type: "json" };
+import manifest from "./operator.plugin.json" with { type: "json" };
 
 const FIREWORKS_MANIFEST_PROVIDER = buildManifestModelProviderConfig({
   providerId: "fireworks",

@@ -19,7 +19,7 @@ import {
   uniqueStrings,
 } from "openclaw/plugin-sdk/string-coerce-runtime";
 import pMap, { pMapSkip } from "p-map";
-import type { OpenClawConfig } from "../api.js";
+import type { OperatorConfig } from "../api.js";
 import { assessClaimFreshness, isClaimContestedStatus } from "./claim-health.js";
 import type { ResolvedMemoryWikiConfig, WikiSearchBackend, WikiSearchCorpus } from "./config.js";
 import {
@@ -1004,7 +1004,7 @@ function shouldUseSharedMemory(config: ResolvedMemoryWikiConfig): boolean {
 
 function assertSessionVisibilityAppConfig(params: {
   config: ResolvedMemoryWikiConfig;
-  appConfig?: OpenClawConfig;
+  appConfig?: OperatorConfig;
   agentId?: string;
   agentSessionKey?: string;
   sandboxed?: boolean;
@@ -1039,13 +1039,13 @@ function shouldSearchWiki(config: ResolvedMemoryWikiConfig): boolean {
 
 function shouldSearchSharedMemory(
   config: ResolvedMemoryWikiConfig,
-  appConfig?: OpenClawConfig,
+  appConfig?: OperatorConfig,
 ): boolean {
   return shouldUseSharedMemory(config) && appConfig !== undefined;
 }
 
 function resolveActiveMemoryAgentId(params: {
-  appConfig?: OpenClawConfig;
+  appConfig?: OperatorConfig;
   agentId?: string;
   agentSessionKey?: string;
 }): string | null {
@@ -1065,7 +1065,7 @@ function resolveActiveMemoryAgentId(params: {
 }
 
 async function resolveActiveMemoryManager(params: {
-  appConfig?: OpenClawConfig;
+  appConfig?: OperatorConfig;
   agentId?: string;
   agentSessionKey?: string;
 }) {
@@ -1240,7 +1240,7 @@ function toMemoryWikiSearchResult(
 }
 
 async function filterMemoryWikiSearchHitsBySessionVisibility(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId: string | undefined;
   requesterSessionKey: string | undefined;
   sandboxed: boolean;
@@ -1265,7 +1265,7 @@ async function filterMemoryWikiSearchHitsBySessionVisibility(params: {
 type SessionMemoryPathVisibilityChecker = (relPath: string) => boolean;
 
 function filterSessionKeysByScopedAgent(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   keys: string[];
   scopedAgentId: string | undefined;
 }): string[] {
@@ -1286,7 +1286,7 @@ function filterSessionKeysByScopedAgent(params: {
 }
 
 async function createSessionMemoryPathVisibilityChecker(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId: string | undefined;
   requesterSessionKey: string | undefined;
   sandboxed: boolean;
@@ -1474,7 +1474,7 @@ export function resolveQueryableWikiPageByLookup(
 
 export async function searchMemoryWiki(params: {
   config: ResolvedMemoryWikiConfig;
-  appConfig?: OpenClawConfig;
+  appConfig?: OperatorConfig;
   agentId?: string;
   agentSessionKey?: string;
   sandboxed?: boolean;
@@ -1544,7 +1544,7 @@ export async function searchMemoryWiki(params: {
 
 export async function getMemoryWikiPage(params: {
   config: ResolvedMemoryWikiConfig;
-  appConfig?: OpenClawConfig;
+  appConfig?: OperatorConfig;
   agentId?: string;
   agentSessionKey?: string;
   sandboxed?: boolean;

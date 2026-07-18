@@ -4,7 +4,7 @@
 import { expectDefined } from "openclaw/plugin-sdk/expect-runtime";
 import { buildManifestModelProviderConfig } from "openclaw/plugin-sdk/provider-catalog-shared";
 import type { ModelDefinitionConfig } from "openclaw/plugin-sdk/provider-model-shared";
-import manifest from "./openclaw.plugin.json" with { type: "json" };
+import manifest from "./operator.plugin.json" with { type: "json" };
 
 const CEREBRAS_MANIFEST_CATALOG = manifest.modelCatalog.providers.cerebras;
 

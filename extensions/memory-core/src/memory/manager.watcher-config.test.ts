@@ -5,7 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import type {
   MemorySearchConfig,
-  OpenClawConfig,
+  OperatorConfig,
 } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
 import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -224,8 +224,8 @@ describe("memory watcher config", () => {
     await fs.writeFile(path.join(extraDir, seedFile.name), seedFile.contents);
   }
 
-  function createWatcherConfig(overrides?: Partial<MemorySearchConfig>): OpenClawConfig {
-    const defaults: NonNullable<NonNullable<OpenClawConfig["agents"]>["defaults"]> = {
+  function createWatcherConfig(overrides?: Partial<MemorySearchConfig>): OperatorConfig {
+    const defaults: NonNullable<NonNullable<OperatorConfig["agents"]>["defaults"]> = {
       workspace: workspaceDir,
       memorySearch: {
         provider: "openai",
@@ -243,10 +243,10 @@ describe("memory watcher config", () => {
         defaults,
         list: [{ id: "main", default: true }],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
   }
 
-  async function expectWatcherManager(cfg: OpenClawConfig) {
+  async function expectWatcherManager(cfg: OperatorConfig) {
     const result = await getMemorySearchManager({ cfg, agentId: "main" });
     if (!result.manager) {
       throw new Error("manager missing");

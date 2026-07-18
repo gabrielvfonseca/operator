@@ -5,7 +5,7 @@ import path from "node:path";
 import type { DatabaseSync } from "node:sqlite";
 import {
   resolveSessionTranscriptsDirForAgent,
-  type OpenClawConfig,
+  type OperatorConfig,
   type ResolvedMemorySearchConfig,
 } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
 import { statSessionEntrySync } from "openclaw/plugin-sdk/memory-core-host-engine-qmd";
@@ -95,7 +95,7 @@ function emitSessionTranscriptUpdate(update: MemorySessionTranscriptUpdate): voi
 }
 
 class SessionStartupCatchupHarness extends MemoryManagerSyncOps {
-  protected readonly cfg = {} as OpenClawConfig;
+  protected readonly cfg = {} as OperatorConfig;
   protected readonly agentId = "main";
   protected readonly workspaceDir = "/tmp/openclaw-test-workspace";
   protected readonly settings = {

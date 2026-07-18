@@ -6,7 +6,7 @@ import {
   type JsonSchemaObject,
 } from "openclaw/plugin-sdk/json-schema-runtime";
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../api.js";
+import type { OperatorConfig } from "../api.js";
 import {
   memoryWikiConfigSchema,
   resolveMemoryWikiAgentConfig,
@@ -80,7 +80,7 @@ describe("resolveMemoryWikiConfig", () => {
       agents: {
         list: [{ id: "Support Team", default: true }, { id: "Marketing" }],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     const support = resolveMemoryWikiAgentConfig({
       config: base,
@@ -125,7 +125,7 @@ describe("resolveMemoryWikiConfig", () => {
     const config = resolveMemoryWikiConfig({ vault: { scope: "agent" } });
     const appConfig = {
       agents: { list: [{ id: "support", default: true }, { id: "marketing" }] },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(() => resolveMemoryWikiAgentConfig({ config, appConfig })).toThrow(
       "agentId is required",
@@ -136,7 +136,7 @@ describe("resolveMemoryWikiConfig", () => {
     const config = resolveMemoryWikiConfig({ vault: { scope: "agent" } });
     const appConfig = {
       agents: { list: [{ id: "support", default: true }, { id: "marketing" }] },
-    } as OpenClawConfig;
+    } as OperatorConfig;
 
     expect(() => resolveMemoryWikiAgentConfig({ config, appConfig, agentId: "finance" })).toThrow(
       "Unknown memory-wiki agentId: finance",

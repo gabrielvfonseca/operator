@@ -1,5 +1,5 @@
 // Memory Core tests cover index plugin behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import type { OpenClawPluginApi, OpenClawPluginCommandDefinition } from "openclaw/plugin-sdk/core";
 import type { MemoryPluginRuntime } from "openclaw/plugin-sdk/memory-core-host-runtime-core";
 import { createTestPluginApi } from "openclaw/plugin-sdk/plugin-test-api";
@@ -119,7 +119,7 @@ describe("memory-core plugin runtime registration", () => {
 
   it("wires scoped memory search cleanup through the lazy runtime", async () => {
     const runtime = registerMemoryCoreRuntime();
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as OperatorConfig;
 
     await runtime.closeMemorySearchManager?.({ cfg, agentId: "main" });
 
@@ -128,7 +128,7 @@ describe("memory-core plugin runtime registration", () => {
 
   it("binds the host local-service hook to the registered memory runtime", async () => {
     const runtime = registerMemoryCoreRuntime();
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as OperatorConfig;
 
     await runtime.getMemorySearchManager({ cfg, agentId: "main" });
 
@@ -144,7 +144,7 @@ describe("buildMemoryFlushPlan", () => {
         timeFormat: "12",
       },
     },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 
   it("replaces YYYY-MM-DD using user timezone and appends current time", () => {
     const plan = buildMemoryFlushPlan({

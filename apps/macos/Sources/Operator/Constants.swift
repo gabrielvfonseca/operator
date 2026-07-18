@@ -1,0 +1,58 @@
+import Foundation
+
+// Stable identifier used for both the macOS LaunchAgent label and Nix-managed defaults suite.
+// nix-operator writes app defaults into this suite to survive app bundle identifier churn.
+let launchdLabel = "ai.operator.mac"
+let gatewayLaunchdLabel = "ai.operator.gateway"
+let nodeLaunchdLabel = "ai.operator.node"
+let onboardingVersionKey = "operator.onboardingVersion"
+let onboardingSeenKey = "operator.onboardingSeen"
+let onboardingSystemAgentPendingKey = "operator.onboardingSystemAgentPending"
+// Pre-rename releases persisted pending activations under the Crestodian key.
+let onboardingSystemAgentPendingRetiredKey = "operator.onboardingCrestodianPending"
+let currentOnboardingVersion = 8
+let pauseDefaultsKey = "operator.pauseEnabled"
+let iconAnimationsEnabledKey = "operator.iconAnimationsEnabled"
+let swabbleEnabledKey = "operator.swabbleEnabled"
+let swabbleTriggersKey = "operator.swabbleTriggers"
+let voiceWakeTriggerChimeKey = "operator.voiceWakeTriggerChime"
+let voiceWakeSendChimeKey = "operator.voiceWakeSendChime"
+let showDockIconKey = "operator.showDockIcon"
+let defaultVoiceWakeTriggers = ["operator"]
+let voiceWakeMaxWords = 32
+let voiceWakeMaxWordLength = 64
+let voiceWakeMicKey = "operator.voiceWakeMicID"
+let voiceWakeMicNameKey = "operator.voiceWakeMicName"
+let voiceWakeLocaleKey = "operator.voiceWakeLocaleID"
+let voiceWakeAdditionalLocalesKey = "operator.voiceWakeAdditionalLocaleIDs"
+let voicePushToTalkEnabledKey = "operator.voicePushToTalkEnabled"
+let voiceWakeTriggersTalkModeKey = "operator.voiceWakeTriggersTalkMode"
+let talkEnabledKey = "operator.talkEnabled"
+let talkPhaseSoundsEnabledKey = "operator.talkPhaseSoundsEnabled"
+let talkShiftToStopEnabledKey = "operator.talkShiftToStopEnabled"
+let iconOverrideKey = "operator.iconOverride"
+let connectionModeKey = "operator.connectionMode"
+let remoteTargetKey = "operator.remoteTarget"
+let remoteIdentityKey = "operator.remoteIdentity"
+let remoteProjectRootKey = "operator.remoteProjectRoot"
+let remoteCliPathKey = "operator.remoteCliPath"
+let canvasEnabledKey = "operator.canvasEnabled"
+let cameraEnabledKey = "operator.cameraEnabled"
+let computerControlEnabledKey = "openclaw.computerControlEnabled"
+let locationModeKey = "operator.locationMode"
+let locationPreciseKey = "operator.locationPreciseEnabled"
+let peekabooBridgeEnabledKey = "operator.peekabooBridgeEnabled"
+let deepLinkKeyKey = "operator.deepLinkKey"
+let cliInstallPromptedVersionKey = "operator.cliInstallPromptedVersion"
+let cliInstallPolicyKey = "operator.cliInstallPolicy"
+let cliManagedRestartPendingKey = "operator.cliManagedRestartPending"
+let postAppUpdateReceiptKey = "operator.postAppUpdateReceipt"
+let lastLaunchedAppVersionKey = "operator.lastLaunchedAppVersion"
+let cliValidatedExecutableKey = "operator.cliValidatedExecutable"
+let cliValidatedVersionKey = "operator.cliValidatedVersion"
+let macNodeIdentityProfileKey = "operator.macNodeIdentityProfile"
+let heartbeatsEnabledKey = "operator.heartbeatsEnabled"
+let debugPaneEnabledKey = "operator.debugPaneEnabled"
+let debugFileLogEnabledKey = "operator.debug.fileLogEnabled"
+let appLogLevelKey = "operator.debug.appLogLevel"
+let voiceWakeSupported: Bool = ProcessInfo.processInfo.operatingSystemVersion.majorVersion >= 26

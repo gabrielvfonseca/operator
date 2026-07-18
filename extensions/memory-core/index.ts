@@ -5,7 +5,7 @@ import {
   resolveMemorySearchConfig,
   resolveSessionAgentIds,
   type MemoryPluginRuntime,
-  type OpenClawConfig,
+  type OperatorConfig,
 } from "openclaw/plugin-sdk/memory-core-host-runtime-core";
 import { resolveMemoryBackendConfig } from "openclaw/plugin-sdk/memory-core-host-runtime-files";
 import {
@@ -24,8 +24,8 @@ import { buildPromptSection } from "./src/prompt-section.js";
 type MemoryToolsModule = typeof import("./src/tools.js");
 
 type MemoryToolOptions = {
-  config?: OpenClawConfig;
-  getConfig?: () => OpenClawConfig | undefined;
+  config?: OperatorConfig;
+  getConfig?: () => OperatorConfig | undefined;
   agentId?: string;
   agentSessionKey?: string;
   sandboxed?: boolean;
@@ -39,7 +39,7 @@ const loadRuntimeProviderModule = createLazyRuntimeModule(
   () => import("./src/runtime-provider.js"),
 );
 
-function getToolConfig(options: MemoryToolOptions): OpenClawConfig | undefined {
+function getToolConfig(options: MemoryToolOptions): OperatorConfig | undefined {
   return options.getConfig?.() ?? options.config;
 }
 

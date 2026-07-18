@@ -30,7 +30,7 @@ import {
   MemorySearchSchema,
 } from "./tools.shared.js";
 import {
-  asOpenClawConfig,
+  asOperatorConfig,
   createMemorySearchToolOrThrow,
   expectUnavailableMemorySearchDetails,
 } from "./tools.test-helpers.js";
@@ -47,7 +47,7 @@ const QMD_SEARCH_TIMEOUT_MS = 45_000;
 
 function createQmdTimeoutSearchTool(options?: { oneShotCliRun?: boolean }) {
   return createMemorySearchToolOrThrow({
-    config: asOpenClawConfig({
+    config: asOperatorConfig({
       agents: { list: [{ id: "main", default: true }] },
       memory: {
         backend: "qmd",
@@ -228,7 +228,7 @@ describe("memory_search unavailable payloads", () => {
   it("passes the host local-service hook to tool memory managers", async () => {
     const acquireLocalService = vi.fn(async () => undefined);
     const tool = createMemorySearchTool({
-      config: asOpenClawConfig({
+      config: asOperatorConfig({
         agents: { list: [{ id: "main", default: true }] },
       }),
       acquireLocalService,
@@ -1236,7 +1236,7 @@ describe("memory_search corpus labels", () => {
 
   it("uses explicit plugin context agent over synthetic active-memory session keys", async () => {
     const tool = createMemorySearchToolOrThrow({
-      config: asOpenClawConfig({
+      config: asOperatorConfig({
         agents: {
           list: [
             { id: "main", default: true, memorySearch: { enabled: false } },
@@ -1254,7 +1254,7 @@ describe("memory_search corpus labels", () => {
   });
 
   it("re-resolves config when executing a previously created tool", async () => {
-    const startupConfig = asOpenClawConfig({
+    const startupConfig = asOperatorConfig({
       agents: {
         defaults: {
           memorySearch: {
@@ -1268,7 +1268,7 @@ describe("memory_search corpus labels", () => {
         backend: "builtin",
       },
     });
-    const patchedConfig = asOpenClawConfig({
+    const patchedConfig = asOperatorConfig({
       agents: {
         defaults: {
           memorySearch: {

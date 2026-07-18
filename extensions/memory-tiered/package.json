@@ -1,0 +1,30 @@
+{
+  "name": "@operator/memory-tiered",
+  "version": "2026.7.2",
+  "private": true,
+  "description": "OpenClaw tiered memory plugin: working, semantic, and procedural stores.",
+  "type": "module",
+  "dependencies": {
+    "@temporalio/client": "*",
+    "neo4j-driver": "*",
+    "qdrant-client": "*",
+    "redis": "*"
+  },
+  "devDependencies": {
+    "@operator/plugin-sdk": "workspace:*",
+    "openclaw": "workspace:*"
+  },
+  "peerDependencies": {
+    "openclaw": ">=2026.7.2"
+  },
+  "peerDependenciesMeta": {
+    "openclaw": {
+      "optional": true
+    }
+  },
+  "openclaw": {
+    "extensions": [
+      "./index.ts"
+    ]
+  }
+}

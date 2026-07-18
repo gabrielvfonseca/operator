@@ -25,7 +25,7 @@ export { buildDiscordComponentMessage } from "./src/components.js";
 type DiscordMessageActionHandler =
   typeof import("./src/channel-actions.runtime.js").handleDiscordMessageAction;
 
-// Deprecated compatibility surface for existing @openclaw/discord/api.js consumers.
+// Deprecated compatibility surface for existing @operator/discord/api.js consumers.
 export const handleDiscordMessageAction: DiscordMessageActionHandler = async (...args) =>
   (await import("./src/channel-actions.runtime.js")).handleDiscordMessageAction(...args);
 export {

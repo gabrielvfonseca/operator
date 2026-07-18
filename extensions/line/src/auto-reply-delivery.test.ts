@@ -1,5 +1,5 @@
 // Line tests cover auto reply delivery plugin behavior.
-import { expectDefined } from "@openclaw/normalization-core";
+import { expectDefined } from "@operator/normalization-core";
 import { describe, expect, it, vi } from "vitest";
 import { deliverLineAutoReply } from "./auto-reply-delivery.js";
 import { sendLineReplyChunks } from "./reply-chunks.js";

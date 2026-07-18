@@ -12,11 +12,11 @@ import {
   upsertSessionEntry,
 } from "openclaw/plugin-sdk/session-store-runtime";
 import { appendSessionTranscriptMessageByIdentity } from "openclaw/plugin-sdk/session-transcript-runtime";
-import { resolveOpenClawAgentSqlitePath } from "openclaw/plugin-sdk/sqlite-runtime";
+import { resolveOperatorAgentSqlitePath } from "openclaw/plugin-sdk/sqlite-runtime";
 import {
   closeOpenClawAgentDatabasesForTest,
-  closeOpenClawStateDatabaseForTest,
-  openOpenClawAgentDatabase,
+  closeOperatorStateDatabaseForTest,
+  openOperatorAgentDatabase,
 } from "openclaw/plugin-sdk/sqlite-runtime-testing";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import "./test-runtime-mocks.js";
@@ -293,7 +293,7 @@ describe("memory index", () => {
     await Promise.all(Array.from(managersForCleanup).map((manager) => manager.close()));
     await closeAllMemorySearchManagers();
     closeOpenClawAgentDatabasesForTest();
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
     clearRegistry();
     managersForCleanup.clear();
     restoreMemoryIndexStateDir();
@@ -645,8 +645,8 @@ describe("memory index", () => {
   it("reindexes memory tables in place without deleting unrelated agent rows", async () => {
     const stateDir = path.join(workspaceDir, "managed-memory-state");
     setMemoryIndexStateDir(stateDir);
-    const agentDbPath = resolveOpenClawAgentSqlitePath({ agentId: "main" });
-    const agentDb = openOpenClawAgentDatabase({ agentId: "main" });
+    const agentDbPath = resolveOperatorAgentSqlitePath({ agentId: "main" });
+    const agentDb = openOperatorAgentDatabase({ agentId: "main" });
     agentDb.db
       .prepare("INSERT INTO cache_entries (scope, key, value_json, updated_at) VALUES (?, ?, ?, ?)")
       .run("test", "keep-me", JSON.stringify({ value: "keep-me" }), 1);
@@ -664,7 +664,7 @@ describe("memory index", () => {
       await manager.close?.();
     }
 
-    const reopened = openOpenClawAgentDatabase({ agentId: "main" });
+    const reopened = openOperatorAgentDatabase({ agentId: "main" });
     expect(
       reopened.db
         .prepare("SELECT value_json FROM cache_entries WHERE scope = ? AND key = ?")
@@ -678,7 +678,7 @@ describe("memory index", () => {
     const manager = await getFreshManager(createCfg({}));
     await manager.close?.();
 
-    const agentDb = openOpenClawAgentDatabase({ agentId: "main" });
+    const agentDb = openOperatorAgentDatabase({ agentId: "main" });
     expect(
       agentDb.db.prepare("SELECT role, agent_id FROM schema_meta WHERE meta_key = 'primary'").get(),
     ).toEqual({

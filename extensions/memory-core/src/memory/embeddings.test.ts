@@ -1,5 +1,5 @@
 // Memory Core tests cover embeddings plugin behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import type { EmbeddingProviderAdapter } from "openclaw/plugin-sdk/embedding-providers";
 import type { MemoryEmbeddingProviderAdapter } from "openclaw/plugin-sdk/memory-core-host-engine-embeddings";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -8,12 +8,12 @@ import { createEmbeddingProvider, resolveEmbeddingProviderFallbackModel } from "
 const mockEmbeddingRegistry = vi.hoisted(() => ({
   genericAdapters: [] as EmbeddingProviderAdapter[],
   adapters: [] as MemoryEmbeddingProviderAdapter[],
-  genericLookupConfigs: [] as Array<OpenClawConfig | undefined>,
+  genericLookupConfigs: [] as Array<OperatorConfig | undefined>,
   acquireLocalService: vi.fn(async () => undefined),
 }));
 
 vi.mock("openclaw/plugin-sdk/embedding-providers", () => ({
-  getEmbeddingProvider: (id: string, config?: OpenClawConfig) => {
+  getEmbeddingProvider: (id: string, config?: OperatorConfig) => {
     mockEmbeddingRegistry.genericLookupConfigs.push(config);
     return mockEmbeddingRegistry.genericAdapters.find((adapter) => adapter.id === id);
   },
@@ -56,7 +56,7 @@ function createOptions(
           "voyage",
         ],
       },
-    } as OpenClawConfig,
+    } as OperatorConfig,
     agentDir: "/tmp/openclaw-agent",
     provider,
     fallback: "none",

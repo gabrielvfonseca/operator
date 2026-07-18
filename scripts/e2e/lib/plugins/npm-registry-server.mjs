@@ -50,7 +50,7 @@ function readPackageManifest(tarballPath, packageName) {
       ? packageJson
       : {};
   } catch {
-    return packageName === "@openclaw/demo-plugin-npm"
+    return packageName === "@operator/demo-plugin-npm"
       ? { dependencies: { "is-number": "7.0.0" } }
       : {};
   }

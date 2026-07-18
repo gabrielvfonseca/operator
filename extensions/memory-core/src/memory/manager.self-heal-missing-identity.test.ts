@@ -2,8 +2,8 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
-import { resolveOpenClawAgentSqlitePath } from "openclaw/plugin-sdk/sqlite-runtime";
+import type { OperatorConfig } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
+import { resolveOperatorAgentSqlitePath } from "openclaw/plugin-sdk/sqlite-runtime";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { closeAllMemorySearchManagers, getMemorySearchManager } from "./index.js";
 import type { MemoryIndexManager } from "./manager.js";
@@ -63,7 +63,7 @@ describe("memory manager self-heal missing identity with FTS-only chunks", () =>
     await fs.mkdir(path.join(workspaceDir, "memory"), { recursive: true });
     await fs.writeFile(path.join(workspaceDir, "MEMORY.md"), "Alpha topic\n\nKeep this note.");
     setSelfHealStateDir(path.join(workspaceDir, "state"));
-    indexPath = resolveOpenClawAgentSqlitePath({ agentId: "main" });
+    indexPath = resolveOperatorAgentSqlitePath({ agentId: "main" });
   });
 
   afterEach(async () => {
@@ -108,7 +108,7 @@ describe("memory manager self-heal missing identity with FTS-only chunks", () =>
         },
         list: [{ id: "main", default: true }],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const result = await getMemorySearchManager({
       cfg,
       agentId: "main",

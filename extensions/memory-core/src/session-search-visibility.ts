@@ -1,5 +1,5 @@
 // Memory Core plugin module implements session search visibility behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/memory-core-host-runtime-core";
+import type { OperatorConfig } from "openclaw/plugin-sdk/memory-core-host-runtime-core";
 import type { MemorySearchResult } from "openclaw/plugin-sdk/memory-core-host-runtime-files";
 import { resolveSessionAgentId } from "openclaw/plugin-sdk/memory-host-core";
 import {
@@ -19,12 +19,12 @@ function normalizeAgentIdForCompare(value: string | undefined): string | undefin
   return value?.trim().toLowerCase() || undefined;
 }
 
-function isGlobalSessionKeyForSharedScope(cfg: OpenClawConfig, key: string): boolean {
+function isGlobalSessionKeyForSharedScope(cfg: OperatorConfig, key: string): boolean {
   return cfg.session?.scope === "global" && key.trim().toLowerCase() === "global";
 }
 
 function filterSessionKeysByScopedAgent(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   keys: string[];
   scopedAgentId: string | undefined;
 }): string[] {
@@ -45,7 +45,7 @@ function filterSessionKeysByScopedAgent(params: {
 }
 
 export async function filterMemorySearchHitsBySessionVisibility(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   agentId?: string;
   requesterSessionKey: string | undefined;
   sandboxed: boolean;

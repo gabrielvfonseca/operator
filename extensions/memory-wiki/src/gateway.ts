@@ -2,7 +2,7 @@
 import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
 import { resolveDefaultAgentId } from "openclaw/plugin-sdk/memory-host-core";
 import { readPositiveIntegerParam } from "openclaw/plugin-sdk/param-readers";
-import type { OpenClawConfig, OpenClawPluginApi } from "../api.js";
+import type { OperatorConfig, OpenClawPluginApi } from "../api.js";
 import { applyMemoryWikiMutation, normalizeMemoryWikiMutationInput } from "./apply.js";
 import { compileMemoryWikiVault } from "./compile.js";
 import {
@@ -80,7 +80,7 @@ function respondError(respond: GatewayRespond, error: unknown) {
 
 async function syncImportedSourcesIfNeeded(
   config: ResolvedMemoryWikiConfig,
-  appConfig?: OpenClawConfig,
+  appConfig?: OperatorConfig,
 ) {
   await syncMemoryWikiImportedSources({ config, appConfig });
 }
@@ -88,9 +88,9 @@ async function syncImportedSourcesIfNeeded(
 export function registerMemoryWikiGatewayMethods(params: {
   api: OpenClawPluginApi;
   config: ResolvedMemoryWikiConfig;
-  appConfig?: OpenClawConfig;
-  getAppConfig?: () => OpenClawConfig | undefined;
-  resolveConfig?: (agentId?: string, appConfig?: OpenClawConfig) => ResolvedMemoryWikiConfig;
+  appConfig?: OperatorConfig;
+  getAppConfig?: () => OperatorConfig | undefined;
+  resolveConfig?: (agentId?: string, appConfig?: OperatorConfig) => ResolvedMemoryWikiConfig;
 }) {
   const { api, config: baseConfig } = params;
 
@@ -99,7 +99,7 @@ export function registerMemoryWikiGatewayMethods(params: {
       return params.getAppConfig();
     }
     if (typeof api.runtime.config?.current === "function") {
-      return api.runtime.config.current() as OpenClawConfig;
+      return api.runtime.config.current() as OperatorConfig;
     }
     return params.appConfig;
   };

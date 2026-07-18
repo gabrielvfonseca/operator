@@ -1,4 +1,4 @@
-import { definePage } from "@openclaw/uirouter";
+import { definePage } from "@operator/uirouter";
 import { html } from "lit";
 
 export const page = definePage({

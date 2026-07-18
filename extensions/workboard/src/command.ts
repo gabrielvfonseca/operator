@@ -2,7 +2,7 @@ import {
   WORKBOARD_STATUSES,
   type WorkboardCard,
   type WorkboardStatus,
-} from "@openclaw/workboard-contract";
+} from "@operator/workboard-contract";
 // Workboard plugin module implements command behavior.
 import type { OpenClawPluginApi } from "../api.js";
 import { resolveWorkboardCardByIdOrPrefix } from "./card-lookup.js";

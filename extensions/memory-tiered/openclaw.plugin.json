@@ -1,0 +1,133 @@
+{
+  "id": "memory-tiered",
+  "name": "Memory (Tiered)",
+  "description": "Real tiered memory: working (Redis), semantic (Qdrant), and procedural (Neo4j + Temporal) stores, exposed via agent tools.",
+  "catalog": { "featured": true, "order": 60 },
+  "activation": {
+    "onStartup": false
+  },
+  "kind": "memory",
+  "contracts": {
+    "tools": [
+      "memory_set",
+      "memory_get",
+      "memory_delete",
+      "memory_store",
+      "memory_search",
+      "memory_forget",
+      "procedure_recall",
+      "procedure_register",
+      "procedure_execute"
+    ]
+  },
+  "toolMetadata": {
+    "memory_get": { "replaySafe": true },
+    "memory_delete": { "replaySafe": true }
+  },
+  "commandAliases": [
+    {
+      "name": "memory",
+      "kind": "runtime-slash",
+      "cliCommand": "memory"
+    }
+  ],
+  "uiHints": {
+    "working.redisUrl": {
+      "label": "Working Redis URL",
+      "placeholder": "redis://localhost:6379",
+      "help": "Redis connection string for short-lived working memory (run state, keys with TTL)."
+    },
+    "working.keyPrefix": {
+      "label": "Working Key Prefix",
+      "placeholder": "memory:working:",
+      "advanced": true,
+      "help": "Namespace prefix for all working-memory keys."
+    },
+    "working.defaultTtlSeconds": {
+      "label": "Working Default TTL (s)",
+      "placeholder": "3600",
+      "advanced": true,
+      "help": "Default time-to-live for working-memory entries when not specified."
+    },
+    "semantic.qdrantUrl": {
+      "label": "Semantic Qdrant URL",
+      "placeholder": "http://localhost:6333",
+      "help": "Qdrant connection string for embedded long-term facts and concepts."
+    },
+    "semantic.collection": {
+      "label": "Semantic Collection",
+      "placeholder": "semantic_memory",
+      "advanced": true,
+      "help": "Qdrant collection name for semantic chunks."
+    },
+    "semantic.embeddingProvider": {
+      "label": "Embedding Provider",
+      "placeholder": "openai",
+      "help": "Embedding provider adapter (openai, gemini, voyage, ollama, ...)."
+    },
+    "semantic.embeddingModel": {
+      "label": "Embedding Model",
+      "placeholder": "text-embedding-3-small",
+      "help": "Embedding model used to vectorize semantic chunks."
+    },
+    "procedural.neo4jUrl": {
+      "label": "Procedural Neo4j URL",
+      "placeholder": "bolt://localhost:7687",
+      "help": "Neo4j connection string for stored reusable procedures."
+    },
+    "procedural.temporalHost": {
+      "label": "Temporal Host",
+      "placeholder": "localhost",
+      "advanced": true,
+      "help": "Temporal server host for procedure workflow execution."
+    },
+    "procedural.temporalPort": {
+      "label": "Temporal Port",
+      "placeholder": "7233",
+      "advanced": true,
+      "help": "Temporal server port."
+    },
+    "procedural.temporalNamespace": {
+      "label": "Temporal Namespace",
+      "placeholder": "default",
+      "advanced": true,
+      "help": "Temporal namespace for procedure executions."
+    }
+  },
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "enabled": { "type": "boolean" },
+      "working": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "redisUrl": { "type": "string" },
+          "keyPrefix": { "type": "string" },
+          "defaultTtlSeconds": { "type": "integer", "minimum": 1 }
+        }
+      },
+      "semantic": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "qdrantUrl": { "type": "string" },
+          "collection": { "type": "string" },
+          "embeddingProvider": { "type": "string" },
+          "embeddingModel": { "type": "string" }
+        }
+      },
+      "procedural": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "neo4jUrl": { "type": "string" },
+          "temporalHost": { "type": "string" },
+          "temporalPort": { "type": "integer", "minimum": 1 },
+          "temporalNamespace": { "type": "string" }
+        }
+      }
+    }
+  }
+}

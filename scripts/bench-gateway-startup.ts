@@ -624,7 +624,7 @@ function writePluginFixtures(
     const entry = path.join(pluginDir, "index.cjs");
     writeFileSync(entry, `module.exports = { id: ${JSON.stringify(id)}, register() {} };\n`);
     writeFileSync(
-      path.join(pluginDir, "openclaw.plugin.json"),
+      path.join(pluginDir, "operator.plugin.json"),
       `${JSON.stringify(
         {
           id,

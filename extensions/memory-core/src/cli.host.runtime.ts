@@ -16,7 +16,7 @@ export {
   resolveDefaultAgentId,
   resolveSessionTranscriptsDirForAgent,
   resolveStateDir,
-  type OpenClawConfig,
+  type OperatorConfig,
 } from "openclaw/plugin-sdk/memory-core-host-runtime-core";
 export {
   listMemoryFiles,

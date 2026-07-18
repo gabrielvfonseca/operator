@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "outDir": "dist"
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/dist/**"
+  ],
+  "extends": "@operator/typescript-config/core"
+}

@@ -1,7 +1,7 @@
 // Memory Core tests cover manager sync ops.interval plugin behavior.
 import type { DatabaseSync } from "node:sqlite";
 import type {
-  OpenClawConfig,
+  OperatorConfig,
   ResolvedMemorySearchConfig,
 } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
 import type { MemorySource } from "openclaw/plugin-sdk/memory-core-host-engine-storage";
@@ -19,7 +19,7 @@ type MemoryIndexEntry = {
 };
 
 class IntervalSyncHarness extends MemoryManagerSyncOps {
-  protected readonly cfg = {} as OpenClawConfig;
+  protected readonly cfg = {} as OperatorConfig;
   protected readonly agentId = "main";
   protected readonly workspaceDir = "/tmp/openclaw-memory-interval-test";
   protected readonly settings: ResolvedMemorySearchConfig;

@@ -1,5 +1,5 @@
 // Discord tests cover message handler.queue plugin behavior.
-import { expectDefined } from "@openclaw/normalization-core";
+import { expectDefined } from "@operator/normalization-core";
 import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { DiscordRetryableInboundError } from "./inbound-dedupe.js";

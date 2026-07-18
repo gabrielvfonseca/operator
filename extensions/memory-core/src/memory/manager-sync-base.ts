@@ -6,7 +6,7 @@ import {
   createSubsystemLogger,
   resolveAgentDir,
   resolveUserPath,
-  type OpenClawConfig,
+  type OperatorConfig,
   type ResolvedMemorySearchConfig,
 } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
 import {
@@ -106,7 +106,7 @@ function memoryTableExists(db: DatabaseSync, tableName: string): boolean {
 }
 export abstract class MemoryManagerSyncBase {
   protected readonly acquireLocalService?: MemoryCoreAcquireLocalService;
-  protected abstract readonly cfg: OpenClawConfig;
+  protected abstract readonly cfg: OperatorConfig;
   protected abstract readonly agentId: string;
   protected abstract readonly workspaceDir: string;
   protected abstract readonly settings: ResolvedMemorySearchConfig;

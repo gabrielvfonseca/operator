@@ -25,7 +25,7 @@ import {
 } from "openclaw/plugin-sdk/runtime-doctor";
 import {
   ensureOpenClawAgentDatabaseSchema,
-  resolveOpenClawAgentSqlitePath,
+  resolveOperatorAgentSqlitePath,
 } from "openclaw/plugin-sdk/sqlite-runtime";
 import {
   DAILY_INGESTION_STATE_RELATIVE_PATH,
@@ -750,7 +750,7 @@ async function collectLegacyMemorySidecarSources(params: {
       agentId,
       legacyPath: normalizedPath,
       stateDir: params.stateDir,
-      agentDatabasePath: resolveOpenClawAgentSqlitePath({ agentId, env: migrationEnv }),
+      agentDatabasePath: resolveOperatorAgentSqlitePath({ agentId, env: migrationEnv }),
     });
   }
   for (const agentId of agentIds) {

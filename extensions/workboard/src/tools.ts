@@ -1,4 +1,4 @@
-import type { WorkboardCard } from "@openclaw/workboard-contract";
+import type { WorkboardCard } from "@operator/workboard-contract";
 // Workboard plugin module implements tools behavior.
 import { jsonResult, readStringParam } from "openclaw/plugin-sdk/core";
 import type { AnyAgentTool, OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";

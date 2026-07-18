@@ -1,6 +1,6 @@
 // Memory Core provider module implements model/runtime integration.
 import type {
-  OpenClawConfig,
+  OperatorConfig,
   ResolvedMemorySearchConfig,
 } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
 import {
@@ -182,7 +182,7 @@ export function applyMemoryFallbackProviderState(params: {
 }
 
 export function resolveMemoryFallbackProviderRequest(params: {
-  cfg: OpenClawConfig;
+  cfg: OperatorConfig;
   settings: ResolvedMemorySearchConfig;
   currentProviderId: string | null;
 }): {

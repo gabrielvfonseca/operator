@@ -12,7 +12,7 @@ import {
   resolveMemoryHostEventLogPath,
 } from "openclaw/plugin-sdk/memory-host-events";
 import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../api.js";
+import type { OperatorConfig } from "../api.js";
 import { syncMemoryWikiBridgeSources } from "./bridge.js";
 import { createMemoryWikiTestHarness } from "./test-helpers.js";
 
@@ -112,7 +112,7 @@ describe("syncMemoryWikiBridgeSources", () => {
       },
     ]);
 
-    const appConfig: OpenClawConfig = {
+    const appConfig: OperatorConfig = {
       agents: {
         list: [{ id: "main", default: true, workspace: workspaceDir }],
       },
@@ -205,7 +205,7 @@ describe("syncMemoryWikiBridgeSources", () => {
       },
     ]);
 
-    const appConfig: OpenClawConfig = {
+    const appConfig: OperatorConfig = {
       agents: {
         list: [{ id: "main", default: true, workspace: workspaceDir }],
       },
@@ -247,7 +247,7 @@ describe("syncMemoryWikiBridgeSources", () => {
       } as Omit<MemoryPluginPublicArtifact, "agentIds"> as MemoryPluginPublicArtifact,
     ]);
 
-    const appConfig: OpenClawConfig = {
+    const appConfig: OperatorConfig = {
       agents: {
         list: [{ id: "main", default: true, workspace: workspaceDir }],
       },
@@ -328,7 +328,7 @@ describe("syncMemoryWikiBridgeSources", () => {
     });
     const supportConfig = { ...unresolvedSupportConfig, agentId: "support" };
     const marketingConfig = { ...unresolvedMarketingConfig, agentId: "marketing" };
-    const appConfig: OpenClawConfig = {
+    const appConfig: OperatorConfig = {
       agents: {
         list: [
           { id: "support", default: true, workspace: supportWorkspace },
@@ -406,7 +406,7 @@ describe("syncMemoryWikiBridgeSources", () => {
 
     await fs.writeFile(path.join(workspaceDir, "MEMORY.md"), "# Durable Memory\n", "utf8");
 
-    const appConfig: OpenClawConfig = {
+    const appConfig: OperatorConfig = {
       agents: {
         list: [{ id: "main", default: true, workspace: workspaceDir }],
       },
@@ -461,7 +461,7 @@ describe("syncMemoryWikiBridgeSources", () => {
       },
     ]);
 
-    const appConfig: OpenClawConfig = {
+    const appConfig: OperatorConfig = {
       agents: {
         list: [{ id: "main", default: true, workspace: workspaceDir }],
       },
@@ -504,7 +504,7 @@ describe("syncMemoryWikiBridgeSources", () => {
         contentType: "markdown",
       },
     ]);
-    const appConfig: OpenClawConfig = {
+    const appConfig: OperatorConfig = {
       agents: {
         list: [{ id: "main", default: true, workspace: workspaceDir }],
       },
@@ -553,7 +553,7 @@ describe("syncMemoryWikiBridgeSources", () => {
         contentType: "markdown",
       },
     ]);
-    const appConfig: OpenClawConfig = {
+    const appConfig: OperatorConfig = {
       agents: {
         list: [{ id: "main", default: true, workspace: workspaceDir }],
       },
@@ -602,7 +602,7 @@ describe("syncMemoryWikiBridgeSources", () => {
         contentType: "markdown",
       },
     ]);
-    const appConfig: OpenClawConfig = {
+    const appConfig: OperatorConfig = {
       agents: {
         list: [{ id: "main", default: true, workspace: workspaceDir }],
       },
@@ -672,7 +672,7 @@ describe("syncMemoryWikiBridgeSources", () => {
         contentType: "markdown",
       },
     ]);
-    const appConfig: OpenClawConfig = {
+    const appConfig: OperatorConfig = {
       agents: {
         list: [{ id: "main", default: true, workspace: workspaceDir }],
       },
@@ -722,7 +722,7 @@ describe("syncMemoryWikiBridgeSources", () => {
       },
     ]);
 
-    const appConfig: OpenClawConfig = {
+    const appConfig: OperatorConfig = {
       agents: {
         list: [{ id: "main", default: true, workspace: workspaceDir }],
       },

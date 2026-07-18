@@ -39,9 +39,9 @@ export function buildPluginCatalogMock() {
         enabled: false,
       }),
       entry({
-        id: "memory-wiki",
-        name: "Memory Wiki",
-        description: "Long-term wiki-style memory for people and projects.",
+        id: "memory-tiered",
+        name: "Memory (Tiered)",
+        description: "Real working/semantic/procedural memory via agent tools.",
         category: "memory",
         installed: true,
       }),

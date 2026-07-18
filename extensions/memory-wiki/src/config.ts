@@ -4,7 +4,7 @@ import path from "node:path";
 import { mapPluginConfigIssues } from "openclaw/plugin-sdk/extension-shared";
 import { resolveDefaultAgentId, resolveSessionAgentId } from "openclaw/plugin-sdk/memory-host-core";
 import { buildPluginConfigSchema, z, type OpenClawPluginConfigSchema } from "../api.js";
-import type { OpenClawConfig } from "../api.js";
+import type { OperatorConfig } from "../api.js";
 
 const WIKI_VAULT_MODES = ["isolated", "bridge", "unsafe-local"] as const;
 const WIKI_VAULT_SCOPES = ["global", "agent"] as const;
@@ -109,7 +109,7 @@ export type ResolvedMemoryWikiConfig = {
 
 export type MemoryWikiConfigResolver = (
   agentId?: string,
-  appConfig?: OpenClawConfig,
+  appConfig?: OperatorConfig,
 ) => ResolvedMemoryWikiConfig;
 
 const DEFAULT_WIKI_VAULT_MODE: WikiVaultMode = "isolated";
@@ -294,7 +294,7 @@ export function resolveMemoryWikiConfig(
 }
 
 export function resolveMemoryWikiConfiguredAgentIds(
-  appConfig: OpenClawConfig | undefined,
+  appConfig: OperatorConfig | undefined,
 ): string[] {
   const configured = appConfig?.agents?.list ?? [];
   const ids = configured.flatMap((entry) => {
@@ -310,7 +310,7 @@ export function resolveMemoryWikiConfiguredAgentIds(
 /** Resolve the exact vault for one trusted runtime agent context. */
 export function resolveMemoryWikiAgentConfig(params: {
   config: ResolvedMemoryWikiConfig;
-  appConfig?: OpenClawConfig;
+  appConfig?: OperatorConfig;
   agentId?: string;
 }): ResolvedMemoryWikiConfig {
   if (params.config.vault.scope === "global") {

@@ -1,4 +1,4 @@
-import { expectDefined } from "@openclaw/normalization-core";
+import { expectDefined } from "@operator/normalization-core";
 // Telegram tests cover bot message dispatch plugin behavior.
 import type { Bot } from "grammy";
 import {

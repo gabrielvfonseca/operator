@@ -1,17 +1,17 @@
 // Memory Core plugin module implements dreaming command behavior.
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-contracts";
+import type { OperatorConfig } from "openclaw/plugin-sdk/config-contracts";
 import { resolveMemoryDreamingConfig } from "openclaw/plugin-sdk/memory-core-host-status";
 import type { OpenClawPluginApi, PluginCommandContext } from "openclaw/plugin-sdk/plugin-entry";
 import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
 import { asRecord } from "./dreaming-shared.js";
 import { resolveShortTermPromotionDreamingConfig } from "./dreaming.js";
 
-function resolveMemoryCorePluginConfig(cfg: OpenClawConfig): Record<string, unknown> {
+function resolveMemoryCorePluginConfig(cfg: OperatorConfig): Record<string, unknown> {
   const entry = asRecord(cfg.plugins?.entries?.["memory-core"]);
   return asRecord(entry?.config) ?? {};
 }
 
-function updateDreamingEnabledInConfig(cfg: OpenClawConfig, enabled: boolean): OpenClawConfig {
+function updateDreamingEnabledInConfig(cfg: OperatorConfig, enabled: boolean): OperatorConfig {
   const entries = { ...cfg.plugins?.entries };
   const existingEntry = asRecord(entries["memory-core"]) ?? {};
   const existingConfig = asRecord(existingEntry.config) ?? {};
@@ -48,7 +48,7 @@ function formatPhaseGuide(): string {
   ].join("\n");
 }
 
-function formatStatus(cfg: OpenClawConfig): string {
+function formatStatus(cfg: OperatorConfig): string {
   const pluginConfig = resolveMemoryCorePluginConfig(cfg);
   const dreaming = resolveMemoryDreamingConfig({
     pluginConfig,
@@ -93,7 +93,7 @@ export async function handleDreamingCommand(api: OpenClawPluginApi, ctx: PluginC
     .split(/\s+/)
     .filter(Boolean)
     .map((token) => normalizeLowercaseStringOrEmpty(token));
-  const currentConfig = api.runtime.config.current() as OpenClawConfig;
+  const currentConfig = api.runtime.config.current() as OperatorConfig;
 
   if (!firstToken || firstToken === "help" || firstToken === "options" || firstToken === "phases") {
     return { text: formatUsage(formatStatus(currentConfig)) };

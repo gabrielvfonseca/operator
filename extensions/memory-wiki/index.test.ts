@@ -1,7 +1,7 @@
 // Memory Wiki tests cover index plugin behavior.
 import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "./api.js";
+import type { OperatorConfig } from "./api.js";
 import plugin from "./index.js";
 import { createMemoryWikiTestHarness } from "./src/test-helpers.js";
 
@@ -92,7 +92,7 @@ describe("memory-wiki plugin", () => {
     const rootDir = await createTempDir("memory-wiki-index-agents-");
     const appConfig = {
       agents: { list: [{ id: "support", default: true }, { id: "marketing" }] },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     const { api, registerTool } = createPluginApi();
     api.config = appConfig;
     api.pluginConfig = {

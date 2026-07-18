@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../api.js";
+import type { OperatorConfig } from "../api.js";
 import { compileMemoryWikiVault } from "./compile.js";
 import type { MemoryWikiPluginConfig } from "./config.js";
 import { renderWikiMarkdown } from "./markdown.js";
@@ -99,15 +99,15 @@ async function createQueryVault(options?: {
   });
 }
 
-function createAppConfig(): OpenClawConfig {
+function createAppConfig(): OperatorConfig {
   return {
     agents: {
       list: [{ id: "main", default: true }],
     },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }
 
-function createSessionVisibilityAppConfig(): OpenClawConfig {
+function createSessionVisibilityAppConfig(): OperatorConfig {
   return {
     agents: {
       defaults: { sandbox: { sessionToolsVisibility: "all" } },
@@ -116,7 +116,7 @@ function createSessionVisibilityAppConfig(): OpenClawConfig {
     tools: {
       sessions: { visibility: "self" },
     },
-  } as OpenClawConfig;
+  } as OperatorConfig;
 }
 
 function mockSessionTranscriptStore() {
@@ -1054,7 +1054,7 @@ describe("searchMemoryWiki", () => {
       agents: {
         list: [{ id: "main", default: true }, { id: "secondary" }],
       },
-    } as OpenClawConfig;
+    } as OperatorConfig;
     loadCombinedSessionStoreForGatewayMock.mockReturnValue({
       storePath: "(test)",
       store: {

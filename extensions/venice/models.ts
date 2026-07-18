@@ -7,7 +7,7 @@ import { buildManifestModelProviderConfig } from "openclaw/plugin-sdk/provider-c
 import type { ModelDefinitionConfig } from "openclaw/plugin-sdk/provider-model-shared";
 import { createSubsystemLogger, retryAsync } from "openclaw/plugin-sdk/runtime-env";
 import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coerce-runtime";
-import manifest from "./openclaw.plugin.json" with { type: "json" };
+import manifest from "./operator.plugin.json" with { type: "json" };
 
 const log = createSubsystemLogger("venice-models");
 

@@ -3,7 +3,7 @@ export {
   buildPluginConfigSchema,
   definePluginEntry,
   type AnyAgentTool,
-  type OpenClawConfig,
+  type OperatorConfig,
   type OpenClawPluginApi,
   type OpenClawPluginConfigSchema,
 } from "openclaw/plugin-sdk/plugin-entry";

@@ -82,7 +82,7 @@ function parsePlugins(value) {
 }
 
 function packageSlug(packageName) {
-  return packageName.slice("@openclaw/".length);
+  return packageName.slice("@operator/".length);
 }
 
 function normalizePlanEntry(value, index) {

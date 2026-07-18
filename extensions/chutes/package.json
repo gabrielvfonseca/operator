@@ -1,5 +1,5 @@
 {
-  "name": "@openclaw/chutes-provider",
+  "name": "@operator/chutes-provider",
   "version": "2026.7.2",
   "description": "OpenClaw Chutes.ai provider plugin.",
   "repository": {
@@ -8,15 +8,15 @@
   },
   "type": "module",
   "devDependencies": {
-    "@openclaw/plugin-sdk": "workspace:*"
+    "@operator/plugin-sdk": "workspace:*"
   },
   "openclaw": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "clawhubSpec": "clawhub:@openclaw/chutes-provider",
-      "npmSpec": "@openclaw/chutes-provider",
+      "clawhubSpec": "clawhub:@operator/chutes-provider",
+      "npmSpec": "@operator/chutes-provider",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.6.8"
     },
