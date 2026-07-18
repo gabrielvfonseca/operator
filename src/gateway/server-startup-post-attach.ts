@@ -4,7 +4,7 @@ import pMap from "p-map";
 import type { CliDeps } from "../cli/deps.types.js";
 import { resolveStateDir } from "../config/paths.js";
 import type { GatewayTailscaleMode } from "../config/types.gateway.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import { hasConfiguredInternalHooks } from "../hooks/configured.js";
 import { isTruthyEnvValue } from "../infra/env.js";
 import { hasRestartSentinel } from "../infra/restart-sentinel.js";
@@ -43,7 +43,7 @@ const PROVIDER_AUTH_REWARM_DELAY_MS = 1_000;
 const AGENT_RUNTIME_PLUGIN_PREWARM_START_DELAY_MS = 0;
 const DEFERRED_SIDECAR_START_DELAY_MS = 100;
 const SESSION_LOCK_CLEANUP_CONCURRENCY = 4;
-const SKIP_STARTUP_MODEL_PREWARM_ENV = "OPENCLAW_SKIP_STARTUP_MODEL_PREWARM";
+const SKIP_STARTUP_MODEL_PREWARM_ENV = "OPERATOR_SKIP_STARTUP_MODEL_PREWARM";
 const QMD_STARTUP_IDLE_DELAY_MS = 120_000;
 type Awaitable<T> = T | Promise<T>;
 type GatewayStartupTrace = {
@@ -582,7 +582,7 @@ async function prewarmConfiguredPrimaryModel(params: {
   if (!explicitPrimary) {
     return;
   }
-  const { normalizeProviderId } = await import("@openclaw/model-catalog-core/provider-id");
+  const { normalizeProviderId } = await import("@operator/model-catalog-core/provider-id");
   if (
     isConfiguredCliBackendPrimary({
       cfg: params.cfg,
@@ -739,8 +739,8 @@ export async function startGatewaySidecars(params: {
   });
 
   const skipChannels =
-    isTruthyEnvValue(process.env.OPENCLAW_SKIP_CHANNELS) ||
-    isTruthyEnvValue(process.env.OPENCLAW_SKIP_PROVIDERS);
+    isTruthyEnvValue(process.env.OPERATOR_SKIP_CHANNELS) ||
+    isTruthyEnvValue(process.env.OPERATOR_SKIP_PROVIDERS);
   // Agent RPC remains available when transport startup is disabled, so its model metadata must
   // warm independently instead of leaving the first headless request on the cold path.
   schedulePrimaryModelPrewarm(
@@ -775,7 +775,7 @@ export async function startGatewaySidecars(params: {
     } else {
       await measureStartup(params.startupTrace, "sidecars.channel-skip", () =>
         params.logChannels.info(
-          "skipping channel start (OPENCLAW_SKIP_CHANNELS=1 or OPENCLAW_SKIP_PROVIDERS=1)",
+          "skipping channel start (OPERATOR_SKIP_CHANNELS=1 or OPERATOR_SKIP_PROVIDERS=1)",
         ),
       );
     }
@@ -845,7 +845,7 @@ export async function startGatewaySidecars(params: {
         const [{ getAcpSessionManager }, { ACP_SESSION_IDENTITY_RENDERER_VERSION }] =
           await Promise.all([
             import("../acp/control-plane/manager.js"),
-            import("@openclaw/acp-core/runtime/session-identifiers"),
+            import("@operator/acp-core/runtime/session-identifiers"),
           ]);
         const result = await getAcpSessionManager().reconcilePendingSessionIdentities({
           cfg: params.cfg,

@@ -5,13 +5,13 @@ import {
   executeSqliteQueryTakeFirstSync,
   getNodeSqliteKysely,
 } from "../infra/kysely-sync.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
   openOpenClawStateDatabase,
   runOpenClawStateWriteTransaction,
   type OpenClawStateDatabaseOptions,
-} from "../state/openclaw-state-db.js";
-import { resolveOpenClawStateSqlitePath } from "../state/openclaw-state-db.paths.js";
+} from "../state/operator-state-db.js";
+import { resolveOpenClawStateSqlitePath } from "../state/operator-state-db.paths.js";
 import type {
   HostedOfficialExternalPluginCatalogMetadata,
   HostedOfficialExternalPluginCatalogSnapshot,
@@ -54,7 +54,7 @@ function resolveStoreEnv(
   }
   return {
     ...(options.env ?? process.env),
-    OPENCLAW_STATE_DIR: options.stateDir,
+    OPERATOR_STATE_DIR: options.stateDir,
   };
 }
 
@@ -183,7 +183,7 @@ function rowToSnapshot(
   };
 }
 
-/** Creates a snapshot store backed by the shared `state/openclaw.sqlite` database. */
+/** Creates a snapshot store backed by the shared `state/operator.sqlite` database. */
 export function createSqliteHostedOfficialExternalPluginCatalogSnapshotStore(
   options: HostedOfficialExternalPluginCatalogSnapshotStoreOptions = {},
 ): HostedOfficialExternalPluginCatalogSnapshotStore {

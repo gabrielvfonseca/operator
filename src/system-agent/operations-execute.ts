@@ -1,5 +1,5 @@
 // Public operation dispatcher. Parsing and mutation helpers live in focused modules.
-import { truncateUtf16Safe } from "@openclaw/normalization-core/utf16-slice";
+import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
 import { buildAgentMainSessionKey, normalizeAgentId } from "../routing/session-key.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { resolveUserPath, shortenHomePath } from "../utils.js";
@@ -242,8 +242,8 @@ export async function executeSystemAgentOperation(
       runtime.log(
         [
           `Connecting ${operation.channel} needs an interactive session.`,
-          "Run `openclaw setup` and say `connect " + operation.channel + "`,",
-          "or run `openclaw channels add` for the terminal wizard.",
+          "Run `operator setup` and say `connect " + operation.channel + "`,",
+          "or run `operator channels add` for the terminal wizard.",
         ].join("\n"),
       );
       return { applied: false };
@@ -251,17 +251,17 @@ export async function executeSystemAgentOperation(
       runtime.log(
         [
           "Changing model providers must happen outside the inference session that powers OpenClaw.",
-          "Exit OpenClaw and run `openclaw onboard`; it stages credentials, live-tests the candidate route, and saves only a passing setup.",
+          "Exit OpenClaw and run `operator onboard`; it stages credentials, live-tests the candidate route, and saves only a passing setup.",
         ].join("\n"),
       );
       return { applied: false };
     case "open-setup": {
       const command =
         operation.target === "guided"
-          ? "openclaw onboard"
+          ? "operator onboard"
           : operation.target === "classic"
-            ? "openclaw onboard --classic"
-            : `openclaw channels add${operation.channel ? ` --channel ${operation.channel}` : ""}`;
+            ? "operator onboard --classic"
+            : `operator channels add${operation.channel ? ` --channel ${operation.channel}` : ""}`;
       runtime.log(
         `One-shot mode cannot open an interactive wizard. Run \`${command}\` in a terminal.`,
       );
@@ -305,7 +305,7 @@ export async function executeSystemAgentOperation(
     case "plugin-uninstall": {
       const message = [
         "OpenClaw cannot prove that uninstalling a plugin will preserve its own active inference route.",
-        `Exit OpenClaw and run \`openclaw plugins uninstall ${operation.pluginId}\` from a terminal.`,
+        `Exit OpenClaw and run \`operator plugins uninstall ${operation.pluginId}\` from a terminal.`,
       ].join("\n");
       runtime.log(message);
       return { applied: false, message };
@@ -360,7 +360,7 @@ export async function executeSystemAgentOperation(
     }
     case "doctor-fix":
       runtime.log(
-        "Doctor repairs can change the inference route that powers this session. Exit OpenClaw and run `openclaw doctor --fix` in a terminal.",
+        "Doctor repairs can change the inference route that powers this session. Exit OpenClaw and run `operator doctor --fix` in a terminal.",
       );
       return { applied: false };
     case "status": {
@@ -430,8 +430,8 @@ export async function executeSystemAgentOperation(
       if (result?.exitReason === "return-to-system-agent") {
         runtime.log(
           result.systemAgentMessage
-            ? `[openclaw] returned from agent with request: ${result.systemAgentMessage}`
-            : "[openclaw] returned from agent",
+            ? `[operator] returned from agent with request: ${result.systemAgentMessage}`
+            : "[operator] returned from agent",
         );
         return { applied: false, returnToShell: true, nextInput: result.systemAgentMessage };
       }

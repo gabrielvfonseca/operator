@@ -3,7 +3,7 @@ import {
   clampOpenAIPromptCacheKey,
   type OpenAICompletionsToolChoice,
   type OpenAIReasoningEffort,
-} from "@openclaw/ai/internal/openai";
+} from "@operator/ai/internal/openai";
 import type { ModelCompatConfig } from "../config/types.models.js";
 import type { Api, Model, Usage } from "../llm/types.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
@@ -29,7 +29,7 @@ export type BaseOpenAIStreamOptions = {
   headers?: Record<string, string>;
   firstEventTimeoutMs?: number;
   onFirstEventTimeout?: (reason: Error) => void;
-  openclawCodeModeToolSurface?: boolean;
+  operatorCodeModeToolSurface?: boolean;
   responseFormat?: Record<string, unknown>;
   frequencyPenalty?: number;
   presencePenalty?: number;
@@ -116,7 +116,7 @@ export function resolveCacheRetention(
   if (cacheRetention === "short" || cacheRetention === "long" || cacheRetention === "none") {
     return cacheRetention;
   }
-  if (typeof process !== "undefined" && process.env.OPENCLAW_CACHE_RETENTION === "long") {
+  if (typeof process !== "undefined" && process.env.OPERATOR_CACHE_RETENTION === "long") {
     return "long";
   }
   return "short";

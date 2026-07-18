@@ -117,7 +117,7 @@ export type {
   NativeHookRelayRegistrationHandle,
 } from "../agents/harness/native-hook-relay.js";
 
-export { VERSION as OPENCLAW_VERSION } from "../version.js";
+export { VERSION as OPERATOR_VERSION } from "../version.js";
 export { formatErrorMessage } from "../infra/errors.js";
 export { formatApprovalDisplayPath } from "../infra/approval-display-paths.js";
 export { buildAgentHookContextChannelFields } from "../plugins/hook-agent-context.js";
@@ -244,7 +244,7 @@ export async function detectAndLoadAgentHarnessPromptImages(params: {
   model: { input?: string[] };
   existingImages?: ImageContent[];
   imageOrder?: PromptImageOrderEntry[];
-  config?: import("../config/types.openclaw.js").OpenClawConfig;
+  config?: import("../config/types.operator.js").OpenClawConfig;
   workspaceOnly?: boolean;
   localRoots?: readonly string[];
   sandbox?: { root: string; bridge: SandboxFsBridge };
@@ -258,7 +258,7 @@ export async function detectAndLoadAgentHarnessPromptImages(params: {
     await Promise.all([
       import("../agents/image-sanitization.js"),
       import("../agents/embedded-agent-runner/run/images.js"),
-      import("@openclaw/media-core/constants"),
+      import("@operator/media-core/constants"),
     ]);
 
   return detectAndLoadPromptImages({

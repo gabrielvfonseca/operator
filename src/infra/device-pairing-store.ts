@@ -10,12 +10,12 @@ import type {
   DevicePairingPaired,
   DevicePairingPending,
   DeviceBootstrapTokens,
-} from "../state/openclaw-state-db.generated.js";
+} from "../state/operator-state-db.generated.js";
 import {
   openOpenClawStateDatabase,
   runOpenClawStateWriteTransaction,
   type OpenClawStateDatabaseOptions,
-} from "../state/openclaw-state-db.js";
+} from "../state/operator-state-db.js";
 import type {
   DeviceAuthToken,
   DeviceBootstrapTokenRecord,
@@ -36,7 +36,7 @@ type DevicePairingStoreTarget = "pending" | "paired" | "both";
 
 /** Route an explicit pairing base dir (tests, alternate state roots) to that dir's DB. */
 function resolveDevicePairingStateDbOptions(baseDir?: string): OpenClawStateDatabaseOptions {
-  return baseDir ? { env: { ...process.env, OPENCLAW_STATE_DIR: baseDir } } : {};
+  return baseDir ? { env: { ...process.env, OPERATOR_STATE_DIR: baseDir } } : {};
 }
 
 // Read-back allowlist for the approved_via column. The Record type forces

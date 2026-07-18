@@ -2,8 +2,8 @@
 import { once } from "node:events";
 import http2 from "node:http2";
 import tls from "node:tls";
-import { resolveTimerTimeoutMs } from "@openclaw/normalization-core/number-coercion";
-import { openProxyConnectTunnel } from "@openclaw/proxyline";
+import { resolveTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
+import { openProxyConnectTunnel } from "@operator/proxyline";
 import { toErrorObject } from "./errors.js";
 import {
   getActiveManagedProxyUrl,
@@ -271,8 +271,8 @@ export async function probeApnsHttp2ReachabilityViaProxy(
         ":path": `/3/device/${"0".repeat(64)}`,
         // APNs should reject this token with InvalidProviderToken. That failure
         // is the success signal that the proxy actually tunneled to Apple.
-        authorization: "bearer intentionally.invalid.openclaw.proxy.validation",
-        "apns-topic": "ai.openclaw.ios",
+        authorization: "bearer intentionally.invalid.operator.proxy.validation",
+        "apns-topic": "ai.operator.ios",
         "apns-push-type": "alert",
         "apns-priority": "10",
       });

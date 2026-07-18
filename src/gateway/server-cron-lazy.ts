@@ -1,7 +1,7 @@
 // Gateway cron lazy loader.
 // Defers scheduler startup until cron is touched by runtime or API handlers.
 import type { CliDeps } from "../cli/deps.types.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import { resolveCronJobsStorePath } from "../cron/store.js";
 import { createLazyPromiseLoader } from "../shared/lazy-runtime.js";
 import type { GatewayCronServiceContract } from "./server-cron-contract.js";
@@ -28,7 +28,7 @@ type LoadedGatewayCronState = {
 export function createLazyGatewayCronState(params: LazyGatewayCronParams): GatewayCronState {
   const env = params.env ?? process.env;
   const storePath = resolveCronJobsStorePath(params.cfg.cron?.store, env);
-  const cronEnabled = env.OPENCLAW_SKIP_CRON !== "1" && params.cfg.cron?.enabled !== false;
+  const cronEnabled = env.OPERATOR_SKIP_CRON !== "1" && params.cfg.cron?.enabled !== false;
   let loaded: LoadedGatewayCronState | null = null;
   let stopped = false;
   let lifecycleGeneration = 0;

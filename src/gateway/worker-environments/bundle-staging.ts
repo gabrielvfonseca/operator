@@ -83,7 +83,7 @@ function pruneVendoredPackageManifest(contents: Buffer): Buffer {
 }
 
 function normalizePortableMode(mode: number, relativePath: string): number {
-  return relativePath === "openclaw.mjs" || (mode & 0o111) !== 0 ? 0o700 : 0o600;
+  return relativePath === "operator.mjs" || (mode & 0o111) !== 0 ? 0o700 : 0o600;
 }
 
 type StagedFileSource = {
@@ -161,11 +161,11 @@ async function stageManifestEntry(
   });
 }
 
-// tsdown keeps some @openclaw workspace packages external of dist (never-bundle list),
+// tsdown keeps some @operator workspace packages external of dist (never-bundle list),
 // so shipped dist imports them at runtime; scan staged bytes for those specifiers to
 // know which workspace builds must ride along in the bundle.
-const OPENCLAW_IMPORT_SPECIFIER_PATTERN =
-  /["'`](@openclaw\/[a-z0-9-]+)(?:\/[A-Za-z0-9./_-]+)?["'`]/gu;
+const OPERATOR_IMPORT_SPECIFIER_PATTERN =
+  /["'`](@operator\/[a-z0-9-]+)(?:\/[A-Za-z0-9./_-]+)?["'`]/gu;
 
 function collectOpenclawImportSpecifiers(
   relativePath: string,
@@ -175,7 +175,7 @@ function collectOpenclawImportSpecifiers(
   if (!/\.(?:cjs|js|mjs)$/u.test(relativePath)) {
     return;
   }
-  for (const match of contents.toString("utf8").matchAll(OPENCLAW_IMPORT_SPECIFIER_PATTERN)) {
+  for (const match of contents.toString("utf8").matchAll(OPERATOR_IMPORT_SPECIFIER_PATTERN)) {
     const packageName = match[1];
     if (packageName) {
       into.add(packageName);
@@ -280,7 +280,7 @@ export async function collectWorkerBundleManifest(
   }
   const referencedPackages = new Set<string>();
   const entries: WorkerBundleManifestEntry[] = [];
-  for (const relativePath of ["openclaw.mjs", ...distFiles].toSorted(comparePaths)) {
+  for (const relativePath of ["operator.mjs", ...distFiles].toSorted(comparePaths)) {
     const { entry, contents } = await stageManifestEntry(
       sourceRoot,
       sourceRootRealPath,

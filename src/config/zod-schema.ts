@@ -1,9 +1,9 @@
-import { isHttpsUrl, isHttpUrl } from "@openclaw/net-policy/url-protocol";
+import { isHttpsUrl, isHttpUrl } from "@operator/net-policy/url-protocol";
 // Assembles the canonical Zod schema for OpenClaw config parsing.
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeStringifiedOptionalString,
-} from "@openclaw/normalization-core/string-coerce";
+} from "@operator/normalization-core/string-coerce";
 import { z } from "zod";
 import { parseDurationMs } from "../cli/parse-duration.js";
 import { base64UrlDecode, normalizeEd25519PublicKeyBase64Url } from "../infra/ed25519-signature.js";
@@ -70,7 +70,7 @@ const GatewayRemoteConfigSchema = z.strictObject(GatewayRemoteSchemaShape).optio
 
 const TailscaleServiceNameSchema = z.string().regex(/^svc:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/, {
   message:
-    'Tailscale serviceName must use the "svc:<dns-label>" format, for example "svc:openclaw"',
+    'Tailscale serviceName must use the "svc:<dns-label>" format, for example "svc:operator"',
 });
 
 const LegacyCanvasHostSchema = z
@@ -806,7 +806,7 @@ export const OpenClawSchema = z
                 mcpArgs: z.array(z.string()).optional(),
                 driver: z
                   .union([
-                    z.literal("openclaw"),
+                    z.literal("operator"),
                     z.literal("clawd"),
                     z.literal("existing-session"),
                     z.literal("extension"),

@@ -2,7 +2,7 @@
 // sentinels, and hand off managed-service restarts when needed.
 import { randomUUID } from "node:crypto";
 import os from "node:os";
-import { isRecord } from "@openclaw/normalization-core/record-coerce";
+import { isRecord } from "@operator/normalization-core/record-coerce";
 import {
   validateUpdateRunParams,
   validateUpdateStatusParams,
@@ -10,9 +10,9 @@ import {
 import { isRestartEnabled } from "../../config/commands.flags.js";
 import { readConfigFileSnapshot } from "../../config/config.js";
 import { extractDeliveryInfo } from "../../config/sessions.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OpenClawConfig } from "../../config/types.operator.js";
 import { GATEWAY_SERVICE_KIND, GATEWAY_SERVICE_MARKER } from "../../daemon/constants.js";
-import { resolveOpenClawPackageRoot } from "../../infra/openclaw-root.js";
+import { resolveOpenClawPackageRoot } from "../../infra/operator-root.js";
 import { readPackageVersion } from "../../infra/package-json.js";
 import { type RestartSentinelPayload, writeRestartSentinel } from "../../infra/restart-sentinel.js";
 import {
@@ -98,7 +98,7 @@ function hasManagedServiceHandoffContext(
 ): boolean {
   if (supervisor === "launchd") {
     return Boolean(
-      env.OPENCLAW_LAUNCHD_LABEL?.trim() ||
+      env.OPERATOR_LAUNCHD_LABEL?.trim() ||
       env.LAUNCH_JOB_LABEL?.trim() ||
       env.LAUNCH_JOB_NAME?.trim() ||
       env.XPC_SERVICE_NAME?.trim(),
@@ -108,13 +108,13 @@ function hasManagedServiceHandoffContext(
     // Ambient systemd markers only prove that a service manager started this
     // process. The detached CLI needs the durable unit name to stop the same
     // gateway before mutating the install root.
-    return Boolean(env.OPENCLAW_SYSTEMD_UNIT?.trim());
+    return Boolean(env.OPERATOR_SYSTEMD_UNIT?.trim());
   }
   if (supervisor === "schtasks") {
     return Boolean(
-      env.OPENCLAW_WINDOWS_TASK_NAME?.trim() ||
-      (env.OPENCLAW_SERVICE_MARKER?.trim() === GATEWAY_SERVICE_MARKER &&
-        env.OPENCLAW_SERVICE_KIND?.trim() === GATEWAY_SERVICE_KIND),
+      env.OPERATOR_WINDOWS_TASK_NAME?.trim() ||
+      (env.OPERATOR_SERVICE_MARKER?.trim() === GATEWAY_SERVICE_MARKER &&
+        env.OPERATOR_SERVICE_KIND?.trim() === GATEWAY_SERVICE_KIND),
     );
   }
   return false;
@@ -346,7 +346,7 @@ export const updateHandlers: GatewayRequestHandlers = {
           allowGatewayServiceRepair: false,
           allowGatewayActivation: false,
         });
-        // The CLI `openclaw update` resumes post-core plugin convergence after a
+        // The CLI `operator update` resumes post-core plugin convergence after a
         // git/source core update; the RPC path did not, leaving official managed
         // plugins stale on the new core. Run the finalizer here to match.
         const finalizeOutcome = await runPostCoreFinalizeAfterGatewayUpdate({

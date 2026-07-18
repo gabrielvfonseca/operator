@@ -29,7 +29,7 @@ For `qwen3.7-max` or `qwen3.6-flash`, use a **Standard (pay-as-you-go)** endpoin
 `qwen` ships as an official external plugin, not bundled with core. Install it and restart Gateway:
 
 ```bash
-openclaw plugins install @openclaw/qwen-provider
+openclaw plugins install @operator/qwen-provider
 openclaw gateway restart
 ```
 

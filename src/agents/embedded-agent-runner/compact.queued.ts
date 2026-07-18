@@ -2,7 +2,7 @@
  * Queues embedded-agent session compaction onto the correct command lane.
  */
 import { parseSqliteSessionFileMarker } from "../../config/sessions/sqlite-marker.js";
-import { OPENCLAW_EMBEDDED_CONTEXT_ENGINE_HOST } from "../../context-engine/host-compat.js";
+import { OPERATOR_EMBEDDED_CONTEXT_ENGINE_HOST } from "../../context-engine/host-compat.js";
 import { ensureContextEnginesInitialized } from "../../context-engine/init.js";
 import {
   resolveContextEngine,
@@ -411,7 +411,7 @@ async function compactResolvedContextEngine(
           modelId: policyModelId,
         });
   const lockedNativeHarness =
-    params.modelSelectionLocked === true && selectedHarnessRuntime !== "openclaw";
+    params.modelSelectionLocked === true && selectedHarnessRuntime !== "operator";
   const resolvedCompactionTarget = resolveEmbeddedCompactionTarget({
     config: params.config,
     provider: params.provider,
@@ -624,7 +624,7 @@ async function compactResolvedContextEngine(
     contextEnginePluginId: resolveContextEngineOwnerPluginId(contextEngine),
   });
   const contextEngineRuntimeSettings = buildContextEngineRuntimeSettings({
-    contextEngineHost: OPENCLAW_EMBEDDED_CONTEXT_ENGINE_HOST,
+    contextEngineHost: OPERATOR_EMBEDDED_CONTEXT_ENGINE_HOST,
     provider: ceProvider,
     requestedModel: params.model,
     resolvedModel: ceModelId,
@@ -1005,7 +1005,7 @@ function shouldAttemptNativeHarnessCompaction(params: {
   selectedHarnessRuntime?: string | null;
 }): boolean {
   const selectedRuntime = normalizeOptionalAgentRuntimeId(params.selectedHarnessRuntime);
-  if (!selectedRuntime || selectedRuntime === "auto" || selectedRuntime === "openclaw") {
+  if (!selectedRuntime || selectedRuntime === "auto" || selectedRuntime === "operator") {
     return false;
   }
   return isOpenAIProvider(params.provider) ? params.nativeHarnessCompaction === true : true;

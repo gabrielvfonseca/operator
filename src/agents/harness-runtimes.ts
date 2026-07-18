@@ -1,10 +1,10 @@
 /**
  * Collects configured native harness runtime ids from model provider config.
  */
-import { parseModelCatalogRef } from "@openclaw/model-catalog-core/model-catalog-refs";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import { parseModelCatalogRef } from "@operator/model-catalog-core/model-catalog-refs";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import { isRecord } from "../utils.js";
-import { OPENCLAW_AGENT_RUNTIME_ID, isDefaultAgentRuntimeId } from "./agent-runtime-id.js";
+import { OPERATOR_AGENT_RUNTIME_ID, isDefaultAgentRuntimeId } from "./agent-runtime-id.js";
 import { normalizeOptionalAgentRuntimeId } from "./agent-runtime-id.js";
 import { resolveAgentHarnessPolicy } from "./harness/policy.js";
 
@@ -18,7 +18,7 @@ function isSelectablePluginRuntime(runtime: string | undefined): runtime is stri
   return (
     Boolean(runtime) &&
     !isDefaultAgentRuntimeId(runtime) &&
-    normalizeOptionalAgentRuntimeId(runtime) !== OPENCLAW_AGENT_RUNTIME_ID
+    normalizeOptionalAgentRuntimeId(runtime) !== OPERATOR_AGENT_RUNTIME_ID
   );
 }
 

@@ -846,7 +846,7 @@ export async function inspectWindowsGatewayFirewall(
         code: "windows_firewall_inspection_failed",
         message: "OpenClaw could not quickly inspect Windows Firewall LAN Gateway policy.",
         details: [
-          "Run `openclaw gateway status --deep` again, or verify the advertised LAN URL from another device.",
+          "Run `operator gateway status --deep` again, or verify the advertised LAN URL from another device.",
         ],
       };
     }
@@ -858,7 +858,7 @@ export async function inspectWindowsGatewayFirewall(
         code: "windows_firewall_inspection_failed",
         message: "OpenClaw could not parse Windows Firewall LAN Gateway policy.",
         details: [
-          "Run `openclaw gateway status --deep` again, or verify the advertised LAN URL from another device.",
+          "Run `operator gateway status --deep` again, or verify the advertised LAN URL from another device.",
         ],
       };
     }
@@ -879,7 +879,7 @@ export async function inspectWindowsGatewayFirewall(
         code: "windows_firewall_inspection_failed",
         message: "OpenClaw could not parse Windows Firewall LAN Gateway policy.",
         details: [
-          "Run `openclaw gateway status --deep` again, or verify the advertised LAN URL from another device.",
+          "Run `operator gateway status --deep` again, or verify the advertised LAN URL from another device.",
         ],
       };
     }
@@ -896,7 +896,7 @@ export async function inspectWindowsGatewayFirewall(
           code: "windows_firewall_inspection_failed",
           message: "OpenClaw could not parse Windows Firewall LAN Gateway policy.",
           details: [
-            "Run `openclaw gateway status --deep` again, or verify the advertised LAN URL from another device.",
+            "Run `operator gateway status --deep` again, or verify the advertised LAN URL from another device.",
           ],
         };
   }
@@ -925,7 +925,7 @@ export async function inspectWindowsGatewayFirewall(
       code: "windows_firewall_inspection_failed",
       message: "OpenClaw could not inspect Windows Firewall policy for LAN Gateway reachability.",
       details: [
-        "Run `openclaw gateway status --deep` from a normal PowerShell session and verify the advertised LAN URL from another device.",
+        "Run `operator gateway status --deep` from a normal PowerShell session and verify the advertised LAN URL from another device.",
       ],
     };
   }
@@ -946,7 +946,7 @@ export async function inspectWindowsGatewayFirewall(
       code: "windows_firewall_inspection_failed",
       message: "OpenClaw could not parse Windows Firewall policy for LAN Gateway reachability.",
       details: [
-        "Run `openclaw gateway status --deep` from a normal PowerShell session and verify the advertised LAN URL from another device.",
+        "Run `operator gateway status --deep` from a normal PowerShell session and verify the advertised LAN URL from another device.",
       ],
     };
   }
@@ -959,7 +959,7 @@ export async function inspectWindowsGatewayFirewall(
       code: "windows_firewall_inspection_failed",
       message: "OpenClaw could not parse Windows Firewall policy for LAN Gateway reachability.",
       details: [
-        "Run `openclaw gateway status --deep` from a normal PowerShell session and verify the advertised LAN URL from another device.",
+        "Run `operator gateway status --deep` from a normal PowerShell session and verify the advertised LAN URL from another device.",
       ],
     };
   }
@@ -981,7 +981,7 @@ export async function inspectWindowsGatewayFirewall(
           code: "windows_firewall_inspection_failed",
           message: "OpenClaw could not parse Windows Firewall policy for LAN Gateway reachability.",
           details: [
-            "Run `openclaw gateway status --deep` from a normal PowerShell session and verify the advertised LAN URL from another device.",
+            "Run `operator gateway status --deep` from a normal PowerShell session and verify the advertised LAN URL from another device.",
           ],
         };
       }
@@ -993,7 +993,7 @@ export async function inspectWindowsGatewayFirewall(
         message:
           "OpenClaw could not inspect managed Windows Firewall rules for LAN Gateway reachability.",
         details: [
-          "Run `openclaw gateway status --deep` from a normal PowerShell session and verify Group Policy or administrator-managed allow rules for the Gateway port.",
+          "Run `operator gateway status --deep` from a normal PowerShell session and verify Group Policy or administrator-managed allow rules for the Gateway port.",
         ],
       };
     }
@@ -1023,7 +1023,7 @@ export function formatWindowsGatewayFirewallGuidance(params: {
     return [];
   }
   return [
-    "Windows firewall: if another device cannot connect to the LAN URL, run `openclaw gateway status --deep` from this Windows host.",
+    "Windows firewall: if another device cannot connect to the LAN URL, run `operator gateway status --deep` from this Windows host.",
   ];
 }
 /* oxlint-disable max-lines -- TODO: split this grandfathered oversized file. */

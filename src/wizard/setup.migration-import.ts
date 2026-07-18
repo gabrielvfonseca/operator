@@ -3,7 +3,7 @@ import {
   ensureOnboardingPluginInstalled,
   type OnboardingPluginInstallEntry,
 } from "../commands/onboarding-plugin-install.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import {
   listAvailableManifestContractPlugins,
@@ -418,7 +418,7 @@ export async function runSetupMigrationImport(params: {
     });
     const recoveryState =
       !setupMigrationProviderSupportsRecovery(providerId) ||
-      process.env.OPENCLAW_MIGRATION_EXISTING_IMPORT === "1"
+      process.env.OPERATOR_MIGRATION_EXISTING_IMPORT === "1"
         ? ({ kind: "none" } as const)
         : await resolveSetupMigrationRecovery({
             stateDir,

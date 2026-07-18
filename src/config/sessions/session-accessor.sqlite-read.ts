@@ -5,11 +5,11 @@ import {
   iterateSqliteQuerySync,
 } from "../../infra/kysely-sync.js";
 import { extractAssistantVisibleText } from "../../shared/chat-message-content.js";
-import { isTranscriptOnlyOpenClawAssistantModel } from "../../shared/transcript-only-openclaw-assistant.js";
+import { isTranscriptOnlyOpenClawAssistantModel } from "../../shared/transcript-only-operator-assistant.js";
 import {
   openOpenClawAgentDatabase,
   type OpenClawAgentDatabase,
-} from "../../state/openclaw-agent-db.js";
+} from "../../state/operator-agent-db.js";
 import type {
   LatestTranscriptAssistantMessage,
   LatestTranscriptAssistantText,

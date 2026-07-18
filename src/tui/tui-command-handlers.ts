@@ -161,7 +161,7 @@ export function createCommandHandlers(context: CommandHandlerContext) {
   const setAgent = async (id: string) => {
     state.currentAgentId = normalizeAgentId(id);
     await setSession("");
-    chatLog.addSystem(`agent set to ${state.currentAgentId}; use /openclaw to return`);
+    chatLog.addSystem(`agent set to ${state.currentAgentId}; use /operator to return`);
   };
 
   const closeOverlayAndRender = (handle: OverlayHandle) => {
@@ -490,7 +490,7 @@ export function createCommandHandlers(context: CommandHandlerContext) {
           chatLog.addSystem("Usage: /btw [side question]");
         }
         break;
-      case "openclaw":
+      case "operator":
         chatLog.addSystem(
           args ? `returning to OpenClaw with request: ${args}` : "returning to OpenClaw",
         );

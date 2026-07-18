@@ -849,7 +849,7 @@ export async function runPreparedCliAgent(
       content: [{ type: "text" as const, text: block.message }],
       timestamp: nowMs,
       idempotencyKey: `hook-block:before_agent_run:user:${params.runId}`,
-      __openclaw: {
+      __operator: {
         beforeAgentRunBlocked: {
           blockedBy: block.pluginId,
           blockedAt: nowMs,

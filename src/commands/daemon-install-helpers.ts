@@ -10,7 +10,7 @@ import { coerceSecretRef, resolveSecretInputRef, type SecretRef } from "../confi
 import { resolveGatewayLaunchAgentLabel } from "../daemon/constants.js";
 import { resolveGatewayStateDir, resolveGatewayTaskScriptPath } from "../daemon/paths.js";
 import {
-  OPENCLAW_WRAPPER_ENV_KEY,
+  OPERATOR_WRAPPER_ENV_KEY,
   resolveGatewayProgramArguments,
   resolveOpenClawWrapperPath,
 } from "../daemon/program-args.js";
@@ -454,12 +454,12 @@ function mergeServicePath(
 }
 
 // Operator opt-in env vars that should survive service regeneration even though
-// they share the OPENCLAW_ prefix that is otherwise stripped from preserved
+// they share the OPERATOR_ prefix that is otherwise stripped from preserved
 // environments. These represent intentional, user-placed configuration on the
 // service definition that the install/repair flow should not silently revert.
-const PRESERVED_OPENCLAW_OPERATOR_OPT_IN_ENV_KEYS = new Set([
-  "OPENCLAW_CLI_CONTAINER_BYPASS",
-  "OPENCLAW_CONTAINER_HINT",
+const PRESERVED_OPERATOR_OPERATOR_OPT_IN_ENV_KEYS = new Set([
+  "OPERATOR_CLI_CONTAINER_BYPASS",
+  "OPERATOR_CONTAINER_HINT",
 ]);
 
 /** Preserve safe operator-owned env vars from an existing service definition. */
@@ -481,7 +481,7 @@ function collectPreservedExistingServiceEnvVars(
       upper === "HOME" ||
       upper === "PATH" ||
       upper === "TMPDIR" ||
-      (upper.startsWith("OPENCLAW_") && !PRESERVED_OPENCLAW_OPERATOR_OPT_IN_ENV_KEYS.has(upper))
+      (upper.startsWith("OPERATOR_") && !PRESERVED_OPERATOR_OPERATOR_OPT_IN_ENV_KEYS.has(upper))
     ) {
       continue;
     }
@@ -740,23 +740,23 @@ export async function buildGatewayInstallPlan(params: {
     devMode: params.devMode,
     nodePath: params.nodePath,
   });
-  const wrapperInput = params.wrapperPath ?? params.env[OPENCLAW_WRAPPER_ENV_KEY];
+  const wrapperInput = params.wrapperPath ?? params.env[OPERATOR_WRAPPER_ENV_KEY];
   const wrapperPointsAtWindowsTaskScript =
     Boolean(wrapperInput?.trim()) &&
     platform === "win32" &&
     isSameServicePath(wrapperInput, resolveGatewayTaskScriptPath(params.env), platform);
   if (wrapperPointsAtWindowsTaskScript) {
     params.warn?.(
-      `Ignoring ${OPENCLAW_WRAPPER_ENV_KEY} because it points to the Windows task script; using the OpenClaw gateway entrypoint directly to avoid a recursive gateway.cmd wrapper.`,
+      `Ignoring ${OPERATOR_WRAPPER_ENV_KEY} because it points to the Windows task script; using the OpenClaw gateway entrypoint directly to avoid a recursive gateway.cmd wrapper.`,
     );
   }
   const wrapperPath = wrapperPointsAtWindowsTaskScript
     ? undefined
     : await resolveOpenClawWrapperPath(wrapperInput);
   const serviceInputEnv: Record<string, string | undefined> = wrapperPath
-    ? { ...params.env, [OPENCLAW_WRAPPER_ENV_KEY]: wrapperPath }
+    ? { ...params.env, [OPERATOR_WRAPPER_ENV_KEY]: wrapperPath }
     : wrapperPointsAtWindowsTaskScript
-      ? omitEnvKey(params.env, OPENCLAW_WRAPPER_ENV_KEY)
+      ? omitEnvKey(params.env, OPERATOR_WRAPPER_ENV_KEY)
       : params.env;
   const { programArguments, workingDirectory } = await resolveGatewayProgramArguments({
     port: params.port,
@@ -777,7 +777,7 @@ export async function buildGatewayInstallPlan(params: {
     port: params.port,
     launchdLabel:
       platform === "darwin"
-        ? resolveGatewayLaunchAgentLabel(serviceInputEnv.OPENCLAW_PROFILE)
+        ? resolveGatewayLaunchAgentLabel(serviceInputEnv.OPERATOR_PROFILE)
         : undefined,
     platform,
     extraPathDirs: resolveDaemonServicePathDirs({
@@ -845,6 +845,6 @@ function omitEnvKey(
 export function gatewayInstallErrorHint(platform = process.platform): string {
   return platform === "win32"
     ? "Tip: native Windows now falls back to a per-user Startup-folder login item when Scheduled Task creation is denied; if install still fails, rerun from an elevated PowerShell or skip service install."
-    : `Tip: rerun \`${formatCliCommand("openclaw gateway install")}\` after fixing the error.`;
+    : `Tip: rerun \`${formatCliCommand("operator gateway install")}\` after fixing the error.`;
 }
 /* oxlint-disable max-lines -- TODO: split this grandfathered oversized file. */

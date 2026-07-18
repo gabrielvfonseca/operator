@@ -1,5 +1,5 @@
 // Imported by openai-transport-stream.test.ts to keep its mocked suite in one Vitest module graph.
-import type { Model } from "openclaw/plugin-sdk/llm";
+import type { Model } from "operator/plugin-sdk/llm";
 import { describe, expect, it } from "vitest";
 import { buildOpenAICompletionsParams } from "./openai-transport-stream.js";
 import {

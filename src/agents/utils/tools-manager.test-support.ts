@@ -8,7 +8,7 @@ type ToolsManagerTestApi = {
 
 function getTestApi(): ToolsManagerTestApi {
   return (globalThis as Record<PropertyKey, unknown>)[
-    Symbol.for("openclaw.toolsManagerTestApi")
+    Symbol.for("operator.toolsManagerTestApi")
   ] as ToolsManagerTestApi;
 }
 

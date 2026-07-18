@@ -16,7 +16,7 @@ import type { OpenClawConfig } from "../../config/types.openclaw.js";
 import {
   type OpenClawTestState,
   withOpenClawTestState,
-} from "../../test-utils/openclaw-test-state.js";
+} from "../../test-utils/operator-test-state.js";
 import {
   clearSessionAuthProfileOverride,
   resolveSessionAuthProfileOverride,

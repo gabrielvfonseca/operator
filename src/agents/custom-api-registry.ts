@@ -1,7 +1,7 @@
 /**
  * Registers caller-supplied custom API stream functions with the LLM registry.
  */
-import { getApiProvider, registerApiProvider } from "@openclaw/ai/internal/runtime";
+import { getApiProvider, registerApiProvider } from "@operator/ai/internal/runtime";
 import type {
   Api,
   AssistantMessageEventStreamContract,
@@ -12,7 +12,7 @@ import { createAssistantMessageEventStream } from "../llm/utils/event-stream.js"
 import type { StreamFn } from "./runtime/index.js";
 import { buildStreamErrorAssistantMessage } from "./stream-message-shared.js";
 
-const CUSTOM_API_SOURCE_PREFIX = "openclaw-custom-api:";
+const CUSTOM_API_SOURCE_PREFIX = "operator-custom-api:";
 
 /** Returns the registry source id used for a custom API stream function. */
 function getCustomApiRegistrySourceId(api: Api): string {

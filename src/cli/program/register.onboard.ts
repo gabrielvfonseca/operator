@@ -179,7 +179,7 @@ export function registerOnboardCommand(program: Command): void {
     .addHelpText(
       "after",
       () =>
-        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/onboard", "docs.openclaw.ai/cli/onboard")}\n`,
+        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/onboard", "docs.operator.ai/cli/onboard")}\n`,
     )
     .option(
       "--workspace <dir>",
@@ -210,7 +210,7 @@ export function registerOnboardCommand(program: Command): void {
     .option("--gateway-token <token>", "Gateway token (token auth)")
     .option(
       "--gateway-token-ref-env <name>",
-      "Gateway token SecretRef env var name (token auth; e.g. OPENCLAW_GATEWAY_TOKEN)",
+      "Gateway token SecretRef env var name (token auth; e.g. OPERATOR_GATEWAY_TOKEN)",
     )
     .option("--gateway-password <password>", "Gateway password (password auth)")
     .option("--remote-url <url>", "Remote Gateway WebSocket URL")
@@ -254,8 +254,8 @@ export function registerOnboardCommand(program: Command): void {
           defaultRuntime.error(
             [
               "Non-interactive setup requires explicit risk acknowledgement.",
-              "Read: https://docs.openclaw.ai/security",
-              `Re-run with: ${formatCliCommand("openclaw onboard --modern --non-interactive --accept-risk ...")}`,
+              "Read: https://docs.operator.ai/security",
+              `Re-run with: ${formatCliCommand("operator onboard --modern --non-interactive --accept-risk ...")}`,
             ].join("\n"),
           );
           defaultRuntime.exit(1);

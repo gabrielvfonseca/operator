@@ -57,14 +57,14 @@ export type AgentHarnessAuthBindingFingerprintParams = {
   authProfileId: string;
   authProfileStore: import("../auth-profiles/types.js").AuthProfileStore;
   agentDir: string;
-  config?: import("../../config/types.openclaw.js").OpenClawConfig;
+  config?: import("../../config/types.operator.js").OpenClawConfig;
 };
 export type AgentHarnessSideQuestionParams = {
-  cfg: import("../../config/types.openclaw.js").OpenClawConfig;
+  cfg: import("../../config/types.operator.js").OpenClawConfig;
   agentDir: string;
   provider: string;
   model: string;
-  runtimeModel?: import("openclaw/plugin-sdk/llm").Model<import("openclaw/plugin-sdk/llm").Api>;
+  runtimeModel?: import("operator/plugin-sdk/llm").Model<import("operator/plugin-sdk/llm").Api>;
   /** One atomic route/profile/store snapshot prepared before native dispatch. */
   preparedRuntimeAuth: {
     plan: import("../runtime-plan/types.js").AgentRuntimeAuthPlan;

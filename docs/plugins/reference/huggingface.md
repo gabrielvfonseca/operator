@@ -11,7 +11,7 @@ Adds Hugging Face model provider support to OpenClaw.
 
 ## Distribution
 
-- Package: `@openclaw/huggingface-provider`
+- Package: `@operator/huggingface-provider`
 - Install route: included in OpenClaw
 
 ## Surface

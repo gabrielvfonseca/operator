@@ -1,7 +1,7 @@
 /**
  * Prepares stream subscription, tool execution, and the active run queue.
  */
-import { normalizeOptionalString } from "@openclaw/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 import { isSilentReplyText, SILENT_REPLY_TOKEN } from "../../../auto-reply/tokens.js";
 import {
   freezeDiagnosticTraceContext,
@@ -285,7 +285,7 @@ export function prepareEmbeddedAttemptStream(input: {
 
   const toolSearchCatalogExecutor: ToolSearchCatalogToolExecutor = async (toolParams) => {
     try {
-      if (toolParams.source === "openclaw" && toolParams.sourceName === "core") {
+      if (toolParams.source === "operator" && toolParams.sourceName === "core") {
         recordStructuredReplayTrustForToolCall(
           toolParams.toolCallId,
           toolParams.tool as never,

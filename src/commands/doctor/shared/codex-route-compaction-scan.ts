@@ -1,6 +1,6 @@
-import { asOptionalRecord as asMutableRecord } from "@openclaw/normalization-core/record-coerce";
-import { normalizeOptionalLowercaseString as normalizeString } from "@openclaw/normalization-core/string-coerce";
-import type { OpenClawConfig } from "../../../config/types.openclaw.js";
+import { asOptionalRecord as asMutableRecord } from "@operator/normalization-core/record-coerce";
+import { normalizeOptionalLowercaseString as normalizeString } from "@operator/normalization-core/string-coerce";
+import type { OpenClawConfig } from "../../../config/types.operator.js";
 import {
   agentUsesCodexRuntimeForCompaction,
   asAgentRuntimePolicyConfig,

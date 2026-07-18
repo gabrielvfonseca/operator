@@ -1,7 +1,7 @@
 /** Tests node-host MCP startup, descriptors, calls, and failure isolation. */
 
 import { ErrorCode, type CallToolResult, type Tool } from "@modelcontextprotocol/sdk/types.js";
-import { expectDefined } from "@openclaw/normalization-core";
+import { expectDefined } from "@operator/normalization-core";
 import { describe, expect, it, vi } from "vitest";
 import { OpenClawSchema } from "../config/zod-schema.js";
 import { startNodeHostMcpManager } from "./mcp.js";

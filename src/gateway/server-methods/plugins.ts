@@ -10,7 +10,7 @@ import {
   validatePluginsSetEnabledParams,
   validatePluginsUninstallParams,
 } from "../../../packages/gateway-protocol/src/index.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OpenClawConfig } from "../../config/types.operator.js";
 import { searchInstallablePluginPackages } from "../../plugins/catalog-search.js";
 import {
   formatManagedPluginLifecycleError,

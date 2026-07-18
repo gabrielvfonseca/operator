@@ -3,7 +3,7 @@ import crypto from "node:crypto";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@openclaw/normalization-core/string-coerce";
+} from "@operator/normalization-core/string-coerce";
 import { normalizeChatType } from "../../channels/chat-type.js";
 import { normalizeAnyChannelId } from "../../channels/registry.js";
 import { applyMergePatch } from "../../config/merge-patch.js";
@@ -12,7 +12,7 @@ import { loadSessionEntry, listSessionEntries } from "../../config/sessions/sess
 import { resolveSessionKey } from "../../config/sessions/session-key.js";
 import { formatSqliteSessionFileMarker } from "../../config/sessions/sqlite-marker.js";
 import type { SessionEntry, SessionScope } from "../../config/sessions/types.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OpenClawConfig } from "../../config/types.operator.js";
 import {
   isModelSelectionLocked,
   MODEL_SELECTION_LOCKED_RESET_MESSAGE,
@@ -35,7 +35,7 @@ import type { SessionInitResult } from "./session.js";
 
 function isSlowReplyTestAllowed(env: NodeJS.ProcessEnv = process.env): boolean {
   return (
-    env.OPENCLAW_ALLOW_SLOW_REPLY_TESTS === "1" || env.OPENCLAW_STRICT_FAST_REPLY_CONFIG === "0"
+    env.OPERATOR_ALLOW_SLOW_REPLY_TESTS === "1" || env.OPERATOR_STRICT_FAST_REPLY_CONFIG === "0"
   );
 }
 
@@ -67,7 +67,7 @@ export function resolveGetReplyConfig(params: {
   }
   if (params.isFastTestEnv && !isCompleteReplyConfig(configOverride) && !isSlowReplyTestAllowed()) {
     throw new Error(
-      "Fast reply tests must pass with withFastReplyConfig()/markCompleteReplyConfig(); set OPENCLAW_ALLOW_SLOW_REPLY_TESTS=1 to opt out.",
+      "Fast reply tests must pass with withFastReplyConfig()/markCompleteReplyConfig(); set OPERATOR_ALLOW_SLOW_REPLY_TESTS=1 to opt out.",
     );
   }
   if (params.isFastTestEnv && isCompleteReplyConfig(configOverride)) {

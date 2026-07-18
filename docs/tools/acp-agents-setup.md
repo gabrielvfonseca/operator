@@ -135,11 +135,11 @@ See [Configuration Reference](/gateway/configuration-reference).
 
 ## Plugin setup for acpx backend
 
-Packaged installs use the official `@openclaw/acpx` runtime plugin for ACP.
+Packaged installs use the official `@operator/acpx` runtime plugin for ACP.
 Install and enable it before using ACP harness sessions:
 
 ```bash
-openclaw plugins install @openclaw/acpx
+openclaw plugins install @operator/acpx
 openclaw config set plugins.entries.acpx.enabled true
 ```
 
@@ -155,7 +155,7 @@ If you disabled `acpx`, denied it via `plugins.allow` / `plugins.deny`, or want
 to switch back to the packaged plugin, use the explicit package path:
 
 ```bash
-openclaw plugins install @openclaw/acpx
+openclaw plugins install @operator/acpx
 openclaw config set plugins.entries.acpx.enabled true
 ```
 

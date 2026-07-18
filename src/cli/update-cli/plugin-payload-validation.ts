@@ -18,7 +18,7 @@ type PluginPayloadSmokeFailureReason =
   | "invalid-bundle-manifest"
   | "missing-main-entry"
   | "missing-extension-entry"
-  | "missing-openclaw-peer-link";
+  | "missing-operator-peer-link";
 
 export type PluginPayloadSmokeFailure = {
   pluginId: string;
@@ -188,8 +188,8 @@ async function validatePackagePayload(params: {
       failures.push({
         pluginId: params.pluginId,
         installPath: params.installPath,
-        reason: "missing-openclaw-peer-link",
-        detail: `Plugin declares peerDependency "openclaw" but peer link audit failed: ${peerIssue.reason}.`,
+        reason: "missing-operator-peer-link",
+        detail: `Plugin declares peerDependency "operator" but peer link audit failed: ${peerIssue.reason}.`,
       });
     }
   }
@@ -203,7 +203,7 @@ async function validatePackagePayload(params: {
       detail: `Plugin extension entry validation failed: ${
         extensionResolution.status === "invalid"
           ? extensionResolution.error
-          : "package.json openclaw.extensions is empty"
+          : "package.json operator.extensions is empty"
       }`,
     });
     return failures;
@@ -310,7 +310,7 @@ function manifestDeclaresOpenClawPeer(manifest: PackageManifest): boolean {
     typeof peerDependencies === "object" &&
     peerDependencies !== null &&
     !Array.isArray(peerDependencies) &&
-    typeof (peerDependencies as Record<string, unknown>).openclaw === "string"
+    typeof (peerDependencies as Record<string, unknown>).operator === "string"
   );
 }
 

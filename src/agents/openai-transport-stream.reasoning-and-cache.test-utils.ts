@@ -1,7 +1,7 @@
 // Imported by openai-transport-stream.test.ts to keep its mocked suite in one Vitest module graph.
-import { SYSTEM_PROMPT_CACHE_BOUNDARY } from "@openclaw/ai/internal/shared";
-import { expectDefined } from "@openclaw/normalization-core";
-import type { Model } from "openclaw/plugin-sdk/llm";
+import { SYSTEM_PROMPT_CACHE_BOUNDARY } from "@operator/ai/internal/shared";
+import { expectDefined } from "@operator/normalization-core";
+import type { Model } from "operator/plugin-sdk/llm";
 import { describe, expect, it } from "vitest";
 import { buildOpenAICompletionsParams } from "./openai-transport-stream.js";
 import {
@@ -160,18 +160,18 @@ describe("openai transport stream", () => {
       } as never,
       { sessionId: "session-123" } as never,
       {
-        openclaw_session_id: "session-123",
-        openclaw_turn_id: "turn-123",
-        openclaw_turn_attempt: "1",
-        openclaw_transport: "stream",
+        operator_session_id: "session-123",
+        operator_turn_id: "turn-123",
+        operator_turn_attempt: "1",
+        operator_transport: "stream",
       },
     ) as { metadata?: Record<string, string> };
 
     expectRecordFields(params.metadata, {
-      openclaw_session_id: "session-123",
-      openclaw_turn_id: "turn-123",
-      openclaw_turn_attempt: "1",
-      openclaw_transport: "stream",
+      operator_session_id: "session-123",
+      operator_turn_id: "turn-123",
+      operator_turn_attempt: "1",
+      operator_transport: "stream",
     });
   });
 

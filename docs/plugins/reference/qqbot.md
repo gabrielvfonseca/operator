@@ -11,7 +11,7 @@ OpenClaw QQ Bot channel plugin for group and direct-message workflows.
 
 ## Distribution
 
-- Package: `@openclaw/qqbot`
+- Package: `@operator/qqbot`
 - Install route: npm; ClawHub
 
 ## Surface

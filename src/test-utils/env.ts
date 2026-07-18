@@ -46,10 +46,10 @@ const PATH_RESOLUTION_ENV_KEYS = [
   "USERPROFILE",
   "HOMEDRIVE",
   "HOMEPATH",
-  "OPENCLAW_HOME",
-  "OPENCLAW_STATE_DIR",
-  "OPENCLAW_BUNDLED_PLUGINS_DIR",
-  "OPENCLAW_DISABLE_BUNDLED_PLUGINS",
+  "OPERATOR_HOME",
+  "OPERATOR_STATE_DIR",
+  "OPERATOR_BUNDLED_PLUGINS_DIR",
+  "OPERATOR_DISABLE_BUNDLED_PLUGINS",
 ] as const;
 
 // Windows home resolution depends on split drive/path env vars, not only HOME.
@@ -76,10 +76,10 @@ export function createPathResolutionEnv(
     ...process.env,
     HOME: resolvedHome,
     USERPROFILE: resolvedHome,
-    OPENCLAW_HOME: undefined,
-    OPENCLAW_STATE_DIR: undefined,
-    OPENCLAW_BUNDLED_PLUGINS_DIR: undefined,
-    OPENCLAW_DISABLE_BUNDLED_PLUGINS: undefined,
+    OPERATOR_HOME: undefined,
+    OPERATOR_STATE_DIR: undefined,
+    OPERATOR_BUNDLED_PLUGINS_DIR: undefined,
+    OPERATOR_DISABLE_BUNDLED_PLUGINS: undefined,
   };
 
   const windowsHome = resolveWindowsHomeParts(resolvedHome);

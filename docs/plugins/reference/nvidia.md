@@ -11,7 +11,7 @@ Adds NVIDIA model provider support to OpenClaw.
 
 ## Distribution
 
-- Package: `@openclaw/nvidia-provider`
+- Package: `@operator/nvidia-provider`
 - Install route: included in OpenClaw
 
 ## Surface

@@ -94,7 +94,7 @@ export function getSubagentRunsSnapshotForRead(
 ): Map<string, SubagentRunRecord> {
   const merged = new Map<string, SubagentRunRecord>();
   const shouldReadPersisted =
-    process.env.OPENCLAW_TEST_READ_SUBAGENT_RUNS_FROM_SQLITE === "1" ||
+    process.env.OPERATOR_TEST_READ_SUBAGENT_RUNS_FROM_SQLITE === "1" ||
     !(process.env.VITEST || process.env.NODE_ENV === "test");
   if (shouldReadPersisted) {
     try {

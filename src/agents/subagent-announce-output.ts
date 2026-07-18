@@ -3,7 +3,7 @@
  *
  * Reads child session output, detects waiting states, and formats completion findings for announcements.
  */
-import { asFiniteNumber } from "@openclaw/normalization-core/number-coercion";
+import { asFiniteNumber } from "@operator/normalization-core/number-coercion";
 import { isSilentReplyText, SILENT_REPLY_TOKEN } from "../auto-reply/tokens.js";
 import { formatDurationCompact } from "../infra/format-time/format-duration.js";
 import { buildAgentRunTerminalOutcomeFromWaitResult } from "./agent-run-terminal-outcome.js";
@@ -48,7 +48,7 @@ const defaultSubagentAnnounceOutputDeps: SubagentAnnounceOutputDeps = {
 let subagentAnnounceOutputDeps: SubagentAnnounceOutputDeps = defaultSubagentAnnounceOutputDeps;
 
 function isFastTestMode() {
-  return process.env.OPENCLAW_TEST_FAST === "1";
+  return process.env.OPERATOR_TEST_FAST === "1";
 }
 
 type SubagentOutputSnapshot = {
@@ -576,6 +576,6 @@ const testing = {
 };
 if (process.env.VITEST || process.env.NODE_ENV === "test") {
   (globalThis as Record<PropertyKey, unknown>)[
-    Symbol.for("openclaw.subagentAnnounceOutputTestApi")
+    Symbol.for("operator.subagentAnnounceOutputTestApi")
   ] = testing;
 }

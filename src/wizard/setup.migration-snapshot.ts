@@ -3,7 +3,7 @@ import crypto from "node:crypto";
 import { createReadStream } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import { withFileLock } from "../infra/file-lock.js";
 import type { MigrationPlan } from "../plugins/types.js";
 import { resolveUserPath } from "../utils.js";
@@ -333,7 +333,7 @@ export function assertFreshSetupMigrationTarget(freshness: {
   fresh: boolean;
   reasons: readonly string[];
 }): void {
-  if (freshness.fresh || process.env.OPENCLAW_MIGRATION_EXISTING_IMPORT === "1") {
+  if (freshness.fresh || process.env.OPERATOR_MIGRATION_EXISTING_IMPORT === "1") {
     return;
   }
   throw new Error(

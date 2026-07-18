@@ -5,12 +5,12 @@ import { executeSqliteQuerySync, getNodeSqliteKysely } from "../infra/kysely-syn
 import { assertSqliteTableIntegrity } from "../infra/sqlite-integrity.js";
 import { normalizeSqliteNumber } from "../infra/sqlite-number.js";
 import { runSqliteDeferredTransactionSync } from "../infra/sqlite-transaction.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
+import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
 import {
   closeOpenClawStateDatabase,
   openOpenClawStateDatabase,
   runOpenClawStateWriteTransaction,
-} from "../state/openclaw-state-db.js";
+} from "../state/operator-state-db.js";
 import { parseDeliveryContextJson } from "./task-registry.sqlite.shared.js";
 import type { TaskRegistryStoreSnapshot } from "./task-registry.store.types.js";
 import {
@@ -49,7 +49,7 @@ type TaskRegistryDatabase = {
   path: string;
 };
 
-// SQLite-backed task store mirrors task records and delivery state into openclaw-state.db.
+// SQLite-backed task store mirrors task records and delivery state into operator-state.db.
 const TASK_RUN_SELECT_COLUMNS = [
   "task_id",
   "runtime",
@@ -385,7 +385,7 @@ export function saveTaskRegistryStateToSqlite(snapshot: TaskRegistryStoreSnapsho
       db,
       tableName: "task_runs",
       columnName: "task_id",
-      tempTableName: "openclaw_live_task_run_ids",
+      tempTableName: "operator_live_task_run_ids",
       ids: taskIds,
     });
     const deliveryTaskIds = [...snapshot.deliveryStates.keys()];
@@ -396,7 +396,7 @@ export function saveTaskRegistryStateToSqlite(snapshot: TaskRegistryStoreSnapsho
         db,
         tableName: "task_delivery_state",
         columnName: "task_id",
-        tempTableName: "openclaw_live_task_delivery_ids",
+        tempTableName: "operator_live_task_delivery_ids",
         ids: deliveryTaskIds,
       });
     }

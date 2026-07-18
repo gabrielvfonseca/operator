@@ -1,7 +1,7 @@
 /** Detects when secrets runtime preparation can safely use a fast path. */
 import { existsSync } from "node:fs";
 import path from "node:path";
-import { uniqueStrings } from "@openclaw/normalization-core/string-normalization";
+import { uniqueStrings } from "@operator/normalization-core/string-normalization";
 import {
   listAgentIds,
   resolveAgentDir,
@@ -16,7 +16,7 @@ import { getRuntimeAuthProfileStoreCredentialsRevision } from "../agents/auth-pr
 import { resolveAuthProfileDatabasePath } from "../agents/auth-profiles/sqlite.js";
 import type { AuthProfileStore } from "../agents/auth-profiles/types.js";
 import { resolveOAuthPath } from "../config/paths.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import type { PluginManifestRegistry } from "../plugins/manifest-registry.js";
 import type { PluginOrigin } from "../plugins/plugin-origin.types.js";
 import { resolveUserPath } from "../utils.js";
@@ -33,11 +33,11 @@ const RUNTIME_PATH_ENV_KEYS = [
   "USERPROFILE",
   "HOMEDRIVE",
   "HOMEPATH",
-  "OPENCLAW_HOME",
-  "OPENCLAW_STATE_DIR",
-  "OPENCLAW_CONFIG_PATH",
-  "OPENCLAW_AGENT_DIR",
-  "OPENCLAW_TEST_FAST",
+  "OPERATOR_HOME",
+  "OPERATOR_STATE_DIR",
+  "OPERATOR_CONFIG_PATH",
+  "OPERATOR_AGENT_DIR",
+  "OPERATOR_TEST_FAST",
 ] as const;
 
 /**

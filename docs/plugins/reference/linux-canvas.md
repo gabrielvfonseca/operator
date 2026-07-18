@@ -11,7 +11,7 @@ Canvas rendering bridge for the OpenClaw Linux desktop app.
 
 ## Distribution
 
-- Package: `@openclaw/linux-canvas`
+- Package: `@operator/linux-canvas`
 - Install route: included in OpenClaw
 
 ## Surface

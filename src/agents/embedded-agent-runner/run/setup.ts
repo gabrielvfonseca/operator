@@ -2,7 +2,7 @@
  * Resolves hook-selected model state and pre-model attachments for a run.
  */
 import type { SessionEntry } from "../../../config/sessions/types.js";
-import type { OpenClawConfig } from "../../../config/types.openclaw.js";
+import type { OpenClawConfig } from "../../../config/types.operator.js";
 import type { ProviderRuntimeModel } from "../../../plugins/provider-runtime-model.types.js";
 import type {
   PluginHookBeforeAgentStartResult,
@@ -19,7 +19,7 @@ import {
 import {
   isDefaultAgentRuntimeId,
   normalizeOptionalAgentRuntimeId,
-  OPENCLAW_AGENT_RUNTIME_ID,
+  OPERATOR_AGENT_RUNTIME_ID,
 } from "../../agent-runtime-id.js";
 import {
   evaluateContextWindowGuard,
@@ -201,7 +201,7 @@ export function resolveNativeModelOwnedHarnessId(params: {
   if (
     !requestedHarnessId ||
     isDefaultAgentRuntimeId(requestedHarnessId) ||
-    requestedHarnessId === OPENCLAW_AGENT_RUNTIME_ID ||
+    requestedHarnessId === OPERATOR_AGENT_RUNTIME_ID ||
     requestedHarnessId !== selectedHarnessId
   ) {
     return undefined;

@@ -7,7 +7,7 @@ import type {
 } from "../auto-reply/reply/reply-dispatcher.types.js";
 import type { FinalizedMsgContext } from "../auto-reply/templating.js";
 import type { ChatType } from "../channels/chat-type.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import type { TtsAutoMode } from "../config/types.tts.js";
 import type { DiagnosticTraceContext } from "../infra/diagnostic-trace-context.js";
 import type {
@@ -187,7 +187,7 @@ type PluginHookChannelPairingRequestedEvent = {
   accountId?: string;
   /** Channel-scoped sender ID awaiting operator approval. */
   senderId: string;
-  /** Short-lived code accepted by `openclaw pairing approve`. */
+  /** Short-lived code accepted by `operator pairing approve`. */
   code: string;
   /** Sender-supplied channel metadata for operator notification/audit. Treat as untrusted. */
   metadata?: Record<string, string | undefined>;

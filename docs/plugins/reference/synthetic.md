@@ -11,7 +11,7 @@ Adds Synthetic model provider support to OpenClaw.
 
 ## Distribution
 
-- Package: `@openclaw/synthetic-provider`
+- Package: `@operator/synthetic-provider`
 - Install route: included in OpenClaw
 
 ## Surface

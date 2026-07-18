@@ -317,9 +317,9 @@ export function buildBuiltinChatCommands(
       ],
     }),
     defineChatCommand({
-      key: "openclaw",
+      key: "operator",
       description: "Run the OpenClaw setup and repair helper.",
-      textAlias: "/openclaw",
+      textAlias: "/operator",
       acceptsArgs: true,
       scope: "text",
       category: "management",

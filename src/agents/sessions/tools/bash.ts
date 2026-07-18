@@ -5,7 +5,7 @@
  */
 import { existsSync } from "node:fs";
 import { Container, Text, truncateToWidth } from "@earendil-works/pi-tui";
-import { resolveTimerTimeoutMs } from "@openclaw/normalization-core/number-coercion";
+import { resolveTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
 import { Type } from "typebox";
 import { toErrorObject } from "../../../infra/errors.js";
 import { formatDurationSeconds } from "../../../infra/format-time/format-duration.js";
@@ -40,7 +40,7 @@ function resolveBashTimeoutMs(timeoutSeconds: unknown): number | undefined {
 }
 
 if (process.env.VITEST || process.env.NODE_ENV === "test") {
-  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("openclaw.bashToolTestApi")] = {
+  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("operator.bashToolTestApi")] = {
     resolveBashTimeoutMs,
   };
 }
@@ -312,7 +312,7 @@ export function createBashToolDefinition(
       void ctx;
       const resolvedCommand = commandPrefix ? `${commandPrefix}\n${command}` : command;
       const spawnContext = resolveSpawnContext(resolvedCommand, cwd, spawnHook);
-      const output = new OutputAccumulator({ tempFilePrefix: "openclaw-bash" });
+      const output = new OutputAccumulator({ tempFilePrefix: "operator-bash" });
       let acceptingOutput = true;
       let updateTimer: NodeJS.Timeout | undefined;
       let updateDirty = false;

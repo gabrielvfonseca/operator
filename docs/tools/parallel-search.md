@@ -31,7 +31,7 @@ one explicitly; neither is auto-detected.
 ## Install plugin
 
 ```bash
-openclaw plugins install @openclaw/parallel-plugin
+openclaw plugins install @operator/parallel-plugin
 openclaw gateway restart
 ```
 

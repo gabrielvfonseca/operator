@@ -1,9 +1,9 @@
 /** Loads and normalizes OpenClaw plugin manifests, including contracts and config schemas. */
 import fs from "node:fs";
 import path from "node:path";
-import { normalizeModelCatalog } from "@openclaw/model-catalog-core/model-catalog-normalize";
-import { normalizeModelCatalogProviderId } from "@openclaw/model-catalog-core/model-catalog-refs";
-import type { ModelCatalog } from "@openclaw/model-catalog-core/model-catalog-types";
+import { normalizeModelCatalog } from "@operator/model-catalog-core/model-catalog-normalize";
+import { normalizeModelCatalogProviderId } from "@operator/model-catalog-core/model-catalog-refs";
+import type { ModelCatalog } from "@operator/model-catalog-core/model-catalog-types";
 import { normalizeOptionalString } from "../../packages/normalization-core/src/string-coerce.js";
 import { normalizeTrimmedStringList } from "../../packages/normalization-core/src/string-normalization.js";
 import type { ChannelConfigRuntimeSchema } from "../channels/plugins/types.config.js";
@@ -23,7 +23,7 @@ import { createPluginCacheKey, PluginLruCache } from "./plugin-cache-primitives.
 import type { PluginKind } from "./plugin-kind.types.js";
 
 /** Canonical plugin manifest filename inside plugin roots. */
-export const PLUGIN_MANIFEST_FILENAME = "openclaw.plugin.json";
+export const PLUGIN_MANIFEST_FILENAME = "operator.plugin.json";
 const PLUGIN_MANIFEST_FILENAMES = [PLUGIN_MANIFEST_FILENAME] as const;
 const MAX_PLUGIN_MANIFEST_BYTES = 256 * 1024;
 const MAX_PLUGIN_MANIFEST_LOAD_CACHE_ENTRIES = 512;
@@ -232,7 +232,7 @@ export type PluginManifestSetup = {
 };
 
 export type PluginManifestQaRunner = {
-  /** Subcommand mounted beneath `openclaw qa`, for example `matrix`. */
+  /** Subcommand mounted beneath `operator qa`, for example `matrix`. */
   commandName: string;
   /** Optional user-facing help text for fallback host stubs. */
   description?: string;
@@ -1925,7 +1925,7 @@ export function loadPluginManifest(
   });
 }
 
-// package.json "openclaw" metadata (used for setup/catalog)
+// package.json "operator" metadata (used for setup/catalog)
 export type PluginPackageChannel = {
   id?: string;
   label?: string;
@@ -2075,7 +2075,7 @@ export function resolvePackageExtensionEntries(
     return {
       status: "invalid",
       entries: [],
-      error: "package.json openclaw must be an object",
+      error: "package.json operator must be an object",
     };
   }
   const raw = rawOpenClaw.extensions;
@@ -2086,7 +2086,7 @@ export function resolvePackageExtensionEntries(
     return {
       status: "invalid",
       entries: [],
-      error: "package.json openclaw.extensions must be an array",
+      error: "package.json operator.extensions must be an array",
     };
   }
   const entries: string[] = [];
@@ -2096,7 +2096,7 @@ export function resolvePackageExtensionEntries(
       return {
         status: "invalid",
         entries: [],
-        error: `package.json openclaw.extensions[${index}] must be a non-empty string`,
+        error: `package.json operator.extensions[${index}] must be a non-empty string`,
       };
     }
     entries.push(normalized);

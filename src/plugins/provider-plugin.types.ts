@@ -5,7 +5,7 @@ import type { AgentMessage, StreamFn } from "../agents/runtime/index.js";
 import type { ProviderSystemPromptContribution } from "../agents/system-prompt-contribution.js";
 import type { AnyAgentTool } from "../agents/tools/common.js";
 import type { ModelProviderConfig } from "../config/types.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import type { ProviderUsageSnapshot } from "../infra/provider-usage.types.js";
 import type { PluginTextTransforms } from "./cli-backend.types.js";
 import type {
@@ -588,7 +588,7 @@ export type ProviderPlugin = {
    */
   formatApiKey?: (cred: AuthProfileCredential) => string;
   /**
-   * Legacy auth-profile ids that should be retired by `openclaw doctor`.
+   * Legacy auth-profile ids that should be retired by `operator doctor`.
    *
    * Use this when a provider plugin replaces an older core-managed profile id
    * and wants cleanup/migration messaging to live with the provider instead of
@@ -596,7 +596,7 @@ export type ProviderPlugin = {
    */
   deprecatedProfileIds?: string[];
   /**
-   * Legacy OAuth profile-id migrations that `openclaw doctor` should offer.
+   * Legacy OAuth profile-id migrations that `operator doctor` should offer.
    *
    * Use this when a provider moved from a legacy default OAuth profile id to a
    * newer identity-based id and wants doctor to own the config rewrite without

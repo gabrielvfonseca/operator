@@ -14,7 +14,7 @@ import {
   onSessionIdentityMutation,
   type SessionIdentityMutation,
 } from "../../config/sessions/session-accessor.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OpenClawConfig } from "../../config/types.operator.js";
 import {
   claimAgentRunContext,
   emitAgentEventForOwner,

@@ -4,7 +4,7 @@
 import { randomUUID } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { isRecord } from "@openclaw/normalization-core/record-coerce";
+import { isRecord } from "@operator/normalization-core/record-coerce";
 import { isSessionTranscriptSideAppendEntry } from "../../config/sessions/transcript-tree.js";
 import { CURRENT_SESSION_VERSION } from "../../config/sessions/version.js";
 import { appendRegularFile } from "../../infra/fs-safe.js";
@@ -64,7 +64,7 @@ const repairableToolCallContentTypes = new Set([
   "tool_use",
 ]);
 
-const invalidJsonlSlotType = "__openclaw_invalid_jsonl_slot";
+const invalidJsonlSlotType = "__operator_invalid_jsonl_slot";
 
 function isString(value: unknown): value is string {
   return typeof value === "string" && value.trim() !== "";
@@ -500,7 +500,7 @@ function readableSessionState(fileEntries: FileEntry[]): ReadableSessionState {
         const isParentLinkedOpaque =
           typeof rawType === "string" &&
           rawType !== "session" &&
-          !id.startsWith("__openclaw_invalid_jsonl_slot_") &&
+          !id.startsWith("__operator_invalid_jsonl_slot_") &&
           !sessionEntryTypes.has(rawType) &&
           Object.hasOwn(rawRecord, "parentId") &&
           (rawParentId === null || isString(rawParentId));
@@ -573,7 +573,7 @@ function fileEntryOrMigrationSlot(value: unknown, index: number): FileEntry {
   }
   return {
     type: invalidJsonlSlotType,
-    id: `__openclaw_invalid_jsonl_slot_${index}`,
+    id: `__operator_invalid_jsonl_slot_${index}`,
     parentId: null,
     timestamp: "1970-01-01T00:00:00.000Z",
   } as unknown as FileEntry;

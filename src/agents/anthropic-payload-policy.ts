@@ -1,7 +1,7 @@
 import {
   splitSystemPromptCacheBoundary,
   stripSystemPromptCacheBoundary,
-} from "@openclaw/ai/internal/shared";
+} from "@operator/ai/internal/shared";
 /**
  * Anthropic-family request payload policy helpers.
  * Applies service-tier and cache-control markers only when provider endpoint
@@ -65,7 +65,7 @@ export function resolveAnthropicEphemeralCacheControl(
   cacheRetention: AnthropicPayloadPolicyInput["cacheRetention"],
 ): AnthropicEphemeralCacheControl | undefined {
   const retention =
-    cacheRetention ?? (process.env.OPENCLAW_CACHE_RETENTION === "long" ? "long" : "short");
+    cacheRetention ?? (process.env.OPERATOR_CACHE_RETENTION === "long" ? "long" : "short");
   if (retention === "none") {
     return undefined;
   }

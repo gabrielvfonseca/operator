@@ -25,7 +25,7 @@ type CommitmentExtractionTestApi = {
 
 function getTestApi(): CommitmentExtractionTestApi {
   const api = (globalThis as Record<PropertyKey, unknown>)[
-    Symbol.for("openclaw.commitmentExtractionTestApi")
+    Symbol.for("operator.commitmentExtractionTestApi")
   ];
   if (!api) {
     throw new Error("commitment extraction test API is unavailable");

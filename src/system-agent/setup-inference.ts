@@ -4,7 +4,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { isDeepStrictEqual } from "node:util";
-import { expectDefined } from "@openclaw/normalization-core";
+import { expectDefined } from "@operator/normalization-core";
 import { resolveAgentEffectiveModelPrimary, resolveDefaultAgentId } from "../agents/agent-scope.js";
 import { normalizeAuthProfileCredential } from "../agents/auth-profiles/credential-normalize.js";
 import { loadPersistedAuthProfileStore } from "../agents/auth-profiles/persisted.js";
@@ -40,7 +40,7 @@ import {
   normalizeAgentModelRefForConfig,
   resolveAgentModelPrimaryValue,
 } from "../config/model-input.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import type { PluginInstallRecord } from "../config/types.plugins.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
@@ -287,7 +287,7 @@ export type ActivateSetupInferenceDeps = {
   clearLoadInstalledPluginIndexInstallRecordsCache?: typeof import("../plugins/installed-plugin-index-records.js").clearLoadInstalledPluginIndexInstallRecordsCache;
   clearPluginMetadataLifecycleCaches?: typeof import("../plugins/plugin-metadata-lifecycle.js").clearPluginMetadataLifecycleCaches;
   invalidatePluginRuntimeDiscoveryAfterConfigMutation?: typeof import("../plugins/registry-refresh.js").invalidatePluginRuntimeDiscoveryAfterConfigMutation;
-  disposeOpenClawAgentDatabaseByPath?: typeof import("../state/openclaw-agent-db.js").disposeOpenClawAgentDatabaseByPath;
+  disposeOpenClawAgentDatabaseByPath?: typeof import("../state/operator-agent-db.js").disposeOpenClawAgentDatabaseByPath;
   createTempDir?: () => Promise<string>;
   removeTempDir?: (dir: string) => Promise<void>;
   timeoutMs?: number;
@@ -713,7 +713,7 @@ function resolveSetupAgentRuntimeId(
     kind === "provider-auth" ||
     parseProviderAutoSetupChoiceId(kind) !== undefined
   ) {
-    return "openclaw";
+    return "operator";
   }
   return undefined;
 }
@@ -1063,7 +1063,7 @@ async function buildTestPlan(params: {
         modelRef,
         agentDir: params.agentDir,
         config: prepared.config,
-        agentId: "openclaw",
+        agentId: "operator",
         routeAgentId: resolveDefaultAgentId(prepared.config),
         ...(prepared.selectedProfileId ? { authProfileId: prepared.selectedProfileId } : {}),
         persistModelRef: modelRef,
@@ -1106,7 +1106,7 @@ async function buildTestPlan(params: {
         model: route.model,
         modelRef: route.modelLabel,
         config: route.runConfig,
-        agentId: "openclaw",
+        agentId: "operator",
         routeAgentId: route.agentId,
         agentDir: route.agentDir,
         ...(route.runner === "embedded"
@@ -1126,7 +1126,7 @@ async function buildTestPlan(params: {
         ...ref,
         modelRef,
         config: cfg,
-        agentId: "openclaw",
+        agentId: "operator",
         routeAgentId: resolveDefaultAgentId(cfg),
         persistModelRef: modelRef,
       };
@@ -1142,7 +1142,7 @@ async function buildTestPlan(params: {
         ...ref,
         modelRef,
         config: cfg,
-        agentId: "openclaw",
+        agentId: "operator",
         routeAgentId: resolveDefaultAgentId(cfg),
         persistModelRef: modelRef,
       };
@@ -1159,7 +1159,7 @@ async function buildTestPlan(params: {
         modelRef,
         agentHarnessRuntimeOverride: "codex",
         config: cfg,
-        agentId: "openclaw",
+        agentId: "operator",
         routeAgentId: resolveDefaultAgentId(cfg),
         agentDir: params.agentDir,
         cleanupBundleMcpOnRunEnd: true,
@@ -1177,7 +1177,7 @@ async function buildTestPlan(params: {
         ...ref,
         modelRef,
         config: cfg,
-        agentId: "openclaw",
+        agentId: "operator",
         routeAgentId: resolveDefaultAgentId(cfg),
         persistModelRef: modelRef,
       };
@@ -1193,7 +1193,7 @@ async function buildTestPlan(params: {
         ...ref,
         modelRef,
         config: cfg,
-        agentId: "openclaw",
+        agentId: "operator",
         routeAgentId: resolveDefaultAgentId(cfg),
         persistModelRef: modelRef,
       };
@@ -1369,7 +1369,7 @@ async function buildTestPlan(params: {
         modelRef,
         agentDir: params.agentDir,
         config: preparedAuth.config,
-        agentId: "openclaw",
+        agentId: "operator",
         routeAgentId: resolveDefaultAgentId(preparedAuth.config),
         authProfileId: preparedAuth.selectedProfileId,
         persistModelRef: modelRef,
@@ -1528,7 +1528,7 @@ async function activateSetupInferenceUnredacted(
       ).workspace;
 
   const tempDir = await (
-    deps.createTempDir ?? (() => fs.mkdtemp(path.join(os.tmpdir(), "openclaw-setup-inference-")))
+    deps.createTempDir ?? (() => fs.mkdtemp(path.join(os.tmpdir(), "operator-setup-inference-")))
   )();
   const testAgentDir = path.join(tempDir, "agent");
   let pendingCodexInstall: PluginInstallRecord | undefined;
@@ -1672,7 +1672,7 @@ async function activateSetupInferenceUnredacted(
         reason: "source-changed",
         workspaceDir: workspace,
         policyPluginIds: ["codex"],
-        traceCommand: "openclaw-setup-probe",
+        traceCommand: "operator-setup-probe",
         logger: { warn: (message) => (registryRefreshWarning = message) },
       });
       const ensureHarnessPlugin =
@@ -1852,7 +1852,7 @@ async function activateSetupInferenceUnredacted(
         };
       }
       if (
-        successfulHarnessId !== "openclaw" &&
+        successfulHarnessId !== "operator" &&
         (test.auth.runtimeOwnerKind !== "plugin-harness" ||
           test.auth.runtimeOwnerId?.trim() !== successfulHarnessId ||
           !test.auth.runtimeArtifactFingerprint ||
@@ -2017,7 +2017,7 @@ async function activateSetupInferenceUnredacted(
             };
           }
           throw new SetupInferenceActivationIndeterminateError(
-            "Inference activation could not confirm whether its verified credential was saved or rolled back. No config commit was attempted; run openclaw doctor --fix before retrying.",
+            "Inference activation could not confirm whether its verified credential was saved or rolled back. No config commit was attempted; run operator doctor --fix before retrying.",
           );
         }
         if (persistedManualAuth.status === "not-persisted") {
@@ -2123,7 +2123,7 @@ async function activateSetupInferenceUnredacted(
             const rolledBack = await rollbackManualAuthProfiles(manualAuthReceipt, deps);
             if (!rolledBack) {
               throw new SetupInferenceActivationIndeterminateError(
-                "Inference activation stopped before its config commit, but could not confirm removal of its staged credential. Run openclaw doctor --fix before retrying.",
+                "Inference activation stopped before its config commit, but could not confirm removal of its staged credential. Run operator doctor --fix before retrying.",
               );
             }
           }
@@ -2155,13 +2155,13 @@ async function activateSetupInferenceUnredacted(
               configReferencesManualAuthProfiles(reconciledRuntime, manualAuthReceipt)
             ) {
               throw new SetupInferenceActivationIndeterminateError(
-                "Inference activation could not confirm its config commit state. The verified credential was retained because the current config may reference it. Run openclaw doctor --fix before retrying.",
+                "Inference activation could not confirm its config commit state. The verified credential was retained because the current config may reference it. Run operator doctor --fix before retrying.",
               );
             }
             const rolledBack = await rollbackManualAuthProfiles(manualAuthReceipt, deps);
             if (!rolledBack) {
               throw new SetupInferenceActivationIndeterminateError(
-                "Inference activation failed and its staged credential could not be rolled back. Run openclaw doctor --fix before retrying.",
+                "Inference activation failed and its staged credential could not be rolled back. Run operator doctor --fix before retrying.",
               );
             }
           }
@@ -2188,7 +2188,7 @@ async function activateSetupInferenceUnredacted(
       const after = await readSnapshot().catch(() => null);
       try {
         await appendSystemAgentAuditEntry({
-          operation: "openclaw.setup",
+          operation: "operator.setup",
           summary: "Verified and configured AI access through OpenClaw setup",
           configPath: after?.path ?? snapshot.path,
           configHashBefore: snapshot.hash ?? null,
@@ -2298,7 +2298,7 @@ export async function verifySetupInference(
     return {
       ok: false,
       status: "unavailable",
-      error: "No OpenClaw config exists. Run `openclaw onboard` first.",
+      error: "No OpenClaw config exists. Run `operator onboard` first.",
     };
   }
   if (!snapshot.valid) {
@@ -2462,11 +2462,11 @@ export async function verifySetupInferenceConfig(params: {
     return {
       ok: false,
       status: "unavailable",
-      error: "No agent model is configured. Run `openclaw onboard` first.",
+      error: "No agent model is configured. Run `operator onboard` first.",
     };
   }
   const tempDir = await (
-    deps.createTempDir ?? (() => fs.mkdtemp(path.join(os.tmpdir(), "openclaw-setup-inference-")))
+    deps.createTempDir ?? (() => fs.mkdtemp(path.join(os.tmpdir(), "operator-setup-inference-")))
   )();
   try {
     const plan = await buildTestPlan({
@@ -2599,8 +2599,8 @@ async function cleanupSetupInferenceTempDir(params: {
   try {
     const disposeDatabase =
       params.deps.disposeOpenClawAgentDatabaseByPath ??
-      (await import("../state/openclaw-agent-db.js")).disposeOpenClawAgentDatabaseByPath;
-    disposeDatabase(path.join(params.tempDir, "agent", "openclaw-agent.sqlite"));
+      (await import("../state/operator-agent-db.js")).disposeOpenClawAgentDatabaseByPath;
+    disposeDatabase(path.join(params.tempDir, "agent", "operator-agent.sqlite"));
   } catch {
     // Windows cannot remove an open SQLite file. Keep cleanup nonfatal, but
     // always try the directory removal so callers do not retain probe secrets.
@@ -2657,7 +2657,7 @@ async function retainUnownedCodexInstall(params: {
     const marked = await markRetained({
       packageDir: params.record.installPath,
       pluginId: "codex",
-      reason: "openclaw-inference-activation-not-committed",
+      reason: "operator-inference-activation-not-committed",
     });
     if (!marked) {
       log.warn("Could not retain the uncommitted Codex runtime package generation.");
@@ -3049,7 +3049,7 @@ async function runSetupInferenceTest(params: {
       result = (await runCli({
         sessionId,
         sessionKey: `temp:setup-inference:${runId}`,
-        agentId: plan.agentId ?? "openclaw",
+        agentId: plan.agentId ?? "operator",
         trigger: "manual",
         sessionFile,
         workspaceDir: tempDir,
@@ -3061,8 +3061,8 @@ async function runSetupInferenceTest(params: {
         ...(plan.authProfileId ? { authProfileId: plan.authProfileId } : {}),
         timeoutMs,
         runId,
-        messageChannel: "openclaw",
-        messageProvider: "openclaw",
+        messageChannel: "operator",
+        messageProvider: "operator",
         executionMode: "side-question",
         disableTools: true,
         cleanupCliLiveSessionOnRunEnd: true,
@@ -3077,7 +3077,7 @@ async function runSetupInferenceTest(params: {
       result = (await runEmbedded({
         sessionId,
         sessionKey: `temp:setup-inference:${runId}`,
-        agentId: plan.agentId ?? "openclaw",
+        agentId: plan.agentId ?? "operator",
         trigger: "manual",
         sessionFile,
         workspaceDir: tempDir,
@@ -3103,8 +3103,8 @@ async function runSetupInferenceTest(params: {
         ...resolveSetupInferenceProbeStreamParams(plan.agentHarnessRuntimeOverride),
         disableTools: true,
         modelRun: true,
-        messageChannel: "openclaw",
-        messageProvider: "openclaw",
+        messageChannel: "operator",
+        messageProvider: "operator",
         onSuccessfulAuthBinding: (binding) => {
           successfulAuth = binding;
         },

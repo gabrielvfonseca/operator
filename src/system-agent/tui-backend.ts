@@ -114,7 +114,7 @@ function splitModelRef(ref: string | undefined): { provider?: string; model?: st
 }
 
 class SystemAgentTuiBackend implements TuiBackend {
-  readonly connection = { url: "openclaw local" };
+  readonly connection = { url: "operator local" };
 
   onEvent?: (evt: TuiEvent) => void;
   onConnected?: () => void;
@@ -185,7 +185,7 @@ class SystemAgentTuiBackend implements TuiBackend {
     verboseLevel: string;
   }> {
     return {
-      sessionId: "openclaw",
+      sessionId: "operator",
       messages: this.messages,
       thinkingLevel: this.route.thinkingLevel,
       verboseLevel: "off",
@@ -195,7 +195,7 @@ class SystemAgentTuiBackend implements TuiBackend {
   async listSessions(): Promise<TuiSessionList> {
     return {
       ts: Date.now(),
-      path: "openclaw",
+      path: "operator",
       count: 1,
       defaults: {
         model: this.route.model ?? null,
@@ -205,7 +205,7 @@ class SystemAgentTuiBackend implements TuiBackend {
       sessions: [
         {
           key: SYSTEM_AGENT_SESSION_KEY,
-          sessionId: "openclaw",
+          sessionId: "operator",
           displayName: "OpenClaw",
           updatedAt: Date.now(),
           thinkingLevel: this.route.thinkingLevel,
@@ -230,10 +230,10 @@ class SystemAgentTuiBackend implements TuiBackend {
     const model = splitModelRef(typeof opts.model === "string" ? opts.model : undefined);
     return {
       ok: true,
-      path: "openclaw",
+      path: "operator",
       key: SYSTEM_AGENT_SESSION_KEY,
       entry: {
-        sessionId: "openclaw",
+        sessionId: "operator",
         displayName: "OpenClaw",
         updatedAt: Date.now(),
         ...(model.model ? { model: model.model } : {}),
@@ -268,7 +268,7 @@ class SystemAgentTuiBackend implements TuiBackend {
     return {
       ok: true as const,
       key: SYSTEM_AGENT_SESSION_KEY,
-      entry: { sessionId: "openclaw", updatedAt: Date.now() },
+      entry: { sessionId: "operator", updatedAt: Date.now() },
     };
   }
 
@@ -383,7 +383,7 @@ async function runSetupHandoff(
 ): Promise<void> {
   if (handoff.target !== "channels") {
     runtime.error(
-      "Setup cannot replace the inference route powering OpenClaw. Exit and run `openclaw onboard`, then start OpenClaw again.",
+      "Setup cannot replace the inference route powering OpenClaw. Exit and run `operator onboard`, then start OpenClaw again.",
     );
     return;
   }
@@ -459,7 +459,7 @@ export async function runSystemAgentTui(
         historyLimit: 200,
         backend,
         config: {},
-        title: "openclaw setup",
+        title: "operator setup",
         ...(initialMessage ? { message: initialMessage } : {}),
       });
     } finally {
@@ -472,7 +472,7 @@ export async function runSystemAgentTui(
     }
     if (handoff.kind === "model-setup") {
       runtime.error(
-        "OpenClaw cannot replace its active inference route. Run `openclaw onboard` outside this session, then start OpenClaw again.",
+        "OpenClaw cannot replace its active inference route. Run `operator onboard` outside this session, then start OpenClaw again.",
       );
       return;
     }

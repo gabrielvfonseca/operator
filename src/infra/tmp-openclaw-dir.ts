@@ -4,7 +4,7 @@ import { tmpdir as getOsTmpDir } from "node:os";
 import path from "node:path";
 
 /** Preferred shared OpenClaw temp root on POSIX systems when ownership and permissions are safe. */
-export const POSIX_OPENCLAW_TMP_DIR = "/tmp/openclaw";
+export const POSIX_OPERATOR_TMP_DIR = "/tmp/operator";
 
 type MaybeNodeError = { code?: string };
 
@@ -70,7 +70,7 @@ export function resolvePreferredOpenClawTmpDir(
   };
 
   const fallback = (): string => {
-    const suffix = uid === undefined ? "openclaw" : `openclaw-${uid}`;
+    const suffix = uid === undefined ? "operator" : `operator-${uid}`;
     const joiner = platform === "win32" ? path.win32.join : path.join;
     return joiner(tmpdir(), suffix);
   };
@@ -118,7 +118,7 @@ export function resolvePreferredOpenClawTmpDir(
         }
         throw chmodErr;
       }
-      warn(`[openclaw] tightened permissions on temp dir: ${candidatePath}`);
+      warn(`[operator] tightened permissions on temp dir: ${candidatePath}`);
       return resolveDirState(candidatePath) === "available";
     } catch {
       return false;
@@ -155,7 +155,7 @@ export function resolvePreferredOpenClawTmpDir(
     return ensureTrustedFallbackDir();
   }
 
-  const preferredDir = POSIX_OPENCLAW_TMP_DIR;
+  const preferredDir = POSIX_OPERATOR_TMP_DIR;
   const preferredState = resolveDirState(preferredDir);
   if (preferredState === "available") {
     return preferredDir;

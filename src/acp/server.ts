@@ -9,8 +9,8 @@ import {
   ndJsonStream,
   type AnyMessage,
 } from "@agentclientprotocol/sdk";
-import type { AcpServerOptions } from "@openclaw/acp-core/types";
-import { normalizeOptionalString } from "@openclaw/normalization-core/string-coerce";
+import type { AcpServerOptions } from "@operator/acp-core/types";
+import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 import {
   GATEWAY_CLIENT_CAPS,
   GATEWAY_CLIENT_MODES,
@@ -22,7 +22,7 @@ import { startGatewayClientWhenEventLoopReady } from "../gateway/client-start-re
 import { GatewayClient } from "../gateway/client.js";
 import { isMainModule } from "../infra/is-main.js";
 import { routeLogsToStderr } from "../logging/console.js";
-import { closeOpenClawStateDatabase } from "../state/openclaw-state-db.js";
+import { closeOpenClawStateDatabase } from "../state/operator-state-db.js";
 import {
   createSqliteAcpEventLedger,
   migrateFileAcpEventLedgerToSqlite,
@@ -101,9 +101,9 @@ export async function serveAcpGateway(opts: AcpServerOptions = {}): Promise<void
       // Gateway delivery stays non-blocking, but translator failures must not
       // escape this callback as unhandled process rejections.
       void agent?.handleGatewayEvent(evt).catch((err: unknown) => {
-        process.stderr.write(`openclaw acp: gateway event ${evt.event} failed\n`);
+        process.stderr.write(`operator acp: gateway event ${evt.event} failed\n`);
         if (opts.verbose) {
-          process.stderr.write(`openclaw acp: gateway event ${evt.event} error: ${String(err)}\n`);
+          process.stderr.write(`operator acp: gateway event ${evt.event} error: ${String(err)}\n`);
         }
       });
     },
@@ -332,7 +332,7 @@ function parseArgs(args: string[]): AcpServerOptions {
 }
 
 function printHelp(): void {
-  console.log(`Usage: openclaw acp [options]
+  console.log(`Usage: operator acp [options]
 
 Gateway-backed ACP server for IDE integration.
 
@@ -357,12 +357,12 @@ if (isMainModule({ currentFile: fileURLToPath(import.meta.url) })) {
   const argv = process.argv.slice(2);
   if (argv.includes("--token") || argv.includes("--gateway-token")) {
     console.error(
-      "Warning: --token can be exposed via process listings. Prefer --token-file or OPENCLAW_GATEWAY_TOKEN.",
+      "Warning: --token can be exposed via process listings. Prefer --token-file or OPERATOR_GATEWAY_TOKEN.",
     );
   }
   if (argv.includes("--password") || argv.includes("--gateway-password")) {
     console.error(
-      "Warning: --password can be exposed via process listings. Prefer --password-file or OPENCLAW_GATEWAY_PASSWORD.",
+      "Warning: --password can be exposed via process listings. Prefer --password-file or OPERATOR_GATEWAY_PASSWORD.",
     );
   }
   const opts = parseArgs(argv);

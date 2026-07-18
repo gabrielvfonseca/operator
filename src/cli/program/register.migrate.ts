@@ -120,15 +120,15 @@ export function registerMigrateCommand(program: Command) {
       "after",
       () =>
         `\n${theme.heading("Examples:")}\n${formatHelpExamples([
-          ["openclaw migrate list", "Show available migration providers."],
-          ["openclaw migrate hermes", "Preview Hermes migration, then prompt before applying."],
-          ["openclaw migrate hermes --dry-run", "Preview Hermes migration only."],
+          ["operator migrate list", "Show available migration providers."],
+          ["operator migrate hermes", "Preview Hermes migration, then prompt before applying."],
+          ["operator migrate hermes --dry-run", "Preview Hermes migration only."],
           [
-            "openclaw migrate apply hermes --yes",
+            "operator migrate apply hermes --yes",
             "Apply Hermes migration non-interactively after writing a verified backup.",
           ],
           [
-            "openclaw migrate hermes --no-auth-credentials",
+            "operator migrate hermes --no-auth-credentials",
             "Preview and apply Hermes migration while skipping auth credential import.",
           ],
         ])}`,

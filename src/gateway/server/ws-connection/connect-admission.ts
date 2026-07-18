@@ -30,7 +30,7 @@ export function resolveTrustedProxyControlUiScopes(params: {
   requestedScopes: string[];
   upgradeReq: IncomingMessage;
 }): string[] {
-  const header = params.upgradeReq.headers["x-openclaw-scopes"];
+  const header = params.upgradeReq.headers["x-operator-scopes"];
   const rawHeader = Array.isArray(header) ? header[0] : header;
   if (rawHeader === undefined) {
     return params.requestedScopes;

@@ -1,10 +1,10 @@
-import { getApiProvider } from "@openclaw/ai/internal/runtime";
+import { getApiProvider } from "@operator/ai/internal/runtime";
 /**
  * Simple completion transport preparation.
  *
  * Registers provider-specific stream functions and rewrites models that need OpenClaw-managed transport semantics.
  */
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import type { Api, Model } from "../llm/types.js";
 import { wrapProviderSimpleCompletionStreamFn } from "../plugins/provider-runtime.js";
 import { createAnthropicVertexStreamFnForModel } from "./anthropic-vertex-stream.js";
@@ -19,11 +19,11 @@ import {
 } from "./provider-transport-stream.js";
 import type { StreamFn } from "./runtime/index.js";
 
-const PROVIDER_SIMPLE_COMPLETION_API_PREFIX = "openclaw-provider-simple:";
+const PROVIDER_SIMPLE_COMPLETION_API_PREFIX = "operator-provider-simple:";
 
 function resolveAnthropicVertexSimpleApi(baseUrl?: string): Api {
   const suffix = baseUrl?.trim() ? encodeURIComponent(baseUrl.trim()) : "default";
-  return `openclaw-anthropic-vertex-simple:${suffix}`;
+  return `operator-anthropic-vertex-simple:${suffix}`;
 }
 
 export function normalizeCodexResponsesBaseUrlForOpenAISdk(baseUrl?: string): string {

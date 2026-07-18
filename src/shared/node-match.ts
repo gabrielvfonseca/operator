@@ -3,7 +3,7 @@ import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "@openclaw/normalization-core/string-coerce";
+} from "@operator/normalization-core/string-coerce";
 
 /**
  * Shared node-selection policy for CLI, gateway-facing SDK helpers, and plugins.
@@ -73,7 +73,7 @@ function formatNodeCandidateLabel(node: NodeMatchCandidate): string {
 
 function isCurrentOpenClawClient(clientId: string | undefined): boolean {
   const normalized = normalizeOptionalLowercaseString(clientId) ?? "";
-  return normalized.startsWith("openclaw-");
+  return normalized.startsWith("operator-");
 }
 
 function isLegacyClawdbotClient(clientId: string | undefined): boolean {

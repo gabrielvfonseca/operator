@@ -384,7 +384,7 @@ vi.mock("../config/sessions.js", () => ({
     cfg?: { session?: { mainKey?: string } };
     agentId: string;
   }) => `agent:${params.agentId}:${params.cfg?.session?.mainKey ?? "main"}`,
-  resolveStorePath: () => "/tmp/openclaw-sessions-spawn-test-store.json",
+  resolveStorePath: () => "/tmp/operator-sessions-spawn-test-store.json",
   updateSessionStore: async (
     _storePath: string,
     mutator: (store: typeof hoisted.sessionStore) => void | Promise<void>,

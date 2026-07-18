@@ -9,7 +9,7 @@ import {
 } from "../config/config.js";
 import { applyMergePatch } from "../config/merge-patch.js";
 import type { AgentModelEntryConfig } from "../config/types.agent-defaults.js";
-import type { ConfigFileSnapshot, OpenClawConfig } from "../config/types.openclaw.js";
+import type { ConfigFileSnapshot, OpenClawConfig } from "../config/types.operator.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { enablePluginInConfig } from "../plugins/enable.js";
 import { normalizeAgentId } from "../routing/session-key.js";
@@ -75,7 +75,7 @@ type SystemAgentSetupApplyHooks = {
 /** Prompter for quickstart-only flows: notes go to the log, prompts fail loud. */
 export function createQuickstartNotePrompter(runtime: RuntimeEnv): WizardPrompter {
   const unexpected = (kind: string) => {
-    throw new Error(`openclaw setup hit an interactive ${kind} prompt; quickstart must not ask`);
+    throw new Error(`operator setup hit an interactive ${kind} prompt; quickstart must not ask`);
   };
   return {
     intro: async () => {},
@@ -511,13 +511,13 @@ export async function applySystemAgentSetup(
       const { updateExecApprovals } = await import("../infra/exec-approvals.js");
       await updateExecApprovals({
         update: (approvals) =>
-          approvals.agents?.openclaw
+          approvals.agents?.operator
             ? null
             : {
                 ...approvals,
                 agents: {
                   ...approvals.agents,
-                  openclaw: { security: "full", ask: "off" },
+                  operator: { security: "full", ask: "off" },
                 },
               },
       });
@@ -537,7 +537,7 @@ export async function applySystemAgentSetup(
           config: nextConfig,
           reason: "source-changed",
           workspaceDir: workspace,
-          traceCommand: "openclaw-setup",
+          traceCommand: "operator-setup",
           logger: {
             warn: (message) => lines.push(message),
           },

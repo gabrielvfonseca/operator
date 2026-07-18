@@ -6,7 +6,7 @@ import {
   asDateTimestampMs,
   isFutureDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "@openclaw/normalization-core/number-coercion";
+} from "@operator/normalization-core/number-coercion";
 import { DEFAULT_MAX_ARCHIVE_BYTES_ZIP } from "../../infra/archive.js";
 import { sha256Hex } from "../../infra/crypto-digest.js";
 import { formatErrorMessage } from "../../infra/errors.js";
@@ -17,12 +17,12 @@ import {
   getNodeSqliteKysely,
 } from "../../infra/kysely-sync.js";
 import { withTempWorkspace } from "../../infra/private-temp-workspace.js";
-import { resolvePreferredOpenClawTmpDir } from "../../infra/tmp-openclaw-dir.js";
+import { resolvePreferredOpenClawTmpDir } from "../../infra/tmp-operator-dir.js";
 import {
   openOpenClawStateDatabase,
   runOpenClawStateWriteTransaction,
   type OpenClawStateDatabaseOptions,
-} from "../../state/openclaw-state-db.js";
+} from "../../state/operator-state-db.js";
 import { validateRequestedSkillSlug } from "./archive-install.js";
 import {
   deleteOwnedSkillUpload,
@@ -699,7 +699,7 @@ function createSkillUploadStore(options?: SkillUploadStoreOptions) {
           return await withTempWorkspace(
             {
               rootDir: tempRootDir ?? resolvePreferredOpenClawTmpDir(),
-              prefix: "openclaw-skill-upload-",
+              prefix: "operator-skill-upload-",
             },
             async (tmp) => {
               const archivePath = path.join(tmp.dir, "archive.zip");
@@ -740,7 +740,7 @@ function createSkillUploadStore(options?: SkillUploadStoreOptions) {
 export const defaultSkillUploadStore = createSkillUploadStore();
 
 if (process.env.VITEST || process.env.NODE_ENV === "test") {
-  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("openclaw.skillUploadStoreTestApi")] = {
+  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("operator.skillUploadStoreTestApi")] = {
     createSkillUploadStore,
   };
 }

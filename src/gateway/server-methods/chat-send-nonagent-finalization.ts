@@ -1,4 +1,4 @@
-import { expectDefined } from "@openclaw/normalization-core";
+import { expectDefined } from "@operator/normalization-core";
 import type { ReplyPayload } from "../../auto-reply/reply-payload.js";
 import {
   appendLocalMediaParentRoots,
@@ -228,7 +228,7 @@ export async function finalizeChatSendNonAgentReplies(params: {
             : {}),
         ...(fallbackText ? { text: fallbackText } : {}),
         timestamp: Date.now(),
-        ...(ttsSupplementMarker ? { openclawTtsSupplement: ttsSupplementMarker } : {}),
+        ...(ttsSupplementMarker ? { operatorTtsSupplement: ttsSupplementMarker } : {}),
         // Keep compatible with runner stopReason enums when transcript persistence fails.
         stopReason: "stop",
         usage: { input: 0, output: 0, totalTokens: 0 },

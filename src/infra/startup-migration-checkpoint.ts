@@ -3,10 +3,10 @@ import { randomUUID } from "node:crypto";
 import { existsSync } from "node:fs";
 import { createRequire } from "node:module";
 import type { DatabaseSync } from "node:sqlite";
-import { withOpenClawStateDatabaseReadOnly } from "../state/openclaw-state-db-readonly.js";
-import type { DB as OpenClawStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
-import { withOpenClawStateStartupMigrationCheckpointDatabase } from "../state/openclaw-state-db.js";
-import { resolveOpenClawStateSqlitePath } from "../state/openclaw-state-db.paths.js";
+import { withOpenClawStateDatabaseReadOnly } from "../state/operator-state-db-readonly.js";
+import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import { withOpenClawStateStartupMigrationCheckpointDatabase } from "../state/operator-state-db.js";
+import { resolveOpenClawStateSqlitePath } from "../state/operator-state-db.paths.js";
 import { VERSION } from "../version.js";
 import {
   executeSqliteQuerySync,

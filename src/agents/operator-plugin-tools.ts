@@ -1,0 +1,116 @@
+/**
+ * Operator plugin tool resolver.
+ *
+ * This module builds runtime plugin tools from config/options, delivery context,
+ * auth profiles, and the current runtime config snapshot.
+ */
+import type { OperatorConfig } from "../config/types.operator.js";
+import { resolvePluginTools } from "../plugins/tools.js";
+import { resolveApiKeyForProfile, resolveAuthProfileOrder } from "./auth-profiles.js";
+import type { AuthProfileStore } from "./auth-profiles/types.js";
+import { createNodePluginTools } from "./node-plugin-tools.js";
+import {
+  resolveOperatorPluginToolInputs,
+  type OperatorPluginToolOptions,
+} from "./operator-tools.plugin-context.js";
+import { applyPluginToolDeliveryDefaults } from "./plugin-tool-delivery-defaults.js";
+import { resolveAgentRuntimeToolConfig } from "./tool-runtime-config.js";
+import type { AnyAgentTool } from "./tools/common.js";
+
+type ResolveOperatorPluginToolsOptions = OperatorPluginToolOptions & {
+  pluginToolAllowlist?: string[];
+  pluginToolDenylist?: string[];
+  currentThreadTs?: string;
+  currentMessageId?: string | number;
+  sandboxRoot?: string;
+  modelHasVision?: boolean;
+  modelProvider?: string;
+  modelId?: string;
+  allowMediaInvokeCommands?: boolean;
+  requesterAgentIdOverride?: string;
+  requireExplicitMessageTarget?: boolean;
+  disableMessageTool?: boolean;
+  disablePluginTools?: boolean;
+  authProfileStore?: AuthProfileStore;
+};
+
+/** Resolves plugin tools for an agent run and applies delivery-context defaults. */
+export function resolveOperatorPluginToolsForOptions(params: {
+  options?: ResolveOperatorPluginToolsOptions;
+  resolvedConfig?: OperatorConfig;
+  existingToolNames?: Set<string>;
+}): AnyAgentTool[] {
+  if (params.options?.disablePluginTools) {
+    return [];
+  }
+
+  const resolveCurrentRuntimeConfig = () => {
+    // Re-resolve on demand so auth/profile lookups see the active runtime config
+    // while tests can still inject a fixed resolvedConfig.
+    return resolveAgentRuntimeToolConfig(params.resolvedConfig ?? params.options?.config);
+  };
+  const authProfileStore = params.options?.authProfileStore;
+  const resolveAuthProfileIdsForProvider = authProfileStore
+    ? (providerId: string): string[] =>
+        resolveAuthProfileOrder({
+          cfg: resolveCurrentRuntimeConfig(),
+          store: authProfileStore,
+          provider: providerId,
+        })
+    : undefined;
+  const hasAuthForProvider = authProfileStore
+    ? (providerId: string) => (resolveAuthProfileIdsForProvider?.(providerId) ?? []).length > 0
+    : undefined;
+  const resolveApiKeyForProvider = authProfileStore
+    ? async (providerId: string): Promise<string | undefined> => {
+        for (const profileId of resolveAuthProfileIdsForProvider?.(providerId) ?? []) {
+          const resolved = await resolveApiKeyForProfile({
+            cfg: resolveCurrentRuntimeConfig(),
+            store: authProfileStore,
+            profileId,
+            agentDir: params.options?.agentDir,
+          });
+          if (resolved?.apiKey) {
+            return resolved.apiKey;
+          }
+        }
+        return undefined;
+      }
+    : undefined;
+  const pluginToolInputs = resolveOperatorPluginToolInputs({
+    options: params.options,
+    resolvedConfig: params.resolvedConfig,
+    runtimeConfig: resolveCurrentRuntimeConfig(),
+    getRuntimeConfig: resolveCurrentRuntimeConfig,
+  });
+  const existingToolNames = new Set(params.existingToolNames ?? []);
+  const pluginTools = resolvePluginTools({
+    ...pluginToolInputs,
+    context: {
+      ...pluginToolInputs.context,
+      ...(hasAuthForProvider ? { hasAuthForProvider } : {}),
+      ...(resolveApiKeyForProvider ? { resolveApiKeyForProvider } : {}),
+    },
+    existingToolNames,
+    toolAllowlist: params.options?.pluginToolAllowlist,
+    toolDenylist: params.options?.pluginToolDenylist,
+    allowGatewaySubagentBinding: params.options?.allowGatewaySubagentBinding,
+    ...(hasAuthForProvider ? { hasAuthForProvider } : {}),
+  });
+  for (const tool of pluginTools) {
+    existingToolNames.add(tool.name);
+  }
+  pluginTools.push(
+    ...createNodePluginTools({
+      existingToolNames,
+      toolAllowlist: params.options?.pluginToolAllowlist,
+      toolDenylist: params.options?.pluginToolDenylist,
+      agentSessionKey: params.options?.agentSessionKey,
+    }),
+  );
+
+  return applyPluginToolDeliveryDefaults({
+    tools: pluginTools,
+    deliveryContext: pluginToolInputs.context.deliveryContext,
+  });
+}

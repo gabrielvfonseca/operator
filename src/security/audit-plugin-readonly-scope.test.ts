@@ -1,5 +1,5 @@
 // Verifies plugin readonly-scope audit findings.
-import { expectDefined } from "@openclaw/normalization-core";
+import { expectDefined } from "@operator/normalization-core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { OpenClawConfig } from "../config/config.js";
 
@@ -45,7 +45,7 @@ function createAuditOptions(params: {
     includeChannelSecurity: true,
     deep: false,
     deepTimeoutMs: 5000,
-    stateDir: "/tmp/openclaw-test-state",
+    stateDir: "/tmp/operator-test-state",
     configPath: "/tmp/openclaw-test-config.json",
     plugins: params.plugins,
     loadPluginSecurityCollectors: true,
@@ -193,7 +193,7 @@ describe("security audit read-only plugin scope", () => {
       env: {},
       includeFilesystem: false,
       includeChannelSecurity: false,
-      stateDir: "/tmp/openclaw-test-state",
+      stateDir: "/tmp/operator-test-state",
       configPath: "/tmp/openclaw-test-config.json",
     });
 

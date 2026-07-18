@@ -6,7 +6,7 @@ import type {
   SystemAgentSetupDetectResult,
   SystemAgentSetupVerifyResult,
 } from "../../packages/gateway-protocol/src/index.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import type { CallGatewayCliOptions } from "../gateway/call.js";
 import { defaultRuntime, type RuntimeEnv } from "../runtime.js";
 import type {
@@ -201,7 +201,7 @@ export async function runRemoteGatewayInferenceOnboarding(
 
   const detect = async (): Promise<SetupInferenceDetection> => {
     const result = await request<SystemAgentSetupDetectResult>({
-      method: "openclaw.setup.detect",
+      method: "operator.setup.detect",
       payload: {},
       timeoutMs: GATEWAY_SETUP_DETECT_TIMEOUT_MS,
     });
@@ -214,7 +214,7 @@ export async function runRemoteGatewayInferenceOnboarding(
     params: ActivateSetupInferenceParams,
   ): Promise<ActivateSetupInferenceResult> => {
     const result = await request<SystemAgentSetupActivateResult>({
-      method: "openclaw.setup.activate",
+      method: "operator.setup.activate",
       payload: {
         kind: params.kind,
         ...(params.modelRef !== undefined ? { modelRef: params.modelRef } : {}),
@@ -229,7 +229,7 @@ export async function runRemoteGatewayInferenceOnboarding(
       return activation;
     }
     const verification = await request<SystemAgentSetupVerifyResult>({
-      method: "openclaw.setup.verify",
+      method: "operator.setup.verify",
       payload: {},
       timeoutMs: GATEWAY_SETUP_VERIFY_TIMEOUT_MS,
     });
@@ -253,7 +253,7 @@ export async function runRemoteGatewayInferenceOnboarding(
       await prompter.intro("OpenClaw");
       const sessionId = randomUUID();
       let reply = await request<SystemAgentChatResult>({
-        method: "openclaw.chat",
+        method: "operator.chat",
         payload: { sessionId, welcomeVariant: "onboarding" },
         timeoutMs: GATEWAY_SYSTEM_AGENT_CHAT_TIMEOUT_MS,
       });
@@ -275,7 +275,7 @@ export async function runRemoteGatewayInferenceOnboarding(
             validate: (value) => (value.trim() ? undefined : "Required"),
           });
           reply = await request<SystemAgentChatResult>({
-            method: "openclaw.chat",
+            method: "operator.chat",
             payload: { sessionId, message },
             timeoutMs: GATEWAY_SYSTEM_AGENT_CHAT_TIMEOUT_MS,
           });

@@ -18,8 +18,8 @@ import {
   resolveInboundMentionDecision,
 } from "../channel-mention-gating.js";
 
-const DEFAULT_PROVIDER = "openai";
-const DEFAULT_MODEL = "gpt-5.6-sol";
+const DEFAULT_PROVIDER = "openrouter";
+const DEFAULT_MODEL = "openrouter/auto";
 
 type DeepPartial<T> = {
   [K in keyof T]?: T[K] extends (...args: never[]) => unknown
@@ -372,7 +372,7 @@ export function createPluginRuntimeMock(overrides: DeepPartial<PluginRuntime> = 
     config: {
       current: vi.fn(() => ({})) as unknown as PluginRuntime["config"]["current"],
       mutateConfigFile: vi.fn(async () => ({
-        path: "/tmp/openclaw.json",
+        path: "/tmp/operator.json",
         previousHash: null,
         persistedHash: null,
         snapshot: {} as never,
@@ -382,7 +382,7 @@ export function createPluginRuntimeMock(overrides: DeepPartial<PluginRuntime> = 
         result: undefined,
       })) as unknown as PluginRuntime["config"]["mutateConfigFile"],
       replaceConfigFile: vi.fn(async ({ nextConfig }) => ({
-        path: "/tmp/openclaw.json",
+        path: "/tmp/operator.json",
         previousHash: null,
         persistedHash: null,
         snapshot: {} as never,
@@ -803,7 +803,7 @@ export function createPluginRuntimeMock(overrides: DeepPartial<PluginRuntime> = 
       })),
     },
     state: {
-      resolveStateDir: vi.fn(() => "/tmp/openclaw"),
+      resolveStateDir: vi.fn(() => "/tmp/operator"),
       openKeyedStore: vi.fn(() => {
         throw new Error("openKeyedStore mock is not configured");
       }) as unknown as PluginRuntime["state"]["openKeyedStore"],

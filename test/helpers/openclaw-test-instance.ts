@@ -12,7 +12,7 @@ import {
 import {
   createOpenClawTestState,
   type OpenClawTestState,
-} from "../../src/test-utils/openclaw-test-state.js";
+} from "../../src/test-utils/operator-test-state.js";
 import { sleep } from "../../src/utils.js";
 
 type OpenClawTestStateOptions = NonNullable<Parameters<typeof createOpenClawTestState>[0]>;

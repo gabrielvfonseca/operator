@@ -1,7 +1,7 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 
 export const POST_CORE_UPDATE_SOURCE_CONFIG_PATH_ENV =
-  "OPENCLAW_UPDATE_POST_CORE_SOURCE_CONFIG_PATH";
+  "OPERATOR_UPDATE_POST_CORE_SOURCE_CONFIG_PATH";
 
 export type PreUpdateConfigRestoreInput = {
   sourceConfig: OpenClawConfig;

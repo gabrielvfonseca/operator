@@ -1,17 +1,17 @@
 /** Cross-platform daemon service names, labels, and profile-aware descriptions. */
-import { normalizeLowercaseStringOrEmpty } from "@openclaw/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
 
 // Default service labels (canonical + legacy compatibility)
-export const GATEWAY_LAUNCH_AGENT_LABEL = "ai.openclaw.gateway";
-const GATEWAY_SYSTEMD_SERVICE_NAME = "openclaw-gateway";
+export const GATEWAY_LAUNCH_AGENT_LABEL = "ai.operator.gateway";
+const GATEWAY_SYSTEMD_SERVICE_NAME = "operator-gateway";
 const GATEWAY_WINDOWS_TASK_NAME = "OpenClaw Gateway";
-export const GATEWAY_SERVICE_MARKER = "openclaw";
+export const GATEWAY_SERVICE_MARKER = "operator";
 export const GATEWAY_SERVICE_KIND = "gateway";
-export const GATEWAY_SERVICE_RUNTIME_PID_ENV = "OPENCLAW_GATEWAY_SERVICE_PID";
-const NODE_LAUNCH_AGENT_LABEL = "ai.openclaw.node";
-const NODE_SYSTEMD_SERVICE_NAME = "openclaw-node";
+export const GATEWAY_SERVICE_RUNTIME_PID_ENV = "OPERATOR_GATEWAY_SERVICE_PID";
+const NODE_LAUNCH_AGENT_LABEL = "ai.operator.node";
+const NODE_SYSTEMD_SERVICE_NAME = "operator-node";
 const NODE_WINDOWS_TASK_NAME = "OpenClaw Node";
-export const NODE_SERVICE_MARKER = "openclaw";
+export const NODE_SERVICE_MARKER = "operator";
 export const NODE_SERVICE_KIND = "node";
 export const NODE_WINDOWS_TASK_SCRIPT_NAME = "node.cmd";
 export const LEGACY_GATEWAY_SYSTEMD_SERVICE_NAMES: string[] = ["clawdbot-gateway"];
@@ -35,7 +35,7 @@ export function resolveGatewayLaunchAgentLabel(profile?: string): string {
   if (!normalized) {
     return GATEWAY_LAUNCH_AGENT_LABEL;
   }
-  return `ai.openclaw.${normalized}`;
+  return `ai.operator.${normalized}`;
 }
 
 export function resolveLegacyGatewayLaunchAgentLabels(profile?: string): string[] {
@@ -48,7 +48,7 @@ export function resolveGatewaySystemdServiceName(profile?: string): string {
   if (!suffix) {
     return GATEWAY_SYSTEMD_SERVICE_NAME;
   }
-  return `openclaw-gateway${suffix}`;
+  return `operator-gateway${suffix}`;
 }
 
 export function resolveGatewayWindowsTaskName(profile?: string): string {
@@ -83,8 +83,8 @@ export function resolveGatewayServiceDescription(params: {
   return (
     params.description ??
     formatGatewayServiceDescription({
-      profile: params.env.OPENCLAW_PROFILE,
-      version: params.environment?.OPENCLAW_SERVICE_VERSION ?? params.env.OPENCLAW_SERVICE_VERSION,
+      profile: params.env.OPERATOR_PROFILE,
+      version: params.environment?.OPERATOR_SERVICE_VERSION ?? params.env.OPERATOR_SERVICE_VERSION,
     })
   );
 }

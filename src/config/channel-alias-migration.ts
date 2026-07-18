@@ -10,7 +10,7 @@ import {
   type NormalizeLegacyChannelAccountParams,
 } from "./channel-compat-normalization.js";
 import type { LegacyConfigRule } from "./legacy.shared.js";
-import type { OpenClawConfig } from "./types.openclaw.js";
+import type { OpenClawConfig } from "./types.operator.js";
 
 export type StreamingAliasMode = "off" | "partial" | "block" | "progress";
 
@@ -96,7 +96,7 @@ function buildAliasRuleMessage(params: {
   const prefixedCount = params.root && !streaming.deliveryOnly ? 2 : 1;
   const keys = flat.map((key, index) => (index < prefixedCount ? `${prefix}.${key}` : key));
   const keyList = `${keys.slice(0, -1).join(", ")}, and ${keys.at(-1)}`;
-  return `${keyList} are legacy; use ${prefix}.streaming.{${nested.join(",")}}. Run "openclaw doctor --fix".`;
+  return `${keyList} are legacy; use ${prefix}.streaming.{${nested.join(",")}}. Run "operator doctor --fix".`;
 }
 
 /**

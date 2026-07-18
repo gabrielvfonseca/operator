@@ -11,7 +11,7 @@ Adds Vydra model provider support to OpenClaw.
 
 ## Distribution
 
-- Package: `@openclaw/vydra-provider`
+- Package: `@operator/vydra-provider`
 - Install route: included in OpenClaw
 
 ## Surface

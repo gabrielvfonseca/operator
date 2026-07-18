@@ -81,7 +81,7 @@ describe("runtime postbuild static assets", () => {
     await fs.writeFile(
       path.join(packageDir, "package.json"),
       JSON.stringify({
-        name: "@openclaw/demo",
+        name: "@operator/demo",
         openclaw: {
           build: {
             staticAssets: [
@@ -112,7 +112,7 @@ describe("runtime postbuild static assets", () => {
     await fs.writeFile(
       path.join(packageDir, "package.json"),
       JSON.stringify({
-        name: "@openclaw/external-demo",
+        name: "@operator/external-demo",
         openclaw: {
           build: {
             bundledDist: false,
@@ -138,7 +138,7 @@ describe("runtime postbuild static assets", () => {
     await fs.writeFile(
       path.join(packageDir, "package.json"),
       JSON.stringify({
-        name: "@openclaw/external-demo",
+        name: "@operator/external-demo",
         openclaw: {
           build: {
             bundledDist: false,
@@ -197,7 +197,7 @@ describe("runtime postbuild static assets", () => {
     await fs.writeFile(
       path.join(rootDir, "extensions", "diffs", "package.json"),
       JSON.stringify({
-        name: "@openclaw/diffs",
+        name: "@operator/diffs",
         openclaw: {
           extensions: ["./index.ts"],
           build: {
@@ -251,7 +251,7 @@ describe("runtime postbuild static assets", () => {
     await fs.writeFile(
       path.join(distPluginDir, "package.json"),
       JSON.stringify({
-        name: "@openclaw/diffs",
+        name: "@operator/diffs",
         openclaw: {
           extensions: ["./index.js"],
           build: {
@@ -288,7 +288,7 @@ describe("runtime postbuild static assets", () => {
     await fs.writeFile(
       path.join(rootDir, "extensions", "diffs", "package.json"),
       JSON.stringify({
-        name: "@openclaw/diffs",
+        name: "@operator/diffs",
         openclaw: {
           extensions: ["./index.ts"],
           build: {

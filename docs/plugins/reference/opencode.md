@@ -11,7 +11,7 @@ Adds OpenCode model provider support to OpenClaw.
 
 ## Distribution
 
-- Package: `@openclaw/opencode-provider`
+- Package: `@operator/opencode-provider`
 - Install route: included in OpenClaw
 
 ## Surface

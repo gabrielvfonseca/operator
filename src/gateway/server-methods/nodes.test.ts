@@ -1,4 +1,4 @@
-import { expectDefined } from "@openclaw/normalization-core";
+import { expectDefined } from "@operator/normalization-core";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   approveDevicePairing,
@@ -17,7 +17,7 @@ import { resetRemoteNodeSkillsForTests } from "../../skills/runtime/remote-skill
 import {
   createOpenClawTestState,
   type OpenClawTestState,
-} from "../../test-utils/openclaw-test-state.js";
+} from "../../test-utils/operator-test-state.js";
 import { nodeHandlers } from "./nodes.js";
 import type { GatewayRequestHandlerOptions } from "./types.js";
 

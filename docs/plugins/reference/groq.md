@@ -11,8 +11,8 @@ Adds Groq model provider support to OpenClaw.
 
 ## Distribution
 
-- Package: `@openclaw/groq-provider`
-- Install route: npm; ClawHub: `clawhub:@openclaw/groq-provider`
+- Package: `@operator/groq-provider`
+- Install route: npm; ClawHub: `clawhub:@operator/groq-provider`
 
 ## Surface
 

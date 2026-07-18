@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { resolveStateDir } from "../../../config/paths.js";
 import type { HealthFinding } from "../../../flows/health-checks.js";
-import { resolveOpenClawPackageRootSync } from "../../../infra/openclaw-root.js";
+import { resolveOpenClawPackageRootSync } from "../../../infra/operator-root.js";
 import { resolveConfigDir, resolveUserPath } from "../../../utils.js";
 import { removeStalePluginRuntimeSymlinks } from "./plugin-runtime-symlinks.js";
 
@@ -58,21 +58,21 @@ async function pathExists(targetPath: string): Promise<boolean> {
 
 function isRuntimeDependencyMarkerName(name: string): boolean {
   return (
-    name === ".openclaw-runtime-deps.json" ||
-    name === ".openclaw-runtime-deps-stamp.json" ||
-    name.startsWith(".openclaw-runtime-deps-")
+    name === ".operator-runtime-deps.json" ||
+    name === ".operator-runtime-deps-stamp.json" ||
+    name.startsWith(".operator-runtime-deps-")
   );
 }
 
 function isInstallStageDebrisName(name: string): boolean {
-  return /^\.openclaw-install-stage(?:-.+)?$/u.test(name);
+  return /^\.operator-install-stage(?:-.+)?$/u.test(name);
 }
 
 function isLegacyDependencyDebrisName(name: string): boolean {
   return (
     isRuntimeDependencyMarkerName(name) ||
-    name === ".openclaw-pnpm-store" ||
-    name === ".openclaw-install-backups" ||
+    name === ".operator-pnpm-store" ||
+    name === ".operator-install-backups" ||
     isInstallStageDebrisName(name)
   );
 }
@@ -181,7 +181,7 @@ async function collectExistingCleanupRoots(
 }
 
 function collectExplicitStageTargets(env: NodeJS.ProcessEnv): CleanupTarget[] {
-  return splitPathList(env.OPENCLAW_PLUGIN_STAGE_DIR).map((entry) => ({
+  return splitPathList(env.OPERATOR_PLUGIN_STAGE_DIR).map((entry) => ({
     kind: "explicit-stage",
     path: resolveUserPath(entry, env),
     rawPath: entry,
@@ -190,7 +190,7 @@ function collectExplicitStageTargets(env: NodeJS.ProcessEnv): CleanupTarget[] {
 
 async function hasOpenClawRenameResidue(root: string): Promise<boolean> {
   const nodeModulesRoot = path.join(root, "node_modules");
-  if (await isFile(path.join(nodeModulesRoot, ".openclaw-rename-tmp"))) {
+  if (await isFile(path.join(nodeModulesRoot, ".operator-rename-tmp"))) {
     return true;
   }
   const entries = await fs.readdir(nodeModulesRoot, { withFileTypes: true }).catch(() => []);
@@ -199,7 +199,7 @@ async function hasOpenClawRenameResidue(root: string): Promise<boolean> {
       continue;
     }
     const entryPath = path.join(nodeModulesRoot, entry.name);
-    if (await isFile(path.join(entryPath, ".openclaw-rename-tmp"))) {
+    if (await isFile(path.join(entryPath, ".operator-rename-tmp"))) {
       return true;
     }
     if (!entry.name.startsWith("@")) {
@@ -210,7 +210,7 @@ async function hasOpenClawRenameResidue(root: string): Promise<boolean> {
       if (!scopedEntry.isDirectory() || scopedEntry.isSymbolicLink()) {
         continue;
       }
-      if (await isFile(path.join(entryPath, scopedEntry.name, ".openclaw-rename-tmp"))) {
+      if (await isFile(path.join(entryPath, scopedEntry.name, ".operator-rename-tmp"))) {
         return true;
       }
     }
@@ -431,7 +431,7 @@ export function legacyPluginDependencyStateIssueToHealthFinding(
     target: issue.path,
     path: issue.path,
     requirement: "legacy-plugin-dependency-state-removed",
-    fixHint: "Run `openclaw doctor --fix` to remove legacy plugin dependency state.",
+    fixHint: "Run `operator doctor --fix` to remove legacy plugin dependency state.",
   };
 }
 
@@ -477,6 +477,6 @@ export async function cleanupLegacyPluginDependencyState(params: {
 
 if (process.env.VITEST || process.env.NODE_ENV === "test") {
   (globalThis as Record<PropertyKey, unknown>)[
-    Symbol.for("openclaw.pluginDependencyCleanupTestApi")
+    Symbol.for("operator.pluginDependencyCleanupTestApi")
   ] = { collectLegacyPluginDependencyTargets };
 }

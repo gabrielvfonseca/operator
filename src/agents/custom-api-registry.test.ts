@@ -4,8 +4,8 @@ import {
   getApiProvider,
   registerApiProvider,
   unregisterApiProviders,
-} from "@openclaw/ai/internal/runtime";
-import { registerBuiltInApiProviders, resetApiProviders } from "@openclaw/ai/providers";
+} from "@operator/ai/internal/runtime";
+import { registerBuiltInApiProviders, resetApiProviders } from "@operator/ai/providers";
 // Covers dynamic registration of custom model API providers.
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createAssistantMessageEventStream } from "../llm/utils/event-stream.js";

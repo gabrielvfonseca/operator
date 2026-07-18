@@ -8,7 +8,7 @@ import {
   createAgentPatchedSessionModelFallback,
   type AgentPatchedSessionModelFallback,
 } from "../config/sessions/session-model-fallback.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import type { FailoverReason } from "./embedded-agent-helpers/types.js";
 import { resolveFailoverReasonFromError } from "./failover-error.js";
 import { resolveSessionModelRef } from "./session-model-ref.js";
@@ -115,7 +115,7 @@ async function reconcileAgentPatchedSessionModel(params: {
           config: params.cfg,
           message: {
             role: "custom" as const,
-            customType: "openclaw.system-note",
+            customType: "operator.system-note",
             content: note,
             display: true,
             timestamp,

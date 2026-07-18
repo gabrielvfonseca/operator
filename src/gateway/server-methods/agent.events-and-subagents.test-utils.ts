@@ -1,5 +1,5 @@
 // Imported by agent.test.ts to keep its mocked suite in one Vitest module graph.
-import { expectDefined } from "@openclaw/normalization-core";
+import { expectDefined } from "@operator/normalization-core";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ErrorCodes } from "../../../packages/gateway-protocol/src/index.js";
 import { registerExecApprovalFollowupRuntimeHandoff } from "../../agents/bash-tools.exec-approval-followup-state.js";
@@ -831,7 +831,7 @@ describe("gateway agent handler", () => {
     await invokeAgent(
       {
         message: [
-          "[Mon 2026-04-06 02:42 GMT+1] <<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
+          "[Mon 2026-04-06 02:42 GMT+1] <<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
           "OpenClaw runtime context (internal):",
           "This context is runtime-generated, not user-authored. Keep internal details private.",
         ].join("\n"),

@@ -9,11 +9,11 @@ import {
 import type { PreparedCliRunContext } from "./types.js";
 
 export const CLI_MESSAGING_EVIDENCE_MAX_CALLS = 64;
-const OPENCLAW_MCP_TOOL_PREFIX = "mcp__openclaw__";
+const OPERATOR_MCP_TOOL_PREFIX = "mcp__operator__";
 
 export function normalizeCliMessagingToolName(toolName: string): string {
-  return toolName.startsWith(OPENCLAW_MCP_TOOL_PREFIX)
-    ? toolName.slice(OPENCLAW_MCP_TOOL_PREFIX.length)
+  return toolName.startsWith(OPERATOR_MCP_TOOL_PREFIX)
+    ? toolName.slice(OPERATOR_MCP_TOOL_PREFIX.length)
     : toolName;
 }
 

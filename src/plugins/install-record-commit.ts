@@ -13,7 +13,7 @@ import {
 } from "../config/config.js";
 import type { ConfigWriteOptions } from "../config/io.js";
 import { extractShippedPluginInstallConfigRecords } from "../config/plugin-install-config-migration.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import type { PluginInstallRecord } from "../config/types.plugins.js";
 import { isPathInside } from "../infra/path-guards.js";
 import {

@@ -1,0 +1,108 @@
+/*
+ * Operator Console design tokens.
+ *
+ * Mirrors the legacy Control UI theme model:
+ *   - `data-theme`      = claw | knot | dash (+ *-light variants resolved in the bootstrap)
+ *   - `data-theme-mode` = light | dark
+ *
+ * Tokens are exposed as shadcn-style CSS variables consumed by Tailwind via the
+ * `hsl(var(--token))` convention. Dark is the default (legacy default was dark).
+ */
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+
+    /* Default (claw / dark) */
+    --background: 210 24% 8%;
+    --foreground: 204 33% 95%;
+
+    --card: 210 22% 11%;
+    --card-foreground: 204 33% 95%;
+
+    --popover: 210 22% 11%;
+    --popover-foreground: 204 33% 95%;
+
+    --primary: 201 100% 77%;
+    --primary-foreground: 210 40% 6%;
+
+    --secondary: 210 16% 18%;
+    --secondary-foreground: 204 33% 95%;
+
+    --muted: 210 16% 16%;
+    --muted-foreground: 210 12% 65%;
+
+    --accent: 210 16% 20%;
+    --accent-foreground: 204 33% 95%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 210 14% 24%;
+    --input: 210 14% 24%;
+    --ring: 201 100% 77%;
+  }
+
+  /* Light mode (any theme) */
+  :root[data-theme-mode="light"] {
+    --background: 210 40% 98%;
+    --foreground: 210 24% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 210 24% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 24% 12%;
+
+    --primary: 201 96% 40%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 20% 92%;
+    --secondary-foreground: 210 24% 12%;
+
+    --muted: 210 20% 94%;
+    --muted-foreground: 210 12% 40%;
+
+    --accent: 210 20% 90%;
+    --accent-foreground: 210 24% 12%;
+
+    --destructive: 0 72% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 210 18% 84%;
+    --input: 210 18% 84%;
+    --ring: 201 96% 40%;
+  }
+
+  /* Knot theme accent overrides */
+  :root[data-theme="knot"],
+  :root[data-theme="openknot"] {
+    --primary: 270 76% 74%;
+    --ring: 270 76% 74%;
+  }
+  :root[data-theme="knot"][data-theme-mode="light"],
+  :root[data-theme="openknot-light"] {
+    --primary: 270 60% 48%;
+    --ring: 270 60% 48%;
+  }
+
+  /* Dash theme accent overrides */
+  :root[data-theme="dash"] {
+    --primary: 152 62% 55%;
+    --ring: 152 62% 55%;
+  }
+  :root[data-theme="dash"][data-theme-mode="light"],
+  :root[data-theme="dash-light"] {
+    --primary: 152 55% 38%;
+    --ring: 152 55% 38%;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+}

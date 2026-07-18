@@ -11,8 +11,8 @@ Twilio SMS channel plugin for OpenClaw text messages.
 
 ## Distribution
 
-- Package: `@openclaw/sms`
-- Install route: npm; ClawHub: `clawhub:@openclaw/sms`
+- Package: `@operator/sms`
+- Install route: npm; ClawHub: `clawhub:@operator/sms`
 
 ## Surface
 

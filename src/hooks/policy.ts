@@ -26,33 +26,33 @@ type HookResolutionCollision = {
 };
 
 const HOOK_SOURCE_POLICIES: Record<HookSource, HookSourcePolicy> = {
-  "openclaw-bundled": {
+  "operator-bundled": {
     precedence: 10,
     trustedLocalCode: true,
     defaultEnableMode: "default-on",
-    canOverride: ["openclaw-bundled"],
-    canBeOverriddenBy: ["openclaw-managed", "openclaw-plugin"],
+    canOverride: ["operator-bundled"],
+    canBeOverriddenBy: ["operator-managed", "operator-plugin"],
   },
-  "openclaw-plugin": {
+  "operator-plugin": {
     precedence: 20,
     trustedLocalCode: true,
     defaultEnableMode: "default-on",
-    canOverride: ["openclaw-bundled", "openclaw-plugin"],
-    canBeOverriddenBy: ["openclaw-managed"],
+    canOverride: ["operator-bundled", "operator-plugin"],
+    canBeOverriddenBy: ["operator-managed"],
   },
-  "openclaw-managed": {
+  "operator-managed": {
     precedence: 30,
     trustedLocalCode: true,
     defaultEnableMode: "default-on",
-    canOverride: ["openclaw-bundled", "openclaw-managed", "openclaw-plugin"],
-    canBeOverriddenBy: ["openclaw-managed"],
+    canOverride: ["operator-bundled", "operator-managed", "operator-plugin"],
+    canBeOverriddenBy: ["operator-managed"],
   },
-  "openclaw-workspace": {
+  "operator-workspace": {
     precedence: 40,
     trustedLocalCode: true,
     defaultEnableMode: "explicit-opt-in",
-    canOverride: ["openclaw-workspace"],
-    canBeOverriddenBy: ["openclaw-workspace"],
+    canOverride: ["operator-workspace"],
+    canBeOverriddenBy: ["operator-workspace"],
   },
 };
 
@@ -87,7 +87,7 @@ export function resolveHookEnableState(params: {
   const hookKey = resolveHookKey(entry.hook.name, entry);
   const hookConfig = params.hookConfig ?? resolveHookConfig(config, hookKey);
 
-  if (entry.hook.source === "openclaw-plugin") {
+  if (entry.hook.source === "operator-plugin") {
     return { enabled: true };
   }
   if (hookConfig?.enabled === false) {

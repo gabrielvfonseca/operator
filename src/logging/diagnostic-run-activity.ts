@@ -692,7 +692,7 @@ registerDiagnosticRunActivityListener();
 
 if (process.env.VITEST || process.env.NODE_ENV === "test") {
   (globalThis as Record<PropertyKey, unknown>)[
-    Symbol.for("openclaw.diagnosticRunActivityTestApi")
+    Symbol.for("operator.diagnosticRunActivityTestApi")
   ] = {
     markDiagnosticModelStartedForTest,
     markDiagnosticRunProgressForTest,

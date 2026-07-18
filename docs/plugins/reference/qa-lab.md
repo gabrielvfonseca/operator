@@ -11,7 +11,7 @@ OpenClaw QA lab plugin with private debugger UI and scenario runner.
 
 ## Distribution
 
-- Package: `@openclaw/qa-lab`
+- Package: `@operator/qa-lab`
 - Install route: source checkout only
 
 ## Surface

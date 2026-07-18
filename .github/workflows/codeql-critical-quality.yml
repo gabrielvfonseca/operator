@@ -31,7 +31,7 @@ on:
       - "extensions/*.ts"
       - "extensions/**/*.ts"
       - "packages/plugin-package-contract/**"
-      - "packages/plugin-sdk/**"
+      - "sdks/plugin-sdk/**"
       - "packages/memory-host-sdk/**"
       - "packages/net-policy/**"
       - "src/*.ts"
@@ -298,7 +298,7 @@ jobs:
                 src/plugins/activation-planner.ts|src/plugins/api-builder.ts|src/plugins/bundled-*.ts|src/plugins/captured-registration.ts|src/plugins/config-*.ts|src/plugins/discovery.ts|src/plugins/effective-plugin-ids.ts|src/plugins/externalized-bundled-plugins.ts|src/plugins/installed-plugin-index*.ts|src/plugins/loader*.ts|src/plugins/manifest*.ts|src/plugins/module-export.ts|src/plugins/package-entrypoints.ts|src/plugins/plugin-registry*.ts|src/plugins/public-surface*.ts|src/plugins/registry.ts|src/plugins/registry-types.ts|src/plugins/runtime|src/plugins/runtime/*|src/plugins/runtime-state.ts|src/plugins/runtime.ts|src/plugins/sdk-alias.ts|src/plugins/types.ts|src/plugins/validation-diagnostics.ts)
                   plugin=true
                   ;;
-                packages/plugin-package-contract/*|packages/plugin-sdk/*)
+                packages/plugin-package-contract/*|sdks/plugin-sdk/*)
                   plugin_sdk_package=true
                   ;;
               esac

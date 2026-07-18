@@ -1,21 +1,21 @@
 // Identifies OpenClaw-authored assistant rows that are transcript bookkeeping,
 // not provider model output. Some history surfaces keep gateway-injected rows
 // visible, so use the narrower delivery-mirror predicate when visibility matters.
-export const OPENCLAW_TRANSCRIPT_ARTIFACT_API = "openclaw-transcript" as const;
-export const OPENCLAW_TRANSCRIPT_ARTIFACT_PROVIDER = "openclaw" as const;
-export const OPENCLAW_DELIVERY_MIRROR_MODEL = "delivery-mirror" as const;
-const OPENCLAW_GATEWAY_INJECTED_MODEL = "gateway-injected" as const;
+export const OPERATOR_TRANSCRIPT_ARTIFACT_API = "operator-transcript" as const;
+export const OPERATOR_TRANSCRIPT_ARTIFACT_PROVIDER = "operator" as const;
+export const OPERATOR_DELIVERY_MIRROR_MODEL = "delivery-mirror" as const;
+const OPERATOR_GATEWAY_INJECTED_MODEL = "gateway-injected" as const;
 
-const TRANSCRIPT_ONLY_OPENCLAW_ASSISTANT_MODELS = new Set<string>([
-  OPENCLAW_DELIVERY_MIRROR_MODEL,
-  OPENCLAW_GATEWAY_INJECTED_MODEL,
+const TRANSCRIPT_ONLY_OPERATOR_ASSISTANT_MODELS = new Set<string>([
+  OPERATOR_DELIVERY_MIRROR_MODEL,
+  OPERATOR_GATEWAY_INJECTED_MODEL,
 ]);
 
 export function isTranscriptOnlyOpenClawAssistantModel(provider: unknown, model: unknown): boolean {
   return (
-    provider === OPENCLAW_TRANSCRIPT_ARTIFACT_PROVIDER &&
+    provider === OPERATOR_TRANSCRIPT_ARTIFACT_PROVIDER &&
     typeof model === "string" &&
-    TRANSCRIPT_ONLY_OPENCLAW_ASSISTANT_MODELS.has(model)
+    TRANSCRIPT_ONLY_OPERATOR_ASSISTANT_MODELS.has(model)
   );
 }
 
@@ -34,15 +34,15 @@ export function isOpenClawMessageToolMirrorAssistantMessage(message: unknown): b
   if (!message || typeof message !== "object" || Array.isArray(message)) {
     return false;
   }
-  const entry = message as { role?: unknown; openclawMessageToolMirror?: unknown };
-  return entry.role === "assistant" && entry.openclawMessageToolMirror !== undefined;
+  const entry = message as { role?: unknown; operatorMessageToolMirror?: unknown };
+  return entry.role === "assistant" && entry.operatorMessageToolMirror !== undefined;
 }
 
 export function isOpenClawInternalSourceReplyMirrorAssistantMessage(message: unknown): boolean {
   if (!isOpenClawMessageToolMirrorAssistantMessage(message)) {
     return false;
   }
-  const marker = (message as { openclawMessageToolMirror?: unknown }).openclawMessageToolMirror;
+  const marker = (message as { operatorMessageToolMirror?: unknown }).operatorMessageToolMirror;
   return (
     Boolean(marker) &&
     typeof marker === "object" &&
@@ -58,7 +58,7 @@ export function isOpenClawDeliveryMirrorAssistantMessage(message: unknown): bool
   const entry = message as { role?: unknown; provider?: unknown; model?: unknown };
   return (
     entry.role === "assistant" &&
-    entry.provider === OPENCLAW_TRANSCRIPT_ARTIFACT_PROVIDER &&
-    entry.model === OPENCLAW_DELIVERY_MIRROR_MODEL
+    entry.provider === OPERATOR_TRANSCRIPT_ARTIFACT_PROVIDER &&
+    entry.model === OPERATOR_DELIVERY_MIRROR_MODEL
   );
 }

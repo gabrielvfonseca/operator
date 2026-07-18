@@ -9,7 +9,7 @@ import {
   resolveDefaultAgentId,
 } from "../../agents/agent-scope-config.js";
 import { resolveSandboxConfigForAgent } from "../../agents/sandbox/config.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OpenClawConfig } from "../../config/types.operator.js";
 import { normalizeAgentId } from "../../routing/session-key.js";
 
 /** Why a terminal cannot open, or `null` when it can. */
@@ -285,7 +285,7 @@ export function buildTerminalEnv(baseEnv: NodeJS.ProcessEnv): Record<string, str
   }
   env.TERM = env.TERM ?? "xterm-256color";
   // Lets shells and prompts detect that they are inside an OpenClaw terminal.
-  env.OPENCLAW_TERMINAL = "1";
+  env.OPERATOR_TERMINAL = "1";
   return env;
 }
 

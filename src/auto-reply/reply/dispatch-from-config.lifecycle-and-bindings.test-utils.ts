@@ -727,7 +727,7 @@ describe("dispatchReplyFromConfig", () => {
       ((hookName?: string) =>
         hookName === "inbound_claim" || hookName === "message_received") as () => boolean,
     );
-    hookMocks.registry.plugins = [{ id: "openclaw-codex-app-server", status: "loaded" }];
+    hookMocks.registry.plugins = [{ id: "operator-codex-app-server", status: "loaded" }];
     hookMocks.runner.runInboundClaimForPluginOutcome.mockResolvedValue({
       status: "handled",
       result: { handled: true },
@@ -745,13 +745,13 @@ describe("dispatchReplyFromConfig", () => {
       boundAt: 1710000000000,
       metadata: {
         pluginBindingOwner: "plugin",
-        pluginId: "openclaw-codex-app-server",
-        pluginRoot: "/Users/huntharo/github/openclaw-app-server",
+        pluginId: "operator-codex-app-server",
+        pluginRoot: "/Users/huntharo/github/operator-app-server",
         data: {
           kind: "codex-app-server-session",
           version: 1,
           sessionFile: "/tmp/session.jsonl",
-          workspaceDir: "/workspace/openclaw",
+          workspaceDir: "/workspace/operator",
         },
       },
     } satisfies SessionBindingRecord);
@@ -801,7 +801,7 @@ describe("dispatchReplyFromConfig", () => {
           },
         ]
       | undefined;
-    expect(inboundClaimCall?.[0]).toBe("openclaw-codex-app-server");
+    expect(inboundClaimCall?.[0]).toBe("operator-codex-app-server");
     expect(inboundClaimCall?.[1]?.channel).toBe("discord");
     expect(inboundClaimCall?.[1]?.accountId).toBe("default");
     expect(inboundClaimCall?.[1]?.conversationId).toBe("channel:1481858418548412579");
@@ -1293,7 +1293,7 @@ describe("dispatchReplyFromConfig", () => {
     const order: string[] = [];
     const rawPath = "/Users/demo/Library/Messages/Attachments/ab/cd/photo.jpg";
     const stagedPath =
-      "/tmp/openclaw-proof/.openclaw/media/remote-cache/agent-main-imessage/photo.jpg";
+      "/tmp/operator-proof/.operator/media/remote-cache/agent-main-imessage/photo.jpg";
     stageSandboxMediaMocks.stageSandboxMedia.mockImplementationOnce(async (paramsUnknown) => {
       order.push("stage");
       const params = paramsUnknown as {
@@ -1304,7 +1304,7 @@ describe("dispatchReplyFromConfig", () => {
         remoteMediaMode?: string;
       };
       expect(params.sessionKey).toBe("agent:main:imessage:direct:user");
-      expect(params.workspaceDir).toContain(".openclaw/workspace");
+      expect(params.workspaceDir).toContain(".operator/workspace");
       expect(params.remoteMediaMode).toBe("cache");
       params.ctx.MediaPath = stagedPath;
       params.ctx.MediaPaths = [stagedPath];
@@ -1320,7 +1320,7 @@ describe("dispatchReplyFromConfig", () => {
       ((hookName?: string) =>
         hookName === "inbound_claim" || hookName === "message_received") as () => boolean,
     );
-    hookMocks.registry.plugins = [{ id: "openclaw-codex-app-server", status: "loaded" }];
+    hookMocks.registry.plugins = [{ id: "operator-codex-app-server", status: "loaded" }];
     hookMocks.runner.runInboundClaimForPluginOutcome.mockImplementationOnce(
       async (_plugin, event) => {
         order.push("claim");
@@ -1347,13 +1347,13 @@ describe("dispatchReplyFromConfig", () => {
       boundAt: 1710000000000,
       metadata: {
         pluginBindingOwner: "plugin",
-        pluginId: "openclaw-codex-app-server",
-        pluginRoot: "/plugins/openclaw-codex-app-server",
+        pluginId: "operator-codex-app-server",
+        pluginRoot: "/plugins/operator-codex-app-server",
         data: {
           kind: "codex-app-server-session",
           version: 1,
           sessionFile: "/tmp/session.jsonl",
-          workspaceDir: "/workspace/openclaw",
+          workspaceDir: "/workspace/operator",
         },
       },
     } satisfies SessionBindingRecord);
@@ -1557,7 +1557,7 @@ describe("dispatchReplyFromConfig", () => {
       ((hookName?: string) =>
         hookName === "inbound_claim" || hookName === "message_received") as () => boolean,
     );
-    hookMocks.registry.plugins = [{ id: "openclaw-codex-app-server", status: "loaded" }];
+    hookMocks.registry.plugins = [{ id: "operator-codex-app-server", status: "loaded" }];
     hookMocks.runner.runInboundClaimForPluginOutcome.mockResolvedValue({
       status: "handled",
       result: { handled: true },
@@ -1586,8 +1586,8 @@ describe("dispatchReplyFromConfig", () => {
               boundAt: 1710000000000,
               metadata: {
                 pluginBindingOwner: "plugin",
-                pluginId: "openclaw-codex-app-server",
-                pluginRoot: "/plugins/openclaw-codex-app-server",
+                pluginId: "operator-codex-app-server",
+                pluginRoot: "/plugins/operator-codex-app-server",
               },
             } satisfies SessionBindingRecord)
           : null,
@@ -1629,7 +1629,7 @@ describe("dispatchReplyFromConfig", () => {
       }),
     );
     expect(hookMocks.runner.runInboundClaimForPluginOutcome).toHaveBeenCalledWith(
-      "openclaw-codex-app-server",
+      "operator-codex-app-server",
       expect.objectContaining({
         channel: "discord",
         conversationId: "1510164477642014740",
@@ -1650,7 +1650,7 @@ describe("dispatchReplyFromConfig", () => {
       ((hookName?: string) =>
         hookName === "inbound_claim" || hookName === "message_received") as () => boolean,
     );
-    hookMocks.registry.plugins = [{ id: "openclaw-codex-app-server", status: "loaded" }];
+    hookMocks.registry.plugins = [{ id: "operator-codex-app-server", status: "loaded" }];
     hookMocks.runner.runInboundClaimForPluginOutcome.mockResolvedValue({
       status: "handled",
       result: { handled: true, reply: { text: "should not send" } },
@@ -1668,13 +1668,13 @@ describe("dispatchReplyFromConfig", () => {
       boundAt: 1710000000000,
       metadata: {
         pluginBindingOwner: "plugin",
-        pluginId: "openclaw-codex-app-server",
-        pluginRoot: "/workspace/openclaw-app-server",
+        pluginId: "operator-codex-app-server",
+        pluginRoot: "/workspace/operator-app-server",
         data: {
           kind: "codex-app-server-session",
           version: 1,
           sessionFile: "/tmp/session.jsonl",
-          workspaceDir: "/workspace/openclaw",
+          workspaceDir: "/workspace/operator",
         },
       },
     } satisfies SessionBindingRecord);
@@ -1735,7 +1735,7 @@ describe("dispatchReplyFromConfig", () => {
       ((hookName?: string) =>
         hookName === "inbound_claim" || hookName === "message_received") as () => boolean,
     );
-    hookMocks.registry.plugins = [{ id: "openclaw-codex-app-server", status: "loaded" }];
+    hookMocks.registry.plugins = [{ id: "operator-codex-app-server", status: "loaded" }];
     hookMocks.runner.runInboundClaimForPluginOutcome.mockResolvedValue({
       status: "handled",
       result: { handled: true },
@@ -1753,14 +1753,14 @@ describe("dispatchReplyFromConfig", () => {
       boundAt: 1710000000000,
       metadata: {
         pluginBindingOwner: "plugin",
-        pluginId: "openclaw-codex-app-server",
-        pluginRoot: "/Users/huntharo/github/openclaw-app-server",
+        pluginId: "operator-codex-app-server",
+        pluginRoot: "/Users/huntharo/github/operator-app-server",
         detachHint: "/codex detach",
         data: {
           kind: "codex-app-server-session",
           version: 1,
           sessionFile: "/tmp/session.jsonl",
-          workspaceDir: "/workspace/openclaw",
+          workspaceDir: "/workspace/operator",
         },
       },
     } satisfies SessionBindingRecord);
@@ -1802,7 +1802,7 @@ describe("dispatchReplyFromConfig", () => {
       ((hookName?: string) =>
         hookName === "inbound_claim" || hookName === "message_received") as () => boolean,
     );
-    hookMocks.registry.plugins = [{ id: "openclaw-codex-app-server", status: "loaded" }];
+    hookMocks.registry.plugins = [{ id: "operator-codex-app-server", status: "loaded" }];
     hookMocks.runner.runInboundClaimForPluginOutcome.mockResolvedValue({
       status: "handled",
       result: { handled: true },
@@ -1820,8 +1820,8 @@ describe("dispatchReplyFromConfig", () => {
       boundAt: 1710000000000,
       metadata: {
         pluginBindingOwner: "plugin",
-        pluginId: "openclaw-codex-app-server",
-        pluginRoot: "/Users/huntharo/github/openclaw-app-server",
+        pluginId: "operator-codex-app-server",
+        pluginRoot: "/Users/huntharo/github/operator-app-server",
       },
     } satisfies SessionBindingRecord);
     const cfg = emptyConfig;
@@ -1851,7 +1851,7 @@ describe("dispatchReplyFromConfig", () => {
     expect(result).toEqual({ queuedFinal: false, counts: { tool: 0, block: 0, final: 0 } });
     expect(sessionBindingMocks.touch).toHaveBeenCalledWith("binding-command-unknown-slash");
     expect(hookMocks.runner.runInboundClaimForPluginOutcome).toHaveBeenCalledWith(
-      "openclaw-codex-app-server",
+      "operator-codex-app-server",
       expect.objectContaining({ content: "/notes keep this with the bound plugin" }),
       expect.objectContaining({
         pluginBinding: expect.objectContaining({ bindingId: "binding-command-unknown-slash" }),

@@ -7,7 +7,7 @@ import { getChannelPlugin } from "../channels/plugins/registry.js";
 import type { ChannelLegacyStateMigrationPlan } from "../channels/plugins/types.core.js";
 import type { ChannelId } from "../channels/plugins/types.public.js";
 import { isNamedProfile, resolveOAuthDir, resolveStateDir } from "../config/paths.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import {
   createPluginStateKeyedStore,
@@ -25,7 +25,7 @@ import { DEFAULT_ACCOUNT_ID, DEFAULT_MAIN_KEY, normalizeAgentId } from "../routi
 import {
   detectOpenClawStateDatabaseSchemaMigrations,
   repairOpenClawStateDatabaseSchema,
-} from "../state/openclaw-state-db.js";
+} from "../state/operator-state-db.js";
 import {
   detectLegacyApnsRegistrations,
   migrateLegacyApnsRegistrations,
@@ -238,7 +238,7 @@ export async function detectLegacyStateMigrations(params: {
   const stateDir = resolveStateDir(env, homedir);
   const oauthDir = resolveOAuthDir(env, stateDir);
   // Sources under the DEFAULT home state dir are foreign state when
-  // OPENCLAW_STATE_DIR points elsewhere: an isolated/test gateway must never
+  // OPERATOR_STATE_DIR points elsewhere: an isolated/test gateway must never
   // import (and archive) another install's files. Only an explicit doctor run
   // opts into the cross-directory import.
   const crossStateDirImports = params.crossStateDirImports === true;
@@ -249,7 +249,7 @@ export async function detectLegacyStateMigrations(params: {
     : { ...detectedExecApprovals, hasLegacy: false };
   if (detectedExecApprovals.hasLegacy && !crossStateDirImports) {
     notices.push(
-      `Exec approvals in the default state dir were not imported into OPENCLAW_STATE_DIR automatically (${detectedExecApprovals.sourcePath} -> ${detectedExecApprovals.targetPath}); run \`openclaw doctor --fix\` to import them.`,
+      `Exec approvals in the default state dir were not imported into OPERATOR_STATE_DIR automatically (${detectedExecApprovals.sourcePath} -> ${detectedExecApprovals.targetPath}); run \`operator doctor --fix\` to import them.`,
     );
   }
 
@@ -336,7 +336,7 @@ export async function detectLegacyStateMigrations(params: {
   const hasPluginInstallIndex = fileExists(pluginInstallIndexPath);
   const debugProxyCaptureSidecar = detectLegacyDebugProxyCaptureSidecar(stateDir, env);
   const stateSchemaMigrations = detectOpenClawStateDatabaseSchemaMigrations({
-    env: { ...env, OPENCLAW_STATE_DIR: stateDir },
+    env: { ...env, OPERATOR_STATE_DIR: stateDir },
   });
   const taskRunsSidecarPath = resolveLegacyTaskRunsSidecarPath(stateDir);
   const flowRunsSidecarPath = resolveLegacyFlowRunsSidecarPath(stateDir);
@@ -391,7 +391,7 @@ export async function detectLegacyStateMigrations(params: {
     !crossStateDirImports
   ) {
     notices.push(
-      `Plugin binding approvals in the default state dir were not imported into OPENCLAW_STATE_DIR automatically (${pluginBindingApprovals.sourcePath}); run \`openclaw doctor --fix\` to import them.`,
+      `Plugin binding approvals in the default state dir were not imported into OPERATOR_STATE_DIR automatically (${pluginBindingApprovals.sourcePath}); run \`operator doctor --fix\` to import them.`,
     );
   }
   const currentConversationBindings = {
@@ -762,7 +762,7 @@ export async function autoMigrateLegacyPluginDoctorState(params: {
   const stateDir = resolveStateDir(env, params.homedir ?? os.homedir);
   const oauthDir = resolveOAuthDir(env, stateDir);
   const stateSchema = repairOpenClawStateDatabaseSchema({
-    env: { ...env, OPENCLAW_STATE_DIR: stateDir },
+    env: { ...env, OPERATOR_STATE_DIR: stateDir },
   });
   const changes = [...stateDirResult.changes, ...stateSchema.changes];
   const warnings = [...stateDirResult.warnings, ...stateSchema.warnings];
@@ -816,7 +816,7 @@ function migrateLegacyStateSchema(
   warnings: string[];
 } {
   return repairOpenClawStateDatabaseSchema({
-    env: { ...env, OPENCLAW_STATE_DIR: detected.stateDir },
+    env: { ...env, OPERATOR_STATE_DIR: detected.stateDir },
   });
 }
 
@@ -908,7 +908,7 @@ export async function runLegacyStateMigrations(params: {
   });
   const channelPairing = migrateLegacyChannelPairingState({
     detected: detected.channelPairing,
-    env: { ...env, OPENCLAW_STATE_DIR: detected.stateDir },
+    env: { ...env, OPERATOR_STATE_DIR: detected.stateDir },
   });
   const execApprovals = migrateLegacyExecApprovals(detected.execApprovals);
   const preSessionChannelPlans = await runLegacyMigrationPlans(
@@ -926,7 +926,7 @@ export async function runLegacyStateMigrations(params: {
   });
   const acpSessionMetadata = await migrateLegacyAcpSessionMetadata({
     cfg: params.config ?? ({} as OpenClawConfig),
-    env: { ...env, OPENCLAW_STATE_DIR: detected.stateDir },
+    env: { ...env, OPERATOR_STATE_DIR: detected.stateDir },
     now,
   });
   const agentDir = await migrateLegacyAgentDir(detected, now);
@@ -1049,7 +1049,7 @@ export async function autoMigrateLegacyState(params: {
   });
   const stateDir = resolveStateDir(env, params.homedir ?? os.homedir);
   const stateSchema = repairOpenClawStateDatabaseSchema({
-    env: { ...env, OPENCLAW_STATE_DIR: stateDir },
+    env: { ...env, OPERATOR_STATE_DIR: stateDir },
   });
   if (stateSchema.warnings.length > 0) {
     return {
@@ -1118,7 +1118,7 @@ export async function autoMigrateLegacyState(params: {
     homedir: params.homedir,
     crossStateDirImports: params.crossStateDirImports,
   });
-  const hasCustomAgentDir = env.OPENCLAW_AGENT_DIR?.trim() || env.PI_CODING_AGENT_DIR?.trim();
+  const hasCustomAgentDir = env.OPERATOR_AGENT_DIR?.trim() || env.PI_CODING_AGENT_DIR?.trim();
   if (hasCustomAgentDir) {
     const pluginStateSidecar = await migrateLegacyPluginStateSidecar({
       stateDir: detected.stateDir,
@@ -1158,7 +1158,7 @@ export async function autoMigrateLegacyState(params: {
     });
     const channelPairing = migrateLegacyChannelPairingState({
       detected: detected.channelPairing,
-      env: { ...env, OPENCLAW_STATE_DIR: detected.stateDir },
+      env: { ...env, OPERATOR_STATE_DIR: detected.stateDir },
     });
     const execApprovals = migrateLegacyExecApprovals(detected.execApprovals);
     const preSessionChannelPlans = await runLegacyMigrationPlans(
@@ -1325,7 +1325,7 @@ export async function autoMigrateLegacyState(params: {
   });
   const channelPairing = migrateLegacyChannelPairingState({
     detected: detected.channelPairing,
-    env: { ...env, OPENCLAW_STATE_DIR: detected.stateDir },
+    env: { ...env, OPERATOR_STATE_DIR: detected.stateDir },
   });
   const execApprovals = migrateLegacyExecApprovals(detected.execApprovals);
   const preSessionChannelPlans = await runLegacyMigrationPlans(

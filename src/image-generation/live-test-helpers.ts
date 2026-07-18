@@ -1,6 +1,6 @@
 /** Helpers for selecting image-generation providers and models in live tests. */
-import { normalizeOptionalLowercaseString } from "@openclaw/normalization-core/string-coerce";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import {
   parseLiveCsvFilter,
   parseProviderModelMap,

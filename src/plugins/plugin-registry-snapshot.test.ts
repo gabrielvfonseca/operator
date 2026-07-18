@@ -95,7 +95,7 @@ function writeBundledPlugin(rootDir: string, pluginId: string, entryPath: string
   fs.writeFileSync(
     path.join(rootDir, "package.json"),
     JSON.stringify({
-      name: `@openclaw/${pluginId}`,
+      name: `@operator/${pluginId}`,
       version: "1.0.0",
       openclaw: { extensions: [`./${entryPath}`] },
     }),
@@ -415,7 +415,7 @@ describe("loadPluginRegistrySnapshotWithMetadata", () => {
     const config = {};
     const whatsappDir = writeManagedNpmPlugin({
       stateDir,
-      packageName: "@openclaw/whatsapp",
+      packageName: "@operator/whatsapp",
       pluginId: "whatsapp",
       version: "2026.5.2",
     });
@@ -438,12 +438,12 @@ describe("loadPluginRegistrySnapshotWithMetadata", () => {
     expectDiagnosticsContainCode(result.diagnostics, "persisted-registry-stale-source");
     expect(result.snapshot.installRecords.whatsapp).toEqual({
       source: "npm",
-      spec: "@openclaw/whatsapp@2026.5.2",
+      spec: "@operator/whatsapp@2026.5.2",
       installPath: whatsappDir,
       version: "2026.5.2",
-      resolvedName: "@openclaw/whatsapp",
+      resolvedName: "@operator/whatsapp",
       resolvedVersion: "2026.5.2",
-      resolvedSpec: "@openclaw/whatsapp@2026.5.2",
+      resolvedSpec: "@operator/whatsapp@2026.5.2",
     });
     const whatsappPlugin = requirePluginRecord(result.snapshot.plugins, "whatsapp");
     expect(whatsappPlugin.origin).toBe("global");
@@ -460,7 +460,7 @@ describe("loadPluginRegistrySnapshotWithMetadata", () => {
     const config = {};
     const codexDir = writeManagedNpmPlugin({
       stateDir,
-      packageName: "@openclaw/codex",
+      packageName: "@operator/codex",
       pluginId: "codex",
       version: "2026.6.10-beta.1",
     });
@@ -499,7 +499,7 @@ describe("loadPluginRegistrySnapshotWithMetadata", () => {
     };
     const codexDir = writeManagedNpmPlugin({
       stateDir,
-      packageName: "@openclaw/codex",
+      packageName: "@operator/codex",
       pluginId: "codex",
       version: "2026.6.10-beta.1",
     });

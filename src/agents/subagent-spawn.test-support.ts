@@ -24,7 +24,7 @@ type Testing = {
 
 function getTesting(): Testing {
   return (globalThis as Record<PropertyKey, unknown>)[
-    Symbol.for("openclaw.subagentSpawnTestApi")
+    Symbol.for("operator.subagentSpawnTestApi")
   ] as Testing;
 }
 

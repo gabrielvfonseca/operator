@@ -1,6 +1,6 @@
 // Exposes private secret file helpers with fs-safe defaults.
 import "./fs-safe-defaults.js";
-import { readSecretFileSync as readSecretFileSyncImpl } from "@openclaw/fs-safe/secret";
+import { readSecretFileSync as readSecretFileSyncImpl } from "@operator/fs-safe/secret";
 import { resolveUserPath } from "../utils.js";
 
 export {
@@ -10,8 +10,8 @@ export {
   readSecretFileSync,
   tryReadSecretFileSync,
   type SecretFileReadOptions,
-} from "@openclaw/fs-safe/secret";
-export { writeSecretFileAtomic as writePrivateSecretFileAtomic } from "@openclaw/fs-safe/secret";
+} from "@operator/fs-safe/secret";
+export { writeSecretFileAtomic as writePrivateSecretFileAtomic } from "@operator/fs-safe/secret";
 
 export type SecretFileReadResult =
   | {

@@ -5,7 +5,7 @@ import { shouldWarnOnTouchedVersion } from "./version.js";
 
 /** Override env var for intentional older-binary destructive config actions. */
 export const ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS_ENV =
-  "OPENCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS";
+  "OPERATOR_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS";
 
 /** Block payload shown when an older binary would mutate newer-written config. */
 export type FutureConfigActionBlock = {
@@ -60,7 +60,7 @@ export function resolveFutureConfigActionBlock(
     touchedVersion,
     message: `Refusing to ${params.action} because this OpenClaw binary (${currentVersion}) is older than the config last written by OpenClaw ${touchedVersion}.`,
     hints: [
-      "Run the newer openclaw binary on PATH, or reinstall the intended gateway service from the newer install.",
+      "Run the newer operator binary on PATH, or reinstall the intended gateway service from the newer install.",
       `Set ${ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS_ENV}=1 only for an intentional downgrade or recovery action.`,
     ],
   };

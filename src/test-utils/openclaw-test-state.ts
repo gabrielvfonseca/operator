@@ -1,4 +1,4 @@
-// Creates isolated OpenClaw state directories for integration-style tests.
+// Creates isolated operator state directories for integration-style tests.
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -14,9 +14,9 @@ type ConfigRuntimeResettable = typeof configRuntime & {
   resetConfigRuntimeState?: () => void;
 };
 
-type OpenClawTestStateLayout = "home" | "state-only" | "split";
+type operatorTestStateLayout = "home" | "state-only" | "split";
 
-type OpenClawTestStateScenario =
+type operatorTestStateScenario =
   | "empty"
   | "minimal"
   | "update-stable"
@@ -24,11 +24,11 @@ type OpenClawTestStateScenario =
   | "gateway-loopback"
   | "external-service";
 
-type OpenClawTestStateOptions = {
+type operatorTestStateOptions = {
   prefix?: string;
   label?: string;
-  layout?: OpenClawTestStateLayout;
-  scenario?: OpenClawTestStateScenario;
+  layout?: operatorTestStateLayout;
+  scenario?: operatorTestStateScenario;
   agentEnv?: "clear" | "main";
   applyEnv?: boolean;
   env?: Record<string, string | undefined>;
@@ -38,7 +38,7 @@ type OpenClawTestStateOptions = {
   };
 };
 
-export type OpenClawTestState = {
+export type operatorTestState = {
   root: string;
   home: string;
   stateDir: string;
@@ -59,17 +59,17 @@ export type OpenClawTestState = {
   cleanup: () => Promise<void>;
 };
 
-const DEFAULT_PREFIX = "openclaw-test-state-";
+const DEFAULT_PREFIX = "operator-test-state-";
 const ENV_KEYS = [
   "HOME",
   "USERPROFILE",
   "HOMEDRIVE",
   "HOMEPATH",
-  "OPENCLAW_HOME",
-  "OPENCLAW_STATE_DIR",
-  "OPENCLAW_CONFIG_PATH",
-  "OPENCLAW_AGENT_DIR",
-  "OPENCLAW_SERVICE_REPAIR_POLICY",
+  "operator_HOME",
+  "operator_STATE_DIR",
+  "operator_CONFIG_PATH",
+  "operator_AGENT_DIR",
+  "operator_SERVICE_REPAIR_POLICY",
 ] as const;
 
 function resetConfigRuntimeStateForTest(): void {
@@ -108,7 +108,7 @@ function resolveWindowsHomeEnv(
 
 function resolveLayout(
   root: string,
-  layout: OpenClawTestStateLayout,
+  layout: operatorTestStateLayout,
 ): {
   home: string;
   stateDir: string;
@@ -117,11 +117,11 @@ function resolveLayout(
 } {
   if (layout === "home") {
     const home = path.join(root, "home");
-    const stateDir = path.join(home, ".openclaw");
+    const stateDir = path.join(home, ".operator");
     return {
       home,
       stateDir,
-      configPath: path.join(stateDir, "openclaw.json"),
+      configPath: path.join(stateDir, "operator.json"),
       workspaceDir: path.join(home, "workspace"),
     };
   }
@@ -131,7 +131,7 @@ function resolveLayout(
     return {
       home,
       stateDir,
-      configPath: path.join(root, "config", "openclaw.json"),
+      configPath: path.join(root, "config", "operator.json"),
       workspaceDir: path.join(root, "workspace"),
     };
   }
@@ -139,12 +139,12 @@ function resolveLayout(
   return {
     home: path.join(root, "home"),
     stateDir,
-    configPath: path.join(stateDir, "openclaw.json"),
+    configPath: path.join(stateDir, "operator.json"),
     workspaceDir: path.join(root, "workspace"),
   };
 }
 
-function scenarioConfig(options: OpenClawTestStateOptions): Record<string, unknown> | undefined {
+function scenarioConfig(options: operatorTestStateOptions): Record<string, unknown> | undefined {
   const scenario = options.scenario ?? "empty";
   if (scenario === "minimal" || scenario === "external-service") {
     return {};
@@ -167,7 +167,7 @@ function scenarioConfig(options: OpenClawTestStateOptions): Record<string, unkno
         bind: "loopback",
         auth: {
           mode: "token",
-          token: options.gateway?.token ?? "openclaw-test-token",
+          token: options.gateway?.token ?? "operator-test-token",
         },
         controlUi: {
           enabled: false,
@@ -190,7 +190,7 @@ function scenarioConfig(options: OpenClawTestStateOptions): Record<string, unkno
         port: options.gateway?.port ?? 18789,
         auth: {
           mode: "token",
-          token: options.gateway?.token ?? "openclaw-test-token",
+          token: options.gateway?.token ?? "operator-test-token",
         },
         controlUi: {
           enabled: false,
@@ -201,17 +201,17 @@ function scenarioConfig(options: OpenClawTestStateOptions): Record<string, unkno
   return undefined;
 }
 
-function scenarioEnv(options: OpenClawTestStateOptions): Record<string, string | undefined> {
+function scenarioEnv(options: operatorTestStateOptions): Record<string, string | undefined> {
   if ((options.scenario ?? "empty") === "external-service") {
     return {
-      OPENCLAW_SERVICE_REPAIR_POLICY: "external",
+      operator_SERVICE_REPAIR_POLICY: "external",
     };
   }
   return {};
 }
 
 function buildEnvVars(params: {
-  layout: OpenClawTestStateLayout;
+  layout: operatorTestStateLayout;
   home: string;
   stateDir: string;
   configPath: string;
@@ -223,14 +223,14 @@ function buildEnvVars(params: {
   const agentDirEnv =
     params.agentEnv === "main"
       ? {
-          OPENCLAW_AGENT_DIR: params.agentDir,
+          operator_AGENT_DIR: params.agentDir,
         }
       : {
-          OPENCLAW_AGENT_DIR: undefined,
+          operator_AGENT_DIR: undefined,
         };
   const envVars: Record<string, string | undefined> = {
-    OPENCLAW_STATE_DIR: params.stateDir,
-    OPENCLAW_CONFIG_PATH: params.configPath,
+    operator_STATE_DIR: params.stateDir,
+    operator_CONFIG_PATH: params.configPath,
     ...agentDirEnv,
     ...params.scenarioEnv,
     ...params.extraEnv,
@@ -239,7 +239,7 @@ function buildEnvVars(params: {
     Object.assign(envVars, {
       HOME: params.home,
       USERPROFILE: params.home,
-      OPENCLAW_HOME: params.home,
+      operator_HOME: params.home,
       ...resolveWindowsHomeEnv(params.home),
     });
   }
@@ -264,9 +264,9 @@ async function writeJsonFile(filePath: string, value: unknown): Promise<string> 
   return filePath;
 }
 
-export async function createOpenClawTestState(
-  options: OpenClawTestStateOptions = {},
-): Promise<OpenClawTestState> {
+export async function createoperatorTestState(
+  options: operatorTestStateOptions = {},
+): Promise<operatorTestState> {
   const label = normalizeLabel(options.label ?? options.scenario);
   const prefix = options.prefix ?? `${DEFAULT_PREFIX}${label}-`;
   // Canonicalize: macOS tmpdir sits behind a symlink (/var -> /private/var) and
@@ -306,7 +306,7 @@ export async function createOpenClawTestState(
   const sessionsDir = (agentId = "main") =>
     path.join(paths.stateDir, "agents", agentId, "sessions");
 
-  const state: OpenClawTestState = {
+  const state: operatorTestState = {
     root,
     ...paths,
     env,
@@ -335,7 +335,7 @@ export async function createOpenClawTestState(
     applyEnv: () => {
       resetConfigRuntimeStateForTest();
       for (const [key, value] of Object.entries(envVars)) {
-        // Test fixtures apply a fixed OpenClaw env set, not plugin-provided host env.
+        // Test fixtures apply a fixed operator env set, not plugin-provided host env.
         if (value === undefined) {
           Reflect.deleteProperty(process.env, key);
         } else {
@@ -369,11 +369,11 @@ export async function createOpenClawTestState(
   return state;
 }
 
-export async function withOpenClawTestState<T>(
-  options: OpenClawTestStateOptions,
-  fn: (state: OpenClawTestState) => Promise<T>,
+export async function withoperatorTestState<T>(
+  options: operatorTestStateOptions,
+  fn: (state: operatorTestState) => Promise<T>,
 ): Promise<T> {
-  const state = await createOpenClawTestState(options);
+  const state = await createoperatorTestState(options);
   try {
     return await fn(state);
   } finally {

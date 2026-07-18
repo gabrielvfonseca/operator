@@ -1,6 +1,6 @@
 const FEATURED_PROVIDER_AUTH_GROUP_ORDER = new Map<string, number>([
-  ["openai", 0],
-  ["openrouter", 1],
+  ["openrouter", 0],
+  ["openai", 1],
   ["xai", 2],
   ["google", 3],
   ["anthropic", 4],

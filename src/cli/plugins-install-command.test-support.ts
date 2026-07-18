@@ -18,7 +18,7 @@ type PluginsInstallCommandTestApi = {
 
 function getTestApi(): PluginsInstallCommandTestApi {
   return (globalThis as Record<PropertyKey, unknown>)[
-    Symbol.for("openclaw.pluginsInstallCommandTestApi")
+    Symbol.for("operator.pluginsInstallCommandTestApi")
   ] as PluginsInstallCommandTestApi;
 }
 

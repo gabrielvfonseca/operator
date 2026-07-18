@@ -3,12 +3,12 @@
  *
  * Implements only the Gateway calls needed by session tools and rejects unsupported methods.
  */
-import { normalizeFastMode, type FastMode } from "@openclaw/normalization-core/string-coerce";
+import { normalizeFastMode, type FastMode } from "@operator/normalization-core/string-coerce";
 import type {
   SessionsListParams,
   SessionsResolveParams,
 } from "../../../packages/gateway-protocol/src/index.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OpenClawConfig } from "../../config/types.operator.js";
 import type { CallGatewayOptions } from "../../gateway/call.js";
 import type {
   ReadSessionMessagesAsyncOptions,
@@ -139,7 +139,7 @@ function readChatHistoryMessageSeq(message: unknown): number | undefined {
   if (!message || typeof message !== "object" || Array.isArray(message)) {
     return undefined;
   }
-  const metadata = (message as Record<string, unknown>)["__openclaw"];
+  const metadata = (message as Record<string, unknown>)["__operator"];
   if (!metadata || typeof metadata !== "object" || Array.isArray(metadata)) {
     return undefined;
   }

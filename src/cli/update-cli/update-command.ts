@@ -1,7 +1,7 @@
 // Main update orchestration for source checkouts and package installs.
 import path from "node:path";
 import { confirm, isCancel } from "@clack/prompts";
-import { isRecord } from "@openclaw/normalization-core/record-coerce";
+import { isRecord } from "@operator/normalization-core/record-coerce";
 import { stylePromptMessage } from "../../../packages/terminal-core/src/prompt-style.js";
 import { theme } from "../../../packages/terminal-core/src/theme.js";
 import {
@@ -16,7 +16,7 @@ import {
   readConfigFileSnapshot,
 } from "../../config/config.js";
 import { formatConfigIssueLines } from "../../config/issue-format.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OpenClawConfig } from "../../config/types.operator.js";
 import { resolveGatewayInstallEntrypoint } from "../../daemon/gateway-entrypoint.js";
 import { disableCurrentOpenClawUpdateLaunchdJob } from "../../daemon/launchd.js";
 import { readGatewayServiceState, resolveGatewayService } from "../../daemon/service.js";
@@ -343,7 +343,7 @@ async function runPackageInstallUpdate(params: {
               serviceEnv: params.managedServiceEnv,
               invocationCwd: params.invocationCwd,
             }),
-            OPENCLAW_UPDATE_IN_PROGRESS: "1",
+            OPERATOR_UPDATE_IN_PROGRESS: "1",
             [UPDATE_DEFER_CONFIGURED_PLUGIN_INSTALL_REPAIR_ENV]: "1",
             [UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE_ENV]: "1",
             [UPDATE_PARENT_SUPPORTS_GATEWAY_RESTART_ENV]: "1",
@@ -354,12 +354,12 @@ async function runPackageInstallUpdate(params: {
               ? "1"
               : "0",
             ...(doctorPolicy.serviceRepairPolicy
-              ? { OPENCLAW_SERVICE_REPAIR_POLICY: doctorPolicy.serviceRepairPolicy }
+              ? { OPERATOR_SERVICE_REPAIR_POLICY: doctorPolicy.serviceRepairPolicy }
               : {}),
             [UPDATE_POST_INSTALL_DOCTOR_RESULT_PATH_ENV]: doctorResultPath,
             ...(candidateHostVersion === null
               ? {}
-              : { OPENCLAW_COMPATIBILITY_HOST_VERSION: candidateHostVersion }),
+              : { OPERATOR_COMPATIBILITY_HOST_VERSION: candidateHostVersion }),
           },
           timeoutMs: params.timeoutMs,
         });
@@ -500,13 +500,13 @@ async function runGitUpdate(params: {
 }
 
 async function withUpdateInProgressEnv<T>(run: () => Promise<T>): Promise<T> {
-  const previousUpdateInProgress = process.env.OPENCLAW_UPDATE_IN_PROGRESS;
-  process.env.OPENCLAW_UPDATE_IN_PROGRESS = "1";
+  const previousUpdateInProgress = process.env.OPERATOR_UPDATE_IN_PROGRESS;
+  process.env.OPERATOR_UPDATE_IN_PROGRESS = "1";
   return run().finally(() => {
     if (previousUpdateInProgress === undefined) {
-      delete process.env.OPENCLAW_UPDATE_IN_PROGRESS;
+      delete process.env.OPERATOR_UPDATE_IN_PROGRESS;
     } else {
-      process.env.OPENCLAW_UPDATE_IN_PROGRESS = previousUpdateInProgress;
+      process.env.OPERATOR_UPDATE_IN_PROGRESS = previousUpdateInProgress;
     }
   });
 }
@@ -576,7 +576,7 @@ async function updateCommandInternal(
       return;
     }
 
-    process.env.OPENCLAW_COMPATIBILITY_HOST_VERSION = (await readPackageVersion(root)) ?? VERSION;
+    process.env.OPERATOR_COMPATIBILITY_HOST_VERSION = (await readPackageVersion(root)) ?? VERSION;
 
     let postCoreConfigSnapshot = await readConfigFileSnapshot({
       skipPluginValidation: true,
@@ -707,7 +707,7 @@ async function updateCommandInternal(
     updateInstallKind === "git" ? DEFAULT_GIT_CHANNEL : DEFAULT_PACKAGE_CHANNEL;
   const channel = requestedChannel ?? storedChannel ?? defaultChannel;
   const devTargetRef =
-    channel === "dev" ? process.env.OPENCLAW_UPDATE_DEV_TARGET_REF?.trim() || undefined : undefined;
+    channel === "dev" ? process.env.OPERATOR_UPDATE_DEV_TARGET_REF?.trim() || undefined : undefined;
 
   const explicitTag = normalizeTag(opts.tag);
   if (channel === "extended-stable" && explicitTag) {
@@ -1011,7 +1011,7 @@ async function updateCommandInternal(
     if (runtimeSelection.replacedNodeRunner && !opts.json) {
       defaultRuntime.log(
         theme.warn(
-          `Managed gateway service Node (${runtimeSelection.replacedNodeRunner}) cannot run openclaw@${runtimeSelection.targetVersion ?? tag}.`,
+          `Managed gateway service Node (${runtimeSelection.replacedNodeRunner}) cannot run operator@${runtimeSelection.targetVersion ?? tag}.`,
         ),
       );
       defaultRuntime.log(
@@ -1091,7 +1091,7 @@ async function updateCommandInternal(
         [
           `${updateLabel} cannot run from inside the gateway service process.`,
           "That path replaces the active OpenClaw dist tree while the live gateway may still lazy-load old chunks.",
-          `Run \`${replaceCliName(formatCliCommand("openclaw update"), CLI_NAME)}\` from a shell outside the gateway service, or stop the gateway service first and then update.`,
+          `Run \`${replaceCliName(formatCliCommand("operator update"), CLI_NAME)}\` from a shell outside the gateway service, or stop the gateway service first and then update.`,
         ].join("\n"),
       );
       defaultRuntime.exit(1);
@@ -1234,18 +1234,18 @@ async function updateCommandInternal(
         ),
       );
       defaultRuntime.log(
-        theme.muted("Commit, stash, or discard the local changes, then rerun `openclaw update`."),
+        theme.muted("Commit, stash, or discard the local changes, then rerun `operator update`."),
       );
     }
     if (result.reason === "not-git-install") {
       defaultRuntime.log(
         theme.warn(
-          `Skipped: this OpenClaw install isn't a git checkout, and the package manager couldn't be detected. Update via your package manager, then run \`${replaceCliName(formatCliCommand("openclaw doctor"), CLI_NAME)}\` and \`${replaceCliName(formatCliCommand("openclaw gateway restart"), CLI_NAME)}\`.`,
+          `Skipped: this OpenClaw install isn't a git checkout, and the package manager couldn't be detected. Update via your package manager, then run \`${replaceCliName(formatCliCommand("operator doctor"), CLI_NAME)}\` and \`${replaceCliName(formatCliCommand("operator gateway restart"), CLI_NAME)}\`.`,
         ),
       );
       defaultRuntime.log(
         theme.muted(
-          `Examples: \`${replaceCliName("npm i -g openclaw@latest", CLI_NAME)}\` or \`${replaceCliName("pnpm add -g openclaw@latest", CLI_NAME)}\``,
+          `Examples: \`${replaceCliName("npm i -g operator@latest", CLI_NAME)}\` or \`${replaceCliName("pnpm add -g operator@latest", CLI_NAME)}\``,
         ),
       );
     }
@@ -1351,9 +1351,9 @@ async function updateCommandInternal(
         : null;
     const compatibilityDowngradeTarget =
       versionComparison != null && versionComparison > 0 ? postUpdateInstalledVersion : null;
-    const previousCompatibilityHostVersion = process.env.OPENCLAW_COMPATIBILITY_HOST_VERSION;
+    const previousCompatibilityHostVersion = process.env.OPERATOR_COMPATIBILITY_HOST_VERSION;
     if (compatibilityDowngradeTarget) {
-      process.env.OPENCLAW_COMPATIBILITY_HOST_VERSION = compatibilityDowngradeTarget;
+      process.env.OPERATOR_COMPATIBILITY_HOST_VERSION = compatibilityDowngradeTarget;
     }
     try {
       postCorePluginUpdate = await updatePluginsAfterCoreUpdate({
@@ -1369,9 +1369,9 @@ async function updateCommandInternal(
     } finally {
       if (compatibilityDowngradeTarget) {
         if (previousCompatibilityHostVersion === undefined) {
-          delete process.env.OPENCLAW_COMPATIBILITY_HOST_VERSION;
+          delete process.env.OPERATOR_COMPATIBILITY_HOST_VERSION;
         } else {
-          process.env.OPENCLAW_COMPATIBILITY_HOST_VERSION = previousCompatibilityHostVersion;
+          process.env.OPERATOR_COMPATIBILITY_HOST_VERSION = previousCompatibilityHostVersion;
         }
       }
     }

@@ -7,7 +7,7 @@ import type { SkillWorkshopProposalMutationBudget } from "../../skills/workshop/
 import {
   createOpenClawTestState,
   type OpenClawTestState,
-} from "../../test-utils/openclaw-test-state.js";
+} from "../../test-utils/operator-test-state.js";
 import { createTrackedTempDirs } from "../../test-utils/tracked-temp-dirs.js";
 import { createOpenClawTools } from "../openclaw-tools.js";
 import { createSkillWorkshopTool } from "./skill-workshop-tool.js";

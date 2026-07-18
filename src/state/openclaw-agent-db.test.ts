@@ -402,7 +402,7 @@ describe("openclaw agent database", () => {
     ).toBe(
       path.join(
         os.tmpdir(),
-        "openclaw-test-state",
+        "operator-test-state",
         `${process.pid}-7`,
         "agents",
         "main",

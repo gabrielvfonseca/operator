@@ -8,7 +8,7 @@ import {
   resolvePositiveTimerTimeoutMs,
   resolveTimerTimeoutMs,
   resolveTimestampMsToIsoString,
-} from "@openclaw/normalization-core/number-coercion";
+} from "@operator/normalization-core/number-coercion";
 import { z } from "zod";
 import { resolveConfigPath, resolveGatewayLockDir, resolveStateDir } from "../config/paths.js";
 import { getFileLockProcessStartTime, isPidAlive } from "../shared/pid-alive.js";
@@ -329,7 +329,7 @@ export async function acquireGatewayLock(
     stateDir: paths.stateDir,
   });
   const shouldAcquireConfigLock =
-    role === "sqlite-maintenance" || env.OPENCLAW_ALLOW_MULTI_GATEWAY !== "1";
+    role === "sqlite-maintenance" || env.OPERATOR_ALLOW_MULTI_GATEWAY !== "1";
   if (!shouldAcquireConfigLock) {
     return {
       ...stateLock,

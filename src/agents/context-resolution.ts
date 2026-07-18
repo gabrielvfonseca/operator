@@ -1,6 +1,6 @@
-import { resolveClaudeSonnet5ModelIdentity } from "@openclaw/llm-core";
-import { normalizeLowercaseStringOrEmpty } from "@openclaw/normalization-core/string-coerce";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import { resolveClaudeSonnet5ModelIdentity } from "@operator/llm-core";
+import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import {
   lookupCachedContextTokens,
   lookupCachedContextWindow,

@@ -1,5 +1,5 @@
 // Model-backed compaction request construction.
-import { normalizeOptionalString } from "@openclaw/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 import { resolveAgentWorkspaceDir } from "../../agents/agent-scope.js";
 import { compactEmbeddedAgentSession } from "../../agents/embedded-agent.js";
 import { resolvePersistedSessionRuntimeId } from "../../agents/session-runtime-compat.js";
@@ -7,7 +7,7 @@ import { resolveIngressWorkspaceOverrideForSessionRun } from "../../agents/spawn
 import { normalizeReasoningLevel, normalizeThinkLevel } from "../../auto-reply/thinking.js";
 import type { SessionEntry } from "../../config/sessions.js";
 import { resolveSessionTranscriptRuntimeTarget } from "../../config/sessions/session-accessor.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OpenClawConfig } from "../../config/types.operator.js";
 import { resolveSessionModelRef } from "../session-utils.js";
 
 export async function runGatewaySessionCompaction(params: {

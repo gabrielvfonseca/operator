@@ -26,7 +26,7 @@ Status: official plugin, installed separately. Text only: no MMS/media, direct m
 
 You need:
 
-- The official SMS plugin installed with `openclaw plugins install @openclaw/sms`.
+- The official SMS plugin installed with `openclaw plugins install @operator/sms`.
 - A Twilio account with an SMS-capable phone number, or a Twilio Messaging Service.
 - The Twilio Account SID and Auth Token.
 - A public HTTPS URL that reaches your OpenClaw Gateway.
@@ -39,7 +39,7 @@ One Twilio number can serve both SMS and [Voice Call](/plugins/voice-call) if it
 <Steps>
   <Step title="Install the plugin">
     ```bash
-    openclaw plugins install @openclaw/sms
+    openclaw plugins install @operator/sms
     ```
   </Step>
   <Step title="Create or choose a Twilio sender">

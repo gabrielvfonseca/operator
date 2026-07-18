@@ -11,7 +11,7 @@ Adds fal model provider support to OpenClaw.
 
 ## Distribution
 
-- Package: `@openclaw/fal-provider`
+- Package: `@operator/fal-provider`
 - Install route: included in OpenClaw
 
 ## Surface

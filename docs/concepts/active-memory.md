@@ -394,10 +394,10 @@ model — `/v1/models` visibility alone does not guarantee it.
 `config.toolsAllow` sets the concrete tool names the blocking sub-agent may
 call. Defaults depend on the active memory provider:
 
-| `plugins.slots.memory`           | Default `toolsAllow`              |
-| -------------------------------- | --------------------------------- |
-| unset / `memory-core` (built-in) | `["memory_search", "memory_get"]` |
-| `memory-lancedb`                 | `["memory_recall"]`               |
+| `plugins.slots.memory`             | Default `toolsAllow`                                                                                                                                             |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| unset / `memory-tiered` (built-in) | `["memory_search", "memory_store", "memory_set", "memory_get", "memory_delete", "memory_forget", "procedure_recall", "procedure_register", "procedure_execute"]` |
+| `memory-lancedb`                   | `["memory_recall"]`                                                                                                                                              |
 
 If none of the configured tools are available, or the sub-agent run fails,
 active memory skips recall for that turn and the main reply continues

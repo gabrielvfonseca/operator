@@ -9,9 +9,10 @@ title: "Memory"
 
 # `openclaw memory`
 
-Manage semantic memory indexing, search, and promotion into `MEMORY.md`.
-Provided by the bundled `memory-core` plugin, available when
-`plugins.slots.memory` selects `memory-core` (the default). Other memory
+Manage semantic memory indexing, search, and migration into semantic store.
+
+Provided by the bundled `memory-tiered` plugin, available when
+`plugins.slots.memory` selects `memory-tiered` (the default). Other memory
 plugins expose their own CLI namespaces.
 
 Related: [Memory](/concepts/memory) concept, [Dreaming](/concepts/dreaming),

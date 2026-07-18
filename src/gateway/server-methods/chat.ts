@@ -28,7 +28,7 @@ import { createAgentRunRestartAbortError } from "../../agents/run-termination.js
 import { dispatchInboundMessage } from "../../auto-reply/dispatch.js";
 import { resolveSessionWorkStartError } from "../../config/sessions.js";
 import { resolveTranscriptSessionKeyBySessionId } from "../../config/sessions/session-accessor.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OpenClawConfig } from "../../config/types.operator.js";
 import {
   clearAgentRunContext,
   getAgentEventLifecycleGeneration,
@@ -341,7 +341,7 @@ function resolveWebchatPromptCacheKey(params: {
     )
     .digest("hex")
     .slice(0, 32);
-  return `openclaw-webchat-${digest}`;
+  return `operator-webchat-${digest}`;
 }
 
 export {

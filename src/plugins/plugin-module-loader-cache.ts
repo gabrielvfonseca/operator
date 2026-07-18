@@ -166,7 +166,7 @@ function resolvePluginModuleLoaderCacheEntry(
       aliasMap,
     });
   const transformOpenClawDependencies = params.transformOpenClawDependencies ?? tryNative;
-  const cacheKey = `${moduleConfigCacheKey}\0transform-openclaw=${transformOpenClawDependencies ? "1" : "0"}`;
+  const cacheKey = `${moduleConfigCacheKey}\0transform-operator=${transformOpenClawDependencies ? "1" : "0"}`;
   const scopedCacheKey = `${loaderFilename}::${
     params.sharedCacheScopeKey ??
     (params.cacheScopeKey ? `${params.cacheScopeKey}::${cacheKey}` : cacheKey)
@@ -200,7 +200,7 @@ function createLazySourceTransformLoader(params: {
       {
         ...jitiOptions,
         nativeModules: params.transformOpenClawDependencies
-          ? jitiOptions.nativeModules.filter((moduleName) => moduleName !== "openclaw")
+          ? jitiOptions.nativeModules.filter((moduleName) => moduleName !== "operator")
           : jitiOptions.nativeModules,
         tryNative: false,
       },

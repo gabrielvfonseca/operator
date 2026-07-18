@@ -1,13 +1,13 @@
 // Channel MCP bridge translates MCP tool calls into channel runtime operations.
 import { randomUUID } from "node:crypto";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { resolveIntegerOption } from "@openclaw/normalization-core/number-coercion";
+import { resolveIntegerOption } from "@operator/normalization-core/number-coercion";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
-} from "@openclaw/normalization-core/string-coerce";
+} from "@operator/normalization-core/string-coerce";
 import type { EventFrame } from "../../packages/gateway-protocol/src/index.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import type { GatewayClient } from "../gateway/client.js";
 import { extractFirstTextBlock } from "../shared/chat-message-content.js";
 import { VERSION } from "../version.js";
@@ -372,7 +372,7 @@ export class OpenClawChannelBridge {
       inputPreview: params.inputPreview,
     });
     if (this.verbose) {
-      process.stderr.write(`openclaw mcp: pending Claude permission ${params.requestId}\n`);
+      process.stderr.write(`operator mcp: pending Claude permission ${params.requestId}\n`);
     }
   }
 
@@ -398,10 +398,10 @@ export class OpenClawChannelBridge {
       }
       // Always surface a single low-noise record so swallowed delivery failures
       // remain observable; the spammy error detail stays behind --verbose.
-      process.stderr.write(`openclaw mcp: notification ${notification.method} failed\n`);
+      process.stderr.write(`operator mcp: notification ${notification.method} failed\n`);
       if (this.verbose) {
         process.stderr.write(
-          `openclaw mcp: notification ${notification.method} error: ${String(error)}\n`,
+          `operator mcp: notification ${notification.method} error: ${String(error)}\n`,
         );
       }
     }
@@ -527,10 +527,10 @@ export class OpenClawChannelBridge {
     } catch (error) {
       // Always surface a single low-noise record so swallowed gateway event
       // failures remain observable; the spammy error detail stays behind --verbose.
-      process.stderr.write(`openclaw mcp: gateway event ${event.event} failed\n`);
+      process.stderr.write(`operator mcp: gateway event ${event.event} failed\n`);
       if (this.verbose) {
         process.stderr.write(
-          `openclaw mcp: gateway event ${event.event} error: ${String(error)}\n`,
+          `operator mcp: gateway event ${event.event} error: ${String(error)}\n`,
         );
       }
     }

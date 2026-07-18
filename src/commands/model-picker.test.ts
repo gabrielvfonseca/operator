@@ -1,6 +1,6 @@
 // Model picker tests cover catalog rows, provider metadata, backend defaults, and prompt choices.
 import path from "node:path";
-import type { NormalizedModelCatalogRow } from "@openclaw/model-catalog-core/model-catalog-types";
+import type { NormalizedModelCatalogRow } from "@operator/model-catalog-core/model-catalog-types";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { testing as cliBackendsTesting } from "../agents/cli-backends.test-support.js";
 import type { ModelCatalogEntry } from "../agents/model-catalog.js";
@@ -244,11 +244,11 @@ const OPENROUTER_CATALOG = [
   },
 ] as const;
 
-function expectRouterModelFiltering(options: Array<{ value: string }>) {
+function expectRouterModelFiltering(options: Array<{ value: string }>, expected: string[]) {
   const routerValues = options
     .map((option) => option.value)
     .filter((value) => value.startsWith("openrouter/"));
-  expect(routerValues).toEqual(["openrouter/meta-llama/llama-3.3-70b:free"]);
+  expect(routerValues).toEqual(expected);
 }
 
 function createSelectAllMultiselect() {
@@ -2490,9 +2490,9 @@ describe("runtime model picker visibility", () => {
       "openai/gpt-5.5",
       "anthropic/claude-sonnet-4-6",
       "google/gemini-3.1-pro-preview",
-      "openai/gpt-5.6-sol",
+      "openrouter/auto",
     ]);
-    expect(call.initialValues).toEqual(["openai/gpt-5.5", "openai/gpt-5.6-sol"]);
+    expect(call.initialValues).toEqual(["openai/gpt-5.5", "openrouter/auto"]);
   });
 });
 
@@ -2519,10 +2519,13 @@ describe("router model filtering", () => {
     await promptModelAllowlist({ config, prompter: allowlistPrompter });
 
     const defaultOptions = pickerOptions(select as MockCallSource);
-    expectRouterModelFiltering(defaultOptions);
+    expectRouterModelFiltering(defaultOptions, ["openrouter/meta-llama/llama-3.3-70b:free"]);
 
     const allowlistCall = pickerParams(multiselect as MockCallSource);
-    expectRouterModelFiltering(allowlistCall.options as Array<{ value: string }>);
+    expectRouterModelFiltering(allowlistCall.options as Array<{ value: string }>, [
+      "openrouter/auto",
+      "openrouter/meta-llama/llama-3.3-70b:free",
+    ]);
     expect(allowlistCall.searchable).toBe(true);
     expect(runProviderPluginAuthMethod).not.toHaveBeenCalled();
   });
@@ -2646,7 +2649,7 @@ describe("applyModelFallbacksFromSelection", () => {
     } as OpenClawConfig;
 
     const next = applyModelFallbacksFromSelection(config, [
-      "openai/gpt-5.6-sol",
+      "openrouter/auto",
       "anthropic/claude-sonnet-4-6",
     ]);
     expect(next.agents?.defaults?.model).toEqual({

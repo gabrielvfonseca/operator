@@ -3183,7 +3183,7 @@ describe("scripts/crabbox-wrapper", () => {
       "--",
       "pnpm",
       "--filter",
-      "@openclaw/discord",
+      "@operator/discord",
       "test",
     ]);
 
@@ -3192,7 +3192,7 @@ describe("scripts/crabbox-wrapper", () => {
     expect(result.status).toBe(0);
     expect(output.args).toContain("--shell");
     expect(remoteCommand).toContain("$openclawModulesDir = $env:PNPM_CONFIG_MODULES_DIR");
-    expect(remoteCommand).toContain("pnpm --filter '@openclaw/discord' test");
+    expect(remoteCommand).toContain("pnpm --filter '@operator/discord' test");
   });
 
   const itWithPosixLinkedWorktreeFixture = process.platform === "win32" ? it.skip : it;

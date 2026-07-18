@@ -14,7 +14,7 @@ query-filters:
         - security
 
 paths:
-  - packages/plugin-sdk/src
+  - sdks/plugin-sdk/src
   - packages/plugin-package-contract/src
 
 paths-ignore:

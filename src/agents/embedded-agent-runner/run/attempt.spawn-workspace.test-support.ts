@@ -5,7 +5,7 @@ import path from "node:path";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
-} from "@openclaw/normalization-core/string-coerce";
+} from "@operator/normalization-core/string-coerce";
 import { expect, vi, type Mock } from "vitest";
 import type {
   AssembleResult,
@@ -784,7 +784,7 @@ vi.mock("../cache-ttl.js", () => ({
   appendCacheTtlTimestamp: (
     sessionManager: { appendCustomEntry?: (customType: string, data: unknown) => void },
     data: unknown,
-  ) => sessionManager.appendCustomEntry?.("openclaw.cache-ttl", data),
+  ) => sessionManager.appendCustomEntry?.("operator.cache-ttl", data),
   isCacheTtlEligibleProvider: (provider?: string) => provider === "anthropic",
   readLastCacheTtlTimestamp: (
     sessionManager: {
@@ -795,7 +795,7 @@ vi.mock("../cache-ttl.js", () => ({
     const calls = sessionManager.appendCustomEntry?.mock?.calls ?? [];
     for (let index = calls.length - 1; index >= 0; index -= 1) {
       const [customType, data] = calls[index] ?? [];
-      if (customType !== "openclaw.cache-ttl") {
+      if (customType !== "operator.cache-ttl") {
         continue;
       }
       const entry = data as
@@ -1314,8 +1314,8 @@ export async function createContextEngineAttemptRunner(params: {
   trajectory?: boolean;
 }) {
   const { maintain: rawMaintain, ...contextEngineRest } = params.contextEngine;
-  const workspaceDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-ctx-engine-workspace-"));
-  const agentDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-ctx-engine-agent-"));
+  const workspaceDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-ctx-engine-workspace-"));
+  const agentDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-ctx-engine-agent-"));
   const sessionFile = path.join(workspaceDir, "session.jsonl");
   const sessionStore = path.join(workspaceDir, "sessions.json");
   params.tempPaths.push(workspaceDir, agentDir);
@@ -1350,14 +1350,14 @@ export async function createContextEngineAttemptRunner(params: {
       }),
   }));
 
-  const previousTrajectoryEnv = process.env.OPENCLAW_TRAJECTORY;
-  const previousTrajectoryDirEnv = process.env.OPENCLAW_TRAJECTORY_DIR;
+  const previousTrajectoryEnv = process.env.OPERATOR_TRAJECTORY;
+  const previousTrajectoryDirEnv = process.env.OPERATOR_TRAJECTORY_DIR;
   if (params.trajectory !== true) {
-    process.env.OPENCLAW_TRAJECTORY = "0";
-    delete process.env.OPENCLAW_TRAJECTORY_DIR;
+    process.env.OPERATOR_TRAJECTORY = "0";
+    delete process.env.OPERATOR_TRAJECTORY_DIR;
   } else {
-    delete process.env.OPENCLAW_TRAJECTORY;
-    process.env.OPENCLAW_TRAJECTORY_DIR = workspaceDir;
+    delete process.env.OPERATOR_TRAJECTORY;
+    process.env.OPERATOR_TRAJECTORY_DIR = workspaceDir;
   }
   try {
     return await (
@@ -1408,14 +1408,14 @@ export async function createContextEngineAttemptRunner(params: {
     });
   } finally {
     if (previousTrajectoryEnv === undefined) {
-      delete process.env.OPENCLAW_TRAJECTORY;
+      delete process.env.OPERATOR_TRAJECTORY;
     } else {
-      process.env.OPENCLAW_TRAJECTORY = previousTrajectoryEnv;
+      process.env.OPERATOR_TRAJECTORY = previousTrajectoryEnv;
     }
     if (previousTrajectoryDirEnv === undefined) {
-      delete process.env.OPENCLAW_TRAJECTORY_DIR;
+      delete process.env.OPERATOR_TRAJECTORY_DIR;
     } else {
-      process.env.OPENCLAW_TRAJECTORY_DIR = previousTrajectoryDirEnv;
+      process.env.OPERATOR_TRAJECTORY_DIR = previousTrajectoryDirEnv;
     }
   }
 }

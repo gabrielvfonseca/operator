@@ -6,8 +6,8 @@ import { createHash } from "node:crypto";
 import { type BigIntStats, readFileSync, statSync } from "node:fs";
 import fs from "node:fs/promises";
 import { isDeepStrictEqual } from "node:util";
-import { clampTimerTimeoutMs } from "@openclaw/normalization-core/number-coercion";
-import { normalizeStringEntries } from "@openclaw/normalization-core/string-normalization";
+import { clampTimerTimeoutMs } from "@operator/normalization-core/number-coercion";
+import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
 import { parseSqliteSessionFileMarker } from "../../../config/sessions/sqlite-marker.js";
 import {
   type OwnedSessionTranscriptPublishedEntry,
@@ -17,7 +17,7 @@ import {
 } from "../../../config/sessions/transcript-write-context.js";
 import { toErrorObject } from "../../../infra/errors.js";
 import { resolveGlobalSingleton } from "../../../shared/global-singleton.js";
-import { isTranscriptOnlyOpenClawAssistantMessage } from "../../../shared/transcript-only-openclaw-assistant.js";
+import { isTranscriptOnlyOpenClawAssistantMessage } from "../../../shared/transcript-only-operator-assistant.js";
 import { isSessionWriteLockAcquireError } from "../../session-write-lock-error.js";
 import type { acquireSessionWriteLock } from "../../session-write-lock.js";
 import type {
@@ -113,7 +113,7 @@ type SessionWithAgentPrompt = {
 };
 
 type PromptReleaseStreamFn = ((...args: unknown[]) => unknown) & {
-  __openclawSessionLockPromptReleaseInstalled?: boolean;
+  __operatorSessionLockPromptReleaseInstalled?: boolean;
 };
 
 type SessionFileFingerprint =
@@ -931,7 +931,7 @@ type SessionFileOwnerState = {
 };
 
 const EMBEDDED_ATTEMPT_SESSION_FILE_OWNER_STATE_KEY = Symbol.for(
-  "openclaw.embeddedAttemptSessionFileOwnerState",
+  "operator.embeddedAttemptSessionFileOwnerState",
 );
 
 const sessionFileOwnerState = resolveGlobalSingleton(
@@ -1079,7 +1079,7 @@ function resetEmbeddedAttemptSessionFileOwnersForTest(): void {
 
 if (process.env.VITEST || process.env.NODE_ENV === "test") {
   (globalThis as Record<PropertyKey, unknown>)[
-    Symbol.for("openclaw.embeddedAttemptSessionFileOwnersTestApi")
+    Symbol.for("operator.embeddedAttemptSessionFileOwnersTestApi")
   ] = { resetEmbeddedAttemptSessionFileOwnersForTest };
 }
 
@@ -2184,7 +2184,7 @@ export function installPromptSubmissionLockRelease(params: {
     return;
   }
   const currentStreamFn = agent.streamFn;
-  if (currentStreamFn["__openclawSessionLockPromptReleaseInstalled"] === true) {
+  if (currentStreamFn["__operatorSessionLockPromptReleaseInstalled"] === true) {
     return;
   }
   const originalStreamFn = currentStreamFn.bind(agent);
@@ -2210,7 +2210,7 @@ export function installPromptSubmissionLockRelease(params: {
       await params.reacquireAfterPrompt();
     }
   };
-  wrappedStreamFn["__openclawSessionLockPromptReleaseInstalled"] = true;
+  wrappedStreamFn["__operatorSessionLockPromptReleaseInstalled"] = true;
   agent.streamFn = wrappedStreamFn;
 }
 /* oxlint-disable max-lines -- TODO: split this grandfathered oversized file. */

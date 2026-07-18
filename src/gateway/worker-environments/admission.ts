@@ -14,7 +14,7 @@ export type { WorkerConnectionIdentity } from "./connection-identity.js";
 
 export type ExpectedWorkerBuild = {
   bundleHash: string;
-  openclawVersion: string;
+  operatorVersion: string;
   protocolFeatures: readonly string[];
 };
 
@@ -38,7 +38,7 @@ export function verifyWorkerAdmissionHandshake(
 ): boolean {
   return (
     handshake.bundleHash === expected.bundleHash &&
-    handshake.openclawVersion === expected.openclawVersion &&
+    handshake.operatorVersion === expected.operatorVersion &&
     sameStrings(handshake.protocolFeatures, expected.protocolFeatures)
   );
 }
@@ -85,8 +85,8 @@ export function admitWorkerConnection(params: {
     return { ok: false, reason: "bundle-mismatch" };
   }
   if (
-    admission.handshake.openclawVersion !== environment.bootstrapReceipt.openclawVersion ||
-    admission.handshake.openclawVersion !== params.expectedBuild.openclawVersion
+    admission.handshake.operatorVersion !== environment.bootstrapReceipt.operatorVersion ||
+    admission.handshake.operatorVersion !== params.expectedBuild.operatorVersion
   ) {
     return { ok: false, reason: "version-mismatch" };
   }

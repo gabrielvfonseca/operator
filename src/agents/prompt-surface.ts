@@ -55,5 +55,5 @@ export function resolveAgentPromptSurfaceForSessionKey(
   if (sessionKey && isAcpSessionKey(sessionKey)) {
     return "acp_backend";
   }
-  return sessionKey && isSubagentSessionKey(sessionKey) ? "subagent" : "openclaw_main";
+  return sessionKey && isSubagentSessionKey(sessionKey) ? "subagent" : "operator_main";
 }

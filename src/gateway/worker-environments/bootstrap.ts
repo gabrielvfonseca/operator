@@ -1,4 +1,4 @@
-import { truncateUtf16Safe } from "@openclaw/normalization-core/utf16-slice";
+import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
 import {
   type WorkerAdmissionHandshake,
   WORKER_PROTOCOL_MAX_FEATURE_LENGTH,
@@ -23,7 +23,7 @@ import {
   workerSshRemoteCommand,
 } from "./ssh.js";
 
-const BOOTSTRAP_ROOT = ".openclaw-worker";
+const BOOTSTRAP_ROOT = ".operator-worker";
 const BOOTSTRAP_RECEIPT = "bootstrap-receipt.json";
 const DEFAULT_BOOTSTRAP_TIMEOUT_MS = 10 * 60_000;
 const NODE_MISSING_EXIT_CODE = 42;
@@ -31,10 +31,10 @@ const NPM_MISSING_EXIT_CODE = 43;
 const LOCK_TIMEOUT_EXIT_CODE = 44;
 const NODE_UNSUPPORTED_EXIT_CODE = 45;
 const LOCK_MAX_AGE_SECONDS = 60 * 60;
-const NODE_MISSING_MARKER = "OPENCLAW_WORKER_NODE_MISSING";
-const NODE_UNSUPPORTED_MARKER = "OPENCLAW_WORKER_NODE_UNSUPPORTED";
-const NPM_MISSING_MARKER = "OPENCLAW_WORKER_NPM_MISSING";
-const BOOTSTRAP_OUTPUT_TAG = "OPENCLAW_WORKER_BOOTSTRAP_V1";
+const NODE_MISSING_MARKER = "OPERATOR_WORKER_NODE_MISSING";
+const NODE_UNSUPPORTED_MARKER = "OPERATOR_WORKER_NODE_UNSUPPORTED";
+const NPM_MISSING_MARKER = "OPERATOR_WORKER_NPM_MISSING";
+const BOOTSTRAP_OUTPUT_TAG = "OPERATOR_WORKER_BOOTSTRAP_V1";
 const BUNDLE_HASH_PATTERN = /^[a-f0-9]{64}$/u;
 const NPM_INTEGRITY_PATTERN = /^sha512-[A-Za-z0-9+/]{86}==$/u;
 
@@ -54,7 +54,7 @@ try {
   const actual = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
   const expected = JSON.parse(process.argv[2]);
   const shapeMatches =
-    Object.keys(actual).sort().join(",") === "bundleHash,openclawVersion,protocolFeatures";
+    Object.keys(actual).sort().join(",") === "bundleHash,operatorVersion,protocolFeatures";
   const featuresMatch =
     Array.isArray(actual.protocolFeatures) &&
     Array.isArray(expected.protocolFeatures) &&
@@ -63,7 +63,7 @@ try {
   process.exit(
     shapeMatches &&
       actual.bundleHash === expected.bundleHash &&
-      actual.openclawVersion === expected.openclawVersion &&
+      actual.operatorVersion === expected.operatorVersion &&
       featuresMatch
       ? 0
       : 1,
@@ -140,7 +140,7 @@ function addFile(relative) {
     fail("unsafe worker file: " + relative);
   }
   const contents = fs.readFileSync(absolute);
-  const mode = relative === "openclaw.mjs" || (stats.mode & 0o111) !== 0 ? 0o700 : 0o600;
+  const mode = relative === "operator.mjs" || (stats.mode & 0o111) !== 0 ? 0o700 : 0o600;
   fs.chmodSync(absolute, mode);
   entries.push({
     path: relative,
@@ -194,7 +194,7 @@ function readNpmInventory() {
 }
 try {
   assertRoot();
-  addFile("openclaw.mjs");
+  addFile("operator.mjs");
   addFile("package.json");
   if (install === "npm") {
     readNpmInventory();
@@ -276,8 +276,8 @@ fi
 incoming=$root/.incoming
 ensure_private_directory "$incoming"
 incoming=$(cd "$incoming" && pwd -P)
-find "$incoming" -type f -name 'openclaw-upload-*.tgz.*' -mmin +60 -exec rm -f -- {} + 2>/dev/null || true
-upload=$(mktemp "$incoming/openclaw-upload-$hash.tgz.XXXXXXXX")
+find "$incoming" -type f -name 'operator-upload-*.tgz.*' -mmin +60 -exec rm -f -- {} + 2>/dev/null || true
+upload=$(mktemp "$incoming/operator-upload-$hash.tgz.XXXXXXXX")
 printf '%s\t%s\t%s\n' '${BOOTSTRAP_OUTPUT_TAG}' install "$upload"
 `;
 
@@ -447,16 +447,16 @@ case "$install" in
     fi
     npm_prefix=$staging/.npm-prefix
     npm_pack_json=$staging/npm-pack.json
-    OPENCLAW_DISABLE_PLUGIN_REGISTRY_MIGRATION=1 npm pack "$package_spec" --pack-destination "$staging" --ignore-scripts --json --registry=https://registry.npmjs.org/ > "$npm_pack_json"
+    OPERATOR_DISABLE_PLUGIN_REGISTRY_MIGRATION=1 npm pack "$package_spec" --pack-destination "$staging" --ignore-scripts --json --registry=https://registry.npmjs.org/ > "$npm_pack_json"
     package_archive=$(node -e '${READ_NPM_PACK_FILENAME_JS}' "$npm_pack_json")
     package_archive=$staging/$package_archive
     if ! node -e '${VERIFY_NPM_PACKAGE_JS}' "$package_archive" "$package_integrity"; then
       printf '%s\n' 'worker npm package integrity mismatch' >&2
       exit 2
     fi
-    OPENCLAW_DISABLE_PLUGIN_REGISTRY_MIGRATION=1 npm install --global --prefix "$npm_prefix" --ignore-scripts --omit=dev --no-audit --no-fund "$package_archive"
-    package_dir=$npm_prefix/lib/node_modules/openclaw
-    if [ ! -f "$package_dir/openclaw.mjs" ]; then
+    OPERATOR_DISABLE_PLUGIN_REGISTRY_MIGRATION=1 npm install --global --prefix "$npm_prefix" --ignore-scripts --omit=dev --no-audit --no-fund "$package_archive"
+    package_dir=$npm_prefix/lib/node_modules/operator
+    if [ ! -f "$package_dir/operator.mjs" ]; then
       printf '%s\n' 'npm did not install the OpenClaw package root' >&2
       exit 2
     fi
@@ -482,7 +482,7 @@ if [ "$install" = bundle ]; then
     printf '%s\n' '${NPM_MISSING_MARKER}' >&2
     exit ${NPM_MISSING_EXIT_CODE}
   fi
-  OPENCLAW_DISABLE_PLUGIN_REGISTRY_MIGRATION=1 npm install --prefix "$staging" --ignore-scripts --omit=dev --no-audit --no-fund >&2
+  OPERATOR_DISABLE_PLUGIN_REGISTRY_MIGRATION=1 npm install --prefix "$staging" --ignore-scripts --omit=dev --no-audit --no-fund >&2
 fi
 printf '%s\n' "$receipt_json" > "$staging/${BOOTSTRAP_RECEIPT}"
 chmod 600 "$staging/${BOOTSTRAP_RECEIPT}"
@@ -516,12 +516,12 @@ type WorkerBootstrapDependencies = {
 
 function normalizeHandshake(artifact: WorkerInstallationArtifact): WorkerAdmissionHandshake {
   const bundleHash = artifact.bundleHash.trim();
-  const openclawVersion = artifact.openclawVersion.trim();
+  const operatorVersion = artifact.operatorVersion.trim();
   const protocolFeatures = artifact.protocolFeatures.map((feature) => feature.trim());
   if (!BUNDLE_HASH_PATTERN.test(bundleHash)) {
     throw new Error("Worker bundle hash must be a lowercase SHA-256 digest");
   }
-  if (!openclawVersion) {
+  if (!operatorVersion) {
     throw new Error("Worker OpenClaw version must be non-empty");
   }
   if (
@@ -534,10 +534,10 @@ function normalizeHandshake(artifact: WorkerInstallationArtifact): WorkerAdmissi
   }
   if (artifact.install === "npm") {
     if (
-      !isExactSemverVersion(openclawVersion) ||
-      artifact.packageSpec !== `openclaw@${openclawVersion}`
+      !isExactSemverVersion(operatorVersion) ||
+      artifact.packageSpec !== `operator@${operatorVersion}`
     ) {
-      throw new Error(`Worker npm install must use exact package openclaw@${openclawVersion}`);
+      throw new Error(`Worker npm install must use exact package operator@${operatorVersion}`);
     }
     if (!NPM_INTEGRITY_PATTERN.test(artifact.packageIntegrity)) {
       throw new Error("Worker npm install requires a pinned SHA-512 package integrity");
@@ -545,7 +545,7 @@ function normalizeHandshake(artifact: WorkerInstallationArtifact): WorkerAdmissi
   } else if (!BUNDLE_HASH_PATTERN.test(artifact.tarballSha256)) {
     throw new Error("Worker bundle archive digest must be a lowercase SHA-256 digest");
   }
-  return { bundleHash, openclawVersion, protocolFeatures };
+  return { bundleHash, operatorVersion, protocolFeatures };
 }
 
 function parseReceiptJson(
@@ -563,7 +563,7 @@ function parseReceiptJson(
   }
   if (
     parsed.bundleHash !== expected.bundleHash ||
-    parsed.openclawVersion !== expected.openclawVersion ||
+    parsed.operatorVersion !== expected.operatorVersion ||
     parsed.protocolFeatures.length !== expected.protocolFeatures.length ||
     parsed.protocolFeatures.some((feature, index) => feature !== expected.protocolFeatures[index])
   ) {
@@ -700,7 +700,7 @@ export async function bootstrapWorker(
     ssh: request.ssh,
     pinnedHostKey: request.pinnedHostKey,
     resolveIdentity: dependencies.resolveIdentity,
-    temporaryDirectoryPrefix: "openclaw-worker-bootstrap-",
+    temporaryDirectoryPrefix: "operator-worker-bootstrap-",
   });
   try {
     const preflight = parsePreflight(

@@ -1,6 +1,6 @@
 import type { MsgContext } from "../auto-reply/templating.js";
 import { applyTemplate } from "../auto-reply/templating.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import type { LinkModelConfig, LinkToolsConfig } from "../config/types.tools.js";
 import { logVerbose, shouldLogVerbose } from "../globals.js";
 // Link-understanding runner fetches allowed URLs and invokes configured commands with bounded content.
@@ -155,8 +155,8 @@ async function runCliEntry(params: {
     timeoutMs,
     input: params.content,
     env: {
-      OPENCLAW_LINK_FINAL_URL: params.finalUrl,
-      OPENCLAW_LINK_URL: params.url,
+      OPERATOR_LINK_FINAL_URL: params.finalUrl,
+      OPERATOR_LINK_URL: params.url,
     },
   });
   if (result.code !== 0) {

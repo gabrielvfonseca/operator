@@ -2,16 +2,17 @@
 // surfaces, hooks, readiness, auth, and WebSocket upgrades.
 import {
   createServer as createHttpServer,
+  request as httpRequest,
   type Server as HttpServer,
   type IncomingMessage,
   type ServerResponse,
 } from "node:http";
-import { createServer as createHttpsServer } from "node:https";
+import { createServer as createHttpsServer, request as httpsRequest } from "node:https";
 import type { TlsOptions } from "node:tls";
 import type { WebSocketServer } from "ws";
 import { resolveBundledChannelGatewayAuthBypassPaths } from "../channels/plugins/gateway-auth-bypass.js";
 import { getRuntimeConfig } from "../config/io.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import {
   createDiagnosticTraceContext,
   runWithDiagnosticTraceContext,
@@ -500,6 +501,74 @@ export function createGatewayHttpServer(opts: {
     );
   }
 
+  /**
+   * Proxies an HTTP request to a target URL.
+   * @param req - The incoming request
+   * @param res - The server response
+   * @param targetUrl - The base URL to proxy to (should not end with slash)
+   * @param path - The path to forward (should start with slash)
+   */
+  async function proxyRequest(
+    req: IncomingMessage,
+    res: ServerResponse,
+    targetUrl: string,
+    path: string,
+  ): Promise<boolean> {
+    try {
+      const url = new URL(targetUrl);
+      const targetPath = url.pathname.endsWith("/")
+        ? url.pathname + path.slice(1)
+        : url.pathname + path;
+      const finalUrl = new URL(`${url.origin}${targetPath}${url.search}`);
+
+      const options: RequestOptions = {
+        method: req.method,
+        headers: req.headers,
+        hostname: finalUrl.hostname,
+        port: finalUrl.port
+          ? parseInt(finalUrl.port, 10)
+          : finalUrl.protocol === "https:"
+            ? 443
+            : 80,
+        path: finalUrl.pathname + finalUrl.search,
+        rejectUnauthorized: false, // For dev/self-signed certs
+      };
+
+      const protocol = finalUrl.protocol === "https:" ? httpsRequest : httpRequest;
+      const proxyReq = protocol(options, (proxyRes) => {
+        // Copy response headers
+        res.writeHead(proxyRes.statusCode ?? 200, proxyRes.headers);
+        proxyRes.pipe(res, { end: true });
+      });
+
+      // Forward request body
+      if (req.method !== "GET" && req.method !== "HEAD") {
+        req.pipe(proxyReq, { end: true });
+      } else {
+        proxyReq.end();
+      }
+
+      proxyReq.on("error", (err) => {
+        if (!res.headersSent) {
+          res.writeHead(502, { "Content-Type": "text/plain" });
+          res.end(`Bad Gateway: ${err.message}`);
+        } else {
+          res.destroy();
+        }
+      });
+
+      return true;
+    } catch (err) {
+      if (!res.headersSent) {
+        res.writeHead(500, { "Content-Type": "text/plain" });
+        res.end(`Internal Server Error: ${err.message}`);
+      } else {
+        res.destroy();
+      }
+      return true;
+    }
+  }
+
   async function handleRequest(req: IncomingMessage, res: ServerResponse) {
     setDefaultSecurityHeaders(res, {
       strictTransportSecurity: strictTransportSecurityHeader,
@@ -532,6 +601,8 @@ export function createGatewayHttpServer(opts: {
       const configSnapshot = loadGatewayConfig();
       const trustedProxies = configSnapshot.gateway?.trustedProxies ?? [];
       const allowRealIpFallback = configSnapshot.gateway?.allowRealIpFallback === true;
+      const controlUiMode = configSnapshot.gateway?.controlUi?.mode ?? "static";
+      const controlUiNextUrl = configSnapshot.gateway?.controlUi?.next?.url;
       const scopedNodeCapability = normalizePluginNodeCapabilityScopedUrl(req.url ?? "/");
       if (scopedNodeCapability.malformedScopedPath) {
         sendGatewayAuthFailure(res, { ok: false, reason: "unauthorized" });
@@ -749,33 +820,7 @@ export function createGatewayHttpServer(opts: {
           },
         });
       }
-      if (
-        controlUiEnabled &&
-        isControlUiPluginManagerRequest({
-          basePath: controlUiBasePath,
-          pathname: scopedRequestPath,
-          method: req.method,
-        })
-      ) {
-        // This page must remain reachable when a plugin route is broken so the
-        // operator can disable it. Other explicit plugin routes retain precedence.
-        requestStages.push({
-          name: "control-ui-plugin-manager",
-          run: async () =>
-            (await getControlUiModule()).handleControlUiHttpRequest(req, res, {
-              basePath: controlUiBasePath,
-              config: configSnapshot,
-              terminalEnabled:
-                opts.isTerminalEnabled?.() ?? configSnapshot.gateway?.terminal?.enabled === true,
-              agentId: resolveAssistantIdentity({ cfg: configSnapshot }).agentId,
-              root: controlUiRoot,
-              auth: resolvedAuthValue,
-              trustedProxies,
-              allowRealIpFallback,
-              rateLimiter,
-            }),
-        });
-      }
+
       // Plugin routes run before the general Control UI SPA catch-all so
       // explicitly registered endpoints stay reachable. Core routes and the
       // plugin recovery surface staged above keep precedence.
@@ -785,13 +830,6 @@ export function createGatewayHttpServer(opts: {
           res,
           requestPath: scopedRequestPath,
           getGatewayAuthBypassPaths: () => getCachedPluginGatewayAuthBypassPaths(configSnapshot),
-          pluginPathContext,
-          handlePluginRequest,
-          shouldEnforcePluginGatewayAuth,
-          resolvedAuth: resolvedAuthValue,
-          trustedProxies,
-          allowRealIpFallback,
-          rateLimiter,
         }),
       );
 
@@ -840,10 +878,22 @@ export function createGatewayHttpServer(opts: {
             });
           },
         });
-        requestStages.push({
-          name: "control-ui-http",
-          run: handleControlUiRequest,
-        });
+        if (controlUiMode === "next" && controlUiNextUrl) {
+          // Proxy to Next.js server
+          requestStages.push({
+            name: "control-ui-http-proxy",
+            run: () => {
+              const parsedUrl = new URL(req.url ?? "/", `http://${req.headers.host}`);
+              return proxyRequest(req, res, controlUiNextUrl, parsedUrl.pathname);
+            },
+          });
+        } else {
+          // Serve static Control UI (default)
+          requestStages.push({
+            name: "control-ui-http",
+            run: handleControlUiRequest,
+          });
+        }
       }
 
       if (await runGatewayHttpRequestStages(requestStages)) {
@@ -1012,17 +1062,17 @@ export function attachGatewayUpgradeHandler(opts: {
         wss.handleUpgrade(req, socket, head, (ws) => {
           (
             ws as unknown as import("ws").WebSocket & {
-              __openclawPreauthBudgetClaimed?: boolean;
-              __openclawPreauthBudgetKey?: string;
+              __operatorPreauthBudgetClaimed?: boolean;
+              __operatorPreauthBudgetKey?: string;
             }
-          )["__openclawPreauthBudgetKey"] = preauthBudgetKey;
+          )["__operatorPreauthBudgetKey"] = preauthBudgetKey;
           wss.emit("connection", ws, req);
           const budgetClaimed = Boolean(
             (
               ws as unknown as import("ws").WebSocket & {
-                __openclawPreauthBudgetClaimed?: boolean;
+                __operatorPreauthBudgetClaimed?: boolean;
               }
-            )["__openclawPreauthBudgetClaimed"],
+            )["__operatorPreauthBudgetClaimed"],
           );
           if (budgetClaimed) {
             budgetTransferred = true;
@@ -1081,9 +1131,9 @@ export function attachWorkerGatewayUpgradeHandler(params: {
         const workerSocket = ws as GatewayIngressWebSocket;
         workerSocket[GATEWAY_WS_CONNECTION_KIND_PROPERTY] = "worker";
         workerSocket[GATEWAY_WS_PREAUTH_BUDGET_PROPERTY] = params.preauthConnectionBudget;
-        workerSocket["__openclawPreauthBudgetKey"] = preauthBudgetKey;
+        workerSocket["__operatorPreauthBudgetKey"] = preauthBudgetKey;
         params.wss.emit("connection", ws, req);
-        if (workerSocket["__openclawPreauthBudgetClaimed"]) {
+        if (workerSocket["__operatorPreauthBudgetClaimed"]) {
           budgetTransferred = true;
           socket.off("close", releaseUpgradeBudget);
         }
@@ -1098,4 +1148,4 @@ export function attachWorkerGatewayUpgradeHandler(params: {
     }
   });
 }
-/* oxlint-disable max-lines -- TODO: split this grandfathered oversized file. */
+/* oxlint-disable max-lines -- TODO: split this grandfathered oversized file.  */

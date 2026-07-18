@@ -1,9 +1,9 @@
 // Resolves diagnostics feature flags from config and environment.
-import { normalizeLowercaseStringOrEmpty } from "@openclaw/normalization-core/string-coerce";
-import { normalizeUniqueStringEntriesLower } from "@openclaw/normalization-core/string-normalization";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeUniqueStringEntriesLower } from "@operator/normalization-core/string-normalization";
+import type { OpenClawConfig } from "../config/types.operator.js";
 
-const DIAGNOSTICS_ENV = "OPENCLAW_DIAGNOSTICS";
+const DIAGNOSTICS_ENV = "OPERATOR_DIAGNOSTICS";
 
 type ParsedEnvFlags = {
   flags: string[];
@@ -34,7 +34,7 @@ function parseEnvFlags(raw?: string): ParsedEnvFlags {
   };
 }
 
-/** Resolves enabled diagnostic flags from config plus `OPENCLAW_DIAGNOSTICS` overrides. */
+/** Resolves enabled diagnostic flags from config plus `OPERATOR_DIAGNOSTICS` overrides. */
 export function resolveDiagnosticFlags(
   cfg?: OpenClawConfig,
   env: NodeJS.ProcessEnv = process.env,

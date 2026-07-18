@@ -6,10 +6,10 @@
 import {
   findNormalizedProviderValue,
   normalizeProviderId,
-} from "@openclaw/model-catalog-core/provider-id";
-import { asDateTimestampMs } from "@openclaw/normalization-core/number-coercion";
-import { normalizeUniqueStringEntries } from "@openclaw/normalization-core/string-normalization";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+} from "@operator/model-catalog-core/provider-id";
+import { asDateTimestampMs } from "@operator/normalization-core/number-coercion";
+import { normalizeUniqueStringEntries } from "@operator/normalization-core/string-normalization";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import {
   DEFAULT_OAUTH_REFRESH_MARGIN_MS,
   type AuthCredentialReasonCode,

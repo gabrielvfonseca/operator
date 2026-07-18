@@ -11,7 +11,7 @@ Adds ComfyUI model provider support to OpenClaw.
 
 ## Distribution
 
-- Package: `@openclaw/comfy-provider`
+- Package: `@operator/comfy-provider`
 - Install route: included in OpenClaw
 
 ## Surface

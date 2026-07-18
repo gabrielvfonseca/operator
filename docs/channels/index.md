@@ -10,7 +10,7 @@ OpenClaw can talk to you on any chat app you already use. Each channel connects 
 Text is supported everywhere; media and reactions vary by channel.
 
 iMessage, Telegram, and the WebChat UI ship with the core install. Channels marked
-"official plugin" install with one command (`openclaw plugins install @openclaw/<id>`)
+"official plugin" install with one command (`openclaw plugins install @operator/<id>`)
 or on demand during `openclaw onboard` / `openclaw channels add`, then need a Gateway
 restart. "External plugin" channels are maintained outside the OpenClaw repo.
 

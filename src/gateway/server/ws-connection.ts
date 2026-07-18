@@ -1,7 +1,7 @@
 // Gateway WebSocket connection handler owns pre-auth limits, handshake auth, presence, and message-handler attachment.
 import { randomUUID } from "node:crypto";
 import type { Socket } from "node:net";
-import { normalizeLowercaseStringOrEmpty } from "@openclaw/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
 import type { RawData, WebSocket, WebSocketServer } from "ws";
 import { WORKER_PROTOCOL_MAX_PAYLOAD_BYTES } from "../../../packages/gateway-protocol/src/index.js";
 import { GATEWAY_STARTUP_PENDING_CLOSE_CAUSE } from "../../../packages/gateway-protocol/src/startup-unavailable.js";
@@ -272,15 +272,15 @@ export function attachGatewayWsConnectionHandler(params: AttachGatewayWsConnecti
     const { remoteAddr, remotePort, localAddr, localPort, endpoint } = resolveSocketAddress(socket);
     const preauthBudgetKey = (
       socket as WebSocket & {
-        __openclawPreauthBudgetClaimed?: boolean;
-        __openclawPreauthBudgetKey?: string;
+        __operatorPreauthBudgetClaimed?: boolean;
+        __operatorPreauthBudgetKey?: string;
       }
-    )["__openclawPreauthBudgetKey"];
+    )["__operatorPreauthBudgetKey"];
     (
       socket as WebSocket & {
-        __openclawPreauthBudgetClaimed?: boolean;
+        __operatorPreauthBudgetClaimed?: boolean;
       }
-    )["__openclawPreauthBudgetClaimed"] = true;
+    )["__operatorPreauthBudgetClaimed"] = true;
     const headerValue = (value: string | string[] | undefined) =>
       Array.isArray(value) ? value[0] : value;
     const requestHost = headerValue(upgradeReq.headers.host);
@@ -466,7 +466,7 @@ export function attachGatewayWsConnectionHandler(params: AttachGatewayWsConnecti
       lastHandshakePhase === "ws_upgrade_started" &&
       !hasReceivedPreauthFrame &&
       lastFrameType === undefined &&
-      normalizeLowercaseStringOrEmpty(requestUserAgent).startsWith("openclaw/") &&
+      normalizeLowercaseStringOrEmpty(requestUserAgent).startsWith("operator/") &&
       isLoopbackAddress(remoteAddr);
 
     socket.once("close", (code, reason) => {

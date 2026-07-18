@@ -13,7 +13,7 @@ type SessionLifecycleAdmissionTestApi = {
 
 function getTestApi(): SessionLifecycleAdmissionTestApi {
   return (globalThis as Record<PropertyKey, unknown>)[
-    Symbol.for("openclaw.sessionLifecycleAdmissionTestApi")
+    Symbol.for("operator.sessionLifecycleAdmissionTestApi")
   ] as SessionLifecycleAdmissionTestApi;
 }
 

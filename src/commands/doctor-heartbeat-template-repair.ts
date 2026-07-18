@@ -5,7 +5,7 @@ import { note } from "../../packages/terminal-core/src/note.js";
 import { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "../agents/agent-scope.js";
 import { resolveWorkspaceTemplateDir } from "../agents/workspace-templates.js";
 import { DEFAULT_HEARTBEAT_FILENAME } from "../agents/workspace.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import type { HealthFinding } from "../flows/health-checks.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { writeTextAtomic } from "../infra/json-files.js";
@@ -148,7 +148,7 @@ function heartbeatTemplateAnalysisToHealthFinding(
     message: "HEARTBEAT.md contains an older heartbeat documentation template.",
     path: heartbeatPath,
     requirement: "legacy-template",
-    fixHint: 'Run "openclaw doctor --fix" to replace it with the clean heartbeat template.',
+    fixHint: 'Run "operator doctor --fix" to replace it with the clean heartbeat template.',
   };
 }
 
@@ -227,7 +227,7 @@ export async function maybeRepairHeartbeatTemplate(params: {
     note(
       [
         `${shortenHomePath(heartbeatPath)} contains an older heartbeat documentation template.`,
-        'Run "openclaw doctor --fix" to replace it with the clean heartbeat template.',
+        'Run "operator doctor --fix" to replace it with the clean heartbeat template.',
       ].join("\n"),
       "Heartbeat template",
     );

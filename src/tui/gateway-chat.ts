@@ -19,7 +19,7 @@ import {
   type TaskSuggestionsListResult,
 } from "../../packages/gateway-protocol/src/index.js";
 import { getRuntimeConfig } from "../config/config.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import { assertExplicitGatewayAuthModeWhenBothConfigured } from "../gateway/auth-mode-policy.js";
 import { resolveGatewayInteractiveSurfaceAuth } from "../gateway/auth-surface-resolution.js";
 import {
@@ -75,7 +75,7 @@ function throwGatewayAuthResolutionError(reason: string): never {
   throw new Error(
     [
       reason,
-      "Fix: set OPENCLAW_GATEWAY_TOKEN/OPENCLAW_GATEWAY_PASSWORD, pass --token/--password,",
+      "Fix: set OPERATOR_GATEWAY_TOKEN/OPERATOR_GATEWAY_PASSWORD, pass --token/--password,",
       "or resolve the configured secret provider for this credential.",
     ].join("\n"),
   );
@@ -147,7 +147,7 @@ export class GatewayChatClient implements TuiBackend {
       tlsFingerprint: connection.tlsFingerprint,
       preauthHandshakeTimeoutMs: connection.preauthHandshakeTimeoutMs,
       clientName: GATEWAY_CLIENT_NAMES.TUI,
-      clientDisplayName: "openclaw-tui",
+      clientDisplayName: "operator-tui",
       clientVersion: VERSION,
       platform: process.platform,
       mode: GATEWAY_CLIENT_MODES.UI,
@@ -433,8 +433,8 @@ async function resolveGatewayConnection(
   });
   const hasExplicitGatewayTarget = Boolean(
     urlOverride ||
-    env.OPENCLAW_GATEWAY_URL?.trim() ||
-    env.OPENCLAW_GATEWAY_PORT?.trim() ||
+    env.OPERATOR_GATEWAY_URL?.trim() ||
+    env.OPERATOR_GATEWAY_PORT?.trim() ||
     isRemoteMode,
   );
   const activeLocalGatewayPort = hasExplicitGatewayTarget

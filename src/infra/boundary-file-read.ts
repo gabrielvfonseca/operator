@@ -10,4 +10,4 @@ export {
   openRootFileSync,
   type RootFileOpenFailure,
   type RootFileOpenResult,
-} from "@openclaw/fs-safe/advanced";
+} from "@operator/fs-safe/advanced";

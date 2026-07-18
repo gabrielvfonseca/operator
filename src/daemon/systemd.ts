@@ -3,8 +3,8 @@ import * as fsSync from "node:fs";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { normalizeLowercaseStringOrEmpty } from "@openclaw/normalization-core/string-coerce";
-import { normalizeStringEntries } from "@openclaw/normalization-core/string-normalization";
+import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
+import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
 import { resolveStateDir } from "../config/paths.js";
 import {
   isUnresolvedShellReference,
@@ -68,11 +68,11 @@ function resolveSystemdUnitPathForName(env: GatewayServiceEnv, name: string): st
 }
 
 function resolveSystemdServiceName(env: GatewayServiceEnv): string {
-  const override = env.OPENCLAW_SYSTEMD_UNIT?.trim();
+  const override = env.OPERATOR_SYSTEMD_UNIT?.trim();
   if (override) {
     return override.endsWith(".service") ? override.slice(0, -".service".length) : override;
   }
-  return resolveGatewaySystemdServiceName(env.OPENCLAW_PROFILE);
+  return resolveGatewaySystemdServiceName(env.OPERATOR_PROFILE);
 }
 
 function resolveSystemdUnitPath(env: GatewayServiceEnv): string {
@@ -126,7 +126,7 @@ async function findMarkerOwnedSystemSystemdUnit(): Promise<{
     if (
       svc.platform !== "linux" ||
       svc.scope !== "system" ||
-      svc.marker !== "openclaw" ||
+      svc.marker !== "operator" ||
       !svc.label?.endsWith(".service")
     ) {
       continue;
@@ -377,7 +377,7 @@ function resolveSystemdEnvironmentFilePath(params: {
   stateDir: string;
   environment?: GatewayServiceEnv;
 }): string {
-  const serviceKind = params.environment?.OPENCLAW_SERVICE_KIND?.trim();
+  const serviceKind = params.environment?.OPERATOR_SERVICE_KIND?.trim();
   const filename =
     serviceKind === "node" ? SYSTEMD_NODE_DOTENV_FILENAME : SYSTEMD_GATEWAY_DOTENV_FILENAME;
   return path.join(params.stateDir, filename);
@@ -387,7 +387,7 @@ function resolveLegacyNodeSystemdEnvironmentFilePath(params: {
   stateDir: string;
   environment?: GatewayServiceEnv;
 }): string | null {
-  if (params.environment?.OPENCLAW_SERVICE_KIND?.trim() !== "node") {
+  if (params.environment?.OPERATOR_SERVICE_KIND?.trim() !== "node") {
     return null;
   }
   const legacyPath = path.join(params.stateDir, SYSTEMD_GATEWAY_DOTENV_FILENAME);
@@ -396,7 +396,7 @@ function resolveLegacyNodeSystemdEnvironmentFilePath(params: {
 }
 
 function isNodeSystemdEnvironment(env: GatewayServiceEnv): boolean {
-  return env.OPENCLAW_SERVICE_KIND?.trim() === "node";
+  return env.OPERATOR_SERVICE_KIND?.trim() === "node";
 }
 
 function expandSystemdSpecifier(input: string, env: GatewayServiceEnv): string {
@@ -1185,7 +1185,7 @@ async function removeNodeSystemdManagedEnvironmentKeys(env: GatewayServiceEnv): 
   } catch {
     return;
   }
-  const managedKeys = new Set(["OPENCLAW_GATEWAY_TOKEN", "OPENCLAW_GATEWAY_PASSWORD"]);
+  const managedKeys = new Set(["OPERATOR_GATEWAY_TOKEN", "OPERATOR_GATEWAY_PASSWORD"]);
   const remaining = Object.fromEntries(
     Object.entries(existingFile.environment).filter(([key, value]) => {
       const normalized = normalizeSystemdEnvironmentKey(key);

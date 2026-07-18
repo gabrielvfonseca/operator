@@ -35,7 +35,7 @@ function createOpenClawDelegateTool(options?: {
 }): AnyAgentTool {
   const defaultSessionId = stableDelegationSessionId(options?.agentSessionKey);
   return {
-    name: "openclaw",
+    name: "operator",
     label: "OpenClaw",
     description:
       "Ask system expert. Config, channels, plugins, agents, models/providers, updates. Writes need human approval.",
@@ -45,7 +45,7 @@ function createOpenClawDelegateTool(options?: {
       const message = readStringParam(params, "message", { required: true });
       const sessionId = readStringParam(params, "sessionId") ?? defaultSessionId;
       const callGateway = options?.callGateway ?? callInProcessGatewayTool;
-      const result = await callGateway<OpenClawDelegateResult>("openclaw.chat", {
+      const result = await callGateway<OpenClawDelegateResult>("operator.chat", {
         sessionId,
         message,
         delegation: {

@@ -1,7 +1,7 @@
 /** Broad plugin loader coverage for manifest discovery, runtime registration, and diagnostics. */
 import fs from "node:fs";
 import path from "node:path";
-import { expectDefined } from "@openclaw/normalization-core";
+import { expectDefined } from "@operator/normalization-core";
 import { expect } from "vitest";
 import { listRegisteredAgentHarnesses } from "../agents/harness/registry.js";
 import { clearRuntimeConfigSnapshot } from "../config/runtime-snapshot.js";
@@ -119,7 +119,7 @@ export function updatePluginManifest(
   plugin: Pick<TempPlugin, "dir">,
   patch: Record<string, unknown>,
 ) {
-  const manifestPath = path.join(plugin.dir, "openclaw.plugin.json");
+  const manifestPath = path.join(plugin.dir, "operator.plugin.json");
   const raw = JSON.parse(fs.readFileSync(manifestPath, "utf-8")) as Record<string, unknown>;
   fs.writeFileSync(manifestPath, JSON.stringify({ ...raw, ...patch }, null, 2), "utf-8");
 }
@@ -156,7 +156,7 @@ export function setupBundledDreamingMemoryPlugins(params?: {
   });
   const openSchema = { type: "object", additionalProperties: true };
   fs.writeFileSync(
-    path.join(memoryCoreDir, "openclaw.plugin.json"),
+    path.join(memoryCoreDir, "operator.plugin.json"),
     JSON.stringify(
       { id: "memory-core", kind: "memory", configSchema: EMPTY_PLUGIN_SCHEMA },
       null,
@@ -165,7 +165,7 @@ export function setupBundledDreamingMemoryPlugins(params?: {
     "utf-8",
   );
   fs.writeFileSync(
-    path.join(selectedMemoryDir, "openclaw.plugin.json"),
+    path.join(selectedMemoryDir, "operator.plugin.json"),
     JSON.stringify(
       {
         id: selectedId,
@@ -177,7 +177,7 @@ export function setupBundledDreamingMemoryPlugins(params?: {
     ),
     "utf-8",
   );
-  process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
+  process.env.OPERATOR_BUNDLED_PLUGINS_DIR = bundledDir;
   return { bundledDir, selectedId };
 }
 
@@ -199,14 +199,14 @@ export function writeBundledPlugin(params: {
     filename: params.filename ?? "index.cjs",
     body: params.body ?? simplePluginBody(params.id),
   });
-  delete process.env.OPENCLAW_DISABLE_BUNDLED_PLUGINS;
-  process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
+  delete process.env.OPERATOR_DISABLE_BUNDLED_PLUGINS;
+  process.env.OPERATOR_BUNDLED_PLUGINS_DIR = bundledDir;
   return { bundledDir, plugin };
 }
 
 export function makeOpenClawDevSourceRoot() {
   const root = makeTempDir();
-  fs.writeFileSync(path.join(root, "package.json"), JSON.stringify({ name: "openclaw" }), "utf-8");
+  fs.writeFileSync(path.join(root, "package.json"), JSON.stringify({ name: "operator" }), "utf-8");
   mkdirSafe(path.join(root, "src"));
   mkdirSafe(path.join(root, "extensions"));
   return root;
@@ -219,7 +219,7 @@ export function writeWorkspacePlugin(params: {
   workspaceDir?: string;
 }) {
   const workspaceDir = params.workspaceDir ?? makeTempDir();
-  const workspacePluginDir = path.join(workspaceDir, ".openclaw", "extensions", params.id);
+  const workspacePluginDir = path.join(workspaceDir, ".operator", "extensions", params.id);
   mkdirSafe(workspacePluginDir);
   const plugin = writePlugin({
     id: params.id,
@@ -232,7 +232,7 @@ export function writeWorkspacePlugin(params: {
 
 export function withStateDir<T>(run: (stateDir: string) => T) {
   const stateDir = makeTempDir();
-  return withEnv({ OPENCLAW_STATE_DIR: stateDir }, () => run(stateDir));
+  return withEnv({ OPERATOR_STATE_DIR: stateDir }, () => run(stateDir));
 }
 
 export function loadBundledMemoryPluginRegistry(options?: {
@@ -241,7 +241,7 @@ export function loadBundledMemoryPluginRegistry(options?: {
   pluginFilename?: string;
 }) {
   if (!options && cachedBundledMemoryDir) {
-    process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = cachedBundledMemoryDir;
+    process.env.OPERATOR_BUNDLED_PLUGINS_DIR = cachedBundledMemoryDir;
     return loadOpenClawPlugins({
       cache: false,
       workspaceDir: cachedBundledMemoryDir,
@@ -270,7 +270,7 @@ export function loadBundledMemoryPluginRegistry(options?: {
           name: options.packageMeta.name,
           version: options.packageMeta.version,
           description: options.packageMeta.description,
-          openclaw: { extensions: [`./${pluginFilename}`] },
+          operator: { extensions: [`./${pluginFilename}`] },
         },
         null,
         2,
@@ -290,7 +290,7 @@ export function loadBundledMemoryPluginRegistry(options?: {
   if (!options) {
     cachedBundledMemoryDir = bundledDir;
   }
-  process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
+  process.env.OPERATOR_BUNDLED_PLUGINS_DIR = bundledDir;
 
   return loadOpenClawPlugins({
     cache: false,
@@ -315,7 +315,7 @@ export function setupBundledTelegramPlugin() {
       filename: "telegram.cjs",
     });
   }
-  process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = cachedBundledTelegramDir;
+  process.env.OPERATOR_BUNDLED_PLUGINS_DIR = cachedBundledTelegramDir;
 }
 
 export function expectTelegramLoaded(registry: ReturnType<typeof loadOpenClawPlugins>) {
@@ -604,7 +604,7 @@ function createEscapingEntryFixture(params: { id: string; sourceBody: string }) 
   const linkedEntry = path.join(pluginDir, "entry.cjs");
   fs.writeFileSync(outsideEntry, params.sourceBody, "utf-8");
   fs.writeFileSync(
-    path.join(pluginDir, "openclaw.plugin.json"),
+    path.join(pluginDir, "operator.plugin.json"),
     JSON.stringify(
       {
         id: params.id,
@@ -691,7 +691,7 @@ export function createSetupEntryChannelPluginFixture(params: {
     JSON.stringify(
       {
         name: params.packageName,
-        openclaw: {
+        operator: {
           extensions: ["./index.cjs"],
           setupEntry: "./setup-entry.cjs",
           ...(params.startupDeferConfiguredChannelFullLoadUntilAfterListen
@@ -709,7 +709,7 @@ export function createSetupEntryChannelPluginFixture(params: {
     "utf-8",
   );
   fs.writeFileSync(
-    path.join(pluginDir, "openclaw.plugin.json"),
+    path.join(pluginDir, "operator.plugin.json"),
     JSON.stringify(
       {
         id: params.id,
@@ -897,10 +897,10 @@ module.exports = {
 
 export function createEnvResolvedPluginFixture(pluginId: string) {
   useNoBundledPlugins();
-  const openclawHome = makeTempDir();
+  const operatorHome = makeTempDir();
   const ignoredHome = makeTempDir();
   const stateDir = makeTempDir();
-  const pluginDir = path.join(openclawHome, "plugins", pluginId);
+  const pluginDir = path.join(operatorHome, "plugins", pluginId);
   mkdirSafe(pluginDir);
   const plugin = writePlugin({
     id: pluginId,
@@ -910,10 +910,10 @@ export function createEnvResolvedPluginFixture(pluginId: string) {
   });
   const env = {
     ...process.env,
-    OPENCLAW_HOME: openclawHome,
+    OPERATOR_HOME: operatorHome,
     HOME: ignoredHome,
-    OPENCLAW_STATE_DIR: stateDir,
-    OPENCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
+    OPERATOR_STATE_DIR: stateDir,
+    OPERATOR_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
   };
   return { plugin, env };
 }

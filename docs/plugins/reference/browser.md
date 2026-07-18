@@ -11,7 +11,7 @@ Adds agent-callable tools.
 
 ## Distribution
 
-- Package: `@openclaw/browser-plugin`
+- Package: `@operator/browser-plugin`
 - Install route: included in OpenClaw
 
 ## Surface

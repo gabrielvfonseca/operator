@@ -1,6 +1,6 @@
 // Stores durable delivery queue entries in SQLite.
-import type { DB as OpenClawStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
-import { openOpenClawStateDatabase } from "../state/openclaw-state-db.js";
+import type { DB as OpenClawStateKyselyDatabase } from "../state/operator-state-db.generated.js";
+import { openOpenClawStateDatabase } from "../state/operator-state-db.js";
 import {
   executeSqliteQuerySync,
   executeSqliteQueryTakeFirstSync,
@@ -62,7 +62,7 @@ type QueueRow = {
 
 function openStateDatabase(stateDir?: string) {
   return openOpenClawStateDatabase({
-    env: stateDir ? { ...process.env, OPENCLAW_STATE_DIR: stateDir } : process.env,
+    env: stateDir ? { ...process.env, OPERATOR_STATE_DIR: stateDir } : process.env,
   });
 }
 
@@ -247,7 +247,7 @@ export function commitStagedDeliveryQueueEntry(params: {
       return true;
     },
     {
-      databaseLabel: "openclaw-state",
+      databaseLabel: "operator-state",
       operationLabel: "commit staged delivery queue entry",
     },
   );
@@ -306,7 +306,7 @@ export function expireStagingAndLoadDeliveryQueueEntries(params: {
       };
     },
     {
-      databaseLabel: "openclaw-state",
+      databaseLabel: "operator-state",
       operationLabel: "expire delivery queue staging entries",
     },
   );

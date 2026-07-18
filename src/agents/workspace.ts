@@ -7,7 +7,7 @@ import { createHash } from "node:crypto";
 import syncFs from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { readStringValue } from "@openclaw/normalization-core/string-coerce";
+import { readStringValue } from "@operator/normalization-core/string-coerce";
 import { extractFrontmatterBlock } from "../../packages/markdown-core/src/frontmatter.js";
 import { resolveLegacyStateDirs, resolveStateDir } from "../config/paths.js";
 import { openRootFile } from "../infra/boundary-file-read.js";
@@ -38,14 +38,14 @@ export const DEFAULT_USER_FILENAME = "USER.md";
 export const DEFAULT_HEARTBEAT_FILENAME = "HEARTBEAT.md";
 export const DEFAULT_BOOTSTRAP_FILENAME = "BOOTSTRAP.md";
 export const DEFAULT_MEMORY_FILENAME = CANONICAL_ROOT_MEMORY_FILENAME;
-const LEGACY_WORKSPACE_STATE_DIRNAME = ".openclaw";
+const LEGACY_WORKSPACE_STATE_DIRNAME = ".operator";
 const LEGACY_WORKSPACE_STATE_FILENAME = "workspace-state.json";
-const WORKSPACE_STATE_FILENAME = "openclaw-workspace-state.json";
+const WORKSPACE_STATE_FILENAME = "operator-workspace-state.json";
 const WORKSPACE_STATE_VERSION = 1;
 const WORKSPACE_ATTESTATION_SUFFIX = ".attested";
 const WORKSPACE_ATTESTATION_DIRNAME = "workspace-attestations";
 const WORKSPACE_ATTESTATION_RECENT_MS = 24 * 60 * 60 * 1000;
-const WORKSPACE_ATTESTATION_HEADER = "openclaw-workspace-attestation:v1";
+const WORKSPACE_ATTESTATION_HEADER = "operator-workspace-attestation:v1";
 const WORKSPACE_ATTESTATION_MAX_BYTES = 2048;
 const WORKSPACE_ONBOARDING_PROFILE_FILENAMES = [
   DEFAULT_SOUL_FILENAME,

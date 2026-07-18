@@ -1,7 +1,7 @@
-// Appends the read-only diagnosis section for `openclaw status --all`.
+// Appends the read-only diagnosis section for `operator status --all`.
 // Every line that can include logs, config, or connection details is redacted before display.
 
-import { normalizeOptionalString } from "@openclaw/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 import type { ProgressReporter } from "../../cli/progress.js";
 import { formatConfigIssueLine } from "../../config/issue-format.js";
 import {
@@ -482,6 +482,6 @@ export async function appendStatusAllDiagnosis(params: {
 
   lines.push("");
   lines.push(muted("Pasteable debug report. Auth tokens redacted."));
-  lines.push("Troubleshooting: https://docs.openclaw.ai/troubleshooting");
+  lines.push("Troubleshooting: https://docs.operator.ai/troubleshooting");
   lines.push("");
 }

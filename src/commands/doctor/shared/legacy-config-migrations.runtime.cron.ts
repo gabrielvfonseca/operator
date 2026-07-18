@@ -8,7 +8,7 @@ import {
 const CRON_RUN_LOG_RULE: LegacyConfigRule = {
   path: ["cron", "runLog"],
   message:
-    'cron.runLog is retired; run history now has fixed per-job retention. Run "openclaw doctor --fix".',
+    'cron.runLog is retired; run history now has fixed per-job retention. Run "operator doctor --fix".',
 };
 
 export const LEGACY_CONFIG_MIGRATIONS_RUNTIME_CRON: LegacyConfigMigrationSpec[] = [

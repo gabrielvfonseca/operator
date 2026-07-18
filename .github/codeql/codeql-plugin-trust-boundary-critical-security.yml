@@ -61,10 +61,10 @@ paths:
   - src/plugin-sdk/core.ts
   - src/plugin-sdk/extension-shared.ts
   - packages/plugin-package-contract/src
-  - packages/plugin-sdk/src/plugin-entry.ts
-  - packages/plugin-sdk/src/plugin-runtime.ts
-  - packages/plugin-sdk/src/runtime-env.ts
-  - packages/plugin-sdk/src/security-runtime.ts
+  - sdks/plugin-sdk/src/plugin-entry.ts
+  - sdks/plugin-sdk/src/plugin-runtime.ts
+  - sdks/plugin-sdk/src/runtime-env.ts
+  - sdks/plugin-sdk/src/security-runtime.ts
 
 paths-ignore:
   - "**/node_modules"

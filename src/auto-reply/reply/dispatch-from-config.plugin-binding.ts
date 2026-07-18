@@ -1,5 +1,5 @@
-import { normalizeOptionalString } from "@openclaw/normalization-core/string-coerce";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
+import type { OpenClawConfig } from "../../config/types.operator.js";
 import { matchPluginCommand } from "../../plugins/commands.js";
 import { isNativeCommandTurn, resolveCommandTurnContext } from "../command-turn-context.js";
 import {

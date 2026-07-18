@@ -6,9 +6,9 @@
 import {
   sanitizeInlineImageBase64,
   sanitizeInlineImageDataUrlForStorage,
-} from "@openclaw/media-core/inline-image-data-url";
-import { findNormalizedProviderValue } from "@openclaw/model-catalog-core/provider-id";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+} from "@operator/media-core/inline-image-data-url";
+import { findNormalizedProviderValue } from "@operator/model-catalog-core/provider-id";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import { readLoggingConfig } from "../logging/config.js";
 import {
   getDefaultRedactPatterns,
@@ -204,23 +204,23 @@ const OPENAI_RESPONSES_APIS = new Set([
   "openai-responses",
   "azure-openai-responses",
   "openai-chatgpt-responses",
-  "openclaw-openai-responses-transport",
-  "openclaw-azure-openai-responses-transport",
+  "operator-openai-responses-transport",
+  "operator-azure-openai-responses-transport",
 ]);
 const GOOGLE_REASONING_APIS = new Set([
   "google-generative-ai",
   "google-vertex",
   "google-gemini-cli",
-  "openclaw-google-generative-ai-transport",
+  "operator-google-generative-ai-transport",
 ]);
 const ANTHROPIC_REASONING_APIS = new Set([
   "anthropic-messages",
   "bedrock-converse-stream",
-  "openclaw-anthropic-messages-transport",
+  "operator-anthropic-messages-transport",
 ]);
 const OPENAI_COMPLETIONS_APIS = new Set([
   "openai-completions",
-  "openclaw-openai-completions-transport",
+  "operator-openai-completions-transport",
 ]);
 const OPAQUE_REPLAY_TOKEN_RE = /^[A-Za-z0-9+/_-]+={0,2}$/;
 const GOOGLE_THOUGHT_SIGNATURE_RE =
@@ -265,7 +265,7 @@ function isCustomProviderRoute(route: TranscriptAssistantRoute | undefined): boo
 
 function isGitHubCopilotResponsesRoute(route: TranscriptAssistantRoute | undefined): boolean {
   return (
-    (route?.api === "openai-responses" || route?.api === "openclaw-openai-responses-transport") &&
+    (route?.api === "openai-responses" || route?.api === "operator-openai-responses-transport") &&
     route.provider === "github-copilot"
   );
 }
@@ -379,7 +379,7 @@ const OPENAI_REASONING_REPLAY_METADATA_KEYS = new Set([
   "sessionHash",
   "authProfileHash",
 ]);
-const OPENAI_REASONING_REPLAY_METADATA_KEY = "__openclaw_replay";
+const OPENAI_REASONING_REPLAY_METADATA_KEY = "__operator_replay";
 
 function sanitizeOpenAIReasoningReplayMetadata(
   value: unknown,
@@ -643,7 +643,7 @@ function redactTranscriptStructuredValue(
       (isOpenAIResponsesRoute(currentAssistantRoute) ||
         isCustomProviderRoute(currentAssistantRoute)) &&
       source.type === "thinking" &&
-      key === "openclawReasoningReplay"
+      key === "operatorReasoningReplay"
     ) {
       const sanitizedMetadata = sanitizeOpenAIReasoningReplayMetadata(item, currentAssistantRoute);
       if (sanitizedMetadata !== undefined) {

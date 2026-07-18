@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { normalizeLowercaseStringOrEmpty } from "@openclaw/normalization-core/string-coerce";
+import { normalizeLowercaseStringOrEmpty } from "@operator/normalization-core/string-coerce";
 import { expandHomePrefix, resolveRequiredHomeDir } from "../../infra/home-dir.js";
 import { DEFAULT_AGENT_ID, normalizeAgentId } from "../../routing/session-key.js";
 import { resolveStateDir } from "../paths.js";
@@ -98,7 +98,7 @@ function resolvePathFromAgentSessionsDir(
 }
 
 // Absolute sessionFile paths recorded under another state root (restored
-// backups, moved OPENCLAW_STATE_DIR, rehearsal copies) never satisfy the
+// backups, moved OPERATOR_STATE_DIR, rehearsal copies) never satisfy the
 // relative-containment check above. Re-root the canonical
 // `agents/<id>/sessions/<suffix>` tail onto the current sessions dir, but only
 // when the file exists there: genuine cross-root layouts keep their foreign

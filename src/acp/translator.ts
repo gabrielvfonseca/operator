@@ -30,15 +30,15 @@ import type {
   ToolCallLocation,
   ToolKind,
 } from "@agentclientprotocol/sdk";
-import { readBool, readNonNegativeInteger, readString } from "@openclaw/acp-core/meta";
-import { defaultAcpSessionStore, type AcpSessionStore } from "@openclaw/acp-core/session";
-import { toAcpSessionLineageMeta } from "@openclaw/acp-core/session-lineage-meta";
-import type { AcpServerOptions } from "@openclaw/acp-core/types";
-import { timestampMsToIsoString } from "@openclaw/normalization-core/number-coercion";
+import { readBool, readNonNegativeInteger, readString } from "@operator/acp-core/meta";
+import { defaultAcpSessionStore, type AcpSessionStore } from "@operator/acp-core/session";
+import { toAcpSessionLineageMeta } from "@operator/acp-core/session-lineage-meta";
+import type { AcpServerOptions } from "@operator/acp-core/types";
+import { timestampMsToIsoString } from "@operator/normalization-core/number-coercion";
 import {
   normalizeFastMode,
   normalizeOptionalString,
-} from "@openclaw/normalization-core/string-coerce";
+} from "@operator/normalization-core/string-coerce";
 import type { EventFrame } from "../../packages/gateway-protocol/src/index.js";
 import type { GatewayClient } from "../gateway/client.js";
 import type { GatewaySessionRow, SessionsListResult } from "../gateway/session-utils.js";
@@ -208,7 +208,7 @@ function buildSystemInputProvenance(originSessionId: string) {
     kind: "external_user" as const,
     originSessionId,
     sourceChannel: "acp",
-    sourceTool: "openclaw_acp",
+    sourceTool: "operator_acp",
   };
 }
 
@@ -219,7 +219,7 @@ function buildSystemProvenanceReceipt(params: {
 }) {
   return [
     "[Source Receipt]",
-    "bridge=openclaw-acp",
+    "bridge=operator-acp",
     `originHost=${os.hostname()}`,
     `originCwd=${shortenHomePath(params.cwd)}`,
     `acpSessionId=${params.sessionId}`,

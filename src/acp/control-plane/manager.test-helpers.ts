@@ -1,5 +1,5 @@
 /** Shared ACP manager test harness, mocks, fixtures, and assertion helpers. */
-import type { AcpRuntime, AcpRuntimeCapabilities } from "@openclaw/acp-core/runtime/types";
+import type { AcpRuntime, AcpRuntimeCapabilities } from "@operator/acp-core/runtime/types";
 import { afterEach, beforeEach, expect, vi } from "vitest";
 import { resetAcpManagerTaskStateForTests } from "../../../test/helpers/acp-manager-task-state.js";
 import type { OpenClawConfig } from "../../config/config.js";
@@ -52,7 +52,7 @@ export const baseCfg = {
     dispatch: { enabled: true },
   },
 } as const;
-const ORIGINAL_STATE_DIR = process.env.OPENCLAW_STATE_DIR;
+const ORIGINAL_STATE_DIR = process.env.OPERATOR_STATE_DIR;
 
 export async function flushMicrotasks(rounds = 3): Promise<void> {
   for (let index = 0; index < rounds; index += 1) {
@@ -333,9 +333,9 @@ export function installAcpSessionManagerTestLifecycle(): void {
 
   afterEach(() => {
     if (ORIGINAL_STATE_DIR === undefined) {
-      deleteTestEnvValue("OPENCLAW_STATE_DIR");
+      deleteTestEnvValue("OPERATOR_STATE_DIR");
     } else {
-      setTestEnvValue("OPENCLAW_STATE_DIR", ORIGINAL_STATE_DIR);
+      setTestEnvValue("OPERATOR_STATE_DIR", ORIGINAL_STATE_DIR);
     }
     resetAcpManagerTaskStateForTests();
   });

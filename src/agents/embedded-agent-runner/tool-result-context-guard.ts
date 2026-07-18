@@ -1,4 +1,4 @@
-import { truncateUtf16Safe } from "@openclaw/normalization-core/utf16-slice";
+import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
 /**
  * Installs context guards for oversized tool-result histories.
  */
@@ -31,7 +31,7 @@ const PREEMPTIVE_OVERFLOW_RATIO = 0.9;
 const PREEMPTIVE_CONTEXT_OVERFLOW_MESSAGE =
   "Context overflow: estimated context size exceeds safe threshold during tool loop.";
 const TOOL_RESULT_ESTIMATE_TO_TEXT_RATIO = 4 / TOOL_RESULT_CHARS_PER_TOKEN_ESTIMATE;
-const TRANSCRIPT_PROMPT_TEXT_KEY = "__openclawTranscriptPromptText";
+const TRANSCRIPT_PROMPT_TEXT_KEY = "__operatorTranscriptPromptText";
 
 type GuardableTransformContext = (
   messages: AgentMessage[],

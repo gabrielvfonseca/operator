@@ -1,10 +1,10 @@
 // Resolves package version metadata for CLI and library callers.
 import { createRequire } from "node:module";
-import { normalizeOptionalString } from "@openclaw/normalization-core/string-coerce";
+import { normalizeOptionalString } from "@operator/normalization-core/string-coerce";
 
 // oxlint-disable-next-line eslint/no-underscore-dangle -- Bundled builds replace this compile-time define identifier.
-declare const __OPENCLAW_VERSION__: string | undefined;
-const CORE_PACKAGE_NAME = "openclaw";
+declare const __OPERATOR_VERSION__: string | undefined;
+const CORE_PACKAGE_NAME = "operator";
 
 const PACKAGE_JSON_CANDIDATES = [
   "../package.json",
@@ -58,7 +58,7 @@ function firstNonEmpty(...values: Array<string | undefined>): string | undefined
 }
 
 function readInjectedVersion(): string | undefined {
-  return typeof __OPENCLAW_VERSION__ === "string" ? __OPENCLAW_VERSION__ : undefined;
+  return typeof __OPERATOR_VERSION__ === "string" ? __OPERATOR_VERSION__ : undefined;
 }
 
 export function readVersionFromPackageJsonForModuleUrl(moduleUrl: string): string | null {
@@ -118,12 +118,12 @@ function resolveVersionFromRuntimeSources(params: {
 }): string {
   const preferredCandidates =
     params.preference === "env-first"
-      ? [params.env["OPENCLAW_VERSION"], params.runtimeVersion]
-      : [params.runtimeVersion, params.env["OPENCLAW_VERSION"]];
+      ? [params.env["OPERATOR_VERSION"], params.runtimeVersion]
+      : [params.runtimeVersion, params.env["OPERATOR_VERSION"]];
   return (
     firstNonEmpty(
       ...preferredCandidates,
-      params.env["OPENCLAW_SERVICE_VERSION"],
+      params.env["OPERATOR_SERVICE_VERSION"],
       params.env["npm_package_version"],
     ) ?? params.fallback
   );
@@ -145,7 +145,7 @@ export function resolveCompatibilityHostVersion(
   env: RuntimeVersionEnv = process.env as RuntimeVersionEnv,
   fallback = RUNTIME_SERVICE_VERSION_FALLBACK,
 ): string {
-  const explicitCompatibilityVersion = firstNonEmpty(env.OPENCLAW_COMPATIBILITY_HOST_VERSION);
+  const explicitCompatibilityVersion = firstNonEmpty(env.OPERATOR_COMPATIBILITY_HOST_VERSION);
   if (explicitCompatibilityVersion) {
     return explicitCompatibilityVersion;
   }
@@ -163,5 +163,5 @@ export function resolveCompatibilityHostVersion(
 export const VERSION = resolveBinaryVersion({
   moduleUrl: import.meta.url,
   injectedVersion: readInjectedVersion(),
-  bundledVersion: process.env.OPENCLAW_BUNDLED_VERSION,
+  bundledVersion: process.env.OPERATOR_BUNDLED_VERSION,
 });

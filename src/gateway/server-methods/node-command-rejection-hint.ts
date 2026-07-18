@@ -1,6 +1,6 @@
 // Human-readable hint for why a node command was rejected, kept out of the
 // oversized nodes.ts server-methods file.
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OpenClawConfig } from "../../config/types.operator.js";
 import { DEFAULT_DANGEROUS_NODE_COMMANDS } from "../node-command-policy.js";
 
 export function buildNodeCommandRejectionHint(
@@ -28,7 +28,7 @@ export function buildNodeCommandRejectionHint(
   }
   if (reason === "node did not declare commands") {
     if (node?.declaredCommands?.includes(command)) {
-      return "node command not allowed: the node's declared command surface is pending approval; run `openclaw nodes pending`, then `openclaw nodes approve <requestId>`";
+      return "node command not allowed: the node's declared command surface is pending approval; run `operator nodes pending`, then `operator nodes approve <requestId>`";
     }
     return `node command not allowed: the node did not declare any supported commands`;
   }

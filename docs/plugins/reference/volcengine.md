@@ -11,7 +11,7 @@ Adds Volcengine, Volcengine Plan model provider support to OpenClaw.
 
 ## Distribution
 
-- Package: `@openclaw/volcengine-provider`
+- Package: `@operator/volcengine-provider`
 - Install route: included in OpenClaw
 
 ## Surface

@@ -2,8 +2,8 @@
 import {
   asFiniteNumber,
   timestampMsToIsoString,
-} from "@openclaw/normalization-core/number-coercion";
-import { normalizeOptionalString as asString } from "@openclaw/normalization-core/string-coerce";
+} from "@operator/normalization-core/number-coercion";
+import { normalizeOptionalString as asString } from "@operator/normalization-core/string-coerce";
 import { resolveAgentConfig } from "../agents/agent-scope.js";
 import type { OpenClawConfig } from "../config/config.js";
 import { parseAbsoluteTimeMs } from "../cron/parse.js";
@@ -372,6 +372,6 @@ export async function persistCommitmentExtractionResult(params: {
 }
 
 if (process.env.VITEST || process.env.NODE_ENV === "test") {
-  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("openclaw.commitmentExtractionTestApi")] =
+  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("operator.commitmentExtractionTestApi")] =
     { validateCommitmentCandidates };
 }

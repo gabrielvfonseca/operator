@@ -102,7 +102,7 @@ function hasBundledChannelLegacyStateMigrationInputs(stateDir: string, oauthDir:
 }
 
 function hasCrossStateDirApprovalMigrationInputs(stateDir: string): boolean {
-  if (!process.env.OPENCLAW_STATE_DIR?.trim() || isNamedProfile()) {
+  if (!process.env.OPERATOR_STATE_DIR?.trim() || isNamedProfile()) {
     return false;
   }
   const homeDir = resolveRequiredHomeDir(process.env, os.homedir);
@@ -130,7 +130,7 @@ function hasLegacyStateMigrationInputs(): boolean {
   const stateDir = resolveStateDir(process.env, os.homedir);
   const oauthDir = resolveOAuthDir(process.env, stateDir);
   if (
-    !process.env.OPENCLAW_STATE_DIR?.trim() &&
+    !process.env.OPERATOR_STATE_DIR?.trim() &&
     resolveLegacyStateDirs(() => resolveRequiredHomeDir(process.env, os.homedir)).some(
       fileOrDirExists,
     )
@@ -148,7 +148,7 @@ function hasLegacyStateMigrationInputs(): boolean {
       path.join(stateDir, "agents"),
       path.join(stateDir, "plugins", "installs.json"),
       path.join(stateDir, "sessions"),
-      path.join(stateDir, "state", "openclaw.sqlite"),
+      path.join(stateDir, "state", "operator.sqlite"),
     ].some(fileOrDirExists) ||
     sqliteSidecarPaths.some(
       (sourcePath) => fileOrDirExists(sourcePath) || hasPendingSqliteSidecarArchive(sourcePath),
@@ -344,10 +344,10 @@ export async function ensureConfigReady(params: {
   params.runtime.error("");
   const fixHint = isPluginPackagingRuntimeOutputInvalidConfigSnapshot(snapshot)
     ? formatPluginPackagingRuntimeOutputRecoveryHint()
-    : commandText(formatCliCommand("openclaw doctor --fix"));
+    : commandText(formatCliCommand("operator doctor --fix"));
   params.runtime.error(`${muted("Fix:")} ${fixHint}`);
   params.runtime.error(
-    `${muted("Inspect:")} ${commandText(formatCliCommand("openclaw config validate"))}`,
+    `${muted("Inspect:")} ${commandText(formatCliCommand("operator config validate"))}`,
   );
   params.runtime.error(
     muted(

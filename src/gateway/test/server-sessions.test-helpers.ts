@@ -5,8 +5,8 @@ import fsSync from "node:fs";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expectDefined } from "@openclaw/normalization-core";
-import type { AssistantMessage, UserMessage } from "openclaw/plugin-sdk/llm";
+import { expectDefined } from "@operator/normalization-core";
+import type { AssistantMessage, UserMessage } from "operator/plugin-sdk/llm";
 import { afterAll, beforeAll, beforeEach, expect, vi } from "vitest";
 import type { SessionEntry } from "../../config/sessions.js";
 import {
@@ -317,7 +317,7 @@ export function setupGatewaySessionsTestHarness() {
 
   beforeAll(async () => {
     harness = await startGatewayServerHarness();
-    sharedSessionStoreDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-sessions-"));
+    sharedSessionStoreDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-sessions-"));
   });
 
   afterAll(async () => {
@@ -457,9 +457,9 @@ export function setupGatewaySessionsTestHarness() {
       });
     }
 
-    const configPath = process.env.OPENCLAW_CONFIG_PATH;
+    const configPath = process.env.OPERATOR_CONFIG_PATH;
     if (!configPath) {
-      throw new Error("OPENCLAW_CONFIG_PATH is required");
+      throw new Error("OPERATOR_CONFIG_PATH is required");
     }
     await fs.writeFile(
       configPath,

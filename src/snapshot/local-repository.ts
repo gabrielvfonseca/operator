@@ -29,8 +29,8 @@ import {
 import { readSqliteUserVersion } from "../infra/sqlite-user-version.js";
 import { runExec } from "../process/exec.js";
 import { isValidAgentId, normalizeAgentId } from "../routing/session-key.js";
-import { assertOpenClawAgentDatabaseForMaintenance } from "../state/openclaw-agent-db.js";
-import { assertOpenClawStateDatabaseForMaintenance } from "../state/openclaw-state-db.js";
+import { assertOpenClawAgentDatabaseForMaintenance } from "../state/operator-agent-db.js";
+import { assertOpenClawStateDatabaseForMaintenance } from "../state/operator-state-db.js";
 import {
   containsAsciiControlCharacter,
   copySnapshotArtifact,

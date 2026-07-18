@@ -126,17 +126,17 @@ describe("security-sensitive guard workflow", () => {
   it("requires secops review for future workflow or guard changes", () => {
     const codeowners = readFileSync(CODEOWNERS, "utf8");
     expect(codeowners).toContain(
-      "/.github/workflows/security-sensitive-guard.yml @openclaw/openclaw-secops",
+      "/.github/workflows/security-sensitive-guard.yml @operator/openclaw-secops",
     );
     expect(codeowners).toContain(
-      "/test/scripts/security-sensitive-guard-workflow.test.ts @openclaw/openclaw-secops",
+      "/test/scripts/security-sensitive-guard-workflow.test.ts @operator/openclaw-secops",
     );
     expect(codeowners).toContain(
-      "/test/scripts/security-sensitive-guard-script.test.ts @openclaw/openclaw-secops",
+      "/test/scripts/security-sensitive-guard-script.test.ts @operator/openclaw-secops",
     );
     expect(codeowners).toContain(
-      "/scripts/github/security-sensitive-guard.mjs @openclaw/openclaw-secops",
+      "/scripts/github/security-sensitive-guard.mjs @operator/openclaw-secops",
     );
-    expect(codeowners).toContain("/.gitignore @openclaw/openclaw-secops");
+    expect(codeowners).toContain("/.gitignore @operator/openclaw-secops");
   });
 });

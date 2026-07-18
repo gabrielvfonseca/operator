@@ -1,10 +1,10 @@
 import { randomUUID } from "node:crypto";
-import { resolveTimestampMsToIsoString } from "@openclaw/normalization-core/number-coercion";
+import { resolveTimestampMsToIsoString } from "@operator/normalization-core/number-coercion";
 import {
   openOpenClawAgentDatabase,
   runOpenClawAgentWriteTransaction,
   type OpenClawAgentDatabase,
-} from "../../state/openclaw-agent-db.js";
+} from "../../state/operator-agent-db.js";
 import type {
   SessionTranscriptAccessScope,
   SessionTranscriptTurnMessageAppend,
@@ -245,7 +245,7 @@ export function appendSqliteTranscriptEventSync(
 export async function appendSqliteExpectedSessionTranscriptTurn(
   scope: SessionTranscriptWriteScope,
   options: {
-    config?: import("../types.openclaw.js").OpenClawConfig;
+    config?: import("../types.operator.js").OpenClawConfig;
     cwd?: string;
     expectedLifecycleRevision?: string;
     expectedSessionState?: SessionTranscriptTurnExpectedState;

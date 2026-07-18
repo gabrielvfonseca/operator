@@ -7,7 +7,7 @@ import { closeOpenClawStateDatabaseForTest } from "../../state/openclaw-state-db
 import {
   createOpenClawTestState,
   type OpenClawTestState,
-} from "../../test-utils/openclaw-test-state.js";
+} from "../../test-utils/operator-test-state.js";
 import { applyPromotionClaimTags, printAvailablePromotionsSection } from "./list.promotions.js";
 import type { ModelRow } from "./list.types.js";
 

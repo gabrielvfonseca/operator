@@ -1,6 +1,6 @@
 import path from "node:path";
-import { uniqueValues } from "@openclaw/normalization-core/string-normalization";
-import { normalizeStringEntries } from "@openclaw/normalization-core/string-normalization";
+import { uniqueValues } from "@operator/normalization-core/string-normalization";
+import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
 import type { AnyAgentTool } from "../agents/tools/common.js";
 import { registerInternalHook, unregisterInternalHook } from "../hooks/internal-hooks.js";
 import type { HookEntry } from "../hooks/types.js";
@@ -46,7 +46,7 @@ import type {
 const LEGACY_DEACTIVATE_HOOK_ALIAS_COMPAT = getPluginCompatRecord("legacy-deactivate-hook-alias");
 const LEGACY_SUBAGENT_SPAWNING_HOOK_COMPAT = getPluginCompatRecord("legacy-subagent-spawning-hook");
 
-const ACTIVE_PLUGIN_HOOK_REGISTRATIONS_KEY = Symbol.for("openclaw.activePluginHookRegistrations");
+const ACTIVE_PLUGIN_HOOK_REGISTRATIONS_KEY = Symbol.for("operator.activePluginHookRegistrations");
 const activePluginHookRegistrations = resolveGlobalSingleton<
   Map<string, Array<{ event: string; handler: Parameters<typeof registerInternalHook>[1] }>>
 >(ACTIVE_PLUGIN_HOOK_REGISTRATIONS_KEY, () => new Map());
@@ -326,7 +326,7 @@ export function createToolHookRegistrars(state: PluginRegistryState) {
             ...entry.hook,
             name: hookName,
             description,
-            source: "openclaw-plugin",
+            source: "operator-plugin",
             pluginId: record.id,
           },
           metadata: { ...entry.metadata, events: normalizedEvents },
@@ -335,7 +335,7 @@ export function createToolHookRegistrars(state: PluginRegistryState) {
           hook: {
             name: hookName,
             description,
-            source: "openclaw-plugin",
+            source: "operator-plugin",
             pluginId: record.id,
             filePath: record.source,
             baseDir: path.dirname(record.source),

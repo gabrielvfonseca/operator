@@ -1,5 +1,5 @@
 // OpenClaw rescue policy gates remote writes by owner, DM, sandbox, and YOLO posture.
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import { normalizeAgentId } from "../routing/session-key.js";
 
 /**

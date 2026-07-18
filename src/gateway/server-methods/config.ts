@@ -3,10 +3,10 @@ import { isDeepStrictEqual } from "node:util";
 import {
   asDateTimestampMs,
   resolveExpiresAtMsFromDurationMs,
-} from "@openclaw/normalization-core/number-coercion";
-import { isRecord } from "@openclaw/normalization-core/record-coerce";
-import { normalizeStringEntries } from "@openclaw/normalization-core/string-normalization";
-import { truncateUtf16Safe } from "@openclaw/normalization-core/utf16-slice";
+} from "@operator/normalization-core/number-coercion";
+import { isRecord } from "@operator/normalization-core/record-coerce";
+import { normalizeStringEntries } from "@operator/normalization-core/string-normalization";
+import { truncateUtf16Safe } from "@operator/normalization-core/utf16-slice";
 import {
   ErrorCodes,
   errorShape,
@@ -33,7 +33,7 @@ import { normalizeConfigPatchReplacePaths } from "../../config/patch-replace-pat
 import { redactConfigObject, restoreRedactedValues } from "../../config/redact-snapshot.js";
 import { loadGatewayRuntimeConfigSchema } from "../../config/runtime-schema.js";
 import { lookupConfigSchema, type ConfigSchemaResponse } from "../../config/schema.js";
-import type { ConfigValidationIssue, OpenClawConfig } from "../../config/types.openclaw.js";
+import type { ConfigValidationIssue, OpenClawConfig } from "../../config/types.operator.js";
 import {
   validateConfigObjectRawWithPlugins,
   validateConfigObjectWithPlugins,

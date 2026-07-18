@@ -1,7 +1,7 @@
 // Gateway Talk realtime relay.
 // Bridges browser Talk audio sessions with realtime voice provider plugins.
 import { randomUUID } from "node:crypto";
-import { resolveExpiresAtMsFromDurationMs } from "@openclaw/normalization-core/number-coercion";
+import { resolveExpiresAtMsFromDurationMs } from "@operator/normalization-core/number-coercion";
 import type { OpenClawConfig } from "../config/types.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import type { RealtimeVoiceProviderPlugin } from "../plugins/types.js";
@@ -958,7 +958,7 @@ function scheduleForcedAgentConsult(session: RelaySession | undefined, question:
       args: {
         question: handle.question,
         context:
-          "The realtime provider produced a final user transcript without invoking openclaw_agent_consult, so OpenClaw is forcing the consult for realtime Talk.",
+          "The realtime provider produced a final user transcript without invoking operator_agent_consult, so OpenClaw is forcing the consult for realtime Talk.",
         responseStyle: "Reply in a concise spoken tone.",
       },
       talkEvent: session.talk.emit({
@@ -1397,7 +1397,7 @@ export async function steerTalkRealtimeRelayAgentRun(params: {
       type: "tool.progress",
       turnId,
       payload: {
-        name: "openclaw_agent_control",
+        name: "operator_agent_control",
         phase: finalResult.mode,
         result: finalResult,
       },

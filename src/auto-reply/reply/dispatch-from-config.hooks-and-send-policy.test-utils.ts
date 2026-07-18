@@ -612,7 +612,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
     hookMocks.runner.hasHooks.mockImplementation(
       ((hookName?: string) => hookName === "inbound_claim") as () => boolean,
     );
-    hookMocks.registry.plugins = [{ id: "openclaw-codex-app-server", status: "loaded" }];
+    hookMocks.registry.plugins = [{ id: "operator-codex-app-server", status: "loaded" }];
     hookMocks.runner.runInboundClaimForPluginOutcome.mockResolvedValue({
       status: "handled",
       result: { handled: true, reply: { text: "must not send" } },
@@ -630,7 +630,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
       boundAt: 1710000000000,
       metadata: {
         pluginBindingOwner: "plugin",
-        pluginId: "openclaw-codex-app-server",
+        pluginId: "operator-codex-app-server",
         pluginRoot: "/tmp/plugin",
       },
     } satisfies SessionBindingRecord);
@@ -669,7 +669,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
       ((hookName?: string) =>
         hookName === "inbound_claim" || hookName === "message_received") as () => boolean,
     );
-    hookMocks.registry.plugins = [{ id: "openclaw-codex-app-server", status: "loaded" }];
+    hookMocks.registry.plugins = [{ id: "operator-codex-app-server", status: "loaded" }];
     hookMocks.runner.runInboundClaimForPluginOutcome.mockResolvedValue({
       status: "handled",
       result: { handled: true },
@@ -687,7 +687,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
       boundAt: 1710000000000,
       metadata: {
         pluginBindingOwner: "plugin",
-        pluginId: "openclaw-codex-app-server",
+        pluginId: "operator-codex-app-server",
         pluginRoot: "/tmp/plugin",
       },
     } satisfies SessionBindingRecord);
@@ -821,7 +821,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
         ((hookName?: string) =>
           hookName === "inbound_claim" || hookName === "message_received") as () => boolean,
       );
-      hookMocks.registry.plugins = [{ id: "openclaw-codex-app-server", status: "loaded" }];
+      hookMocks.registry.plugins = [{ id: "operator-codex-app-server", status: "loaded" }];
       hookMocks.runner.runInboundClaimForPluginOutcome.mockResolvedValue({
         status: "handled",
         result: params.pluginReply
@@ -837,7 +837,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
         boundAt: 1710000000000,
         metadata: {
           pluginBindingOwner: "plugin",
-          pluginId: "openclaw-codex-app-server",
+          pluginId: "operator-codex-app-server",
           pluginRoot: "/tmp/plugin",
         },
       } satisfies SessionBindingRecord);
@@ -864,7 +864,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
       });
       expect(sessionBindingMocks.touch).toHaveBeenCalledWith(params.bindingId);
       expect(hookMocks.runner.runInboundClaimForPluginOutcome).toHaveBeenCalledWith(
-        "openclaw-codex-app-server",
+        "operator-codex-app-server",
         expect.objectContaining({
           content: "observed message",
           ...params.expectedClaim,
@@ -888,7 +888,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
       ((hookName?: string) =>
         hookName === "inbound_claim" || hookName === "message_received") as () => boolean,
     );
-    hookMocks.registry.plugins = [{ id: "openclaw-codex-app-server", status: "loaded" }];
+    hookMocks.registry.plugins = [{ id: "operator-codex-app-server", status: "loaded" }];
     hookMocks.runner.runInboundClaimForPluginOutcome.mockResolvedValue({
       status: "no_handler",
     });
@@ -907,7 +907,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
       boundAt: 1710000000000,
       metadata: {
         pluginBindingOwner: "plugin",
-        pluginId: "openclaw-codex-app-server",
+        pluginId: "operator-codex-app-server",
         pluginRoot: "/tmp/plugin",
       },
     } satisfies SessionBindingRecord);
@@ -951,7 +951,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
       hookMocks.runner.runInboundClaimForPluginOutcome,
       "plugin inbound claim",
     );
-    expect(claimCall[0]).toBe("openclaw-codex-app-server");
+    expect(claimCall[0]).toBe("operator-codex-app-server");
     expect(claimCall[1]).toMatchObject({
       channel: "telegram",
       content: "observed message",
@@ -983,7 +983,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
       ((hookName?: string) =>
         hookName === "inbound_claim" || hookName === "message_received") as () => boolean,
     );
-    hookMocks.registry.plugins = [{ id: "openclaw-codex-app-server", status: "loaded" }];
+    hookMocks.registry.plugins = [{ id: "operator-codex-app-server", status: "loaded" }];
     hookMocks.runner.runInboundClaimForPluginOutcome.mockResolvedValue({
       status: "no_handler",
     });
@@ -1002,7 +1002,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
       boundAt: 1710000000000,
       metadata: {
         pluginBindingOwner: "plugin",
-        pluginId: "openclaw-codex-app-server",
+        pluginId: "operator-codex-app-server",
         pluginRoot: "/tmp/plugin",
       },
     } satisfies SessionBindingRecord);
@@ -1043,7 +1043,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
       hookMocks.runner.runInboundClaimForPluginOutcome,
       "plugin inbound claim",
     );
-    expect(claimCall[0]).toBe("openclaw-codex-app-server");
+    expect(claimCall[0]).toBe("operator-codex-app-server");
     expect(claimCall[1]).toMatchObject({
       channel: "imessage",
       content: "observed message",
@@ -1066,7 +1066,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
       ((hookName?: string) =>
         hookName === "inbound_claim" || hookName === "message_received") as () => boolean,
     );
-    hookMocks.registry.plugins = [{ id: "openclaw-codex-app-server", status: "loaded" }];
+    hookMocks.registry.plugins = [{ id: "operator-codex-app-server", status: "loaded" }];
     hookMocks.runner.runInboundClaimForPluginOutcome.mockResolvedValue({
       status: "no_handler",
     });
@@ -1085,7 +1085,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
       boundAt: 1710000000000,
       metadata: {
         pluginBindingOwner: "plugin",
-        pluginId: "openclaw-codex-app-server",
+        pluginId: "operator-codex-app-server",
         pluginRoot: "/tmp/plugin",
       },
     } satisfies SessionBindingRecord);
@@ -1107,10 +1107,10 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
       MessageThreadId: 11,
       ChatType: "group",
       GroupSubject: "Dev",
-      Body: "/reset@openclaw",
-      RawBody: "/reset@openclaw",
-      CommandBody: "/reset@openclaw",
-      BotUsername: "openclaw",
+      Body: "/reset@operator",
+      RawBody: "/reset@operator",
+      CommandBody: "/reset@operator",
+      BotUsername: "operator",
       CommandSource: undefined,
       CommandAuthorized: true,
       WasMentioned: false,
@@ -1134,7 +1134,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
       ((hookName?: string) =>
         hookName === "inbound_claim" || hookName === "message_received") as () => boolean,
     );
-    hookMocks.registry.plugins = [{ id: "openclaw-codex-app-server", status: "loaded" }];
+    hookMocks.registry.plugins = [{ id: "operator-codex-app-server", status: "loaded" }];
     hookMocks.runner.runInboundClaimForPluginOutcome.mockResolvedValue({
       status: "handled",
       result: { handled: true },
@@ -1154,7 +1154,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
       boundAt: 1710000000000,
       metadata: {
         pluginBindingOwner: "plugin",
-        pluginId: "openclaw-codex-app-server",
+        pluginId: "operator-codex-app-server",
         pluginRoot: "/tmp/plugin",
       },
     } satisfies SessionBindingRecord);
@@ -1194,7 +1194,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
       hookMocks.runner.runInboundClaimForPluginOutcome,
       "plugin inbound claim",
     );
-    expect(claimCall[0]).toBe("openclaw-codex-app-server");
+    expect(claimCall[0]).toBe("operator-codex-app-server");
     expect(claimCall[1]).toMatchObject({
       channel: "telegram",
       content: "/status",
@@ -1210,7 +1210,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
       ((hookName?: string) =>
         hookName === "inbound_claim" || hookName === "message_received") as () => boolean,
     );
-    hookMocks.registry.plugins = [{ id: "openclaw-codex-app-server", status: "loaded" }];
+    hookMocks.registry.plugins = [{ id: "operator-codex-app-server", status: "loaded" }];
     hookMocks.runner.runInboundClaimForPluginOutcome.mockResolvedValue({
       status: "handled",
       result: { handled: true },
@@ -1230,7 +1230,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
       boundAt: 1710000000000,
       metadata: {
         pluginBindingOwner: "plugin",
-        pluginId: "openclaw-codex-app-server",
+        pluginId: "operator-codex-app-server",
         pluginRoot: "/tmp/plugin",
       },
     } satisfies SessionBindingRecord);
@@ -1275,7 +1275,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
       hookMocks.runner.runInboundClaimForPluginOutcome,
       "plugin inbound claim",
     );
-    expect(claimCall[0]).toBe("openclaw-codex-app-server");
+    expect(claimCall[0]).toBe("operator-codex-app-server");
     expect(claimCall[1]).toMatchObject({
       channel: "telegram",
       content: "/think high through this",
@@ -1459,7 +1459,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
     const replyResolver = vi.fn(async (_ctx: MsgContext, opts?: GetReplyOptions) => {
       await opts?.onToolResult?.({
         text: "💨Fast: auto-off(75s>=60s)",
-        channelData: { openclawProgressKind: "fast-mode-auto" },
+        channelData: { operatorProgressKind: "fast-mode-auto" },
       });
       return { text: "NO_REPLY" } satisfies ReplyPayload;
     });
@@ -1481,7 +1481,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
     expect(dispatcher.sendToolResult).toHaveBeenCalledWith(
       expect.objectContaining({
         text: "💨Fast: auto-off(75s>=60s)",
-        channelData: { openclawProgressKind: "fast-mode-auto" },
+        channelData: { operatorProgressKind: "fast-mode-auto" },
       }),
     );
     expect(dispatcher.sendFinalReply).not.toHaveBeenCalled();
@@ -1498,7 +1498,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
     const replyResolver = vi.fn(async (_ctx: MsgContext, opts?: GetReplyOptions) => {
       await opts?.onToolResult?.({
         text: "💨Fast: auto-off(75s>=60s)",
-        channelData: { openclawProgressKind: "fast-mode-auto" },
+        channelData: { operatorProgressKind: "fast-mode-auto" },
       });
       return { text: "NO_REPLY" } satisfies ReplyPayload;
     });
@@ -1536,7 +1536,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
     const replyResolver = vi.fn(async (_ctx: MsgContext, opts?: GetReplyOptions) => {
       await opts?.onToolResult?.({
         text: "💨Fast: auto-off(75s>=60s)",
-        channelData: { openclawProgressKind: "fast-mode-auto" },
+        channelData: { operatorProgressKind: "fast-mode-auto" },
       });
       return { text: "NO_REPLY" } satisfies ReplyPayload;
     });
@@ -1568,7 +1568,7 @@ describe("sendPolicy deny — suppress delivery, not processing (#53328)", () =>
     const onToolResult = vi.fn();
     const payload = {
       text: "💨Fast: auto-on",
-      channelData: { openclawProgressKind: "fast-mode-auto" },
+      channelData: { operatorProgressKind: "fast-mode-auto" },
     } satisfies ReplyPayload;
     const replyResolver = vi.fn(async (_ctx: MsgContext, opts?: GetReplyOptions) => {
       await opts?.onToolResult?.(payload);

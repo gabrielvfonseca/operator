@@ -1,12 +1,12 @@
 // OpenAI-compatible speech provider sends speech synthesis requests to OpenAI-style APIs.
-import { normalizeOptionalLowercaseString } from "@openclaw/normalization-core/string-coerce";
+import { normalizeOptionalLowercaseString } from "@operator/normalization-core/string-coerce";
 import {
   assertOkOrThrowHttpError,
   postJsonRequest,
   readProviderBinaryResponse,
   resolveProviderHttpRequestConfig,
-} from "openclaw/plugin-sdk/provider-http";
-import { normalizeResolvedSecretInputString } from "openclaw/plugin-sdk/secret-input";
+} from "operator/plugin-sdk/provider-http";
+import { normalizeResolvedSecretInputString } from "operator/plugin-sdk/secret-input";
 import { asFiniteNumber, asObject, trimToUndefined } from "../agents/provider-http-errors.js";
 import type { SpeechProviderPlugin } from "../plugins/types.js";
 import type {
