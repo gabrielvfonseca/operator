@@ -27,7 +27,7 @@ import { updateCommand } from "./update-command.js";
 export async function updateWizardCommand(opts: UpdateWizardOptions = {}): Promise<void> {
   if (!process.stdin.isTTY) {
     defaultRuntime.error(
-      "Update wizard ...
+      "Update wizard requires a TTY. Use `operator update --channel <stable|extended-stable|beta|dev>` instead.",
     );
     defaultRuntime.exit(1);
     return;
@@ -115,7 +115,7 @@ export async function updateWizardCommand(opts: UpdateWizardOptions = {}): Promi
         const empty = await isEmptyDir(gitDir);
         if (!empty) {
           defaultRuntime.error(
-            `OPERATOR_GIT_DIR points at a non-git directory: ${gitDir}. Set OPERATOR_GIT_DIR to an empty folder or an openclaw checkout.`,
+            `OPERATOR_GIT_DIR points at a non-git directory: ${gitDir}. Set OPERATOR_GIT_DIR to an empty folder or an operator checkout.`,
           );
           defaultRuntime.exit(1);
           return;

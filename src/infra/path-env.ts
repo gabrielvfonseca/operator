@@ -166,7 +166,7 @@ function candidateBinDirs(
     // ignore
   }
 
-  // Bundled macOS app: `openclaw` lives next to the executable (process.execPath).
+  // Bundled macOS app: `operator` lives next to the executable (process.execPath).
   try {
     const execDir = path.dirname(execPath);
     const siblingCli = path.join(execDir, "@gabrielvfonseca/operator");
@@ -195,7 +195,7 @@ function candidateBinDirs(
 
   // User-writable / package-manager directories are appended so they never
   // shadow trusted OS binaries.
-  // This includes Brew/Homebrew dirs, which are useful for finding `openclaw`
+  // This includes Brew/Homebrew dirs, which are useful for finding `operator`
   // in launchd/minimal environments but must not be treated as trusted.
   append.push(...resolvePathBootstrapBrewDirs({ homeDir, platform, existingPathParts }));
   const pnpmHome = normalizeTrustedPackageManagerRoot({
@@ -241,7 +241,7 @@ function candidateBinDirs(
 }
 
 /**
- * Best-effort PATH bootstrap so skills that ...
+ * Best-effort PATH bootstrap so skills that require the `operator` CLI can run
  * under launchd/minimal environments (and inside the macOS app bundle).
  */
 export function ensureOperatorCliOnPath(opts: EnsureOperatorPathOpts = {}) {
