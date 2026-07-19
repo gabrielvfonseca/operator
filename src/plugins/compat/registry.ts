@@ -772,7 +772,7 @@ const PLUGIN_COMPAT_RECORDS = [
     surfaces: [
       "createCapturedPluginRegistration",
       "capturePluginRegistration",
-      "OperatorPluginApi",
+      "OpenClawPluginApi",
     ],
     diagnostics: ["runtime registration capture contract probe"],
     tests: ["src/plugins/captured-registration.test.ts"],
@@ -1395,7 +1395,7 @@ const PLUGIN_COMPAT_RECORDS = [
     deprecated: "2026-04-26",
     warningStarts: "2026-04-26",
     removeAfter: "2026-07-26",
-    replacement: "`OperatorConfig`",
+    replacement: "`OpenClawConfig`",
     docsPath: "/plugins/sdk-migration",
     surfaces: ["openclaw/plugin-sdk `ClawdbotConfig` type export"],
     diagnostics: ["plugin SDK compatibility warning"],

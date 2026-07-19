@@ -13,7 +13,7 @@ import {
   type AgentAvatarResolution,
   resolvePublicAgentAvatarSource,
 } from "../agents/identity-avatar.js";
-import type { OperatorConfig } from "../config/types.operator.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import { matchRootFileOpenFailure, openRootFileSync } from "../infra/boundary-file-read.js";
 import {
   isPackageProvenControlUiRootSync,
@@ -109,7 +109,7 @@ function buildAssistantMediaContentDisposition(filename: string, mime?: string):
 
 type ControlUiRequestOptions = {
   basePath?: string;
-  config?: OperatorConfig;
+  config?: OpenClawConfig;
   terminalEnabled?: boolean;
   agentId?: string;
   root?: ControlUiRootState;
@@ -525,7 +525,7 @@ export async function handleControlUiAssistantMediaRequest(
   res: ServerResponse,
   opts?: {
     basePath?: string;
-    config?: OperatorConfig;
+    config?: OpenClawConfig;
     agentId?: string;
     auth?: ResolvedGatewayAuth;
     trustedProxies?: string[];
@@ -645,7 +645,7 @@ export async function handleControlUiAvatarRequest(
   res: ServerResponse,
   opts: {
     basePath?: string;
-    config: OperatorConfig;
+    config: OpenClawConfig;
     auth?: ResolvedGatewayAuth;
     trustedProxies?: string[];
     allowRealIpFallback?: boolean;

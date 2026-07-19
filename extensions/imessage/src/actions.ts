@@ -477,10 +477,10 @@ export const imessageMessageActions: ChannelMessageActionAdapter = {
           ? ` imsg reports: ${privateApiStatus.statusMessage}`
           : "";
         log.warn(
-          `iMessage ${action} blocked: private API bridge unavailable (accountId=${account.accountId}, cliPath=${cliPathForProbe}). Run \`imsg launch\` to re-inject the dylib, then \`openclaw channels status --probe\` to refresh.${reason}`,
+          `iMessage ${action} blocked: private API bridge unavailable (accountId=${account.accountId}, cliPath=${cliPathForProbe}). Run \`imsg launch\` to re-inject the dylib, then \`operator channels status --probe\` to refresh.${reason}`,
         );
         throw new Error(
-          `iMessage ${action} requires the imsg private API bridge. Run imsg launch, then openclaw channels status --probe to refresh capability detection.${reason}`,
+          `iMessage ${action} requires the imsg private API bridge. Run imsg launch, then operator channels status --probe to refresh capability detection.${reason}`,
         );
       }
     };
@@ -617,14 +617,14 @@ export const imessageMessageActions: ChannelMessageActionAdapter = {
           );
         }
         // Reply-with-attachment requires the `imsg send-rich --file` flag
-        // (openclaw/imsg#114). Older imsg builds reject the option, so
+        // (operator/imsg#114). Older imsg builds reject the option, so
         // refuse loudly here rather than letting send-rich ship the text
         // alone and silently drop the attachment — the original symptom
-        // of openclaw/openclaw#79822.
+        // of operator/operator#79822.
         if (privateApiStatus?.cliCapabilities?.sendRichSupportsAttachment !== true) {
           throw new Error(
             "iMessage reply with an attachment needs an imsg build that exposes `send-rich --file` " +
-              "(openclaw/imsg#114). Upgrade imsg, or use action 'upload-file' (with filePath/filename) " +
+              "(operator/imsg#114). Upgrade imsg, or use action 'upload-file' (with filePath/filename) " +
               "or action 'send' (with media) to deliver the file plus a separate 'reply' for any text.",
           );
         }
@@ -759,7 +759,7 @@ export const imessageMessageActions: ChannelMessageActionAdapter = {
       }
       if (privateApiStatus?.selectors?.pollPayloadMessage !== true) {
         throw new Error(
-          "iMessage poll requires an imsg bridge that advertises the pollPayloadMessage selector. Update imsg, run imsg launch to re-inject the bridge, then run openclaw channels status --probe to refresh capability detection.",
+          "iMessage poll requires an imsg bridge that advertises the pollPayloadMessage selector. Update imsg, run imsg launch to re-inject the bridge, then run operator channels status --probe to refresh capability detection.",
         );
       }
       // Shared `message`-tool poll params (see src/poll-params.ts): pollQuestion
@@ -793,14 +793,14 @@ export const imessageMessageActions: ChannelMessageActionAdapter = {
       }
       if (privateApiStatus?.selectors?.pollVoteMessage !== true) {
         throw new Error(
-          "iMessage poll-vote requires an imsg bridge that advertises the pollVoteMessage selector. Update imsg, run imsg launch to re-inject the bridge, then run openclaw channels status --probe to refresh capability detection.",
+          "iMessage poll-vote requires an imsg bridge that advertises the pollVoteMessage selector. Update imsg, run imsg launch to re-inject the bridge, then run operator channels status --probe to refresh capability detection.",
         );
       }
       // A previously injected helper can be newer than cliPath. The selector
       // proves native construction; rpc_methods proves this binary has vote.
       if (!imessageRpcSupportsMethod(privateApiStatus, "poll.vote")) {
         throw new Error(
-          "iMessage poll-vote requires an imsg build that advertises the poll.vote capability. Update imsg, then run openclaw channels status --probe to refresh capability detection.",
+          "iMessage poll-vote requires an imsg build that advertises the poll.vote capability. Update imsg, then run operator channels status --probe to refresh capability detection.",
         );
       }
       // The poll being voted on is an inbound message; the agent references it

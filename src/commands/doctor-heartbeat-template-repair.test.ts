@@ -214,7 +214,7 @@ Add short tasks below the comments only when you want the agent to check somethi
         severity: "warning",
         path: heartbeatPath,
         requirement: "legacy-template",
-        fixHint: expect.stringContaining("openclaw doctor --fix"),
+        fixHint: expect.stringContaining("operator doctor --fix"),
       }),
     ]);
   });

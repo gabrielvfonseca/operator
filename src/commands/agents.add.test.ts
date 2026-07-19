@@ -7,8 +7,8 @@ import { resolveAuthProfileOrder } from "../agents/auth-profiles/order.js";
 import { loadPersistedAuthProfileStore } from "../agents/auth-profiles/persisted.js";
 import { saveAuthProfileStore } from "../agents/auth-profiles/store.js";
 import { formatCliCommand } from "../cli/command-format.js";
-import { closeOperatorAgentDatabasesForTest } from "../state/openclaw-agent-db.js";
-import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import { closeOpenClawAgentDatabasesForTest } from "../state/operator-agent-db.js";
+import { closeOpenClawStateDatabaseForTest } from "../state/operator-state-db.js";
 import { createSuiteTempRootTracker } from "../test-helpers/temp-dir.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import { baseConfigSnapshot, createTestRuntime } from "./test-runtime-config-helpers.js";
@@ -115,8 +115,7 @@ import { WizardCancelledError } from "../wizard/prompts.js";
 import { agentsAddCommand, testing } from "./agents.commands.add.js";
 
 const runtime = createTestRuntime();
-const RESERVED_SYSTEM_AGENT_IDS_FOR_TEST = ["@gabrielvfonseca/operator", "crestodian"] as const; // reserved ids
-
+const RESERVED_SYSTEM_AGENT_IDS_FOR_TEST = ["operator", "crestodian"] as const; // reserved ids
 describe("agents add command", () => {
   const suiteTempDirs = createSuiteTempRootTracker({ prefix: "operator-agents-add-" });
 
@@ -125,8 +124,8 @@ describe("agents add command", () => {
   });
 
   afterAll(async () => {
-    closeOperatorAgentDatabasesForTest();
-    closeOperatorStateDatabaseForTest();
+    closeOpenClawAgentDatabasesForTest();
+    closeOpenClawStateDatabaseForTest();
     await suiteTempDirs.cleanup();
   });
 
@@ -151,7 +150,7 @@ describe("agents add command", () => {
     run: (root: string) => Promise<void>,
   ): Promise<void> {
     const root = await suiteTempDirs.make(prefix);
-    await withEnvAsync({ OPERATOR_STATE_DIR: root }, async () => await run(root));
+    await withEnvAsync({ OPENCLAW_STATE_DIR: root }, async () => await run(root));
   }
 
   it("requires --workspace when flags are present", async () => {
@@ -161,7 +160,7 @@ describe("agents add command", () => {
 
     expect(runtime.error).toHaveBeenCalledOnce();
     expect(runtime.error).toHaveBeenCalledWith(
-      `Non-interactive agent creation ...
+      `Non-interactive agent creation requires --workspace. Re-run ${formatCliCommand("operator agents add <id> --workspace <path>")} or omit flags to use the wizard.`,
     );
     expect(runtime.exit).toHaveBeenCalledWith(1);
     expect(writeConfigFileMock).not.toHaveBeenCalled();
@@ -176,7 +175,7 @@ describe("agents add command", () => {
 
     expect(runtime.error).toHaveBeenCalledOnce();
     expect(runtime.error).toHaveBeenCalledWith(
-      `Non-interactive agent creation ...
+      `Non-interactive agent creation requires --workspace. Re-run ${formatCliCommand("operator agents add <id> --workspace <path>")} or omit flags to use the wizard.`,
     );
     expect(runtime.exit).toHaveBeenCalledWith(1);
     expect(writeConfigFileMock).not.toHaveBeenCalled();
@@ -190,7 +189,7 @@ describe("agents add command", () => {
       await agentsAddCommand({ name, workspace: "/tmp/reserved" }, runtime, { hasFlags: true });
 
       expect(runtime.error).toHaveBeenCalledWith(
-        `"${name}" is reserved. Choose another name, or run ${formatCliCommand("openclaw agents list")} to inspect configured agents.`,
+        `"${name}" is reserved. Choose another name, or run ${formatCliCommand("operator agents list")} to inspect configured agents.`,
       );
       expect(runtime.exit).toHaveBeenCalledWith(1);
       expect(writeConfigFileMock).not.toHaveBeenCalled();

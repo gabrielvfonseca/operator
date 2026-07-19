@@ -15,8 +15,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { handleCodexAppServerApprovalRequest } from "./approval-bridge.js";
 import { requestPluginApproval } from "./plugin-approval-roundtrip.js";
 
-vi.mock("openclaw/plugin-sdk/agent-harness-runtime", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("openclaw/plugin-sdk/agent-harness-runtime")>()),
+vi.mock("operator/plugin-sdk/agent-harness-runtime", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("operator/plugin-sdk/agent-harness-runtime")>()),
   callGatewayTool: vi.fn(),
   hasNativeHookRelayInvocation: vi.fn(() => false),
   invokeNativeHookRelay: vi.fn(),
@@ -27,9 +27,9 @@ vi.mock("openclaw/plugin-sdk/agent-harness-runtime", async (importOriginal) => (
   })),
 }));
 
-vi.mock("openclaw/plugin-sdk/agent-harness-exec-review-runtime", async (importOriginal) => ({
+vi.mock("operator/plugin-sdk/agent-harness-exec-review-runtime", async (importOriginal) => ({
   ...(await importOriginal<
-    typeof import("openclaw/plugin-sdk/agent-harness-exec-review-runtime")
+    typeof import("operator/plugin-sdk/agent-harness-exec-review-runtime")
   >()),
   reviewExecRequestWithConfiguredModel: vi.fn(),
 }));
@@ -867,8 +867,8 @@ describe("Codex app-server approval bridge", () => {
   it.each([
     "/approve abc123 allow-once",
     "bash -lc '/approve abc123 allow-once'",
-    "openclaw channels login --channel whatsapp",
-    "sudo -EH bash -lc 'openclaw channels login --channel whatsapp'",
+    "operator channels login --channel whatsapp",
+    "sudo -EH bash -lc 'operator channels login --channel whatsapp'",
   ])("keeps unsafe control command approvals on the plugin approval route: %s", async (command) => {
     const params = createParams();
     params.config = {
@@ -941,7 +941,7 @@ describe("Codex app-server approval bridge", () => {
         threadId: "thread-1",
         turnId: "turn-1",
         itemId: "cmd-auto-review-security-suppression",
-        command: "openclaw config set security.audit.suppressions '[]'",
+        command: "operator config set security.audit.suppressions '[]'",
       },
       paramsForRun: params,
       threadId: "thread-1",

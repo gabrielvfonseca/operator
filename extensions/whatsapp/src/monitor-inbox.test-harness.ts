@@ -124,10 +124,10 @@ export function failNextWhatsAppPluginStateRegisterIfAbsent(error: Error) {
   pluginRuntimeMocks.failNextRegisterIfAbsent(error);
 }
 
-vi.mock("openclaw/plugin-sdk/channel-activity-runtime", async () => {
+vi.mock("operator/plugin-sdk/channel-activity-runtime", async () => {
   const actual = await vi.importActual<
-    typeof import("openclaw/plugin-sdk/channel-activity-runtime")
-  >("openclaw/plugin-sdk/channel-activity-runtime");
+    typeof import("operator/plugin-sdk/channel-activity-runtime")
+  >("operator/plugin-sdk/channel-activity-runtime");
   return {
     ...actual,
     recordChannelActivity: (...args: unknown[]) =>
@@ -137,8 +137,8 @@ vi.mock("openclaw/plugin-sdk/channel-activity-runtime", async () => {
 
 vi.mock("./runtime.js", async () => {
   const { createChannelIngressQueueForTests: createChannelIngressQueue } = await Promise.resolve(
-    vi.importActual<typeof import("openclaw/plugin-sdk/plugin-state-test-runtime")>(
-      "openclaw/plugin-sdk/plugin-state-test-runtime",
+    vi.importActual<typeof import("operator/plugin-sdk/plugin-state-test-runtime")>(
+      "operator/plugin-sdk/plugin-state-test-runtime",
     ),
   );
   return {

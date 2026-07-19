@@ -31,7 +31,7 @@ function renderImageBlock(params: {
     return `    image: ${params.imageName}\n`;
   }
   const context = toPosixRelative(params.outputDir, params.repoRoot) || ".";
-  return `    build:\n      context: ${yamlDoubleQuoted(context)}\n      dockerfile: Dockerfile\n      args:\n        OPERATOR_EXTENSIONS: "qa-channel qa-lab"\n`;
+  return `    build:\n      context: ${yamlDoubleQuoted(context)}\n      dockerfile: Dockerfile\n      args:\n        OPENCLAW_EXTENSIONS: "qa-channel qa-lab"\n`;
 }
 
 function renderCompose(params: {
@@ -65,8 +65,8 @@ ${imageBlock}    pull_policy: never
       retries: 6
       start_period: 3s
     environment:
-      OPERATOR_ENABLE_PRIVATE_QA_CLI: "1"
-      OPERATOR_PROFILE: ""
+      OPENCLAW_ENABLE_PRIVATE_QA_CLI: "1"
+      OPENCLAW_PROFILE: ""
     command:
       - node
       - dist/index.js
@@ -105,8 +105,7 @@ ${params.bindUiDist ? `      - ${yamlDoubleQuoted(`${qaLabUiMount}:${QA_LAB_UI_O
     command:
       - sh
       - -lc
-      - OPERATOR_QA_CONTROL_UI_PROXY_TOKEN="$(node -e 'const fs=require("node:fs");const cfg=JSON.parse(fs.readFileSync("/opt/operator-scaffold/operator.json","utf8"));process.stdout.write(cfg.gateway?.auth?.token ?? "")')" exec node dist/index.js qa ui --host 0.0.0.0 --port ${QA_LAB_INTERNAL_PORT} --advertise-host 127.0.0.1 --advertise-port ${params.qaLabPort} --control-ui-url http://127.0.0.1:${params.gatewayPort}/ --control-ui-proxy-target http://operator-qa-gateway:18789/${params.bindUiDist ? ` --ui-dist-dir ${QA_LAB_UI_OVERLAY_DIR}` : ""} --auto-kickoff-target direct --send-kickoff-on-start --embedded-gateway disabled
-    depends_on:
+      - OPERATOR_QA_CONTROL_UI_PROXY_TOKEN="$(node -e 'const fs=require("node:fs");const cfg=JSON.parse(fs.readFileSync("/opt/operator-scaffold/operator.json","utf8"));process.stdout.write(cfg.gateway?.auth?.token ?? "")')" exec node dist/index.js qa ui --host 0.0.0.0 --port ${QA_LAB_INTERNAL_PORT} --advertise-host 127.0.0.1 --advertise-port ${params.qaLabPort} --control-ui-url http://127.0.0.1:${params.gatewayPort}/ --control-ui-proxy-target http://operator-qa-gateway:18789/${params.bindUiDist ? ` --ui-dist-dir ${QA_LAB_UI_OVERLAY_DIR}` : ""} --auto-kickoff-target direct --send-kickoff-on-start --embedded-gateway disabled    depends_on:
       qa-mock-openai:
         condition: service_healthy
 `
@@ -124,8 +123,7 @@ ${imageBlock}    pull_policy: never
       OPERATOR_SKIP_GMAIL_WATCHER: "1"
       OPERATOR_SKIP_BROWSER_CONTROL_SERVER: "1"
       OPERATOR_SKIP_CANVAS_HOST: "1"
-      OPERATOR_PROFILE: ""
-    volumes:
+      OPERATOR_PROFILE: ""    volumes:
       - ./state:/opt/operator-scaffold:ro
       - ${yamlDoubleQuoted(`${repoMount}:/opt/operator-repo:ro`)}
     healthcheck:
@@ -150,8 +148,7 @@ ${
     command:
       - sh
       - -lc
-      - mkdir -p /tmp/openclaw/workspace /tmp/openclaw/state && cp /opt/operator-scaffold/operator.json /tmp/openclaw/operator.json && cp -R /opt/operator-scaffold/seed-workspace/. /tmp/openclaw/workspace/ && rm -rf /tmp/openclaw/workspace/repo && ln -s /opt/operator-repo /tmp/openclaw/workspace/repo && exec node dist/index.js gateway run --port 18789 --bind lan --allow-unconfigured
-`;
+      - mkdir -p /tmp/openclaw/workspace /tmp/openclaw/state && cp /opt/operator-scaffold/operator.json /tmp/openclaw/operator.json && cp -R /opt/operator-scaffold/seed-workspace/. /tmp/openclaw/workspace/ && rm -rf /tmp/openclaw/workspace/repo && ln -s /opt/operator-repo /tmp/openclaw/workspace/repo && exec node dist/index.js gateway run --port 18789 --bind lan --allow-unconfigured`;
 }
 
 function renderEnvExample(params: {
@@ -163,7 +160,7 @@ function renderEnvExample(params: {
   includeQaLabUi: boolean;
 }) {
   return `# QA Docker harness example env
-OPERATOR_GATEWAY_TOKEN=${params.gatewayToken}
+OPENCLAW_GATEWAY_TOKEN=${params.gatewayToken}
 QA_GATEWAY_PORT=${params.gatewayPort}
 QA_BUS_BASE_URL=${params.qaBusBaseUrl}
 QA_PROVIDER_BASE_URL=${params.providerBaseUrl}
@@ -190,8 +187,7 @@ Files:
 Suggested flow:
 
 1. Build the prebaked image once:
-   - \`docker build -t operator:qa-local-prebaked --build-arg OPERATOR_EXTENSIONS="qa-channel qa-lab" -f Dockerfile .\`
-2. Start the stack:
+   - \`docker build -t operator:qa-local-prebaked --build-arg OPERATOR_EXTENSIONS="qa-channel qa-lab" -f Dockerfile .\`2. Start the stack:
    - \`docker compose -f docker-compose.qa.yml up${params.usePrebuiltImage ? "" : " --build"} -d\`
 3. Open the QA dashboard:
    - \`${params.includeQaLabUi ? `http://127.0.0.1:${params.qaLabPort}` : "not published in this scaffold"}\`
@@ -254,7 +250,7 @@ export async function writeQaDockerHarnessFiles(params: {
     gatewayPort: 18789,
     gatewayToken,
     providerBaseUrl,
-    workspaceDir: "/tmp/openclaw/workspace",
+    workspaceDir: "/tmp/operator/workspace",
     controlUiRoot: "/app/dist/control-ui",
     transportPluginIds: QA_CHANNEL_REQUIRED_PLUGIN_IDS,
     transportConfig: createQaChannelGatewayConfig({
@@ -354,7 +350,7 @@ export async function buildQaDockerHarnessImage(
       "-t",
       imageName,
       "--build-arg",
-      "OPERATOR_EXTENSIONS=qa-channel qa-lab",
+      "OPENCLAW_EXTENSIONS=qa-channel qa-lab",
       "-f",
       "Dockerfile",
       ".",

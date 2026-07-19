@@ -34,9 +34,9 @@ function hasValidBundledPluginConfig(params: {
 }
 
 function prepareConfigForDisabledBundledInstall(
-  config: OperatorConfig,
+  config: OpenClawConfig,
   pluginId: string,
-): OperatorConfig {
+): OpenClawConfig {
   const entries = config.plugins?.entries ?? {};
   const { [pluginId]: _removedEntry, ...nextEntries } = entries;
   return {

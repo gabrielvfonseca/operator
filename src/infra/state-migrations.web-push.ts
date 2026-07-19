@@ -389,7 +389,7 @@ function migrateIntoDatabase(params: {
 }): { importedSubscriptions: number; importedVapidKeys: boolean } {
   let importedSubscriptions = 0;
   let importedVapidKeys = false;
-  runOperatorStateWriteTransaction(
+  runOpenClawStateWriteTransaction(
     ({ db }) => {
       const webPushDb = getNodeSqliteKysely<WebPushDatabase>(db);
       const expectedSubscriptions = new Map<string, WebPushSubscription>();

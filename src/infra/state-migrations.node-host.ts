@@ -28,7 +28,7 @@ const MIGRATION_LOCK_POLL_INTERVAL_MS = 25;
 const CONFIG_KEYS = new Set(["version", "nodeId", "token", "displayName", "gateway"]);
 const GATEWAY_KEYS = new Set(["host", "port", "tls", "tlsFingerprint", "contextPath"]);
 
-type NodeHostConfigDatabase = Pick<OperatorStateKyselyDatabase, "node_host_config">;
+type NodeHostConfigDatabase = Pick<OpenClawStateKyselyDatabase, "node_host_config">;
 
 type LegacySourceSnapshot = {
   sourcePath: string;
@@ -334,7 +334,7 @@ function migrateIntoDatabase(params: { env: NodeJS.ProcessEnv; legacy: Canonical
 } {
   let imported = false;
   let preservedCanonical = false;
-  runOperatorStateWriteTransaction(
+  runOpenClawStateWriteTransaction(
     ({ db }) => {
       const stateDb = getNodeSqliteKysely<NodeHostConfigDatabase>(db);
       const row = executeSqliteQueryTakeFirstSync(

@@ -5,7 +5,7 @@
  */
 import { normalizeLowercaseStringOrEmpty } from "@gabrielvfonseca/normalization-core/string-coerce";
 import { Type, type TSchema } from "typebox";
-import { getRuntimeConfig, type OperatorConfig } from "../../config/config.js";
+import { getRuntimeConfig, type OpenClawConfig } from "../../config/config.js";
 import { resolveCronCreationDelivery } from "../../cron/delivery-context.js";
 import { assertCronDeliveryInputNonBlankFields } from "../../cron/delivery-target-validation.js";
 import { normalizeCronJobCreate, normalizeCronJobPatch } from "../../cron/normalize.js";
@@ -428,7 +428,7 @@ function readCronJobIdParam(params: Record<string, unknown>) {
 
 function resolveCronToolCallerScope(
   opts: CronToolOptions | undefined,
-  cfg: OperatorConfig,
+  cfg: OpenClawConfig,
 ): CronToolCallerScope | undefined {
   const sessionKey = opts?.agentSessionKey?.trim();
   if (!sessionKey) {

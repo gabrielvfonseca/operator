@@ -10,13 +10,13 @@ import {
   listPotentialConfiguredChannelIds,
 } from "../../../channels/config-presence.js";
 import { listRawChannelPluginCatalogEntries } from "../../../channels/plugins/catalog.js";
-import type { OperatorConfig } from "../../../config/types.operator.js";
+import type { OpenClawConfig } from "../../../config/types.operator.js";
 import type { PluginInstallRecord } from "../../../config/types.plugins.js";
 import type { HealthFinding, HealthRepairEffect } from "../../../flows/health-checks.js";
 import { parseClawHubPluginSpec } from "../../../infra/clawhub-spec.js";
 import {
-  compareOperatorReleaseVersions,
-  isOperatorOrgNpmSpec,
+  compareOpenClawReleaseVersions,
+  isOpenClawOrgNpmSpec,
   parseRegistryNpmSpec,
 } from "../../../infra/npm-registry-spec.js";
 import {
@@ -117,7 +117,7 @@ function shouldFallbackClawHubToNpm(params: {
   result: { ok: false; code?: string };
   npmSpec?: string;
 }): boolean {
-  if (!isOperatorOrgNpmSpec(params.npmSpec)) {
+  if (!isOpenClawOrgNpmSpec(params.npmSpec)) {
     return false;
   }
   return (
@@ -190,7 +190,7 @@ function addConfiguredPluginId(ids: Set<string>, value: unknown): void {
   }
 }
 
-function addConfiguredAgentRuntimePluginIds(ids: Set<string>, cfg: OperatorConfig): void {
+function addConfiguredAgentRuntimePluginIds(ids: Set<string>, cfg: OpenClawConfig): void {
   for (const runtime of collectConfiguredRuntimePluginIds(cfg)) {
     addConfiguredPluginId(ids, runtime);
   }
@@ -198,7 +198,7 @@ function addConfiguredAgentRuntimePluginIds(ids: Set<string>, cfg: OperatorConfi
 
 function addConfiguredMemoryEmbeddingProviderPluginIds(
   ids: Set<string>,
-  cfg: OperatorConfig,
+  cfg: OpenClawConfig,
 ): void {
   const configuredProviderIds = collectConfiguredMemoryEmbeddingProviderIds(cfg);
   if (configuredProviderIds.size === 0) {
@@ -214,7 +214,7 @@ function addConfiguredMemoryEmbeddingProviderPluginIds(
   }
 }
 
-function addConfiguredSpeechProviderPluginIds(ids: Set<string>, cfg: OperatorConfig): void {
+function addConfiguredSpeechProviderPluginIds(ids: Set<string>, cfg: OpenClawConfig): void {
   for (const pluginId of resolveOfficialExternalProviderContractPluginIds({
     contract: "speechProviders",
     providerIds: collectConfiguredSpeechProviderIds(cfg),
@@ -223,7 +223,7 @@ function addConfiguredSpeechProviderPluginIds(ids: Set<string>, cfg: OperatorCon
   }
 }
 
-function addConfiguredWebFetchProviderPluginIds(ids: Set<string>, cfg: OperatorConfig): void {
+function addConfiguredWebFetchProviderPluginIds(ids: Set<string>, cfg: OpenClawConfig): void {
   const webFetch = cfg.tools?.web?.fetch;
   if (webFetch?.enabled === false) {
     return;
@@ -242,7 +242,7 @@ function addConfiguredWebFetchProviderPluginIds(ids: Set<string>, cfg: OperatorC
 
 function addEnvWebFetchProviderPluginIds(
   ids: Set<string>,
-  cfg: OperatorConfig,
+  cfg: OpenClawConfig,
   env?: NodeJS.ProcessEnv,
 ): void {
   if (cfg.tools?.web?.fetch?.enabled === false) {
@@ -256,7 +256,7 @@ function addEnvWebFetchProviderPluginIds(
   }
 }
 
-function collectConfiguredPluginIds(cfg: OperatorConfig, env?: NodeJS.ProcessEnv): Set<string> {
+function collectConfiguredPluginIds(cfg: OpenClawConfig, env?: NodeJS.ProcessEnv): Set<string> {
   const ids = new Set<string>();
   const plugins = asObjectRecord(cfg.plugins);
   if (plugins?.enabled === false) {
@@ -293,7 +293,7 @@ function collectConfiguredPluginIds(cfg: OperatorConfig, env?: NodeJS.ProcessEnv
   return ids;
 }
 
-function collectBlockedPluginIds(cfg: OperatorConfig): Set<string> {
+function collectBlockedPluginIds(cfg: OpenClawConfig): Set<string> {
   const ids = new Set<string>();
   const deny = cfg.plugins?.deny;
   if (Array.isArray(deny)) {
@@ -312,7 +312,7 @@ function collectBlockedPluginIds(cfg: OperatorConfig): Set<string> {
   return ids;
 }
 
-function collectConfiguredChannelIds(cfg: OperatorConfig, env?: NodeJS.ProcessEnv): Set<string> {
+function collectConfiguredChannelIds(cfg: OpenClawConfig, env?: NodeJS.ProcessEnv): Set<string> {
   const ids = new Set<string>();
   if (asObjectRecord(cfg.plugins)?.enabled === false) {
     return ids;
@@ -335,7 +335,7 @@ function collectConfiguredChannelIds(cfg: OperatorConfig, env?: NodeJS.ProcessEn
 }
 
 function collectEffectiveConfiguredChannelOwnerPluginIds(params: {
-  cfg: OperatorConfig;
+  cfg: OpenClawConfig;
   env: NodeJS.ProcessEnv;
   snapshot: PluginMetadataSnapshot;
   configuredChannelIds: ReadonlySet<string>;
@@ -367,7 +367,7 @@ function collectEffectiveConfiguredChannelOwnerPluginIds(params: {
 }
 
 function collectDownloadableInstallCandidates(params: {
-  cfg: OperatorConfig;
+  cfg: OpenClawConfig;
   env?: NodeJS.ProcessEnv;
   missingPluginIds: ReadonlySet<string>;
   configuredPluginIds?: ReadonlySet<string>;
@@ -547,7 +547,7 @@ function addLegacyNpmDeclarationInstallCandidate(params: {
 }
 
 function collectLegacyNpmDeclarationInstallCandidates(params: {
-  cfg: OperatorConfig;
+  cfg: OpenClawConfig;
   env?: NodeJS.ProcessEnv;
   configuredPluginIds: ReadonlySet<string>;
   missingPluginIds: ReadonlySet<string>;
@@ -596,7 +596,7 @@ function collectLegacyNpmDeclarationInstallCandidates(params: {
 }
 
 function collectUpdateDeferredPluginIds(params: {
-  cfg: OperatorConfig;
+  cfg: OpenClawConfig;
   env: NodeJS.ProcessEnv;
   configuredPluginIds: ReadonlySet<string>;
   configuredChannelIds: ReadonlySet<string>;
@@ -695,7 +695,7 @@ function installedRuntimePackageVersionIsStale(params: {
   ) {
     return false;
   }
-  const comparison = compareOperatorReleaseVersions(params.installedVersion, params.currentVersion);
+  const comparison = compareOpenClawReleaseVersions(params.installedVersion, params.currentVersion);
   return comparison === null ? params.installedVersion !== params.currentVersion : comparison < 0;
 }
 
@@ -769,7 +769,7 @@ function isConfiguredPluginRepairTarget(params: {
 }
 
 function collectOfficialReplacementInstallCandidates(params: {
-  cfg: OperatorConfig;
+  cfg: OpenClawConfig;
   env: NodeJS.ProcessEnv;
   repairablePluginIds: ReadonlySet<string>;
   configuredPluginIds: ReadonlySet<string>;
@@ -1418,7 +1418,7 @@ function missingRecordedPluginIssueKind(params: {
 
 /** Detect configured plugin installs that Doctor can repair without mutating package state. */
 export async function detectConfiguredPluginInstallHealthIssues(params: {
-  cfg: OperatorConfig;
+  cfg: OpenClawConfig;
   env?: NodeJS.ProcessEnv;
   baselineRecords?: Record<string, PluginInstallRecord>;
 }): Promise<ConfiguredPluginInstallHealthIssue[]> {
@@ -1802,7 +1802,7 @@ type RepairMissingPluginInstallsResult = {
 
 /** Repair missing installs inferred from the current Operator config. */
 export async function repairMissingConfiguredPluginInstalls(params: {
-  cfg: OperatorConfig;
+  cfg: OpenClawConfig;
   env?: NodeJS.ProcessEnv;
   acknowledgeClawHubRisk?: boolean;
   onClawHubRisk?: (request: ClawHubRiskAcknowledgementRequest) => boolean | Promise<boolean>;
@@ -1829,7 +1829,7 @@ export async function repairMissingConfiguredPluginInstalls(params: {
 
 /** Repair missing installs for an explicit plugin/channel id set. */
 export async function repairMissingPluginInstallsForIds(params: {
-  cfg: OperatorConfig;
+  cfg: OpenClawConfig;
   pluginIds: Iterable<string>;
   channelIds?: Iterable<string>;
   blockedPluginIds?: Iterable<string>;
@@ -1861,7 +1861,7 @@ export async function repairMissingPluginInstallsForIds(params: {
 }
 
 async function repairMissingPluginInstalls(params: {
-  cfg: OperatorConfig;
+  cfg: OpenClawConfig;
   pluginIds: ReadonlySet<string>;
   channelIds: ReadonlySet<string>;
   blockedPluginIds?: ReadonlySet<string>;

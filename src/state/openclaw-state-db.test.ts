@@ -19,31 +19,31 @@ import { loadTaskRegistryStateFromSqlite } from "../tasks/task-registry.store.sq
 import { withOperatorTestState } from "../test-utils/openclaw-test-state.js";
 import type { DB as OperatorStateKyselyDatabase } from "./openclaw-state-db.generated.js";
 import {
-  assertOperatorStateDatabaseForMaintenance,
-  closeOperatorStateDatabaseForTest,
-  detectOperatorStateDatabaseSchemaMigrations,
-  OPERATOR_SQLITE_BUSY_TIMEOUT_MS,
-  openOperatorStateDatabase,
-  OPERATOR_STATE_SCHEMA_VERSION,
-  repairOperatorStateDatabaseSchema,
-  runOperatorStateWriteTransaction,
-  withOperatorStateStartupMigrationCheckpointDatabase,
-} from "./openclaw-state-db.js";
-import { resolveOperatorStateSqlitePath } from "./openclaw-state-db.paths.js";
+  assertOpenClawStateDatabaseForMaintenance,
+  closeOpenClawStateDatabaseForTest,
+  detectOpenClawStateDatabaseSchemaMigrations,
+  OPENCLAW_SQLITE_BUSY_TIMEOUT_MS,
+  openOpenClawStateDatabase,
+  OPENCLAW_STATE_SCHEMA_VERSION,
+  repairOpenClawStateDatabaseSchema,
+  runOpenClawStateWriteTransaction,
+  withOpenClawStateStartupMigrationCheckpointDatabase,
+} from "./operator-state-db.js";
+import { resolveOpenClawStateSqlitePath } from "./operator-state-db.paths.js";
 import {
   collectSqliteSchemaShape,
   createSqliteSchemaShapeFromSql,
 } from "./sqlite-schema-shape.test-support.js";
 
 type StateDbTestDatabase = Pick<
-  OperatorStateKyselyDatabase,
+  OpenClawStateKyselyDatabase,
   "diagnostic_events" | "schema_meta" | "skill_curator_state" | "skill_lifecycle" | "skill_usage"
 >;
 
 const stateDbTempDirs: string[] = [];
 
 function createTempStateDir(): string {
-  return makeTempDir(stateDbTempDirs, "openclaw-state-db-");
+  return makeTempDir(stateDbTempDirs, "operator-state-db-");
 }
 
 type PlacementConstraintProbe = {
@@ -215,9 +215,9 @@ function createLegacyAuditStateDatabase(stateDir: string): string {
 }
 
 function createCanonicalAuditStateDatabase(stateDir: string): string {
-  const database = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: stateDir } });
+  const database = openOpenClawStateDatabase({ env: { OPENCLAW_STATE_DIR: stateDir } });
   const databasePath = database.path;
-  closeOperatorStateDatabaseForTest();
+  closeOpenClawStateDatabaseForTest();
   return databasePath;
 }
 
@@ -323,11 +323,11 @@ function runHotRollbackJournalRecoveryProbe(params: { moduleUrl: string; rootDir
     const databasePath = path.join(${JSON.stringify(params.rootDir)}, "hot-journal.sqlite");
     const readyPath = path.join(${JSON.stringify(params.rootDir)}, "writer-ready");
     const {
-      closeOperatorStateDatabaseForTest,
-      openOperatorStateDatabase,
+      closeOpenClawStateDatabaseForTest,
+      openOpenClawStateDatabase,
     } = await import(moduleUrl);
 
-    const initial = openOperatorStateDatabase({ path: databasePath });
+    const initial = openOpenClawStateDatabase({ path: databasePath });
     initial.db.exec(\`
       CREATE TABLE hot_journal_probe (
         id INTEGER PRIMARY KEY,
@@ -335,7 +335,7 @@ function runHotRollbackJournalRecoveryProbe(params: { moduleUrl: string; rootDir
       );
       INSERT INTO hot_journal_probe (id, value) VALUES (1, 'committed');
     \`);
-    closeOperatorStateDatabaseForTest();
+    closeOpenClawStateDatabaseForTest();
 
     const rollbackMode = new DatabaseSync(databasePath);
     rollbackMode.exec("PRAGMA journal_mode = DELETE;");
@@ -345,12 +345,12 @@ function runHotRollbackJournalRecoveryProbe(params: { moduleUrl: string; rootDir
       import fs from "node:fs";
       import { DatabaseSync } from "node:sqlite";
 
-      const database = new DatabaseSync(process.env.OPERATOR_HOT_JOURNAL_DATABASE_PATH);
+      const database = new DatabaseSync(process.env.OPENCLAW_HOT_JOURNAL_DATABASE_PATH);
       database.exec("PRAGMA journal_mode = DELETE; PRAGMA synchronous = FULL; BEGIN IMMEDIATE;");
       database
         .prepare("UPDATE hot_journal_probe SET value = ? WHERE id = 1")
         .run("uncommitted");
-      fs.writeFileSync(process.env.OPERATOR_HOT_JOURNAL_READY_PATH, "ready");
+      fs.writeFileSync(process.env.OPENCLAW_HOT_JOURNAL_READY_PATH, "ready");
       setInterval(() => {}, 1_000);
     \`;
     const writer = spawn(
@@ -359,8 +359,8 @@ function runHotRollbackJournalRecoveryProbe(params: { moduleUrl: string; rootDir
       {
         env: {
           ...process.env,
-          OPERATOR_HOT_JOURNAL_DATABASE_PATH: databasePath,
-          OPERATOR_HOT_JOURNAL_READY_PATH: readyPath,
+          OPENCLAW_HOT_JOURNAL_DATABASE_PATH: databasePath,
+          OPENCLAW_HOT_JOURNAL_READY_PATH: readyPath,
         },
         stdio: ["ignore", "ignore", "pipe"],
       },
@@ -395,12 +395,12 @@ function runHotRollbackJournalRecoveryProbe(params: { moduleUrl: string; rootDir
         throw new Error(\`writer was not killed: \${JSON.stringify(outcome)} \${writerStderr}\`);
       }
 
-      const reopened = openOperatorStateDatabase({ path: databasePath });
+      const reopened = openOpenClawStateDatabase({ path: databasePath });
       const row = reopened.db
         .prepare("SELECT value FROM hot_journal_probe WHERE id = 1")
         .get();
       const integrity = reopened.db.prepare("PRAGMA integrity_check").get();
-      closeOperatorStateDatabaseForTest();
+      closeOpenClawStateDatabaseForTest();
       console.log(JSON.stringify({
         integrity: integrity?.integrity_check,
         journalExistsAfterRecovery: fs.existsSync(journalPath),
@@ -411,7 +411,7 @@ function runHotRollbackJournalRecoveryProbe(params: { moduleUrl: string; rootDir
         writer.kill("SIGKILL");
         await writerClosed;
       }
-      closeOperatorStateDatabaseForTest();
+      closeOpenClawStateDatabaseForTest();
     }
   `;
   const output = execFileSync(
@@ -431,12 +431,12 @@ function runHotRollbackJournalRecoveryProbe(params: { moduleUrl: string; rootDir
 }
 
 function expectNoncanonicalAuditSchemaRejected(stateDir: string, databasePath: string): void {
-  const options = { env: { OPERATOR_STATE_DIR: stateDir } };
-  expect(detectOperatorStateDatabaseSchemaMigrations(options)).toEqual([
+  const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
+  expect(detectOpenClawStateDatabaseSchemaMigrations(options)).toEqual([
     { kind: "audit-events-v2", path: databasePath },
   ]);
-  expect(() => openOperatorStateDatabase(options)).toThrow(/noncanonical audit event schema/);
-  expect(repairOperatorStateDatabaseSchema(options)).toEqual({
+  expect(() => openOpenClawStateDatabase(options)).toThrow(/noncanonical audit event schema/);
+  expect(repairOpenClawStateDatabaseSchema(options)).toEqual({
     changes: [],
     warnings: [expect.stringContaining("cannot be repaired automatically")],
   });
@@ -451,10 +451,10 @@ function runConcurrentSchemaProbe(params: {
     import fs from "node:fs";
     import { DatabaseSync } from "node:sqlite";
 
-    const pageBarrierDir = process.env.OPERATOR_SCHEMA_TEST_PAGE_BARRIER_DIR;
+    const pageBarrierDir = process.env.OPENCLAW_SCHEMA_TEST_PAGE_BARRIER_DIR;
     if (pageBarrierDir) {
-      const pageReadyPath = process.env.OPERATOR_SCHEMA_TEST_PAGE_READY_PATH;
-      const workerCount = Number(process.env.OPERATOR_SCHEMA_TEST_WORKER_COUNT);
+      const pageReadyPath = process.env.OPENCLAW_SCHEMA_TEST_PAGE_READY_PATH;
+      const workerCount = Number(process.env.OPENCLAW_SCHEMA_TEST_WORKER_COUNT);
       const originalPrepare = DatabaseSync.prototype.prepare;
       const sleepBuffer = new Int32Array(new SharedArrayBuffer(4));
       DatabaseSync.prototype.prepare = function (sql) {
@@ -492,12 +492,12 @@ function runConcurrentSchemaProbe(params: {
     }
 
     const {
-      closeOperatorStateDatabaseForTest,
-      openOperatorStateDatabase,
-    } = await import(process.env.OPERATOR_SCHEMA_TEST_MODULE_URL);
-    const databasePath = process.env.OPERATOR_SCHEMA_TEST_DATABASE_PATH;
-    const readyPath = process.env.OPERATOR_SCHEMA_TEST_READY_PATH;
-    const startPath = process.env.OPERATOR_SCHEMA_TEST_START_PATH;
+      closeOpenClawStateDatabaseForTest,
+      openOpenClawStateDatabase,
+    } = await import(process.env.OPENCLAW_SCHEMA_TEST_MODULE_URL);
+    const databasePath = process.env.OPENCLAW_SCHEMA_TEST_DATABASE_PATH;
+    const readyPath = process.env.OPENCLAW_SCHEMA_TEST_READY_PATH;
+    const startPath = process.env.OPENCLAW_SCHEMA_TEST_START_PATH;
     fs.writeFileSync(readyPath, "ready");
     const deadline = Date.now() + 15_000;
     while (!fs.existsSync(startPath)) {
@@ -507,13 +507,13 @@ function runConcurrentSchemaProbe(params: {
       await new Promise((resolve) => setTimeout(resolve, 2));
     }
     try {
-      const database = openOperatorStateDatabase({ path: databasePath });
+      const database = openOpenClawStateDatabase({ path: databasePath });
       const integrity = database.db.prepare("PRAGMA integrity_check").get();
       if (integrity?.integrity_check !== "ok") {
         throw new Error("state database integrity check failed");
       }
     } finally {
-      closeOperatorStateDatabaseForTest();
+      closeOpenClawStateDatabaseForTest();
     }
   `;
   const orchestratorSource = `
@@ -553,11 +553,11 @@ function runConcurrentSchemaProbe(params: {
 
       if (mode === "upgrade") {
         const {
-          closeOperatorStateDatabaseForTest,
-          openOperatorStateDatabase,
+          closeOpenClawStateDatabaseForTest,
+          openOpenClawStateDatabase,
         } = await import(moduleUrl);
-        openOperatorStateDatabase({ path: databasePath });
-        closeOperatorStateDatabaseForTest();
+        openOpenClawStateDatabase({ path: databasePath });
+        closeOpenClawStateDatabaseForTest();
 
         const legacy = new DatabaseSync(databasePath);
         legacy
@@ -617,15 +617,15 @@ function runConcurrentSchemaProbe(params: {
           {
             env: {
               ...process.env,
-              OPERATOR_SCHEMA_TEST_DATABASE_PATH: databasePath,
-              OPERATOR_SCHEMA_TEST_MODULE_URL: moduleUrl,
-              OPERATOR_SCHEMA_TEST_READY_PATH: readyPath,
-              OPERATOR_SCHEMA_TEST_START_PATH: startPath,
+              OPENCLAW_SCHEMA_TEST_DATABASE_PATH: databasePath,
+              OPENCLAW_SCHEMA_TEST_MODULE_URL: moduleUrl,
+              OPENCLAW_SCHEMA_TEST_READY_PATH: readyPath,
+              OPENCLAW_SCHEMA_TEST_START_PATH: startPath,
               ...(mode === "fresh"
                 ? {
-                    OPERATOR_SCHEMA_TEST_PAGE_BARRIER_DIR: barrierDir,
-                    OPERATOR_SCHEMA_TEST_PAGE_READY_PATH: pageReadyPath,
-                    OPERATOR_SCHEMA_TEST_WORKER_COUNT: String(workerCount),
+                    OPENCLAW_SCHEMA_TEST_PAGE_BARRIER_DIR: barrierDir,
+                    OPENCLAW_SCHEMA_TEST_PAGE_READY_PATH: pageReadyPath,
+                    OPENCLAW_SCHEMA_TEST_WORKER_COUNT: String(workerCount),
                   }
                 : {}),
             },
@@ -685,11 +685,11 @@ afterAll(() => {
 });
 
 afterEach(() => {
-  closeOperatorStateDatabaseForTest();
+  closeOpenClawStateDatabaseForTest();
   vi.restoreAllMocks();
 });
 
-describe("openclaw state database", () => {
+describe("operator state database", () => {
   it("resolves under the shared state database directory", () => {
     const stateDir = createTempStateDir();
 
@@ -700,7 +700,7 @@ describe("openclaw state database", () => {
 
   it("keeps test default state under a worker-sharded temp directory", () => {
     expect(
-      resolveOperatorStateSqlitePath({
+      resolveOpenClawStateSqlitePath({
         VITEST: "true",
         VITEST_WORKER_ID: "7",
       } as NodeJS.ProcessEnv),
@@ -711,12 +711,12 @@ describe("openclaw state database", () => {
 
   it("creates the shared state schema from the committed SQL shape", () => {
     const stateDir = createTempStateDir();
-    const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+    const database = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
 
     expect(collectSqliteSchemaShape(database.db)).toEqual(
-      createSqliteSchemaShapeFromSql(new URL("./openclaw-state-schema.sql", import.meta.url)),
+      createSqliteSchemaShapeFromSql(new URL("./operator-state-schema.sql", import.meta.url)),
     );
     expect(database.path).toBe(path.join(stateDir, "state", "operator.sqlite"));
     expect(
@@ -739,8 +739,8 @@ describe("openclaw state database", () => {
 
   it("doctor migrates version 2 tables to STRICT without losing rows", () => {
     const stateDir = createTempStateDir();
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
-    const opened = openOperatorStateDatabase(options);
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
+    const opened = openOpenClawStateDatabase(options);
     const databasePath = opened.path;
     opened.db
       .prepare(
@@ -749,7 +749,7 @@ describe("openclaw state database", () => {
         ) VALUES (1, 10, 20, NULL, '{}')`,
       )
       .run();
-    closeOperatorStateDatabaseForTest();
+    closeOpenClawStateDatabaseForTest();
 
     const { DatabaseSync } = requireNodeSqlite();
     const legacy = new DatabaseSync(databasePath);
@@ -769,16 +769,16 @@ describe("openclaw state database", () => {
     `);
     legacy.close();
 
-    expect(detectOperatorStateDatabaseSchemaMigrations(options)).toEqual([
+    expect(detectOpenClawStateDatabaseSchemaMigrations(options)).toEqual([
       { kind: "strict-tables-v3", path: databasePath },
     ]);
-    expect(repairOperatorStateDatabaseSchema(options)).toEqual({
+    expect(repairOpenClawStateDatabaseSchema(options)).toEqual({
       changes: ["Migrated shared state tables to SQLite STRICT typing (1)"],
       warnings: [],
     });
-    expect(detectOperatorStateDatabaseSchemaMigrations(options)).toEqual([]);
+    expect(detectOpenClawStateDatabaseSchemaMigrations(options)).toEqual([]);
 
-    const migrated = openOperatorStateDatabase(options);
+    const migrated = openOpenClawStateDatabase(options);
     expect(
       migrated.db
         .prepare("SELECT strict FROM pragma_table_list WHERE name = 'skill_curator_state'")
@@ -794,8 +794,8 @@ describe("openclaw state database", () => {
   });
 
   it("rejects a placement turn claim tuple without an owner", () => {
-    const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: createTempStateDir() },
+    const database = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: createTempStateDir() },
     });
 
     expect(() =>
@@ -933,8 +933,8 @@ describe("openclaw state database", () => {
   ] satisfies Array<PlacementConstraintProbe & { name: string }>;
 
   it.each(validPlacementShapes)("allows a valid $name", (input) => {
-    const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: createTempStateDir() },
+    const database = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: createTempStateDir() },
     });
 
     expect(() => insertPlacementConstraintProbe(database.db, input)).not.toThrow();
@@ -1074,8 +1074,8 @@ describe("openclaw state database", () => {
   ] satisfies Array<PlacementConstraintProbe & { name: string }>;
 
   it.each(invalidPlacementShapes)("rejects a placement with $name", (input) => {
-    const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: createTempStateDir() },
+    const database = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: createTempStateDir() },
     });
 
     expect(() => insertPlacementConstraintProbe(database.db, input)).toThrow();
@@ -1119,8 +1119,8 @@ describe("openclaw state database", () => {
   }>;
 
   it.each(invalidPlacementClaimOwners)("rejects a placement with $name", (input) => {
-    const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: createTempStateDir() },
+    const database = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: createTempStateDir() },
     });
 
     expect(() =>
@@ -1142,8 +1142,8 @@ describe("openclaw state database", () => {
   });
 
   it("allows an exact worker claim while placement drains", () => {
-    const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: createTempStateDir() },
+    const database = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: createTempStateDir() },
     });
 
     expect(() =>
@@ -1164,10 +1164,10 @@ describe("openclaw state database", () => {
 
   it("repairs a same-name shared-state uniqueness index", () => {
     const stateDir = createTempStateDir();
-    const env = { OPERATOR_STATE_DIR: stateDir };
-    const created = openOperatorStateDatabase({ env });
+    const env = { OPENCLAW_STATE_DIR: stateDir };
+    const created = openOpenClawStateDatabase({ env });
     const databasePath = created.path;
-    closeOperatorStateDatabaseForTest();
+    closeOpenClawStateDatabaseForTest();
 
     const { DatabaseSync } = requireNodeSqlite();
     const drifted = new DatabaseSync(databasePath);
@@ -1184,7 +1184,7 @@ describe("openclaw state database", () => {
       drifted.close();
     }
 
-    const reopened = openOperatorStateDatabase({ env });
+    const reopened = openOpenClawStateDatabase({ env });
     expect(
       reopened.db
         .prepare(
@@ -1199,23 +1199,23 @@ describe("openclaw state database", () => {
   it("migrates the released audit ledger to message-compatible attribution exactly once", () => {
     const stateDir = createTempStateDir();
     const databasePath = createLegacyAuditStateDatabase(stateDir);
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
 
-    expect(detectOperatorStateDatabaseSchemaMigrations(options)).toEqual([
+    expect(detectOpenClawStateDatabaseSchemaMigrations(options)).toEqual([
       { kind: "audit-events-v2", path: databasePath },
       { kind: "strict-tables-v3", path: databasePath },
     ]);
-    expect(() => openOperatorStateDatabase(options)).toThrow(/legacy audit event schema/);
+    expect(() => openOpenClawStateDatabase(options)).toThrow(/legacy audit event schema/);
 
-    expect(repairOperatorStateDatabaseSchema(options)).toEqual({
+    expect(repairOpenClawStateDatabaseSchema(options)).toEqual({
       changes: [
         "Migrated shared state audit event ledger → versioned message lifecycle schema",
         "Migrated shared state tables to SQLite STRICT typing (3)",
       ],
       warnings: [],
     });
-    expect(repairOperatorStateDatabaseSchema(options)).toEqual({ changes: [], warnings: [] });
-    expect(detectOperatorStateDatabaseSchemaMigrations(options)).toEqual([]);
+    expect(repairOpenClawStateDatabaseSchema(options)).toEqual({ changes: [], warnings: [] });
+    expect(detectOpenClawStateDatabaseSchemaMigrations(options)).toEqual([]);
 
     const { DatabaseSync } = requireNodeSqlite();
     const db = new DatabaseSync(databasePath);
@@ -1319,10 +1319,10 @@ describe("openclaw state database", () => {
           "idx_audit_events_direction_sequence",
         ]),
       );
-      expect(readSqliteNumberPragma(db, "user_version")).toBe(OPERATOR_STATE_SCHEMA_VERSION);
+      expect(readSqliteNumberPragma(db, "user_version")).toBe(OPENCLAW_STATE_SCHEMA_VERSION);
       expect(
         db.prepare("SELECT schema_version FROM schema_meta WHERE meta_key = 'primary'").get(),
-      ).toEqual({ schema_version: OPERATOR_STATE_SCHEMA_VERSION });
+      ).toEqual({ schema_version: OPENCLAW_STATE_SCHEMA_VERSION });
       expect(() =>
         db
           .prepare(
@@ -1345,7 +1345,7 @@ describe("openclaw state database", () => {
   it("preserves an empty audit ledger's sequence high-water mark", () => {
     const stateDir = createTempStateDir();
     const databasePath = createLegacyAuditStateDatabase(stateDir);
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
     const { DatabaseSync } = requireNodeSqlite();
     const legacy = new DatabaseSync(databasePath);
     legacy.exec(
@@ -1353,7 +1353,7 @@ describe("openclaw state database", () => {
     );
     legacy.close();
 
-    expect(repairOperatorStateDatabaseSchema(options).warnings).toEqual([]);
+    expect(repairOpenClawStateDatabaseSchema(options).warnings).toEqual([]);
 
     const migrated = new DatabaseSync(databasePath);
     try {
@@ -1388,13 +1388,13 @@ describe("openclaw state database", () => {
   it("refuses an audit sequence high-water mark outside the supported cursor range", () => {
     const stateDir = createTempStateDir();
     const databasePath = createLegacyAuditStateDatabase(stateDir);
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
     const { DatabaseSync } = requireNodeSqlite();
     const legacy = new DatabaseSync(databasePath);
     legacy.exec("UPDATE sqlite_sequence SET seq = 9007199254740992 WHERE name = 'audit_events';");
     legacy.close();
 
-    expect(repairOperatorStateDatabaseSchema(options)).toEqual({
+    expect(repairOpenClawStateDatabaseSchema(options)).toEqual({
       changes: [],
       warnings: [expect.stringContaining("exceeds the supported integer range")],
     });
@@ -1419,31 +1419,31 @@ describe("openclaw state database", () => {
   it("lets normal open create an audit ledger for a pre-v2 database", () => {
     const stateDir = createTempStateDir();
     const databasePath = createLegacyAuditStateDatabase(stateDir);
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
     const { DatabaseSync } = requireNodeSqlite();
     const legacy = new DatabaseSync(databasePath);
     legacy.exec("DROP TABLE audit_events");
     legacy.close();
 
-    expect(detectOperatorStateDatabaseSchemaMigrations(options)).toEqual([]);
-    expect(repairOperatorStateDatabaseSchema(options)).toEqual({ changes: [], warnings: [] });
+    expect(detectOpenClawStateDatabaseSchemaMigrations(options)).toEqual([]);
+    expect(repairOpenClawStateDatabaseSchema(options)).toEqual({ changes: [], warnings: [] });
     const beforeOpen = new DatabaseSync(databasePath, { readOnly: true });
     expect(readSqliteNumberPragma(beforeOpen, "user_version")).toBe(1);
     beforeOpen.close();
 
-    const opened = openOperatorStateDatabase(options);
+    const opened = openOpenClawStateDatabase(options);
     expect(
       opened.db
         .prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'audit_events'")
         .get(),
     ).toEqual({ name: "audit_events" });
-    expect(readSqliteNumberPragma(opened.db, "user_version")).toBe(OPERATOR_STATE_SCHEMA_VERSION);
+    expect(readSqliteNumberPragma(opened.db, "user_version")).toBe(OPENCLAW_STATE_SCHEMA_VERSION);
   });
 
   it("refuses to rebuild a noncanonical audit table with unknown data columns", () => {
     const stateDir = createTempStateDir();
     const databasePath = createLegacyAuditStateDatabase(stateDir);
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
     const { DatabaseSync } = requireNodeSqlite();
     const customized = new DatabaseSync(databasePath);
     customized.exec("ALTER TABLE audit_events ADD COLUMN operator_note TEXT;");
@@ -1452,7 +1452,7 @@ describe("openclaw state database", () => {
       .run("preserve-me", "event-legacy");
     customized.close();
 
-    const result = repairOperatorStateDatabaseSchema(options);
+    const result = repairOpenClawStateDatabaseSchema(options);
     expect(result.changes).toEqual([]);
     expect(result.warnings).toEqual([expect.stringContaining("cannot be repaired automatically")]);
 
@@ -1604,7 +1604,7 @@ describe("openclaw state database", () => {
 
   it("creates the bounded skill curator tables", () => {
     const stateDir = createTempStateDir();
-    const database = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: stateDir } });
+    const database = openOpenClawStateDatabase({ env: { OPENCLAW_STATE_DIR: stateDir } });
     const kysely = getNodeSqliteKysely<StateDbTestDatabase>(database.db);
 
     executeSqliteQuerySync(
@@ -1702,7 +1702,7 @@ describe("openclaw state database", () => {
     const databasePath = path.join(createTempStateDir(), "operator.sqlite");
     fs.writeFileSync(databasePath, "not a sqlite database");
 
-    expect(() => openOperatorStateDatabase({ path: databasePath })).toThrow(
+    expect(() => openOpenClawStateDatabase({ path: databasePath })).toThrow(
       "file is not a database",
     );
     expect(listOpenFileDescriptorsForPath(databasePath)).toEqual([]);
@@ -1711,7 +1711,7 @@ describe("openclaw state database", () => {
   it("rejects stale secondary indexes before writable initialization", () => {
     const stateDir = createTempStateDir();
     const databasePath = createCanonicalAuditStateDatabase(stateDir);
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
     createUnsafeIndexDrift(databasePath);
     const { DatabaseSync } = requireNodeSqlite();
     const before = new DatabaseSync(databasePath, { readOnly: true });
@@ -1734,10 +1734,10 @@ describe("openclaw state database", () => {
       before.close();
     }
 
-    expect(() => openOperatorStateDatabase(options)).toThrow(
+    expect(() => openOpenClawStateDatabase(options)).toThrow(
       /integrity_check failed.*missing from index unsafe_index_records_value/iu,
     );
-    expect(repairOperatorStateDatabaseSchema(options)).toEqual({
+    expect(repairOpenClawStateDatabaseSchema(options)).toEqual({
       changes: [],
       warnings: [
         expect.stringMatching(
@@ -1747,7 +1747,7 @@ describe("openclaw state database", () => {
     });
     const checkpointCallback = vi.fn();
     expect(() =>
-      withOperatorStateStartupMigrationCheckpointDatabase(checkpointCallback, options),
+      withOpenClawStateStartupMigrationCheckpointDatabase(checkpointCallback, options),
     ).toThrow(/integrity_check failed.*missing from index unsafe_index_records_value/iu);
     expect(checkpointCallback).not.toHaveBeenCalled();
 
@@ -1775,7 +1775,7 @@ describe("openclaw state database", () => {
   it("rejects foreign-key violations before writable initialization", () => {
     const stateDir = createTempStateDir();
     const databasePath = createCanonicalAuditStateDatabase(stateDir);
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
     const { DatabaseSync } = requireNodeSqlite();
     const corrupted = new DatabaseSync(databasePath);
     try {
@@ -1809,14 +1809,14 @@ describe("openclaw state database", () => {
 
     const failure =
       /foreign_key_check failed.*task_delivery_state row 1 references task_runs \(foreign key 0\)/iu;
-    expect(() => openOperatorStateDatabase(options)).toThrow(failure);
-    expect(repairOperatorStateDatabaseSchema(options)).toEqual({
+    expect(() => openOpenClawStateDatabase(options)).toThrow(failure);
+    expect(repairOpenClawStateDatabaseSchema(options)).toEqual({
       changes: [],
       warnings: [expect.stringMatching(failure)],
     });
     const checkpointCallback = vi.fn();
     expect(() =>
-      withOperatorStateStartupMigrationCheckpointDatabase(checkpointCallback, options),
+      withOpenClawStateStartupMigrationCheckpointDatabase(checkpointCallback, options),
     ).toThrow(failure);
     expect(checkpointCallback).not.toHaveBeenCalled();
 
@@ -1845,7 +1845,7 @@ describe("openclaw state database", () => {
     () => {
       expect(
         runHotRollbackJournalRecoveryProbe({
-          moduleUrl: new URL("./openclaw-state-db.ts", import.meta.url).href,
+          moduleUrl: new URL("./operator-state-db.ts", import.meta.url).href,
           rootDir: createTempStateDir(),
         }),
       ).toEqual({
@@ -1858,19 +1858,19 @@ describe("openclaw state database", () => {
 
   it("adds gateway boot lifecycle startup markers to existing state databases", () => {
     const stateDir = createTempStateDir();
-    const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+    const database = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const databasePath = database.path;
-    closeOperatorStateDatabaseForTest();
+    closeOpenClawStateDatabaseForTest();
 
     const { DatabaseSync } = requireNodeSqlite();
     const legacyDb = new DatabaseSync(databasePath);
     legacyDb.exec("ALTER TABLE gateway_boot_lifecycle DROP COLUMN startup_reason");
     legacyDb.close();
 
-    const reopened = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+    const reopened = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const columns = reopened.db
       .prepare("PRAGMA table_info(gateway_boot_lifecycle)")
@@ -1881,11 +1881,11 @@ describe("openclaw state database", () => {
 
   it("adds worker bootstrap lifecycle columns to existing state databases", () => {
     const stateDir = createTempStateDir();
-    const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+    const database = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const databasePath = database.path;
-    closeOperatorStateDatabaseForTest();
+    closeOpenClawStateDatabaseForTest();
 
     const { DatabaseSync } = requireNodeSqlite();
     const legacyDb = new DatabaseSync(databasePath);
@@ -1900,8 +1900,8 @@ describe("openclaw state database", () => {
     `);
     legacyDb.close();
 
-    const reopened = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+    const reopened = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const columns = reopened.db.prepare("PRAGMA table_info(worker_environments)").all() as Array<{
       name?: string;
@@ -1927,11 +1927,11 @@ describe("openclaw state database", () => {
 
   it("adds worker transcript commit tables to existing state databases", () => {
     const stateDir = createTempStateDir();
-    const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+    const database = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const databasePath = database.path;
-    closeOperatorStateDatabaseForTest();
+    closeOpenClawStateDatabaseForTest();
 
     const { DatabaseSync } = requireNodeSqlite();
     const legacyDb = new DatabaseSync(databasePath);
@@ -1941,8 +1941,8 @@ describe("openclaw state database", () => {
     `);
     legacyDb.close();
 
-    const reopened = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+    const reopened = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const tables = reopened.db
       .prepare(
@@ -1962,7 +1962,7 @@ describe("openclaw state database", () => {
 
   it("backfills durable approval transport references in databases created by PR 1", () => {
     const stateDir = createTempStateDir();
-    const database = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: stateDir } });
+    const database = openOpenClawStateDatabase({ env: { OPENCLAW_STATE_DIR: stateDir } });
     const databasePath = database.path;
     const approvalId = "approval/from-pr1";
     const expectedRef = buildApprovalResolutionRef({ approvalId, approvalKind: "exec" });
@@ -1997,7 +1997,7 @@ describe("openclaw state database", () => {
           allowedDecisions: ["allow-once", "deny"],
         }),
       );
-    closeOperatorStateDatabaseForTest();
+    closeOpenClawStateDatabaseForTest();
 
     const { DatabaseSync } = requireNodeSqlite();
     const legacyDb = new DatabaseSync(databasePath);
@@ -2007,7 +2007,7 @@ describe("openclaw state database", () => {
     `);
     legacyDb.close();
 
-    const reopened = openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: stateDir } });
+    const reopened = openOpenClawStateDatabase({ env: { OPENCLAW_STATE_DIR: stateDir } });
     expect(
       reopened.db
         .prepare("SELECT resolution_ref FROM operator_approvals WHERE approval_id = ?")
@@ -2024,10 +2024,10 @@ describe("openclaw state database", () => {
 
   it("migrates operator approvals to accept system-agent records", () => {
     const stateDir = createTempStateDir();
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
-    const database = openOperatorStateDatabase(options);
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
+    const database = openOpenClawStateDatabase(options);
     const databasePath = database.path;
-    closeOperatorStateDatabaseForTest();
+    closeOpenClawStateDatabaseForTest();
 
     const { DatabaseSync } = requireNodeSqlite();
     const legacyDb = new DatabaseSync(databasePath);
@@ -2043,16 +2043,16 @@ describe("openclaw state database", () => {
     legacyDb.exec("DROP TABLE operator_approvals_current");
     legacyDb.close();
 
-    expect(detectOperatorStateDatabaseSchemaMigrations(options)).toContainEqual({
+    expect(detectOpenClawStateDatabaseSchemaMigrations(options)).toContainEqual({
       kind: "operator-approvals-system-agent",
       path: databasePath,
     });
-    expect(repairOperatorStateDatabaseSchema(options)).toEqual({
+    expect(repairOpenClawStateDatabaseSchema(options)).toEqual({
       changes: ["Migrated shared state operator approvals → Operator system changes"],
       warnings: [],
     });
 
-    const reopened = openOperatorStateDatabase(options);
+    const reopened = openOpenClawStateDatabase(options);
     const migratedSql = reopened.db
       .prepare("SELECT sql FROM sqlite_schema WHERE type = 'table' AND name = 'operator_approvals'")
       .get() as { sql: string };
@@ -2061,9 +2061,9 @@ describe("openclaw state database", () => {
 
   it("adds managed-image typed columns before creating canonical indexes", () => {
     const stateDir = createTempStateDir();
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
-    const databasePath = openOperatorStateDatabase(options).path;
-    closeOperatorStateDatabaseForTest();
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
+    const databasePath = openOpenClawStateDatabase(options).path;
+    closeOpenClawStateDatabaseForTest();
 
     const { DatabaseSync } = requireNodeSqlite();
     const legacyDb = new DatabaseSync(databasePath);
@@ -2078,7 +2078,7 @@ describe("openclaw state database", () => {
     `);
     legacyDb.close();
 
-    const reopened = openOperatorStateDatabase(options);
+    const reopened = openOpenClawStateDatabase(options);
     const columns = reopened.db
       .prepare("PRAGMA table_info(managed_outgoing_image_records)")
       .all() as Array<{ name?: unknown; notnull?: unknown }>;
@@ -2087,7 +2087,7 @@ describe("openclaw state database", () => {
     );
     expect(columns).toContainEqual(expect.objectContaining({ name: "agent_id" }));
     expect(columns).toContainEqual(expect.objectContaining({ name: "cleanup_pending" }));
-    assertOperatorStateDatabaseForMaintenance(reopened.db, { pathname: reopened.path });
+    assertOpenClawStateDatabaseForMaintenance(reopened.db, { pathname: reopened.path });
     const indexes = reopened.db
       .prepare("PRAGMA index_list(managed_outgoing_image_records)")
       .all() as Array<{ name?: unknown }>;
@@ -2103,16 +2103,16 @@ describe("openclaw state database", () => {
 
   it("adds relay origins to existing APNs registration tables", () => {
     const stateDir = createTempStateDir();
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
-    const databasePath = openOperatorStateDatabase(options).path;
-    closeOperatorStateDatabaseForTest();
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
+    const databasePath = openOpenClawStateDatabase(options).path;
+    closeOpenClawStateDatabaseForTest();
 
     const { DatabaseSync } = requireNodeSqlite();
     const legacyDb = new DatabaseSync(databasePath);
     legacyDb.exec("ALTER TABLE apns_registrations DROP COLUMN relay_origin");
     legacyDb.close();
 
-    const reopened = openOperatorStateDatabase(options);
+    const reopened = openOpenClawStateDatabase(options);
     const columns = reopened.db.prepare("PRAGMA table_info(apns_registrations)").all() as Array<{
       name?: unknown;
     }>;
@@ -2121,10 +2121,10 @@ describe("openclaw state database", () => {
 
   it("serializes concurrent additive schema upgrades across processes", () => {
     const rootDir = createTempStateDir();
-    const moduleUrl = new URL("./openclaw-state-db.ts", import.meta.url).href;
+    const moduleUrl = new URL("./operator-state-db.ts", import.meta.url).href;
     const databasePaths = runConcurrentSchemaProbe({ mode: "upgrade", moduleUrl, rootDir });
     const expectedShape = createSqliteSchemaShapeFromSql(
-      new URL("./openclaw-state-schema.sql", import.meta.url),
+      new URL("./operator-state-schema.sql", import.meta.url),
     );
     const { DatabaseSync } = requireNodeSqlite();
 
@@ -2134,10 +2134,10 @@ describe("openclaw state database", () => {
       try {
         expect(db.prepare("PRAGMA integrity_check").get()).toEqual({ integrity_check: "ok" });
         expect(db.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
-        expect(readSqliteNumberPragma(db, "user_version")).toBe(OPERATOR_STATE_SCHEMA_VERSION);
+        expect(readSqliteNumberPragma(db, "user_version")).toBe(OPENCLAW_STATE_SCHEMA_VERSION);
         expect(
           db.prepare("SELECT schema_version FROM schema_meta WHERE meta_key = 'primary'").get(),
-        ).toEqual({ schema_version: OPERATOR_STATE_SCHEMA_VERSION });
+        ).toEqual({ schema_version: OPENCLAW_STATE_SCHEMA_VERSION });
         expect(
           db
             .prepare("SELECT agent_id, requester_agent_id FROM task_runs WHERE task_id = ?")
@@ -2155,10 +2155,10 @@ describe("openclaw state database", () => {
 
   it("serializes concurrent fresh database initialization across processes", () => {
     const rootDir = createTempStateDir();
-    const moduleUrl = new URL("./openclaw-state-db.ts", import.meta.url).href;
+    const moduleUrl = new URL("./operator-state-db.ts", import.meta.url).href;
     const databasePaths = runConcurrentSchemaProbe({ mode: "fresh", moduleUrl, rootDir });
     const expectedShape = createSqliteSchemaShapeFromSql(
-      new URL("./openclaw-state-schema.sql", import.meta.url),
+      new URL("./operator-state-schema.sql", import.meta.url),
     );
     const { DatabaseSync } = requireNodeSqlite();
 
@@ -2169,10 +2169,10 @@ describe("openclaw state database", () => {
         expect(db.prepare("PRAGMA integrity_check").get()).toEqual({ integrity_check: "ok" });
         expect(db.prepare("PRAGMA foreign_key_check").all()).toEqual([]);
         expect(readSqliteNumberPragma(db, "auto_vacuum")).toBe(2);
-        expect(readSqliteNumberPragma(db, "user_version")).toBe(OPERATOR_STATE_SCHEMA_VERSION);
+        expect(readSqliteNumberPragma(db, "user_version")).toBe(OPENCLAW_STATE_SCHEMA_VERSION);
         expect(
           db.prepare("SELECT schema_version FROM schema_meta WHERE meta_key = 'primary'").get(),
-        ).toEqual({ schema_version: OPERATOR_STATE_SCHEMA_VERSION });
+        ).toEqual({ schema_version: OPENCLAW_STATE_SCHEMA_VERSION });
         expect(collectSqliteSchemaShape(db)).toEqual(expectedShape);
       } finally {
         db.close();
@@ -2182,11 +2182,11 @@ describe("openclaw state database", () => {
 
   it("migrates requester and executor attribution for existing cross-agent tasks", () => {
     const stateDir = createTempStateDir();
-    const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+    const database = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const databasePath = database.path;
-    closeOperatorStateDatabaseForTest();
+    closeOpenClawStateDatabaseForTest();
 
     const { DatabaseSync } = requireNodeSqlite();
     const legacyDb = new DatabaseSync(databasePath);
@@ -2259,8 +2259,8 @@ describe("openclaw state database", () => {
       );
     legacyDb.close();
 
-    const reopened = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+    const reopened = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const columns = reopened.db.prepare("PRAGMA table_info(task_runs)").all() as Array<{
       name?: string;
@@ -2326,10 +2326,10 @@ describe("openclaw state database", () => {
         200,
         200,
       );
-    closeOperatorStateDatabaseForTest();
+    closeOpenClawStateDatabaseForTest();
 
-    const currentReopened = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+    const currentReopened = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     expect(
       currentReopened.db
@@ -2349,8 +2349,8 @@ describe("openclaw state database", () => {
     await withOperatorTestState(
       { layout: "state-only", prefix: "operator-state-task-delivery-status-" },
       async ({ stateDir }) => {
-        const database = openOperatorStateDatabase({
-          env: { OPERATOR_STATE_DIR: stateDir },
+        const database = openOpenClawStateDatabase({
+          env: { OPENCLAW_STATE_DIR: stateDir },
         });
         const insert = database.db.prepare(
           `INSERT INTO task_runs (
@@ -2376,10 +2376,10 @@ describe("openclaw state database", () => {
             100,
           );
         }
-        closeOperatorStateDatabaseForTest();
+        closeOpenClawStateDatabaseForTest();
 
         const readStatuses = () =>
-          openOperatorStateDatabase({ env: { OPERATOR_STATE_DIR: stateDir } })
+          openOpenClawStateDatabase({ env: { OPENCLAW_STATE_DIR: stateDir } })
             .db.prepare("SELECT task_id, delivery_status FROM task_runs ORDER BY task_id")
             .all();
         const expectedStatuses = [
@@ -2400,20 +2400,20 @@ describe("openclaw state database", () => {
           { taskId: "pending", deliveryStatus: "pending" },
         ]);
 
-        closeOperatorStateDatabaseForTest();
+        closeOpenClawStateDatabaseForTest();
         expect(readStatuses()).toEqual(expectedStatuses);
-        closeOperatorStateDatabaseForTest();
+        closeOpenClawStateDatabaseForTest();
       },
     );
   });
 
   it("adds hosted catalog snapshot trust columns to existing state databases", () => {
     const stateDir = createTempStateDir();
-    const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+    const database = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const databasePath = database.path;
-    closeOperatorStateDatabaseForTest();
+    closeOpenClawStateDatabaseForTest();
 
     const { DatabaseSync } = requireNodeSqlite();
     const legacyDb = new DatabaseSync(databasePath);
@@ -2426,8 +2426,8 @@ describe("openclaw state database", () => {
     `);
     legacyDb.close();
 
-    const reopened = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+    const reopened = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const columns = reopened.db
       .prepare("PRAGMA table_info(official_external_plugin_catalog_snapshots)")
@@ -2442,24 +2442,24 @@ describe("openclaw state database", () => {
         "trust_verified_at",
       ]),
     );
-    closeOperatorStateDatabaseForTest();
+    closeOpenClawStateDatabaseForTest();
   });
 
   it("adds task detail storage to an existing state database", () => {
     const stateDir = createTempStateDir();
-    const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+    const database = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const databasePath = database.path;
-    closeOperatorStateDatabaseForTest();
+    closeOpenClawStateDatabaseForTest();
 
     const { DatabaseSync } = requireNodeSqlite();
     const legacyDb = new DatabaseSync(databasePath);
     legacyDb.exec("ALTER TABLE task_runs DROP COLUMN detail_json");
     legacyDb.close();
 
-    const reopened = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+    const reopened = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const columns = reopened.db.prepare("PRAGMA table_info(task_runs)").all() as Array<{
       name?: string;
@@ -2469,11 +2469,11 @@ describe("openclaw state database", () => {
 
   it("rolls back the requester attribution column when its backfill fails", () => {
     const stateDir = createTempStateDir();
-    const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+    const database = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const databasePath = database.path;
-    closeOperatorStateDatabaseForTest();
+    closeOpenClawStateDatabaseForTest();
 
     const { DatabaseSync } = requireNodeSqlite();
     const legacyDb = new DatabaseSync(databasePath);
@@ -2521,8 +2521,8 @@ describe("openclaw state database", () => {
     legacyDb.close();
 
     expect(() =>
-      openOperatorStateDatabase({
-        env: { OPERATOR_STATE_DIR: stateDir },
+      openOpenClawStateDatabase({
+        env: { OPENCLAW_STATE_DIR: stateDir },
       }),
     ).toThrow(/blocked task attribution repair/);
 
@@ -2536,8 +2536,8 @@ describe("openclaw state database", () => {
     interruptedDb.exec("DROP TRIGGER reject_task_attribution_repair");
     interruptedDb.close();
 
-    const reopened = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+    const reopened = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     expect(
       reopened.db
@@ -2614,8 +2614,8 @@ describe("openclaw state database", () => {
     );
     db.close();
 
-    const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+    const database = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
 
     expect(() =>
@@ -2695,8 +2695,8 @@ describe("openclaw state database", () => {
     );
     db.close();
 
-    const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+    const database = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
 
     expect(
@@ -2769,8 +2769,8 @@ describe("openclaw state database", () => {
     );
     db.close();
 
-    const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+    const database = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
 
     expect(() =>
@@ -2805,17 +2805,17 @@ describe("openclaw state database", () => {
 
   it("configures durable SQLite connection pragmas", () => {
     const stateDir = createTempStateDir();
-    const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+    const database = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
 
     expect(readSqliteNumberPragma(database.db, "busy_timeout")).toBe(
-      OPERATOR_SQLITE_BUSY_TIMEOUT_MS,
+      OPENCLAW_SQLITE_BUSY_TIMEOUT_MS,
     );
     expect(readSqliteNumberPragma(database.db, "foreign_keys")).toBe(1);
     expect(readSqliteNumberPragma(database.db, "synchronous")).toBe(1);
     expect(readSqliteNumberPragma(database.db, "auto_vacuum")).toBe(2);
-    expect(readSqliteNumberPragma(database.db, "user_version")).toBe(OPERATOR_STATE_SCHEMA_VERSION);
+    expect(readSqliteNumberPragma(database.db, "user_version")).toBe(OPENCLAW_STATE_SCHEMA_VERSION);
     expect(readSqliteNumberPragma(database.db, "wal_autocheckpoint")).toBe(1000);
     const journalMode = database.db.prepare("PRAGMA journal_mode").get() as
       | { journal_mode?: string }
@@ -2827,8 +2827,8 @@ describe("openclaw state database", () => {
     const stateDir = createTempStateDir();
     const statfs = vi.spyOn(fs, "statfsSync").mockReturnValue(statfsFixture(0x6969));
 
-    const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+    const database = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
 
     const journalMode = database.db.prepare("PRAGMA journal_mode").get() as
@@ -2840,8 +2840,8 @@ describe("openclaw state database", () => {
 
   it("records durable schema metadata", () => {
     const stateDir = createTempStateDir();
-    const database = openOperatorStateDatabase({
-      env: { OPERATOR_STATE_DIR: stateDir },
+    const database = openOpenClawStateDatabase({
+      env: { OPENCLAW_STATE_DIR: stateDir },
     });
     const stateDb = getNodeSqliteKysely<StateDbTestDatabase>(database.db);
 
@@ -2850,7 +2850,7 @@ describe("openclaw state database", () => {
         database.db,
         stateDb.selectFrom("schema_meta").select(["role", "schema_version"]),
       ),
-    ).toEqual({ role: "global", schema_version: OPERATOR_STATE_SCHEMA_VERSION });
+    ).toEqual({ role: "global", schema_version: OPENCLAW_STATE_SCHEMA_VERSION });
   });
 
   it("refuses to open newer global schema versions", () => {
@@ -2859,15 +2859,15 @@ describe("openclaw state database", () => {
     fs.mkdirSync(path.dirname(databasePath), { recursive: true });
     const { DatabaseSync } = requireNodeSqlite();
     const db = new DatabaseSync(databasePath);
-    db.exec(`PRAGMA user_version = ${OPERATOR_STATE_SCHEMA_VERSION + 1};`);
+    db.exec(`PRAGMA user_version = ${OPENCLAW_STATE_SCHEMA_VERSION + 1};`);
     db.close();
 
     expect(() =>
-      openOperatorStateDatabase({
-        env: { OPERATOR_STATE_DIR: stateDir },
+      openOpenClawStateDatabase({
+        env: { OPENCLAW_STATE_DIR: stateDir },
       }),
     ).toThrow(
-      `Operator state database ${databasePath} uses newer schema version ${OPERATOR_STATE_SCHEMA_VERSION + 1}; this Operator build supports ${OPERATOR_STATE_SCHEMA_VERSION}. Upgrade Operator before opening this database. Do not downgrade Operator or modify the database. To run this older build, use a separate state directory or restore a compatible backup.`,
+      `Operator state database ${databasePath} uses newer schema version ${OPENCLAW_STATE_SCHEMA_VERSION + 1}; this Operator build supports ${OPENCLAW_STATE_SCHEMA_VERSION}. Upgrade Operator before opening this database. Do not downgrade Operator or modify the database. To run this older build, use a separate state directory or restore a compatible backup.`,
     );
   });
 
@@ -2877,7 +2877,7 @@ describe("openclaw state database", () => {
       `operator-explicit-state-${process.pid}-${Date.now()}.sqlite`,
     );
 
-    expect(() => openOperatorStateDatabase({ path: databasePath })).not.toThrow();
+    expect(() => openOpenClawStateDatabase({ path: databasePath })).not.toThrow();
     expect(fs.existsSync(databasePath)).toBe(true);
   });
 
@@ -2893,17 +2893,17 @@ describe("openclaw state database", () => {
       `second-${process.pid}-${Date.now()}.sqlite`,
     );
 
-    const first = openOperatorStateDatabase({ path: firstPath });
-    const second = openOperatorStateDatabase({ path: secondPath });
+    const first = openOpenClawStateDatabase({ path: firstPath });
+    const second = openOpenClawStateDatabase({ path: secondPath });
 
     expect(first.db.isOpen).toBe(true);
     expect(second.db.isOpen).toBe(true);
-    expect(openOperatorStateDatabase({ path: firstPath })).toBe(first);
-    expect(readSqliteNumberPragma(first.db, "user_version")).toBe(OPERATOR_STATE_SCHEMA_VERSION);
+    expect(openOpenClawStateDatabase({ path: firstPath })).toBe(first);
+    expect(readSqliteNumberPragma(first.db, "user_version")).toBe(OPENCLAW_STATE_SCHEMA_VERSION);
   });
 
   it("keys explicit relative paths by resolved database pathname", () => {
-    const moduleUrl = new URL("./openclaw-state-db.ts", import.meta.url).href;
+    const moduleUrl = new URL("./operator-state-db.ts", import.meta.url).href;
     const output = execFileSync(
       process.execPath,
       [
@@ -2916,11 +2916,11 @@ describe("openclaw state database", () => {
           import os from "node:os";
           import path from "node:path";
           import {
-            closeOperatorStateDatabaseForTest,
-            openOperatorStateDatabase,
+            closeOpenClawStateDatabaseForTest,
+            openOpenClawStateDatabase,
           } from ${JSON.stringify(moduleUrl)};
 
-          const root = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-state-db-relative-"));
+          const root = fs.mkdtempSync(path.join(os.tmpdir(), "operator-state-db-relative-"));
           const firstDir = path.join(root, "first");
           const secondDir = path.join(root, "second");
           fs.mkdirSync(firstDir);
@@ -2929,14 +2929,14 @@ describe("openclaw state database", () => {
           try {
             process.chdir(firstDir);
             const firstPath = path.resolve("state.sqlite");
-            const first = openOperatorStateDatabase({ path: "state.sqlite" });
+            const first = openOpenClawStateDatabase({ path: "state.sqlite" });
             first.db
               .prepare("INSERT INTO diagnostic_events (scope, event_key, payload_json, created_at) VALUES (?, ?, ?, ?)")
               .run("relative-path", "first", "{}", 1);
 
             process.chdir(secondDir);
             const secondPath = path.resolve("state.sqlite");
-            const second = openOperatorStateDatabase({ path: "state.sqlite" });
+            const second = openOpenClawStateDatabase({ path: "state.sqlite" });
             second.db
               .prepare("INSERT INTO diagnostic_events (scope, event_key, payload_json, created_at) VALUES (?, ?, ?, ?)")
               .run("relative-path", "second", "{}", 2);
@@ -2952,7 +2952,7 @@ describe("openclaw state database", () => {
             }));
           } finally {
             process.chdir(previousCwd);
-            closeOperatorStateDatabaseForTest();
+            closeOpenClawStateDatabaseForTest();
           }
         `,
       ],
@@ -2975,9 +2975,9 @@ describe("openclaw state database", () => {
 
   it("uses savepoints for nested write transaction rollback", () => {
     const stateDir = createTempStateDir();
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
 
-    runOperatorStateWriteTransaction((database) => {
+    runOpenClawStateWriteTransaction((database) => {
       const stateDb = getNodeSqliteKysely<StateDbTestDatabase>(database.db);
       executeSqliteQuerySync(
         database.db,
@@ -2989,7 +2989,7 @@ describe("openclaw state database", () => {
         }),
       );
       expect(() =>
-        runOperatorStateWriteTransaction((inner) => {
+        runOpenClawStateWriteTransaction((inner) => {
           const innerDb = getNodeSqliteKysely<StateDbTestDatabase>(inner.db);
           executeSqliteQuerySync(
             inner.db,
@@ -3005,7 +3005,7 @@ describe("openclaw state database", () => {
       ).toThrow("rollback nested");
     }, options);
 
-    const database = openOperatorStateDatabase(options);
+    const database = openOpenClawStateDatabase(options);
     const stateDb = getNodeSqliteKysely<StateDbTestDatabase>(database.db);
     expect(
       executeSqliteQuerySync(
@@ -3021,16 +3021,16 @@ describe("openclaw state database", () => {
 
   it("rejects Promise-returning write transactions", () => {
     const stateDir = createTempStateDir();
-    const options = { env: { OPERATOR_STATE_DIR: stateDir } };
+    const options = { env: { OPENCLAW_STATE_DIR: stateDir } };
 
     expect(() =>
-      runOperatorStateWriteTransaction(async () => {
+      runOpenClawStateWriteTransaction(async () => {
         return "not sync";
       }, options),
     ).toThrow("must be synchronous");
 
     expect(() =>
-      runOperatorStateWriteTransaction((database) => {
+      runOpenClawStateWriteTransaction((database) => {
         const stateDb = getNodeSqliteKysely<StateDbTestDatabase>(database.db);
         executeSqliteQuerySync(
           database.db,

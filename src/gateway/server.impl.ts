@@ -35,7 +35,7 @@ import { isNixMode, normalizeStateDirEnv } from "../config/paths.js";
 import { captureConfigOverrideApplier } from "../config/runtime-overrides.js";
 import { resolveMainSessionKey } from "../config/sessions.js";
 import type { GatewayAuthConfig } from "../config/types.gateway.js";
-import type { OperatorConfig } from "../config/types.operator.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import { isSecretRef } from "../config/types.secrets.js";
 import { getActiveCronJobCount } from "../cron/active-jobs.js";
 import {
@@ -47,7 +47,7 @@ import {
   isDiagnosticsTimelineEnabled,
 } from "../infra/diagnostics-timeline.js";
 import { isTruthyEnvValue, isVitestRuntimeEnv, logAcceptedEnvOption } from "../infra/env.js";
-import { ensureOperatorCliOnPath } from "../infra/path-env.js";
+import { ensureOpenClawCliOnPath } from "../infra/path-env.js";
 import { readGatewayRestartHandoffSync } from "../infra/restart-handoff.js";
 import {
   type GatewayRestartEmitter,
@@ -172,7 +172,7 @@ export async function resetModelCatalogCacheForTest(): Promise<void> {
   await resetModelCatalogCacheForTestLocal();
 }
 
-ensureOperatorCliOnPath();
+ensureOpenClawCliOnPath();
 
 const MAX_MEDIA_TTL_HOURS = 24 * 7;
 const POST_READY_MAINTENANCE_DELAY_MS = 250;
@@ -266,7 +266,7 @@ const gatewayRuntime = runtimeForLogger(log);
 
 function createGatewayStartupTrace() {
   const logEnabled = isTruthyEnvValue(process.env.OPERATOR_GATEWAY_STARTUP_TRACE);
-  let timelineConfig: OperatorConfig | undefined;
+  let timelineConfig: OpenClawConfig | undefined;
   let eventLoopDelay: ReturnType<typeof monitorEventLoopDelay> | undefined;
   const timelineOptions = () => ({
     ...(timelineConfig ? { config: timelineConfig } : {}),
@@ -362,7 +362,7 @@ function createGatewayStartupTrace() {
     }
   };
   return {
-    setConfig(config: OperatorConfig) {
+    setConfig(config: OpenClawConfig) {
       timelineConfig = config;
       ensureEventLoopDelay();
     },
@@ -642,7 +642,7 @@ export async function startGatewayServer(
   const emitSecretsStateEvent = (
     code: "SECRETS_RELOADER_DEGRADED" | "SECRETS_RELOADER_RECOVERED",
     message: string,
-    cfg: OperatorConfig,
+    cfg: OpenClawConfig,
   ) => {
     enqueueSystemEvent(`[${code}] ${message}`, {
       sessionKey: resolveMainSessionKey(cfg),
@@ -741,7 +741,7 @@ export async function startGatewayServer(
   const seededControlUiAllowedOrigins = controlUiSeed.seededAllowedOrigins
     ? cfgAtStart.gateway?.controlUi?.allowedOrigins
     : undefined;
-  const applyFixedGatewayOverlays = (config: OperatorConfig): OperatorConfig => {
+  const applyFixedGatewayOverlays = (config: OpenClawConfig): OpenClawConfig => {
     let runtimeConfig = config;
     if (reloadAuthOverride || startupTailscaleOverride) {
       runtimeConfig = {
@@ -779,7 +779,7 @@ export async function startGatewayServer(
     }
     return runtimeConfig;
   };
-  const applyReloadableGatewayAuthRefs = (config: OperatorConfig): OperatorConfig => {
+  const applyReloadableGatewayAuthRefs = (config: OpenClawConfig): OpenClawConfig => {
     if (!startupAuthSecretRefOverride?.token && !startupAuthSecretRefOverride?.password) {
       return config;
     }
@@ -792,9 +792,9 @@ export async function startGatewayServer(
     };
   };
   const prepareReloadCandidate = (params: {
-    runtimeConfig: OperatorConfig;
-    sourceConfig: OperatorConfig;
-    previousSourceConfig?: OperatorConfig;
+    runtimeConfig: OpenClawConfig;
+    sourceConfig: OpenClawConfig;
+    previousSourceConfig?: OpenClawConfig;
   }) => {
     const previousSourceConfig =
       params.previousSourceConfig ??
@@ -815,14 +815,14 @@ export async function startGatewayServer(
           discovery: metadata?.discovery,
         });
     const applyCandidateOverrides = captureConfigOverrideApplier();
-    const reapplyCompareOverlays = (config: OperatorConfig): OperatorConfig =>
+    const reapplyCompareOverlays = (config: OpenClawConfig): OpenClawConfig =>
       applyCandidateOverrides(
         mergeActivationSectionsIntoRuntimeConfig({
           runtimeConfig: config,
           activationConfig: pluginCandidate.compareConfig,
         }),
       );
-    const reapplyRuntimeOverlays = (config: OperatorConfig): OperatorConfig =>
+    const reapplyRuntimeOverlays = (config: OpenClawConfig): OpenClawConfig =>
       applyFixedGatewayOverlays(applyReloadableGatewayAuthRefs(reapplyCompareOverlays(config)));
     return {
       runtimeConfig: reapplyRuntimeOverlays(params.runtimeConfig),
@@ -1012,7 +1012,7 @@ export async function startGatewayServer(
       env: process.env,
       tailscaleMode,
     });
-  const resolveSharedGatewaySessionGenerationForConfig = (config: OperatorConfig) =>
+  const resolveSharedGatewaySessionGenerationForConfig = (config: OpenClawConfig) =>
     resolveSharedGatewaySessionGeneration(
       resolveGatewayAuth({
         authConfig: config.gateway?.auth,
@@ -1722,7 +1722,7 @@ export async function startGatewayServer(
         ]),
       );
     const reloadAttachedGatewayPlugins = async (params: {
-      nextConfig: OperatorConfig;
+      nextConfig: OpenClawConfig;
       changedPaths: readonly string[];
       beforeReplace: (channels: ReadonlySet<ChannelId>) => Promise<void>;
       commitRuntime: () => Promise<void>;
@@ -1873,7 +1873,7 @@ export async function startGatewayServer(
           clients,
           invalidateDeviceTransports: watchNodeHttpRuntime.invalidateSessionsForDevice,
           disconnectDeviceTransports: watchNodeHttpRuntime.disconnectSessionsForDevice,
-          enforceSharedGatewayAuthGenerationForConfigWrite: (nextConfig: OperatorConfig) => {
+          enforceSharedGatewayAuthGenerationForConfigWrite: (nextConfig: OpenClawConfig) => {
             enforceSharedGatewaySessionGenerationForConfigWrite({
               state: sharedGatewaySessionGenerationState,
               nextConfig,

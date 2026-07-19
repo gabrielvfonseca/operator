@@ -164,17 +164,17 @@ const CODEX_APPROVAL_POST_PENDING_BUDGET_MS =
 const CODEX_APPROVAL_SCENARIO_BUDGET_MS =
   CODEX_APPROVAL_PENDING_TIMEOUT_MS + CODEX_APPROVAL_POST_PENDING_BUDGET_MS;
 const DEFAULT_REMOTE_COMMAND_TIMEOUT_SECONDS = 600;
-const CRABBOX_BIN_ENV = "OPERATOR_MANTIS_CRABBOX_BIN";
-const CRABBOX_PROVIDER_ENV = "OPERATOR_MANTIS_CRABBOX_PROVIDER";
-const CRABBOX_CLASS_ENV = "OPERATOR_MANTIS_CRABBOX_CLASS";
-const CRABBOX_MARKET_ENV = "OPERATOR_MANTIS_CRABBOX_MARKET";
-const CRABBOX_LEASE_ID_ENV = "OPERATOR_MANTIS_CRABBOX_LEASE_ID";
-const CRABBOX_KEEP_ENV = "OPERATOR_MANTIS_KEEP_VM";
-const CRABBOX_IDLE_TIMEOUT_ENV = "OPERATOR_MANTIS_CRABBOX_IDLE_TIMEOUT";
-const CRABBOX_TTL_ENV = "OPERATOR_MANTIS_CRABBOX_TTL";
-const HYDRATE_MODE_ENV = "OPERATOR_MANTIS_HYDRATE_MODE";
-const SLACK_URL_ENV = "OPERATOR_MANTIS_SLACK_URL";
-const SLACK_CHANNEL_ID_ENV = "OPERATOR_MANTIS_SLACK_CHANNEL_ID";
+const CRABBOX_BIN_ENV = "OPENCLAW_MANTIS_CRABBOX_BIN";
+const CRABBOX_PROVIDER_ENV = "OPENCLAW_MANTIS_CRABBOX_PROVIDER";
+const CRABBOX_CLASS_ENV = "OPENCLAW_MANTIS_CRABBOX_CLASS";
+const CRABBOX_MARKET_ENV = "OPENCLAW_MANTIS_CRABBOX_MARKET";
+const CRABBOX_LEASE_ID_ENV = "OPENCLAW_MANTIS_CRABBOX_LEASE_ID";
+const CRABBOX_KEEP_ENV = "OPENCLAW_MANTIS_KEEP_VM";
+const CRABBOX_IDLE_TIMEOUT_ENV = "OPENCLAW_MANTIS_CRABBOX_IDLE_TIMEOUT";
+const CRABBOX_TTL_ENV = "OPENCLAW_MANTIS_CRABBOX_TTL";
+const HYDRATE_MODE_ENV = "OPENCLAW_MANTIS_HYDRATE_MODE";
+const SLACK_URL_ENV = "OPENCLAW_MANTIS_SLACK_URL";
+const SLACK_CHANNEL_ID_ENV = "OPENCLAW_MANTIS_SLACK_CHANNEL_ID";
 
 function normalizeHydrateMode(
   value: string | undefined,
@@ -407,43 +407,43 @@ function buildCrabboxEnv(env: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
   const next = {
     ...env,
   };
-  if (!trimToValue(next.OPERATOR_LIVE_OPENAI_KEY) && trimToValue(next.OPENAI_API_KEY)) {
-    next.OPERATOR_LIVE_OPENAI_KEY = next.OPENAI_API_KEY;
+  if (!trimToValue(next.OPENCLAW_LIVE_OPENAI_KEY) && trimToValue(next.OPENAI_API_KEY)) {
+    next.OPENCLAW_LIVE_OPENAI_KEY = next.OPENAI_API_KEY;
   }
-  if (!trimToValue(next.OPERATOR_MANTIS_SLACK_BOT_TOKEN) && trimToValue(next.SLACK_BOT_TOKEN)) {
-    next.OPERATOR_MANTIS_SLACK_BOT_TOKEN = next.SLACK_BOT_TOKEN;
-  }
-  if (
-    !trimToValue(next.OPERATOR_MANTIS_SLACK_BOT_TOKEN) &&
-    trimToValue(next.OPERATOR_QA_SLACK_SUT_BOT_TOKEN)
-  ) {
-    next.OPERATOR_MANTIS_SLACK_BOT_TOKEN = next.OPERATOR_QA_SLACK_SUT_BOT_TOKEN;
-  }
-  if (!trimToValue(next.OPERATOR_MANTIS_SLACK_APP_TOKEN) && trimToValue(next.SLACK_APP_TOKEN)) {
-    next.OPERATOR_MANTIS_SLACK_APP_TOKEN = next.SLACK_APP_TOKEN;
+  if (!trimToValue(next.OPENCLAW_MANTIS_SLACK_BOT_TOKEN) && trimToValue(next.SLACK_BOT_TOKEN)) {
+    next.OPENCLAW_MANTIS_SLACK_BOT_TOKEN = next.SLACK_BOT_TOKEN;
   }
   if (
-    !trimToValue(next.OPERATOR_MANTIS_SLACK_APP_TOKEN) &&
-    trimToValue(next.OPERATOR_QA_SLACK_SUT_APP_TOKEN)
+    !trimToValue(next.OPENCLAW_MANTIS_SLACK_BOT_TOKEN) &&
+    trimToValue(next.OPENCLAW_QA_SLACK_SUT_BOT_TOKEN)
   ) {
-    next.OPERATOR_MANTIS_SLACK_APP_TOKEN = next.OPERATOR_QA_SLACK_SUT_APP_TOKEN;
+    next.OPENCLAW_MANTIS_SLACK_BOT_TOKEN = next.OPENCLAW_QA_SLACK_SUT_BOT_TOKEN;
+  }
+  if (!trimToValue(next.OPENCLAW_MANTIS_SLACK_APP_TOKEN) && trimToValue(next.SLACK_APP_TOKEN)) {
+    next.OPENCLAW_MANTIS_SLACK_APP_TOKEN = next.SLACK_APP_TOKEN;
   }
   if (
-    !trimToValue(next.OPERATOR_MANTIS_SLACK_CHANNEL_ID) &&
-    trimToValue(next.OPERATOR_QA_SLACK_CHANNEL_ID)
+    !trimToValue(next.OPENCLAW_MANTIS_SLACK_APP_TOKEN) &&
+    trimToValue(next.OPENCLAW_QA_SLACK_SUT_APP_TOKEN)
   ) {
-    next.OPERATOR_MANTIS_SLACK_CHANNEL_ID = next.OPERATOR_QA_SLACK_CHANNEL_ID;
+    next.OPENCLAW_MANTIS_SLACK_APP_TOKEN = next.OPENCLAW_QA_SLACK_SUT_APP_TOKEN;
+  }
+  if (
+    !trimToValue(next.OPENCLAW_MANTIS_SLACK_CHANNEL_ID) &&
+    trimToValue(next.OPENCLAW_QA_SLACK_CHANNEL_ID)
+  ) {
+    next.OPENCLAW_MANTIS_SLACK_CHANNEL_ID = next.OPENCLAW_QA_SLACK_CHANNEL_ID;
   }
   return next;
 }
 
 function resolveSlackGatewayEnvPayload(env: NodeJS.ProcessEnv): SlackGatewayCredentialPayload {
-  const channelId = trimToValue(env.OPERATOR_QA_SLACK_CHANNEL_ID);
-  const sutBotToken = trimToValue(env.OPERATOR_QA_SLACK_SUT_BOT_TOKEN);
-  const sutAppToken = trimToValue(env.OPERATOR_QA_SLACK_SUT_APP_TOKEN);
+  const channelId = trimToValue(env.OPENCLAW_QA_SLACK_CHANNEL_ID);
+  const sutBotToken = trimToValue(env.OPENCLAW_QA_SLACK_SUT_BOT_TOKEN);
+  const sutAppToken = trimToValue(env.OPENCLAW_QA_SLACK_SUT_APP_TOKEN);
   if (!channelId || !sutBotToken || !sutAppToken) {
     throw new Error(
-      "Gateway setup requires OPERATOR_QA_SLACK_CHANNEL_ID, OPERATOR_QA_SLACK_SUT_BOT_TOKEN, and OPERATOR_QA_SLACK_SUT_APP_TOKEN when using --credential-source env.",
+      "Gateway setup requires OPENCLAW_QA_SLACK_CHANNEL_ID, OPENCLAW_QA_SLACK_SUT_BOT_TOKEN, and OPENCLAW_QA_SLACK_SUT_APP_TOKEN when using --credential-source env.",
     );
   }
   return {
@@ -486,8 +486,8 @@ async function prepareGatewayCredentialEnv(params: {
     return {};
   }
   if (
-    trimToValue(params.env.OPERATOR_MANTIS_SLACK_BOT_TOKEN) &&
-    trimToValue(params.env.OPERATOR_MANTIS_SLACK_APP_TOKEN)
+    trimToValue(params.env.OPENCLAW_MANTIS_SLACK_BOT_TOKEN) &&
+    trimToValue(params.env.OPENCLAW_MANTIS_SLACK_APP_TOKEN)
   ) {
     return {};
   }
@@ -501,16 +501,16 @@ async function prepareGatewayCredentialEnv(params: {
   });
   const leaseHeartbeat = startQaCredentialLeaseHeartbeat(credentialLease);
   const payload = credentialLease.payload;
-  params.env.OPERATOR_MANTIS_SLACK_BOT_TOKEN = payload.sutBotToken;
-  params.env.OPERATOR_MANTIS_SLACK_APP_TOKEN = payload.sutAppToken;
-  params.env.OPERATOR_MANTIS_SLACK_CHANNEL_ID =
-    trimToValue(params.env.OPERATOR_MANTIS_SLACK_CHANNEL_ID) ?? payload.channelId;
-  params.env.OPERATOR_QA_SLACK_CHANNEL_ID =
-    trimToValue(params.env.OPERATOR_QA_SLACK_CHANNEL_ID) ?? payload.channelId;
-  params.env.OPERATOR_QA_SLACK_SUT_BOT_TOKEN =
-    trimToValue(params.env.OPERATOR_QA_SLACK_SUT_BOT_TOKEN) ?? payload.sutBotToken;
-  params.env.OPERATOR_QA_SLACK_SUT_APP_TOKEN =
-    trimToValue(params.env.OPERATOR_QA_SLACK_SUT_APP_TOKEN) ?? payload.sutAppToken;
+  params.env.OPENCLAW_MANTIS_SLACK_BOT_TOKEN = payload.sutBotToken;
+  params.env.OPENCLAW_MANTIS_SLACK_APP_TOKEN = payload.sutAppToken;
+  params.env.OPENCLAW_MANTIS_SLACK_CHANNEL_ID =
+    trimToValue(params.env.OPENCLAW_MANTIS_SLACK_CHANNEL_ID) ?? payload.channelId;
+  params.env.OPENCLAW_QA_SLACK_CHANNEL_ID =
+    trimToValue(params.env.OPENCLAW_QA_SLACK_CHANNEL_ID) ?? payload.channelId;
+  params.env.OPENCLAW_QA_SLACK_SUT_BOT_TOKEN =
+    trimToValue(params.env.OPENCLAW_QA_SLACK_SUT_BOT_TOKEN) ?? payload.sutBotToken;
+  params.env.OPENCLAW_QA_SLACK_SUT_APP_TOKEN =
+    trimToValue(params.env.OPENCLAW_QA_SLACK_SUT_APP_TOKEN) ?? payload.sutAppToken;
   return {
     credentialLease,
     leaseHeartbeat,
@@ -574,25 +574,25 @@ setup_gateway=${setupGateway}
 approval_checkpoints=${approvalCheckpoints}
 slack_channel_id=${slackChannelId}
 approval_checkpoint_scenarios_json=${checkpointScenarioJson}
-remote_command_timeout_seconds="\${OPERATOR_MANTIS_REMOTE_COMMAND_TIMEOUT_SECONDS:-${remoteCommandTimeoutSeconds}}"
-if [ -z "\${OPERATOR_QA_SLACK_CHANNEL_ID:-}" ] && [ -n "$slack_channel_id" ]; then
-  export OPERATOR_QA_SLACK_CHANNEL_ID="$slack_channel_id"
+remote_command_timeout_seconds="\${OPENCLAW_MANTIS_REMOTE_COMMAND_TIMEOUT_SECONDS:-${remoteCommandTimeoutSeconds}}"
+if [ -z "\${OPENCLAW_QA_SLACK_CHANNEL_ID:-}" ] && [ -n "$slack_channel_id" ]; then
+  export OPENCLAW_QA_SLACK_CHANNEL_ID="$slack_channel_id"
 fi
 case "$remote_command_timeout_seconds" in
   ''|*[!0-9]*)
-    echo "OPERATOR_MANTIS_REMOTE_COMMAND_TIMEOUT_SECONDS must be an integer number of seconds." >&2
+    echo "OPENCLAW_MANTIS_REMOTE_COMMAND_TIMEOUT_SECONDS must be an integer number of seconds." >&2
     exit 2
     ;;
 esac
 if [ "$remote_command_timeout_seconds" -le 0 ]; then
-  echo "OPERATOR_MANTIS_REMOTE_COMMAND_TIMEOUT_SECONDS must be greater than zero." >&2
+  echo "OPENCLAW_MANTIS_REMOTE_COMMAND_TIMEOUT_SECONDS must be greater than zero." >&2
   exit 2
 fi
 rm -rf "$out"
 mkdir -p "$out"
 export DISPLAY="\${DISPLAY:-:99}"
-if [ -n "\${OPERATOR_LIVE_OPENAI_KEY:-}" ] && [ -z "\${OPENAI_API_KEY:-}" ]; then
-  export OPENAI_API_KEY="$OPERATOR_LIVE_OPENAI_KEY"
+if [ -n "\${OPENCLAW_LIVE_OPENAI_KEY:-}" ] && [ -z "\${OPENAI_API_KEY:-}" ]; then
+  export OPENAI_API_KEY="$OPENCLAW_LIVE_OPENAI_KEY"
 fi
 if ! command -v node >/dev/null 2>&1; then
   sudo apt-get update -y >"$out/node-apt.log" 2>&1
@@ -614,11 +614,11 @@ if [ -z "$browser_bin" ]; then
   echo "No browser binary found. Checked BROWSER, CHROME_BIN, google-chrome, chromium, chromium-browser." >&2
   exit 127
 fi
-team_id="\${OPERATOR_QA_SLACK_TEAM_ID:-}"
-auth_test_token="\${OPERATOR_QA_SLACK_SUT_BOT_TOKEN:-\${OPERATOR_MANTIS_SLACK_BOT_TOKEN:-}}"
+team_id="\${OPENCLAW_QA_SLACK_TEAM_ID:-}"
+auth_test_token="\${OPENCLAW_QA_SLACK_SUT_BOT_TOKEN:-\${OPENCLAW_MANTIS_SLACK_BOT_TOKEN:-}}"
 if [ -z "$slack_url_override" ] && [ -z "$team_id" ] && [ -n "$auth_test_token" ]; then
   node --input-type=module >"$out/slack-auth-test.json" 2>"$out/slack-auth-test.err" <<'MANTIS_SLACK_AUTH'
-const token = process.env.OPERATOR_QA_SLACK_SUT_BOT_TOKEN || process.env.OPERATOR_MANTIS_SLACK_BOT_TOKEN;
+const token = process.env.OPENCLAW_QA_SLACK_SUT_BOT_TOKEN || process.env.OPENCLAW_MANTIS_SLACK_BOT_TOKEN;
 const response = await fetch("https://slack.com/api/auth.test", {
   method: "POST",
   headers: { authorization: \`Bearer \${token}\` },
@@ -631,16 +631,15 @@ MANTIS_SLACK_AUTH
   team_id="$(node --input-type=module -e 'import fs from "node:fs"; const value = JSON.parse(fs.readFileSync(process.argv[1], "utf8")); process.stdout.write(value.team_id || "");' "$out/slack-auth-test.json" || true)"
 fi
 slack_url="$slack_url_override"
-if [ -z "$slack_url" ] && [ -n "$team_id" ] && [ -n "\${OPERATOR_QA_SLACK_CHANNEL_ID:-}" ]; then
-  slack_url="https://app.slack.com/client/$team_id/$OPERATOR_QA_SLACK_CHANNEL_ID"
+if [ -z "$slack_url" ] && [ -n "$team_id" ] && [ -n "\${OPENCLAW_QA_SLACK_CHANNEL_ID:-}" ]; then
+  slack_url="https://app.slack.com/client/$team_id/$OPENCLAW_QA_SLACK_CHANNEL_ID"
 fi
-profile="\${OPERATOR_MANTIS_SLACK_BROWSER_PROFILE_DIR:-$HOME/.config/operator-mantis/slack-chrome-profile}"
-mkdir -p "$profile"
+profile="\${OPERATOR_MANTIS_SLACK_BROWSER_PROFILE_DIR:-$HOME/.config/operator-mantis/slack-chrome-profile}"mkdir -p "$profile"
 if [ "$setup_gateway" = "1" ]; then
-  export SLACK_BOT_TOKEN="\${OPERATOR_MANTIS_SLACK_BOT_TOKEN:-\${SLACK_BOT_TOKEN:-}}"
-  export SLACK_APP_TOKEN="\${OPERATOR_MANTIS_SLACK_APP_TOKEN:-\${SLACK_APP_TOKEN:-}}"
+  export SLACK_BOT_TOKEN="\${OPENCLAW_MANTIS_SLACK_BOT_TOKEN:-\${SLACK_BOT_TOKEN:-}}"
+  export SLACK_APP_TOKEN="\${OPENCLAW_MANTIS_SLACK_APP_TOKEN:-\${SLACK_APP_TOKEN:-}}"
   if [ -z "$SLACK_BOT_TOKEN" ] || [ -z "$SLACK_APP_TOKEN" ]; then
-    echo "Gateway setup requires OPERATOR_MANTIS_SLACK_BOT_TOKEN and OPERATOR_MANTIS_SLACK_APP_TOKEN." >&2
+    echo "Gateway setup requires OPENCLAW_MANTIS_SLACK_BOT_TOKEN and OPENCLAW_MANTIS_SLACK_APP_TOKEN." >&2
     exit 2
   fi
   if [ -z "$slack_url" ] && [ -n "$team_id" ]; then
@@ -810,8 +809,7 @@ console.log(match[1] + " " + match[2]);
   fi
   if [ "$setup_gateway" = "1" ]; then
     export OPERATOR_HOME="$HOME/.operator-mantis/slack-openclaw"
-    mkdir -p "$OPERATOR_HOME"
-    cat >"$out/slack.socket.patch.json5" <<MANTIS_SLACK_PATCH
+    mkdir -p "$OPERATOR_HOME"    cat >"$out/slack.socket.patch.json5" <<MANTIS_SLACK_PATCH
 {
   gateway: {
     port: 38973,
@@ -840,8 +838,7 @@ console.log(match[1] + " " + match[2]);
 MANTIS_SLACK_PATCH
     pnpm openclaw config patch --file "$out/slack.socket.patch.json5" --dry-run
     pnpm openclaw config patch --file "$out/slack.socket.patch.json5"
-    nohup pnpm openclaw gateway run --dev --allow-unconfigured --port 38973 --cli-backend-logs </dev/null >"$out/operator-gateway.log" 2>&1 &
-    gateway_pid="$!"
+    nohup pnpm openclaw gateway run --dev --allow-unconfigured --port 38973 --cli-backend-logs </dev/null >"$out/operator-gateway.log" 2>&1 &    gateway_pid="$!"
     echo "$gateway_pid" >"$out/operator-gateway.pid"
     sleep 12
     if ! kill -0 "$gateway_pid" >/dev/null 2>&1; then
@@ -861,37 +858,37 @@ MANTIS_SLACK_PATCH
         cp -a "$slack_qa_output_dir"/. "$out/slack-qa"/
       fi
     }
-    qa_args=(openclaw qa slack --repo-root . --output-dir "$slack_qa_output_dir" --provider-mode "$provider_mode" --model "$primary_model" --alt-model "$alternate_model" --credential-source "$credential_source" --credential-role "$credential_role")
+    qa_args=(operator qa slack --repo-root . --output-dir "$slack_qa_output_dir" --provider-mode "$provider_mode" --model "$primary_model" --alt-model "$alternate_model" --credential-source "$credential_source" --credential-role "$credential_role")
     if [ "$fast_mode" = "1" ]; then
       qa_args+=(--fast)
     fi
     if [ "$approval_checkpoints" = "1" ]; then
       checkpoint_dir="$out/approval-checkpoints"
       mkdir -p "$checkpoint_dir"
-      export OPERATOR_QA_SLACK_APPROVAL_CHECKPOINT_DIR="$checkpoint_dir"
-      export OPERATOR_QA_SLACK_APPROVAL_CHECKPOINT_TIMEOUT_MS="\${OPERATOR_QA_SLACK_APPROVAL_CHECKPOINT_TIMEOUT_MS:-${approvalCheckpointTimeoutMs}}"
-      export OPERATOR_MANTIS_APPROVAL_CHECKPOINT_SCENARIOS_JSON="$approval_checkpoint_scenarios_json"
-      export OPERATOR_MANTIS_APPROVAL_BROWSER_BIN="$browser_bin"
+      export OPENCLAW_QA_SLACK_APPROVAL_CHECKPOINT_DIR="$checkpoint_dir"
+      export OPENCLAW_QA_SLACK_APPROVAL_CHECKPOINT_TIMEOUT_MS="\${OPENCLAW_QA_SLACK_APPROVAL_CHECKPOINT_TIMEOUT_MS:-${approvalCheckpointTimeoutMs}}"
+      export OPENCLAW_MANTIS_APPROVAL_CHECKPOINT_SCENARIOS_JSON="$approval_checkpoint_scenarios_json"
+      export OPENCLAW_MANTIS_APPROVAL_BROWSER_BIN="$browser_bin"
       cat >"$out/approval-checkpoint-watcher.mjs" <<'MANTIS_APPROVAL_WATCHER'
 	import { spawn } from "node:child_process";
 	import fs from "node:fs/promises";
 	import path from "node:path";
 
-const checkpointDir = process.env.OPERATOR_QA_SLACK_APPROVAL_CHECKPOINT_DIR;
+const checkpointDir = process.env.OPENCLAW_QA_SLACK_APPROVAL_CHECKPOINT_DIR;
 const timeoutMs = Number.parseInt(
-  process.env.OPERATOR_QA_SLACK_APPROVAL_CHECKPOINT_TIMEOUT_MS || "${approvalCheckpointTimeoutMs}",
+  process.env.OPENCLAW_QA_SLACK_APPROVAL_CHECKPOINT_TIMEOUT_MS || "${approvalCheckpointTimeoutMs}",
   10,
 );
 	const scenarioIds = JSON.parse(
-	  process.env.OPERATOR_MANTIS_APPROVAL_CHECKPOINT_SCENARIOS_JSON || "[]",
+	  process.env.OPENCLAW_MANTIS_APPROVAL_CHECKPOINT_SCENARIOS_JSON || "[]",
 	);
-	const browserBin = process.env.OPERATOR_MANTIS_APPROVAL_BROWSER_BIN;
+	const browserBin = process.env.OPENCLAW_MANTIS_APPROVAL_BROWSER_BIN;
 
 if (!checkpointDir) {
-  throw new Error("OPERATOR_QA_SLACK_APPROVAL_CHECKPOINT_DIR is required.");
+  throw new Error("OPENCLAW_QA_SLACK_APPROVAL_CHECKPOINT_DIR is required.");
 }
 if (!Number.isFinite(timeoutMs) || timeoutMs <= 0) {
-  throw new Error("OPERATOR_QA_SLACK_APPROVAL_CHECKPOINT_TIMEOUT_MS must be a positive integer.");
+  throw new Error("OPENCLAW_QA_SLACK_APPROVAL_CHECKPOINT_TIMEOUT_MS must be a positive integer.");
 }
 if (!Array.isArray(scenarioIds) || scenarioIds.length === 0) {
   throw new Error("At least one approval checkpoint scenario id is required.");
@@ -980,7 +977,7 @@ async function waitForCheckpoint(filePath) {
 	    "</style></head><body><main class='wrap'>" +
 	    '<div class="channel"># Slack native approval checkpoint</div>' +
 	    '<section class="message"><div class="avatar">OC</div><div class="content">' +
-	    '<div class="meta"><span class="name">openclaw</span><span class="app">APP</span><span class="state">' +
+	    '<div class="meta"><span class="name">operator</span><span class="app">APP</span><span class="state">' +
 	    htmlEscape(stateLabel) +
 	    "</span></div>" +
 	    '<h1 class="title">' + htmlEscape(title) + "</h1>" +
@@ -994,7 +991,7 @@ async function waitForCheckpoint(filePath) {
 
 	async function captureScreenshot(screenshotPath, checkpoint) {
 	  if (!browserBin) {
-	    throw new Error("OPERATOR_MANTIS_APPROVAL_BROWSER_BIN is required to render approval checkpoint screenshots.");
+	    throw new Error("OPENCLAW_MANTIS_APPROVAL_BROWSER_BIN is required to render approval checkpoint screenshots.");
 	  }
 	  const htmlPath = screenshotPath + ".html";
 	  await fs.writeFile(htmlPath, renderCheckpointHtml(checkpoint), "utf8");
@@ -1331,7 +1328,7 @@ export async function runMantisSlackDesktopSmoke(
   const slackChannelId =
     trimToValue(opts.slackChannelId) ??
     trimToValue(env[SLACK_CHANNEL_ID_ENV]) ??
-    trimToValue(env.OPERATOR_QA_SLACK_CHANNEL_ID) ??
+    trimToValue(env.OPENCLAW_QA_SLACK_CHANNEL_ID) ??
     DEFAULT_SLACK_CHANNEL_ID;
   const slackUrl = trimToValue(opts.slackUrl) ?? trimToValue(env[SLACK_URL_ENV]);
   const runner = opts.commandRunner ?? defaultCommandRunner;

@@ -80,7 +80,7 @@ type QaMultipassPlan = {
   fastMode?: boolean;
   thinkingDefault?: string;
   runtimePair?: [RuntimeId, RuntimeId];
-  channelDriverSelection?: OperatorCrablineChannelDriverSelection;
+  channelDriverSelection?: OpenClawCrablineChannelDriverSelection;
   enabledPluginIds?: string[];
   scenarioIds: string[];
   forwardedEnv: Record<string, string>;
@@ -245,7 +245,7 @@ function createQaMultipassPlan(params: {
   scenarioIds?: string[];
   concurrency?: number;
   runtimePair?: [RuntimeId, RuntimeId];
-  channelDriverSelection?: OperatorCrablineChannelDriverSelection;
+  channelDriverSelection?: OpenClawCrablineChannelDriverSelection;
   enabledPluginIds?: string[];
   image?: string;
   cpus?: number;
@@ -359,15 +359,15 @@ function renderQaMultipassGuestScript(
       .filter(
         ([key]) =>
           key !== "CODEX_HOME" &&
-          key !== "OPERATOR_CONFIG_PATH" &&
-          key !== "OPERATOR_QA_LIVE_PROVIDER_CONFIG_PATH",
+          key !== "OPENCLAW_CONFIG_PATH" &&
+          key !== "OPENCLAW_QA_LIVE_PROVIDER_CONFIG_PATH",
       )
       .map(([key, value]) => `${key}=${shellQuote(redactSecrets ? "<redacted>" : value)}`),
     ...(plan.guestCodexHomePath ? [`CODEX_HOME=${shellQuote(plan.guestCodexHomePath)}`] : []),
     ...(plan.guestLiveProviderConfigPath
       ? [
-          `OPERATOR_CONFIG_PATH=${shellQuote(plan.guestLiveProviderConfigPath)}`,
-          `OPERATOR_QA_LIVE_PROVIDER_CONFIG_PATH=${shellQuote(plan.guestLiveProviderConfigPath)}`,
+          `OPENCLAW_CONFIG_PATH=${shellQuote(plan.guestLiveProviderConfigPath)}`,
+          `OPENCLAW_QA_LIVE_PROVIDER_CONFIG_PATH=${shellQuote(plan.guestLiveProviderConfigPath)}`,
         ]
       : []),
     plan.qaCommand.map(shellQuote).join(" "),
@@ -575,7 +575,7 @@ export async function runQaMultipass(params: {
   scenarioIds?: string[];
   concurrency?: number;
   runtimePair?: [RuntimeId, RuntimeId];
-  channelDriverSelection?: OperatorCrablineChannelDriverSelection;
+  channelDriverSelection?: OpenClawCrablineChannelDriverSelection;
   enabledPluginIds?: string[];
   image?: string;
   cpus?: number;
@@ -608,13 +608,13 @@ export async function runQaMultipass(params: {
       );
     }
     throw new Error(
-      `Multipass is not installed on this host. Install it with '${resolveMultipassInstallHint()}', then rerun 'pnpm openclaw qa suite --runner multipass'.`,
+      `Multipass is not installed on this host. Install it with '${resolveMultipassInstallHint()}', then rerun 'pnpm operator qa suite --runner multipass'.`,
       { cause: error },
     );
   }
 
   const hostTransferDirPath = await fs.promises.mkdtemp(
-    path.join(resolvePreferredOperatorTmpDir(), `${plan.vmName}-qa-suite-`),
+    path.join(resolvePreferredOpenClawTmpDir(), `${plan.vmName}-qa-suite-`),
   );
   const hostTransferScriptPath = path.join(hostTransferDirPath, "guest-run.sh");
   await writeFile(hostTransferScriptPath, renderQaMultipassGuestScript(plan), {

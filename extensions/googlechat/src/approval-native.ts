@@ -157,7 +157,7 @@ export function shouldHandleGoogleChatNativeApprovalRequest(params: {
 }
 
 export function shouldSuppressLocalGoogleChatExecApprovalPrompt(params: {
-  cfg: OperatorConfig;
+  cfg: OpenClawConfig;
   accountId?: string | null;
   payload: ReplyPayload;
   hint?: ChannelOutboundPayloadHint;

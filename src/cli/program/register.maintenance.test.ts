@@ -122,7 +122,7 @@ describe("registerMaintenanceCommands doctor action", () => {
 
   it("denies cross-state imports for older update parents", async () => {
     doctorCommand.mockResolvedValue(undefined);
-    vi.stubEnv("OPERATOR_UPDATE_IN_PROGRESS", "1");
+    vi.stubEnv("OPENCLAW_UPDATE_IN_PROGRESS", "1");
 
     await runMaintenanceCli(["doctor", "--fix", "--non-interactive"]);
 
@@ -138,7 +138,7 @@ describe("registerMaintenanceCommands doctor action", () => {
       "--session-sqlite",
       "import",
       "--session-sqlite-store",
-      "/tmp/openclaw/sessions.json",
+      "/tmp/operator/sessions.json",
       "--json",
     ]);
 
@@ -146,7 +146,7 @@ describe("registerMaintenanceCommands doctor action", () => {
     const [runtimeArg, options] = commandCall(doctorCommand);
     expect(runtimeArg).toBe(runtime);
     expect(options.sessionSqlite).toBe("import");
-    expect(options.sessionSqliteStore).toBe("/tmp/openclaw/sessions.json");
+    expect(options.sessionSqliteStore).toBe("/tmp/operator/sessions.json");
     expect(options.json).toBe(true);
     expect(runtime.exit).toHaveBeenCalledWith(0);
   });
@@ -244,7 +244,7 @@ describe("registerMaintenanceCommands doctor action", () => {
 
     expect(doctorCommand).not.toHaveBeenCalled();
     expect(runtime.error).toHaveBeenCalledWith(
-      "doctor session SQLite options ...
+      "doctor session SQLite options require --session-sqlite. Use `operator doctor --session-sqlite dry-run ...`.",
     );
     expect(runtime.exit).toHaveBeenCalledWith(2);
   });
@@ -284,7 +284,7 @@ describe("registerMaintenanceCommands doctor action", () => {
 
     expect(doctorCommand).not.toHaveBeenCalled();
     expect(runtime.error).toHaveBeenCalledWith(
-      "doctor lint options ...
+      "doctor lint options require --lint. Use `operator doctor --lint ...`.",
     );
     expect(runtime.exit).toHaveBeenCalledWith(2);
   });
@@ -295,7 +295,7 @@ describe("registerMaintenanceCommands doctor action", () => {
     expect(doctorCommand).not.toHaveBeenCalled();
     expect(runDoctorLintCli).not.toHaveBeenCalled();
     expect(runtime.error).toHaveBeenCalledWith(
-      "doctor lint options ...
+      "doctor lint options require --lint. Use `operator doctor --lint ...`.",
     );
     expect(runtime.exit).toHaveBeenCalledWith(2);
   });
@@ -315,7 +315,7 @@ describe("registerMaintenanceCommands doctor action", () => {
     expect(doctorCommand).not.toHaveBeenCalled();
     expect(runDoctorLintCli).not.toHaveBeenCalled();
     expect(runtime.error).toHaveBeenCalledWith(
-      "doctor lint options ...
+      "doctor lint options require --lint. Use `operator doctor --lint ...`.",
     );
     expect(runtime.exit).toHaveBeenCalledWith(2);
   });

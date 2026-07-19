@@ -13,7 +13,7 @@ import {
   resolveConfiguredModelRef,
 } from "../agents/model-selection-shared.js";
 import { resolveThinkingDefault } from "../agents/model-thinking-default.js";
-import type { OperatorConfig } from "../config/types.operator.js";
+import type { OpenClawConfig } from "../config/types.operator.js";
 import { getResolvedLoggerSettings } from "../logging.js";
 import { collectEnabledInsecureOrDangerousFlagsFromCurrentSnapshot } from "../security/dangerous-config-flags-current.js";
 
@@ -30,8 +30,8 @@ type StartupThinkLevel =
 
 /** Emit startup summary lines after Gateway bind and plugin loading complete. */
 export async function logGatewayStartup(params: {
-  cfg: OperatorConfig;
-  activationSourceConfig?: OperatorConfig;
+  cfg: OpenClawConfig;
+  activationSourceConfig?: OpenClawConfig;
   bindHost: string;
   bindHosts?: string[];
   port: number;
@@ -104,7 +104,7 @@ function normalizeStartupThinkLevel(value: unknown): StartupThinkLevel | undefin
 
 /** Resolve explicit thinking overrides from agent defaults and per-model config. */
 function resolveExplicitStartupThinking(params: {
-  cfg: OperatorConfig;
+  cfg: OpenClawConfig;
   provider: string;
   model: string;
   defaultAgentThinking: unknown;
@@ -134,7 +134,7 @@ function isConfiguredReasoningDisabled(params: {
 
 /** Format model thinking and fast-mode details for the Gateway startup banner. */
 export function formatAgentModelStartupDetails(params: {
-  cfg: OperatorConfig;
+  cfg: OpenClawConfig;
   provider: string;
   model: string;
 }): string {
@@ -180,8 +180,8 @@ export function formatAgentModelStartupDetails(params: {
 }
 
 async function collectConfiguredChannelStartupWarnings(params: {
-  cfg: OperatorConfig;
-  activationSourceConfig?: OperatorConfig;
+  cfg: OpenClawConfig;
+  activationSourceConfig?: OpenClawConfig;
 }): Promise<string[]> {
   const [blockerModule, presencePolicyModule, pluginRegistryModule] = await Promise.all([
     import("../commands/doctor/shared/channel-plugin-blockers.js"),

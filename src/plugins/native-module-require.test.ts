@@ -77,8 +77,7 @@ describe("tryNativeRequireJavaScriptModule", () => {
   it("declines missing dependency errors when source-transform fallback is available", () => {
     const dir = makeTempDir();
     const modulePath = path.join(dir, "plugin.cjs");
-    fs.writeFileSync(modulePath, '...
-
+    fs.writeFileSync(modulePath, 'require("operator/plugin-sdk");\n', "utf8");
     expect(
       tryNativeRequireJavaScriptModule(modulePath, {
         allowWindows: true,
@@ -102,7 +101,7 @@ describe("tryNativeRequireJavaScriptModule", () => {
     );
     fs.writeFileSync(
       modulePath,
-      'import { defineChannelMessageAdapter } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";\nexport const marker = defineChannelMessageAdapter();\n',
+      'import { defineChannelMessageAdapter } from "operator/plugin-sdk/channel-outbound";\nexport const marker = defineChannelMessageAdapter();\n',
       "utf8",
     );
     fs.writeFileSync(
@@ -111,7 +110,7 @@ describe("tryNativeRequireJavaScriptModule", () => {
         `import { tryNativeRequireJavaScriptModule } from ${JSON.stringify(nativeRequireModuleUrl)};`,
         `const result = tryNativeRequireJavaScriptModule(${JSON.stringify(modulePath)}, {`,
         "  allowWindows: true,",
-        `  aliasMap: { "openclaw/plugin-sdk/channel-outbound": ${JSON.stringify(sdkPath)} },`,
+        `  aliasMap: { "operator/plugin-sdk/channel-outbound": ${JSON.stringify(sdkPath)} },`,
         "});",
         "if (!result.ok) {",
         '  throw new Error("native require declined ESM graph");',

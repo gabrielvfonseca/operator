@@ -5,7 +5,7 @@ import path from "node:path";
 import { expectDefined } from "@gabrielvfonseca/normalization-core";
 import { bundledPluginRootAt } from "@gabrielvfonseca/operator/plugin-sdk/test-fixtures";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/config.js";
+import type { OpenClawConfig } from "../config/config.js";
 import { withEnvAsync } from "../test-utils/env.js";
 
 const APP_ROOT = "/app";
@@ -123,8 +123,8 @@ function createSuccessfulNpmUpdateResult(params?: {
 }) {
   return {
     ok: true,
-    pluginId: params?.pluginId ?? "opik-openclaw",
-    targetDir: params?.targetDir ?? "/tmp/opik-openclaw",
+    pluginId: params?.pluginId ?? "opik-operator",
+    targetDir: params?.targetDir ?? "/tmp/opik-operator",
     version: params?.version ?? "0.2.6",
     extensions: ["index.ts"],
     ...(params?.npmResolution ? { npmResolution: params.npmResolution } : {}),
@@ -204,7 +204,7 @@ function createMarketplaceInstallConfig(params: {
   marketplaceSource: string;
   marketplacePlugin: string;
   marketplaceName?: string;
-}): OperatorConfig {
+}): OpenClawConfig {
   return {
     plugins: {
       installs: {
@@ -228,7 +228,7 @@ function createClawHubInstallConfig(params: {
   clawhubFamily: "bundle-plugin" | "code-plugin";
   clawhubChannel: "community" | "official" | "private";
   spec?: string;
-}): OperatorConfig {
+}): OpenClawConfig {
   return {
     plugins: {
       installs: {
@@ -246,7 +246,7 @@ function createClawHubInstallConfig(params: {
   };
 }
 
-function createEnabledDemoClawHubInstallConfig(): OperatorConfig {
+function createEnabledDemoClawHubInstallConfig(): OpenClawConfig {
   const installPath = createInstalledPackageDir({
     name: "demo",
     version: "1.2.3",
@@ -280,7 +280,7 @@ function createGitInstallConfig(params: {
   spec: string;
   installPath: string;
   commit?: string;
-}): OperatorConfig {
+}): OpenClawConfig {
   return {
     plugins: {
       installs: {
@@ -300,7 +300,7 @@ function createBundledPathInstallConfig(params: {
   installPath: string;
   sourcePath?: string;
   spec?: string;
-}): OperatorConfig {
+}): OpenClawConfig {
   return {
     plugins: {
       load: { paths: params.loadPaths },
@@ -394,7 +394,7 @@ function mockNpmViewMetadata(params: {
   version: string;
   integrity?: string;
   shasum?: string;
-  openclaw?: Record<string, unknown>;
+  operator?: Record<string, unknown>;
 }) {
   runCommandWithTimeoutMock.mockResolvedValueOnce({
     code: 0,
@@ -593,7 +593,7 @@ describe("updateNpmInstalledPlugins", () => {
   });
 
   it("does not treat inherited prototype names as install records", async () => {
-    const config: OperatorConfig = { plugins: { installs: {} } };
+    const config: OpenClawConfig = { plugins: { installs: {} } };
 
     const result = await updateNpmInstalledPlugins({
       config,
@@ -616,30 +616,30 @@ describe("updateNpmInstalledPlugins", () => {
     {
       name: "skips integrity drift checks for unpinned npm specs during dry-run updates",
       config: createNpmInstallConfig({
-        pluginId: "opik-openclaw",
-        spec: "@opik/opik-openclaw",
+        pluginId: "opik-operator",
+        spec: "@opik/opik-operator",
         integrity: "sha512-old",
-        installPath: "/tmp/opik-openclaw",
+        installPath: "/tmp/opik-operator",
       }),
-      pluginIds: ["opik-openclaw"],
+      pluginIds: ["opik-operator"],
       dryRun: true,
       expectedCall: {
-        spec: "@opik/opik-openclaw",
+        spec: "@opik/opik-operator",
         expectedIntegrity: undefined,
       },
     },
     {
       name: "keeps integrity drift checks for exact-version npm specs during dry-run updates",
       config: createNpmInstallConfig({
-        pluginId: "opik-openclaw",
-        spec: "@opik/opik-openclaw@0.2.5",
+        pluginId: "opik-operator",
+        spec: "@opik/opik-operator@0.2.5",
         integrity: "sha512-old",
-        installPath: "/tmp/opik-openclaw",
+        installPath: "/tmp/opik-operator",
       }),
-      pluginIds: ["opik-openclaw"],
+      pluginIds: ["opik-operator"],
       dryRun: true,
       expectedCall: {
-        spec: "@opik/opik-openclaw@0.2.5",
+        spec: "@opik/opik-operator@0.2.5",
         expectedIntegrity: "sha512-old",
       },
     },
@@ -1349,7 +1349,7 @@ describe("updateNpmInstalledPlugins", () => {
       shasum: "same",
     });
     installPluginFromNpmSpecMock.mockRejectedValue(new Error("installer should not run"));
-    const config: OperatorConfig = {
+    const config: OpenClawConfig = {
       plugins: {
         installs: {
           "lossless-claw": {
@@ -1400,7 +1400,7 @@ describe("updateNpmInstalledPlugins", () => {
   });
 
   it("does not skip unchanged npm plugins when package metadata requires a newer plugin API", async () => {
-    vi.stubEnv("OPERATOR_COMPATIBILITY_HOST_VERSION", "2026.5.28-beta.3");
+    vi.stubEnv("OPENCLAW_COMPATIBILITY_HOST_VERSION", "2026.5.28-beta.3");
     const installPath = createInstalledPackageDir({
       name: "@gabrielvfonseca/msteams",
       version: "2026.5.28-beta.4",
@@ -1465,7 +1465,7 @@ describe("updateNpmInstalledPlugins", () => {
   });
 
   it("does not skip unchanged npm plugins when package metadata requires a newer host", async () => {
-    vi.stubEnv("OPERATOR_COMPATIBILITY_HOST_VERSION", "2026.5.28-beta.3");
+    vi.stubEnv("OPENCLAW_COMPATIBILITY_HOST_VERSION", "2026.5.28-beta.3");
     const installPath = createInstalledPackageDir({
       name: "@gabrielvfonseca/msteams",
       version: "2026.5.28-beta.4",
@@ -1519,7 +1519,7 @@ describe("updateNpmInstalledPlugins", () => {
     });
   });
 
-  it("repairs missing openclaw peer links before skipping unchanged npm plugins", async () => {
+  it("repairs missing operator peer links before skipping unchanged npm plugins", async () => {
     const installPath = createInstalledPackageDir({
       name: "@gabrielvfonseca/codex",
       version: "2026.5.3",
@@ -1543,7 +1543,7 @@ describe("updateNpmInstalledPlugins", () => {
         },
       }),
     );
-    const config: OperatorConfig = {
+    const config: OpenClawConfig = {
       plugins: {
         installs: {
           codex: {
@@ -1580,7 +1580,7 @@ describe("updateNpmInstalledPlugins", () => {
     ]);
   });
 
-  it("skips unchanged npm plugins when the openclaw peer link already resolves", async () => {
+  it("skips unchanged npm plugins when the operator peer link already resolves", async () => {
     const installPath = createInstalledPackageDir({
       name: "@gabrielvfonseca/codex",
       version: "2026.5.3",
@@ -1630,13 +1630,13 @@ describe("updateNpmInstalledPlugins", () => {
     ]);
   });
 
-  it("repairs openclaw peer links after batch npm updates prune earlier plugin links", async () => {
+  it("repairs operator peer links after batch npm updates prune earlier plugin links", async () => {
     const plugins = [
       { pluginId: "brave", packageName: "@gabrielvfonseca/brave-plugin" },
       { pluginId: "codex", packageName: "@gabrielvfonseca/codex" },
       { pluginId: "discord", packageName: "@gabrielvfonseca/discord" },
     ];
-    const { installPaths, peerLinkPath, linkPeer } = createOperatorPeerLinkFixtures(plugins);
+    const { installPaths, peerLinkPath, linkPeer } = createOpenClawPeerLinkFixtures(plugins);
     for (const { packageName } of plugins) {
       mockNpmViewMetadata({
         name: packageName,
@@ -1706,13 +1706,13 @@ describe("updateNpmInstalledPlugins", () => {
     );
   });
 
-  it("repairs sibling openclaw peer links after a targeted npm update prunes the shared install tree", async () => {
+  it("repairs sibling operator peer links after a targeted npm update prunes the shared install tree", async () => {
     const plugins = [
       { pluginId: "brave", packageName: "@gabrielvfonseca/brave-plugin" },
       { pluginId: "codex", packageName: "@gabrielvfonseca/codex" },
       { pluginId: "discord", packageName: "@gabrielvfonseca/discord" },
     ];
-    const { installPaths, peerLinkPath, linkPeer } = createOperatorPeerLinkFixtures(plugins);
+    const { installPaths, peerLinkPath, linkPeer } = createOpenClawPeerLinkFixtures(plugins);
     linkPeer("brave");
     linkPeer("discord");
     mockNpmViewMetadata({
@@ -1769,12 +1769,12 @@ describe("updateNpmInstalledPlugins", () => {
     }
   });
 
-  it("continues repairing sibling openclaw peer links after one recorded npm install cannot be relinked", async () => {
+  it("continues repairing sibling operator peer links after one recorded npm install cannot be relinked", async () => {
     const plugins = [
       { pluginId: "brave", packageName: "@gabrielvfonseca/brave-plugin" },
       { pluginId: "codex", packageName: "@gabrielvfonseca/codex" },
     ];
-    const { installPaths, peerLinkPath, linkPeer } = createOperatorPeerLinkFixtures(plugins);
+    const { installPaths, peerLinkPath, linkPeer } = createOpenClawPeerLinkFixtures(plugins);
     const brokenInstallPath = createInstalledPackageDir({
       name: "@gabrielvfonseca/broken-plugin",
       version: "2026.5.4",
@@ -1846,7 +1846,7 @@ describe("updateNpmInstalledPlugins", () => {
     expect(fs.existsSync(peerLinkPath("brave"))).toBe(true);
     expect(fs.existsSync(peerLinkPath("codex"))).toBe(true);
     expect(warnMessages).toEqual([
-      `Could not repair openclaw peer link for "broken" at ${brokenInstallPath}: Skipping openclaw peerDependency link because ${path.join(brokenInstallPath, "node_modules")} is not a real directory.`,
+      `Could not repair operator peer link for "broken" at ${brokenInstallPath}: Skipping operator peerDependency link because ${path.join(brokenInstallPath, "node_modules")} is not a real directory.`,
     ]);
   });
 
@@ -2295,7 +2295,7 @@ describe("updateNpmInstalledPlugins", () => {
           },
         },
       },
-    } satisfies OperatorConfig;
+    } satisfies OpenClawConfig;
 
     const result = await updateNpmInstalledPlugins({
       config,
@@ -2344,7 +2344,7 @@ describe("updateNpmInstalledPlugins", () => {
             },
           },
         },
-      } satisfies OperatorConfig,
+      } satisfies OpenClawConfig,
     },
     {
       source: "ClawHub",
@@ -2368,7 +2368,7 @@ describe("updateNpmInstalledPlugins", () => {
             },
           },
         },
-      } satisfies OperatorConfig,
+      } satisfies OpenClawConfig,
     },
     {
       source: "marketplace",
@@ -2389,7 +2389,7 @@ describe("updateNpmInstalledPlugins", () => {
             },
           },
         },
-      } satisfies OperatorConfig,
+      } satisfies OpenClawConfig,
     },
   ])("skips disabled $source installs before update network calls", async ({ config }) => {
     installPluginFromNpmSpecMock.mockRejectedValue(new Error("npm installer should not run"));
@@ -2765,7 +2765,7 @@ describe("updateNpmInstalledPlugins", () => {
         status: "unchanged",
         currentVersion: "1.2.3",
         nextVersion: "1.2.3",
-        message: `demo is pinned to ${spec} (installed 1.2.3); registry default resolves to 1.2.4. Pass \`openclaw plugins update @acme/demo@latest\` to follow the registry default line.`,
+        message: `demo is pinned to ${spec} (installed 1.2.3); registry default resolves to 1.2.4. Pass \`operator plugins update @acme/demo@latest\` to follow the registry default line.`,
       });
     },
   );
@@ -2877,7 +2877,7 @@ describe("updateNpmInstalledPlugins", () => {
           },
         },
       },
-    } satisfies OperatorConfig;
+    } satisfies OpenClawConfig;
 
     const result = await updateNpmInstalledPlugins({
       config,
@@ -2927,7 +2927,7 @@ describe("updateNpmInstalledPlugins", () => {
           contextEngine: "demo",
         },
       },
-    } satisfies OperatorConfig;
+    } satisfies OpenClawConfig;
 
     const result = await updateNpmInstalledPlugins({
       config,
@@ -3256,14 +3256,14 @@ describe("updateNpmInstalledPlugins", () => {
           actualIntegrity: "sha512-new",
           resolution: {
             integrity: "sha512-new",
-            resolvedSpec: "@opik/opik-openclaw@0.2.5",
+            resolvedSpec: "@opik/opik-operator@0.2.5",
             version: "0.2.5",
           },
         });
         if (proceed === false) {
           return {
             ok: false,
-            error: "aborted: npm package integrity drift detected for @opik/opik-openclaw@0.2.5",
+            error: "aborted: npm package integrity drift detected for @opik/opik-operator@0.2.5",
           };
         }
         return createSuccessfulNpmUpdateResult();
@@ -3271,25 +3271,25 @@ describe("updateNpmInstalledPlugins", () => {
     );
 
     const config = createNpmInstallConfig({
-      pluginId: "opik-openclaw",
-      spec: "@opik/opik-openclaw@0.2.5",
+      pluginId: "opik-operator",
+      spec: "@opik/opik-operator@0.2.5",
       integrity: "sha512-old",
-      installPath: "/tmp/opik-openclaw",
+      installPath: "/tmp/opik-operator",
     });
     const result = await updateNpmInstalledPlugins({
       config,
-      pluginIds: ["opik-openclaw"],
+      pluginIds: ["opik-operator"],
       logger: { warn },
     });
 
     expect(warn).toHaveBeenCalledWith(
-      'Integrity drift for "opik-openclaw" (@opik/opik-openclaw@0.2.5): expected sha512-old, got sha512-new',
+      'Integrity drift for "opik-operator" (@opik/opik-operator@0.2.5): expected sha512-old, got sha512-new',
     );
     expect(result.changed).toBe(false);
     expect(result.config).toBe(config);
     expect(result.outcomes).toEqual([
       {
-        pluginId: "opik-openclaw",
+        pluginId: "opik-operator",
         status: "error",
         message:
           "Failed to update opik-operator: aborted: npm package integrity drift detected for @opik/opik-openclaw@0.2.5",
@@ -4604,7 +4604,7 @@ describe("updateNpmInstalledPlugins", () => {
             },
           },
         },
-      } as OperatorConfig,
+      } as OpenClawConfig,
       pluginIds: ["context-engine"],
     });
 
@@ -4754,8 +4754,8 @@ describe("updateNpmInstalledPlugins", () => {
   });
 
   it("reuses the recorded managed extensions root when updating external plugins", async () => {
-    const installPath = "/var/openclaw/extensions/demo";
-    const extensionsDir = "/var/openclaw/extensions";
+    const installPath = "/var/operator/extensions/demo";
+    const extensionsDir = "/var/operator/extensions";
     const expectedExtensionsDir = path.resolve(extensionsDir);
     installPluginFromNpmSpecMock.mockResolvedValue(
       createSuccessfulNpmUpdateResult({
@@ -4904,7 +4904,6 @@ describe("syncPluginsForUpdateChannel", () => {
   it("forwards an explicit env to bundled plugin source resolution", async () => {
     resolveBundledPluginSourcesMock.mockReturnValue(new Map());
     const env = { OPERATOR_HOME: "/srv/operator-home" } as NodeJS.ProcessEnv;
-
     await syncPluginsForUpdateChannel({
       channel: "beta",
       config: {},
@@ -4931,7 +4930,7 @@ describe("syncPluginsForUpdateChannel", () => {
         channel: "beta",
         env: {
           ...process.env,
-          OPERATOR_HOME: bundledHome,
+          OPENCLAW_HOME: bundledHome,
           HOME: "/tmp/ignored-home",
         },
         config: {
@@ -5270,7 +5269,7 @@ describe("syncPluginsForUpdateChannel", () => {
       code: "package_not_found",
       error: "Package not found on ClawHub.",
     });
-    const config: OperatorConfig = {
+    const config: OpenClawConfig = {
       channels: {
         "legacy-chat": {
           enabled: true,
@@ -5423,7 +5422,7 @@ describe("syncPluginsForUpdateChannel", () => {
       error: "ClawHub ClawPack integrity mismatch.",
       warning: "WARNING\nSecurity scan: suspicious",
     });
-    const config: OperatorConfig = {
+    const config: OpenClawConfig = {
       channels: {
         "legacy-chat": {
           enabled: true,
@@ -5544,7 +5543,7 @@ describe("syncPluginsForUpdateChannel", () => {
       ok: false,
       error: "package unavailable",
     });
-    const config: OperatorConfig = {
+    const config: OpenClawConfig = {
       channels: {
         "legacy-chat": {
           enabled: true,

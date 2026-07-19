@@ -81,7 +81,7 @@ async function installCompletionForDoctor(
 async function generateCompletionCache(
   options: CompletionCacheGenerationOptions,
 ): Promise<boolean> {
-  const root = await resolveOperatorPackageRoot({
+  const root = await resolveOpenClawPackageRoot({
     moduleUrl: import.meta.url,
     argv1: process.argv[1],
     cwd: process.cwd(),

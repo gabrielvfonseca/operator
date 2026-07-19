@@ -13,7 +13,7 @@ import {
 } from "@gabrielvfonseca/operator/plugin-sdk/session-store-runtime";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { installMatrixMonitorTestRuntime } from "../../test-runtime.js";
-import { MATRIX_OPERATOR_FINALIZED_PREVIEW_KEY } from "../send/types.js";
+import { MATRIX_OPENCLAW_FINALIZED_PREVIEW_KEY } from "../send/types.js";
 import { createMatrixRoomMessageHandler } from "./handler.js";
 import {
   createMatrixHandlerTestHarness,
@@ -238,7 +238,7 @@ function expectFinalizedPreviewEdit(eventId: string, text: string) {
       room === "!room:example.org" && editedEventId === eventId && body === text,
   );
   const options = requireRecord(call[3], "edit options");
-  expect(options.extraContent).toEqual({ [MATRIX_OPERATOR_FINALIZED_PREVIEW_KEY]: true });
+  expect(options.extraContent).toEqual({ [MATRIX_OPENCLAW_FINALIZED_PREVIEW_KEY]: true });
 }
 
 function expectEditLiveFlag(eventId: string, text: string, expected: boolean | undefined) {
@@ -3198,7 +3198,7 @@ describe("matrix monitor handler draft streaming", () => {
       name: "exec",
       phase: "end",
       status: "failed",
-      progressText: "run openclaw cron -> run jq (agent) failed",
+      progressText: "run operator cron -> run jq (agent) failed",
     });
     await opts.onItemEvent?.({
       itemId: "command-1",
@@ -3206,7 +3206,7 @@ describe("matrix monitor handler draft streaming", () => {
       name: "exec",
       phase: "end",
       status: "failed",
-      progressText: "run openclaw cron -> run jq (agent) failed",
+      progressText: "run operator cron -> run jq (agent) failed",
     });
     expect(sendSingleTextMessageMatrixMock).not.toHaveBeenCalled();
     await vi.advanceTimersByTimeAsync(5_000);
@@ -3235,7 +3235,7 @@ describe("matrix monitor handler draft streaming", () => {
     );
     expect(recoveredEdit?.[2]).not.toContain("completed");
     expect(recoveredEdit?.[2]).not.toContain("failed");
-    expect(recoveredEdit?.[2]).not.toContain("run openclaw cron -> run jq");
+    expect(recoveredEdit?.[2]).not.toContain("run operator cron -> run jq");
     vi.useRealTimers();
   });
 

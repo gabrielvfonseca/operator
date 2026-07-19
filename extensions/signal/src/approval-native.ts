@@ -35,7 +35,7 @@ import { normalizeSignalMessagingTarget } from "./normalize.js";
 
 type ApprovalRequest = ExecApprovalRequest | PluginApprovalRequest;
 type ApprovalKind = "exec" | "plugin";
-type ApprovalForwardingConfig = NonNullable<NonNullable<OperatorConfig["approvals"]>["exec"]>;
+type ApprovalForwardingConfig = NonNullable<NonNullable<OpenClawConfig["approvals"]>["exec"]>;
 type ApprovalForwardingMode = NonNullable<ApprovalForwardingConfig["mode"]>;
 type ChannelApprovalForwardTarget = Parameters<
   NonNullable<
@@ -51,7 +51,7 @@ type SignalApprovalTarget = {
 const DEFAULT_APPROVAL_FORWARDING_MODE: ApprovalForwardingMode = "session";
 
 function isSignalApprovalTransportEnabled(params: {
-  cfg: OperatorConfig;
+  cfg: OpenClawConfig;
   accountId?: string | null;
 }): boolean {
   return resolveSignalAccount({ cfg: params.cfg, accountId: params.accountId }).enabled;
@@ -118,7 +118,7 @@ const {
 } = signalApprovalRouteGates;
 
 export function isSignalNativeApprovalHandlerConfigured(params: {
-  cfg: OperatorConfig;
+  cfg: OpenClawConfig;
   accountId?: string | null;
 }): boolean {
   return isSignalNativeApprovalHandlerConfiguredBase(params);
@@ -134,7 +134,7 @@ function resolveSignalSessionTargetFromSessionKey(sessionKey?: string | null): s
 }
 
 export function shouldSuppressLocalSignalExecApprovalPrompt(params: {
-  cfg: OperatorConfig;
+  cfg: OpenClawConfig;
   accountId?: string | null;
   payload: ReplyPayload;
   hint?: ChannelOutboundPayloadHint;
@@ -168,7 +168,7 @@ function isSignalGroupTarget(to: string): boolean {
 }
 
 function resolveSignalOriginTarget(params: {
-  cfg: OperatorConfig;
+  cfg: OpenClawConfig;
   accountId?: string | null;
   approvalKind?: ApprovalKind;
   request: ApprovalRequest;

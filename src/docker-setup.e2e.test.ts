@@ -172,11 +172,11 @@ const sandboxRootTracker = createSuiteTempRootTracker({ prefix: "operator-docker
 
 const prestartContainerEnvFlags = [
   "-e HOME=/home/node",
-  "-e OPERATOR_HOME=/home/node",
-  "-e OPERATOR_STATE_DIR=/home/node/.operator",
-  "-e OPERATOR_CONFIG_PATH=/home/node/.operator/operator.json",
-  "-e OPERATOR_CONFIG_DIR=/home/node/.operator",
-  "-e OPERATOR_WORKSPACE_DIR=/home/node/.operator/workspace",
+  "-e OPENCLAW_HOME=/home/node",
+  "-e OPENCLAW_STATE_DIR=/home/node/.operator",
+  "-e OPENCLAW_CONFIG_PATH=/home/node/.operator/operator.json",
+  "-e OPENCLAW_CONFIG_DIR=/home/node/.operator",
+  "-e OPENCLAW_WORKSPACE_DIR=/home/node/.operator/workspace",
 ].join(" ");
 
 const noFollowOwnershipRepair = (root: string) =>
@@ -194,10 +194,10 @@ function createEnv(
     LC_ALL: process.env.LC_ALL,
     TMPDIR: process.env.TMPDIR,
     DOCKER_STUB_LOG: sandbox.logPath,
-    OPERATOR_GATEWAY_TOKEN: "test-token",
-    OPERATOR_CONFIG_DIR: join(sandbox.rootDir, "config"),
-    OPERATOR_WORKSPACE_DIR: join(sandbox.rootDir, "@gabrielvfonseca/operator"),
-    OPERATOR_AUTH_PROFILE_SECRET_DIR: join(sandbox.rootDir, "auth-profile-secrets"),
+    OPENCLAW_GATEWAY_TOKEN: "test-token",
+    OPENCLAW_CONFIG_DIR: join(sandbox.rootDir, "config"),
+    OPENCLAW_WORKSPACE_DIR: join(sandbox.rootDir, "operator"),
+    OPENCLAW_AUTH_PROFILE_SECRET_DIR: join(sandbox.rootDir, "auth-profile-secrets"),
   };
 
   for (const [key, value] of Object.entries(overrides)) {
@@ -297,9 +297,9 @@ async function runDockerSetupWithUnsetGatewayToken(
   await prepare?.(configDir);
 
   const result = runDockerSetup(sandbox, {
-    OPERATOR_GATEWAY_TOKEN: undefined,
-    OPERATOR_CONFIG_DIR: configDir,
-    OPERATOR_WORKSPACE_DIR: workspaceDir,
+    OPENCLAW_GATEWAY_TOKEN: undefined,
+    OPENCLAW_CONFIG_DIR: configDir,
+    OPENCLAW_WORKSPACE_DIR: workspaceDir,
   });
   const envFile = await readFile(join(sandbox.rootDir, ".env"), "utf8");
 
@@ -367,21 +367,21 @@ describe("scripts/docker/setup.sh", () => {
 
     const result = runDockerSetup(activeSandbox, {
       GIT_COMMIT: buildCommit,
-      OPERATOR_DOCKER_APT_PACKAGES: "curl wget",
-      OPERATOR_EXTRA_MOUNTS: undefined,
-      OPERATOR_HOME_VOLUME: "operator-home",
+      OPENCLAW_DOCKER_APT_PACKAGES: "curl wget",
+      OPENCLAW_EXTRA_MOUNTS: undefined,
+      OPENCLAW_HOME_VOLUME: "operator-home",
     });
     expect(result.status).toBe(0);
     const envFile = await readFile(join(activeSandbox.rootDir, ".env"), "utf8");
-    expect(envFile).toContain("OPERATOR_IMAGE_APT_PACKAGES=curl wget");
-    expect(envFile).toContain("OPERATOR_DOCKER_BUILD_NODE_OPTIONS=--max-old-space-size=8192");
-    expect(envFile).toContain("OPERATOR_DOCKER_BUILD_TSDOWN_MAX_OLD_SPACE_MB=");
-    expect(envFile).toContain("OPERATOR_DOCKER_BUILD_SKIP_DTS=1");
-    expect(envFile).toContain("OPERATOR_EXTRA_MOUNTS=");
-    expect(envFile).toContain("OPERATOR_HOME_VOLUME=operator-home"); // pragma: allowlist secret
-    expect(envFile).toContain("OPERATOR_DISABLE_BONJOUR=");
+    expect(envFile).toContain("OPENCLAW_IMAGE_APT_PACKAGES=curl wget");
+    expect(envFile).toContain("OPENCLAW_DOCKER_BUILD_NODE_OPTIONS=--max-old-space-size=8192");
+    expect(envFile).toContain("OPENCLAW_DOCKER_BUILD_TSDOWN_MAX_OLD_SPACE_MB=");
+    expect(envFile).toContain("OPENCLAW_DOCKER_BUILD_SKIP_DTS=1");
+    expect(envFile).toContain("OPENCLAW_EXTRA_MOUNTS=");
+    expect(envFile).toContain("OPENCLAW_HOME_VOLUME=operator-home"); // pragma: allowlist secret
+    expect(envFile).toContain("OPENCLAW_DISABLE_BONJOUR=");
     expect(envFile).toContain(
-      `OPERATOR_AUTH_PROFILE_SECRET_DIR=${join(activeSandbox.rootDir, "auth-profile-secrets")}`,
+      `OPENCLAW_AUTH_PROFILE_SECRET_DIR=${join(activeSandbox.rootDir, "auth-profile-secrets")}`,
     );
     const extraCompose = await readFile(
       join(activeSandbox.rootDir, "docker-compose.extra.yml"),
@@ -389,23 +389,23 @@ describe("scripts/docker/setup.sh", () => {
     );
     expect(extraCompose).toContain("operator-home:/home/node");
     expect(extraCompose).toContain(
-      `${join(activeSandbox.rootDir, "auth-profile-secrets")}:/home/node/.config/openclaw`,
+      `${join(activeSandbox.rootDir, "auth-profile-secrets")}:/home/node/.config/operator`,
     );
     expect(extraCompose).toContain("volumes:");
     expect(extraCompose).toContain("operator-home:");
     const log = await readDockerLog(activeSandbox);
-    expect(log).toContain("--build-arg OPERATOR_IMAGE_APT_PACKAGES=curl wget");
+    expect(log).toContain("--build-arg OPENCLAW_IMAGE_APT_PACKAGES=curl wget");
     expect(log).toContain(
-      "--build-arg OPERATOR_DOCKER_BUILD_NODE_OPTIONS=--max-old-space-size=8192",
+      "--build-arg OPENCLAW_DOCKER_BUILD_NODE_OPTIONS=--max-old-space-size=8192",
     );
-    expect(log).toContain("--build-arg OPERATOR_DOCKER_BUILD_TSDOWN_MAX_OLD_SPACE_MB=");
-    expect(log).toContain("--build-arg OPERATOR_DOCKER_BUILD_SKIP_DTS=1");
+    expect(log).toContain("--build-arg OPENCLAW_DOCKER_BUILD_TSDOWN_MAX_OLD_SPACE_MB=");
+    expect(log).toContain("--build-arg OPENCLAW_DOCKER_BUILD_SKIP_DTS=1");
     expect(log).toMatch(
-      /--build-arg OPERATOR_BUILD_TIMESTAMP=\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/u,
+      /--build-arg OPENCLAW_BUILD_TIMESTAMP=\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/u,
     );
     expect(log).toContain(`--build-arg GIT_COMMIT=${buildCommit}`);
     expect(log).toContain(
-      `run --rm --no-deps ${prestartContainerEnvFlags} --entrypoint node operator-gateway dist/index.js onboard --mode local --no-install-daemon --gateway-auth token --gateway-token-ref-env OPERATOR_GATEWAY_TOKEN --skip-ui --suppress-gateway-token-output`,
+      `run --rm --no-deps ${prestartContainerEnvFlags} --entrypoint node operator-gateway dist/index.js onboard --mode local --no-install-daemon --gateway-auth token --gateway-token-ref-env OPENCLAW_GATEWAY_TOKEN --skip-ui --suppress-gateway-token-output`,
     );
     expect(result.stdout).toContain("Gateway token: stored in Docker environment/config");
     expect(result.stdout).toContain("Gateway running with host port mapping.");
@@ -430,19 +430,19 @@ describe("scripts/docker/setup.sh", () => {
     const extraMountSource = join(activeSandbox.rootDir, "extra data");
 
     const result = runDockerSetup(activeSandbox, {
-      OPERATOR_CONFIG_DIR: configDir,
-      OPERATOR_WORKSPACE_DIR: workspaceDir,
-      OPERATOR_AUTH_PROFILE_SECRET_DIR: authProfileSecretDir,
-      OPERATOR_HOME_VOLUME: homeVolumeDir,
-      OPERATOR_EXTRA_MOUNTS: `${extraMountSource}:/mnt/extra data:ro`,
+      OPENCLAW_CONFIG_DIR: configDir,
+      OPENCLAW_WORKSPACE_DIR: workspaceDir,
+      OPENCLAW_AUTH_PROFILE_SECRET_DIR: authProfileSecretDir,
+      OPENCLAW_HOME_VOLUME: homeVolumeDir,
+      OPENCLAW_EXTRA_MOUNTS: `${extraMountSource}:/mnt/extra data:ro`,
     });
 
     expect(result.status).toBe(0);
     expect(result.stderr).not.toContain("cannot contain whitespace");
     const envFile = await readFile(join(activeSandbox.rootDir, ".env"), "utf8");
-    expect(envFile).toContain(`OPERATOR_CONFIG_DIR=${configDir}`);
-    expect(envFile).toContain(`OPERATOR_WORKSPACE_DIR=${workspaceDir}`);
-    expect(envFile).toContain(`OPERATOR_AUTH_PROFILE_SECRET_DIR=${authProfileSecretDir}`);
+    expect(envFile).toContain(`OPENCLAW_CONFIG_DIR=${configDir}`);
+    expect(envFile).toContain(`OPENCLAW_WORKSPACE_DIR=${workspaceDir}`);
+    expect(envFile).toContain(`OPENCLAW_AUTH_PROFILE_SECRET_DIR=${authProfileSecretDir}`);
 
     const extraCompose = await readFile(
       join(activeSandbox.rootDir, "docker-compose.extra.yml"),
@@ -451,7 +451,7 @@ describe("scripts/docker/setup.sh", () => {
     expect(extraCompose).toContain(`"${homeVolumeDir}:/home/node"`);
     expect(extraCompose).toContain(`"${configDir}:/home/node/.operator"`);
     expect(extraCompose).toContain(`"${workspaceDir}:/home/node/.operator/workspace"`);
-    expect(extraCompose).toContain(`"${authProfileSecretDir}:/home/node/.config/openclaw"`);
+    expect(extraCompose).toContain(`"${authProfileSecretDir}:/home/node/.config/operator"`);
     expect(extraCompose).toContain(`"${extraMountSource}:/mnt/extra data:ro"`);
   });
 
@@ -459,67 +459,67 @@ describe("scripts/docker/setup.sh", () => {
     const activeSandbox = requireSandbox(sandbox);
 
     const result = runDockerSetup(activeSandbox, {
-      OPERATOR_DISABLE_BONJOUR: "0",
+      OPENCLAW_DISABLE_BONJOUR: "0",
     });
 
     expect(result.status).toBe(0);
     const envFile = await readFile(join(activeSandbox.rootDir, ".env"), "utf8");
-    expect(envFile).toContain("OPERATOR_DISABLE_BONJOUR=0");
+    expect(envFile).toContain("OPENCLAW_DISABLE_BONJOUR=0");
   });
 
-  it("normalizes legacy OPERATOR_DOCKER_APT_PACKAGES into OPERATOR_IMAGE_APT_PACKAGES", async () => {
+  it("normalizes legacy OPENCLAW_DOCKER_APT_PACKAGES into OPENCLAW_IMAGE_APT_PACKAGES", async () => {
     const activeSandbox = requireSandbox(sandbox);
     await resetDockerLog(activeSandbox);
 
     const result = runDockerSetup(activeSandbox, {
-      OPERATOR_DOCKER_APT_PACKAGES: "curl wget",
+      OPENCLAW_DOCKER_APT_PACKAGES: "curl wget",
     });
     expect(result.status).toBe(0);
 
     const envFile = await readFile(join(activeSandbox.rootDir, ".env"), "utf8");
-    expect(envFile).toContain("OPERATOR_IMAGE_APT_PACKAGES=curl wget");
-    expect(envFile).not.toContain("OPERATOR_DOCKER_APT_PACKAGES");
+    expect(envFile).toContain("OPENCLAW_IMAGE_APT_PACKAGES=curl wget");
+    expect(envFile).not.toContain("OPENCLAW_DOCKER_APT_PACKAGES");
 
     const log = await readDockerLog(activeSandbox);
-    expect(log).toContain("--build-arg OPERATOR_IMAGE_APT_PACKAGES=curl wget");
-    expect(log).not.toContain("--build-arg OPERATOR_DOCKER_APT_PACKAGES");
+    expect(log).toContain("--build-arg OPENCLAW_IMAGE_APT_PACKAGES=curl wget");
+    expect(log).not.toContain("--build-arg OPENCLAW_DOCKER_APT_PACKAGES");
   });
 
-  it("prefers OPERATOR_IMAGE_APT_PACKAGES over legacy OPERATOR_DOCKER_APT_PACKAGES", async () => {
+  it("prefers OPENCLAW_IMAGE_APT_PACKAGES over legacy OPENCLAW_DOCKER_APT_PACKAGES", async () => {
     const activeSandbox = requireSandbox(sandbox);
     await resetDockerLog(activeSandbox);
 
     const result = runDockerSetup(activeSandbox, {
-      OPERATOR_IMAGE_APT_PACKAGES: "curl wget httpie",
-      OPERATOR_DOCKER_APT_PACKAGES: "curl wget",
+      OPENCLAW_IMAGE_APT_PACKAGES: "curl wget httpie",
+      OPENCLAW_DOCKER_APT_PACKAGES: "curl wget",
     });
     expect(result.status).toBe(0);
 
     const envFile = await readFile(join(activeSandbox.rootDir, ".env"), "utf8");
-    expect(envFile).toContain("OPERATOR_IMAGE_APT_PACKAGES=curl wget httpie");
-    expect(envFile).not.toContain("OPERATOR_DOCKER_APT_PACKAGES");
+    expect(envFile).toContain("OPENCLAW_IMAGE_APT_PACKAGES=curl wget httpie");
+    expect(envFile).not.toContain("OPENCLAW_DOCKER_APT_PACKAGES");
 
     const log = await readDockerLog(activeSandbox);
-    expect(log).toContain("--build-arg OPERATOR_IMAGE_APT_PACKAGES=curl wget httpie");
-    expect(log).not.toMatch(/--build-arg OPERATOR_IMAGE_APT_PACKAGES=curl wget(?! httpie)/);
+    expect(log).toContain("--build-arg OPENCLAW_IMAGE_APT_PACKAGES=curl wget httpie");
+    expect(log).not.toMatch(/--build-arg OPENCLAW_IMAGE_APT_PACKAGES=curl wget(?! httpie)/);
   });
 
-  it("explicitly empty OPERATOR_IMAGE_APT_PACKAGES suppresses legacy fallback", async () => {
+  it("explicitly empty OPENCLAW_IMAGE_APT_PACKAGES suppresses legacy fallback", async () => {
     const activeSandbox = requireSandbox(sandbox);
     await resetDockerLog(activeSandbox);
 
     const result = runDockerSetup(activeSandbox, {
-      OPERATOR_IMAGE_APT_PACKAGES: "",
-      OPERATOR_DOCKER_APT_PACKAGES: "curl wget",
+      OPENCLAW_IMAGE_APT_PACKAGES: "",
+      OPENCLAW_DOCKER_APT_PACKAGES: "curl wget",
     });
     expect(result.status).toBe(0);
 
     const envFile = await readFile(join(activeSandbox.rootDir, ".env"), "utf8");
-    expect(envFile).toContain("OPERATOR_IMAGE_APT_PACKAGES=");
+    expect(envFile).toContain("OPENCLAW_IMAGE_APT_PACKAGES=");
     expect(envFile).not.toContain("curl wget");
 
     const log = await readDockerLog(activeSandbox);
-    expect(log).not.toContain("--build-arg OPERATOR_IMAGE_APT_PACKAGES=curl wget");
+    expect(log).not.toContain("--build-arg OPENCLAW_IMAGE_APT_PACKAGES=curl wget");
   });
 
   it("avoids shared-network operator-cli before the gateway is started", async () => {
@@ -545,10 +545,10 @@ describe("scripts/docker/setup.sh", () => {
 
     await resetDockerLog(activeSandbox);
     const result = runDockerSetup(activeSandbox, {
-      OPERATOR_HOME: "/mnt/c/Users/Trevor",
-      OPERATOR_STATE_DIR: "/mnt/c/Users/Trevor/.operator",
-      OPERATOR_CONFIG_PATH: "/mnt/c/Users/Trevor/.operator/operator.json",
-      OPERATOR_SKIP_ONBOARDING: "1",
+      OPENCLAW_HOME: "/mnt/c/Users/Trevor",
+      OPENCLAW_STATE_DIR: "/mnt/c/Users/Trevor/.operator",
+      OPENCLAW_CONFIG_PATH: "/mnt/c/Users/Trevor/.operator/operator.json",
+      OPENCLAW_SKIP_ONBOARDING: "1",
     });
     expect(result.status).toBe(0);
 
@@ -578,8 +578,8 @@ describe("scripts/docker/setup.sh", () => {
 
     await withUnixSocket(socketPath, async () => {
       const result = runDockerSetup(activeSandbox, {
-        OPERATOR_SANDBOX: "1",
-        OPERATOR_DOCKER_SOCKET: socketPath,
+        OPENCLAW_SANDBOX: "1",
+        OPENCLAW_DOCKER_SOCKET: socketPath,
       });
 
       expect(result.status).toBe(0);
@@ -602,20 +602,20 @@ describe("scripts/docker/setup.sh", () => {
     const result = runDockerSetup(
       activeSandbox,
       {
-        OPERATOR_IMAGE: "ghcr.io/openclaw/operator:latest",
-        OPERATOR_SKIP_ONBOARDING: "1",
+        OPENCLAW_IMAGE: "ghcr.io/operator/operator:latest",
+        OPENCLAW_SKIP_ONBOARDING: "1",
       },
       ["--offline"],
     );
 
     expect(result.status).toBe(0);
     expect(result.stdout).toContain(
-      "Using preloaded Docker image: ghcr.io/openclaw/operator:latest",
+      "Using preloaded Docker image: ghcr.io/operator/operator:latest",
     );
 
     const lines = await readDockerLogLines(activeSandbox);
     const log = lines.join("\n");
-    expect(log).toContain("image inspect ghcr.io/openclaw/operator:latest");
+    expect(log).toContain("image inspect ghcr.io/operator/operator:latest");
     expect(log).not.toMatch(/^build /m);
     expect(log).not.toMatch(/^pull /m);
     expect(log).toContain("config set --batch-json");
@@ -629,19 +629,19 @@ describe("scripts/docker/setup.sh", () => {
     const result = runDockerSetup(
       activeSandbox,
       {
-        OPERATOR_IMAGE: "ghcr.io/openclaw/operator:offline",
-        DOCKER_STUB_MISSING_IMAGES: "ghcr.io/openclaw/operator:offline",
+        OPENCLAW_IMAGE: "ghcr.io/operator/operator:offline",
+        DOCKER_STUB_MISSING_IMAGES: "ghcr.io/operator/operator:offline",
       },
       ["--offline"],
     );
 
     expect(result.status).not.toBe(0);
     expect(result.stderr).toContain(
-      "Offline Docker setup ...
+      "Offline Docker setup requires preloaded image ghcr.io/operator/operator:offline",
     );
 
     const log = await readDockerLog(activeSandbox);
-    expect(log).toContain("image inspect ghcr.io/openclaw/operator:offline");
+    expect(log).toContain("image inspect ghcr.io/operator/operator:offline");
     expect(log).not.toMatch(/^build /m);
     expect(log).not.toMatch(/^pull /m);
     expect(log).not.toContain("up -d operator-gateway");
@@ -663,9 +663,9 @@ describe("scripts/docker/setup.sh", () => {
       const result = runDockerSetup(
         activeSandbox,
         {
-          OPERATOR_SANDBOX: "1",
-          OPERATOR_SKIP_ONBOARDING: "1",
-          OPERATOR_DOCKER_SOCKET: socketPath,
+          OPENCLAW_SANDBOX: "1",
+          OPENCLAW_SKIP_ONBOARDING: "1",
+          OPENCLAW_DOCKER_SOCKET: socketPath,
           DOCKER_STUB_AGENTS_JSON: JSON.stringify({
             defaults: { sandbox: { docker: { image: defaultImage } } },
             list: [{ id: "custom", sandbox: { docker: { image: agentImage } } }],
@@ -714,9 +714,9 @@ describe("scripts/docker/setup.sh", () => {
       const result = runDockerSetup(
         activeSandbox,
         {
-          OPERATOR_SANDBOX: "1",
-          OPERATOR_SKIP_ONBOARDING: "1",
-          OPERATOR_DOCKER_SOCKET: socketPath,
+          OPENCLAW_SANDBOX: "1",
+          OPENCLAW_SKIP_ONBOARDING: "1",
+          OPENCLAW_DOCKER_SOCKET: socketPath,
           DOCKER_STUB_AGENTS_JSON: JSON.stringify({
             defaults: {
               sandbox: {
@@ -776,9 +776,9 @@ describe("scripts/docker/setup.sh", () => {
       const result = runDockerSetup(
         activeSandbox,
         {
-          OPERATOR_SANDBOX: "1",
-          OPERATOR_SKIP_ONBOARDING: "1",
-          OPERATOR_DOCKER_SOCKET: socketPath,
+          OPENCLAW_SANDBOX: "1",
+          OPENCLAW_SKIP_ONBOARDING: "1",
+          OPENCLAW_DOCKER_SOCKET: socketPath,
           DOCKER_STUB_AGENTS_JSON: JSON.stringify({
             defaults: { sandbox: { browser: { enabled: true, image: browserImage } } },
           }),
@@ -811,8 +811,8 @@ describe("scripts/docker/setup.sh", () => {
     const workspaceDir = join(activeSandbox.rootDir, "workspace-identity");
 
     const result = runDockerSetup(activeSandbox, {
-      OPERATOR_CONFIG_DIR: configDir,
-      OPERATOR_WORKSPACE_DIR: workspaceDir,
+      OPENCLAW_CONFIG_DIR: configDir,
+      OPENCLAW_WORKSPACE_DIR: workspaceDir,
     });
 
     expect(result.status).toBe(0);
@@ -820,16 +820,16 @@ describe("scripts/docker/setup.sh", () => {
     expect(identityDirStat.isDirectory()).toBe(true);
   });
 
-  it("writes OPERATOR_TZ into .env when given a real IANA timezone", async () => {
+  it("writes OPENCLAW_TZ into .env when given a real IANA timezone", async () => {
     const activeSandbox = requireSandbox(sandbox);
 
     const result = runDockerSetup(activeSandbox, {
-      OPERATOR_TZ: "Asia/Shanghai",
+      OPENCLAW_TZ: "Asia/Shanghai",
     });
 
     expect(result.status).toBe(0);
     const envFile = await readFile(join(activeSandbox.rootDir, ".env"), "utf8");
-    expect(envFile).toContain("OPERATOR_TZ=Asia/Shanghai");
+    expect(envFile).toContain("OPENCLAW_TZ=Asia/Shanghai");
   });
 
   it("precreates agent data dirs to avoid EACCES in container", async () => {
@@ -838,8 +838,8 @@ describe("scripts/docker/setup.sh", () => {
     const workspaceDir = join(activeSandbox.rootDir, "workspace-agent-dirs");
 
     const result = runDockerSetup(activeSandbox, {
-      OPERATOR_CONFIG_DIR: configDir,
-      OPERATOR_WORKSPACE_DIR: workspaceDir,
+      OPENCLAW_CONFIG_DIR: configDir,
+      OPENCLAW_WORKSPACE_DIR: workspaceDir,
     });
 
     expect(result.status).toBe(0);
@@ -861,7 +861,7 @@ describe("scripts/docker/setup.sh", () => {
     expect(log).toContain("run --rm --no-deps --user root --entrypoint sh operator-gateway -c");
     expect(log).toContain("/usr/bin/chown -h node:node /home/node/.config");
     expect(log).toContain(noFollowOwnershipRepair("/home/node/.operator"));
-    expect(log).toContain(noFollowOwnershipRepair("/home/node/.config/openclaw"));
+    expect(log).toContain(noFollowOwnershipRepair("/home/node/.config/operator"));
     expect(log).toContain("[ ! -L /home/node/.operator/workspace/.operator ]");
     expect(log).toContain(noFollowOwnershipRepair("/home/node/.operator/workspace/.operator"));
     expect(log).toContain("fi || true");
@@ -878,9 +878,9 @@ describe("scripts/docker/setup.sh", () => {
     const secretDir = join(activeSandbox.rootDir, "auth-profile-secret-key");
 
     const result = runDockerSetup(activeSandbox, {
-      OPERATOR_CONFIG_DIR: configDir,
-      OPERATOR_WORKSPACE_DIR: workspaceDir,
-      OPERATOR_AUTH_PROFILE_SECRET_DIR: secretDir,
+      OPENCLAW_CONFIG_DIR: configDir,
+      OPENCLAW_WORKSPACE_DIR: workspaceDir,
+      OPENCLAW_AUTH_PROFILE_SECRET_DIR: secretDir,
     });
 
     expect(result.status).toBe(0);
@@ -889,10 +889,10 @@ describe("scripts/docker/setup.sh", () => {
     expect(secretDir.startsWith(`${configDir}/`)).toBe(false);
 
     const log = await readDockerLog(activeSandbox);
-    expect(log).toContain(noFollowOwnershipRepair("/home/node/.config/openclaw"));
+    expect(log).toContain(noFollowOwnershipRepair("/home/node/.config/operator"));
   });
 
-  it("reuses existing config token when OPERATOR_GATEWAY_TOKEN is unset", async () => {
+  it("reuses existing config token when OPENCLAW_GATEWAY_TOKEN is unset", async () => {
     const activeSandbox = requireSandbox(sandbox);
     const { result, envFile } = await runDockerSetupWithUnsetGatewayToken(
       activeSandbox,
@@ -906,14 +906,14 @@ describe("scripts/docker/setup.sh", () => {
     );
 
     expect(result.status).toBe(0);
-    expect(envFile).toContain("OPERATOR_GATEWAY_TOKEN=config-token-123"); // pragma: allowlist secret
+    expect(envFile).toContain("OPENCLAW_GATEWAY_TOKEN=config-token-123"); // pragma: allowlist secret
   });
 
-  it("reuses existing .env token when OPERATOR_GATEWAY_TOKEN and config token are unset", async () => {
+  it("reuses existing .env token when OPENCLAW_GATEWAY_TOKEN and config token are unset", async () => {
     const activeSandbox = requireSandbox(sandbox);
     await writeFile(
       join(activeSandbox.rootDir, ".env"),
-      "OPERATOR_GATEWAY_TOKEN=dotenv-token-123\nOPERATOR_GATEWAY_PORT=18789\n", // pragma: allowlist secret
+      "OPENCLAW_GATEWAY_TOKEN=dotenv-token-123\nOPENCLAW_GATEWAY_PORT=18789\n", // pragma: allowlist secret
     );
     const { result, envFile } = await runDockerSetupWithUnsetGatewayToken(
       activeSandbox,
@@ -921,7 +921,7 @@ describe("scripts/docker/setup.sh", () => {
     );
 
     expect(result.status).toBe(0);
-    expect(envFile).toContain("OPERATOR_GATEWAY_TOKEN=dotenv-token-123"); // pragma: allowlist secret
+    expect(envFile).toContain("OPENCLAW_GATEWAY_TOKEN=dotenv-token-123"); // pragma: allowlist secret
     expect(result.stderr).toBe("");
   });
 
@@ -930,9 +930,9 @@ describe("scripts/docker/setup.sh", () => {
     await writeFile(
       join(activeSandbox.rootDir, ".env"),
       [
-        "OPERATOR_GATEWAY_TOKEN=",
-        "OPERATOR_GATEWAY_TOKEN=first-token",
-        "OPERATOR_GATEWAY_TOKEN=last=token=value\r", // pragma: allowlist secret
+        "OPENCLAW_GATEWAY_TOKEN=",
+        "OPENCLAW_GATEWAY_TOKEN=first-token",
+        "OPENCLAW_GATEWAY_TOKEN=last=token=value\r", // pragma: allowlist secret
       ].join("\n"),
     );
     const { result, envFile } = await runDockerSetupWithUnsetGatewayToken(
@@ -941,26 +941,26 @@ describe("scripts/docker/setup.sh", () => {
     );
 
     expect(result.status).toBe(0);
-    expect(envFile).toContain("OPERATOR_GATEWAY_TOKEN=last=token=value"); // pragma: allowlist secret
-    expect(envFile).not.toContain("OPERATOR_GATEWAY_TOKEN=first-token");
+    expect(envFile).toContain("OPENCLAW_GATEWAY_TOKEN=last=token=value"); // pragma: allowlist secret
+    expect(envFile).not.toContain("OPENCLAW_GATEWAY_TOKEN=first-token");
     expect(envFile).not.toContain("\r");
   });
 
-  it("treats OPERATOR_SANDBOX=0 as disabled", async () => {
+  it("treats OPENCLAW_SANDBOX=0 as disabled", async () => {
     const activeSandbox = requireSandbox(sandbox);
     await resetDockerLog(activeSandbox);
 
     const result = runDockerSetup(activeSandbox, {
-      OPERATOR_SANDBOX: "0",
+      OPENCLAW_SANDBOX: "0",
     });
 
     expect(result.status).toBe(0);
     const envFile = await readFile(join(activeSandbox.rootDir, ".env"), "utf8");
-    expect(envFile).toContain("OPERATOR_SANDBOX=");
+    expect(envFile).toContain("OPENCLAW_SANDBOX=");
 
     const log = await readDockerLog(activeSandbox);
-    expect(log).toContain("--build-arg OPERATOR_INSTALL_DOCKER_CLI=");
-    expect(log).not.toContain("--build-arg OPERATOR_INSTALL_DOCKER_CLI=1");
+    expect(log).toContain("--build-arg OPENCLAW_INSTALL_DOCKER_CLI=");
+    expect(log).not.toContain("--build-arg OPENCLAW_INSTALL_DOCKER_CLI=1");
     expect(log).toContain("config set agents.defaults.sandbox.mode off");
   });
 
@@ -975,8 +975,8 @@ describe("scripts/docker/setup.sh", () => {
 
     await withUnixSocket(socketPath, async () => {
       const result = runDockerSetup(activeSandbox, {
-        OPERATOR_SANDBOX: "1",
-        OPERATOR_DOCKER_SOCKET: socketPath,
+        OPENCLAW_SANDBOX: "1",
+        OPENCLAW_DOCKER_SOCKET: socketPath,
         DOCKER_STUB_FAIL_MATCH: "--entrypoint docker operator-gateway --version",
       });
 
@@ -997,8 +997,8 @@ describe("scripts/docker/setup.sh", () => {
       const result = runDockerSetup(
         activeSandbox,
         {
-          OPERATOR_SANDBOX: "1",
-          OPERATOR_DOCKER_SOCKET: socketPath,
+          OPENCLAW_SANDBOX: "1",
+          OPENCLAW_DOCKER_SOCKET: socketPath,
           DOCKER_STUB_FAIL_MATCH: "config set agents.defaults.sandbox.scope",
         },
         ["--offline"],
@@ -1031,56 +1031,56 @@ describe("scripts/docker/setup.sh", () => {
     });
   });
 
-  it("rejects injected multiline OPERATOR_EXTRA_MOUNTS values", () => {
+  it("rejects injected multiline OPENCLAW_EXTRA_MOUNTS values", () => {
     const activeSandbox = requireSandbox(sandbox);
 
     const result = runDockerSetup(activeSandbox, {
-      OPERATOR_EXTRA_MOUNTS: "/tmp:/tmp\n  evil-service:\n    image: alpine",
+      OPENCLAW_EXTRA_MOUNTS: "/tmp:/tmp\n  evil-service:\n    image: alpine",
     });
 
     expect(result.status).not.toBe(0);
-    expect(result.stderr).toContain("OPERATOR_EXTRA_MOUNTS cannot contain control characters");
+    expect(result.stderr).toContain("OPENCLAW_EXTRA_MOUNTS cannot contain control characters");
   });
 
-  it("rejects invalid OPERATOR_EXTRA_MOUNTS mount format", () => {
+  it("rejects invalid OPENCLAW_EXTRA_MOUNTS mount format", () => {
     const activeSandbox = requireSandbox(sandbox);
 
     const result = runDockerSetup(activeSandbox, {
-      OPERATOR_EXTRA_MOUNTS: "bad mount spec",
+      OPENCLAW_EXTRA_MOUNTS: "bad mount spec",
     });
 
     expect(result.status).not.toBe(0);
     expect(result.stderr).toContain("Invalid mount format");
   });
 
-  it("rejects invalid OPERATOR_HOME_VOLUME names", () => {
+  it("rejects invalid OPENCLAW_HOME_VOLUME names", () => {
     const activeSandbox = requireSandbox(sandbox);
 
     const result = runDockerSetup(activeSandbox, {
-      OPERATOR_HOME_VOLUME: "bad name",
+      OPENCLAW_HOME_VOLUME: "bad name",
     });
 
     expect(result.status).not.toBe(0);
-    expect(result.stderr).toContain("OPERATOR_HOME_VOLUME must match");
+    expect(result.stderr).toContain("OPENCLAW_HOME_VOLUME must match");
   });
 
-  it("rejects OPERATOR_TZ values that are not present in zoneinfo", () => {
+  it("rejects OPENCLAW_TZ values that are not present in zoneinfo", () => {
     const activeSandbox = requireSandbox(sandbox);
 
     const result = runDockerSetup(activeSandbox, {
-      OPERATOR_TZ: "Nope/Bad",
+      OPENCLAW_TZ: "Nope/Bad",
     });
 
     expect(result.status).not.toBe(0);
-    expect(result.stderr).toContain("OPERATOR_TZ must match a timezone in /usr/share/zoneinfo");
+    expect(result.stderr).toContain("OPENCLAW_TZ must match a timezone in /usr/share/zoneinfo");
   });
 
-  it("skips onboarding when OPERATOR_SKIP_ONBOARDING is set", async () => {
+  it("skips onboarding when OPENCLAW_SKIP_ONBOARDING is set", async () => {
     const activeSandbox = requireSandbox(sandbox);
     await resetDockerLog(activeSandbox);
 
     const result = runDockerSetup(activeSandbox, {
-      OPERATOR_SKIP_ONBOARDING: "1",
+      OPENCLAW_SKIP_ONBOARDING: "1",
     });
 
     expect(result.status).toBe(0);
@@ -1091,24 +1091,24 @@ describe("scripts/docker/setup.sh", () => {
     expect(log).toContain('"path":"gateway.mode","value":"local"');
     expect(log).toContain('"path":"gateway.bind","value":"lan"');
     const envFile = await readFile(join(activeSandbox.rootDir, ".env"), "utf8");
-    expect(envFile).toContain("OPERATOR_SKIP_ONBOARDING=1");
+    expect(envFile).toContain("OPENCLAW_SKIP_ONBOARDING=1");
   });
 
-  it("treats OPERATOR_SKIP_ONBOARDING=0 as disabled and runs onboarding", async () => {
+  it("treats OPENCLAW_SKIP_ONBOARDING=0 as disabled and runs onboarding", async () => {
     const activeSandbox = requireSandbox(sandbox);
     await resetDockerLog(activeSandbox);
 
     const result = runDockerSetup(activeSandbox, {
-      OPERATOR_SKIP_ONBOARDING: "0",
+      OPENCLAW_SKIP_ONBOARDING: "0",
     });
 
     expect(result.status).toBe(0);
     const log = await readDockerLog(activeSandbox);
     expect(log).toContain(
-      "onboard --mode local --no-install-daemon --gateway-auth token --gateway-token-ref-env OPERATOR_GATEWAY_TOKEN --skip-ui --suppress-gateway-token-output",
+      "onboard --mode local --no-install-daemon --gateway-auth token --gateway-token-ref-env OPENCLAW_GATEWAY_TOKEN --skip-ui --suppress-gateway-token-output",
     );
     const envFile = await readFile(join(activeSandbox.rootDir, ".env"), "utf8");
-    expect(envFile).toMatch(/OPERATOR_SKIP_ONBOARDING=\n/);
+    expect(envFile).toMatch(/OPENCLAW_SKIP_ONBOARDING=\n/);
   });
 
   it("avoids associative arrays so the script remains Bash 3.2-compatible", async () => {
@@ -1150,7 +1150,7 @@ describe("scripts/docker/setup.sh", () => {
   it("keeps docker-compose gateway Bonjour advertising in auto mode by default", async () => {
     const compose = await readFile(join(repoRoot, "docker-compose.yml"), "utf8");
     expect(
-      compose.match(/OPERATOR_DISABLE_BONJOUR: \$\{OPERATOR_DISABLE_BONJOUR:-\}/g),
+      compose.match(/OPENCLAW_DISABLE_BONJOUR: \$\{OPENCLAW_DISABLE_BONJOUR:-\}/g),
     ).toHaveLength(1);
   });
 
@@ -1162,7 +1162,7 @@ describe("scripts/docker/setup.sh", () => {
 
   it("keeps docker-compose gateway token env defaults aligned across services", async () => {
     const compose = await readFile(join(repoRoot, "docker-compose.yml"), "utf8");
-    expect(compose.match(/OPERATOR_GATEWAY_TOKEN: \$\{OPERATOR_GATEWAY_TOKEN:-\}/g)).toHaveLength(
+    expect(compose.match(/OPENCLAW_GATEWAY_TOKEN: \$\{OPENCLAW_GATEWAY_TOKEN:-\}/g)).toHaveLength(
       2,
     );
   });
@@ -1171,7 +1171,7 @@ describe("scripts/docker/setup.sh", () => {
     const compose = await readFile(join(repoRoot, "docker-compose.yml"), "utf8");
     expect(
       compose.split(
-        '"${OPERATOR_AUTH_PROFILE_SECRET_DIR:-${HOME:-/tmp}/.operator-auth-profile-secrets}:/home/node/.config/openclaw"',
+        '"${OPENCLAW_AUTH_PROFILE_SECRET_DIR:-${HOME:-/tmp}/.operator-auth-profile-secrets}:/home/node/.config/operator"',
       ),
     ).toHaveLength(3);
   });
@@ -1183,7 +1183,7 @@ describe("scripts/docker/setup.sh", () => {
 
   it("keeps docker-compose timezone env defaults aligned across services", async () => {
     const compose = await readFile(join(repoRoot, "docker-compose.yml"), "utf8");
-    expect(compose.match(/TZ: \$\{OPERATOR_TZ:-UTC\}/g)).toHaveLength(2);
+    expect(compose.match(/TZ: \$\{OPENCLAW_TZ:-UTC\}/g)).toHaveLength(2);
   });
 
   it("pins container-side state, workspace, and config dirs on both services so host .env paths cannot leak (#77436)", async () => {
@@ -1191,30 +1191,30 @@ describe("scripts/docker/setup.sh", () => {
     // Both gateway and CLI services must override env_file values with the
     // canonical container paths so host-style paths written to `.env` cannot
     // reach runtime code inside Linux Docker.
-    expect(compose.match(/OPERATOR_HOME: \/home\/node$/gm)).toHaveLength(2);
-    expect(compose.match(/OPERATOR_STATE_DIR: \/home\/node\/\.operator$/gm)).toHaveLength(2);
+    expect(compose.match(/OPENCLAW_HOME: \/home\/node$/gm)).toHaveLength(2);
+    expect(compose.match(/OPENCLAW_STATE_DIR: \/home\/node\/\.operator$/gm)).toHaveLength(2);
     expect(
-      compose.match(/OPERATOR_CONFIG_PATH: \/home\/node\/\.operator\/openclaw\.json$/gm),
+      compose.match(/OPENCLAW_CONFIG_PATH: \/home\/node\/\.operator\/operator\.json$/gm),
     ).toHaveLength(2);
-    expect(compose.match(/OPERATOR_CONFIG_DIR: \/home\/node\/\.operator$/gm)).toHaveLength(2);
+    expect(compose.match(/OPENCLAW_CONFIG_DIR: \/home\/node\/\.operator$/gm)).toHaveLength(2);
     expect(
-      compose.match(/OPERATOR_WORKSPACE_DIR: \/home\/node\/\.operator\/workspace$/gm),
+      compose.match(/OPENCLAW_WORKSPACE_DIR: \/home\/node\/\.operator\/workspace$/gm),
     ).toHaveLength(2);
   });
 
-  it("Dockerfile ARG OPERATOR_IMAGE_APT_PACKAGES must not have a default value", async () => {
-    // If the ARG has a default (e.g. ARG OPERATOR_IMAGE_APT_PACKAGES=""), Docker treats it as
+  it("Dockerfile ARG OPENCLAW_IMAGE_APT_PACKAGES must not have a default value", async () => {
+    // If the ARG has a default (e.g. ARG OPENCLAW_IMAGE_APT_PACKAGES=""), Docker treats it as
     // "set" even when no --build-arg is passed. That breaks the RUN fallback expression
-    // ${OPERATOR_IMAGE_APT_PACKAGES-$OPERATOR_DOCKER_APT_PACKAGES} because the variable is
-    // never truly unset, so legacy-only callers using --build-arg OPERATOR_DOCKER_APT_PACKAGES
+    // ${OPENCLAW_IMAGE_APT_PACKAGES-$OPENCLAW_DOCKER_APT_PACKAGES} because the variable is
+    // never truly unset, so legacy-only callers using --build-arg OPENCLAW_DOCKER_APT_PACKAGES
     // get nothing installed — a backward-compat regression.
     const dockerfile = await readFile(join(repoRoot, "Dockerfile"), "utf8");
     const argLine = dockerfile
       .split("\n")
-      .find((line) => line.startsWith("ARG OPERATOR_IMAGE_APT_PACKAGES"));
+      .find((line) => line.startsWith("ARG OPENCLAW_IMAGE_APT_PACKAGES"));
     expect(argLine).toBeDefined();
-    // Must be bare `ARG OPERATOR_IMAGE_APT_PACKAGES` with no default assignment
-    expect(argLine).toBe("ARG OPERATOR_IMAGE_APT_PACKAGES");
+    // Must be bare `ARG OPENCLAW_IMAGE_APT_PACKAGES` with no default assignment
+    expect(argLine).toBe("ARG OPENCLAW_IMAGE_APT_PACKAGES");
   });
 });
 /* oxlint-disable max-lines -- TODO: split this grandfathered oversized file. */

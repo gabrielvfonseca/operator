@@ -16,9 +16,9 @@ import { quoteCommandPart, splitCommandParts } from "./command-line.js";
 import { resolveAcpxPluginRoot } from "./config.js";
 import type { ResolvedAcpxPluginConfig } from "./config.js";
 import {
-  OPERATOR_ACPX_LEASE_ID_ARG,
-  OPERATOR_ACPX_LEASE_ID_ENV,
-  OPERATOR_GATEWAY_INSTANCE_ID_ARG,
+  OPENCLAW_ACPX_LEASE_ID_ARG,
+  OPENCLAW_ACPX_LEASE_ID_ENV,
+  OPENCLAW_GATEWAY_INSTANCE_ID_ARG,
 } from "./process-lease.js";
 
 const CODEX_ACP_PACKAGE = "@zed-industries/codex-acp";
@@ -243,11 +243,11 @@ const stderrLogFileNamePrefix = ${params.stderrLogFileNamePrefix ? JSON.stringif
 const stderrLogMaxChars = 256 * 1024;
 
 const openClawWrapperArgs = new Set([
-  ${quoteCommandPart(OPERATOR_ACPX_LEASE_ID_ARG)},
-  ${quoteCommandPart(OPERATOR_GATEWAY_INSTANCE_ID_ARG)},
+  ${quoteCommandPart(OPENCLAW_ACPX_LEASE_ID_ARG)},
+  ${quoteCommandPart(OPENCLAW_GATEWAY_INSTANCE_ID_ARG)},
 ]);
 
-function readOperatorWrapperArg(args, name) {
+function readOpenClawWrapperArg(args, name) {
   const index = args.indexOf(name);
   if (index < 0) {
     return undefined;
@@ -266,8 +266,8 @@ function resolveStderrLogPath(args) {
     return undefined;
   }
   const leaseId =
-    process.env[${JSON.stringify(OPERATOR_ACPX_LEASE_ID_ENV)}] ||
-    readOperatorWrapperArg(args, ${quoteCommandPart(OPERATOR_ACPX_LEASE_ID_ARG)}) ||
+    process.env[${JSON.stringify(OPENCLAW_ACPX_LEASE_ID_ENV)}] ||
+    readOpenClawWrapperArg(args, ${quoteCommandPart(OPENCLAW_ACPX_LEASE_ID_ARG)}) ||
     "pid-" + process.pid;
   const fileName = stderrLogFileNamePrefix + "." + safeDiagnosticFilePart(leaseId) + ".log";
   return fileURLToPath(new URL("./" + fileName, import.meta.url));
@@ -386,7 +386,7 @@ function finishStderrLog() {
   writeRedactedStderrLog(text);
 }
 
-function stripOperatorWrapperArgs(args) {
+function stripOpenClawWrapperArgs(args) {
   const stripped = [];
   for (let index = 0; index < args.length; index += 1) {
     const value = args[index];
@@ -410,7 +410,7 @@ try {
   // Stderr capture is diagnostic-only; never break the ACP adapter.
 }
 
-const configuredArgs = stripOperatorWrapperArgs(rawConfiguredArgs);
+const configuredArgs = stripOpenClawWrapperArgs(rawConfiguredArgs);
 
 function resolveNpmCliPath() {
   const candidate = path.resolve(
@@ -447,7 +447,7 @@ const args =
     : [...defaultArgs, ...configuredArgs];
 
 if (!command) {
-  console.error("[openclaw] missing configured ${params.displayName} ACP command");
+  console.error("[operator] missing configured ${params.displayName} ACP command");
   process.exit(1);
 }
 
@@ -522,7 +522,7 @@ const parentWatcher =
 parentWatcher?.unref?.();
 
 child.on("error", (error) => {
-  console.error(\`[openclaw] failed to launch ${params.displayName} ACP wrapper: \${error.message}\`);
+  console.error(\`[operator] failed to launch ${params.displayName} ACP wrapper: \${error.message}\`);
   process.exit(1);
 });
 

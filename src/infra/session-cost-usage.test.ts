@@ -3,7 +3,7 @@ import nodeFs from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
-import type { OperatorConfig } from "../config/config.js";
+import type { OpenClawConfig } from "../config/config.js";
 import {
   persistSessionTranscriptTurn,
   upsertSessionEntry,
@@ -39,7 +39,7 @@ function clearGatewayModelPricingState(): void {
 describe("session cost usage", () => {
   const suiteRootTracker = createSuiteTempRootTracker({ prefix: "operator-session-cost-" });
   const withStateDir = async <T>(stateDir: string, fn: () => Promise<T>): Promise<T> =>
-    await withEnvAsync({ OPERATOR_STATE_DIR: stateDir }, fn);
+    await withEnvAsync({ OPENCLAW_STATE_DIR: stateDir }, fn);
   const makeSessionCostRoot = async (prefix: string): Promise<string> =>
     await suiteRootTracker.make(prefix);
   const transcriptText = (sessionId: string, entry: unknown): string =>
@@ -147,7 +147,7 @@ describe("session cost usage", () => {
           },
         },
       },
-    } as unknown as OperatorConfig;
+    } as unknown as OpenClawConfig;
 
     await withStateDir(root, async () => {
       const summary = await loadCostUsageSummary({ config });
@@ -344,7 +344,7 @@ describe("session cost usage", () => {
           },
         },
       },
-    } as unknown as OperatorConfig;
+    } as unknown as OpenClawConfig;
 
     const costSpy = vi.spyOn(usageFormat, "resolveModelCostConfig");
     try {
@@ -451,7 +451,7 @@ describe("session cost usage", () => {
           },
         },
       },
-    } as unknown as OperatorConfig;
+    } as unknown as OpenClawConfig;
 
     clearGatewayModelPricingState();
     await withStateDir(root, async () => {
@@ -546,7 +546,7 @@ describe("session cost usage", () => {
           },
         },
       },
-    } as unknown as OperatorConfig;
+    } as unknown as OpenClawConfig;
     const expectedCost = 0.0028;
 
     await withStateDir(root, async () => {

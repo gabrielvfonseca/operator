@@ -12,10 +12,10 @@ import {
   refreshActiveGoalContext,
 } from "./inbound-meta.js";
 
-const EMPTY_CFG = {} as OperatorConfig;
+const EMPTY_CFG = {} as OpenClawConfig;
 
 const { formattingHintCalls } = vi.hoisted(() => ({
-  formattingHintCalls: [] as Array<{ cfg: OperatorConfig; accountId?: string | null }>,
+  formattingHintCalls: [] as Array<{ cfg: OpenClawConfig; accountId?: string | null }>,
 }));
 
 vi.mock("../../channels/plugins/registry-loaded.js", () => ({
@@ -24,7 +24,7 @@ vi.mock("../../channels/plugins/registry-loaded.js", () => ({
       ? {
           agentPrompt: {
             inboundFormattingHints: (params: {
-              cfg: OperatorConfig;
+              cfg: OpenClawConfig;
               accountId?: string | null;
             }) => {
               formattingHintCalls.push(params);
@@ -295,7 +295,7 @@ describe("buildInboundMetaSystemPrompt", () => {
 
     const cfg = {
       channels: { slack: { botToken: "test-token-placeholder" } },
-    } as OperatorConfig;
+    } as OpenClawConfig;
     const prompt = buildInboundMetaSystemPrompt(
       {
         OriginatingTo: "channel:C123",

@@ -516,7 +516,7 @@ describe("browser server-context existing-session profile", () => {
 
     const pending = live.ensureBrowserAvailable();
     const assertion = expect(pending).rejects.toThrow(
-      /could not connect to Chrome.*managed "@gabrielvfonseca/operator" profile.*DevToolsActivePort/s,
+      /could not connect to Chrome.*managed "operator" profile.*DevToolsActivePort/s,
     );
     await vi.advanceTimersByTimeAsync(8_000);
     await assertion;

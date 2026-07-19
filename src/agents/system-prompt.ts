@@ -45,8 +45,8 @@ import type {
 } from "./embedded-agent-runner/types.js";
 import { buildPromisedWorkPromptSection } from "./promised-work-prompt.js";
 import {
-  buildOperatorToolFallbackText,
-  shouldRenderOperatorToolWorkflowHints,
+  buildOpenClawToolFallbackText,
+  shouldRenderOpenClawToolWorkflowHints,
 } from "./prompt-surface.js";
 import { sanitizeForPromptLiteral } from "./sanitize-for-prompt.js";
 import type {
@@ -839,7 +839,7 @@ export function buildAgentSystemPrompt(params: {
     toolLines.push(summary ? `- ${name}: ${summary}` : `- ${name}`);
   }
   const toolSchemaDirectoryPrompt = params.toolSchemaDirectoryPrompt?.trim();
-  const renderOperatorToolWorkflowHints = shouldRenderOperatorToolWorkflowHints({
+  const renderOpenClawToolWorkflowHints = shouldRenderOpenClawToolWorkflowHints({
     surface: promptSurface,
     hasToolList: toolLines.length > 0,
   });
@@ -958,9 +958,9 @@ export function buildAgentSystemPrompt(params: {
     toolLines,
     toolSchemaDirectoryPrompt,
     capabilityToolNames: [...availableTools].toSorted(),
-    renderOperatorToolWorkflowHints,
+    renderOpenClawToolWorkflowHints,
     hasGateway,
-    hasOperator,
+    hasOpenClaw,
     readToolName,
     execToolName,
     processToolName,
@@ -997,7 +997,7 @@ export function buildAgentSystemPrompt(params: {
       "Tools policy-filtered. Names case-sensitive; call exact.",
       toolLines.length > 0
         ? toolLines.join("\n")
-        : buildOperatorToolFallbackText({
+        : buildOpenClawToolFallbackText({
             surface: promptSurface,
             execToolName,
             processToolName,
@@ -1006,7 +1006,7 @@ export function buildAgentSystemPrompt(params: {
         ? ["", "### Deferred Tool Schemas", toolSchemaDirectoryPrompt]
         : []),
       "TOOLS.md guides usage; never grants availability.",
-      ...(renderOperatorToolWorkflowHints
+      ...(renderOpenClawToolWorkflowHints
         ? [
             `Long wait: no rapid poll. Use ${execToolName} yieldMs or ${processToolName}(poll, timeout=<ms>).`,
             "Large work: `sessions_spawn`; completion push-based.",
@@ -1032,7 +1032,7 @@ export function buildAgentSystemPrompt(params: {
               : []),
           ]
         : []),
-      ...(renderOperatorToolWorkflowHints
+      ...(renderOpenClawToolWorkflowHints
         ? [
             availableTools.has("sessions_yield")
               ? "Never loop-poll `subagents list`/`sessions_list`; wait with `sessions_yield`. Status only on-demand/intervention/debug/request."
@@ -1082,7 +1082,7 @@ export function buildAgentSystemPrompt(params: {
       ...safetySection,
       "## Operator Control",
       "Do not invent commands.",
-      ...(hasOperator
+      ...(hasOpenClaw
         ? [
             "Config, channels, plugins, new agents, model/provider, updates: ask `openclaw`. Never write own config; Operator is system expert.",
           ]

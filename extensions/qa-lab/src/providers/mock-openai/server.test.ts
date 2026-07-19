@@ -138,9 +138,9 @@ const TEST_RUNTIME_CONTEXT_CARRIER = [
   "Operator runtime context for the immediately preceding user message.",
   "This context is runtime-generated, not user-authored. Keep internal details private.",
   "",
-  "<<<BEGIN_OPERATOR_INTERNAL_CONTEXT>>>",
+  "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
   "runtime metadata",
-  "<<<END_OPERATOR_INTERNAL_CONTEXT>>>",
+  "<<<END_OPENCLAW_INTERNAL_CONTEXT>>>",
 ].join("\n");
 
 function makeDeveloperInput(text: string) {
@@ -2737,7 +2737,7 @@ describe("qa mock openai server", () => {
       body: JSON.stringify({
         stream: true,
         instructions:
-          "@openclaw Thread memory check: what is the hidden thread codename stored only in memory? Use memory tools first and reply only in this thread.",
+          "@operator Thread memory check: what is the hidden thread codename stored only in memory? Use memory tools first and reply only in this thread.",
         input: [
           {
             role: "user",
@@ -2764,7 +2764,7 @@ describe("qa mock openai server", () => {
       body: JSON.stringify({
         stream: false,
         instructions:
-          "@openclaw Thread memory check: what is the hidden thread codename stored only in memory? Use memory tools first and reply only in this thread.",
+          "@operator Thread memory check: what is the hidden thread codename stored only in memory? Use memory tools first and reply only in this thread.",
         input: [
           {
             type: "function_call_output",
@@ -2795,7 +2795,7 @@ describe("qa mock openai server", () => {
       body: JSON.stringify({
         stream: false,
         instructions:
-          "@openclaw Thread memory check: what is the hidden thread codename stored only in memory? Use memory tools first and reply only in this thread.",
+          "@operator Thread memory check: what is the hidden thread codename stored only in memory? Use memory tools first and reply only in this thread.",
         input: [
           {
             type: "function_call_output",
@@ -2832,7 +2832,7 @@ describe("qa mock openai server", () => {
               "Available tools include sessions_spawn.\n## /workspace/MEMORY.md\nThread-hidden codename: ORBIT-22.",
           },
           makeUserInput(
-            "@openclaw Thread memory check: what is the hidden thread codename stored only in memory? Use memory tools first and reply only in this thread.",
+            "@operator Thread memory check: what is the hidden thread codename stored only in memory? Use memory tools first and reply only in this thread.",
           ),
           {
             type: "function_call_output",
@@ -4514,7 +4514,7 @@ describe("qa mock openai server", () => {
     const toolPlanOutput = outputItem(await response.json());
     expect(toolPlanOutput.type).toBe("function_call");
     expect(toolPlanOutput.name).toBe("web_search");
-    expect(String(toolPlanOutput.arguments)).toContain("OPERATOR_QA_WEB_SEARCH_DENIED_INPUT");
+    expect(String(toolPlanOutput.arguments)).toContain("OPENCLAW_QA_WEB_SEARCH_DENIED_INPUT");
   });
 
   it("plans QA subagent handoff calls even when Codex dynamic tools are not in body.tools", async () => {
@@ -5117,7 +5117,7 @@ describe("qa mock openai server", () => {
       },
       body:
         '--qa\r\ncontent-disposition: form-data; name="file"; filename="upload.ogg"\r\n\r\n' +
-        "OPERATOR_QA_GROUP_AUDIO_TRIGGER\r\n--qa--\r\n",
+        "OPENCLAW_QA_GROUP_AUDIO_TRIGGER\r\n--qa--\r\n",
     });
     const quiet = await fetch(`${server.baseUrl}/v1/audio/transcriptions`, {
       method: "POST",

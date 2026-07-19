@@ -1,11 +1,11 @@
 // Doctor config-flow tests cover config repair, migration, stripping, and validation orchestration.
 import fs from "node:fs/promises";
 import path from "node:path";
-import { expectDefined } from "@gabrielvfonseca/normalization-core";
-import { withTempHome } from "@gabrielvfonseca/operator/plugin-sdk/test-env";
+import { expectDefined } from "@operator/normalization-core";
+import { withTempHome } from "operator/plugin-sdk/test-env";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { writeChannelPairingStateSnapshot } from "../pairing/pairing-store-sqlite.test-helpers.js";
-import { closeOperatorStateDatabaseForTest } from "../state/openclaw-state-db.js";
+import { closeOpenClawStateDatabaseForTest } from "../state/operator-state-db.js";
 import { loadAndMaybeMigrateDoctorConfig } from "./doctor-config-flow.js";
 import {
   getDoctorConfigInputForTest,
@@ -358,14 +358,14 @@ vi.mock("../config/legacy.js", () => {
         addIssue(
           issues,
           ["heartbeat"],
-          'heartbeat is legacy; use agents.defaults.heartbeat and channels.defaults.heartbeat. Run "openclaw doctor --fix".',
+          'heartbeat is legacy; use agents.defaults.heartbeat and channels.defaults.heartbeat. Run "operator doctor --fix".',
         );
       }
       if ("memorySearch" in root) {
         addIssue(
           issues,
           ["memorySearch"],
-          'memorySearch is legacy; use agents.defaults.memorySearch. Run "openclaw doctor --fix".',
+          'memorySearch is legacy; use agents.defaults.memorySearch. Run "operator doctor --fix".',
         );
       }
       const gateway = asRecord(root.gateway);
@@ -373,7 +373,7 @@ vi.mock("../config/legacy.js", () => {
         addIssue(
           issues,
           ["gateway", "bind"],
-          'gateway.bind host aliases are legacy; use the canonical bind mode. Run "openclaw doctor --fix".',
+          'gateway.bind host aliases are legacy; use the canonical bind mode. Run "operator doctor --fix".',
         );
       }
       const sessionThreadBindings = asRecord(asRecord(root.session)?.threadBindings);
@@ -381,7 +381,7 @@ vi.mock("../config/legacy.js", () => {
         addIssue(
           issues,
           ["session", "threadBindings", "ttlHours"],
-          'session.threadBindings.ttlHours is legacy; use session.threadBindings.idleHours. Run "openclaw doctor --fix".',
+          'session.threadBindings.ttlHours is legacy; use session.threadBindings.idleHours. Run "operator doctor --fix".',
         );
       }
       const sessionMaintenance = asRecord(asRecord(root.session)?.maintenance);
@@ -389,7 +389,7 @@ vi.mock("../config/legacy.js", () => {
         addIssue(
           issues,
           ["session", "maintenance"],
-          'session.maintenance.rotateBytes is deprecated and ignored; run "openclaw doctor --fix" to remove it.',
+          'session.maintenance.rotateBytes is deprecated and ignored; run "operator doctor --fix" to remove it.',
         );
       }
       const xSearch = asRecord(asRecord(asRecord(root.tools)?.web)?.x_search);
@@ -397,7 +397,7 @@ vi.mock("../config/legacy.js", () => {
         addIssue(
           issues,
           ["tools", "web", "x_search", "apiKey"],
-          'tools.web.x_search.apiKey is legacy; use plugins.entries.xai.config.webSearch.apiKey. Run "openclaw doctor --fix".',
+          'tools.web.x_search.apiKey is legacy; use plugins.entries.xai.config.webSearch.apiKey. Run "operator doctor --fix".',
         );
       }
       const sandbox = asRecord(asRecord(asRecord(root.agents)?.defaults)?.sandbox);
@@ -405,7 +405,7 @@ vi.mock("../config/legacy.js", () => {
         addIssue(
           issues,
           ["agents", "defaults", "sandbox"],
-          'agents.defaults.sandbox.perSession is legacy; use agents.defaults.sandbox.scope. Run "openclaw doctor --fix".',
+          'agents.defaults.sandbox.perSession is legacy; use agents.defaults.sandbox.scope. Run "operator doctor --fix".',
         );
       }
 
@@ -423,8 +423,8 @@ vi.mock("../config/legacy.js", () => {
             issues,
             ["channels", channelId],
             channelId === "googlechat"
-              ? `channels.${channelId}.streamMode is legacy and no longer used. Run "openclaw doctor --fix".`
-              : `channels.${channelId}.streamMode, channels.${channelId}.streaming aliases are legacy. Run "openclaw doctor --fix".`,
+              ? `channels.${channelId}.streamMode is legacy and no longer used. Run "operator doctor --fix".`
+              : `channels.${channelId}.streamMode, channels.${channelId}.streaming aliases are legacy. Run "operator doctor --fix".`,
           );
         }
         const threadBindings = asRecord(channel.threadBindings);
@@ -432,7 +432,7 @@ vi.mock("../config/legacy.js", () => {
           addIssue(
             issues,
             ["channels", channelId, "threadBindings", "ttlHours"],
-            'channels.<id>.threadBindings.ttlHours is legacy; use channels.<id>.threadBindings.idleHours. Run "openclaw doctor --fix".',
+            'channels.<id>.threadBindings.ttlHours is legacy; use channels.<id>.threadBindings.idleHours. Run "operator doctor --fix".',
           );
         }
         if (channelId === "slack") {
@@ -441,7 +441,7 @@ vi.mock("../config/legacy.js", () => {
               addIssue(
                 issues,
                 ["channels", "slack"],
-                'channels.slack.channels.<id>.allow is legacy; use enabled. Run "openclaw doctor --fix".',
+                'channels.slack.channels.<id>.allow is legacy; use enabled. Run "operator doctor --fix".',
               );
             }
           }
@@ -452,7 +452,7 @@ vi.mock("../config/legacy.js", () => {
               addIssue(
                 issues,
                 ["channels", "googlechat"],
-                'channels.googlechat.groups.<id>.allow is legacy; use enabled. Run "openclaw doctor --fix".',
+                'channels.googlechat.groups.<id>.allow is legacy; use enabled. Run "operator doctor --fix".',
               );
             }
           }
@@ -465,7 +465,7 @@ vi.mock("../config/legacy.js", () => {
                 addIssue(
                   issues,
                   ["channels", "discord"],
-                  'channels.discord.guilds.<id>.channels.<id>.allow is legacy; use enabled. Run "openclaw doctor --fix".',
+                  'channels.discord.guilds.<id>.channels.<id>.allow is legacy; use enabled. Run "operator doctor --fix".',
                 );
               }
             }
@@ -478,7 +478,7 @@ vi.mock("../config/legacy.js", () => {
             addIssue(
               issues,
               ["channels", channelId, "accounts", accountId, "threadBindings", "ttlHours"],
-              'channels.<id>.threadBindings.ttlHours is legacy; use channels.<id>.threadBindings.idleHours. Run "openclaw doctor --fix".',
+              'channels.<id>.threadBindings.ttlHours is legacy; use channels.<id>.threadBindings.idleHours. Run "operator doctor --fix".',
             );
           }
         }
@@ -672,7 +672,7 @@ vi.mock("./doctor/shared/plugin-tool-allowlist-warnings.js", () => ({
 }));
 
 vi.mock("../doctor-plugin-registry.js", () => ({
-  maybeRepairManagedNpmOperatorPeerLinks: vi.fn(async () => undefined),
+  maybeRepairManagedNpmOpenClawPeerLinks: vi.fn(async () => undefined),
   maybeRepairStaleManagedNpmBundledPlugins: vi.fn(() => undefined),
 }));
 
@@ -913,12 +913,12 @@ vi.mock("../plugins/doctor-contract-registry.js", () => {
       {
         path: ["channels", "telegram", "groupMentionsOnly"],
         message:
-          'channels.telegram.groupMentionsOnly was removed; use channels.telegram.groups."*"....
+          'channels.telegram.groupMentionsOnly was removed; use channels.telegram.groups."*".requireMention instead. Run "operator doctor --fix".',
       },
       {
         path: ["talk"],
         message:
-          "talk.voiceId/talk.voiceAliases/talk.modelId/talk.outputFormat/talk.apiKey are legacy; use talk.providers.<provider> and run openclaw doctor --fix.",
+          "talk.voiceId/talk.voiceAliases/talk.modelId/talk.outputFormat/talk.apiKey are legacy; use talk.providers.<provider> and run operator doctor --fix.",
         match: hasLegacyTalkFields,
       },
     ],
@@ -1262,9 +1262,9 @@ vi.mock("./doctor-config-preflight.js", async () => {
 
   function resolveConfigPath() {
     const stateDir =
-      process.env.OPERATOR_STATE_DIR ||
+      process.env.OPENCLAW_STATE_DIR ||
       (process.env.HOME ? pathLocal.join(process.env.HOME, ".operator") : "");
-    return process.env.OPERATOR_CONFIG_PATH || pathLocal.join(stateDir, "operator.json");
+    return process.env.OPENCLAW_CONFIG_PATH || pathLocal.join(stateDir, "operator.json");
   }
 
   function normalizeDiscordStreamingCompat(cfg: Record<string, unknown>): Record<string, unknown> {
@@ -1566,7 +1566,7 @@ describe("doctor config flow", () => {
     const result = await runDoctorConfigWithInput({
       config: {
         gateway: { auth: { mode: "token", token: 123 } },
-        agents: { list: [{ id: "@gabrielvfonseca/operator" }] },
+        agents: { list: [{ id: "operator" }] },
       },
       run: loadAndMaybeMigrateDoctorConfig,
     });
@@ -1723,7 +1723,7 @@ describe("doctor config flow", () => {
       previewNotes.mock.calls.some(
         ([message, title]) =>
           title === "Doctor" &&
-          message.includes("openclaw doctor --fix") &&
+          message.includes("operator doctor --fix") &&
           message.includes("rotate hooks.token"),
       ),
     ).toBe(true);
@@ -1825,7 +1825,7 @@ describe("doctor config flow", () => {
               enabled: true,
               handler: "./hooks/custom.ts",
               extraDirs: ["./hooks"],
-              env: { OPERATOR_CUSTOM_HOOK: "1" },
+              env: { OPENCLAW_CUSTOM_HOOK: "1" },
             },
             "valid-hook": {
               enabled: true,
@@ -2038,7 +2038,7 @@ describe("doctor config flow", () => {
       config: {
         bridge: { bind: "auto" },
         gateway: { auth: { mode: "token", token: "ok", extra: true } },
-        agents: { list: [{ id: "@gabrielvfonseca/operator" }] },
+        agents: { list: [{ id: "operator" }] },
         session: {
           maintenance: {
             rotateBytes: "10mb",
@@ -2740,7 +2740,7 @@ describe("doctor config flow", () => {
       },
       { skipSessionCleanup: true },
     );
-    closeOperatorStateDatabaseForTest();
+    closeOpenClawStateDatabaseForTest();
 
     const cfg = result.cfg as {
       channels: {
@@ -3000,7 +3000,7 @@ describe("doctor config flow", () => {
         noteSpy.mock.calls.some(
           ([message, title]) =>
             title === "Doctor" &&
-            message.includes('Run "openclaw doctor --fix" to migrate legacy config keys.'),
+            message.includes('Run "operator doctor --fix" to migrate legacy config keys.'),
         ),
       ).toBe(true);
     } finally {
