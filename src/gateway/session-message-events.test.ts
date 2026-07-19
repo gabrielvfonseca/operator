@@ -389,7 +389,7 @@ describe("session.message websocket events", () => {
       });
 
       const payload = messageEvent.payload as {
-        message?: { content?: unknown; __openclaw?: { beforeAgentRunBlocked?: unknown } };
+        message?: { content?: unknown; __operator?: { beforeAgentRunBlocked?: unknown } };
       };
       expect(payload.message?.content).toEqual([
         { type: "text", text: "The agent cannot read this message." },
@@ -434,7 +434,7 @@ describe("session.message websocket events", () => {
         message?: {
           role?: unknown;
           content?: unknown;
-          __openclaw?: { beforeAgentRunBlocked?: unknown };
+          __operator?: { beforeAgentRunBlocked?: unknown };
         };
       };
       expect(payload.message?.role).toBe("user");
@@ -684,7 +684,7 @@ describe("session.message websocket events", () => {
       });
       const payload = requireRecord(messageEvent.payload, "session.message payload");
       const message = requireRecord(payload.message, "session.message payload message");
-      expect((message["__openclaw"] as { seq?: unknown } | undefined)?.seq).toBe(7);
+      expect((message["__operator"] as { seq?: unknown } | undefined)?.seq).toBe(7);
     });
   });
 
@@ -1317,13 +1317,13 @@ describe("session.message websocket events", () => {
       expect(
         payloads.map((payload) => {
           const message = requireRecord(payload.message, "session.message payload message");
-          return ...
+          return requireRecord(message["__operator"], "session.message metadata").id;
         }),
       ).toEqual(outcome.result.entryIds);
       expect(
         payloads.map((payload) => {
           const message = requireRecord(payload.message, "session.message payload message");
-          return ...
+          return requireRecord(message["__operator"], "session.message metadata").seq;
         }),
       ).toEqual([1, 2, 3]);
 

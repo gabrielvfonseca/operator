@@ -865,7 +865,7 @@ function resolveRequiredDeviceRole(
     return { deviceId, role };
   }
   defaultRuntime.error(
-    `--device and --role are ...
+    `--device and --role are required. Run ${formatCliCommand("operator devices list")} to choose a paired device.`,
   );
   defaultRuntime.exit(1);
   return null;
@@ -971,7 +971,7 @@ export async function runDevicesRemoveCommand(
   const trimmed = deviceId.trim();
   if (!trimmed) {
     defaultRuntime.error(
-      `deviceId is ...
+      `deviceId is required. Run ${formatCliCommand("operator devices list")} to choose a paired device.`,
     );
     defaultRuntime.exit(1);
     return;
@@ -1128,7 +1128,7 @@ export async function runDevicesApproveCommand(
   }
   if (!result) {
     defaultRuntime.error(
-      `No pending device request matches ${sanitizeForLog(resolvedRequestId)}. Run ${formatCliCommand("openclaw devices list")} and retry with the current request ID.`,
+      `No pending device request matches ${sanitizeForLog(resolvedRequestId)}. Run ${formatCliCommand("operator devices list")} and retry with the current request ID.`,
     );
     const nodeApprovalNotices = await findQueryPendingNodeApprovalNotices(opts, resolvedRequestId);
     for (const notice of nodeApprovalNotices) {
@@ -1170,7 +1170,7 @@ export async function runDevicesRenameCommand(opts: DevicesRpcOpts): Promise<voi
   const label = normalizeStringifiedOptionalString(opts.name) ?? "";
   if (!deviceId || !label) {
     defaultRuntime.error(
-      `--device and --name are ...
+      `--device and --name are required. Run ${formatCliCommand("operator devices list")} to choose a paired device.`,
     );
     defaultRuntime.exit(1);
     return;

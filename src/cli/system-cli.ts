@@ -75,7 +75,7 @@ export function registerSystemCli(program: Command) {
         const text = normalizeOptionalString(opts.text) ?? "";
         if (!text) {
           throw new Error(
-            `--text is ...
+            `--text is required. Example: ${formatCliCommand('operator system event --text "deploy finished"')}.`,
           );
         }
         const mode = normalizeWakeMode(opts.mode);

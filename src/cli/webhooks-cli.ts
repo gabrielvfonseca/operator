@@ -114,7 +114,7 @@ function parseGmailSetupOptions(raw: Record<string, unknown>): GmailSetupOptions
   const account = normalizeOptionalString(accountRaw) ?? "";
   if (!account) {
     throw new Error(
-      `--account is ...
+      `--account is required. Example: ${formatCliCommand("operator webhooks gmail setup --account default")}.`,
     );
   }
   const common = parseGmailCommonOptions(raw);
