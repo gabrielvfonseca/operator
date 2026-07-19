@@ -59,7 +59,7 @@ const HOSTS_FILE = "hosts.yml";
 // gh config-dir lookup order, matching `gh help environment`.
 function resolveEffectiveGhConfigDir(input: GhConfigDiscoveryInput): string | undefined {
   const env = input.env;
-  if (env.GH_CONFIG_DIR && env.GH_CONFIG_DIR.trim()) {
+  if (env.GH_CONFIG_DIR?.trim()) {
     return env.GH_CONFIG_DIR.trim();
   }
   const xdg = env.XDG_CONFIG_HOME?.trim();
@@ -128,7 +128,7 @@ function ghConfigDirForHome(home: string, platform: NodeJS.Platform): string {
 
 export function detectGhConfigDirMismatch(input: GhConfigDiscoveryInput): GhConfigDiscoveryResult {
   const env = input.env;
-  if (env.GH_CONFIG_DIR && env.GH_CONFIG_DIR.trim()) {
+  if (env.GH_CONFIG_DIR?.trim()) {
     return { kind: "explicit-gh-config-dir-set", ghConfigDir: env.GH_CONFIG_DIR.trim() };
   }
   const effective = resolveEffectiveGhConfigDir(input);

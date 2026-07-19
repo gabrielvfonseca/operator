@@ -288,9 +288,9 @@ async function safeRealpath(filePath: string): Promise<string | undefined> {
 function isFileNotFoundError(error: unknown): boolean {
   return Boolean(
     error &&
-    typeof error === "object" &&
-    "code" in error &&
-    (error as { code?: unknown }).code === "ENOENT",
+      typeof error === "object" &&
+      "code" in error &&
+      (error as { code?: unknown }).code === "ENOENT",
   );
 }
 

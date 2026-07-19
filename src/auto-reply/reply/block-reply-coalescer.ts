@@ -173,8 +173,8 @@ export function createBlockReplyCoalescer(params: {
 
     const replyToConflict = Boolean(
       bufferText &&
-      payload.replyToId &&
-      (!bufferReplyToId || bufferReplyToId !== payload.replyToId),
+        payload.replyToId &&
+        (!bufferReplyToId || bufferReplyToId !== payload.replyToId),
     );
     const visibilityConflict =
       bufferText &&

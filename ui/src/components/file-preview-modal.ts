@@ -497,10 +497,11 @@ export class OperatorFilePreviewModal extends OperatorLitElement {
           <div class="body">
             <aside class="list">
               <div class="list-section">${listLabel} · ${filteredFiles.length}</div>
-              ${filteredFiles.length === 0
-                ? html`<div class="empty-list">${t("filePreview.noMatches")}</div>`
-                : filteredFiles.map(
-                    (file) => html`
+              ${
+                filteredFiles.length === 0
+                  ? html`<div class="empty-list">${t("filePreview.noMatches")}</div>`
+                  : filteredFiles.map(
+                      (file) => html`
                       <button
                         class="item ${file.path === activeFile?.path ? "is-active" : ""}"
                         @pointerdown=${this.preventItemPointerFocus}
@@ -512,7 +513,8 @@ export class OperatorFilePreviewModal extends OperatorLitElement {
                         <span class="item-meta">${file.size}</span>
                       </button>
                     `,
-                  )}
+                    )
+              }
             </aside>
             ${activeFile ? this.renderFile(activeFile) : this.renderEmpty()}
           </div>
@@ -534,9 +536,11 @@ export class OperatorFilePreviewModal extends OperatorLitElement {
         <div class="detail-head">
           <div class="detail-title-row">
             <h2 class="title">${file.path}</h2>
-            ${file.contents
-              ? renderCopyButton(file.contents, this.copyLabel || t("filePreview.copyFile"))
-              : ""}
+            ${
+              file.contents
+                ? renderCopyButton(file.contents, this.copyLabel || t("filePreview.copyFile"))
+                : ""
+            }
           </div>
           <div class="chips">
             <span class="chip accent">${fileKind(file.path)}</span>
@@ -630,6 +634,7 @@ export class OperatorFilePreviewModal extends OperatorLitElement {
       case "ArrowDown":
         this.moveSelection(1, event);
         return;
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
       case "ArrowUp":
         this.moveSelection(-1, event);
       default:

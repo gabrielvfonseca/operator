@@ -757,10 +757,12 @@ describe("TelegramPollingSession", () => {
       recoverStaleTelegramSpooledUpdateClaims,
       writeTelegramSpooledUpdate,
     } = await import("./telegram-ingress-spool.js"));
-    ({ isTelegramSpooledUpdateClaimOwnedByOtherLiveProcess } =
-      await import("./telegram-ingress-claim-owner.js"));
-    ({ createTelegramSpooledReplayDeferredParticipant } =
-      await import("./bot-processing-outcome.js"));
+    ({ isTelegramSpooledUpdateClaimOwnedByOtherLiveProcess } = await import(
+      "./telegram-ingress-claim-owner.js"
+    ));
+    ({ createTelegramSpooledReplayDeferredParticipant } = await import(
+      "./bot-processing-outcome.js"
+    ));
     ({ beginTelegramReplyFence, buildTelegramReplyFenceLaneKey, endTelegramReplyFence } =
       await import("./telegram-reply-fence.js"));
   });

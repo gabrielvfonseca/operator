@@ -178,7 +178,7 @@ export class IMessageRpcClient {
     params?: Record<string, unknown>,
     opts?: { timeoutMs?: number },
   ): Promise<T> {
-    if (!this.child || !this.child.stdin) {
+    if (!this.child?.stdin) {
       throw new Error("imsg rpc not running");
     }
     const id = this.nextId++;

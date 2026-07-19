@@ -277,6 +277,7 @@ function expectResolvedRouteCall(
     peer?: FeishuRoutePeer;
   }>(mockResolveAgentRoute, callIndex, 0);
   expect(routeRequest.peer).toEqual(peer);
+  // biome-ignore lint/complexity/noArguments: migrated from oxlint
   if (arguments.length >= 3) {
     expect(routeRequest.parentPeer).toEqual(parentPeer);
   }

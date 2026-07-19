@@ -120,8 +120,9 @@ vi.mock("./embedded-agent-mcp.js", () => ({
   loadEmbeddedAgentMcpConfig: bundleTestDeps.loadEmbeddedAgentMcpConfig,
 }));
 
-const { loadEnabledBundleAgentSettingsSnapshot } =
-  await import("./agent-project-settings-snapshot.js");
+const { loadEnabledBundleAgentSettingsSnapshot } = await import(
+  "./agent-project-settings-snapshot.js"
+);
 
 const tempDirs = createTrackedTempDirs();
 

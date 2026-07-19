@@ -162,8 +162,9 @@ function installSnapshot(
 
 describe("optional media tool factory planning", () => {
   beforeAll(async () => {
-    ({ createOperatorTools: createOperatorToolsForTestModule } =
-      await import("./operator-tools.js"));
+    ({ createOperatorTools: createOperatorToolsForTestModule } = await import(
+      "./operator-tools.js"
+    ));
 
     const config = legacyModelProviderConfig({
       workflow: { "1": { inputs: {} } },

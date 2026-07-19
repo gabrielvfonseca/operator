@@ -64,7 +64,7 @@ export function projectContextEngineAssemblyForCodex(params: {
     ? truncateOlderContext(renderedContext, maxRenderedContextChars)
     : undefined;
   const promptPrefix = boundedContext
-    ? [CONTEXT_HEADER, CONTEXT_SAFETY_NOTE, "", CONTEXT_OPEN].join("\n") + "\n"
+    ? `${[CONTEXT_HEADER, CONTEXT_SAFETY_NOTE, "", CONTEXT_OPEN].join("\n")}\n`
     : undefined;
   const promptSuffix = boundedContext ? `\n${CONTEXT_CLOSE}\n\n${REQUEST_HEADER}\n${prompt}` : "";
   const promptText = boundedContext ? `${promptPrefix}${boundedContext}${promptSuffix}` : prompt;
@@ -255,7 +255,7 @@ function dropDuplicateTrailingPrompt(messages: AgentMessage[], prompt: string): 
     return messages;
   }
   const trailing = messages.at(-1);
-  if (!trailing || trailing.role !== "user") {
+  if (trailing?.role !== "user") {
     return messages;
   }
   return extractMessageText(trailing).trim() === prompt ? messages.slice(0, -1) : messages;

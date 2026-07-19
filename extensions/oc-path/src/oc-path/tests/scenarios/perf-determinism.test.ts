@@ -14,7 +14,7 @@ describe("perf + determinism", () => {
   it("parses 100 KB file within the parser budget", () => {
     const lines: string[] = [];
     for (let i = 0; i < 1000; i++) {
-      lines.push("## H" + i);
+      lines.push(`## H${i}`);
       for (let j = 0; j < 5; j++) {
         lines.push(`- key${i}-${j}: value with content`);
       }

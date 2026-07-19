@@ -500,6 +500,7 @@ describe("resolveExecWorkdir", () => {
   it("rejects backend-validated sandbox host paths that symlink outside the workspace", async () => {
     await withTempDir(async (workspaceDir) => {
       await withTempDir(async (outsideDir) => {
+        // biome-ignore lint/suspicious/noShadowRestrictedNames: migrated from oxlint
         const escape = path.join(workspaceDir, "escape");
         await symlink(outsideDir, escape, "dir");
 

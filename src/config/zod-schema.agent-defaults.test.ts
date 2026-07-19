@@ -404,6 +404,7 @@ describe("agent defaults schema", () => {
         providers: {
           openai: {
             voice: "nova",
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             apiKey: "${OPENAI_API_KEY}",
           },
         },

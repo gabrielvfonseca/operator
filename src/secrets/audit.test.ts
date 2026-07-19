@@ -612,6 +612,7 @@ describe("secrets audit", () => {
     ).toBe(false);
   });
 
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   it("does not flag ${VAR} env refs in auth profiles as plaintext", async () => {
     writeAuthStore(fixture, {
       version: 1,
@@ -619,6 +620,7 @@ describe("secrets audit", () => {
         "openai:default": {
           type: "api_key",
           provider: "openai",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           key: "${OPENAI_API_KEY}", // pragma: allowlist secret
         },
       },
@@ -658,6 +660,7 @@ describe("secrets audit", () => {
     ).toBe(true);
   });
 
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   it.each(["$OPENAI_API_KEY", "${OPENAI_API_KEY}"])(
     "does not flag %s auth profile env refs when an explicit ref is also configured",
     async (value) => {

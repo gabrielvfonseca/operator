@@ -82,9 +82,11 @@ export function renderSessions(
                 aria-hidden="true"
               ></span>
               <span class="workspace-list__label">${row.label}</span>
-              ${row.updatedAt !== null
-                ? html`<span class="workspace-list__meta">${formatDateTimeMs(row.updatedAt)}</span>`
-                : nothing}
+              ${
+                row.updatedAt !== null
+                  ? html`<span class="workspace-list__meta">${formatDateTimeMs(row.updatedAt)}</span>`
+                  : nothing
+              }
             </a>
           </li>
         `,

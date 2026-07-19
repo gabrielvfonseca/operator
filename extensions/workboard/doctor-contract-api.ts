@@ -48,8 +48,8 @@ function isPersistedSubscription(
 ): value is PersistedWorkboardNotificationSubscription {
   return Boolean(
     value &&
-    typeof value === "object" &&
-    (value as PersistedWorkboardNotificationSubscription).version === 1,
+      typeof value === "object" &&
+      (value as PersistedWorkboardNotificationSubscription).version === 1,
   );
 }
 
@@ -121,10 +121,10 @@ async function targetCardReferencesAttachment(
   const card = await cards.lookup(attachment.attachment.cardId);
   return Boolean(
     card?.version === 1 &&
-    card.card.metadata?.attachments?.some(
-      (entry) =>
-        entry.id === attachment.attachment.id && entry.cardId === attachment.attachment.cardId,
-    ),
+      card.card.metadata?.attachments?.some(
+        (entry) =>
+          entry.id === attachment.attachment.id && entry.cardId === attachment.attachment.cardId,
+      ),
   );
 }
 

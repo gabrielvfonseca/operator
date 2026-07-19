@@ -261,8 +261,9 @@ describe("secrets runtime fast path", () => {
 
   it("refreshes startup-only fast-path snapshots from persisted auth stores after startup", async () => {
     const { prepareSecretsRuntimeFastPathSnapshot } = await import("./runtime-fast-path.js");
-    const { activateSecretsRuntimeSnapshotState, getActiveSecretsRuntimeSnapshot } =
-      await import("./runtime-state.js");
+    const { activateSecretsRuntimeSnapshotState, getActiveSecretsRuntimeSnapshot } = await import(
+      "./runtime-state.js"
+    );
     const { refreshActiveProviderAuthRuntimeSnapshot } = await import("./runtime.js");
     const root = mkdtempSync(path.join(tmpdir(), "operator-runtime-fast-path-refresh-"));
     const env: NodeJS.ProcessEnv = {
@@ -344,8 +345,9 @@ describe("secrets runtime fast path", () => {
   });
 
   it("does not let an active refresh overwrite auth stores mutated during preparation", async () => {
-    const { getRuntimeAuthProfileStoreSnapshot, setRuntimeAuthProfileStoreSnapshot } =
-      await import("../agents/auth-profiles/runtime-snapshots.js");
+    const { getRuntimeAuthProfileStoreSnapshot, setRuntimeAuthProfileStoreSnapshot } = await import(
+      "../agents/auth-profiles/runtime-snapshots.js"
+    );
     const {
       activateSecretsRuntimeSnapshot,
       getActiveSecretsRuntimeSnapshot,
@@ -393,8 +395,9 @@ describe("secrets runtime fast path", () => {
   });
 
   it("re-prepares a preflighted config refresh after its snapshot revision goes stale", async () => {
-    const { getRuntimeConfigSnapshotRefreshHandler } =
-      await import("../config/runtime-snapshot.js");
+    const { getRuntimeConfigSnapshotRefreshHandler } = await import(
+      "../config/runtime-snapshot.js"
+    );
     const {
       activateSecretsRuntimeSnapshot,
       getActiveSecretsRuntimeSnapshot,
@@ -443,8 +446,9 @@ describe("secrets runtime fast path", () => {
   });
 
   it("pins empty auth stores on startup-only fast-path snapshots until refresh", async () => {
-    const { ensureAuthProfileStoreWithoutExternalProfiles } =
-      await import("../agents/auth-profiles/store.js");
+    const { ensureAuthProfileStoreWithoutExternalProfiles } = await import(
+      "../agents/auth-profiles/store.js"
+    );
     const { prepareSecretsRuntimeFastPathSnapshot } = await import("./runtime-fast-path.js");
     const { activateSecretsRuntimeSnapshotState } = await import("./runtime-state.js");
     const root = mkdtempSync(path.join(tmpdir(), "operator-runtime-fast-path-empty-store-"));

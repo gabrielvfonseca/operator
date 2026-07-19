@@ -233,7 +233,7 @@ export function createInstalledPluginIndexScopeLookup(
         const normalized = normalizeOptionalLowercaseString(providerId);
         return Boolean(
           normalized &&
-          (maps.directProviderOwners.has(normalized) || normalizedScope.has(normalized)),
+            (maps.directProviderOwners.has(normalized) || normalizedScope.has(normalized)),
         );
       });
     },

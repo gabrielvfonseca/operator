@@ -1222,6 +1222,7 @@ describe("image tool implicit imageModel config", () => {
           providers: {
             minimax: {
               baseUrl: "https://api.minimax.io/anthropic",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               apiKey: "${MINIMAX_API_KEY}",
               api: "anthropic-messages",
               models: [makeModelDefinition("MiniMax-M2.7", ["text"])],
@@ -1246,6 +1247,7 @@ describe("image tool implicit imageModel config", () => {
           providers: {
             "minimax-cn": {
               baseUrl: "https://api.minimaxi.com/anthropic",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               apiKey: "${MINIMAX_API_KEY}",
               api: "anthropic-messages",
               models: [makeModelDefinition("MiniMax-M2.5", ["text", "image"])],
@@ -1295,6 +1297,7 @@ describe("image tool implicit imageModel config", () => {
           providers: {
             "minimax-cn": {
               baseUrl: "https://api.minimaxi.com/anthropic",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               apiKey: "${MINIMAX_API_KEY}",
               api: "anthropic-messages",
               models: [makeModelDefinition("MiniMax-M2.5", ["text", "image"])],
@@ -1338,6 +1341,7 @@ describe("image tool implicit imageModel config", () => {
           providers: {
             "minimax-cn": {
               baseUrl: "https://api.minimaxi.com/anthropic",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               apiKey: "${MINIMAX_API_KEY}",
               api: "anthropic-messages",
               models: [],

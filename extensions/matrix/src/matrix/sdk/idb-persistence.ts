@@ -301,7 +301,6 @@ export async function restoreIdbFromDisk(snapshotPath?: string): Promise<boolean
         `Failed to restore IndexedDB snapshot from ${resolvedPath}:`,
         err,
       );
-      continue;
     }
   }
   return false;

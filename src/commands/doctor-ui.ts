@@ -110,7 +110,7 @@ async function collectProtocolSchemaChangesSince(
     ],
     { timeoutMs: 5000 },
   ).catch(() => null);
-  if (!gitLog || gitLog.code !== 0) {
+  if (gitLog?.code !== 0) {
     return null;
   }
   if (!gitLog.stdout.trim()) {

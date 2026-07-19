@@ -25,9 +25,9 @@ export function isLikelyMutatingToolName(toolName: string): boolean {
   const normalized = normalizeLowercaseStringOrEmpty(toolName);
   return Boolean(
     normalized &&
-    (MUTATING_TOOL_NAMES.has(normalized) ||
-      normalized.endsWith("_actions") ||
-      normalized.startsWith("message_") ||
-      normalized.includes("send")),
+      (MUTATING_TOOL_NAMES.has(normalized) ||
+        normalized.endsWith("_actions") ||
+        normalized.startsWith("message_") ||
+        normalized.includes("send")),
   );
 }

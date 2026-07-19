@@ -180,9 +180,9 @@ async function createLiveWorkspace(tempDir: string): Promise<string> {
   const workspace = path.join(tempDir, "workspace");
   await fs.mkdir(workspace, { recursive: true });
   await fs.writeFile(
-    path.join(workspace, "AGENTS.md"),
+    path.join(workspace, "AGENTS.MD"),
     [
-      "# AGENTS.md",
+      "# AGENTS.MD",
       "",
       "Follow exact reply instructions from the user.",
       "Do not add commentary when asked for an exact response.",
@@ -987,8 +987,9 @@ async function verifyCodexSubagentProbe(params: {
     });
   });
   try {
-    const { testing: subagentSpawnTesting, spawnSubagentDirect } =
-      await import("../agents/subagent-spawn.test-support.js");
+    const { testing: subagentSpawnTesting, spawnSubagentDirect } = await import(
+      "../agents/subagent-spawn.test-support.js"
+    );
     const noOpContextEngine: ContextEngine = {
       info: { id: "codex-harness-subagent-smoke", name: "Codex harness subagent smoke" },
       ingest: async () => ({ ingested: false }),
@@ -1062,8 +1063,9 @@ async function verifyCodexSubagentProbe(params: {
       events,
     });
   } finally {
-    const { testing: subagentSpawnTesting } =
-      await import("../agents/subagent-spawn.test-support.js");
+    const { testing: subagentSpawnTesting } = await import(
+      "../agents/subagent-spawn.test-support.js"
+    );
     subagentSpawnTesting.setDepsForTest();
     unsubscribe();
   }
@@ -1396,7 +1398,6 @@ describeLive("gateway live (Codex harness)", () => {
               });
               gatewayEvents.length = 0;
               await delay(2_000);
-              continue;
             } else {
               throw error;
             }
@@ -1410,8 +1411,9 @@ describeLive("gateway live (Codex harness)", () => {
           } finally {
             await server?.close();
           }
-          const { resetTaskFlowRegistryForTests, resetTaskRegistryForTests } =
-            await import("../tasks/task-runtime.test-helpers.js");
+          const { resetTaskFlowRegistryForTests, resetTaskRegistryForTests } = await import(
+            "../tasks/task-runtime.test-helpers.js"
+          );
           resetTaskRegistryForTests({ persist: false });
           resetTaskFlowRegistryForTests({ persist: false });
         } finally {

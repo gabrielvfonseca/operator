@@ -97,6 +97,7 @@ export async function repairLoadedGatewayServiceForStart(params: {
     environmentValueSources,
   });
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let loaded;
   try {
     loaded = await params.service.isLoaded({ env: installEnv });

@@ -665,11 +665,8 @@ describe("subagent registry seam flow", () => {
 
   it("keeps parent run active when agent.wait times out before child session settles", async () => {
     let waitAttempts = 0;
-    let resolveSecondWait: (value: {
-      status: "ok";
-      startedAt: number;
-      endedAt: number;
-    }) => void = () => {};
+    let resolveSecondWait: (value: { status: "ok"; startedAt: number; endedAt: number }) => void =
+      () => {};
     const secondWait = new Promise<{ status: "ok"; startedAt: number; endedAt: number }>(
       (resolve) => {
         resolveSecondWait = resolve;
@@ -2221,11 +2218,8 @@ describe("subagent registry seam flow", () => {
 
   it("ignores stale terminal session-store rows from older child runs", async () => {
     let waitAttempts = 0;
-    let resolveSecondWait: (value: {
-      status: "ok";
-      startedAt: number;
-      endedAt: number;
-    }) => void = () => {};
+    let resolveSecondWait: (value: { status: "ok"; startedAt: number; endedAt: number }) => void =
+      () => {};
     const secondWait = new Promise<{ status: "ok"; startedAt: number; endedAt: number }>(
       (resolve) => {
         resolveSecondWait = resolve;

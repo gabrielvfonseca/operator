@@ -1,6 +1,7 @@
 // QR terminal tests cover text normalization and terminal render calls.
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: migrated from oxlint
 const { create, toString } = vi.hoisted(() => ({
   create: vi.fn(() => ({
     modules: {

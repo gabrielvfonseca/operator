@@ -199,7 +199,7 @@ async function createOAuthVerifiedBinding(
 
 async function createCliVerifiedBinding(config: OperatorConfig) {
   const route = await resolveSystemAgentConfiguredRouteFromConfig(config);
-  if (!route || route.runner !== "cli") {
+  if (route?.runner !== "cli") {
     throw new Error("missing test CLI route");
   }
   const runtimeArtifactId = route.provider;

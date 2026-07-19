@@ -267,7 +267,7 @@ describe("stripReasoningTagsFromText", () => {
       const longContent = "x".repeat(10000);
       expect(stripReasoningTagsFromText(`<think>${longContent}</think>visible`)).toBe("visible");
 
-      const pathological = "`".repeat(100) + "<think>test</think>" + "`".repeat(100);
+      const pathological = `${"`".repeat(100)}<think>test</think>${"`".repeat(100)}`;
       const start = Date.now();
       stripReasoningTagsFromText(pathological);
       const elapsed = Date.now() - start;

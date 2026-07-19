@@ -352,47 +352,45 @@ describe("gateway server models + voicewake", () => {
     }
   };
 
-  test(
-    "voicewake.get returns defaults and voicewake.set broadcasts",
-    { timeout: 20_000 },
-    async () => {
-      await withTempHome(async (homeDir) => {
-        const initial = await rpcReq<{ triggers: string[] }>(ws, "voicewake.get");
-        expect(initial.ok).toBe(true);
-        expect(initial.payload?.triggers).toEqual([
-          "@gabrielvfonseca/operator",
-          "claude",
-          "computer",
-        ]);
+  test("voicewake.get returns defaults and voicewake.set broadcasts", {
+    timeout: 20_000,
+  }, async () => {
+    await withTempHome(async (homeDir) => {
+      const initial = await rpcReq<{ triggers: string[] }>(ws, "voicewake.get");
+      expect(initial.ok).toBe(true);
+      expect(initial.payload?.triggers).toEqual([
+        "@gabrielvfonseca/operator",
+        "claude",
+        "computer",
+      ]);
 
-        const changedP = onceMessage(
-          ws,
-          (o) => o.type === "event" && o.event === "voicewake.changed",
-        );
+      const changedP = onceMessage(
+        ws,
+        (o) => o.type === "event" && o.event === "voicewake.changed",
+      );
 
-        const setRes = await rpcReq(ws, "voicewake.set", {
-          triggers: ["  hi  ", "", "there"],
-        });
-        expect(setRes.ok).toBe(true);
-        expect(setRes.payload?.triggers).toEqual(["hi", "there"]);
-
-        const changed = (await changedP) as { event?: string; payload?: unknown };
-        expect(changed.event).toBe("voicewake.changed");
-        expect((changed.payload as { triggers?: unknown } | undefined)?.triggers).toEqual([
-          "hi",
-          "there",
-        ]);
-
-        const after = await rpcReq<{ triggers: string[] }>(ws, "voicewake.get");
-        expect(after.ok).toBe(true);
-        expect(after.payload?.triggers).toEqual(["hi", "there"]);
-
-        await expect(
-          fs.readFile(path.join(homeDir, ".operator", "settings", "voicewake.json"), "utf8"),
-        ).rejects.toThrow(/ENOENT/u);
+      const setRes = await rpcReq(ws, "voicewake.set", {
+        triggers: ["  hi  ", "", "there"],
       });
-    },
-  );
+      expect(setRes.ok).toBe(true);
+      expect(setRes.payload?.triggers).toEqual(["hi", "there"]);
+
+      const changed = (await changedP) as { event?: string; payload?: unknown };
+      expect(changed.event).toBe("voicewake.changed");
+      expect((changed.payload as { triggers?: unknown } | undefined)?.triggers).toEqual([
+        "hi",
+        "there",
+      ]);
+
+      const after = await rpcReq<{ triggers: string[] }>(ws, "voicewake.get");
+      expect(after.ok).toBe(true);
+      expect(after.payload?.triggers).toEqual(["hi", "there"]);
+
+      await expect(
+        fs.readFile(path.join(homeDir, ".operator", "settings", "voicewake.json"), "utf8"),
+      ).rejects.toThrow(/ENOENT/u);
+    });
+  });
 
   test("pushes voicewake.changed to nodes on connect and on updates", async () => {
     await withConnectedNodeEvent("voicewake.changed", async (nodeWs, first) => {

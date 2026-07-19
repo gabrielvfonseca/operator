@@ -20,7 +20,7 @@ describe("tool image sanitizing", () => {
     blocks: Awaited<ReturnType<typeof sanitizeContentBlocksImages>>,
   ): (typeof blocks)[number] & { type: "image"; data: string; mimeType?: string } => {
     const image = blocks.find((block) => block.type === "image");
-    if (!image || image.type !== "image") {
+    if (image?.type !== "image") {
       throw new Error("expected image block");
     }
     return image;

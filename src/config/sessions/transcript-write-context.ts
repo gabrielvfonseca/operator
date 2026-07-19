@@ -95,9 +95,9 @@ export function canAdvanceOwnedSessionEntryCache(params: {
   const context = ownedTranscriptWriteContext.getStore();
   return Boolean(
     context &&
-    contextMatches({ context, ...params }) &&
-    context.publishSessionFileSnapshot &&
-    context.canAdvanceSessionEntryCache?.(params.snapshot),
+      contextMatches({ context, ...params }) &&
+      context.publishSessionFileSnapshot &&
+      context.canAdvanceSessionEntryCache?.(params.snapshot),
   );
 }
 

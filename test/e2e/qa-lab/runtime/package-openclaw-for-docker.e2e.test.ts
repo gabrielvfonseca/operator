@@ -745,6 +745,7 @@ describe("package-openclaw-for-docker", () => {
 
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-package-timeout-"));
     const childPidPath = path.join(tempDir, "child.pid");
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let childPid;
     try {
       const childScript = ["process.on('SIGTERM', () => {});", "setInterval(() => {}, 1000);"].join(
@@ -784,6 +785,7 @@ describe("package-openclaw-for-docker", () => {
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-package-grace-"));
     const donePath = path.join(tempDir, "done");
     const childPidPath = path.join(tempDir, "child.pid");
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let childPid;
     try {
       const script = [
@@ -818,6 +820,7 @@ describe("package-openclaw-for-docker", () => {
 
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-package-descendant-"));
     const childPidPath = path.join(tempDir, "child.pid");
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let childPid;
     try {
       const childScript = ["process.on('SIGTERM', () => {});", "setInterval(() => {}, 1000);"].join(
@@ -906,6 +909,7 @@ describe("package-openclaw-for-docker", () => {
     const childPidPath = path.join(tempDir, "child.pid");
     const scriptUrl = pathToFileURL(path.resolve("scripts/package-openclaw-for-docker.mjs")).href;
     let childPid = 0;
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let runnerPid;
     try {
       const childScript = "setInterval(() => {}, 1000);";

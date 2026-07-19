@@ -115,7 +115,7 @@ function groupSenderEntries(params: {
   input: ChannelIngressStateInput;
 }): string[] {
   const group = params.input.accessGroups?.[params.groupName];
-  if (!group || group.type !== "message.senders") {
+  if (group?.type !== "message.senders") {
     return [];
   }
   return normalizeStringEntries([

@@ -36,15 +36,17 @@ export function renderChatSidebarEditorMenu(params: {
           >
             ${icons.externalLink}
           </button>
-          ${params.absolutePath
-            ? EDITOR_IDS.map(
-                (editor) => html`
+          ${
+            params.absolutePath
+              ? EDITOR_IDS.map(
+                  (editor) => html`
                   <wa-dropdown-item class="sidebar-file-view__editor-item" value=${editor}>
                     ${EDITOR_LABELS[editor]}
                   </wa-dropdown-item>
                 `,
-              )
-            : nothing}
+                )
+              : nothing
+          }
         </wa-dropdown>
       </operator-tooltip>
     </div>

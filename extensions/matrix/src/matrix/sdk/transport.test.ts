@@ -664,7 +664,7 @@ describe("matrix transport streaming OOM guard — real HTTP server without Cont
       ).buffer;
       expect(result).toEqual(payload);
       console.log(
-        "[matrix-bound-proof] under-cap: raw buffer returned correctly, size=" + result.length,
+        `[matrix-bound-proof] under-cap: raw buffer returned correctly, size=${result.length}`,
       );
     } finally {
       await new Promise<void>((resolve) => {

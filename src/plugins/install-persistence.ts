@@ -332,8 +332,7 @@ function logShadowedNpmInstallWarning(params: {
   });
   const active = report.plugins.find((plugin) => plugin.id === params.pluginId);
   if (
-    !active ||
-    active.origin !== "config" ||
+    active?.origin !== "config" ||
     sourceMatchesInstalledPath({ activeSource: active.source, installedSource })
   ) {
     return;

@@ -139,8 +139,8 @@ function userMessageMatchesTranscriptContext(
   }
   return Boolean(
     override &&
-    contentMatchesTimestampOverride(messageContent, override) &&
-    contentMatchesTimestampOverride(runtimeContent, override),
+      contentMatchesTimestampOverride(messageContent, override) &&
+      contentMatchesTimestampOverride(runtimeContent, override),
   );
 }
 

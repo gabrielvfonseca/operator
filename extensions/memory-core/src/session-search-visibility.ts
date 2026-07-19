@@ -134,11 +134,11 @@ export async function filterMemorySearchHitsBySessionVisibility(params: {
     }
     const archivedOwnerMatchesScope = Boolean(
       identity.archived &&
-      ((identity.ownerAgentId &&
-        (!scopedAgentId ||
-          normalizeAgentIdForCompare(identity.ownerAgentId) ===
-            normalizeAgentIdForCompare(scopedAgentId))) ||
-        (isQmdSessionHit && scopedAgentId)),
+        ((identity.ownerAgentId &&
+          (!scopedAgentId ||
+            normalizeAgentIdForCompare(identity.ownerAgentId) ===
+              normalizeAgentIdForCompare(scopedAgentId))) ||
+          (isQmdSessionHit && scopedAgentId)),
     );
     const archivedOwnerAgentId = archivedOwnerMatchesScope
       ? (identity.ownerAgentId ?? scopedAgentId)

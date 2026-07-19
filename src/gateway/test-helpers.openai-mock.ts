@@ -24,7 +24,7 @@ type OpenAIResponseStreamEvent =
 function extractLastUserText(input: unknown[]): string {
   for (let i = input.length - 1; i >= 0; i -= 1) {
     const item = input[i] as Record<string, unknown> | undefined;
-    if (!item || item.role !== "user") {
+    if (item?.role !== "user") {
       continue;
     }
     const content = item.content;
@@ -51,7 +51,7 @@ function extractLastUserText(input: unknown[]): string {
 function extractToolOutput(input: unknown[]): string {
   for (const itemRaw of input) {
     const item = itemRaw as Record<string, unknown> | undefined;
-    if (!item || item.type !== "function_call_output") {
+    if (item?.type !== "function_call_output") {
       continue;
     }
     return typeof item.output === "string" ? item.output : "";

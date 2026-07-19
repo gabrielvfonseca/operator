@@ -128,7 +128,7 @@ export function renderSignalMentions(message: string, mentions?: SignalMention[]
       continue;
     }
 
-    normalized = normalized.slice(0, start) + `@${identifier}` + normalized.slice(end);
+    normalized = `${normalized.slice(0, start)}@${identifier}${normalized.slice(end)}`;
   }
 
   return normalized;

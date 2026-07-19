@@ -41,8 +41,8 @@ export function isDuplicateRestartRecoverySource(
   const normalizedSourceTurnId = normalizeOptionalString(sourceTurnId);
   return Boolean(
     normalizedSourceTurnId &&
-    (hasRestartRecoveryTerminalRun(entry ?? undefined, normalizedSourceTurnId) ||
-      hasRestartRecoverySourceClaim(entry ?? undefined, normalizedSourceTurnId)),
+      (hasRestartRecoveryTerminalRun(entry ?? undefined, normalizedSourceTurnId) ||
+        hasRestartRecoverySourceClaim(entry ?? undefined, normalizedSourceTurnId)),
   );
 }
 

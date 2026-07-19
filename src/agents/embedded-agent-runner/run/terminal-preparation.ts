@@ -160,7 +160,7 @@ export function prepareEmbeddedRunTerminal(input: {
     timedOutDuringPrompt &&
     Boolean(
       payloadAlreadyContainsRecoveredFinalAssistant ||
-      recoveredFinalAssistantPayloadsAfterPromptTimeout?.length,
+        recoveredFinalAssistantPayloadsAfterPromptTimeout?.length,
     );
   const hasPartialAssistantTextAfterPromptTimeout =
     timedOutDuringPrompt &&

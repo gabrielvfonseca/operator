@@ -73,18 +73,24 @@ export function renderActivity(widget: WorkspaceWidget, value: unknown): Templat
           <li class="workspace-feed__row">
             <div class="workspace-feed__head">
               <span class="workspace-feed__title">${entry.title}</span>
-              ${entry.status
-                ? html`<span class="workspace-badge ${statusClass(entry.status)}"
+              ${
+                entry.status
+                  ? html`<span class="workspace-badge ${statusClass(entry.status)}"
                     >${entry.status}</span
                   >`
-                : nothing}
-              ${entry.ts !== null
-                ? html`<span class="workspace-feed__time">${formatDateTimeMs(entry.ts)}</span>`
-                : nothing}
+                  : nothing
+              }
+              ${
+                entry.ts !== null
+                  ? html`<span class="workspace-feed__time">${formatDateTimeMs(entry.ts)}</span>`
+                  : nothing
+              }
             </div>
-            ${entry.detail
-              ? html`<div class="workspace-feed__detail">${entry.detail}</div>`
-              : nothing}
+            ${
+              entry.detail
+                ? html`<div class="workspace-feed__detail">${entry.detail}</div>`
+                : nothing
+            }
           </li>
         `,
       )}

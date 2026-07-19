@@ -320,7 +320,7 @@ function findHeredocBodyEnd(
 
 export function scanTopLevelChars(
   command: string,
-  visit: (char: string, index: number) => boolean | void,
+  visit: (char: string, index: number) => boolean | undefined,
   visitHeredocBody?: (operatorIndex: number, start: number, end: number) => void,
 ): void {
   let quote: '"' | "'" | undefined;

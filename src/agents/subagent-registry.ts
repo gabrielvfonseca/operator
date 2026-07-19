@@ -1548,7 +1548,7 @@ function ensureListener() {
   listenerStarted = true;
   listenerStop = subagentRegistryDeps.onAgentEvent((evt) => {
     void (async () => {
-      if (!evt || evt.stream !== "lifecycle") {
+      if (evt?.stream !== "lifecycle") {
         return;
       }
       const phase = evt.data?.phase;

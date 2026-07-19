@@ -185,6 +185,7 @@ async function auditSystemdUnit(
   issues: ServiceConfigIssue[],
 ) {
   const unitPath = resolveSystemdUserUnitPath(env);
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let content;
   try {
     content = await fs.readFile(unitPath, "utf8");
@@ -234,6 +235,7 @@ async function auditLaunchdPlist(
   issues: ServiceConfigIssue[],
 ) {
   const plistPath = resolveLaunchAgentPlistPath(env);
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let content;
   try {
     content = await fs.readFile(plistPath, "utf8");

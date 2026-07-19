@@ -822,6 +822,7 @@ describe("operator live updater", () => {
 
   test("production fetch refreshes the remote-tracking main ref", () => {
     const source = readFileSync(script, "utf8");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).toContain("refs/heads/main:refs/remotes/${remoteName}/main");
     expect(source).not.toContain('["fetch", "--prune", remoteName, "main"]');
   });

@@ -526,6 +526,7 @@ describe("exec-command-resolution", () => {
     expect(
       resolveAllowlistCandidatePath(
         {
+          // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
           rawExecutable: String.raw`:/Users/demo/AI/system/openclaw`,
           executableName: "@gabrielvfonseca/operator",
         },

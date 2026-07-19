@@ -531,8 +531,9 @@ export async function applySystemAgentSetup(
   if (refreshPluginRegistry && enablePluginId) {
     await runCommittedFollowUp(
       async () => {
-        const { refreshPluginRegistryAfterConfigMutation } =
-          await import("../plugins/registry-refresh.js");
+        const { refreshPluginRegistryAfterConfigMutation } = await import(
+          "../plugins/registry-refresh.js"
+        );
         await refreshPluginRegistryAfterConfigMutation({
           config: nextConfig,
           reason: "source-changed",

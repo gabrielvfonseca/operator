@@ -115,6 +115,7 @@ export const ttsHandlers: GatewayRequestHandlers = {
       const providerRaw = normalizeOptionalString(params.provider);
       const modelId = normalizeOptionalString(params.modelId);
       const voiceId = normalizeOptionalString(params.voiceId);
+      // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
       let overrides;
       try {
         // Explicit provider/model/voice requests are validated before synthesis

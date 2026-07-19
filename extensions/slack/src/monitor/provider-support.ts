@@ -298,10 +298,10 @@ function shouldSkipOperatorSlackSelfEvent(args: SlackSelfFilterArgs): boolean {
   const eventsWhichShouldBeKept = new Set(["member_joined_channel", "member_left_channel"]);
   return Boolean(
     botUserId &&
-    event &&
-    event.user === botUserId &&
-    typeof event.type === "string" &&
-    !eventsWhichShouldBeKept.has(event.type),
+      event &&
+      event.user === botUserId &&
+      typeof event.type === "string" &&
+      !eventsWhichShouldBeKept.has(event.type),
   );
 }
 

@@ -27,7 +27,7 @@ async function tryDispatchAcpReplyHookWithTimeout(
   event: PluginHookReplyDispatchEvent,
   ctx: PluginHookReplyDispatchContext,
   timeoutMs: number,
-): Promise<PluginHookReplyDispatchResult | void> {
+): Promise<PluginHookReplyDispatchResult | undefined> {
   const timeoutController = new AbortController();
   const timeout = setTimeout(() => timeoutController.abort(), timeoutMs);
   timeout.unref?.();

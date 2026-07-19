@@ -217,7 +217,7 @@ async function handleDiscordModalTrigger(params: {
     id: parsed.componentId,
     consume: false,
   });
-  if (!entry || entry.kind !== "modal-trigger") {
+  if (entry?.kind !== "modal-trigger") {
     try {
       await params.interaction.reply({
         content: "This button has expired.",

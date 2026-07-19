@@ -442,7 +442,9 @@ async function initSessionStateAttemptLocked(
   let sessionId: string | undefined;
   let isNewSession = false;
   let bodyStripped: string | undefined;
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let systemSent;
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let abortedLastRun;
   let resetTriggered = false;
 
@@ -707,8 +709,8 @@ async function initSessionStateAttemptLocked(
       });
   const lifecycleMutationMatches = Boolean(
     previousSessionEntry &&
-    lifecycleMutationIdentity?.sessionKey === sessionKey &&
-    lifecycleMutationIdentity.sessionId === previousSessionEntry.sessionId,
+      lifecycleMutationIdentity?.sessionKey === sessionKey &&
+      lifecycleMutationIdentity.sessionId === previousSessionEntry.sessionId,
   );
   if (previousSessionEntry && !lifecycleMutationMatches) {
     return {

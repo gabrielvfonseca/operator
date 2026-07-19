@@ -445,7 +445,7 @@ async function main() {
     assert(permission.behavior === "allow", "expected allow permission reply");
 
     process.stdout.write(
-      JSON.stringify(
+      `${JSON.stringify(
         {
           ok: true,
           sessionKey: "agent:main:main",
@@ -460,7 +460,7 @@ async function main() {
         },
         null,
         2,
-      ) + "\n",
+      )}\n`,
     );
   } finally {
     const closeTasks: Array<Promise<unknown>> = [gateway.close()];

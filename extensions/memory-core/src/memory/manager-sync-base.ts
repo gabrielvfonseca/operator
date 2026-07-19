@@ -263,9 +263,9 @@ export abstract class MemoryManagerSyncBase {
   protected shouldDeferSourceWideBatch(): boolean {
     return Boolean(
       this.batch.enabled &&
-      this.provider &&
-      this.providerRuntime?.batchEmbed &&
-      this.providerRuntime.sourceWideBatchEmbed === true,
+        this.provider &&
+        this.providerRuntime?.batchEmbed &&
+        this.providerRuntime.sourceWideBatchEmbed === true,
     );
   }
 
@@ -464,6 +464,7 @@ export abstract class MemoryManagerSyncBase {
         `sqlite-vec load timed out after ${Math.round(VECTOR_LOAD_TIMEOUT_MS / 1000)}s`,
       );
     }
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let ready;
     try {
       ready = (await this.vectorReady) || false;

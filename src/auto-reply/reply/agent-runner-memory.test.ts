@@ -2271,7 +2271,7 @@ describe("runMemoryFlushIfNeeded", () => {
     const sessionFile = path.join(rootDir, "large-usage-record-session.jsonl");
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         JSON.stringify({
           type: "session",
           id: "session",
@@ -2283,7 +2283,7 @@ describe("runMemoryFlushIfNeeded", () => {
             usage: { input: 40_000, output: 2_000 },
           },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf8",
     );
     registerMemoryFlushPlanResolverForTest(() => ({
@@ -2325,7 +2325,7 @@ describe("runMemoryFlushIfNeeded", () => {
     const sessionFile = path.join(rootDir, "metadata-heavy-session.jsonl");
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         JSON.stringify({
           type: "session",
           id: "session",
@@ -2341,7 +2341,7 @@ describe("runMemoryFlushIfNeeded", () => {
             usage: { input: 40_000, output: 2_000 },
           },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf8",
     );
     registerMemoryFlushPlanResolverForTest(() => ({

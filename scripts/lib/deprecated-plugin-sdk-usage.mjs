@@ -1,5 +1,7 @@
 // Builds the list of deprecated public plugin SDK specifiers guarded by scripts.
-import deprecatedPublicPluginSdkSubpaths from "./plugin-sdk-deprecated-public-subpaths.json" with { type: "json" };
+import deprecatedPublicPluginSdkSubpaths from "./plugin-sdk-deprecated-public-subpaths.json" with {
+  type: "json",
+};
 
 const DEPRECATED_PLUGIN_SDK_EXTRA_SPECIFIERS = [
   "openclaw/plugin-sdk",

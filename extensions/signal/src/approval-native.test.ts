@@ -13,10 +13,7 @@ import {
 type SignalConfig = NonNullable<NonNullable<OperatorConfig["channels"]>["signal"]>;
 
 function buildConfig(
-  params: {
-    signal?: Partial<SignalConfig>;
-    approvals?: OperatorConfig["approvals"];
-  } = {},
+  params: { signal?: Partial<SignalConfig>; approvals?: OperatorConfig["approvals"] } = {},
 ): OperatorConfig {
   return {
     channels: {

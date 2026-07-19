@@ -40,6 +40,7 @@ function pruneSlackExternalArgMenuStore(
 }
 
 function createSlackExternalArgMenuToken(store: Map<string, SlackExternalArgMenuEntry>): string {
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let token;
   do {
     token = generateSecureToken(SLACK_EXTERNAL_ARG_MENU_TOKEN_BYTES);

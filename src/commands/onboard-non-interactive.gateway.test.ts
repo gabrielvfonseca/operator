@@ -186,8 +186,9 @@ let resolveInstallDaemonGatewayHealthTiming: typeof import("./onboard-non-intera
 async function loadGatewayOnboardModules(): Promise<void> {
   vi.resetModules();
   ({ runNonInteractiveSetup } = await import("./onboard-non-interactive.js"));
-  ({ resolveInstallDaemonGatewayHealthTiming } =
-    await import("./onboard-non-interactive/local.test-support.js"));
+  ({ resolveInstallDaemonGatewayHealthTiming } = await import(
+    "./onboard-non-interactive/local.test-support.js"
+  ));
 }
 
 function getPseudoPort(base: number): number {

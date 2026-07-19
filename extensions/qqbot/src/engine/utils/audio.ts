@@ -92,7 +92,7 @@ export async function convertSilkToWav(
 
   const strippedBuf = stripAmrHeader(fileBuf);
   const silk = await loadSilkWasm();
-  if (!silk || !silk.isSilk(strippedBuf)) {
+  if (!silk?.isSilk(strippedBuf)) {
     return null;
   }
 

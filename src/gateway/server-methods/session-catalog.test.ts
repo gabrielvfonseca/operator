@@ -29,8 +29,9 @@ vi.mock("../../plugins/session-conversation-binding.js", () => ({
   bindPluginSessionConversation: conversationBindingMocks.bindPluginSessionConversation,
 }));
 
-const { resolveSessionCatalogCreateTarget, sessionCatalogHandlers } =
-  await import("./session-catalog.js");
+const { resolveSessionCatalogCreateTarget, sessionCatalogHandlers } = await import(
+  "./session-catalog.js"
+);
 
 function provider(
   id: string,

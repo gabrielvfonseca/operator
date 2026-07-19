@@ -8,7 +8,7 @@ if [[ "$mode" == "--write" ]]; then
 fi
 
 args=(
-  README.md
+  README.MD
   docs
   --skip=*.png,*.jpg,*.jpeg,*.gif,*.svg
   -D

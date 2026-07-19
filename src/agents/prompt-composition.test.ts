@@ -67,7 +67,7 @@ describe("prompt composition invariants", () => {
     const always = getTurn(scenario, "t3");
 
     expect(first.systemPrompt).not.toContain("[Bootstrap truncation warning]");
-    expect(first.systemPrompt).toContain("[...truncated, read AGENTS.md for full content...]");
+    expect(first.systemPrompt).toContain("[...truncated, read AGENTS.MD for full content...]");
     expect(first.bodyPrompt.startsWith("hello")).toBe(true);
     expect(first.bodyPrompt).toContain("[Bootstrap truncation warning]");
 

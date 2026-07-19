@@ -304,7 +304,6 @@ export function createOutboundPayloadPlan(
         hasInteractive: entry.hasInteractive,
         hasChannelData: entry.hasChannelData,
       });
-      continue;
     }
   }
   return plan;

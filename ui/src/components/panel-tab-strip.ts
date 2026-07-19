@@ -66,13 +66,17 @@ export function renderPanelTabStrip(params: {
               }
             }}
           >
-            ${tab.icon == null || tab.icon === nothing
-              ? nothing
-              : html`<span class="tabstrip-tab__icon" aria-hidden="true">${tab.icon}</span>`}
+            ${
+              tab.icon == null || tab.icon === nothing
+                ? nothing
+                : html`<span class="tabstrip-tab__icon" aria-hidden="true">${tab.icon}</span>`
+            }
             <span class="tabstrip-tab__label">${tab.label}</span>
-            ${tab.statusLabel
-              ? html`<span class="tabstrip-tab__status">${tab.statusLabel}</span>`
-              : nothing}
+            ${
+              tab.statusLabel
+                ? html`<span class="tabstrip-tab__status">${tab.statusLabel}</span>`
+                : nothing
+            }
           </wa-tab>
           <button
             slot="nav"

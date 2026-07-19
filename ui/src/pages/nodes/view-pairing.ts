@@ -79,23 +79,28 @@ export function renderDevicePairSetup(props: DevicePairSetupProps) {
               </span>
             </label>
           </fieldset>
-          ${!setup && !props.loading && !props.error
-            ? html`
+          ${
+            !setup && !props.loading && !props.error
+              ? html`
                 <button class="btn primary" type="button" @click=${props.onRefresh}>
                   ${icons.smartphone} ${t("nodes.pairing.generateCode")}
                 </button>
               `
-            : nothing}
-          ${props.loading && !setup
-            ? html`
+              : nothing
+          }
+          ${
+            props.loading && !setup
+              ? html`
                 <div class="device-pair-setup__loading" role="status">
                   <span class="device-pair-setup__spinner" aria-hidden="true"></span>
                   <span>${t("nodes.pairing.generating")}</span>
                 </div>
               `
-            : nothing}
-          ${props.error
-            ? html`
+              : nothing
+          }
+          ${
+            props.error
+              ? html`
                 <div class="callout danger device-pair-setup__error" role="alert">
                   <strong>${t("nodes.pairing.failed")}</strong>
                   <span>${props.error}</span>
@@ -109,20 +114,24 @@ export function renderDevicePairSetup(props: DevicePairSetupProps) {
                   ${icons.refresh} ${t("common.reload")}
                 </button>
               `
-            : nothing}
-          ${setup
-            ? html`
+              : nothing
+          }
+          ${
+            setup
+              ? html`
                 <div class="device-pair-setup__qr-frame">
-                  ${setup.qrDataUrl
-                    ? html`<img
+                  ${
+                    setup.qrDataUrl
+                      ? html`<img
                         class="device-pair-setup__qr"
                         src=${setup.qrDataUrl}
                         alt=${t("nodes.pairing.qrAlt")}
                         draggable="false"
                       />`
-                    : html`<div class="device-pair-setup__qr-unavailable">
+                      : html`<div class="device-pair-setup__qr-unavailable">
                         ${t("nodes.pairing.qrUnavailable")}
-                      </div>`}
+                      </div>`
+                  }
                 </div>
 
                 <div class="device-pair-setup__meta">
@@ -141,14 +150,16 @@ export function renderDevicePairSetup(props: DevicePairSetupProps) {
                   </div>
                 </div>
 
-                ${setup.accessDowngraded
-                  ? html`
+                ${
+                  setup.accessDowngraded
+                    ? html`
                       <div class="callout warn device-pair-setup__access-warning" role="status">
                         <strong>${t("nodes.pairing.transportLimitedTitle")}</strong>
                         <span>${t("nodes.pairing.transportLimitedHint")}</span>
                       </div>
                     `
-                  : nothing}
+                    : nothing
+                }
 
                 <div class="device-pair-setup__actions">
                   <button
@@ -174,8 +185,9 @@ export function renderDevicePairSetup(props: DevicePairSetupProps) {
                   <code>${setup.setupCode}</code>
                 </details>
 
-                ${pendingCount > 0
-                  ? html`
+                ${
+                  pendingCount > 0
+                    ? html`
                       <div class="callout warn device-pair-setup__pending">
                         <span>
                           ${t("nodes.pairing.pending", { count: String(pendingCount) })}
@@ -185,9 +197,11 @@ export function renderDevicePairSetup(props: DevicePairSetupProps) {
                         </button>
                       </div>
                     `
-                  : html`<p class="device-pair-setup__waiting">${t("nodes.pairing.waiting")}</p>`}
+                    : html`<p class="device-pair-setup__waiting">${t("nodes.pairing.waiting")}</p>`
+                }
               `
-            : nothing}
+              : nothing
+          }
         </div>
 
         <footer class="device-pair-setup__footer">

@@ -269,15 +269,15 @@ export async function createGatewaySession(params: {
 
   const authorizedHarnessCreation = Boolean(
     explicitTargetKey &&
-    params.initialEntry &&
-    normalizeOptionalAgentRuntimeId(params.authorizedAgentHarnessId) ===
-      normalizeOptionalAgentRuntimeId(params.initialEntry.agentHarnessId) &&
-    isAgentHarnessSessionKeyOwnedBy(explicitTargetKey, params.authorizedAgentHarnessId),
+      params.initialEntry &&
+      normalizeOptionalAgentRuntimeId(params.authorizedAgentHarnessId) ===
+        normalizeOptionalAgentRuntimeId(params.initialEntry.agentHarnessId) &&
+      isAgentHarnessSessionKeyOwnedBy(explicitTargetKey, params.authorizedAgentHarnessId),
   );
   const authorizedPluginCreation = Boolean(
     explicitTargetKey &&
-    params.initialEntry?.pluginOwnerId &&
-    params.authorizedPluginId === params.initialEntry.pluginOwnerId,
+      params.initialEntry?.pluginOwnerId &&
+      params.authorizedPluginId === params.initialEntry.pluginOwnerId,
   );
   if (params.initialEntry?.pluginOwnerId && !authorizedPluginCreation) {
     return {

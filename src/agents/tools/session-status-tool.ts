@@ -800,7 +800,7 @@ export function createSessionStatusTool(opts?: {
           );
       const hasExplicitModelOverride = Boolean(
         !activeModelIdentity &&
-        (resolved.entry.providerOverride?.trim() || resolved.entry.modelOverride?.trim()),
+          (resolved.entry.providerOverride?.trim() || resolved.entry.modelOverride?.trim()),
       );
       const runtimeProviderForCard = runtimeModelIdentity.provider?.trim();
       const runtimeModelForCard = runtimeModelIdentity.model.trim();

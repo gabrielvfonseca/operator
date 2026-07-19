@@ -164,9 +164,7 @@ function readMatrixSyncCacheCursorFromRows(
       if (cursor) {
         cursors.push({ cursor, pathname: "", source: "sqlite", stateKey });
       }
-    } catch {
-      continue;
-    }
+    } catch {}
   }
   return cursors;
 }
@@ -217,9 +215,7 @@ async function readMatrixSyncCacheCursorsFromSqlite(params: {
         } finally {
           db.close();
         }
-      } catch {
-        continue;
-      }
+      } catch {}
     }
   } catch {
     return [];
@@ -542,9 +538,7 @@ async function hasPersistedMatrixPluginStateDedupeEntry(params: {
       } finally {
         db.close();
       }
-    } catch {
-      continue;
-    }
+    } catch {}
   }
   return null;
 }

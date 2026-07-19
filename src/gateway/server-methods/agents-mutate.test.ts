@@ -483,8 +483,8 @@ function expectNotFoundResponseAndNoWrite(respond: ReturnType<typeof vi.fn>) {
 async function expectUnsafeWorkspaceFile(method: "agents.files.get" | "agents.files.set") {
   const params =
     method === "agents.files.set"
-      ? { agentId: "main", name: "AGENTS.md", content: "x" }
-      : { agentId: "main", name: "AGENTS.md" };
+      ? { agentId: "main", name: "AGENTS.MD", content: "x" }
+      : { agentId: "main", name: "AGENTS.MD" };
   const { respond, promise } = makeCall(method, params);
   await promise;
   expectRespondErrorContaining(respond, "unsafe workspace file");
@@ -1276,7 +1276,7 @@ describe("agents.files.list", () => {
       throw createErrnoError("EACCES");
     });
     const rootStat = vi.fn(async ({ relativePath }: Record<string, unknown>) => {
-      if (relativePath === "AGENTS.md") {
+      if (relativePath === "AGENTS.MD") {
         return {
           isFile: true,
           isSymbolicLink: false,
@@ -1295,9 +1295,9 @@ describe("agents.files.list", () => {
     const result = firstRespondResult(respond);
     const files = (result as { files: Array<{ name: string; missing: boolean; size?: number }> })
       .files;
-    const file = files.find((entry) => entry.name === "AGENTS.md");
+    const file = files.find((entry) => entry.name === "AGENTS.MD");
     expectRecordFields(file, {
-      name: "AGENTS.md",
+      name: "AGENTS.MD",
       missing: false,
       size: 17,
     });
@@ -1322,9 +1322,9 @@ describe("agents.files.list", () => {
     const result = firstRespondResult(respond);
     const files = (result as { files: Array<{ name: string; missing: boolean; size?: number }> })
       .files;
-    const file = files.find((entry) => entry.name === "AGENTS.md");
+    const file = files.find((entry) => entry.name === "AGENTS.MD");
     expectRecordFields(file, {
-      name: "AGENTS.md",
+      name: "AGENTS.MD",
       missing: false,
       size: 23,
     });
@@ -1434,19 +1434,19 @@ describe("agents.files.get/set symlink safety", () => {
 
     const { respond, promise } = makeCall("agents.files.get", {
       agentId: "main",
-      name: "AGENTS.md",
+      name: "AGENTS.MD",
     });
     await promise;
 
     expectRecordFields(mockCallArg(rootRead), {
       rootDir: "/workspace/test-agent",
-      relativePath: "AGENTS.md",
+      relativePath: "AGENTS.MD",
       hardlinks: "reject",
       nonBlockingRead: true,
     });
     const payload = expectRespondOk(respond, {});
     expectRecordFields(payload.file, {
-      name: "AGENTS.md",
+      name: "AGENTS.MD",
       content: "hello",
     });
   });

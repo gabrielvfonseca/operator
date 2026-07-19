@@ -31,7 +31,7 @@ describe("maskApiKey", () => {
 
     // Long values keep their prefix/suffix when the 8-code-unit boundary lands
     // in the middle of a surrogate pair.
-    const long = "😀".repeat(3) + "a😀" + "b".repeat(10);
+    const long = `${"😀".repeat(3)}a😀${"b".repeat(10)}`;
     const masked = maskApiKey(long);
     expect(() => encodeURIComponent(masked)).not.toThrow();
     expect(masked).not.toMatch(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])/);

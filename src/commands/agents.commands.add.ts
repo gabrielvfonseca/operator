@@ -162,6 +162,7 @@ export async function agentsAddCommand(
       : undefined;
     const model = opts.model?.trim();
 
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let committed;
     try {
       committed = await transformConfigWithPendingPluginInstalls<AgentsAddMutationResult>({

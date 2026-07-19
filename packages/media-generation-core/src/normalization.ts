@@ -23,9 +23,9 @@ export function hasMediaNormalizationEntry<TValue extends MediaNormalizationValu
 ): entry is MediaNormalizationEntry<TValue> {
   return Boolean(
     entry &&
-    (entry.requested !== undefined ||
-      entry.applied !== undefined ||
-      entry.derivedFrom !== undefined ||
-      (entry.supportedValues?.length ?? 0) > 0),
+      (entry.requested !== undefined ||
+        entry.applied !== undefined ||
+        entry.derivedFrom !== undefined ||
+        (entry.supportedValues?.length ?? 0) > 0),
   );
 }

@@ -288,6 +288,7 @@ function collectSecretInputs(
   defaults: SecretRefDefaults | undefined,
 ): void {
   if (Array.isArray(value)) {
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     value.forEach((item, index) =>
       collectSecretInputs(entries, item, [...path, `#${index}`], defaults),
     );

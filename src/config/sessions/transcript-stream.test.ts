@@ -205,11 +205,11 @@ describe("streamSessionTranscriptLinesReverse", () => {
   it("preserves JSONL line ordering so reverse scans hit the newest match first", async () => {
     fs.writeFileSync(
       transcriptPath,
-      [
+      `${[
         JSON.stringify({ id: "first", role: "user" }),
         JSON.stringify({ id: "second", role: "assistant", text: "hi" }),
         JSON.stringify({ id: "third", role: "assistant", text: "bye" }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf-8",
     );
 

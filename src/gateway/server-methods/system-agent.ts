@@ -256,8 +256,9 @@ export const systemAgentHandlers: GatewayRequestHandlers = {
         // start competing setup work while this server-owned flow can commit.
         const result = await runExclusiveSystemAgentSetupActivation(async () =>
           runSystemAgentGatewayTask(async () => {
-            const { activateSetupInference } =
-              await import("../../system-agent/setup-inference.js");
+            const { activateSetupInference } = await import(
+              "../../system-agent/setup-inference.js"
+            );
             return await activateSetupInference({
               kind: "provider-auth",
               authChoice: params.authChoice,

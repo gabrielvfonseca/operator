@@ -114,7 +114,7 @@ function resolveExistingCopilotAuthResult(agentDir?: string): ProviderAuthResult
     allowKeychainPrompt: false,
   });
   const credential = authStore.profiles[profileId];
-  if (!credential || credential.type !== "token") {
+  if (credential?.type !== "token") {
     return null;
   }
   return {

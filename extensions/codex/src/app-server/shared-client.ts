@@ -223,7 +223,7 @@ export function resolveCodexNativeConfigFenceKey(params: {
     ? getCodexAppServerClientStartMetadata().get(params.client)
     : undefined;
   const startOptions = params.startOptions ?? metadata?.startOptions;
-  if (!startOptions || startOptions.transport !== "stdio") {
+  if (startOptions?.transport !== "stdio") {
     return undefined;
   }
   const configuredHome = startOptions.env?.CODEX_HOME?.trim();

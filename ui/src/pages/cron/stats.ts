@@ -46,9 +46,9 @@ export function renderCronStats(props: {
       >
         <span class="cron-stat__label">${t("cron.stats.failing")}</span>
         <span
-          class="cron-stat__value ${typeof failing === "number" && failing > 0
-            ? "cron-stat__value--danger"
-            : ""}"
+          class="cron-stat__value ${
+            typeof failing === "number" && failing > 0 ? "cron-stat__value--danger" : ""
+          }"
         >
           ${failing ?? t("common.na")}
         </span>

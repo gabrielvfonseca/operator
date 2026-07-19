@@ -139,7 +139,7 @@ describe("parseExecAutoReviewResponse", () => {
   });
 
   it("does not split surrogate pairs when truncating rationale", async () => {
-    const rationale = "x".repeat(499) + "🚀tail";
+    const rationale = `${"x".repeat(499)}🚀tail`;
 
     expect(
       await reviewExecResponse(

@@ -69,11 +69,7 @@ function createStalledBodyResponse(params: {
   };
 }
 
-function createOversizedArchiveResponse(
-  params: {
-    headers?: HeadersInit;
-  } = {},
-): {
+function createOversizedArchiveResponse(params: { headers?: HeadersInit } = {}): {
   response: Response;
   cancel: ReturnType<typeof vi.fn>;
 } {

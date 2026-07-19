@@ -568,8 +568,7 @@ export const modelsAuthStatusHandlers: GatewayRequestHandlers = {
       const availableProfiles = listProfilesForProvider(store, provider);
       const removedProfiles = selection.profileIds ?? availableProfiles;
       if (
-        selection.profileIds &&
-        selection.profileIds.some((profileId) => {
+        selection.profileIds?.some((profileId) => {
           const profile = store.profiles[profileId];
           return (
             !availableProfiles.includes(profileId) ||

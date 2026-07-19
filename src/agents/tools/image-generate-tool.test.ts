@@ -76,9 +76,9 @@ function hasStubbedImageProviderAuth(providerId: string): boolean {
   if (providerId === "google") {
     return Boolean(
       process.env.GEMINI_API_KEY?.trim() ||
-      process.env.GEMINI_API_KEYS?.trim() ||
-      process.env.GOOGLE_API_KEY?.trim() ||
-      process.env.GOOGLE_API_KEYS?.trim(),
+        process.env.GEMINI_API_KEYS?.trim() ||
+        process.env.GOOGLE_API_KEY?.trim() ||
+        process.env.GOOGLE_API_KEYS?.trim(),
     );
   }
   return false;
@@ -335,11 +335,13 @@ describe("createImageGenerateTool", () => {
     ({ splitMediaFromOutput } = await import("../../media/parse.js"));
     mediaStore = await import("../../media/store.js");
     webMedia = await import("../../media/web-media.js");
-    ({ resetRecentMediaGenerationDuplicateGuardsForTests } =
-      await import("../media-generation-task-status-shared.test-support.js"));
+    ({ resetRecentMediaGenerationDuplicateGuardsForTests } = await import(
+      "../media-generation-task-status-shared.test-support.js"
+    ));
     ({ createImageGenerateTool } = await import("./image-generate-tool.js"));
-    ({ resolveImageGenerationModelConfigForTool } =
-      await import("./image-generate-tool.test-support.js"));
+    ({ resolveImageGenerationModelConfigForTool } = await import(
+      "./image-generate-tool.test-support.js"
+    ));
   });
 
   beforeEach(() => {

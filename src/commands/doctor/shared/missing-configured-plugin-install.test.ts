@@ -533,8 +533,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { detectConfiguredPluginInstallHealthIssues } =
-      await import("./missing-configured-plugin-install.js");
+    const { detectConfiguredPluginInstallHealthIssues } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const issues = await detectConfiguredPluginInstallHealthIssues({
       cfg: {
         plugins: {
@@ -573,8 +574,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         channels: {
@@ -652,8 +654,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         channels: {
@@ -695,8 +698,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         channels: {
@@ -739,8 +743,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       ],
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -782,8 +787,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         channels: {
@@ -830,8 +836,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {},
       env: { MATRIX_HOMESERVER: "https://matrix.example.org" },
@@ -878,8 +885,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingPluginInstallsForIds } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingPluginInstallsForIds } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingPluginInstallsForIds({
       cfg: {},
       pluginIds: [],
@@ -917,8 +925,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingPluginInstallsForIds } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingPluginInstallsForIds } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingPluginInstallsForIds({
       cfg: {},
       pluginIds: [],
@@ -960,8 +969,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingPluginInstallsForIds } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingPluginInstallsForIds } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingPluginInstallsForIds({
       cfg: {},
       pluginIds: [],
@@ -1006,8 +1016,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -1052,8 +1063,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     await repairMissingConfiguredPluginInstalls({
       cfg: {
         update: { channel: "extended-stable" },
@@ -1109,8 +1121,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         agents: {
@@ -1159,8 +1172,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         acp: {
@@ -1192,8 +1206,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -1229,8 +1244,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg,
       env: {},
@@ -1254,8 +1270,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -1300,8 +1317,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       diagnostics: [],
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -1360,8 +1378,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       ],
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -1435,8 +1454,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -1488,8 +1508,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       installRecords: {},
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {},
       env: {},
@@ -1562,8 +1583,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
         ],
       });
 
-      const { repairMissingConfiguredPluginInstalls } =
-        await import("./missing-configured-plugin-install.js");
+      const { repairMissingConfiguredPluginInstalls } = await import(
+        "./missing-configured-plugin-install.js"
+      );
       const result = await repairMissingConfiguredPluginInstalls({
         cfg: {
           plugins: {
@@ -1606,8 +1628,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -1670,8 +1693,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -1735,8 +1759,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
         },
       });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -1803,8 +1828,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -1870,8 +1896,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -1934,8 +1961,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       outcomes: [{ pluginId: "discord", status: "updated", message: "ok" }],
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -1980,8 +2008,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         channels: {
@@ -2022,8 +2051,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         channels: {
@@ -2068,8 +2098,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         channels: {
@@ -2118,8 +2149,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         channels: {
@@ -2158,8 +2190,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         channels: {
@@ -2211,8 +2244,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -2240,8 +2274,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
   });
 
   it("does not install plugins merely listed in plugins.allow", async () => {
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -2281,8 +2316,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingPluginInstallsForIds } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingPluginInstallsForIds } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingPluginInstallsForIds({
       cfg: {},
       pluginIds: [],
@@ -2384,8 +2420,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingPluginInstallsForIds } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingPluginInstallsForIds } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingPluginInstallsForIds({
       cfg,
       pluginIds: ["codex"],
@@ -2441,8 +2478,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingPluginInstallsForIds } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingPluginInstallsForIds } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingPluginInstallsForIds({
       cfg: {
         agents: {
@@ -2541,8 +2579,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         agents: {
@@ -2648,8 +2687,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
         },
       },
     };
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const firstPass = await repairMissingConfiguredPluginInstalls({
       cfg,
       env: {},
@@ -2748,8 +2788,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       ]),
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         agents: {
@@ -2862,8 +2903,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg,
       env,
@@ -2936,8 +2978,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg,
       env,
@@ -2960,8 +3003,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingPluginInstallsForIds } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingPluginInstallsForIds } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingPluginInstallsForIds({
       cfg: {},
       pluginIds: [],
@@ -3005,8 +3049,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -3074,8 +3119,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -3148,8 +3194,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -3214,8 +3261,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       ],
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -3275,8 +3323,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       ],
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -3341,8 +3390,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     );
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -3403,8 +3453,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     );
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -3445,8 +3496,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       ],
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -3486,8 +3538,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       ],
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -3549,8 +3602,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       ],
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {},
       env: {},
@@ -3629,8 +3683,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       ],
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -3713,8 +3768,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       ],
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -3801,8 +3857,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       ],
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         update: { channel: "beta" },
@@ -3899,8 +3956,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       ],
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         tools: {
@@ -3994,8 +4052,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         tools: {
@@ -4090,8 +4149,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         channels: {
@@ -4179,8 +4239,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     await repairMissingConfiguredPluginInstalls({
       cfg: {
         tools: {
@@ -4254,8 +4315,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       error: "network unavailable",
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         tools: {
@@ -4330,8 +4392,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     ]);
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         tools: {
@@ -4408,8 +4471,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         tools: {
@@ -4474,8 +4538,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       });
     }
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         messages: {
@@ -4537,8 +4602,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         agents: {
@@ -4587,8 +4653,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         tools: {
@@ -4639,8 +4706,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         agents: {
@@ -4704,8 +4772,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       });
     }
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {},
       env: {
@@ -4754,8 +4823,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const env = { GROQ_API_KEY: "groq-key" };
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {},
@@ -4826,8 +4896,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         update: { channel: "beta" },
@@ -4883,8 +4954,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         plugins: {
@@ -4948,8 +5020,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
       },
     });
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const env = { FIRECRAWL_API_KEY: "firecrawl-key" };
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
@@ -5020,8 +5093,9 @@ describe("repairMissingConfiguredPluginInstalls", () => {
         entry.operator?.plugin?.label ?? entry.label ?? "plugin",
     );
 
-    const { repairMissingConfiguredPluginInstalls } =
-      await import("./missing-configured-plugin-install.js");
+    const { repairMissingConfiguredPluginInstalls } = await import(
+      "./missing-configured-plugin-install.js"
+    );
     const result = await repairMissingConfiguredPluginInstalls({
       cfg: {
         tools: {

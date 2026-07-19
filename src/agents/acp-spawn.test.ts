@@ -100,11 +100,7 @@ const hoisted = vi.hoisted(() => {
     };
     return {
       listSessionEntries: (
-        scope: {
-          agentId?: string;
-          env?: NodeJS.ProcessEnv;
-          storePath?: string;
-        } = {},
+        scope: { agentId?: string; env?: NodeJS.ProcessEnv; storePath?: string } = {},
       ) => {
         const store = loadSessionStoreMock(resolveMockStorePath(scope)) as Record<
           string,

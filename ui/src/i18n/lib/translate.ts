@@ -106,6 +106,7 @@ class I18nManager {
   }
 
   private notify() {
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     this.subscribers.forEach((sub) => sub(this.locale));
   }
 

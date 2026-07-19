@@ -24,7 +24,7 @@ export function slackContextTargetsMatch(
       (slackTargetsMatch(target, context.currentMessagingTarget) ||
         // Core target resolution removes the user: prefix before auto-thread selection.
         matchesResolvedUserTarget(target, context.currentMessagingTarget))) ||
-    (context.currentChannelId && slackTargetsMatch(target, context.currentChannelId)),
+      (context.currentChannelId && slackTargetsMatch(target, context.currentChannelId)),
   );
 }
 

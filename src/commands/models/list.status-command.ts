@@ -1447,8 +1447,9 @@ export async function modelsStatusCommand(
     }
 
     if (missingProvidersInUse.length > 0) {
-      const { buildProviderAuthRecoveryHint } =
-        await import("../../agents/provider-auth-recovery-hint.js");
+      const { buildProviderAuthRecoveryHint } = await import(
+        "../../agents/provider-auth-recovery-hint.js"
+      );
       runtime.log("");
       runtime.log(colorize(rich, theme.heading, "Missing auth"));
       for (const provider of missingProvidersInUse) {

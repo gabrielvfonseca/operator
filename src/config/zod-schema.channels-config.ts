@@ -26,6 +26,7 @@ function addLegacyChannelAcpBindingIssues(
     return;
   }
   if (Array.isArray(value)) {
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     value.forEach((entry, index) => addLegacyChannelAcpBindingIssues(entry, ctx, [...path, index]));
     return;
   }

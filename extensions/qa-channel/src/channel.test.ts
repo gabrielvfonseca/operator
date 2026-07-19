@@ -415,110 +415,106 @@ describe("qa-channel plugin", () => {
     }
   });
 
-  it(
-    "attaches sanitized agent tool starts to outbound qa bus messages",
-    { timeout: 20_000 },
-    async () => {
-      const harness = await startQaChannelTestHarness({
-        allowFrom: ["*"],
-        runtime: createMockQaRuntime({
-          toolStarts: [
-            {
-              name: "exec",
-              phase: "start",
-              args: {
-                command: "pwd",
-                apiToken: "secret-token",
-              },
-            },
-            {
-              name: "exec",
-              phase: "update",
-              args: {
-                command: "ignored update",
-              },
-            },
-          ],
-        }),
-      });
-
-      try {
-        harness.state.addInboundMessage({
-          conversation: { id: "alice", kind: "direct" },
-          senderId: "alice",
-          senderName: "Alice",
-          text: "hello",
-        });
-
-        const outbound = await harness.state.waitFor({
-          kind: "message-text",
-          textIncludes: "qa-echo: hello",
-          direction: "outbound",
-          timeoutMs: 15_000,
-        });
-
-        expect("toolCalls" in outbound ? outbound.toolCalls : undefined).toEqual([
+  it("attaches sanitized agent tool starts to outbound qa bus messages", {
+    timeout: 20_000,
+  }, async () => {
+    const harness = await startQaChannelTestHarness({
+      allowFrom: ["*"],
+      runtime: createMockQaRuntime({
+        toolStarts: [
           {
             name: "exec",
-            arguments: {
-              command: "[redacted]",
-              apiToken: "[redacted]",
+            phase: "start",
+            args: {
+              command: "pwd",
+              apiToken: "secret-token",
             },
           },
-        ]);
-      } finally {
-        await harness.stop();
-      }
-    },
-  );
-
-  it(
-    "surfaces shared group traffic with the room target as From",
-    { timeout: 20_000 },
-    async () => {
-      let dispatchedCtx: Record<string, unknown> | null = null;
-      const harness = await startQaChannelTestHarness({
-        allowFrom: ["*"],
-        runtime: createMockQaRuntime({
-          onDispatch: (ctx) => {
-            dispatchedCtx = ctx;
+          {
+            name: "exec",
+            phase: "update",
+            args: {
+              command: "ignored update",
+            },
           },
-        }),
+        ],
+      }),
+    });
+
+    try {
+      harness.state.addInboundMessage({
+        conversation: { id: "alice", kind: "direct" },
+        senderId: "alice",
+        senderName: "Alice",
+        text: "hello",
       });
 
-      try {
-        harness.state.addInboundMessage({
-          conversation: { id: "qa-room", kind: "group", title: "QA Room" },
-          senderId: "alice",
-          senderName: "Alice",
-          text: "@openclaw hello",
-        });
+      const outbound = await harness.state.waitFor({
+        kind: "message-text",
+        textIncludes: "qa-echo: hello",
+        direction: "outbound",
+        timeoutMs: 15_000,
+      });
 
-        const outbound = await harness.state.waitFor({
-          kind: "message-text",
-          textIncludes: "qa-echo: @openclaw hello",
-          direction: "outbound",
-          timeoutMs: 15_000,
-        });
+      expect("toolCalls" in outbound ? outbound.toolCalls : undefined).toEqual([
+        {
+          name: "exec",
+          arguments: {
+            command: "[redacted]",
+            apiToken: "[redacted]",
+          },
+        },
+      ]);
+    } finally {
+      await harness.stop();
+    }
+  });
 
-        const ctx = expectDispatchedContext(dispatchedCtx);
-        expect(ctx.ChatType).toBe("group");
-        expect(ctx.From).toBe("group:qa-room");
-        expect(ctx.To).toBe("group:qa-room");
-        expect(ctx.SessionKey).toBe("qa-agent:group:group:qa-room");
-        expect(ctx.SenderId).toBe("alice");
-        expect(ctx.GroupSubject).toBe("QA Room");
-        expect("conversation" in outbound).toBe(true);
-        if (!("conversation" in outbound)) {
-          throw new Error("expected outbound message conversation");
-        }
-        expect(outbound.conversation.id).toBe("qa-room");
-        expect(outbound.conversation.kind).toBe("group");
-      } finally {
-        await harness.stop();
+  it("surfaces shared group traffic with the room target as From", {
+    timeout: 20_000,
+  }, async () => {
+    let dispatchedCtx: Record<string, unknown> | null = null;
+    const harness = await startQaChannelTestHarness({
+      allowFrom: ["*"],
+      runtime: createMockQaRuntime({
+        onDispatch: (ctx) => {
+          dispatchedCtx = ctx;
+        },
+      }),
+    });
+
+    try {
+      harness.state.addInboundMessage({
+        conversation: { id: "qa-room", kind: "group", title: "QA Room" },
+        senderId: "alice",
+        senderName: "Alice",
+        text: "@openclaw hello",
+      });
+
+      const outbound = await harness.state.waitFor({
+        kind: "message-text",
+        textIncludes: "qa-echo: @openclaw hello",
+        direction: "outbound",
+        timeoutMs: 15_000,
+      });
+
+      const ctx = expectDispatchedContext(dispatchedCtx);
+      expect(ctx.ChatType).toBe("group");
+      expect(ctx.From).toBe("group:qa-room");
+      expect(ctx.To).toBe("group:qa-room");
+      expect(ctx.SessionKey).toBe("qa-agent:group:group:qa-room");
+      expect(ctx.SenderId).toBe("alice");
+      expect(ctx.GroupSubject).toBe("QA Room");
+      expect("conversation" in outbound).toBe(true);
+      if (!("conversation" in outbound)) {
+        throw new Error("expected outbound message conversation");
       }
-    },
-  );
+      expect(outbound.conversation.id).toBe("qa-room");
+      expect(outbound.conversation.kind).toBe("group");
+    } finally {
+      await harness.stop();
+    }
+  });
 
   it("stages inbound image attachments into agent media payload", { timeout: 20_000 }, async () => {
     let dispatchedCtx: Record<string, unknown> | null = null;

@@ -42,8 +42,9 @@ let withResolvedMatrixSendClient: typeof import("./client.js").withResolvedMatri
 
 describe("matrix send client helpers", () => {
   beforeAll(async () => {
-    ({ withResolvedMatrixControlClient, withResolvedMatrixSendClient } =
-      await import("./client.js"));
+    ({ withResolvedMatrixControlClient, withResolvedMatrixSendClient } = await import(
+      "./client.js"
+    ));
   });
 
   beforeEach(() => {

@@ -186,6 +186,7 @@ async function readLegacyCallRecords(filePath: string): Promise<{
   entries: PreparedLegacyCallRecord[];
   warnings: string[];
 }> {
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let content;
   try {
     content = await fs.readFile(filePath, "utf8");

@@ -721,8 +721,6 @@ export class AcpxRuntime implements AcpRuntime {
   private readonly probeDelegate: BaseAcpxRuntime;
   private readonly delegateOptions: AcpRuntimeOptions;
   private readonly delegateTestOptions: BaseAcpxRuntimeTestOptions;
-  private readonly openclawToolsMcpBridgeEnabled: boolean;
-  private readonly openclawToolsSessionDelegates = new Map<string, BaseAcpxRuntime>();
   private readonly processCleanupDeps: AcpxProcessCleanupDeps | undefined;
   private readonly wrapperRoot: string | undefined;
   private readonly gatewayInstanceId: string | undefined;
@@ -1357,6 +1355,7 @@ export class AcpxRuntime implements AcpRuntime {
     const record = await this.sessionStore.load(
       input.handle.acpxRecordId ?? input.handle.sessionKey,
     );
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let closeSucceeded;
     const delegate = this.resolveDelegateForLoadedRecord(input.handle, record);
     try {

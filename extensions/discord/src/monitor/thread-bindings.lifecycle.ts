@@ -119,7 +119,7 @@ export async function autoBindSpawnedDiscordSubagent(params: {
     }
     try {
       const target = parseDiscordTarget(to, { defaultKind: "channel" });
-      if (!target || target.kind !== "channel") {
+      if (target?.kind !== "channel") {
         return null;
       }
       channelId =

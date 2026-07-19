@@ -1288,6 +1288,7 @@ describe("lmstudio setup", () => {
     {
       name: "ignores unresolved apiKey template when Authorization header is configured",
       providerPatch: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         apiKey: "${LMSTUDIO_API_KEY}",
         headers: {
           Authorization: "Bearer custom-token",
@@ -1524,6 +1525,7 @@ describe("lmstudio setup", () => {
               lmstudio: {
                 baseUrl: "http://localhost:1234/v1",
                 api: "openai-completions",
+                // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
                 apiKey: "${LMSTUDIO_API_KEY}",
                 models: [],
               },

@@ -19,7 +19,7 @@ export function mkdirSafeDir(dir: string) {
 
 /** Creates and tracks a temporary directory for synchronous test cleanup. */
 export function makeTrackedTempDir(prefix: string, trackedDirs: string[]) {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), prefix + "-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), `${prefix}-`));
   chmodSafeDir(dir);
   trackedDirs.push(dir);
   return dir;
@@ -27,7 +27,7 @@ export function makeTrackedTempDir(prefix: string, trackedDirs: string[]) {
 
 /** Creates and tracks a temporary directory for async test cleanup. */
 export async function makeTrackedTempDirAsync(prefix: string, trackedDirs: string[]) {
-  const dir = await fsPromises.mkdtemp(path.join(os.tmpdir(), prefix + "-"));
+  const dir = await fsPromises.mkdtemp(path.join(os.tmpdir(), `${prefix}-`));
   chmodSafeDir(dir);
   trackedDirs.push(dir);
   return dir;

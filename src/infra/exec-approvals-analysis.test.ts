@@ -94,6 +94,7 @@ describe("Windows shell analysis", () => {
     const cases: string[] = [
       'node tool.js "--user=%USERNAME%"',
       'node app.js "$env:USERPROFILE"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "node app.js ${var}",
       "node app.js $(whoami)",
       'node app.js "$?"',
@@ -240,6 +241,7 @@ describe("windowsEscapeArg", () => {
     expect(windowsEscapeArg("%PATH%")).toEqual({ ok: false });
     expect(windowsEscapeArg("$env:SECRET")).toEqual({ ok: false });
     expect(windowsEscapeArg("$var")).toEqual({ ok: false });
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(windowsEscapeArg("${var}")).toEqual({ ok: false });
     expect(windowsEscapeArg("$(whoami)")).toEqual({ ok: false });
     expect(windowsEscapeArg("$?")).toEqual({ ok: false });

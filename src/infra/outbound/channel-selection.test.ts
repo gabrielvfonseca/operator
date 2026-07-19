@@ -56,8 +56,9 @@ let listConfiguredMessageChannels: ChannelSelectionModule["listConfiguredMessage
 let resolveMessageChannelSelection: ChannelSelectionModule["resolveMessageChannelSelection"];
 
 beforeAll(async () => {
-  ({ listConfiguredMessageChannels, resolveMessageChannelSelection } =
-    await import("./channel-selection.js"));
+  ({ listConfiguredMessageChannels, resolveMessageChannelSelection } = await import(
+    "./channel-selection.js"
+  ));
 });
 
 function makePlugin(params: {

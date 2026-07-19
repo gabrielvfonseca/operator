@@ -88,8 +88,10 @@ describe("resolveConfiguredSecretInputWithFallback", () => {
 
   it("returns resolved SecretRef value with fallback metadata", async () => {
     const resolved = await resolveConfiguredSecretInputWithFallback({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       config: createConfig("${CUSTOM_GATEWAY_TOKEN}"),
       env: { CUSTOM_GATEWAY_TOKEN: "resolved-token" } as NodeJS.ProcessEnv,
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       value: "${CUSTOM_GATEWAY_TOKEN}",
       path: "gateway.auth.token",
       readFallback: () => undefined,
@@ -104,8 +106,10 @@ describe("resolveConfiguredSecretInputWithFallback", () => {
 
   it("falls back when SecretRef cannot be resolved", async () => {
     const resolved = await resolveConfiguredSecretInputWithFallback({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       config: createConfig("${MISSING_GATEWAY_TOKEN}"),
       env: {} as NodeJS.ProcessEnv,
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       value: "${MISSING_GATEWAY_TOKEN}",
       path: "gateway.auth.token",
       readFallback: () => "env-fallback-token",
@@ -120,8 +124,10 @@ describe("resolveConfiguredSecretInputWithFallback", () => {
 
   it("ignores blank fallback values when SecretRef cannot be resolved", async () => {
     const resolved = await resolveConfiguredSecretInputWithFallback({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       config: createConfig("${MISSING_GATEWAY_TOKEN}"),
       env: {} as NodeJS.ProcessEnv,
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       value: "${MISSING_GATEWAY_TOKEN}",
       path: "gateway.auth.token",
       readFallback: () => "   ",
@@ -135,8 +141,10 @@ describe("resolveConfiguredSecretInputWithFallback", () => {
 
   it("returns unresolved reason when SecretRef cannot be resolved and no fallback exists", async () => {
     const resolved = await resolveConfiguredSecretInputWithFallback({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       config: createConfig("${MISSING_GATEWAY_TOKEN}"),
       env: {} as NodeJS.ProcessEnv,
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       value: "${MISSING_GATEWAY_TOKEN}",
       path: "gateway.auth.token",
     });
@@ -163,8 +171,10 @@ describe("resolveRequiredConfiguredSecretRefInputString", () => {
 
   it("returns resolved SecretRef value when required", async () => {
     const value = await resolveRequiredConfiguredSecretRefInputString({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       config: createConfig("${CUSTOM_GATEWAY_TOKEN}"),
       env: { CUSTOM_GATEWAY_TOKEN: "resolved-token" } as NodeJS.ProcessEnv,
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       value: "${CUSTOM_GATEWAY_TOKEN}",
       path: "gateway.auth.token",
     });
@@ -175,8 +185,10 @@ describe("resolveRequiredConfiguredSecretRefInputString", () => {
   it("throws when SecretRef cannot be resolved", async () => {
     await expect(
       resolveRequiredConfiguredSecretRefInputString({
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         config: createConfig("${MISSING_GATEWAY_TOKEN}"),
         env: {} as NodeJS.ProcessEnv,
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         value: "${MISSING_GATEWAY_TOKEN}",
         path: "gateway.auth.token",
       }),

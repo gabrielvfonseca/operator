@@ -210,7 +210,7 @@ describe("resolveClaudeCliExecutionArgs", () => {
       "--setting-sources",
       "",
       "--settings",
-      '{"disableAllHooks":true,"enabledPlugins":{},"autoMemoryEnabled":false,"claudeMdExcludes":["**/CLAUDE.md","**/CLAUDE.local.md","**/.claude/rules/**"]}',
+      '{"disableAllHooks":true,"enabledPlugins":{},"autoMemoryEnabled":false,"claudeMdExcludes":["**/CLAUDE.MD","**/CLAUDE.local.md","**/.claude/rules/**"]}',
       "--disable-slash-commands",
       "--no-chrome",
       "--strict-mcp-config",

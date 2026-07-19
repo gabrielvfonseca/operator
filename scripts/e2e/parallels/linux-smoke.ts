@@ -238,6 +238,7 @@ export function parseArgs(argv: string[]): LinuxOptions {
         options.json = true;
         break;
       case "-h":
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
       case "--help":
         process.stdout.write(usage());
         process.exit(0);
@@ -656,6 +657,7 @@ PY`);
   private startGatewayBackground(): void {
     const bonjourEnv = this.disableBonjour ? " OPERATOR_DISABLE_BONJOUR=1" : "";
     this.guestBash(
+      // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
       String.raw`pkill -f "openclaw gateway run" >/dev/null 2>&1 || true
 rm -f /tmp/operator-parallels-linux-gateway.log
 setsid sh -lc ` +
@@ -664,6 +666,7 @@ setsid sh -lc ` +
             this.auth.apiKeyValue,
           )} openclaw gateway run --bind loopback --port 18789 --force >/tmp/operator-parallels-linux-gateway.log 2>&1`,
         ) +
+        // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
         String.raw` >/dev/null 2>&1 < /dev/null &`,
     );
     const deadline = Date.now() + 240_000;

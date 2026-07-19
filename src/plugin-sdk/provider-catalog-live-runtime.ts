@@ -206,9 +206,9 @@ function bodyAdvertisesMoreLiveModelCatalogPages(body: unknown): boolean {
   }
   return Boolean(
     record.has_more === true ||
-    readLiveModelCatalogNextUrl(body) ||
-    readLiveModelCatalogString(record.next_cursor) ||
-    readLiveModelCatalogString(record.nextPageToken),
+      readLiveModelCatalogNextUrl(body) ||
+      readLiveModelCatalogString(record.next_cursor) ||
+      readLiveModelCatalogString(record.nextPageToken),
   );
 }
 

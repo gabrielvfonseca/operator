@@ -1332,7 +1332,7 @@ export class DiscordRealtimeVoiceSession implements VoiceRealtimeSession {
       this.partialUserTranscript,
       this.wakeNames,
     );
-    if (!wakeNameResult || wakeNameResult.edge !== "leading") {
+    if (wakeNameResult?.edge !== "leading") {
       return;
     }
     this.wakeNameAckedForTurn = true;
@@ -1648,9 +1648,9 @@ export class DiscordRealtimeVoiceSession implements VoiceRealtimeSession {
     }
     const providerOwnsDelivery = Boolean(
       state.handledByForcedPlayback &&
-      state.promise &&
-      !state.result &&
-      session.bridge.supportsToolResultSuppression === false,
+        state.promise &&
+        !state.result &&
+        session.bridge.supportsToolResultSuppression === false,
     );
     let resolveProviderDelivery: ((accepted: boolean) => void) | undefined;
     if (providerOwnsDelivery) {

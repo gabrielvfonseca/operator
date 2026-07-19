@@ -65,7 +65,7 @@ function truncate(text: string, maxLength: number): string {
   if (text.length <= maxLength) {
     return text;
   }
-  return sliceUtf16Safe(text, 0, maxLength - 3) + "...";
+  return `${sliceUtf16Safe(text, 0, maxLength - 3)}...`;
 }
 
 /**

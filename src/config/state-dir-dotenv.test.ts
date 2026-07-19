@@ -25,16 +25,24 @@ describe("readStateDirDotEnvFromStateDir", () => {
 
   it("skips values that are unresolved shell variable references", async () => {
     const content = [
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'SUPERMEMORY_OPERATOR_API_KEY="${SUPERMEMORY_OPERATOR_KEY}"',
       "QUOTED_SUPERMEMORY_OPERATOR_API_KEY='\"$SUPERMEMORY_OPERATOR_KEY\"'",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "QUOTED_CURLY_KEY=\"'${ANOTHER_VAR}'\"",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "BRACE_DEFAULT_KEY=${ANOTHER_VAR:-fallback}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "QUOTED_BRACE_DEFAULT_KEY='\"${ANOTHER_VAR:-fallback}\"'",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'BRACE_TRIM_KEY="${ANOTHER_VAR#prefix}"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "BRACE_REPLACE_KEY=${ANOTHER_VAR/pattern/replacement}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "BRACE_CASE_KEY=${ANOTHER_VAR^^}",
       'COMMAND_KEY="$(hostname)"',
       "OTHER_KEY=$SOME_SHELL_VAR",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "CURLY_KEY=${ANOTHER_VAR}",
       "REAL_KEY=actual_value_here",
     ].join("\n");
@@ -65,6 +73,7 @@ describe("readStateDirDotEnvFromStateDir", () => {
       "QUOTED_PRICE='\"$100\"'",
       "LEADING_DOLLAR_PASSWORD=$ecret123",
       "LEADING_DOLLAR_TOKEN=$token_1",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "LOWERCASE_BRACE=${lowercase_literal}",
       "PURE_REF=$SOME_VAR",
     ].join("\n");
@@ -78,6 +87,7 @@ describe("readStateDirDotEnvFromStateDir", () => {
       expect(result["QUOTED_PRICE"]).toBe('"$100"');
       expect(result["LEADING_DOLLAR_PASSWORD"]).toBe("$ecret123");
       expect(result["LEADING_DOLLAR_TOKEN"]).toBe("$token_1");
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(result["LOWERCASE_BRACE"]).toBe("${lowercase_literal}");
       expect(Object.keys(result)).not.toContain("PURE_REF");
     });

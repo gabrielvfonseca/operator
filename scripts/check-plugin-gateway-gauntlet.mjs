@@ -55,7 +55,8 @@ const SINGLE_VALUE_FLAGS = new Set([
 ]);
 const COMMAND_OUTPUT_MAX_BUFFER_BYTES = 16 * 1024 * 1024;
 const MAX_TIMER_TIMEOUT_MS = 2_147_000_000;
-const ANSI_PATTERN = new RegExp(String.raw`\u001B\[[0-9;]*m`, "gu");
+// biome-ignore lint/suspicious/noControlCharactersInRegex: migrated from oxlint
+const ANSI_PATTERN = /\u001B\[[0-9;]*m/gu;
 
 /**
  * Parses plugin gateway gauntlet CLI arguments and env defaults.

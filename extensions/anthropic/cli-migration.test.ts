@@ -22,8 +22,9 @@ vi.mock("./cli-auth-seam.js", async (importActual) => {
 
 const { buildAnthropicCliMigrationResult } = await import("./cli-migration.js");
 const { resolveKnownAnthropicModelRef } = await import("./claude-model-refs.js");
-const { createTestWizardPrompter, registerSingleProviderPlugin } =
-  await import("openclaw/plugin-sdk/plugin-test-runtime");
+const { createTestWizardPrompter, registerSingleProviderPlugin } = await import(
+  "openclaw/plugin-sdk/plugin-test-runtime"
+);
 const { default: anthropicPlugin } = await import("./index.js");
 
 beforeEach(() => {

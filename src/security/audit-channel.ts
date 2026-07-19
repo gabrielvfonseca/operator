@@ -150,9 +150,9 @@ export async function collectChannelSecurityFindings(params: {
       // placeholder. Use source config when needed so audits still explain the
       // originally configured credential surface.
       sourceInspectedAccount &&
-      hasConfiguredUnavailableCredentialStatus(sourceInspectedAccount) &&
-      (!hasResolvedCredentialValue(resolvedAccount) ||
-        (sourceInspection?.configured === true && resolvedInspection?.configured === false)),
+        hasConfiguredUnavailableCredentialStatus(sourceInspectedAccount) &&
+        (!hasResolvedCredentialValue(resolvedAccount) ||
+          (sourceInspection?.configured === true && resolvedInspection?.configured === false)),
     );
     const account = useSourceUnavailableAccount ? sourceInspectedAccount : resolvedAccount;
     const selectedInspection = useSourceUnavailableAccount ? sourceInspection : resolvedInspection;

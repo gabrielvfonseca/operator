@@ -108,6 +108,7 @@ class MockWebSocket {
       case "close":
         this.closeHandlers.push(handler as WsEventHandlers["close"]);
         return;
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
       case "error":
         this.errorHandlers.push(handler as WsEventHandlers["error"]);
       default:

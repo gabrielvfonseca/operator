@@ -30,7 +30,7 @@ export function formatUpdateRestartStatusValue(
     formatTimeAgo?: (ageMs: number) => string;
   } = {},
 ): string | null {
-  if (!payload || payload.kind !== "update") {
+  if (payload?.kind !== "update") {
     return null;
   }
 
@@ -69,7 +69,7 @@ export function formatUpdateRestartStatusValue(
 export function formatUpdateRestartActionLines(
   payload: RestartSentinelPayload | null | undefined,
 ): string[] {
-  if (!payload || payload.kind !== "update") {
+  if (payload?.kind !== "update") {
     return [];
   }
   if (payload.status === "error") {

@@ -254,8 +254,9 @@ async function runTransportStream(
 
 describe("anthropic transport stream", () => {
   beforeAll(async () => {
-    ({ createAnthropicMessagesTransportStreamFn } =
-      await import("./anthropic-transport-stream.js"));
+    ({ createAnthropicMessagesTransportStreamFn } = await import(
+      "./anthropic-transport-stream.js"
+    ));
   });
 
   beforeEach(() => {

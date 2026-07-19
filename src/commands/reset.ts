@@ -40,6 +40,7 @@ async function stopGatewayIfRunning(runtime: RuntimeEnv) {
     return;
   }
   const service = resolveGatewayService();
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let loaded;
   try {
     loaded = await service.isLoaded({ env: process.env });

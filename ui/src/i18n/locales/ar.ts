@@ -1353,7 +1353,8 @@ export const ar: TranslationMap = {
     revealSensitive: "إظهار القيم الحساسة",
     hideSensitive: "إخفاء القيم الحساسة",
     toggleRawRedaction: "تبديل حجب الإعدادات الأولية",
-    sensitiveHidden: "تم إخفاء {count} قيمة حساسة. استخدم زر الإظهار أعلاه لتعديل الإعدادات الأولية.",
+    sensitiveHidden:
+      "تم إخفاء {count} قيمة حساسة. استخدم زر الإظهار أعلاه لتعديل الإعدادات الأولية.",
     sensitiveHiddenPlural:
       "تم إخفاء {count} قيم حساسة. استخدم زر الإظهار أعلاه لتعديل الإعدادات الأولية.",
   },

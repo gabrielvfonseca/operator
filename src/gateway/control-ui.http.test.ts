@@ -1495,6 +1495,7 @@ describe("handleControlUiHttpRequest", () => {
   // endpoint still returns config so older bundles and proxies that still request it
   // do not 404 after upgrade. Without the configured-base-path legacy alias this
   // request 404s, so the assertion is not vacuous.
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   it("still serves bootstrap config at the legacy ${basePath}/__openclaw/control-ui-config.json under a configured basePath (#66946)", async () => {
     await withControlUiRoot({
       fn: async (tmp) => {

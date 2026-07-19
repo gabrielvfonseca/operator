@@ -196,7 +196,7 @@ async function processDiscordMessageInner(
   }
   const text = messageText;
   if (!text) {
-    logVerbose("discord: drop message " + message.id + " (empty content)");
+    logVerbose(`discord: drop message ${message.id} (empty content)`);
     return;
   }
 
@@ -237,17 +237,17 @@ async function processDiscordMessageInner(
   const shouldAckReaction = () =>
     Boolean(
       ackReaction &&
-      shouldAckReactionGate({
-        scope: ackReactionScope,
-        inboundEventKind: ctx.inboundEventKind,
-        isDirect: isDirectMessage,
-        isGroup: isGuildMessage || isGroupDm,
-        isMentionableGroup: isGuildMessage,
-        requireMention: shouldRequireMention,
-        canDetectMention,
-        effectiveWasMentioned,
-        shouldBypassMention,
-      }),
+        shouldAckReactionGate({
+          scope: ackReactionScope,
+          inboundEventKind: ctx.inboundEventKind,
+          isDirect: isDirectMessage,
+          isGroup: isGuildMessage || isGroupDm,
+          isMentionableGroup: isGuildMessage,
+          requireMention: shouldRequireMention,
+          canDetectMention,
+          effectiveWasMentioned,
+          shouldBypassMention,
+        }),
     );
   const shouldSendAckReaction = shouldAckReaction();
   const statusReactionsExplicitlyEnabled = cfg.messages?.statusReactions?.enabled === true;

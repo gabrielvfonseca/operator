@@ -142,7 +142,7 @@ function parseCatalogProvider(value: unknown): CatalogProvider | undefined {
   const row = readRecord(value);
   const id = readString(row?.id);
   const nativeBaseUrl = readString(row?.nativeBaseUrl);
-  if (!id || !nativeBaseUrl || !nativeBaseUrl.startsWith("/v1/native/")) {
+  if (!id || !nativeBaseUrl?.startsWith("/v1/native/")) {
     return undefined;
   }
   return {
@@ -186,6 +186,7 @@ function findNativeRoute(
 }
 
 function googleNativeBaseUrl(rootUrl: string, provider: CatalogProvider, route: CatalogRoute) {
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   const modelPathIndex = route.path.indexOf("/models/${model}");
   if (modelPathIndex <= 0) {
     return undefined;

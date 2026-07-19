@@ -211,6 +211,7 @@ export function parseArgs(argv) {
         setOnce(arg, "outputDir", requireValue(args, ++index, arg));
         break;
       case "-h":
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
       case "--help":
         process.stdout.write(usage());
         process.exit(0);

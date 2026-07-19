@@ -189,7 +189,7 @@ describe("resolveGatewayProgramArguments", () => {
     vi.stubEnv("SystemRoot", String.raw`D:\Windows`);
     fsMocks.realpath.mockResolvedValue(repoIndexPath);
     fsMocks.access.mockResolvedValue(undefined);
-    execFileSyncMock.mockReturnValue(String.raw`D:\Tools\node.exe` + "\r\n");
+    execFileSyncMock.mockReturnValue(`${String.raw`D:\Tools\node.exe`}\r\n`);
 
     let result: Awaited<ReturnType<typeof resolveGatewayProgramArguments>> | undefined;
     await withMockedWindowsPlatform(async () => {

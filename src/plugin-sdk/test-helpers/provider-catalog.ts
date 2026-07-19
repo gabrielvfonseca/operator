@@ -19,8 +19,9 @@ type ProviderRuntimeCatalogModule = Pick<
 >;
 
 export async function importProviderRuntimeCatalogModule(): Promise<ProviderRuntimeCatalogModule> {
-  const { augmentModelCatalogWithProviderPlugins } =
-    await import("operator/plugin-sdk/provider-catalog-runtime");
+  const { augmentModelCatalogWithProviderPlugins } = await import(
+    "operator/plugin-sdk/provider-catalog-runtime"
+  );
   return {
     augmentModelCatalogWithProviderPlugins,
   };

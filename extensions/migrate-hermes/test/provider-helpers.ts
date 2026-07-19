@@ -38,6 +38,7 @@ export function makeConfigRuntime(
   onWrite?: (next: OperatorConfig) => void,
 ): NonNullable<MigrationProviderContext["runtime"]> {
   const commitConfig = (next: OperatorConfig) => {
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     (Object.keys(config) as Array<keyof OperatorConfig>).forEach((key) => delete config[key]);
     Object.assign(config, next);
     onWrite?.(next);
@@ -51,7 +52,7 @@ export function makeConfigRuntime(
         mutate,
       }: {
         afterWrite?: unknown;
-        mutate: (draft: OperatorConfig, context: unknown) => Promise<unknown> | void;
+        mutate: (draft: OperatorConfig, context: unknown) => Promise<unknown> | undefined;
       }) => {
         const next = structuredClone(config);
         const result = await mutate(next, {

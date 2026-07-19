@@ -107,7 +107,7 @@ describe("oauth.http bounded-read real wire proof (loopback http.createServer)",
     const CHUNK = 1024 * 1024;
     const MAX = 16 * 1024 * 1024;
     const TOTAL = 18 * 1024 * 1024;
-    const server = http.createServer((req, res) => {
+    const server = http.createServer((_req, res) => {
       res.writeHead(200, { "content-type": "application/octet-stream" });
       let sent = 0;
       const tick = setInterval(() => {
@@ -157,7 +157,7 @@ describe("oauth.http bounded-read real wire proof (loopback http.createServer)",
 
   it("returns a Buffer for normal-size responses on real wire", async () => {
     const bodyText = '{"access_token":"loopback","expires_in":3600}';
-    const server = http.createServer((req, res) => {
+    const server = http.createServer((_req, res) => {
       res.writeHead(200, { "content-type": "application/json" });
       res.end(bodyText);
     });

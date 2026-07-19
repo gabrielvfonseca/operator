@@ -143,7 +143,6 @@ function collectAgentMemorySearchAssignments(params: {
     const remote = isRecord(memorySearch.remote) ? memorySearch.remote : undefined;
     if (!remote || !Object.hasOwn(remote, "apiKey")) {
       hasEnabledAgentWithoutOverride = true;
-      continue;
     }
   }
 

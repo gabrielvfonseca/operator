@@ -135,9 +135,7 @@ const imessageMessageAdapter = defineChannelMessageAdapter({
   },
   send: {
     text: async (ctx) => {
-      const result = await (
-        await loadIMessageChannelRuntime()
-      ).sendIMessageOutbound({
+      const result = await (await loadIMessageChannelRuntime()).sendIMessageOutbound({
         cfg: ctx.cfg,
         to: ctx.to,
         text: ctx.text,
@@ -150,9 +148,7 @@ const imessageMessageAdapter = defineChannelMessageAdapter({
       return toIMessageMessageSendResult(result, "text", ctx.replyToId);
     },
     media: async (ctx) => {
-      const result = await (
-        await loadIMessageChannelRuntime()
-      ).sendIMessageOutbound({
+      const result = await (await loadIMessageChannelRuntime()).sendIMessageOutbound({
         cfg: ctx.cfg,
         to: ctx.to,
         text: ctx.text,
@@ -426,9 +422,7 @@ export const imessagePlugin: ChannelPlugin<ResolvedIMessageAccount, IMessageProb
       attachedResults: {
         channel: "imessage",
         sendText: async ({ cfg, to, text, accountId, deps, replyToId }) =>
-          await (
-            await loadIMessageChannelRuntime()
-          ).sendIMessageOutbound({
+          await (await loadIMessageChannelRuntime()).sendIMessageOutbound({
             cfg,
             to,
             text,
@@ -447,9 +441,7 @@ export const imessagePlugin: ChannelPlugin<ResolvedIMessageAccount, IMessageProb
           deps,
           replyToId,
         }) =>
-          await (
-            await loadIMessageChannelRuntime()
-          ).sendIMessageOutbound({
+          await (await loadIMessageChannelRuntime()).sendIMessageOutbound({
             cfg,
             to,
             text,

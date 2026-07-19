@@ -32,8 +32,9 @@ let resolveManifestDeclaredWebProviderCandidatePluginIds: typeof import("./web-p
 
 describe("resolveManifestDeclaredWebProviderCandidatePluginIds", () => {
   beforeAll(async () => {
-    ({ resolveManifestDeclaredWebProviderCandidatePluginIds } =
-      await import("./web-provider-resolution-shared.js"));
+    ({ resolveManifestDeclaredWebProviderCandidatePluginIds } = await import(
+      "./web-provider-resolution-shared.js"
+    ));
   });
 
   beforeEach(() => {

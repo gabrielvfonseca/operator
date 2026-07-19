@@ -365,6 +365,7 @@ async function installPathSkill(params: {
   config?: OperatorConfig;
 }): Promise<SkillSourceInstallResult> {
   const sourceDir = resolveUserPath(params.spec);
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let stat;
   try {
     stat = await fs.stat(sourceDir);

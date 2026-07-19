@@ -29,7 +29,7 @@ describe("Mistral bounded-stream-read real wire proof (loopback http.createServe
   it("caps an oversized body streamed chunked over real wire", async () => {
     const fetcher = createBoundedMistralFetcher(MAX);
     const CHUNK = 1024 * 1024;
-    const server = http.createServer((req, res) => {
+    const server = http.createServer((_req, res) => {
       res.writeHead(200, { "content-type": "application/octet-stream" });
       let sent = 0;
       const tick = setInterval(() => {
@@ -92,7 +92,7 @@ describe("Mistral bounded-stream-read real wire proof (loopback http.createServe
   it("returns a Response with exact bytes for normal-size responses on real wire", async () => {
     const fetcher = createBoundedMistralFetcher(MAX);
     const bodyText = 'data: {"choices":[{"delta":{"content":"hello"}}]}\n\ndata: [DONE]\n\n';
-    const server = http.createServer((req, res) => {
+    const server = http.createServer((_req, res) => {
       res.writeHead(200, { "content-type": "text/event-stream" });
       res.end(bodyText);
     });

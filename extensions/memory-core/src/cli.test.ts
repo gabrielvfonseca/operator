@@ -1689,11 +1689,11 @@ describe("memory cli", () => {
       const historyPath = path.join(historyDir, "2025-01-01.md");
       await fs.writeFile(
         historyPath,
-        [
+        `${[
           "# Preferences Learned",
           '- Always use "Happy Together" calendar for flights and reservations.',
           "- Calendar ID: udolnrooml2f2ha8jaio24v1r8@group.calendar.google.com",
-        ].join("\n") + "\n",
+        ].join("\n")}\n`,
         "utf-8",
       );
 
@@ -1731,11 +1731,11 @@ describe("memory cli", () => {
       const historyPath = path.join(historyDir, "2025-01-01-vendor-pitch.md");
       await fs.writeFile(
         historyPath,
-        [
+        `${[
           "## Preferences Learned",
           '- Always use "Happy Together" calendar for flights and reservations.',
           "- Calendar ID: udolnrooml2f2ha8jaio24v1r8@group.calendar.google.com",
-        ].join("\n") + "\n",
+        ].join("\n")}\n`,
         "utf-8",
       );
 
@@ -1769,14 +1769,14 @@ describe("memory cli", () => {
       const historyPath = path.join(historyDir, "2025-01-01.md");
       await fs.writeFile(
         historyPath,
-        [
+        `${[
           "## Preferences Learned",
           '- Always use "Happy Together" calendar for flights and reservations.',
           "- Calendar ID: udolnrooml2f2ha8jaio24v1r8@group.calendar.google.com",
           "",
           "## Setup",
           "- Set up Gmail access via gog.",
-        ].join("\n") + "\n",
+        ].join("\n")}\n`,
         "utf-8",
       );
 
@@ -1820,11 +1820,11 @@ describe("memory cli", () => {
       const historyPath = path.join(historyDir, "2025-01-01.md");
       await fs.writeFile(
         historyPath,
-        [
+        `${[
           "## Preferences Learned",
           '- Always use "Happy Together" calendar for flights and reservations.',
           "- Calendar ID: udolnrooml2f2ha8jaio24v1r8@group.calendar.google.com",
-        ].join("\n") + "\n",
+        ].join("\n")}\n`,
         "utf-8",
       );
 
@@ -1855,10 +1855,10 @@ describe("memory cli", () => {
       const secondSluggedPath = path.join(historyDir, "2025-01-01-travel-rule.md");
       await fs.writeFile(
         sluggedPath,
-        [
+        `${[
           "## Preferences Learned",
           '- Always use "Happy Together" calendar for flights and reservations.',
-        ].join("\n") + "\n",
+        ].join("\n")}\n`,
         "utf-8",
       );
       await fs.writeFile(
@@ -1914,10 +1914,10 @@ describe("memory cli", () => {
       const historyPath = path.join(historyDir, "2025-01-01.md");
       await fs.writeFile(
         historyPath,
-        [
+        `${[
           "## Preferences Learned",
           '- Always use "Happy Together" calendar for flights and reservations.',
-        ].join("\n") + "\n",
+        ].join("\n")}\n`,
         "utf-8",
       );
 
@@ -1946,10 +1946,10 @@ describe("memory cli", () => {
       const historyPath = path.join(historyDir, "2025-01-01.md");
       await fs.writeFile(
         historyPath,
-        [
+        `${[
           "## Preferences Learned",
           '- Always use "Happy Together" calendar for flights and reservations.',
-        ].join("\n") + "\n",
+        ].join("\n")}\n`,
         "utf-8",
       );
 
@@ -1979,7 +1979,7 @@ describe("memory cli", () => {
       const historyPath = path.join(historyDir, "2025-03-30.md");
       await fs.writeFile(
         historyPath,
-        [
+        `${[
           "## Operator / runtime / workflow preferences and corrections",
           "- Mariano explicitly said that when he tells Razor there has been an error, the default interpretation should be that he wants it fixed, not merely diagnosed or acknowledged.",
           "- Mariano clarified that the problem with cron output is overlapping, independently unreasonable crons converging into dumb sludge.",
@@ -1991,7 +1991,7 @@ describe("memory cli", () => {
           "## Other context and user preferences reinforced in this session",
           "- Mariano prefers short, punk, high-signal copy for social posts.",
           "- He explicitly wants the assistant to treat ADHD as a reason to reduce clutter and noise, not to produce more summaries.",
-        ].join("\n") + "\n",
+        ].join("\n")}\n`,
         "utf-8",
       );
 
@@ -2029,7 +2029,7 @@ describe("memory cli", () => {
       const historyPath = path.join(historyDir, "2025-02-17.md");
       await fs.writeFile(
         historyPath,
-        [
+        `${[
           "## Heartbeat checks",
           "- 04:17 (Europe/Madrid) heartbeat run.",
           "- Ariston check returned warning/error:",
@@ -2044,7 +2044,7 @@ describe("memory cli", () => {
           "## Heartbeat checks (07:18)",
           "- Ariston check again reports low pressure: 1.1 bar.",
           "- collect-temps.sh completed OK (exit 0).",
-        ].join("\n") + "\n",
+        ].join("\n")}\n`,
         "utf-8",
       );
 
@@ -2081,7 +2081,7 @@ describe("memory cli", () => {
       const historyPath = path.join(historyDir, "2025-02-19.md");
       await fs.writeFile(
         historyPath,
-        [
+        `${[
           "## People mentioned with context",
           "- Bunji — partner, Surrealist Ball Sat 28 Feb w/ Maga",
           "- Bex — girlfriend, date weekend Fri-Sun London, Chateau Denmark",
@@ -2089,7 +2089,7 @@ describe("memory cli", () => {
           "## Process improvements",
           "- Routed several inbound requests into different workflows.",
           "- Important context was written into notes and memory surfaces.",
-        ].join("\n") + "\n",
+        ].join("\n")}\n`,
         "utf-8",
       );
 
@@ -2141,11 +2141,11 @@ describe("memory cli", () => {
       const historyPath = path.join(historyDir, "2025-02-20.md");
       await fs.writeFile(
         historyPath,
-        [
+        `${[
           "## Preferences Learned",
           "- Use long-term plans, avoid reactive task switching.",
           "- A self-aware workflow note should stay intact.",
-        ].join("\n") + "\n",
+        ].join("\n")}\n`,
         "utf-8",
       );
 

@@ -109,7 +109,6 @@ export async function listMattermostDirectoryGroups(
         "[mattermost-directory] listGroups: skipping account:",
         (err as Error)?.message,
       );
-      continue;
     }
   }
   return params.limit && params.limit > 0 ? entries.slice(0, params.limit) : entries;

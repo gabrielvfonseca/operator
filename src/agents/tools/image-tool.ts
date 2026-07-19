@@ -110,14 +110,14 @@ type ImageWebMediaRuntime = {
     mediaUrl: string,
     options?: ImageToolLoadWebMediaOptions,
   ) => Promise<WebMediaResult>;
-  optimizeImageBufferForWebMedia: (typeof import("../../media/web-media.js"))["optimizeImageBufferForWebMedia"];
+  optimizeImageBufferForWebMedia: typeof import("../../media/web-media.js")["optimizeImageBufferForWebMedia"];
 };
 
 async function loadImageWebMediaRuntime(): Promise<ImageWebMediaRuntime> {
   return await import("../../media/web-media.js");
 }
 
-type ResolveModelAsync = (typeof import("../embedded-agent-runner/model.js"))["resolveModelAsync"];
+type ResolveModelAsync = typeof import("../embedded-agent-runner/model.js")["resolveModelAsync"];
 
 const resolveModelAsyncDefault: ResolveModelAsync = async (...args) => {
   const { resolveModelAsync } = await import("../embedded-agent-runner/model.js");
@@ -172,8 +172,8 @@ function isExecutionAliasCandidateForProvider(
   const candidateProvider = modelRefProvider(candidate);
   return Boolean(
     candidateProvider &&
-    candidateProvider !== normalizeMediaProviderId(candidateProvider) &&
-    normalizeMediaProviderId(candidateProvider) === normalizeMediaProviderId(provider),
+      candidateProvider !== normalizeMediaProviderId(candidateProvider) &&
+      normalizeMediaProviderId(candidateProvider) === normalizeMediaProviderId(provider),
   );
 }
 
@@ -959,14 +959,13 @@ export function createImageTool(options?: {
       }
       const imageCompression =
         imageRoute.kind === "fallback" ? imageRoute.imageCompression : undefined;
-      const sandboxConfig: SandboxedBridgeMediaPathConfig | null =
-        options?.sandbox && options?.sandbox.root.trim()
-          ? {
-              root: options.sandbox.root.trim(),
-              bridge: options.sandbox.bridge,
-              workspaceOnly: options.fsPolicy?.workspaceOnly === true,
-            }
-          : null;
+      const sandboxConfig: SandboxedBridgeMediaPathConfig | null = options?.sandbox?.root.trim()
+        ? {
+            root: options.sandbox.root.trim(),
+            bridge: options.sandbox.bridge,
+            workspaceOnly: options.fsPolicy?.workspaceOnly === true,
+          }
+        : null;
 
       // MARK: - Load and resolve each image
       const loadedImages: LoadedImageForTool[] = [];

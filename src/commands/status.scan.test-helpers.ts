@@ -295,10 +295,7 @@ export function createStatusScanConfig<T extends object = OperatorConfig>(
 }
 
 export function createStatusSummary(
-  options: {
-    linkChannel?: { linked: boolean };
-    byAgent?: unknown[];
-  } = {},
+  options: { linkChannel?: { linked: boolean }; byAgent?: unknown[] } = {},
 ) {
   return {
     linkChannel: options.linkChannel,

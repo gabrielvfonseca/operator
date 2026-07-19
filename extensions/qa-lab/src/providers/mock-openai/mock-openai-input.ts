@@ -152,7 +152,6 @@ export function extractToolOutput(input: ResponsesInputItem[]) {
       ) {
         return output;
       }
-      continue;
     }
   }
   return "";

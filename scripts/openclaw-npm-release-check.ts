@@ -163,7 +163,7 @@ function isNodeModulesPackageRoot(segments: string[], index: number): boolean {
   if (parent === "node_modules") {
     return true;
   }
-  return parent !== undefined && parent.startsWith("@") && segments[index - 2] === "node_modules";
+  return parent?.startsWith("@") && segments[index - 2] === "node_modules";
 }
 
 function pathContainsPackedTestCargo(packedPath: string): boolean {
@@ -646,6 +646,7 @@ export function collectControlUiPackErrors(paths: Iterable<string>): string[] {
 
 function collectPackedTarballErrors(): string[] {
   const errors: string[] = [];
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let stdout;
   try {
     stdout = runNpmCommand(["pack", "--json", "--dry-run", "--ignore-scripts"]);

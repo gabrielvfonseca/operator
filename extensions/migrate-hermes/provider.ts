@@ -9,9 +9,7 @@ import { buildHermesPlan } from "./plan.js";
 import { discoverHermesSource, hasHermesSource } from "./source.js";
 
 export function buildHermesMigrationProvider(
-  params: {
-    runtime?: MigrationProviderContext["runtime"];
-  } = {},
+  params: { runtime?: MigrationProviderContext["runtime"] } = {},
 ): MigrationProviderPlugin {
   return {
     id: "hermes",

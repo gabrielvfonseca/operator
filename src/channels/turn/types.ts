@@ -196,7 +196,7 @@ export type ChannelEventDeliveryAdapter = {
   deliver: (
     payload: ReplyPayload,
     info: ChannelDeliveryInfo,
-  ) => Promise<ChannelDeliveryResult | void>;
+  ) => Promise<ChannelDeliveryResult | undefined>;
   durable?:
     | false
     | ChannelTurnDurableDeliveryOptions
@@ -210,7 +210,7 @@ export type ChannelEventDeliveryAdapter = {
   onDelivered?: (
     payload: ReplyPayload,
     info: ChannelDeliveryInfo,
-    result: ChannelDeliveryResult | void,
+    result: ChannelDeliveryResult | undefined,
   ) => Promise<void> | void;
   onError?: (err: unknown, info: { kind: string }) => void;
 };

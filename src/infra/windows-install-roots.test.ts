@@ -37,6 +37,7 @@ describe("getWindowsInstallRoots", () => {
       return value ? `${valueName}    REG_SZ    ${value}\r\n` : "";
     });
     const originalEnv = process.env;
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let roots;
     try {
       process.env = {

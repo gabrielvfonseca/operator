@@ -180,10 +180,10 @@ export async function resolveSlackThreadContextData(params: {
       : undefined;
   const shouldSeedInitialThreadContext = Boolean(
     params.isThreadReply &&
-    params.threadTs &&
-    (threadSessionFreshness
-      ? threadSessionFreshness.state !== "fresh"
-      : threadSessionPreviousTimestamp === undefined),
+      params.threadTs &&
+      (threadSessionFreshness
+        ? threadSessionFreshness.state !== "fresh"
+        : threadSessionPreviousTimestamp === undefined),
   );
   const shouldLoadInitialThreadHistory =
     shouldSeedInitialThreadContext || params.forceInitialHistory === true;
@@ -205,10 +205,10 @@ export async function resolveSlackThreadContextData(params: {
       : undefined;
   const starterIsCurrentBot = Boolean(
     starter &&
-    isCurrentBotAuthor({
-      userId: starter.userId,
-      botId: starter.botId,
-    }),
+      isCurrentBotAuthor({
+        userId: starter.userId,
+        botId: starter.botId,
+      }),
   );
   const starterAllowed =
     !starter ||

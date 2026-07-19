@@ -627,6 +627,7 @@ function writeProofPlugin(envCtx, options = {}) {
     secretProviderIntegrations: {
       [INTEGRATION_ID]: {
         source: "exec",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         command: "${node}",
         args: ["./resolver.mjs"],
         providerAlias: PROVIDER_ALIAS,
@@ -1780,7 +1781,7 @@ async function p12OpenAiLiveProof() {
       const probeResult = payload.auth?.probes?.results?.find?.(
         (entry) => entry?.profileId === OPENAI_PROFILE && entry?.source === "profile",
       );
-      if (!probeResult || probeResult.status !== "ok") {
+      if (probeResult?.status !== "ok") {
         throw new Error(`OpenAI live probe did not report ok for ${OPENAI_PROFILE}: ${combined}`);
       }
       const callsAfter = readJson(storePath).calls;

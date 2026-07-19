@@ -105,8 +105,9 @@ let handleToolExecutionEnd: typeof import("../agents/embedded-agent-subscribe.ha
 
 describe("after_tool_call hook wiring", () => {
   beforeAll(async () => {
-    ({ handleToolExecutionStart, handleToolExecutionEnd } =
-      await import("../agents/embedded-agent-subscribe.handlers.tools.js"));
+    ({ handleToolExecutionStart, handleToolExecutionEnd } = await import(
+      "../agents/embedded-agent-subscribe.handlers.tools.js"
+    ));
   });
 
   beforeEach(() => {

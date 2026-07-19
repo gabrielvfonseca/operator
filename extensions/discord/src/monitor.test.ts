@@ -942,8 +942,9 @@ vi.spyOn(channelRuntimeModule, "enqueueSystemEvent").mockImplementation(enqueueS
 const routingModule = await import("openclaw/plugin-sdk/routing");
 vi.spyOn(routingModule, "resolveAgentRoute").mockImplementation(resolveAgentRouteMock);
 
-const { DiscordMessageListener, DiscordReactionListener, registerDiscordListener } =
-  await import("./monitor/listeners.js");
+const { DiscordMessageListener, DiscordReactionListener, registerDiscordListener } = await import(
+  "./monitor/listeners.js"
+);
 
 type MockWithCalls = { mock: { calls: unknown[][] } };
 

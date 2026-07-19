@@ -421,8 +421,8 @@ async function dispatchReplyFromConfigInner(
   const sessionKeysMatch = (left?: string, right?: string) =>
     Boolean(
       left &&
-      right &&
-      normalizeExplicitSessionKey(left, ctx) === normalizeExplicitSessionKey(right, ctx),
+        right &&
+        normalizeExplicitSessionKey(left, ctx) === normalizeExplicitSessionKey(right, ctx),
     );
   const notePreparedSession = (binding: ReplySessionBinding) => {
     if (sessionKeysMatch(binding.sessionKey, sessionStoreEntry.sessionKey)) {
@@ -572,11 +572,11 @@ async function dispatchReplyFromConfigInner(
     const mediaRemoteHost = normalizeOptionalString(ctx.MediaRemoteHost);
     const hasUnstagedRemoteMediaMetadata = Boolean(
       hookContext.mediaPath ||
-      hookContext.mediaUrl ||
-      hookContext.mediaType ||
-      hookContext.mediaPaths?.length ||
-      hookContext.mediaUrls?.length ||
-      hookContext.mediaTypes?.length,
+        hookContext.mediaUrl ||
+        hookContext.mediaType ||
+        hookContext.mediaPaths?.length ||
+        hookContext.mediaUrls?.length ||
+        hookContext.mediaTypes?.length,
     );
     if (hookMediaMetadataStaged || !mediaRemoteHost || !hasUnstagedRemoteMediaMetadata) {
       return hookContext;
@@ -630,10 +630,10 @@ async function dispatchReplyFromConfigInner(
     !effectiveExplicitDeliverRoute;
   const hasRouteReplyCandidate = Boolean(
     !suppressAcpChildUserDelivery &&
-    !isInternalWebchatTurn &&
-    normalizedRouteReplyChannel &&
-    replyRoute.to &&
-    normalizedRouteReplyChannel !== normalizedCurrentSurface,
+      !isInternalWebchatTurn &&
+      normalizedRouteReplyChannel &&
+      replyRoute.to &&
+      normalizedRouteReplyChannel !== normalizedCurrentSurface,
   );
   const routeReplyRuntime = hasRouteReplyCandidate ? await loadRouteReplyRuntime() : undefined;
   const {
@@ -664,9 +664,7 @@ async function dispatchReplyFromConfigInner(
       )
     : undefined;
   let normalizeReplyMediaPaths:
-    | ReturnType<
-        (typeof import("./reply-media-paths.runtime.js"))["createReplyMediaPathNormalizer"]
-      >
+    | ReturnType<typeof import("./reply-media-paths.runtime.js")["createReplyMediaPathNormalizer"]>
     | undefined;
   const getNormalizeReplyMediaPaths = async () => {
     if (normalizeReplyMediaPaths) {
@@ -1983,7 +1981,7 @@ async function dispatchReplyFromConfigInner(
         releaseStart: () => releaseStart?.(),
       };
     };
-    const wrapProgressCallback = <Args extends unknown[], Result extends false | void>(
+    const wrapProgressCallback = <Args extends unknown[], Result extends false | undefined>(
       callback: ((...args: Args) => Promise<Result> | Result) | undefined,
       options?: {
         allowWhenToolSummariesHidden?: boolean;

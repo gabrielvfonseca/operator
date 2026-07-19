@@ -196,24 +196,24 @@ type TerminalAttemptState = Pick<
 export function hasAttemptTerminalState(attempt: TerminalAttemptState): boolean {
   return Boolean(
     attempt.clientToolCalls ||
-    attempt.yieldDetected ||
-    attempt.didSendDeterministicApprovalPrompt ||
-    attempt.heartbeatToolResponse ||
-    attempt.lastToolError ||
-    attempt.toolMediaUrls?.some((url) => url.trim().length > 0) ||
-    attempt.toolAudioAsVoice ||
-    attempt.toolTrustedLocalMedia ||
-    attempt.hasToolMediaBlockReply ||
-    attempt.didDeliverSourceReplyViaMessageTool ||
-    attempt.messagingToolSourceReplyPayloads?.length ||
-    hasCommittedMessagingToolDeliveryEvidence({
-      messagingToolSentTexts: attempt.messagingToolSentTexts ?? [],
-      messagingToolSentMediaUrls: attempt.messagingToolSentMediaUrls ?? [],
-      messagingToolSentTargets: attempt.messagingToolSentTargets ?? [],
-    }) ||
-    hasAcceptedSessionSpawn(attempt.acceptedSessionSpawns) ||
-    hasAsyncStartedToolActivity(attempt.toolMetas) ||
-    (attempt.successfulCronAdds ?? 0) > 0,
+      attempt.yieldDetected ||
+      attempt.didSendDeterministicApprovalPrompt ||
+      attempt.heartbeatToolResponse ||
+      attempt.lastToolError ||
+      attempt.toolMediaUrls?.some((url) => url.trim().length > 0) ||
+      attempt.toolAudioAsVoice ||
+      attempt.toolTrustedLocalMedia ||
+      attempt.hasToolMediaBlockReply ||
+      attempt.didDeliverSourceReplyViaMessageTool ||
+      attempt.messagingToolSourceReplyPayloads?.length ||
+      hasCommittedMessagingToolDeliveryEvidence({
+        messagingToolSentTexts: attempt.messagingToolSentTexts ?? [],
+        messagingToolSentMediaUrls: attempt.messagingToolSentMediaUrls ?? [],
+        messagingToolSentTargets: attempt.messagingToolSentTargets ?? [],
+      }) ||
+      hasAcceptedSessionSpawn(attempt.acceptedSessionSpawns) ||
+      hasAsyncStartedToolActivity(attempt.toolMetas) ||
+      (attempt.successfulCronAdds ?? 0) > 0,
   );
 }
 
@@ -313,7 +313,7 @@ export function shouldRetryMissingAssistantTurn(params: {
   if (
     params.payloadCount !== 0 ||
     params.aborted ||
-    Boolean(params.promptError) ||
+    params.promptError ||
     params.timedOut ||
     params.attempt.clientToolCalls ||
     params.attempt.currentAttemptAssistant ||
@@ -546,7 +546,7 @@ export function shouldRetrySilentErrorAssistantTurn(params: {
   }
 
   const assistant = params.assistant;
-  if (!assistant || assistant.stopReason !== "error") {
+  if (assistant?.stopReason !== "error") {
     return false;
   }
 
@@ -631,13 +631,13 @@ function shouldSkipNonVisibleTurnRetry(params: {
 }): boolean {
   return Boolean(
     params.aborted ||
-    params.timedOut ||
-    params.attempt.clientToolCalls ||
-    params.attempt.yieldDetected ||
-    params.attempt.didSendDeterministicApprovalPrompt ||
-    params.attempt.lastToolError ||
-    hasAcceptedSessionSpawn(params.attempt.acceptedSessionSpawns) ||
-    resolveAttemptReplayMetadata(params.attempt).hadPotentialSideEffects,
+      params.timedOut ||
+      params.attempt.clientToolCalls ||
+      params.attempt.yieldDetected ||
+      params.attempt.didSendDeterministicApprovalPrompt ||
+      params.attempt.lastToolError ||
+      hasAcceptedSessionSpawn(params.attempt.acceptedSessionSpawns) ||
+      resolveAttemptReplayMetadata(params.attempt).hadPotentialSideEffects,
   );
 }
 

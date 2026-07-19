@@ -125,6 +125,7 @@ async function recoverTerminalUploadCleanup(options?: {
   const tempRoot = options?.tempRoot ?? resolveTerminalUploadRoot();
   const retentionMs = options?.retentionMs ?? TERMINAL_UPLOAD_RETENTION_MS;
   const nowMs = options?.nowMs ?? Date.now();
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let entries;
   try {
     entries = await readdir(tempRoot, { withFileTypes: true });

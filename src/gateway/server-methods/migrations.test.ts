@@ -76,7 +76,7 @@ function memoryPlan(): MigrationPlan {
         kind: "workspace",
         action: "copy",
         status: "planned",
-        source: path.join(sourceRoot, "AGENTS.md"),
+        source: path.join(sourceRoot, "AGENTS.MD"),
         target: "/tmp/workspace-research/AGENTS.md",
       },
     ],

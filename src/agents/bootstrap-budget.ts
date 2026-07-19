@@ -73,7 +73,7 @@ function formatWarningCause(cause: BootstrapTruncationCause): string {
 }
 
 function isAgentsBootstrapName(name: string | undefined): boolean {
-  return name?.toLowerCase() === "agents.md";
+  return name?.toLowerCase() === "AGENTS.MD";
 }
 
 function normalizeSeenSignatures(signatures?: string[]): string[] {
@@ -305,7 +305,7 @@ function formatBootstrapTruncationWarningLines(params: {
     );
   }
   if (params.analysis.truncatedFiles.some((file) => isAgentsBootstrapName(file.name))) {
-    lines.push("AGENTS.md was truncated; read the full AGENTS.md before relying on scoped policy.");
+    lines.push("AGENTS.MD was truncated; read the full AGENTS.MD before relying on scoped policy.");
   }
   lines.push(
     "If unintentional, raise agents.defaults.bootstrapMaxChars and/or agents.defaults.bootstrapTotalMaxChars.",

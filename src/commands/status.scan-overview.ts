@@ -198,9 +198,7 @@ export async function collectStatusScanOverview(params: {
         skipPluginValidation: params.skipConfigPluginValidation,
       }),
     resolveConfig: async (loadedConfig) =>
-      await (
-        await loadCommandConfigResolutionModule()
-      ).resolveCommandConfigWithSecrets({
+      await (await loadCommandConfigResolutionModule()).resolveCommandConfigWithSecrets({
         config: loadedConfig,
         commandName: params.commandName,
         targetIds: (await loadCommandSecretTargetsModule()).getStatusCommandSecretTargetIds(

@@ -105,11 +105,7 @@ function createTurnMessages(userText = "Inspect the workspace"): WorkerTranscrip
 }
 
 function createRequest(
-  params: {
-    baseLeafId?: string | null;
-    messages?: WorkerTranscriptMessage[];
-    seq?: number;
-  } = {},
+  params: { baseLeafId?: string | null; messages?: WorkerTranscriptMessage[]; seq?: number } = {},
 ): WorkerTranscriptCommitParams {
   return {
     runEpoch: RUN_EPOCH,
@@ -259,10 +255,10 @@ describe("worker transcript commit application", () => {
         .filter((event): event is { type: "message"; id: string } =>
           Boolean(
             event &&
-            typeof event === "object" &&
-            !Array.isArray(event) &&
-            (event as { type?: unknown }).type === "message" &&
-            typeof (event as { id?: unknown }).id === "string",
+              typeof event === "object" &&
+              !Array.isArray(event) &&
+              (event as { type?: unknown }).type === "message" &&
+              typeof (event as { id?: unknown }).id === "string",
           ),
         )
         .map((event) => event.id),

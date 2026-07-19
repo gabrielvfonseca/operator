@@ -407,6 +407,7 @@ describe("runDaemonInstall", () => {
 
   it("does not treat env-template gateway.auth.token as plaintext during install", async () => {
     loadConfigMock.mockReturnValue({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       gateway: { auth: { mode: "token", token: "${OPERATOR_GATEWAY_TOKEN}" } },
     });
     mockResolvedGatewayTokenSecretRef();

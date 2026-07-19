@@ -423,7 +423,7 @@ function resolvePolicy(
   | { kind: "configured"; exec: InstallPolicyExecConfig }
   | { kind: "failure"; result: InstallPolicyResult } {
   const policy = config?.security?.installPolicy;
-  if (!policy || policy.enabled !== true) {
+  if (policy?.enabled !== true) {
     return { kind: "disabled" };
   }
   if (!isTargetEnabled({ policy, targetType })) {
@@ -451,7 +451,7 @@ export async function validateInstallPolicyStatic(
   config: OperatorConfig | undefined,
 ): Promise<InstallPolicyStaticValidation> {
   const policy = config?.security?.installPolicy;
-  if (!policy || policy.enabled !== true) {
+  if (policy?.enabled !== true) {
     return { enabled: false, targets: [], issues: [] };
   }
   const targets = resolveConfiguredTargets(policy);

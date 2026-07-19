@@ -821,7 +821,7 @@ export async function prepareSlackMessage(params: {
   const isAssistantThreadMessage = Boolean(isDirectMessage && messageAssistantThreadContext);
   const shouldForceAssistantReplyThread = Boolean(
     assistantThreadContext?.threadTs &&
-    (isThreadReply || isAssistantThreadMessage || replyToMode !== "off"),
+      (isThreadReply || isAssistantThreadMessage || replyToMode !== "off"),
   );
   const forcedAssistantReplyThreadTs = shouldForceAssistantReplyThread
     ? assistantThreadContext?.threadTs
@@ -1238,7 +1238,7 @@ export async function prepareSlackMessage(params: {
   // Thread participation is broad on Slack; only an explicit bot mention escapes this gate.
   // Native bot identity distinguishes bot pings from other Slack mentions.
   const ignoreOtherMentions = channelConfig?.ignoreOtherMentions ?? false;
-  if (isRoom && ignoreOtherMentions && Boolean(ctx.botUserId) && hasAnyMention && !wasMentioned) {
+  if (isRoom && ignoreOtherMentions && ctx.botUserId && hasAnyMention && !wasMentioned) {
     logInboundDrop({
       log: logVerbose,
       channel: "slack",
@@ -1293,17 +1293,17 @@ export async function prepareSlackMessage(params: {
   const shouldAckReaction = () =>
     Boolean(
       ackReaction &&
-      shouldAckReactionGate({
-        scope: ctx.ackReactionScope as AckReactionScope | undefined,
-        inboundEventKind,
-        isDirect: isDirectMessage,
-        isGroup: isRoomish,
-        isMentionableGroup: isRoom,
-        requireMention: shouldRequireMention,
-        canDetectMention,
-        effectiveWasMentioned,
-        shouldBypassMention,
-      }),
+        shouldAckReactionGate({
+          scope: ctx.ackReactionScope as AckReactionScope | undefined,
+          inboundEventKind,
+          isDirect: isDirectMessage,
+          isGroup: isRoomish,
+          isMentionableGroup: isRoom,
+          requireMention: shouldRequireMention,
+          canDetectMention,
+          effectiveWasMentioned,
+          shouldBypassMention,
+        }),
     );
 
   const ackReactionMessageTs = message.ts;

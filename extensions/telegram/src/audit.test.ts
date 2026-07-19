@@ -62,8 +62,9 @@ describe("telegram audit", () => {
       resolveTelegramApiBase: resolveTelegramApiBaseMock,
       resolveTelegramFetch: resolveTelegramFetchMock,
     }));
-    ({ collectTelegramUnmentionedGroupIds, auditTelegramGroupMembership } =
-      await import("./audit.js"));
+    ({ collectTelegramUnmentionedGroupIds, auditTelegramGroupMembership } = await import(
+      "./audit.js"
+    ));
   });
 
   beforeEach(() => {

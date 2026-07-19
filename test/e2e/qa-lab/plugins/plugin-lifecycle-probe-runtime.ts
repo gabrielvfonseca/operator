@@ -434,11 +434,7 @@ async function startNpmFixtureRegistry(
   const logFd = fs.openSync(serverLog, "a");
   const child = spawn(
     "node",
-    [
-      "scripts/e2e/lib/plugins/npm-registry-server.mjs",
-      serverPortFile,
-      ...packages.flatMap(([packageName, version, tarball]) => [packageName, version, tarball]),
-    ],
+    ["scripts/e2e/lib/plugins/npm-registry-server.mjs", serverPortFile, ...packages.flat()],
     {
       cwd: process.cwd(),
       env,

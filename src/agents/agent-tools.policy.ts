@@ -491,6 +491,7 @@ export function resolveGroupToolPolicy(params: {
   if (!channel) {
     return undefined;
   }
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let plugin;
   try {
     plugin = getLoadedChannelPlugin(channel);

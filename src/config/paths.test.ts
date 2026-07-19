@@ -276,7 +276,7 @@ describe("state + config path candidates", () => {
 });
 
 describe("resolveIncludeRoots", () => {
-  const HOME = path.parse(process.cwd()).root + "fakehome";
+  const HOME = `${path.parse(process.cwd()).root}fakehome`;
 
   it("returns an empty list when OPERATOR_INCLUDE_ROOTS is unset or blank", () => {
     expect(resolveIncludeRoots(envWith({}), () => HOME)).toStrictEqual([]);

@@ -1465,6 +1465,7 @@ describe("config strict validation", () => {
   it("rejects resolved-only gateway.bind aliases as invalid schema values, not legacy", async () => {
     await withTempHome(async (home) => {
       await writeOperatorConfig(home, {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         gateway: { bind: "${OPERATOR_BIND}" },
       });
 

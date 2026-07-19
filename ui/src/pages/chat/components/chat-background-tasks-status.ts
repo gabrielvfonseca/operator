@@ -49,22 +49,28 @@ function renderStatusPreviewRow(task: TaskSummary): TemplateResult {
     : taskTimestampMs(task.updatedAt ?? task.createdAt);
   return html`
     <div class="chat-tasks-preview__row">
-      ${task.status === "running"
-        ? html`<span class="chat-tasks-rail__task-pulse" aria-hidden="true"></span>`
-        : nothing}
+      ${
+        task.status === "running"
+          ? html`<span class="chat-tasks-rail__task-pulse" aria-hidden="true"></span>`
+          : nothing
+      }
       <span class="chat-tasks-preview__title">${taskTitle(task)}</span>
       <span class="chat-tasks-preview__meta">
         <span class="chat-tasks-rail__task-status chat-tasks-rail__task-status--${tone}"
           >${taskStatusLabel(task.status)}</span
         >
-        ${timeMs > 0
-          ? html`<span class="chat-tasks-rail__task-sep" aria-hidden="true">·</span>
+        ${
+          timeMs > 0
+            ? html`<span class="chat-tasks-rail__task-sep" aria-hidden="true">·</span>
               <span>
-                ${active
-                  ? html`<operator-elapsed-time .startMs=${timeMs}></operator-elapsed-time>`
-                  : formatRelativeTimestamp(timeMs)}
+                ${
+                  active
+                    ? html`<operator-elapsed-time .startMs=${timeMs}></operator-elapsed-time>`
+                    : formatRelativeTimestamp(timeMs)
+                }
               </span>`
-          : nothing}
+            : nothing
+        }
       </span>
     </div>
   `;
@@ -87,11 +93,13 @@ function renderStatusPreview(props: BackgroundTasksProps): TemplateResult {
     >
       <div class="chat-tasks-preview">
         ${preview.map((task) => renderStatusPreviewRow(task))}
-        ${overflow > 0
-          ? html`<div class="chat-tasks-preview__more">
+        ${
+          overflow > 0
+            ? html`<div class="chat-tasks-preview__more">
               ${t("chat.backgroundTasks.statusPreviewMore", { count: String(overflow) })}
             </div>`
-          : nothing}
+            : nothing
+        }
       </div>
     </wa-tooltip>
   `;
@@ -126,8 +134,9 @@ export function renderBackgroundTasksStatusRow(
   return html`
     <div class="chat-tasks-status" id=${backgroundTasks.statusRowId} role="status">
       <span class="chat-tasks-status__claw" aria-hidden="true">${icons.claw}</span>
-      ${status.startedMs !== null
-        ? html`
+      ${
+        status.startedMs !== null
+          ? html`
             <!-- Ticking time stays out of the polite live region: without
                  aria-hidden, screen readers would re-announce every second. -->
             <span class="chat-tasks-status__time" aria-hidden="true">
@@ -135,7 +144,8 @@ export function renderBackgroundTasksStatusRow(
             </span>
             <span class="chat-tasks-status__sep" aria-hidden="true">·</span>
           `
-        : nothing}
+          : nothing
+      }
       <button class="chat-tasks-status__link" type="button" @click=${openRail}>${label}</button>
     </div>
     ${renderStatusPreview(backgroundTasks)}

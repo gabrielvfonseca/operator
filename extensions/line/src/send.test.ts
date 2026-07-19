@@ -19,14 +19,12 @@ const {
   const replyMessageMockLocal = vi.fn();
   const showLoadingAnimationMockLocal = vi.fn();
   const getProfileMockLocal = vi.fn();
-  const MessagingApiClientMockLocal = vi.fn(function () {
-    return {
-      pushMessage: pushMessageMockLocal,
-      replyMessage: replyMessageMockLocal,
-      showLoadingAnimation: showLoadingAnimationMockLocal,
-      getProfile: getProfileMockLocal,
-    };
-  });
+  const MessagingApiClientMockLocal = vi.fn(() => ({
+    pushMessage: pushMessageMockLocal,
+    replyMessage: replyMessageMockLocal,
+    showLoadingAnimation: showLoadingAnimationMockLocal,
+    getProfile: getProfileMockLocal,
+  }));
   const requireRuntimeConfigMockLocal = vi.fn((cfg: unknown) => cfg ?? {});
   const resolveLineAccountMockLocal = vi.fn(() => ({ accountId: "default" }));
   const resolveLineChannelAccessTokenMockLocal = vi.fn(() => "line-token");
@@ -126,14 +124,12 @@ describe("LINE send helpers", () => {
     logVerboseMock.mockReset();
     resolvePinnedHostnameWithPolicyMock.mockReset();
 
-    MessagingApiClientMock.mockImplementation(function () {
-      return {
-        pushMessage: pushMessageMock,
-        replyMessage: replyMessageMock,
-        showLoadingAnimation: showLoadingAnimationMock,
-        getProfile: getProfileMock,
-      };
-    });
+    MessagingApiClientMock.mockImplementation(() => ({
+      pushMessage: pushMessageMock,
+      replyMessage: replyMessageMock,
+      showLoadingAnimation: showLoadingAnimationMock,
+      getProfile: getProfileMock,
+    }));
     requireRuntimeConfigMock.mockImplementation((cfg: unknown) => cfg ?? LINE_TEST_CFG);
     resolveLineAccountMock.mockReturnValue({ accountId: "default" });
     resolveLineChannelAccessTokenMock.mockReturnValue("line-token");

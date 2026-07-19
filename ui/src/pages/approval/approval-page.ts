@@ -83,15 +83,19 @@ function renderMetaRow(label: string, value?: string | null) {
 function renderPresentation(presentation: ApprovalPresentation) {
   if (presentation.kind === "exec") {
     return html`
-      ${presentation.warningText
-        ? html`<div class="approval-page__warning" role="note">${presentation.warningText}</div>`
-        : nothing}
-      ${presentation.commandPreview
-        ? html`
+      ${
+        presentation.warningText
+          ? html`<div class="approval-page__warning" role="note">${presentation.warningText}</div>`
+          : nothing
+      }
+      ${
+        presentation.commandPreview
+          ? html`
             <div class="approval-page__preview-label">${t("approvalPage.summaryLabel")}</div>
             <div class="approval-page__summary mono" dir="ltr">${presentation.commandPreview}</div>
           `
-        : nothing}
+          : nothing
+      }
       <div class="approval-page__preview-label">${t("approvalPage.commandLabel")}</div>
       <pre class="approval-page__preview mono" dir="ltr">${presentation.commandText}</pre>
       <dl class="approval-page__meta">
@@ -580,8 +584,9 @@ export class ApprovalPage extends OperatorLightDomElement {
         </time>
       </div>
       ${this.requestError === "connection" ? this.renderConnectionError() : nothing}
-      ${pending
-        ? html`
+      ${
+        pending
+          ? html`
             <div
               class="approval-page__actions"
               role="group"
@@ -593,24 +598,27 @@ export class ApprovalPage extends OperatorLightDomElement {
                     type="button"
                     class="btn approval-page__action approval-page__action--${decision}"
                     data-decision=${decision}
-                    ?disabled=${this.resolving ||
-                    !this.hasGatewayConnection ||
-                    this.requestError !== null}
+                    ?disabled=${
+                      this.resolving || !this.hasGatewayConnection || this.requestError !== null
+                    }
                     @click=${() => void this.resolveApproval(decision)}
                   >
-                    ${this.resolvingDecision === decision
-                      ? t("approvalPage.resolvingDecision", { decision: decisionLabel(decision) })
-                      : decisionLabel(decision)}
+                    ${
+                      this.resolvingDecision === decision
+                        ? t("approvalPage.resolvingDecision", { decision: decisionLabel(decision) })
+                        : decisionLabel(decision)
+                    }
                   </button>
                 `,
               )}
             </div>
           `
-        : html`
+          : html`
             <div class="approval-page__terminal" role="status">
               ${t("approvalPage.safeToClose")}
             </div>
-          `}
+          `
+      }
     `;
   }
 
@@ -632,13 +640,15 @@ export class ApprovalPage extends OperatorLightDomElement {
         >
           ${this.renderHeader()}
           <div class="approval-page__content">
-            ${this.loading && !this.approval
-              ? this.renderLoading()
-              : disconnected
-                ? this.renderConnectionState()
-                : unavailable || !this.approval
-                  ? this.renderUnavailable()
-                  : this.renderApproval(this.approval)}
+            ${
+              this.loading && !this.approval
+                ? this.renderLoading()
+                : disconnected
+                  ? this.renderConnectionState()
+                  : unavailable || !this.approval
+                    ? this.renderUnavailable()
+                    : this.renderApproval(this.approval)
+            }
           </div>
         </section>
         <a class="approval-page__back-link" href=${`${this.context.basePath}/chat`}>

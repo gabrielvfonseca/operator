@@ -27,12 +27,12 @@ function hasNormalizedStringEntry(values: readonly unknown[] | undefined): boole
 export function hasInboundMedia(ctx: InboundMediaContext): boolean {
   return Boolean(
     ctx.StickerMediaIncluded ||
-    ctx.Sticker ||
-    normalizeOptionalString(ctx.MediaPath) ||
-    normalizeOptionalString(ctx.MediaUrl) ||
-    hasNormalizedStringEntry(ctx.MediaPaths) ||
-    hasNormalizedStringEntry(ctx.MediaUrls) ||
-    (Array.isArray(ctx.MediaTypes) && ctx.MediaTypes.length > 0),
+      ctx.Sticker ||
+      normalizeOptionalString(ctx.MediaPath) ||
+      normalizeOptionalString(ctx.MediaUrl) ||
+      hasNormalizedStringEntry(ctx.MediaPaths) ||
+      hasNormalizedStringEntry(ctx.MediaUrls) ||
+      (Array.isArray(ctx.MediaTypes) && ctx.MediaTypes.length > 0),
   );
 }
 

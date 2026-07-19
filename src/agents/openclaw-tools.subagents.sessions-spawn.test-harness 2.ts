@@ -3,17 +3,15 @@ import { vi, type Mock } from "vitest";
 import type { SubagentLifecycleHookRunner } from "../plugins/hooks.js";
 import { resolveRequesterStoreKey } from "./subagent-requester-store-key.js";
 
-type SessionsSpawnTestConfig = ReturnType<
-  (typeof import("../config/config.js"))["getRuntimeConfig"]
->;
+type SessionsSpawnTestConfig = ReturnType<typeof import("../config/config.js")["getRuntimeConfig"]>;
 type SessionsSpawnHookRunner = SubagentLifecycleHookRunner | null;
 type CaptureSubagentCompletionReply =
-  (typeof import("./subagent-announce.js"))["captureSubagentCompletionReply"];
-type RunSubagentAnnounceFlow = (typeof import("./subagent-announce.js"))["runSubagentAnnounceFlow"];
+  typeof import("./subagent-announce.js")["captureSubagentCompletionReply"];
+type RunSubagentAnnounceFlow = typeof import("./subagent-announce.js")["runSubagentAnnounceFlow"];
 type CreateSessionsSpawnTool =
-  (typeof import("./tools/sessions-spawn-tool.js"))["createSessionsSpawnTool"];
-type SubagentRegistryTesting = (typeof import("./subagent-registry.test-helpers.js"))["testing"];
-type SubagentSpawnTesting = (typeof import("./subagent-spawn.test-support.js"))["testing"];
+  typeof import("./tools/sessions-spawn-tool.js")["createSessionsSpawnTool"];
+type SubagentRegistryTesting = typeof import("./subagent-registry.test-helpers.js")["testing"];
+type SubagentSpawnTesting = typeof import("./subagent-spawn.test-support.js")["testing"];
 type CreateOperatorToolsOpts = Parameters<CreateSessionsSpawnTool>[0];
 type GatewayRequest = { method?: string; params?: unknown; timeoutMs?: number };
 type AgentWaitCall = { runId?: string; timeoutMs?: number };
@@ -255,8 +253,9 @@ export async function getSessionsSpawnTool(opts: CreateOperatorToolsOpts) {
     runSubagentAnnounceFlow: (params) => hoisted.state.runSubagentAnnounceFlowOverride(params),
   });
   if (!cachedCreateSessionsSpawnTool) {
-    ({ createSessionsSpawnTool: cachedCreateSessionsSpawnTool } =
-      await import("./tools/sessions-spawn-tool.js"));
+    ({ createSessionsSpawnTool: cachedCreateSessionsSpawnTool } = await import(
+      "./tools/sessions-spawn-tool.js"
+    ));
   }
   return cachedCreateSessionsSpawnTool(opts);
 }

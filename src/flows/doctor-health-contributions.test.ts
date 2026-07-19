@@ -124,8 +124,8 @@ const mocks = vi.hoisted(() => ({
     (hit: { channelId: string; pluginId: string; reason: string }) => ({
       checkId: "core/doctor/channel-plugin-blockers",
       severity: "warning" as const,
-      message: "channels." + hit.channelId + " blocked",
-      path: "channels." + hit.channelId,
+      message: `channels.${hit.channelId} blocked`,
+      path: `channels.${hit.channelId}`,
       target: hit.pluginId,
       requirement: hit.reason,
     }),
@@ -284,7 +284,9 @@ vi.mock("../gateway/secret-input-paths.js", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../gateway/secret-input-paths.js")>();
   return {
     ...actual,
-    readGatewaySecretInputValue: (...args: Parameters<typeof actual.readGatewaySecretInputValue>) =>
+    readGatewaySecretInputValue: (
+      ...args: Parameters<typeof actual.readGatewaySecretInputValue>
+    ) =>
       mocks.readGatewaySecretInputValue.getMockImplementation()
         ? mocks.readGatewaySecretInputValue(...args)
         : actual.readGatewaySecretInputValue(...args),

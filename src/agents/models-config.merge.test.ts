@@ -13,8 +13,9 @@ async function loadMergeModules() {
   // mocks before importing the module under test.
   vi.doUnmock("../plugins/manifest-registry.js");
   ({ NON_ENV_SECRETREF_MARKER } = await import("./model-auth-markers.js"));
-  ({ mergeProviderModels, mergeProviders, mergeWithExistingProviderSecrets } =
-    await import("./models-config.merge.js"));
+  ({ mergeProviderModels, mergeProviders, mergeWithExistingProviderSecrets } = await import(
+    "./models-config.merge.js"
+  ));
 }
 
 beforeAll(loadMergeModules);

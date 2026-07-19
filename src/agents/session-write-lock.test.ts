@@ -169,8 +169,9 @@ describe("acquireSessionWriteLock", () => {
       resolveSessionWriteLockAcquireTimeoutMs,
       resolveSessionWriteLockOptions,
     } = await import("./session-write-lock.js"));
-    ({ testing, resetSessionWriteLockStateForTest } =
-      await import("./session-write-lock.test-support.js"));
+    ({ testing, resetSessionWriteLockStateForTest } = await import(
+      "./session-write-lock.test-support.js"
+    ));
   });
 
   afterEach(() => {
@@ -1463,7 +1464,7 @@ describe("acquireSessionWriteLock", () => {
     const killCalls: Array<NodeJS.Signals | undefined> = [];
     let otherHandlerCalled = false;
 
-    process.kill = ((pid: number, signal?: NodeJS.Signals) => {
+    process.kill = ((_pid: number, signal?: NodeJS.Signals) => {
       killCalls.push(signal);
       return true;
     }) as typeof process.kill;

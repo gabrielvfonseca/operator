@@ -66,9 +66,9 @@ async function mountMenu(
       .groups=${options.groups ?? []}
       .canOpenChat=${options.canOpenChat ?? true}
       .work=${options.work ?? null}
-      .workboard=${options.workboard === undefined
-        ? { captured: false, busy: false }
-        : options.workboard}
+      .workboard=${
+        options.workboard === undefined ? { captured: false, busy: false } : options.workboard
+      }
       .onAction=${options.onAction ?? (() => {})}
       .onClose=${options.onClose ?? (() => {})}
     ></openclaw-session-menu>`,

@@ -406,10 +406,13 @@ async function runGitUpdate(params: {
   opts: UpdateCommandOptions;
   stop: () => void;
   devTargetRef?: string;
-  beforeGitMutation?: () => Promise<{
-    allowGatewayServiceRepair?: boolean;
-    allowGatewayActivation?: boolean;
-  } | void>;
+  beforeGitMutation?: () => Promise<
+    | {
+        allowGatewayServiceRepair?: boolean;
+        allowGatewayActivation?: boolean;
+      }
+    | undefined
+  >;
   allowGatewayServiceRepair: boolean;
   allowGatewayActivation: boolean;
 }): Promise<UpdateRunResult> {

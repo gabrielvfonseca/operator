@@ -86,11 +86,13 @@ const CATALOG = {
       nativeBaseUrl: "/v1/native/google-gemini",
       routes: [
         {
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           path: "/v1beta/models/${model}:generateContent",
           methods: ["POST"],
           requestFormat: "google.generate_content",
         },
         {
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           path: "/v1beta/models/${model}:streamGenerateContent",
           methods: ["POST"],
           requestFormat: "google.generate_content",

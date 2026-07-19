@@ -64,8 +64,9 @@ export async function prepareGatewayPluginBootstrap(params: {
   const shouldRunStartupMaintenance =
     !params.minimalTestGateway || startupMaintenanceConfig.channels !== undefined;
   if (shouldRunStartupMaintenance) {
-    const { runChannelPluginStartupMaintenance } =
-      await import("../channels/plugins/lifecycle-startup.js");
+    const { runChannelPluginStartupMaintenance } = await import(
+      "../channels/plugins/lifecycle-startup.js"
+    );
     const startupTasks = [
       runChannelPluginStartupMaintenance({
         cfg: startupMaintenanceConfig,
@@ -82,8 +83,9 @@ export async function prepareGatewayPluginBootstrap(params: {
           log: params.log,
         }),
       );
-      const { migrateLegacyDevicePairingStore } =
-        await import("../infra/device-pairing-migration.js");
+      const { migrateLegacyDevicePairingStore } = await import(
+        "../infra/device-pairing-migration.js"
+      );
       const { migrateLegacyNodePairingStore } = await import("../infra/node-pairing-migration.js");
       startupTasks.push(
         // The device store import must complete before the node-surface fold:
@@ -145,6 +147,7 @@ export async function prepareGatewayPluginBootstrap(params: {
   const baseMethods = listGatewayMethods();
   const coreGatewayMethodNames = listCoreGatewayMethodNames();
   const emptyPluginRegistry = createEmptyPluginRegistry();
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let pluginRegistry;
   let baseGatewayMethods = baseMethods;
   const shouldLoadRuntimePlugins = params.loadRuntimePlugins !== false;

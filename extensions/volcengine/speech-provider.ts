@@ -189,8 +189,8 @@ export function buildVolcengineSpeechProvider(): SpeechProviderPlugin {
       const cfg = readProviderConfig(providerConfig);
       return Boolean(
         resolveSeedSpeechApiKey(cfg.apiKey) ||
-        ((cfg.appId || process.env.VOLCENGINE_TTS_APPID) &&
-          (cfg.token || process.env.VOLCENGINE_TTS_TOKEN)),
+          ((cfg.appId || process.env.VOLCENGINE_TTS_APPID) &&
+            (cfg.token || process.env.VOLCENGINE_TTS_TOKEN)),
       );
     },
 

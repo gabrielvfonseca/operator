@@ -433,7 +433,9 @@
 }
 
 /* Keep the expanded row visually attached to its drawer. */
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .session-data-row--expanded > td,
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .session-data-row--menu-open > td {
   background: var(--bg-hover);
 }
@@ -443,6 +445,7 @@
   opacity: 1;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .session-data-row--expanded > td {
   border-bottom-color: transparent;
 }
@@ -451,6 +454,7 @@
   cursor: grab;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .session-drop-target--active td {
   background: color-mix(in srgb, var(--accent) 14%, transparent);
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 45%, transparent);
@@ -611,6 +615,7 @@
 }
 
 /* --- Initial-load skeleton --- */
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .session-skeleton-row td {
   border-bottom: 1px solid var(--border);
 }
@@ -741,6 +746,7 @@
 
 /* icons.ts SVGs carry no stroke/fill attributes; without these rules the
    glyphs paint solid black and read as blank squares on dark surfaces. */
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .session-actions .icon-btn {
   display: inline-flex;
   align-items: center;
@@ -836,6 +842,7 @@
 }
 
 /* Group rows (grouped mode) */
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .session-group-row td {
   padding: 6px 12px;
   background: var(--bg-elevated);
@@ -878,6 +885,7 @@
 }
 
 /* --- Row drawer: overrides, stats, compaction history (flat interior) --- */
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .session-details-row td {
   padding: 0;
   background: var(--bg-accent);

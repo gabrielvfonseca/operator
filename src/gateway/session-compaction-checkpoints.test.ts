@@ -332,7 +332,7 @@ describe("session-compaction-checkpoints", () => {
     const legacySnapshotFile = path.join(dir, "legacy.checkpoint.jsonl");
     await fs.writeFile(
       legacySnapshotFile,
-      [
+      `${[
         {
           type: "session",
           version: CURRENT_SESSION_VERSION,
@@ -349,7 +349,7 @@ describe("session-compaction-checkpoints", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf-8",
     );
     await upsertSessionEntry(
@@ -399,7 +399,7 @@ describe("session-compaction-checkpoints", () => {
     const sessionFile = path.join(dir, "session.jsonl");
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         { type: "session", version: 3, id: "session-leaf-control" },
         {
           type: "message",
@@ -434,7 +434,7 @@ describe("session-compaction-checkpoints", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf-8",
     );
 
@@ -450,7 +450,7 @@ describe("session-compaction-checkpoints", () => {
     const sessionFile = path.join(dir, "session.jsonl");
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         {
           type: "session",
           version: 3,
@@ -482,7 +482,7 @@ describe("session-compaction-checkpoints", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf-8",
     );
 

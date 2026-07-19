@@ -111,7 +111,7 @@ const SHELL_HTML = `<!doctype html>
 </html>`;
 
 const TEXT_BODY = "Operator web_fetch direct text benchmark body.".repeat(160);
-const MARKDOWN_BODY = "# Web Fetch Benchmark\n\n" + "- markdown list item\n".repeat(220);
+const MARKDOWN_BODY = `# Web Fetch Benchmark\n\n${"- markdown list item\n".repeat(220)}`;
 const OFFLINE_PROVIDER_ENV_VARS = ["FIRECRAWL_API_KEY"] as const;
 
 const lookupFn = (async () => [{ address: "93.184.216.34", family: 4 }]) as unknown as LookupFn;

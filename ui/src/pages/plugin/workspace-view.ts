@@ -383,17 +383,20 @@ function renderTabStrip(state: WorkspaceUiState, workspace: WorkspaceDocument): 
             data-test-id="workspace-tab"
             data-ws=${tab.slug}
           >
-            ${tab.icon && Object.hasOwn(icons, tab.icon)
-              ? html`<span class="workspace-tab__icon" aria-hidden="true"
+            ${
+              tab.icon && Object.hasOwn(icons, tab.icon)
+                ? html`<span class="workspace-tab__icon" aria-hidden="true"
                   >${icons[tab.icon as keyof typeof icons]}</span
                 >`
-              : nothing}
+                : nothing
+            }
             <span class="workspace-tab__label">${tab.title}</span>
           </wa-tab>
         `;
       })}
-      ${hidden.length > 0
-        ? html`
+      ${
+        hidden.length > 0
+          ? html`
             <wa-dropdown
               slot="nav"
               class="workspace-tabs__hidden"
@@ -420,7 +423,8 @@ function renderTabStrip(state: WorkspaceUiState, workspace: WorkspaceDocument): 
               )}
             </wa-dropdown>
           `
-        : nothing}
+          : nothing
+      }
     </wa-tab-group>
   `;
 }
@@ -815,11 +819,12 @@ function renderDialog(
         <div class="exec-approval-header">
           <div class="exec-approval-title">${title}</div>
         </div>
-        ${targets.length === 0
-          ? html`<div class="exec-approval-sub" style="margin-top: 12px;">
+        ${
+          targets.length === 0
+            ? html`<div class="exec-approval-sub" style="margin-top: 12px;">
               ${t("workspaces.widget.moveToTabEmpty")}
             </div>`
-          : html`<select
+            : html`<select
               class="workspace-dialog__input"
               name="workspace-move-target"
               data-test-id="workspace-move-target"
@@ -829,7 +834,8 @@ function renderDialog(
               ${targets.map(
                 (candidate) => html`<option value=${candidate.slug}>${candidate.title}</option>`,
               )}
-            </select>`}
+            </select>`
+        }
         <div class="exec-approval-actions">
           <button class="btn btn--primary" type="submit" ?disabled=${targets.length === 0}>
             ${t("workspaces.widget.menu.moveToTab")}
@@ -881,9 +887,11 @@ export function renderWorkspace(props: WorkspaceProps): TemplateResult {
 
   return html`
     <section class="workspace" data-test-id="workspace">
-      ${state.actionError
-        ? html`<div class="callout danger workspace__toast" role="alert">${state.actionError}</div>`
-        : nothing}
+      ${
+        state.actionError
+          ? html`<div class="callout danger workspace__toast" role="alert">${state.actionError}</div>`
+          : nothing
+      }
       ${renderBody(props, state, viewState)} ${renderDialog(props, state, viewState)}
     </section>
   `;

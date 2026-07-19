@@ -6,7 +6,7 @@ import type { WorkspaceBootstrapFile } from "./workspace.js";
 
 function makeBootstrapFile(overrides: Partial<WorkspaceBootstrapFile>): WorkspaceBootstrapFile {
   return {
-    name: "AGENTS.md",
+    name: "AGENTS.MD",
     path: "/tmp/workspace/AGENTS.md",
     content: "alpha",
     missing: false,
@@ -49,7 +49,7 @@ describe("buildSystemPromptReport", () => {
     const file = makeBootstrapFile({ path: "/tmp/workspace/policies/AGENTS.md" });
     const report = makeReport({
       file,
-      injectedPath: "AGENTS.md",
+      injectedPath: "AGENTS.MD",
       injectedContent: "trimmed",
     });
 
@@ -74,7 +74,7 @@ describe("buildSystemPromptReport", () => {
     const file = makeBootstrapFile({ path: "/tmp/workspace/policies/AGENTS.md" });
     const report = makeReport({
       file,
-      injectedPath: "AGENTS.md",
+      injectedPath: "AGENTS.MD",
       injectedContent: "trimmed",
       bootstrapMaxChars: 11_111,
       bootstrapTotalMaxChars: 22_222,
@@ -88,7 +88,7 @@ describe("buildSystemPromptReport", () => {
     const file = makeBootstrapFile({ path: "/tmp/workspace/policies/AGENTS.md" });
     const report = makeReport({
       file,
-      injectedPath: "AGENTS.md",
+      injectedPath: "AGENTS.MD",
       injectedContent: "trimmed",
     });
 

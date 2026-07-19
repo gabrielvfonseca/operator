@@ -133,8 +133,9 @@ function expectMessageText(message: AgentMessage | undefined, expected: string):
 
 describe("runPreparedCliAgent context engine lifecycle", () => {
   beforeAll(async () => {
-    ({ restoreCliRunnerTestDeps, runPreparedCliAgent, setCliRunnerTestDeps } =
-      await import("./cli-runner.js"));
+    ({ restoreCliRunnerTestDeps, runPreparedCliAgent, setCliRunnerTestDeps } = await import(
+      "./cli-runner.js"
+    ));
   });
 
   beforeEach(() => {

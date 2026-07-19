@@ -300,7 +300,7 @@ describe("createMattermostDirectChannelWithRetry", () => {
     let abortSignal: AbortSignal | undefined;
     let abortListenerCalled = false;
 
-    mockFetch.mockImplementationOnce((url, init) => {
+    mockFetch.mockImplementationOnce((_url, init) => {
       abortSignal = init?.signal ?? undefined;
       if (abortSignal) {
         abortSignal.addEventListener("abort", () => {
@@ -370,7 +370,7 @@ describe("createMattermostDirectChannelWithRetry", () => {
         maxRetries: 3,
         initialDelayMs: 100,
         maxDelayMs: 1000,
-        onRetry: (attempt, delayMs) => {
+        onRetry: (_attempt, delayMs) => {
           delays.push(delayMs);
         },
       }),
@@ -401,7 +401,7 @@ describe("createMattermostDirectChannelWithRetry", () => {
         maxRetries: 4,
         initialDelayMs: 1000,
         maxDelayMs: 2500,
-        onRetry: (attempt, delayMs) => {
+        onRetry: (_attempt, delayMs) => {
           delays.push(delayMs);
         },
       }),
@@ -453,7 +453,7 @@ describe("createMattermostDirectChannelWithRetry", () => {
 
   it("passes AbortSignal to fetch for timeout support", async () => {
     let capturedSignal: AbortSignal | undefined;
-    mockFetch.mockImplementationOnce((url, init) => {
+    mockFetch.mockImplementationOnce((_url, init) => {
       capturedSignal = init?.signal ?? undefined;
       return Promise.resolve(jsonResponse({ id: "dm-channel-signal" }, 201));
     });

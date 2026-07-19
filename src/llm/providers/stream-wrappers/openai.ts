@@ -124,8 +124,8 @@ function isCodeModeEnabled(config?: OperatorConfig): boolean {
   }
   return Boolean(
     codeMode &&
-    typeof codeMode === "object" &&
-    (codeMode as { enabled?: unknown }).enabled === true,
+      typeof codeMode === "object" &&
+      (codeMode as { enabled?: unknown }).enabled === true,
   );
 }
 

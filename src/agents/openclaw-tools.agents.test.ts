@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import { createPerSenderSessionConfig } from "./test-helpers/session-config.js";
 import { createAgentsListTool } from "./tools/agents-list-tool.js";
 
-let configOverride: ReturnType<(typeof import("../config/config.js"))["getRuntimeConfig"]> = {
+let configOverride: ReturnType<typeof import("../config/config.js")["getRuntimeConfig"]> = {
   session: createPerSenderSessionConfig(),
 };
 

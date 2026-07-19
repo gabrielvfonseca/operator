@@ -92,17 +92,11 @@ describe("security audit channel source-config fallback discord", () => {
                 "source" in token,
               token: "",
               tokenSource:
-                Boolean(token) &&
-                typeof token === "object" &&
-                !Array.isArray(token) &&
-                "source" in token
+                token && typeof token === "object" && !Array.isArray(token) && "source" in token
                   ? "config"
                   : "none",
               tokenStatus:
-                Boolean(token) &&
-                typeof token === "object" &&
-                !Array.isArray(token) &&
-                "source" in token
+                token && typeof token === "object" && !Array.isArray(token) && "source" in token
                   ? "configured_unavailable"
                   : "missing",
               config: channel,

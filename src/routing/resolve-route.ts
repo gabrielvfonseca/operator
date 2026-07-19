@@ -541,7 +541,7 @@ function resolveRouteCacheForConfig(cfg: OperatorConfig): Map<string, ResolvedAg
 }
 
 function formatRouteCachePeer(peer: RoutePeer | null): string {
-  if (!peer || !peer.id) {
+  if (!peer?.id) {
     return "-";
   }
   return `${peer.kind}:${peer.id}`;
@@ -746,8 +746,8 @@ export function resolveAgentRoute(input: ResolveAgentRouteInput): ResolvedAgentR
     },
     {
       matchedBy: "binding.peer.parent",
-      enabled: Boolean(parentPeer && parentPeer.id),
-      scopePeer: parentPeer && parentPeer.id ? parentPeer : null,
+      enabled: Boolean(parentPeer?.id),
+      scopePeer: parentPeer?.id ? parentPeer : null,
       candidates: collectPeerIndexedBindings(bindingsIndex, parentPeer),
       predicate: (candidate) => candidate.match.peer.state === "valid",
     },

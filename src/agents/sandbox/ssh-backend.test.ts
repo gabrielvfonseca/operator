@@ -33,8 +33,9 @@ vi.mock("./ssh.js", async () => {
   };
 });
 
-const { createSshSandboxBackend, resolveSshRuntimePaths, sshSandboxBackendManager } =
-  await import("./ssh-backend.js");
+const { createSshSandboxBackend, resolveSshRuntimePaths, sshSandboxBackendManager } = await import(
+  "./ssh-backend.js"
+);
 const tempDirs: string[] = [];
 
 async function createTempDir(prefix: string): Promise<string> {

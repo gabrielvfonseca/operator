@@ -211,6 +211,7 @@
   animation: chat-sidebar-fade-in 160ms ease-out;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .chat-workspace-rail {
   grid-column: 2;
   grid-row: 1;
@@ -490,6 +491,7 @@
   min-width: 0;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .chat-workspace-rail__file-name,
 .chat-workspace-rail__file-meta {
   min-width: 0;
@@ -498,6 +500,7 @@
   white-space: nowrap;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .chat-workspace-rail__file-name {
   font-size: var(--control-ui-text-sm);
   line-height: 1.2;
@@ -1369,6 +1372,7 @@
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 32%);
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .sidebar-markdown-reader > * {
   position: relative;
   z-index: 1;

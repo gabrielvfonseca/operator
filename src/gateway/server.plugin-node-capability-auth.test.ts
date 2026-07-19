@@ -223,6 +223,7 @@ async function expectMalformedRequestTargetsRejected(params: {
   listener: CanvasGatewayListener;
   headers?: readonly string[];
 }): Promise<void> {
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   for (const requestTarget of ["//", "///", "//${jndi:ldap://example}.action"]) {
     const response = await sendRawHttpRequest({
       host: "127.0.0.1",

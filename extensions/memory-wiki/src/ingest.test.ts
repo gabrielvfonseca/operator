@@ -25,8 +25,9 @@ describe("ingestMemoryWikiSource", () => {
     expect(result.pageId).toBe("source.meeting-notes");
     expect(result.pagePath).toBe("sources/meeting-notes.md");
     expect(result.indexUpdatedFiles.length).toBeGreaterThan(0);
-    await expect(fs.readFile(path.join(config.vault.path, "sources", "meeting-notes.md"), "utf8"))
-      .resolves.toBe(`---
+    await expect(
+      fs.readFile(path.join(config.vault.path, "sources", "meeting-notes.md"), "utf8"),
+    ).resolves.toBe(`---
 pageType: source
 id: source.meeting-notes
 title: meeting notes

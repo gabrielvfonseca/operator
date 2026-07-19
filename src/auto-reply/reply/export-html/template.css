@@ -172,6 +172,7 @@ body {
   flex-shrink: 0;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .tree-content {
   color: var(--text);
 }
@@ -418,6 +419,7 @@ body {
   padding-top: 0;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .thinking-collapsed {
   display: none;
   padding: var(--line-height);
@@ -533,6 +535,7 @@ body {
   white-space: pre-wrap;
 }
 
+/* biome-ignore lint/suspicious/noEmptyBlock: migrated from oxlint */
 .tool-images {
 }
 
@@ -1101,7 +1104,7 @@ body {
 @media print {
   #sidebar,
   #sidebar-toggle {
-    display: none !important;
+    display: none;
   }
   body {
     background: white;

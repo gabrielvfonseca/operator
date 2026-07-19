@@ -218,9 +218,11 @@ export function renderAgentChannels(params: {
       params.onSelectPanel,
     )}
     ${params.error ? html`<div class="callout danger">${params.error}</div>` : nothing}
-    ${!params.snapshot
-      ? html`<div class="callout info">${t("agents.channels.loadHint")}</div>`
-      : nothing}
+    ${
+      !params.snapshot
+        ? html`<div class="callout info">${t("agents.channels.loadHint")}</div>`
+        : nothing
+    }
     ${renderSettingsSection(
       {
         title: t("agents.channels.title"),
@@ -263,8 +265,9 @@ export function renderAgentChannels(params: {
               title: entry.label,
               description: metaParts.join(" · "),
               control: html`
-                ${summary.configured === 0
-                  ? html`
+                ${
+                  summary.configured === 0
+                    ? html`
                       <a
                         class="settings-row__value"
                         href="https://docs.operator.ai/channels"
@@ -273,7 +276,8 @@ export function renderAgentChannels(params: {
                         >${t("agents.channels.setupGuide")}</a
                       >
                     `
-                  : nothing}
+                    : nothing
+                }
                 ${renderSettingsStatus({
                   kind: summary.connected > 0 ? "ok" : summary.total ? "warn" : "muted",
                   label: status,
@@ -423,9 +427,11 @@ export function renderAgentFiles(params: {
       : t("agents.files.updatedUnknown");
 
   return html`
-    ${params.agentFilesError
-      ? html`<div class="callout danger">${params.agentFilesError}</div>`
-      : nothing}
+    ${
+      params.agentFilesError
+        ? html`<div class="callout danger">${params.agentFilesError}</div>`
+        : nothing
+    }
     ${renderSettingsSection(
       {
         title: t("agents.files.coreFilesTitle"),
@@ -457,24 +463,27 @@ export function renderAgentFiles(params: {
                     // expose an editor whose content request was never accepted.
                     return html`
                       <button
-                        class="agent-tab ${isActive ? "active" : ""} ${file.missing
-                          ? "agent-tab--missing"
-                          : ""}"
+                        class="agent-tab ${isActive ? "active" : ""} ${
+                          file.missing ? "agent-tab--missing" : ""
+                        }"
                         ?disabled=${params.agentFilesLoading}
                         @click=${() => params.onSelectFile(file.name)}
                       >
-                        ${label}${file.missing
-                          ? html`
+                        ${label}${
+                          file.missing
+                            ? html`
                               <span class="agent-tab-badge">${t("agents.files.missing")}</span>
                             `
-                          : nothing}
+                            : nothing
+                        }
                       </button>
                     `;
                   })}
                 </div>
-                ${!activeEntry
-                  ? html`<div class="muted">${t("agents.files.selectFile")}</div>`
-                  : html`
+                ${
+                  !activeEntry
+                    ? html`<div class="muted">${t("agents.files.selectFile")}</div>`
+                    : html`
                       <div class="agent-file-header">
                         <div>
                           <div class="agent-file-sub mono">${activeEntry.path}</div>
@@ -508,9 +517,11 @@ export function renderAgentFiles(params: {
                           </button>
                         </div>
                       </div>
-                      ${activeEntry.missing
-                        ? html`<div class="callout info">${t("agents.files.missingHint")}</div>`
-                        : nothing}
+                      ${
+                        activeEntry.missing
+                          ? html`<div class="callout info">${t("agents.files.missingHint")}</div>`
+                          : nothing
+                      }
                       <label class="field agent-file-field">
                         <span>${t("agents.files.content")}</span>
                         <textarea
@@ -645,7 +656,8 @@ export function renderAgentFiles(params: {
                           </div>
                         </div>
                       </operator-modal-dialog>
-                    `}
+                    `
+                }
               </div>
             `,
     )}

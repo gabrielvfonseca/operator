@@ -601,9 +601,7 @@ function createPngScreenshotter(
 }
 
 function createPdfScreenshotter(
-  params: {
-    assertOutputPath?: (outputPath: string) => void;
-  } = {},
+  params: { assertOutputPath?: (outputPath: string) => void } = {},
 ): DiffScreenshotter {
   const screenshotHtml: DiffScreenshotter["screenshotHtml"] = vi.fn(
     async ({ outputPath, image }: { outputPath: string; image: DiffRenderOptions["image"] }) => {

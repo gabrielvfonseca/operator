@@ -16,7 +16,7 @@ const CRON_TIMEOUT_ERROR_PREFIXES: readonly string[] = [
 ];
 
 function hasCronTimeoutPrefix(error: string, prefix: string): boolean {
-  return error === prefix || error.startsWith(prefix + " ");
+  return error === prefix || error.startsWith(`${prefix} `);
 }
 
 export function isCronTerminalAbortReasonText(error: string): boolean {

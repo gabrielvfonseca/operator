@@ -9,9 +9,7 @@ import { buildClaudePlan } from "./plan.js";
 import { discoverClaudeSource, hasClaudeSource } from "./source.js";
 
 export function buildClaudeMigrationProvider(
-  params: {
-    runtime?: MigrationProviderContext["runtime"];
-  } = {},
+  params: { runtime?: MigrationProviderContext["runtime"] } = {},
 ): MigrationProviderPlugin {
   return {
     id: "claude",

@@ -91,9 +91,9 @@ export function normalizeModelCompat(model: Model): Model {
     : undefined;
   const needsForce = Boolean(
     detectedCompatDefaults &&
-    (!detectedCompatDefaults.supportsDeveloperRole ||
-      !detectedCompatDefaults.supportsUsageInStreaming ||
-      !detectedCompatDefaults.supportsStrictMode),
+      (!detectedCompatDefaults.supportsDeveloperRole ||
+        !detectedCompatDefaults.supportsUsageInStreaming ||
+        !detectedCompatDefaults.supportsStrictMode),
   );
   if (!needsForce) {
     return model;

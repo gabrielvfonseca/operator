@@ -202,7 +202,7 @@ function parseLatestAssistantMessageEvent(
     return undefined;
   }
   const message = parsed.message;
-  if (!message || message.role !== "assistant") {
+  if (message?.role !== "assistant") {
     return undefined;
   }
   if (

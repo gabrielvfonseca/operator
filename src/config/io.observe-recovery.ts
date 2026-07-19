@@ -597,6 +597,7 @@ function collectPollutedSecretPlaceholders(
     return output;
   }
   if (Array.isArray(value)) {
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     value.forEach((item, index) =>
       collectPollutedSecretPlaceholders(item, `${pathLabel}[${index}]`, output),
     );

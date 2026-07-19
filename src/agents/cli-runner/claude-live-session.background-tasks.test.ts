@@ -155,7 +155,7 @@ function installLiveStdoutDriver(params?: {
 }
 
 function jsonl(lines: unknown[]): string {
-  return lines.map((line) => JSON.stringify(line)).join("\n") + "\n";
+  return `${lines.map((line) => JSON.stringify(line)).join("\n")}\n`;
 }
 
 function startLiveTurn(params: { runId: string; timeoutMs?: number; noOutputTimeoutMs?: number }) {

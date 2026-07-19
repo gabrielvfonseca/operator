@@ -153,6 +153,7 @@ export function createEmbeddedAgentSessionEventHandler(ctx: EmbeddedAgentSubscri
           });
         });
         return;
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
       case "agent_end":
         scheduleEvent(evt, () => {
           return handleAgentEnd(ctx, evt as never);

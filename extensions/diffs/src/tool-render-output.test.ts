@@ -92,9 +92,7 @@ function createApi(): OperatorPluginApi {
 }
 
 function createPngScreenshotter(
-  params: {
-    assertHtml?: (html: string) => void;
-  } = {},
+  params: { assertHtml?: (html: string) => void } = {},
 ): DiffScreenshotter {
   const screenshotHtml: DiffScreenshotter["screenshotHtml"] = vi.fn(
     async ({ html, outputPath }: { html: string; outputPath: string }) => {

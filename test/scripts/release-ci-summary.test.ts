@@ -552,6 +552,7 @@ describe("release CI summary child correlation", () => {
     ).toThrow("manifest artifact identity mismatch");
 
     const source = readFileSync(SCRIPT, "utf8");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).toContain("actions/artifacts/${artifactId}/zip");
     expect(source).not.toContain('"--name",');
     expect(source).not.toContain("gh run download");
@@ -1175,6 +1176,7 @@ describe("release CI summary child correlation", () => {
     expect(source).toContain("workflow-sha:");
     expect(source).toContain("candidate-sha:");
     expect(source).not.toContain("console.log(`sha:");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).toContain("actions/workflows/${child.workflow}/runs");
   });
 

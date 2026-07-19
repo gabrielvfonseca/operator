@@ -19,7 +19,7 @@ let callGatewayImpl: (request: GatewayCall) => Promise<unknown> = async (request
   return {};
 };
 let sessionStore: Record<string, Record<string, unknown>> = {};
-let configOverride: ReturnType<(typeof import("../config/config.js"))["getRuntimeConfig"]> = {
+let configOverride: ReturnType<typeof import("../config/config.js")["getRuntimeConfig"]> = {
   session: {
     mainKey: "main",
     scope: "per-sender",

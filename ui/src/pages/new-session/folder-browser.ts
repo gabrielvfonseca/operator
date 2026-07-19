@@ -44,8 +44,9 @@ export function renderFolderBrowser(params: {
         >
           ${icons.arrowLeft}
         </button>
-        ${params.target
-          ? html`
+        ${
+          params.target
+            ? html`
               <input
                 class="new-session-page__browser-path"
                 type="text"
@@ -63,10 +64,13 @@ export function renderFolderBrowser(params: {
                 }}
               />
             `
-          : html`<span class="new-session-page__browser-path">${t("newSession.where")}</span>`}
-        ${params.loading
-          ? html`<span class="new-session-page__browser-loading">${t("common.loading")}</span>`
-          : nothing}
+            : html`<span class="new-session-page__browser-path">${t("newSession.where")}</span>`
+        }
+        ${
+          params.loading
+            ? html`<span class="new-session-page__browser-loading">${t("common.loading")}</span>`
+            : nothing
+        }
         <button
           type="button"
           class="new-session-page__browser-nav"
@@ -79,8 +83,9 @@ export function renderFolderBrowser(params: {
       </div>
       ${params.error ? html`<div class="new-session-page__error">${params.error}</div>` : nothing}
       <div class="new-session-page__browser-list" role="group" aria-label=${t("newSession.folder")}>
-        ${!params.target
-          ? html`
+        ${
+          !params.target
+            ? html`
               <button
                 type="button"
                 class="new-session-page__browser-entry"
@@ -110,18 +115,22 @@ export function renderFolderBrowser(params: {
                 `,
               )}
             `
-          : nothing}
-        ${params.listing && entries.length === 0 && !params.loading
-          ? html`<div class="new-session-page__browser-empty">${t("newSession.browserEmpty")}</div>`
-          : nothing}
-        ${params.target
-          ? entries.map(
-              (entry) => html`
+            : nothing
+        }
+        ${
+          params.listing && entries.length === 0 && !params.loading
+            ? html`<div class="new-session-page__browser-empty">${t("newSession.browserEmpty")}</div>`
+            : nothing
+        }
+        ${
+          params.target
+            ? entries.map(
+                (entry) => html`
                 <button
                   type="button"
-                  class="new-session-page__browser-entry ${entry.hidden
-                    ? "new-session-page__browser-entry--hidden"
-                    : ""}"
+                  class="new-session-page__browser-entry ${
+                    entry.hidden ? "new-session-page__browser-entry--hidden" : ""
+                  }"
                   title=${entry.hidden ? t("newSession.hiddenFolder") : nothing}
                   @click=${() => params.onNavigate(entry.path)}
                 >
@@ -131,8 +140,9 @@ export function renderFolderBrowser(params: {
                   <span>${entry.name}</span>
                 </button>
               `,
-            )
-          : nothing}
+              )
+            : nothing
+        }
       </div>
       <div class="new-session-page__browser-actions">
         <button

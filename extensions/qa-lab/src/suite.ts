@@ -564,7 +564,7 @@ function remapModelRefForForcedRuntime(params: {
     return params.modelRef;
   }
   const split = splitModelRef(params.modelRef);
-  if (!split || split.provider !== "mock-openai") {
+  if (split?.provider !== "mock-openai") {
     return params.modelRef;
   }
   return `openai/${split.model}`;

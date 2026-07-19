@@ -16,13 +16,13 @@ describe("runEmbeddedAttempt bootstrap warning prompt assembly", () => {
       files: buildBootstrapInjectionStats({
         bootstrapFiles: [
           {
-            name: "AGENTS.md",
+            name: "AGENTS.MD",
             path: "/tmp/operator-warning-workspace/AGENTS.md",
             content: "A".repeat(200),
             missing: false,
           },
         ],
-        injectedFiles: [{ path: "AGENTS.md", content: "A".repeat(20) }],
+        injectedFiles: [{ path: "AGENTS.MD", content: "A".repeat(20) }],
       }),
       bootstrapMaxChars: 50,
       bootstrapTotalMaxChars: 50,
@@ -41,7 +41,7 @@ describe("runEmbeddedAttempt bootstrap warning prompt assembly", () => {
     expect(systemPrompt).toContain("hook context");
     expect(systemPrompt).toContain("[Bootstrap truncation warning]");
     expect(systemPrompt).toContain("Treat Project Context as partial");
-    expect(systemPrompt).not.toContain("- AGENTS.md: 200 raw -> 20 injected");
+    expect(systemPrompt).not.toContain("- AGENTS.MD: 200 raw -> 20 injected");
     expect(systemPrompt).toContain("base system prompt");
   });
 });

@@ -58,7 +58,7 @@ export function hasUsableOAuthCredential(
     refreshMarginMs?: number;
   },
 ): boolean {
-  if (!credential || credential.type !== "oauth") {
+  if (credential?.type !== "oauth") {
     return false;
   }
   if (typeof credential.access !== "string" || credential.access.trim().length === 0) {

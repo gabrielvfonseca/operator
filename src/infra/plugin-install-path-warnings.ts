@@ -13,7 +13,7 @@ type PluginInstallPathIssue = {
 function resolvePluginInstallCandidatePaths(
   install: PluginInstallRecord | null | undefined,
 ): string[] {
-  if (!install || install.source !== "path") {
+  if (install?.source !== "path") {
     return [];
   }
 

@@ -663,9 +663,9 @@ function hasPotentialActionTargetInput(
 ): boolean {
   return Boolean(
     hasExplicitSingularTargetParam(params) ||
-    normalizeOptionalString(input.toolContext?.currentChannelId) ||
-    normalizeOptionalString(input.toolContext?.currentMessagingTarget) ||
-    hasPotentialPluginActionParam(params),
+      normalizeOptionalString(input.toolContext?.currentChannelId) ||
+      normalizeOptionalString(input.toolContext?.currentMessagingTarget) ||
+      hasPotentialPluginActionParam(params),
   );
 }
 
@@ -1387,7 +1387,7 @@ async function handleSendAction(ctx: ResolvedActionContext): Promise<MessageActi
 
   const useCorePresentationDelivery = Boolean(
     sendPayload.payload.presentation &&
-    hasCorePresentationDelivery(resolveOutboundChannelPlugin({ channel, cfg })?.outbound),
+      hasCorePresentationDelivery(resolveOutboundChannelPlugin({ channel, cfg })?.outbound),
   );
   if (sendPayload.payload.presentation && !useCorePresentationDelivery) {
     const fallbackMessage = materializeMessagePresentationFallback({

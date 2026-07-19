@@ -1389,7 +1389,7 @@ export async function runPreparedReply(
   }
   const runHasStoredSessionModelOverride = Boolean(
     normalizeOptionalString(preparedSessionState.sessionEntry?.modelOverride) ||
-    normalizeOptionalString(preparedSessionState.sessionEntry?.providerOverride),
+      normalizeOptionalString(preparedSessionState.sessionEntry?.providerOverride),
   );
   const runHasLegacyAutoFallbackWithoutOrigin =
     runHasStoredSessionModelOverride &&

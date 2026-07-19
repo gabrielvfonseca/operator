@@ -58,6 +58,7 @@ function buildToolSchemaStats(
   if (cached) {
     return cached;
   }
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let schemaJson;
   try {
     schemaJson = JSON.stringify(parameters);

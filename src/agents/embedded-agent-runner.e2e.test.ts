@@ -182,8 +182,9 @@ beforeAll(async () => {
   installRunEmbeddedMocks();
   ({ clearRuntimeConfigSnapshot, setRuntimeConfigSnapshot } = await import("../config/config.js"));
   ({ runEmbeddedAgent } = await import("./embedded-agent-runner/run.js"));
-  const { SessionManager: LoadedSessionManager } =
-    await import("openclaw/plugin-sdk/agent-sessions");
+  const { SessionManager: LoadedSessionManager } = await import(
+    "openclaw/plugin-sdk/agent-sessions"
+  );
   SessionManager = LoadedSessionManager;
   e2eWorkspace = await createEmbeddedAgentRunnerTestWorkspace("operator-embedded-agent-");
   ({ agentDir, workspaceDir } = e2eWorkspace);
@@ -1162,45 +1163,43 @@ describe("runEmbeddedAgent", () => {
     }
   });
 
-  it(
-    "preserves existing transcript entries across an additional turn",
-    { timeout: 7_000 },
-    async () => {
-      const sessionFile = nextSessionFile();
-      const sessionKey = nextSessionKey();
+  it("preserves existing transcript entries across an additional turn", {
+    timeout: 7_000,
+  }, async () => {
+    const sessionFile = nextSessionFile();
+    const sessionKey = nextSessionKey();
 
-      const sessionManager = SessionManager.open(sessionFile);
-      sessionManager.appendMessage({
-        role: "user",
-        content: [{ type: "text", text: "seed user" }],
-        timestamp: Date.now(),
-      });
-      sessionManager.appendMessage({
-        role: "assistant",
-        content: [{ type: "text", text: "seed assistant" }],
-        stopReason: "stop",
-        api: "openai-responses",
-        provider: "openai",
-        model: "mock-1",
-        usage: createMockUsage(1, 1),
-        timestamp: Date.now(),
-      });
+    const sessionManager = SessionManager.open(sessionFile);
+    sessionManager.appendMessage({
+      role: "user",
+      content: [{ type: "text", text: "seed user" }],
+      timestamp: Date.now(),
+    });
+    sessionManager.appendMessage({
+      role: "assistant",
+      content: [{ type: "text", text: "seed assistant" }],
+      stopReason: "stop",
+      api: "openai-responses",
+      provider: "openai",
+      model: "mock-1",
+      usage: createMockUsage(1, 1),
+      timestamp: Date.now(),
+    });
 
-      await runDefaultEmbeddedTurn(sessionFile, "hello", sessionKey);
+    await runDefaultEmbeddedTurn(sessionFile, "hello", sessionKey);
 
-      const messages = await readSessionMessages(sessionFile);
-      const seedUserIndex = messages.findIndex(
-        (message) => message?.role === "user" && textFromContent(message.content) === "seed user",
-      );
-      const seedAssistantIndex = messages.findIndex(
-        (message) =>
-          message?.role === "assistant" && textFromContent(message.content) === "seed assistant",
-      );
-      expect(seedUserIndex).toBeGreaterThanOrEqual(0);
-      expect(seedAssistantIndex).toBeGreaterThan(seedUserIndex);
-      expect(messages.length).toBeGreaterThanOrEqual(2);
-    },
-  );
+    const messages = await readSessionMessages(sessionFile);
+    const seedUserIndex = messages.findIndex(
+      (message) => message?.role === "user" && textFromContent(message.content) === "seed user",
+    );
+    const seedAssistantIndex = messages.findIndex(
+      (message) =>
+        message?.role === "assistant" && textFromContent(message.content) === "seed assistant",
+    );
+    expect(seedUserIndex).toBeGreaterThanOrEqual(0);
+    expect(seedAssistantIndex).toBeGreaterThan(seedUserIndex);
+    expect(messages.length).toBeGreaterThanOrEqual(2);
+  });
 
   it("repairs orphaned user messages and continues", async () => {
     const result = await runWithOrphanedSingleUserMessage("orphaned user", nextSessionKey());

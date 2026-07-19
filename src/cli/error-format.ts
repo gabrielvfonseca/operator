@@ -112,7 +112,7 @@ export function formatMissingPluginMessage(params: {
 }): string {
   const listCommand = params.listCommand ?? "openclaw plugins list";
   const searchHint = params.includeSearch
-    ? `, or ${formatInlineCliCommand("openclaw plugins search " + params.id)} to look for installable plugins`
+    ? `, or ${formatInlineCliCommand(`openclaw plugins search ${params.id}`)} to look for installable plugins`
     : "";
   return `Plugin not found: ${params.id}. Run ${formatInlineCliCommand(
     listCommand,

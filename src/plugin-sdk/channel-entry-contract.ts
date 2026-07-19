@@ -140,13 +140,13 @@ function isTruthyEnvFlag(value: string | undefined): boolean {
 function resolveSpecifierCandidates(modulePath: string): string[] {
   const ext = normalizeLowercaseStringOrEmpty(path.extname(modulePath));
   if (ext === ".js") {
-    return [modulePath, modulePath.slice(0, -3) + ".ts"];
+    return [modulePath, `${modulePath.slice(0, -3)}.ts`];
   }
   if (ext === ".mjs") {
-    return [modulePath, modulePath.slice(0, -4) + ".mts"];
+    return [modulePath, `${modulePath.slice(0, -4)}.mts`];
   }
   if (ext === ".cjs") {
-    return [modulePath, modulePath.slice(0, -4) + ".cts"];
+    return [modulePath, `${modulePath.slice(0, -4)}.cts`];
   }
   return [modulePath];
 }

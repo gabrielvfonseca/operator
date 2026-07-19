@@ -284,8 +284,9 @@ export async function runPluginsInstallAction(
 
 /** Inspect or refresh the persisted plugin registry index. */
 export async function runPluginsRegistryCommand(opts: PluginRegistryOptions): Promise<void> {
-  const { inspectPluginRegistry, refreshPluginRegistry } =
-    await import("../plugins/plugin-registry.js");
+  const { inspectPluginRegistry, refreshPluginRegistry } = await import(
+    "../plugins/plugin-registry.js"
+  );
   const cfg = getRuntimeConfig();
 
   if (opts.refresh) {
@@ -416,7 +417,7 @@ export async function runPluginsDoctorCommand(): Promise<void> {
         lines.push(`  shadowed: ${shortenHomeInString(diag.source)}`);
       }
       lines.push("  repair:");
-      lines.push("    operator plugins inspect " + (diag.pluginId ?? "<plugin-id>"));
+      lines.push(`    operator plugins inspect ${diag.pluginId ?? "<plugin-id>"}`);
       lines.push("    edit or remove the config-selected plugin source");
       lines.push("    operator plugins registry --refresh");
       lines.push("    operator gateway restart --force");
@@ -692,8 +693,8 @@ function formatMarketplaceEntryInstall(entry: MarketplaceEntryPayload): string |
 function formatMarketplaceEntryLine(entry: MarketplaceEntryPayload): string {
   const id = entry.id ?? entry.name ?? entry.label;
   const install = formatMarketplaceEntryInstall(entry);
-  const suffix = install ? " " + theme.muted(install) : "";
-  const label = entry.label !== id ? " " + theme.muted(entry.label) : "";
+  const suffix = install ? ` ${theme.muted(install)}` : "";
+  const label = entry.label !== id ? ` ${theme.muted(entry.label)}` : "";
   return theme.command(id) + label + suffix;
 }
 
@@ -790,8 +791,8 @@ export async function runPluginMarketplaceEntriesCommand(
   }
 
   const lines = [
-    theme.muted("Source:") + " " + formatMarketplaceRefreshSource(summary.source),
-    theme.muted("Entries:") + " " + String(entries.length),
+    `${theme.muted("Source:")} ${formatMarketplaceRefreshSource(summary.source)}`,
+    `${theme.muted("Entries:")} ${String(entries.length)}`,
   ];
   if (summary.feed) {
     lines.push(
@@ -799,20 +800,20 @@ export async function runPluginMarketplaceEntriesCommand(
         " " +
         summary.feed.id +
         " " +
-        theme.muted("sequence " + String(summary.feed.sequence)),
+        theme.muted(`sequence ${String(summary.feed.sequence)}`),
     );
   }
   if (summary.metadata?.url) {
-    lines.push(theme.muted("URL:") + " " + summary.metadata.url);
+    lines.push(`${theme.muted("URL:")} ${summary.metadata.url}`);
   }
   if (summary.snapshot?.savedAt) {
-    lines.push(theme.muted("Snapshot:") + " " + summary.snapshot.savedAt);
+    lines.push(`${theme.muted("Snapshot:")} ${summary.snapshot.savedAt}`);
   }
   if (summary.trust) {
-    lines.push(theme.muted("Trust:") + " " + formatMarketplaceFeedTrust(summary.trust));
+    lines.push(`${theme.muted("Trust:")} ${formatMarketplaceFeedTrust(summary.trust)}`);
   }
   if (summary.error) {
-    lines.push(theme.muted("Fallback reason:") + " " + summary.error);
+    lines.push(`${theme.muted("Fallback reason:")} ${summary.error}`);
   }
   if (entries.length > 0) {
     lines.push("");
@@ -825,8 +826,9 @@ export async function runPluginMarketplaceEntriesCommand(
 export async function runPluginMarketplaceRefreshCommand(
   opts: PluginMarketplaceRefreshOptions,
 ): Promise<void> {
-  const { loadConfiguredHostedOfficialExternalPluginCatalogEntries } =
-    await import("../plugins/official-external-plugin-catalog.js");
+  const { loadConfiguredHostedOfficialExternalPluginCatalogEntries } = await import(
+    "../plugins/official-external-plugin-catalog.js"
+  );
   const cfg = getRuntimeConfig();
   const expectedSha256 = normalizeMarketplaceExpectedSha256(opts.expectedSha256);
   const result = await loadConfiguredHostedOfficialExternalPluginCatalogEntries(cfg, {
@@ -835,8 +837,9 @@ export async function runPluginMarketplaceRefreshCommand(
     ...(expectedSha256 ? { expectedSha256 } : {}),
     requireSnapshotWrite: true,
   });
-  const { clearManagedPluginOfficialCatalogCache } =
-    await import("../plugins/management-service.js");
+  const { clearManagedPluginOfficialCatalogCache } = await import(
+    "../plugins/management-service.js"
+  );
   clearManagedPluginOfficialCatalogCache();
   const payload = sanitizeMarketplaceRefreshPayload(buildMarketplaceRefreshPayload(result), {
     feedUrl: opts.feedUrl,

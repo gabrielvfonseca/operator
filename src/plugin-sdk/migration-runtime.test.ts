@@ -113,10 +113,10 @@ describe("copyMigrationFileItem", () => {
     vi.spyOn(Date, "now").mockReturnValue(123);
     const root = tempDirs.make("operator-migration-runtime-");
     const reportDir = path.join(root, "report");
-    const sourceOne = path.join(root, "source-one", "AGENTS.md");
-    const sourceTwo = path.join(root, "source-two", "AGENTS.md");
-    const targetOne = path.join(root, "target-one", "AGENTS.md");
-    const targetTwo = path.join(root, "target-two", "AGENTS.md");
+    const sourceOne = path.join(root, "source-one", "AGENTS.MD");
+    const sourceTwo = path.join(root, "source-two", "AGENTS.MD");
+    const targetOne = path.join(root, "target-one", "AGENTS.MD");
+    const targetTwo = path.join(root, "target-two", "AGENTS.MD");
 
     await writeFile(sourceOne, "new one");
     await writeFile(sourceTwo, "new two");
@@ -153,8 +153,8 @@ describe("copyMigrationFileItem", () => {
     if (typeof firstBackup !== "string" || typeof secondBackup !== "string") {
       throw new Error("expected both migration results to include backup paths");
     }
-    expect(path.basename(firstBackup)).toBe("AGENTS.md");
-    expect(path.basename(secondBackup)).toBe("AGENTS.md");
+    expect(path.basename(firstBackup)).toBe("AGENTS.MD");
+    expect(path.basename(secondBackup)).toBe("AGENTS.MD");
     expect(firstBackup).not.toBe(secondBackup);
     await expect(fs.readFile(firstBackup, "utf8")).resolves.toBe("old one");
     await expect(fs.readFile(secondBackup, "utf8")).resolves.toBe("old two");

@@ -121,11 +121,12 @@ export async function handleGatewayExtensionUpgrade(
     defaultExtensionProfileName(state.resolved.profiles),
   );
   const resolved = resolveProfile(state.resolved, profileName);
-  if (!resolved || resolved.driver !== "extension") {
+  if (resolved?.driver !== "extension") {
     destroy(socket, "404 Not Found");
     return true;
   }
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let bridge;
   try {
     bridge = (await ensureExtensionRelayForProfile(state, resolved)).bridge;

@@ -60,7 +60,7 @@ async function makeFakeOperatorPackage(root: string) {
 }
 
 describe("git commit resolution", () => {
-  let resolveCommitHash: (typeof import("./git-commit.js"))["resolveCommitHash"];
+  let resolveCommitHash: typeof import("./git-commit.js")["resolveCommitHash"];
 
   beforeEach(async () => {
     vi.restoreAllMocks();

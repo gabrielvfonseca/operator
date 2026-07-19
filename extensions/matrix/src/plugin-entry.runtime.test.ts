@@ -35,7 +35,7 @@ function writeOperatorPackageFixture(fixtureRoot: string) {
   writeFixtureFile(
     fixtureRoot,
     "package.json",
-    JSON.stringify(
+    `${JSON.stringify(
       {
         name: "@gabrielvfonseca/operator",
         type: "module",
@@ -45,7 +45,7 @@ function writeOperatorPackageFixture(fixtureRoot: string) {
       },
       null,
       2,
-    ) + "\n",
+    )}\n`,
   );
   writeFixtureFile(fixtureRoot, "operator.mjs", "export {};\n");
   writeFixtureFile(fixtureRoot, "dist/plugin-sdk/index.js", "export {};\n");

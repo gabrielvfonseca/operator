@@ -303,7 +303,7 @@ export async function handleChatAbortRequest({
     sessionKey: active.sessionKey,
     stopReason: "rpc",
   });
-  if (res.aborted && active.controlUiVisible !== false && partialText && partialText.trim()) {
+  if (res.aborted && active.controlUiVisible !== false && partialText?.trim()) {
     await persistAbortedPartials({
       context,
       sessionKey: active.sessionKey,

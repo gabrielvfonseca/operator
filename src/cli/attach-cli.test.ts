@@ -8,7 +8,9 @@ const MCP_CONFIG = {
       type: "http",
       url: "http://127.0.0.1:54321/mcp",
       headers: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         Authorization: "Bearer ${OPERATOR_MCP_TOKEN}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "x-session-key": "${OPERATOR_MCP_SESSION_KEY}",
       },
     },

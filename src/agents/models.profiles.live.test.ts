@@ -305,8 +305,8 @@ function applyLiveOllamaProviderEnvCompat(params: {
     !liveBaseUrl ||
     Boolean(
       configuredBaseUrl &&
-      canonicalOllamaCredentialBaseUrl(configuredBaseUrl) ===
-        canonicalOllamaCredentialBaseUrl(baseUrl),
+        canonicalOllamaCredentialBaseUrl(configuredBaseUrl) ===
+          canonicalOllamaCredentialBaseUrl(baseUrl),
     );
   const apiKey = resolveLiveOllamaProviderApiKey({
     baseUrl,
@@ -1012,6 +1012,7 @@ describe("explicit live model discovery scope", () => {
     const remoteApiKeyRefs: SecretInput[] = [
       OLLAMA_REMOTE_API_KEY_ENV,
       "$OLLAMA_API_KEY",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${OLLAMA_API_KEY}",
       { source: "env", provider: "default", id: OLLAMA_REMOTE_API_KEY_ENV },
     ];
@@ -1584,7 +1585,7 @@ async function runDeepSeekV4ReplayRegression(params: {
     toolCall = first.content.find((block) => block.type === "toolCall");
   }
 
-  if (!toolCall || toolCall.type !== "toolCall") {
+  if (toolCall?.type !== "toolCall") {
     throw new Error("expected DeepSeek V4 tool call");
   }
   expect(toolCall.name).toBe("noop");
@@ -2059,7 +2060,7 @@ describeLive("live models (profile keys)", () => {
                 );
               }
               expect(firstText.length).toBe(0);
-              if (!toolCall || toolCall.type !== "toolCall") {
+              if (toolCall?.type !== "toolCall") {
                 throw new Error("expected tool call");
               }
               expect(toolCall.name).toBe("noop");

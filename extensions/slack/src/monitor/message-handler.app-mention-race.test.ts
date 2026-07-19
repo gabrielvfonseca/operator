@@ -9,17 +9,18 @@ type TestHistoryEntry = {
   messageId?: string;
 };
 
-const prepareSlackMessageMock = vi.fn<
-  (params: {
-    ctx: { channelHistories: Map<string, TestHistoryEntry[]> };
-    message: { ts?: string };
-    opts: {
-      source: "message" | "app_mention";
-      wasMentioned?: boolean;
-      shouldRecordDroppedHistory?: () => boolean;
-    };
-  }) => Promise<unknown>
->();
+const prepareSlackMessageMock =
+  vi.fn<
+    (params: {
+      ctx: { channelHistories: Map<string, TestHistoryEntry[]> };
+      message: { ts?: string };
+      opts: {
+        source: "message" | "app_mention";
+        wasMentioned?: boolean;
+        shouldRecordDroppedHistory?: () => boolean;
+      };
+    }) => Promise<unknown>
+  >();
 const dispatchPreparedSlackMessageMock = vi.fn<(prepared: unknown) => Promise<void>>();
 const inboundDeliveryTestCache = resolveGlobalDedupeCache(
   Symbol.for("operator.slackInboundDeliveries"),
@@ -100,10 +101,7 @@ function createMarkMessageSeen() {
 }
 
 function createTestHandler(
-  params: {
-    botUserId?: string;
-    channelHistories?: Map<string, TestHistoryEntry[]>;
-  } = {},
+  params: { botUserId?: string; channelHistories?: Map<string, TestHistoryEntry[]> } = {},
 ) {
   const seenMessages = createMarkMessageSeen();
   return createSlackMessageHandler({

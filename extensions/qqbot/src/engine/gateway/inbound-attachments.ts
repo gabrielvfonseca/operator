@@ -216,7 +216,7 @@ export async function processAttachments(
     }
   }
 
-  const attachmentInfo = otherAttachments.length > 0 ? "\n" + otherAttachments.join("\n") : "";
+  const attachmentInfo = otherAttachments.length > 0 ? `\n${otherAttachments.join("\n")}` : "";
 
   return {
     attachmentInfo,

@@ -141,6 +141,7 @@ function normalizeRetiredGoogleChatKeys(cfg: OperatorConfig): ChannelDoctorConfi
 
   const changes: string[] = [];
   let updated = rawEntry;
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let changed;
 
   const root = normalizeGoogleChatEntry({

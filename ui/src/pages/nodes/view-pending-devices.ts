@@ -97,15 +97,17 @@ function renderPendingDevice(req: PendingDevice, props: NodesProps, paired?: Pai
             access: formatAccessSummary(approval.requested),
           })}
         </span>
-        ${approval.approved
-          ? html`
+        ${
+          approval.approved
+            ? html`
               <span class="settings-row__desc">
                 ${t("nodes.inventory.approvedAccess", {
                   access: formatAccessSummary(approval.approved),
                 })}
               </span>
             `
-          : nothing}
+            : nothing
+        }
       </div>
       <div class="settings-row__control">
         <button class="btn btn--sm" @click=${() => props.onDeviceApprove(req.requestId)}>

@@ -6,7 +6,7 @@ import { runScenarioFlow } from "./scenario-flow-runner.js";
 
 type QaFlowStep = {
   name: string;
-  run: () => Promise<string | void>;
+  run: () => Promise<string | undefined>;
 };
 
 function formatTestTranscript(state: ReturnType<typeof createQaBusState>) {
@@ -267,7 +267,7 @@ describe("scenario-flow-runner", () => {
         config: {},
         runScenario: async (
           _name: string,
-          steps: Array<{ name: string; run: () => Promise<string | void> }>,
+          steps: Array<{ name: string; run: () => Promise<string | undefined> }>,
         ) => {
           const stepResults = [];
           for (const step of steps) {
@@ -340,7 +340,7 @@ describe("scenario-flow-runner", () => {
         config: {},
         runScenario: async (
           _name: string,
-          steps: Array<{ name: string; run: () => Promise<string | void> }>,
+          steps: Array<{ name: string; run: () => Promise<string | undefined> }>,
         ) => {
           const stepResults = [];
           for (const step of steps) {
@@ -402,7 +402,7 @@ describe("scenario-flow-runner", () => {
         config: { expectedText: "QA_CODEX_PLUGIN_TURN_OK" },
         runScenario: async (
           _name: string,
-          steps: Array<{ name: string; run: () => Promise<string | void> }>,
+          steps: Array<{ name: string; run: () => Promise<string | undefined> }>,
         ) => {
           const stepResults = [];
           for (const step of steps) {

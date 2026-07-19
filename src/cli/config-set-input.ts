@@ -57,21 +57,21 @@ export function hasRefBuilderOptions(opts: ConfigSetOptions): boolean {
 export function hasProviderBuilderOptions(opts: ConfigSetOptions): boolean {
   return Boolean(
     opts.providerSource ||
-    opts.providerAllowlist?.length ||
-    opts.providerPath ||
-    opts.providerMode ||
-    opts.providerTimeoutMs ||
-    opts.providerMaxBytes ||
-    opts.providerCommand ||
-    opts.providerArg?.length ||
-    opts.providerNoOutputTimeoutMs ||
-    opts.providerMaxOutputBytes ||
-    opts.providerJsonOnly ||
-    opts.providerEnv?.length ||
-    opts.providerPassEnv?.length ||
-    opts.providerTrustedDir?.length ||
-    opts.providerAllowInsecurePath ||
-    opts.providerAllowSymlinkCommand,
+      opts.providerAllowlist?.length ||
+      opts.providerPath ||
+      opts.providerMode ||
+      opts.providerTimeoutMs ||
+      opts.providerMaxBytes ||
+      opts.providerCommand ||
+      opts.providerArg?.length ||
+      opts.providerNoOutputTimeoutMs ||
+      opts.providerMaxOutputBytes ||
+      opts.providerJsonOnly ||
+      opts.providerEnv?.length ||
+      opts.providerPassEnv?.length ||
+      opts.providerTrustedDir?.length ||
+      opts.providerAllowInsecurePath ||
+      opts.providerAllowSymlinkCommand,
   );
 }
 

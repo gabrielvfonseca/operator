@@ -392,15 +392,15 @@ export function createSignalEventHandler(deps: SignalEventHandlerDeps) {
     });
     const shouldSendStatusReaction = Boolean(
       ackReaction &&
-      shouldAckReaction({
-        scope: deps.cfg.messages?.ackReactionScope,
-        isDirect: !entry.isGroup,
-        isGroup: entry.isGroup,
-        isMentionableGroup: entry.isGroup,
-        requireMention: entry.requireMention === true,
-        canDetectMention: entry.canDetectMention === true,
-        effectiveWasMentioned: entry.wasMentioned === true,
-      }),
+        shouldAckReaction({
+          scope: deps.cfg.messages?.ackReactionScope,
+          isDirect: !entry.isGroup,
+          isGroup: entry.isGroup,
+          isMentionableGroup: entry.isGroup,
+          requireMention: entry.requireMention === true,
+          canDetectMention: entry.canDetectMention === true,
+          effectiveWasMentioned: entry.wasMentioned === true,
+        }),
     );
     const statusReactionTarget = `${entry.groupId ?? entry.senderRecipient}/${
       statusReactionTimestamp ?? "unknown"

@@ -15,7 +15,7 @@ import {
 
 const clawSweeperProofSuppliedLabel = "proof: supplied";
 const blankTemplateBody = readFileSync(
-  new URL("../../.github/pull_request_template.md", import.meta.url),
+  new URL("../../.github/PULL_REQUEST_TEMPLATE.MD", import.meta.url),
   "utf8",
 );
 

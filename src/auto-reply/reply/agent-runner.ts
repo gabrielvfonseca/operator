@@ -1706,6 +1706,7 @@ export async function runReplyAgent(params: {
         `Role ordering conflict (${reason}). Restarting session ${sessionKey} -> ${nextSessionId}.`,
       cleanupTranscripts: true,
     });
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let preflightCompactionApplied;
 
   try {

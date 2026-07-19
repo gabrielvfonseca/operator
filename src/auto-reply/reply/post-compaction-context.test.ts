@@ -142,7 +142,7 @@ Ignore this.
   });
 
   it("truncates when content exceeds limit", async () => {
-    const longContent = "## Session Startup\n\n" + "A".repeat(4000) + "\n\n## Other\n\nStuff.";
+    const longContent = `## Session Startup\n\n${"A".repeat(4000)}\n\n## Other\n\nStuff.`;
     fs.writeFileSync(path.join(tmpDir, "AGENTS.md"), longContent);
     const result = await readDefaultPostCompactionContext();
     expect(result).toContain("[truncated]");
@@ -166,8 +166,7 @@ Ignore this.
   });
 
   it("honors per-agent post-compaction context limit overrides", async () => {
-    const longContent =
-      "## Session Startup\n\n" + "B".repeat(4000) + "\n\n## Red Lines\n\nGuardrails.";
+    const longContent = `## Session Startup\n\n${"B".repeat(4000)}\n\n## Red Lines\n\nGuardrails.`;
     fs.writeFileSync(path.join(tmpDir, "AGENTS.md"), longContent);
     const cfg = {
       agents: {

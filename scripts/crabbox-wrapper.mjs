@@ -67,7 +67,7 @@ function commandCandidates(command, platform) {
   return [`${command}.exe`, `${command}.cmd`, `${command}.bat`, `${command}.com`, command];
 }
 
-function resolveCrabboxBinary(env, platform) {
+function resolveCrabboxBinary(_env, platform) {
   const base = resolve(repoRoot, "../crabbox/bin/crabbox");
   for (const candidate of commandCandidates(base, platform)) {
     if (isExecutableFile(candidate, platform)) {
@@ -2225,17 +2225,21 @@ function remotePosixJsEnvBootstrap() {
     'while [ "$#" -gt 0 ]; do',
     'case "$1" in',
     '-i|--ignore-environment) operator_env_ignore=1; operator_env_args+=("$1"); shift ;;',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     '-S|--split-string|-S*|--split-string=*) command env "${operator_env_args[@]}" "$@"; return ;;',
     '-[!-]*i*) operator_env_ignore=1; operator_env_args+=("$1"); shift ;;',
     '-u|--unset|-C|--chdir) operator_env_args+=("$1"); shift; if [ "$#" -gt 0 ]; then operator_env_args+=("$1"); shift; fi ;;',
     '--unset=*|--chdir=*) operator_env_args+=("$1"); shift ;;',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'PATH=*) if [ "$operator_env_ignore" = "1" ]; then operator_env_args+=("PATH=${OPERATOR_CRABBOX_BOOTSTRAP_PATH:-$PATH}:${1#PATH=}"); else operator_env_args+=("$1"); fi; operator_env_path_seen=1; shift ;;',
     '[A-Za-z_]*=*) operator_env_args+=("$1"); shift ;;',
     '--) operator_env_args+=("--"); shift; break ;;',
     "*) break ;;",
     "esac;",
     "done;",
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'if [ "$operator_env_ignore" = "1" ] && [ "$operator_env_path_seen" = "0" ]; then operator_env_args+=("PATH=${OPERATOR_CRABBOX_BOOTSTRAP_PATH:-$PATH}"); fi;',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'command env "${operator_env_args[@]}" "$@";',
     "};",
   ];
@@ -2245,22 +2249,30 @@ function remoteAwsMacosJsBootstrap({ packageManager = false, bun = false } = {})
   const nodeVersion = process.env.OPERATOR_CRABBOX_MACOS_NODE_VERSION?.trim() || "24.15.0";
   const bootstrap = [
     "operator_crabbox_bootstrap_macos_js() {",
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'tool_root="${OPERATOR_CRABBOX_MACOS_TOOLCHAIN_DIR:-$HOME/.operator-crabbox-toolchain}";',
     `node_version=${shellQuote(nodeVersion)};`,
     'arch="$(uname -m)";',
     'case "$arch" in arm64) node_arch=arm64 ;; x86_64) node_arch=x64 ;; *) echo "unsupported macOS arch: $arch" >&2; return 2 ;; esac;',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'macos_locale="${OPERATOR_CRABBOX_MACOS_LOCALE:-en_US.UTF-8}";',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'case "${LANG:-}" in C.UTF-8|C.utf8|c.UTF-8|c.utf8) export LANG="$macos_locale" ;; esac;',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'case "${LC_ALL:-}" in C.UTF-8|C.utf8|c.UTF-8|c.utf8) export LC_ALL="$macos_locale" ;; esac;',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'case "${LC_CTYPE:-}" in C.UTF-8|C.utf8|c.UTF-8|c.utf8) export LC_CTYPE="$macos_locale" ;; esac;',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'if [ -z "${TMPDIR:-}" ]; then export TMPDIR="/tmp"; fi;',
     'if [ ! -d "$TMPDIR" ]; then mkdir -p "$TMPDIR" 2>/dev/null || export TMPDIR="/tmp"; fi;',
     'if [ ! -d "$TMPDIR" ]; then echo "usable TMPDIR not found: $TMPDIR" >&2; return 1; fi;',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'node_dir="$tool_root/node-v${node_version}-darwin-${node_arch}";',
     'ready_marker="$node_dir/.operator-crabbox-node-ready";',
     'export PATH="$node_dir/bin:$PATH";',
     'if [ ! -x "$node_dir/bin/node" ] || [ ! -f "$ready_marker" ]; then',
     'mkdir -p "$tool_root" || { status=$?; return "$status"; };',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'install_lock="$tool_root/.node-${node_version}-${node_arch}.lock";',
     "lock_acquired=0;",
     "lock_deadline=$((SECONDS + 300));",
@@ -2279,7 +2291,9 @@ function remoteAwsMacosJsBootstrap({ packageManager = false, bun = false } = {})
     'release_install_lock() { if [ "$lock_acquired" = "1" ]; then rm -rf "$install_lock" 2>/dev/null || true; fi; };',
     'if [ ! -x "$node_dir/bin/node" ] || [ ! -f "$ready_marker" ]; then',
     'tmp_dir="$(mktemp -d)" || { release_install_lock; return 1; };',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'pkg="node-v${node_version}-darwin-${node_arch}.tar.gz";',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'base_url="https://nodejs.org/dist/v${node_version}";',
     'curl -fsSL --connect-timeout 10 --max-time 300 --retry 2 --retry-delay 2 -o "$tmp_dir/$pkg" "$base_url/$pkg" || { status=$?; release_install_lock; rm -rf "$tmp_dir"; return "$status"; };',
     'curl -fsSL --connect-timeout 10 --max-time 60 --retry 2 --retry-delay 2 -o "$tmp_dir/SHASUMS256.txt" "$base_url/SHASUMS256.txt" || { status=$?; release_install_lock; rm -rf "$tmp_dir"; return "$status"; };',
@@ -2296,7 +2310,9 @@ function remoteAwsMacosJsBootstrap({ packageManager = false, bun = false } = {})
   ];
   if (packageManager) {
     bootstrap.push(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'export COREPACK_HOME="${COREPACK_HOME:-$tool_root/corepack}";',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'export PNPM_HOME="${PNPM_HOME:-$tool_root/pnpm-home}";',
       'mkdir -p "$COREPACK_HOME" "$PNPM_HOME" || return 1;',
       'export PATH="$PNPM_HOME:$PATH";',
@@ -2308,11 +2324,13 @@ function remoteAwsMacosJsBootstrap({ packageManager = false, bun = false } = {})
   if (bun) {
     bootstrap.push(
       `bun_version=${shellQuote(awsMacosBunVersion)};`,
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'bun_root="$tool_root/bun-v${bun_version}";',
       'bun_ready_marker="$bun_root/.operator-crabbox-bun-ready";',
       'export PATH="$bun_root/bin:$PATH";',
       'if [ ! -x "$bun_root/bin/bun" ] || [ ! -f "$bun_ready_marker" ]; then',
       'mkdir -p "$tool_root" || { status=$?; return "$status"; };',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'bun_install_lock="$tool_root/.bun-${bun_version}.lock";',
       "bun_lock_acquired=0;",
       "bun_lock_deadline=$((SECONDS + 300));",
@@ -2332,6 +2350,7 @@ function remoteAwsMacosJsBootstrap({ packageManager = false, bun = false } = {})
       'if [ ! -x "$bun_root/bin/bun" ] || [ ! -f "$bun_ready_marker" ]; then',
       'rm -rf "$bun_root" || { status=$?; release_bun_install_lock; return "$status"; };',
       'mkdir -p "$bun_root" || { status=$?; release_bun_install_lock; return "$status"; };',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'npm install --global --prefix "$bun_root" --fetch-timeout=120000 --fetch-retries=2 --fetch-retry-mintimeout=2000 --fetch-retry-maxtimeout=15000 "bun@${bun_version}" || { status=$?; release_bun_install_lock; return "$status"; };',
       'touch "$bun_ready_marker" || { status=$?; release_bun_install_lock; return "$status"; };',
       "fi;",
@@ -2349,18 +2368,22 @@ function remoteWsl2JsBootstrap({ packageManager = false } = {}) {
   const nodeVersion = process.env.OPERATOR_CRABBOX_WSL2_NODE_VERSION?.trim() || "24.15.0";
   const bootstrap = [
     "operator_crabbox_bootstrap_wsl2_js() {",
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'tool_root="${OPERATOR_CRABBOX_WSL2_TOOLCHAIN_DIR:-$HOME/.operator-crabbox-toolchain}";',
     `node_version=${shellQuote(nodeVersion)};`,
     'arch="$(uname -m)";',
     'case "$arch" in arm64|aarch64) node_arch=arm64 ;; x86_64|amd64) node_arch=x64 ;; *) echo "unsupported WSL2 arch: $arch" >&2; return 2 ;; esac;',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'if [ -z "${TMPDIR:-}" ]; then export TMPDIR="/tmp"; fi;',
     'if [ ! -d "$TMPDIR" ]; then mkdir -p "$TMPDIR" 2>/dev/null || export TMPDIR="/tmp"; fi;',
     'if [ ! -d "$TMPDIR" ]; then echo "usable TMPDIR not found: $TMPDIR" >&2; return 1; fi;',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'node_dir="$tool_root/node-v${node_version}-linux-${node_arch}";',
     'ready_marker="$node_dir/.operator-crabbox-node-ready";',
     'export PATH="$node_dir/bin:$PATH";',
     'if [ ! -x "$node_dir/bin/node" ] || [ ! -f "$ready_marker" ]; then',
     'mkdir -p "$tool_root" || { status=$?; return "$status"; };',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'install_lock="$tool_root/.node-${node_version}-${node_arch}.lock";',
     "lock_acquired=0;",
     "lock_deadline=$((SECONDS + 300));",
@@ -2379,7 +2402,9 @@ function remoteWsl2JsBootstrap({ packageManager = false } = {}) {
     'release_install_lock() { if [ "$lock_acquired" = "1" ]; then rm -rf "$install_lock" 2>/dev/null || true; fi; };',
     'if [ ! -x "$node_dir/bin/node" ] || [ ! -f "$ready_marker" ]; then',
     'tmp_dir="$(mktemp -d)" || { release_install_lock; return 1; };',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'pkg="node-v${node_version}-linux-${node_arch}.tar.gz";',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'base_url="https://nodejs.org/dist/v${node_version}";',
     'curl -fsSL --connect-timeout 10 --max-time 300 --retry 2 --retry-delay 2 -o "$tmp_dir/$pkg" "$base_url/$pkg" || { status=$?; release_install_lock; rm -rf "$tmp_dir"; return "$status"; };',
     'curl -fsSL --connect-timeout 10 --max-time 60 --retry 2 --retry-delay 2 -o "$tmp_dir/SHASUMS256.txt" "$base_url/SHASUMS256.txt" || { status=$?; release_install_lock; rm -rf "$tmp_dir"; return "$status"; };',
@@ -2396,7 +2421,9 @@ function remoteWsl2JsBootstrap({ packageManager = false } = {}) {
   ];
   if (packageManager) {
     bootstrap.push(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'export COREPACK_HOME="${COREPACK_HOME:-$tool_root/corepack}";',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'export PNPM_HOME="${PNPM_HOME:-$tool_root/pnpm-home}";',
       'mkdir -p "$COREPACK_HOME" "$PNPM_HOME" || return 1;',
       'export PATH="$PNPM_HOME:$PATH";',
@@ -2803,6 +2830,7 @@ function remoteAwsMacosSwiftBootstrap() {
     'operator_xcodebuild_version="$(xcodebuild -version 2>&1)" || { printf "%s\\n" "$operator_xcodebuild_version" >&2; echo "[crabbox] Operator macOS app proof requires Xcode 26.x; active developer directory does not provide usable xcodebuild." >&2; return 2; };',
     'printf "%s\\n" "$operator_xcodebuild_version" >&2;',
     'operator_xcode_major="$(printf "%s\\n" "$operator_xcodebuild_version" | sed -nE "s/^Xcode ([0-9]+)(\\..*)?$/\\1/p" | head -n 1)";',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'if [ "$operator_xcode_major" != "26" ]; then echo "[crabbox] Operator macOS app proof requires Xcode 26.x; current xcodebuild is ${operator_xcode_major:-unknown}." >&2; return 2; fi;',
     "};",
     "operator_crabbox_require_macos_swift_62",
@@ -2907,6 +2935,7 @@ function createAwsMacosScriptStdinWrapper(script) {
   const delimiterValue = uniqueHereDocDelimiter(script);
   return [
     `${remoteAwsMacosScriptBootstrap(requirements)} || exit $?`,
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'tmp_script="$(mktemp "${TMPDIR:-/tmp}/operator-crabbox-script.XXXXXX")" || exit $?',
     'cleanup_operator_crabbox_script() { rm -f "$tmp_script"; }',
     "trap cleanup_operator_crabbox_script EXIT",
@@ -3354,6 +3383,7 @@ if (canonicalProvider === "blacksmith-testbox") {
       [
         `[crabbox] provider=blacksmith-testbox requires Crabbox >= ${formatVersionTuple(minimumBlacksmithCrabboxVersion)} for current Testbox sync, queue, and cleanup behavior.`,
         `[crabbox] selected binary reported version=${version.text || "unknown"}.`,
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "[crabbox] if using ../crabbox, rebuild it: version=$(git -C ../crabbox describe --tags --always --dirty | sed 's/^v//') && go build -C ../crabbox -trimpath -ldflags \"-s -w -X github.com/openclaw/crabbox/internal/cli.version=${version}\" -o bin/crabbox ./cmd/crabbox",
       ].join("\n"),
     );

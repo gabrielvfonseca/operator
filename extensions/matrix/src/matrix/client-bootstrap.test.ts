@@ -40,8 +40,9 @@ let withResolvedRuntimeMatrixClient: typeof import("./client-bootstrap.js").with
 
 describe("client bootstrap", () => {
   beforeAll(async () => {
-    ({ resolveRuntimeMatrixClientWithReadiness, withResolvedRuntimeMatrixClient } =
-      await import("./client-bootstrap.js"));
+    ({ resolveRuntimeMatrixClientWithReadiness, withResolvedRuntimeMatrixClient } = await import(
+      "./client-bootstrap.js"
+    ));
   });
 
   beforeEach(() => {

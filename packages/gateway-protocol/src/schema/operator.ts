@@ -57,6 +57,7 @@ export const SystemAgentChatResultSchema = closedObject({
  */
 export const SystemAgentSetupDetectParamsSchema = closedObject({});
 
+// biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
 const ProviderAutoSetupInferenceKind = Type.TemplateLiteral("provider-auto:${string}", {
   pattern: "^provider-auto:.+$",
 });

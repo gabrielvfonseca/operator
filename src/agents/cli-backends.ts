@@ -202,11 +202,7 @@ function addCliRuntimeModelBinding(
 
 /** Lists model-provider to CLI-runtime bindings from runtime and optional setup registries. */
 export function listCliRuntimeModelBackendBindings(
-  params: {
-    config?: OperatorConfig;
-    env?: NodeJS.ProcessEnv;
-    includeSetupRegistry?: boolean;
-  } = {},
+  params: { config?: OperatorConfig; env?: NodeJS.ProcessEnv; includeSetupRegistry?: boolean } = {},
 ): CliRuntimeModelBackendBinding[] {
   const bindings = new Map<string, CliRuntimeModelBackendBinding>();
   for (const backend of cliBackendsDeps.resolveRuntimeCliBackends()) {
@@ -235,11 +231,7 @@ export function listCliRuntimeModelBackendBindings(
 
 /** Lists CLI runtime ids that alias canonical model providers. */
 export function listCliRuntimeProviderIds(
-  params: {
-    config?: OperatorConfig;
-    env?: NodeJS.ProcessEnv;
-    includeSetupRegistry?: boolean;
-  } = {},
+  params: { config?: OperatorConfig; env?: NodeJS.ProcessEnv; includeSetupRegistry?: boolean } = {},
 ): string[] {
   // Only CLI backends with a canonical modelProvider are runtime aliases that
   // should be hidden from model-provider pickers. Standalone CLI backends own

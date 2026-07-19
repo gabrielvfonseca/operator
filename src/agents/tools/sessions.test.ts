@@ -78,8 +78,8 @@ vi.mock("./sessions-send-tool.a2a.js", () => ({
 
 let createSessionsListTool: typeof import("./sessions-list-tool.js").createSessionsListTool;
 let createSessionsSendTool: typeof import("./sessions-send-tool.js").createSessionsSendTool;
-let resolveAnnounceTarget: (typeof import("./sessions-announce-target.js"))["resolveAnnounceTarget"];
-let setActivePluginRegistry: (typeof import("../../plugins/runtime.js"))["setActivePluginRegistry"];
+let resolveAnnounceTarget: typeof import("./sessions-announce-target.js")["resolveAnnounceTarget"];
+let setActivePluginRegistry: typeof import("../../plugins/runtime.js")["setActivePluginRegistry"];
 const MAIN_AGENT_SESSION_KEY = "agent:main:main";
 const MAIN_AGENT_CHANNEL = "whatsapp";
 const resolveSessionConversationStub: NonNullable<

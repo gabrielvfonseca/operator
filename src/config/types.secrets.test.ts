@@ -3,7 +3,9 @@ import { describe, expect, it } from "vitest";
 import { parseEnvTemplateSecretRef } from "./types.secrets.js";
 
 describe("parseEnvTemplateSecretRef", () => {
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   it("parses ${VAR} template syntax", () => {
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(parseEnvTemplateSecretRef("${OPENAI_API_KEY}")).toEqual({
       source: "env",
       provider: "default",

@@ -316,8 +316,8 @@ function createLazyGoogleRealtimeVoiceProvider(): RealtimeVoiceProviderPlugin {
     isConfigured: ({ cfg, providerConfig }) =>
       Boolean(
         normalizeOptionalString(providerConfig.apiKey) ??
-        normalizeOptionalString(cfg?.models?.providers?.google?.apiKey) ??
-        resolveGoogleRealtimeEnvApiKey(),
+          normalizeOptionalString(cfg?.models?.providers?.google?.apiKey) ??
+          resolveGoogleRealtimeEnvApiKey(),
       ),
     createBridge: createLazyGoogleRealtimeVoiceBridge,
     createBrowserSession: async (req) => {

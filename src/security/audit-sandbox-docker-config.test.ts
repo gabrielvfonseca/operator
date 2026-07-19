@@ -110,7 +110,7 @@ describe("security audit sandbox docker config", () => {
                 sandbox: {
                   mode: "all",
                   docker: {
-                    binds: [path.join(isolatedHome, ".docker", "config.json") + ":/mnt/docker:ro"],
+                    binds: [`${path.join(isolatedHome, ".docker", "config.json")}:/mnt/docker:ro`],
                   },
                 },
               },

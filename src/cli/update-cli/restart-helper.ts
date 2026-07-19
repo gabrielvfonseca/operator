@@ -73,7 +73,9 @@ export async function prepareRestartScript(
   const timestamp = Date.now();
   const platform = process.platform;
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let scriptContent;
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let filename;
 
   try {

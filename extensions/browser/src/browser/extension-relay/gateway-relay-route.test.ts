@@ -169,7 +169,7 @@ describe("handleGatewayExtensionUpgrade", () => {
     getBrowserControlStateMock.mockReturnValue(stateWithExtensionProfile());
     const { socket, writes } = fakeSocket();
     await handleGatewayExtensionUpgrade(
-      req("/browser/extension?token=" + TOKEN),
+      req(`/browser/extension?token=${TOKEN}`),
       socket,
       Buffer.alloc(0),
     );

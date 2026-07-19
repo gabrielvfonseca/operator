@@ -1784,7 +1784,7 @@ function parseClawHubPromotionCore(
   if (pluginNames && pluginNames.length > 0) {
     for (const name of pluginNames) {
       const parsed = parseRegistryNpmSpec(name);
-      if (!parsed || parsed.selectorKind !== "none" || parsed.name !== name) {
+      if (parsed?.selectorKind !== "none" || parsed.name !== name) {
         throw new Error(
           `Malformed ClawHub ${context}: pluginNames must contain npm package names.`,
         );
@@ -1808,11 +1808,7 @@ function parseClawHubPromotion(value: unknown): ClawHubPromotion {
 }
 
 export async function fetchClawHubPromotions(
-  params: {
-    baseUrl?: string;
-    timeoutMs?: number;
-    fetchImpl?: FetchLike;
-  } = {},
+  params: { baseUrl?: string; timeoutMs?: number; fetchImpl?: FetchLike } = {},
 ): Promise<ClawHubPromotion[]> {
   const response = await fetchJson<unknown>({
     baseUrl: params.baseUrl,
@@ -1900,12 +1896,7 @@ type ClawHubPromotionsFeedFetchResult =
   | { status: "ok"; feed: ClawHubPromotionsFeed; payload: string; etag?: string };
 
 export async function fetchClawHubPromotionsFeed(
-  params: {
-    etag?: string;
-    baseUrl?: string;
-    timeoutMs?: number;
-    fetchImpl?: FetchLike;
-  } = {},
+  params: { etag?: string; baseUrl?: string; timeoutMs?: number; fetchImpl?: FetchLike } = {},
 ): Promise<ClawHubPromotionsFeedFetchResult> {
   const { response, url } = await clawhubRequest({
     baseUrl: params.baseUrl,

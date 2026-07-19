@@ -242,7 +242,7 @@ export async function executeSystemAgentOperation(
       runtime.log(
         [
           `Connecting ${operation.channel} needs an interactive session.`,
-          "Run `openclaw setup` and say `connect " + operation.channel + "`,",
+          `Run \`openclaw setup\` and say \`connect ${operation.channel}\`,`,
           "or run `openclaw channels add` for the terminal wizard.",
         ].join("\n"),
       );

@@ -94,6 +94,7 @@ function main() {
   const legacyCompatOffenders: string[] = [];
   const legacyBroadSubpathOffenders = new Map<string, string[]>();
   for (const entryFile of filesToCheck) {
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let content;
     try {
       content = fs.readFileSync(entryFile, "utf8");

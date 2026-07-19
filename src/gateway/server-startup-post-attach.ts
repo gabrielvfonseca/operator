@@ -489,8 +489,9 @@ function scheduleTranscriptsAutoStartSidecar(params: {
     name: "sidecars.transcripts-auto-start",
     log: params.log,
     run: async (isStopped) => {
-      const { createTranscriptsAutoStartService } =
-        await import("../agents/tools/transcripts-tool.js");
+      const { createTranscriptsAutoStartService } = await import(
+        "../agents/tools/transcripts-tool.js"
+      );
       if (isStopped()) {
         return;
       }

@@ -35,9 +35,7 @@ const AGENT_TURN_TIMING_WARN_STAGE_MS = 500;
 
 /** Creates a no-overhead pass-through unless reply profiling is enabled. */
 export function createAgentTurnTimingTracker(
-  options: {
-    profilerEnabled?: boolean;
-  } = {},
+  options: { profilerEnabled?: boolean } = {},
 ): AgentTurnTimingTracker {
   if (!options.profilerEnabled) {
     // This tracker wraps the agent-turn hot path. Without an explicit profiler

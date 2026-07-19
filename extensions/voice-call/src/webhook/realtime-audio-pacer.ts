@@ -143,6 +143,7 @@ export class RealtimeAudioPacer {
     }
 
     let delayMs = 0;
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let sent;
     if (item.type === "audio") {
       this.queuedAudioBytes = Math.max(0, this.queuedAudioBytes - item.chunk.length);

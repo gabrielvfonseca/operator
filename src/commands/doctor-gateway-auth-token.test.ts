@@ -90,6 +90,7 @@ describe("resolveGatewayAuthTokenForService", () => {
       {
         gateway: {
           auth: {
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             token: "${CUSTOM_GATEWAY_TOKEN}",
           },
         },

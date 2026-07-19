@@ -261,7 +261,7 @@ function collectMatrixSecurityWarningsForAccount(params: {
 
 function normalizeMatrixAcpConversationId(conversationId: string) {
   const target = resolveMatrixTargetIdentity(conversationId);
-  if (!target || target.kind !== "room") {
+  if (target?.kind !== "room") {
     return null;
   }
   return { conversationId: target.id };
@@ -627,17 +627,13 @@ export const matrixPlugin: ChannelPlugin<ResolvedMatrixAccount, MatrixProbe> =
       doctor: matrixDoctor,
       heartbeat: {
         sendTyping: async ({ cfg, to, accountId }) => {
-          await (
-            await loadMatrixChannelRuntime()
-          ).sendTypingMatrix(to, true, {
+          await (await loadMatrixChannelRuntime()).sendTypingMatrix(to, true, {
             cfg: cfg as CoreConfig,
             ...(accountId ? { accountId } : {}),
           });
         },
         clearTyping: async ({ cfg, to, accountId }) => {
-          await (
-            await loadMatrixChannelRuntime()
-          ).sendTypingMatrix(to, false, {
+          await (await loadMatrixChannelRuntime()).sendTypingMatrix(to, false, {
             cfg: cfg as CoreConfig,
             ...(accountId ? { accountId } : {}),
           });

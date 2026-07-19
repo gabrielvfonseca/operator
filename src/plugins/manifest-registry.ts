@@ -75,7 +75,7 @@ function resolvePluginSourcePath(sourcePath: string): string {
     return sourcePath;
   }
   if (sourcePath.endsWith(".ts")) {
-    const jsPath = sourcePath.slice(0, -3) + ".js";
+    const jsPath = `${sourcePath.slice(0, -3)}.js`;
     if (fs.existsSync(jsPath)) {
       return jsPath;
     }

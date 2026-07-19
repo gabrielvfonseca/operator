@@ -311,7 +311,7 @@ describe("rewriteTranscriptEntriesInSessionManager", () => {
       { type: "text", text: "[exact replacement]" },
     ]);
     const replayedAssistant = branchMessages[2];
-    if (!replayedAssistant || replayedAssistant.role !== "assistant") {
+    if (replayedAssistant?.role !== "assistant") {
       throw new Error("expected rewritten suffix to replay the assistant summary");
     }
     expect(replayedAssistant.content).toEqual([{ type: "text", text: "summarized" }]);

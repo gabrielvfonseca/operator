@@ -167,7 +167,7 @@ function normalizeInstallE2eAgentOutput(output: string) {
 function extractInstallSmokeUpdateJsonParser(): string {
   const script = readFileSync(SMOKE_RUNNER_PATH, "utf8");
   const match = script.match(
-    /UPDATE_JSON="\$UPDATE_JSON" \\\n[\s\S]*?node - <<'NODE'\n([\s\S]*?)\nNODE\n\n  echo "==> Verify updated version"/u,
+    /UPDATE_JSON="\$UPDATE_JSON" \\\n[\s\S]*?node - <<'NODE'\n([\s\S]*?)\nNODE\n\n {2}echo "==> Verify updated version"/u,
   );
   if (!match) {
     throw new Error("install smoke update JSON parser was not found");
@@ -407,11 +407,13 @@ describe("test-install-sh-docker", () => {
     const script = readFileSync(SCRIPT_PATH, "utf8");
 
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'UPDATE_EXPECT_VERSION="${OPENCLAW_INSTALL_SMOKE_UPDATE_EXPECT_VERSION:-}"',
     );
     expect(script).toContain('if [[ -z "$UPDATE_EXPECT_VERSION" ]]; then');
     expect(script).toContain('UPDATE_EXPECT_VERSION="$packed_update_version"');
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "packed update version ${packed_update_version} does not match expected ${UPDATE_EXPECT_VERSION}",
     );
   });
@@ -422,16 +424,21 @@ describe("test-install-sh-docker", () => {
     const workflow = readFileSync(INSTALL_SMOKE_WORKFLOW_PATH, "utf8");
 
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'UPDATE_BASELINE_VERSION="${OPENCLAW_INSTALL_SMOKE_UPDATE_BASELINE:-latest}"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('quiet_npm pack "${PACKAGE_NAME}@${UPDATE_BASELINE_VERSION}"');
     expect(script).toContain('UPDATE_BASELINE_VERSION="$(');
     expect(runner).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'UPDATE_BASELINE_VERSION="${OPENCLAW_INSTALL_UPDATE_BASELINE:-latest}"',
     );
     expect(runner).toContain("resolve_update_baseline_version");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(runner).toContain('quiet_npm view "${PACKAGE_NAME}@${UPDATE_BASELINE_VERSION}" version');
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "OPENCLAW_INSTALL_SMOKE_UPDATE_BASELINE: ${{ inputs.update_baseline_version || 'latest' }}",
     );
   });
@@ -474,6 +481,7 @@ describe("test-install-sh-docker", () => {
       [
         "#!/usr/bin/env bash",
         "set -euo pipefail",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'case "${1:-}" in',
         "  --version)",
         "    printf 'OpenClaw v2026.6.21-beta.1\\r\\n'",
@@ -526,17 +534,22 @@ describe("test-install-sh-docker", () => {
     const packageHelper = readFileSync(DOCKER_E2E_PACKAGE_HELPER_PATH, "utf8");
     const dockerfile = readFileSync("Dockerfile", "utf8");
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('ROOT_DIR="${OPENCLAW_INSTALL_SMOKE_SOURCE_DIR:-$HARNESS_ROOT}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('UPDATE_DIST_IMAGE="${OPENCLAW_INSTALL_SMOKE_UPDATE_DIST_IMAGE:-}"');
     expect(script).toContain("docker_e2e_restore_package_dist_from_image");
     expect(script).toContain('source "$HARNESS_ROOT/scripts/lib/docker-e2e-package.sh"');
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'DOCKER_COMMAND_TIMEOUT="${DOCKER_COMMAND_TIMEOUT:-${OPENCLAW_INSTALL_SMOKE_DOCKER_COMMAND_TIMEOUT:-600s}}"',
     );
     expect(packageHelper).toContain('container_id="$(docker_e2e_docker_cmd create "$image")"');
     expect(packageHelper).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'docker_e2e_docker_cmd cp "${container_id}:/app/dist" "$temp_dir/dist"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(packageHelper).toContain('"${container_id}:/app/node_modules/@operator/ai/dist"');
     expect(packageHelper).toContain('"$temp_dir/ai-dist"');
     expect(packageHelper).toContain('mv "$temp_dir/ai-dist" "$ai_dist_dir"');
@@ -547,6 +560,7 @@ describe("test-install-sh-docker", () => {
     expect(packageHelper).toContain('mv "$backup_dir" "$restore_root/dist"');
     expect(packageHelper).toContain('docker_e2e_docker_cmd rm -f "$container_id"');
     expect(script).not.toContain('container_id="$(docker create "$image")"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).not.toContain('docker cp "${container_id}:/app/dist" "$ROOT_DIR/dist"');
     expect(packageHelper).toContain(
       'echo "==> Reuse package build artifacts from Docker image: $image"',
@@ -632,6 +646,7 @@ printf 'status=%s\\n' "$status"
     const script = readFileSync(SCRIPT_PATH, "utf8");
 
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'INSTALL_SMOKE_DOCKER_RUN_TIMEOUT="${OPENCLAW_INSTALL_SMOKE_DOCKER_RUN_TIMEOUT:-2700s}"',
     );
     expect(script).toContain("run_install_smoke_container()");
@@ -695,8 +710,10 @@ printf 'status=%s\\n' "$status"
   it("passes the baked browser build arg through Docker setup", () => {
     const script = readFileSync(DOCKER_SETUP_PATH, "utf8");
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('export OPENCLAW_INSTALL_BROWSER="${OPENCLAW_INSTALL_BROWSER:-}"');
     expect(script).toContain("OPENCLAW_INSTALL_BROWSER \\");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('--build-arg "OPENCLAW_INSTALL_BROWSER=${OPENCLAW_INSTALL_BROWSER}"');
   });
 
@@ -705,6 +722,7 @@ printf 'status=%s\\n' "$status"
     const timeoutHelper = readFileSync(HOST_TIMEOUT_PATH, "utf8");
 
     expect(script).toContain('source "$ROOT_DIR/scripts/lib/host-timeout.sh"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('DOCKER_PULL_TIMEOUT="${OPENCLAW_DOCKER_SETUP_PULL_TIMEOUT:-600s}"');
     expect(script).toContain("run_docker_pull()");
     expect(script).toContain(
@@ -720,6 +738,7 @@ printf 'status=%s\\n' "$status"
     const script = readFileSync(PODMAN_SETUP_PATH, "utf8");
 
     expect(script).toContain('source "$REPO_PATH/scripts/lib/host-timeout.sh"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('PODMAN_PULL_TIMEOUT="${OPENCLAW_PODMAN_SETUP_PULL_TIMEOUT:-600s}"');
     expect(script).toContain("run_podman_pull()");
     expect(script).toContain(
@@ -733,6 +752,7 @@ printf 'status=%s\\n' "$status"
     const script = readFileSync(PODMAN_SETUP_PATH, "utf8");
 
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'PODMAN_BUILD_TIMEOUT="${OPENCLAW_PODMAN_SETUP_BUILD_TIMEOUT:-1800s}"',
     );
     expect(script).toContain("run_podman_build()");
@@ -744,6 +764,7 @@ printf 'status=%s\\n' "$status"
   it("bounds detached Podman launches without timing out onboarding", () => {
     const script = readFileSync(PODMAN_RUN_PATH, "utf8");
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('PODMAN_RUN_TIMEOUT="${OPENCLAW_PODMAN_RUN_TIMEOUT:-600s}"');
     expect(script).toContain("OPENCLAW_PODMAN_RUN_TIMEOUT|OPENCLAW_PODMAN_GATEWAY_HOST_PORT");
     expect(script).toContain('source "$SCRIPT_DIR/lib/host-timeout.sh"');
@@ -764,15 +785,19 @@ printf 'status=%s\\n' "$status"
       "python3 -m pip install --no-cache-dir --break-system-packages $OPENCLAW_IMAGE_PIP_PACKAGES",
     );
     expect(dockerSetup).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'export OPENCLAW_IMAGE_PIP_PACKAGES="${OPENCLAW_IMAGE_PIP_PACKAGES:-}"',
     );
     expect(dockerSetup).toContain("OPENCLAW_IMAGE_PIP_PACKAGES \\");
     expect(dockerSetup).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '--build-arg "OPENCLAW_IMAGE_PIP_PACKAGES=${OPENCLAW_IMAGE_PIP_PACKAGES}"',
     );
     expect(dockerSetup).not.toContain("OPENCLAW_DOCKER_PIP_PACKAGES");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(podmanSetup).toContain('OPENCLAW_IMAGE_PIP_PACKAGES="${OPENCLAW_IMAGE_PIP_PACKAGES:-}"');
     expect(podmanSetup).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'BUILD_ARGS+=(--build-arg "OPENCLAW_IMAGE_PIP_PACKAGES=${OPENCLAW_IMAGE_PIP_PACKAGES}")',
     );
     expect(podmanSetup).not.toContain("OPENCLAW_DOCKER_PIP_PACKAGES");
@@ -786,7 +811,9 @@ printf 'status=%s\\n' "$status"
       expect(setupScript).toContain("scripts/lib/build-metadata.sh");
       expect(setupScript).toContain("openclaw_resolve_git_commit");
       expect(setupScript).toContain("openclaw_resolve_build_timestamp");
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(setupScript).toContain("OPENCLAW_BUILD_TIMESTAMP=${BUILD_TIMESTAMP}");
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(setupScript).toContain("GIT_COMMIT=${BUILD_GIT_COMMIT}");
     }
   });
@@ -823,6 +850,7 @@ printf 'status=%s\\n' "$status"
   it("allows repository branch history and release tags for secret-backed Docker release checks", () => {
     const workflow = readFileSync(LIVE_E2E_WORKFLOW_PATH, "utf8");
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain('git rev-parse --verify "${INPUT_REF}^{commit}"');
     expect(workflow).toContain(
       'git merge-base --is-ancestor "$selected_sha" refs/remotes/origin/main',
@@ -897,6 +925,7 @@ printf 'status=%s\\n' "$status"
     expect(script).toContain("--allow-unreleased-changelog");
     expect(script).toContain("OPENCLAW_INSTALL_SMOKE_ALLOW_UNRELEASED_CHANGELOG");
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'if [[ "${OPENCLAW_INSTALL_SMOKE_ALLOW_UNRELEASED_CHANGELOG:-true}" == "true" ]]',
     );
     expect(script).toContain("package_args+=(--allow-unreleased-changelog)");
@@ -974,6 +1003,7 @@ describe("install-sh E2E runner", () => {
     expect(wrapper).toContain('-e OPENCLAW_INSTALL_E2E_SESSION_SCAN_DEPTH="$SESSION_SCAN_DEPTH"');
     expect(wrapper).toContain('-e OPENCLAW_INSTALL_E2E_SESSION_SCAN_NODES="$SESSION_SCAN_NODES"');
     expect(wrapper).not.toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'OPENCLAW_INSTALL_E2E_OPENAI_PROVIDER_TIMEOUT_SECONDS="${OPENCLAW_INSTALL_E2E_OPENAI_PROVIDER_TIMEOUT_SECONDS:-}"',
     );
   });
@@ -1016,7 +1046,9 @@ describe("install-sh E2E runner", () => {
     expect(script).toContain(
       'OPENAI_PROVIDER_TIMEOUT_SECONDS="$(read_positive_int_env OPENCLAW_INSTALL_E2E_OPENAI_PROVIDER_TIMEOUT_SECONDS "$AGENT_TURN_TIMEOUT_SECONDS")"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('timeout --kill-after=15s "${AGENT_TURN_TIMEOUT_SECONDS}s"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('\\"timeoutSeconds\\":${OPENAI_PROVIDER_TIMEOUT_SECONDS}');
   });
 
@@ -1069,6 +1101,7 @@ describe("install-sh smoke runner", () => {
     expect(script).toContain('if [[ "$interval" == "0" ]]; then');
     expect(script).toContain("run_with_heartbeat");
     expect(script).toContain("npm_install_global");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('timeout --kill-after=30s "${INSTALL_COMMAND_TIMEOUT}s"');
     expect(script).toContain("==> Still running");
     expect(script).toContain("print_install_audit");
@@ -1144,9 +1177,12 @@ describe("install-sh smoke runner", () => {
     const script = readFileSync(SCRIPT_PATH, "utf8");
     const runner = readFileSync(SMOKE_RUNNER_PATH, "utf8");
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('SKIP_NPM_GLOBAL="${OPENCLAW_INSTALL_SMOKE_SKIP_NPM_GLOBAL:-0}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('NPM_CACHE_DIR="${OPENCLAW_INSTALL_SMOKE_NPM_CACHE_DIR:-}"');
     expect(script).toContain("-e npm_config_cache=/npm-cache");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('${NPM_CACHE_DOCKER_ARGS[@]+"${NPM_CACHE_DOCKER_ARGS[@]}"}');
     expect(script).toContain("remove_owned_npm_cache");
     expect(script).toContain('sudo -n rm -rf "$NPM_CACHE_DIR"');
@@ -1202,6 +1238,7 @@ describe("bun global install smoke", () => {
     expect(script).toContain("--allow-unreleased-changelog");
     expect(script).toContain("OPENCLAW_BUN_GLOBAL_SMOKE_ALLOW_UNRELEASED_CHANGELOG");
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'if [[ "${OPENCLAW_BUN_GLOBAL_SMOKE_ALLOW_UNRELEASED_CHANGELOG:-true}" == "true" ]]',
     );
     expect(script).toContain("package_args+=(--allow-unreleased-changelog)");
@@ -1219,12 +1256,15 @@ describe("bun global install smoke", () => {
       'COMMAND_TIMEOUT_MS="$(read_positive_int_env OPENCLAW_BUN_GLOBAL_SMOKE_TIMEOUT_MS 180000)"',
     );
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'DOCKER_COMMAND_TIMEOUT="${DOCKER_COMMAND_TIMEOUT:-${OPENCLAW_BUN_GLOBAL_SMOKE_DOCKER_COMMAND_TIMEOUT:-600s}}"',
     );
     expect(packageHelper).toContain('container_id="$(docker_e2e_docker_cmd create "$image")"');
     expect(packageHelper).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'docker_e2e_docker_cmd cp "${container_id}:/app/dist" "$temp_dir/dist"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(packageHelper).toContain('"${container_id}:/app/node_modules/@operator/ai/dist"');
     expect(packageHelper).toContain('"$temp_dir/ai-dist"');
     expect(packageHelper).toContain('mv "$temp_dir/ai-dist" "$ai_dist_dir"');
@@ -1236,6 +1276,7 @@ describe("bun global install smoke", () => {
     expect(packageHelper).toContain('mv "$backup_dir" "$restore_root/dist"');
     expect(packageHelper).toContain('docker_e2e_docker_cmd rm -f "$container_id"');
     expect(script).not.toContain('container_id="$(docker create "$image")"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).not.toContain('docker cp "${container_id}:/app/dist" "$ROOT_DIR/dist"');
     expect(script).not.toContain('\n  rm -rf "$ROOT_DIR/dist"\n');
   });
@@ -1271,6 +1312,7 @@ describe("bun global install smoke", () => {
     expect(script).toContain("package/node_modules/@operator/ai");
     expect(script).toContain("--strip-components=4");
     expect(script).toContain('npm pack --ignore-scripts --silent --pack-destination "$PACK_DIR"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('overrides: { "@operator/ai": `file:${aiPackageTarball}` }');
     expect(script).not.toContain("--registry");
     expect(script).not.toContain("@openclaw:registry");
@@ -1530,8 +1572,10 @@ chmod +x "$BUN_INSTALL/bin/openclaw"
     expect(workflow).toContain("Run Bun global install image-provider smoke");
     expect(workflow).toContain("bash scripts/e2e/bun-global-install-smoke.sh");
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "OPENCLAW_BUN_GLOBAL_SMOKE_DIST_IMAGE: ${{ needs.root_dockerfile_image.outputs.image_ref }}",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("group: ${{ github.workflow }}-workflow-call-${{ github.run_id }}");
     expect(workflow).toContain("cancel-in-progress: false");
     expect(workflow).not.toContain(
@@ -1597,11 +1641,14 @@ chmod +x "$BUN_INSTALL/bin/openclaw"
     };
 
     expect(step("Checkout trusted installer harness").with).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       repository: "${{ needs.preflight.outputs.workflow_repository }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ref: "${{ needs.preflight.outputs.workflow_sha }}",
       "persist-credentials": false,
     });
     expect(step("Checkout candidate CLI").with).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ref: "${{ needs.preflight.outputs.target_sha }}",
       path: "candidate",
       "persist-credentials": false,
@@ -1610,7 +1657,9 @@ chmod +x "$BUN_INSTALL/bin/openclaw"
       "./.github/actions/setup-node-env",
     );
     expect(step("Run installer docker tests").env).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       OPENCLAW_INSTALL_SMOKE_ALLOW_UNRELEASED_CHANGELOG: "${{ inputs.allow_unreleased_changelog }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       OPENCLAW_INSTALL_SMOKE_SOURCE_DIR: "${{ github.workspace }}/candidate",
     });
     expect(step("Run installer docker tests").run).toBe("bash scripts/test-install-sh-docker.sh");

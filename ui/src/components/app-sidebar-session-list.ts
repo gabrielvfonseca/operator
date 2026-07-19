@@ -85,24 +85,28 @@ export abstract class AppSidebarSessionListElement extends AppSidebarMenusElemen
         >
           <span class="sidebar-recent-session__text">
             <span class="sidebar-recent-session__name hover-marquee">${label}</span>
-            ${subtitle
-              ? html`<span class="sidebar-recent-session__subtitle">${subtitle}</span>`
-              : nothing}
+            ${
+              subtitle
+                ? html`<span class="sidebar-recent-session__subtitle">${subtitle}</span>`
+                : nothing
+            }
           </span>
-          ${session.hasActiveRun
-            ? html`<span
+          ${
+            session.hasActiveRun
+              ? html`<span
                 class="session-run-spinner sidebar-recent-session__state"
                 role="img"
                 aria-label=${t("sessionsView.activeRun")}
                 title=${t("sessionsView.activeRun")}
               ></span>`
-            : session.unread
-              ? html`<span
+              : session.unread
+                ? html`<span
                   class="session-unread-dot sidebar-recent-session__unread"
                   role="img"
                   aria-label=${t("sessionsView.unread")}
                 ></span>`
-              : nothing}
+                : nothing
+          }
           ${renderSessionRowBadges(session)}
         </a>
         <span class="sidebar-recent-session__aside session-row-aside">
@@ -112,12 +116,12 @@ export abstract class AppSidebarSessionListElement extends AppSidebarMenusElemen
               class="session-action session-action--pin"
               data-sidebar-session-pin="true"
               type="button"
-              title=${session.pinned
-                ? t("sessionsView.unpinSession")
-                : t("sessionsView.pinSession")}
-              aria-label=${session.pinned
-                ? t("sessionsView.unpinSession")
-                : t("sessionsView.pinSession")}
+              title=${
+                session.pinned ? t("sessionsView.unpinSession") : t("sessionsView.pinSession")
+              }
+              aria-label=${
+                session.pinned ? t("sessionsView.unpinSession") : t("sessionsView.pinSession")
+              }
               ?disabled=${!this.connected}
               @click=${() => void this.patchSession(session, { pinned: !session.pinned })}
             >
@@ -195,47 +199,62 @@ export abstract class AppSidebarSessionListElement extends AppSidebarMenusElemen
       <div
         class=${sectionClass}
         data-session-section=${section.id}
-        @dragover=${acceptsSessions || group
-          ? (event: DragEvent) => this.handleSessionSectionDragOver(event, section.id, group)
-          : nothing}
-        @dragleave=${acceptsSessions || group
-          ? (event: DragEvent) => this.handleSessionSectionDragLeave(event, section.id, group)
-          : nothing}
-        @drop=${acceptsSessions || group
-          ? (event: DragEvent) => this.handleSessionSectionDrop(event, section.id, group)
-          : nothing}
+        @dragover=${
+          acceptsSessions || group
+            ? (event: DragEvent) => this.handleSessionSectionDragOver(event, section.id, group)
+            : nothing
+        }
+        @dragleave=${
+          acceptsSessions || group
+            ? (event: DragEvent) => this.handleSessionSectionDragLeave(event, section.id, group)
+            : nothing
+        }
+        @drop=${
+          acceptsSessions || group
+            ? (event: DragEvent) => this.handleSessionSectionDrop(event, section.id, group)
+            : nothing
+        }
       >
-        ${showHeader
-          ? html`
+        ${
+          showHeader
+            ? html`
               <div
-                class="sidebar-recent-sessions__head ${group
-                  ? "sidebar-recent-sessions__head--draggable"
-                  : ""}"
+                class="sidebar-recent-sessions__head ${
+                  group ? "sidebar-recent-sessions__head--draggable" : ""
+                }"
                 draggable=${group ? "true" : "false"}
-                @dragstart=${group
-                  ? (event: DragEvent) => {
-                      if (event.dataTransfer) {
-                        writeSessionGroupDragData(event.dataTransfer, group);
-                        this.draggingSessionGroup = group;
+                @dragstart=${
+                  group
+                    ? (event: DragEvent) => {
+                        if (event.dataTransfer) {
+                          writeSessionGroupDragData(event.dataTransfer, group);
+                          this.draggingSessionGroup = group;
+                        }
                       }
-                    }
-                  : nothing}
-                @dragend=${group
-                  ? () => {
-                      this.draggingSessionGroup = null;
-                      this.sessionGroupDropTarget = null;
-                    }
-                  : nothing}
-                @contextmenu=${group
-                  ? (event: MouseEvent) => {
-                      event.preventDefault();
-                      this.openSessionGroupMenu(group, event.clientX, event.clientY, null);
-                    }
-                  : nothing}
+                    : nothing
+                }
+                @dragend=${
+                  group
+                    ? () => {
+                        this.draggingSessionGroup = null;
+                        this.sessionGroupDropTarget = null;
+                      }
+                    : nothing
+                }
+                @contextmenu=${
+                  group
+                    ? (event: MouseEvent) => {
+                        event.preventDefault();
+                        this.openSessionGroupMenu(group, event.clientX, event.clientY, null);
+                      }
+                    : nothing
+                }
               >
-                ${group
-                  ? html`<span class="sidebar-session-group-drag-handle" aria-hidden="true"></span>`
-                  : nothing}
+                ${
+                  group
+                    ? html`<span class="sidebar-session-group-drag-handle" aria-hidden="true"></span>`
+                    : nothing
+                }
                 <button
                   type="button"
                   class="sidebar-session-group-toggle"
@@ -249,8 +268,9 @@ export abstract class AppSidebarSessionListElement extends AppSidebarMenusElemen
                   <span class="sidebar-recent-sessions__label-text">${label}</span>
                   <span class="sidebar-session-group-count">${section.rows.length}</span>
                 </button>
-                ${group
-                  ? html`
+                ${
+                  group
+                    ? html`
                       <button
                         type="button"
                         class="sidebar-session-group-actions"
@@ -268,19 +288,25 @@ export abstract class AppSidebarSessionListElement extends AppSidebarMenusElemen
                         ${icons.moreHorizontal}
                       </button>
                     `
-                  : nothing}
+                    : nothing
+                }
               </div>
             `
-          : nothing}
-        ${collapsed
-          ? nothing
-          : html`
+            : nothing
+        }
+        ${
+          collapsed
+            ? nothing
+            : html`
               <div class="sidebar-recent-sessions__list" role="list" aria-label=${label}>
-                ${showFallback
-                  ? this.renderChatFallback()
-                  : section.rows.map((session) => this.renderRecentSession(session))}
+                ${
+                  showFallback
+                    ? this.renderChatFallback()
+                    : section.rows.map((session) => this.renderRecentSession(session))
+                }
               </div>
-            `}
+            `
+        }
       </div>
     `;
   }
@@ -327,8 +353,9 @@ export abstract class AppSidebarSessionListElement extends AppSidebarMenusElemen
     }
     return html`
       <div class="sidebar-session-pagination">
-        ${canShowMore
-          ? html`<button
+        ${
+          canShowMore
+            ? html`<button
               type="button"
               class="sidebar-session-pagination__button"
               aria-label=${t("chat.selectors.loadMoreSessions")}
@@ -338,9 +365,11 @@ export abstract class AppSidebarSessionListElement extends AppSidebarMenusElemen
             >
               ${t("chat.selectors.loadMoreSessions")}
             </button>`
-          : nothing}
-        ${canShowLess
-          ? html`<button
+            : nothing
+        }
+        ${
+          canShowLess
+            ? html`<button
               type="button"
               class="sidebar-session-pagination__button"
               aria-label=${t("usage.details.collapse")}
@@ -351,7 +380,8 @@ export abstract class AppSidebarSessionListElement extends AppSidebarMenusElemen
             >
               ${t("usage.details.collapse")}
             </button>`
-          : nothing}
+            : nothing
+        }
       </div>
     `;
   }
@@ -362,8 +392,9 @@ export abstract class AppSidebarSessionListElement extends AppSidebarMenusElemen
     const expandedAgentId = this.expandedAgentId();
     return html`
       <section class="sidebar-sessions">
-        ${this.sessionMutationError
-          ? html`
+        ${
+          this.sessionMutationError
+            ? html`
               <div
                 class="sidebar-session-error callout danger callout--dismissible"
                 role="alert"
@@ -384,10 +415,12 @@ export abstract class AppSidebarSessionListElement extends AppSidebarMenusElemen
                 </operator-tooltip>
               </div>
             `
-          : nothing}
+            : nothing
+        }
         <div
-          class="sidebar-recent-sessions sidebar-recent-sessions--scroll-${this
-            .sessionsScrollState}"
+          class="sidebar-recent-sessions sidebar-recent-sessions--scroll-${
+            this.sessionsScrollState
+          }"
           aria-label=${titleForRoute("sessions")}
           @scroll=${(event: Event) =>
             this.updateSessionsScrollState(event.currentTarget as HTMLElement)}

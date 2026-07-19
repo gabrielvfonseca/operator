@@ -415,10 +415,13 @@ describe("runGatewayUpdate", () => {
       deferConfiguredPluginInstallRepair?: boolean;
       allowGatewayServiceRepair?: boolean;
       allowGatewayActivation?: boolean;
-      beforeGitMutation?: () => Promise<{
-        allowGatewayServiceRepair?: boolean;
-        allowGatewayActivation?: boolean;
-      } | void>;
+      beforeGitMutation?: () => Promise<
+        | {
+            allowGatewayServiceRepair?: boolean;
+            allowGatewayActivation?: boolean;
+          }
+        | undefined
+      >;
     },
   ) {
     return runGatewayUpdate({
@@ -447,10 +450,13 @@ describe("runGatewayUpdate", () => {
       cwd?: string;
       devTargetRef?: string;
       deferConfiguredPluginInstallRepair?: boolean;
-      beforeGitMutation?: () => Promise<{
-        allowGatewayServiceRepair?: boolean;
-        allowGatewayActivation?: boolean;
-      } | void>;
+      beforeGitMutation?: () => Promise<
+        | {
+            allowGatewayServiceRepair?: boolean;
+            allowGatewayActivation?: boolean;
+          }
+        | undefined
+      >;
     },
   ) {
     return runWithCommand(runner, options);

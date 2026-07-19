@@ -180,7 +180,7 @@ function resolveRequestedFallbackModelRef(params: {
     return `${normalizedRequest.provider}/${normalizedRequest.model}`;
   }
   const rawModel = params.model?.trim();
-  if (!rawModel || !rawModel.includes("/")) {
+  if (!rawModel?.includes("/")) {
     return null;
   }
   const parsed = parseModelRef(rawModel, "");

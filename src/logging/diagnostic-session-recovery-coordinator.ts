@@ -25,7 +25,7 @@ import {
 
 export type RecoverStuckSession = (
   params: StuckSessionRecoveryRequest,
-) => void | StuckSessionRecoveryOutcome | Promise<void | StuckSessionRecoveryOutcome>;
+) => undefined | StuckSessionRecoveryOutcome | Promise<undefined | StuckSessionRecoveryOutcome>;
 
 type RequestStuckSessionRecoveryParams = {
   recover: RecoverStuckSession;
@@ -80,10 +80,11 @@ function recoveryRequestKey(request: StuckSessionRecoveryRequest): string | unde
 }
 
 function isRecoveryPromiseLike(
-  value: void | StuckSessionRecoveryOutcome | Promise<void | StuckSessionRecoveryOutcome>,
-): value is Promise<void | StuckSessionRecoveryOutcome> {
+  value: undefined | StuckSessionRecoveryOutcome | Promise<undefined | StuckSessionRecoveryOutcome>,
+): value is Promise<undefined | StuckSessionRecoveryOutcome> {
   return (
-    typeof (value as Promise<void | StuckSessionRecoveryOutcome> | undefined)?.then === "function"
+    typeof (value as Promise<undefined | StuckSessionRecoveryOutcome> | undefined)?.then ===
+    "function"
   );
 }
 

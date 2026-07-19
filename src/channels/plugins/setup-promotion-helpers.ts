@@ -71,7 +71,7 @@ export function resolveSingleAccountKeysToMove(params: {
     }
     return Boolean(
       resolveLoadedSetupSurface()?.singleAccountKeysToMove?.includes(key) ||
-      resolveBundledSetupSurface()?.singleAccountKeysToMove?.includes(key),
+        resolveBundledSetupSurface()?.singleAccountKeysToMove?.includes(key),
     );
   });
   if (!hasNamedAccounts || keysToMove.length === 0) {

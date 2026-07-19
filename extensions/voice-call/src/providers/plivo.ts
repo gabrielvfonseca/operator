@@ -613,7 +613,7 @@ export class PlivoProvider implements VoiceCallProvider {
 
     for (const key of candidates) {
       const value = params.get(key);
-      if (value && value.trim()) {
+      if (value?.trim()) {
         return value.trim();
       }
     }

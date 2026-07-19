@@ -6,7 +6,6 @@ import { truncateUtf16Safe } from "@gabrielvfonseca/normalization-core/utf16-sli
 import { runCommandWithTimeout } from "../process/exec.js";
 import { defaultRuntime, type RuntimeEnv } from "../runtime.js";
 import * as controlUiFsRuntime from "./control-ui-assets.fs.runtime.js";
-import { resolveOperatorPackageRoot, resolveOperatorPackageRootSync } from "./openclaw-root.js";
 const CONTROL_UI_DIST_PATH_SEGMENTS = ["dist", "control-ui", "index.html"] as const;
 
 export function resolveControlUiDistIndexPathForRoot(root: string): string {
@@ -19,11 +18,7 @@ type ControlUiDistIndexHealth = {
 };
 
 export async function resolveControlUiDistIndexHealth(
-  opts: {
-    root?: string;
-    argv1?: string;
-    moduleUrl?: string;
-  } = {},
+  opts: { root?: string; argv1?: string; moduleUrl?: string } = {},
 ): Promise<ControlUiDistIndexHealth> {
   const indexPath = opts.root
     ? resolveControlUiDistIndexPathForRoot(opts.root)

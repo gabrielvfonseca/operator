@@ -151,8 +151,7 @@ function normalizeBinding(
   value: CopilotSessionBinding | undefined,
 ): CopilotSessionBinding | undefined {
   if (
-    !value ||
-    value.schemaVersion !== 2 ||
+    value?.schemaVersion !== 2 ||
     typeof value.sdkSessionId !== "string" ||
     value.sdkSessionId.trim() === "" ||
     typeof value.compatKey !== "string" ||
@@ -195,8 +194,7 @@ function normalizeAttemptBinding(value: unknown): CopilotAttemptSessionBinding |
   }
   const legacy = value as LegacyCopilotSessionBinding | undefined;
   if (
-    !legacy ||
-    legacy.schemaVersion !== 1 ||
+    legacy?.schemaVersion !== 1 ||
     typeof legacy.sdkSessionId !== "string" ||
     legacy.sdkSessionId.trim() === "" ||
     typeof legacy.compatKey !== "string" ||

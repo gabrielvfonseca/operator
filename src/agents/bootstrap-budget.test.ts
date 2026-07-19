@@ -16,7 +16,7 @@ describe("buildBootstrapInjectionStats", () => {
   it("maps raw and injected sizes and marks truncation", () => {
     const bootstrapFiles: WorkspaceBootstrapFile[] = [
       {
-        name: "AGENTS.md",
+        name: "AGENTS.MD",
         path: "/tmp/AGENTS.md",
         content: "a".repeat(100),
         missing: false,
@@ -37,7 +37,7 @@ describe("buildBootstrapInjectionStats", () => {
       injectedFiles,
     });
     expect(stats).toHaveLength(2);
-    expect(stats[0]?.name).toBe("AGENTS.md");
+    expect(stats[0]?.name).toBe("AGENTS.MD");
     expect(stats[0]?.rawChars).toBe(100);
     expect(stats[0]?.injectedChars).toBe(100);
     expect(stats[0]?.truncated).toBe(false);
@@ -53,7 +53,7 @@ describe("analyzeBootstrapBudget", () => {
     const analysis = analyzeBootstrapBudget({
       files: [
         {
-          name: "AGENTS.md",
+          name: "AGENTS.MD",
           path: "/tmp/AGENTS.md",
           missing: false,
           rawChars: 150,
@@ -75,7 +75,7 @@ describe("analyzeBootstrapBudget", () => {
     expect(analysis.hasTruncation).toBe(true);
     expect(analysis.totalNearLimit).toBe(true);
     expect(analysis.truncatedFiles).toHaveLength(2);
-    const agents = analysis.truncatedFiles.find((file) => file.name === "AGENTS.md");
+    const agents = analysis.truncatedFiles.find((file) => file.name === "AGENTS.MD");
     const soul = analysis.truncatedFiles.find((file) => file.name === "SOUL.md");
     expect(agents?.causes).toContain("per-file-limit");
     expect(agents?.causes).toContain("total-limit");
@@ -86,7 +86,7 @@ describe("analyzeBootstrapBudget", () => {
     const analysis = analyzeBootstrapBudget({
       files: [
         {
-          name: "AGENTS.md",
+          name: "AGENTS.MD",
           path: "/tmp/AGENTS.md",
           missing: false,
           rawChars: 90,
@@ -128,18 +128,18 @@ describe("bootstrap prompt warnings", () => {
 
   it("appends warning details to the turn prompt instead of mutating the system prompt", () => {
     const prompt = appendBootstrapPromptWarning("Please continue.", [
-      "AGENTS.md: 200 raw -> 0 injected",
+      "AGENTS.MD: 200 raw -> 0 injected",
     ]);
     expect(prompt.startsWith("Please continue.")).toBe(true);
     expect(prompt).toContain("[Bootstrap truncation warning]");
     expect(prompt).toContain("Treat Project Context as partial");
-    expect(prompt).toContain("- AGENTS.md: 200 raw -> 0 injected");
-    expect(prompt.endsWith("- AGENTS.md: 200 raw -> 0 injected")).toBe(true);
+    expect(prompt).toContain("- AGENTS.MD: 200 raw -> 0 injected");
+    expect(prompt.endsWith("- AGENTS.MD: 200 raw -> 0 injected")).toBe(true);
   });
 
   it("preserves raw prompt whitespace when appending warning details", () => {
     const prompt = appendBootstrapPromptWarning("  indented\nkeep tail  ", [
-      "AGENTS.md: 200 raw -> 0 injected",
+      "AGENTS.MD: 200 raw -> 0 injected",
     ]);
 
     expect(prompt).toContain("  indented\nkeep tail  ");
@@ -150,7 +150,7 @@ describe("bootstrap prompt warnings", () => {
     const heartbeatPrompt = "Read HEARTBEAT.md. Reply HEARTBEAT_OK.";
 
     expect(
-      appendBootstrapPromptWarning(heartbeatPrompt, ["AGENTS.md: 200 raw -> 0 injected"], {
+      appendBootstrapPromptWarning(heartbeatPrompt, ["AGENTS.MD: 200 raw -> 0 injected"], {
         preserveExactPrompt: heartbeatPrompt,
       }),
     ).toBe(heartbeatPrompt);
@@ -158,7 +158,7 @@ describe("bootstrap prompt warnings", () => {
 
   it("builds a concise agent notice without raw truncation diagnostics", () => {
     const notice = buildBootstrapPromptWarningNotice([
-      "AGENTS.md: 200 raw -> 0 injected",
+      "AGENTS.MD: 200 raw -> 0 injected",
       "If unintentional, raise agents.defaults.bootstrapMaxChars.",
     ]);
 
@@ -214,7 +214,7 @@ describe("bootstrap prompt warnings", () => {
     const analysis = analyzeBootstrapBudget({
       files: [
         {
-          name: "AGENTS.md",
+          name: "AGENTS.MD",
           path: "/tmp/AGENTS.md",
           missing: false,
           rawChars: 150,
@@ -254,7 +254,7 @@ describe("bootstrap prompt warnings", () => {
         rawChars: 150,
       },
     ]);
-    expect(first.lines.join("\n")).toContain("AGENTS.md");
+    expect(first.lines.join("\n")).toContain("AGENTS.MD");
 
     const second = buildBootstrapPromptWarning({
       analysis,
@@ -352,11 +352,11 @@ describe("bootstrap prompt warnings", () => {
     expect(lines).toContain("+1 more truncated file(s).");
   });
 
-  it("warns explicitly when AGENTS.md bootstrap policy is truncated", () => {
+  it("warns explicitly when AGENTS.MD bootstrap policy is truncated", () => {
     const analysis = analyzeBootstrapBudget({
       files: [
         {
-          name: "AGENTS.md",
+          name: "AGENTS.MD",
           path: "/tmp/AGENTS.md",
           missing: false,
           rawChars: 150,
@@ -373,7 +373,7 @@ describe("bootstrap prompt warnings", () => {
     }).lines;
 
     expect(lines).toContain(
-      "AGENTS.md was truncated; read the full AGENTS.md before relying on scoped policy.",
+      "AGENTS.MD was truncated; read the full AGENTS.MD before relying on scoped policy.",
     );
   });
 
@@ -381,7 +381,7 @@ describe("bootstrap prompt warnings", () => {
     const analysis = analyzeBootstrapBudget({
       files: [
         {
-          name: "AGENTS.md",
+          name: "AGENTS.MD",
           path: "/tmp/a/AGENTS.md",
           missing: false,
           rawChars: 150,
@@ -389,7 +389,7 @@ describe("bootstrap prompt warnings", () => {
           truncated: true,
         },
         {
-          name: "AGENTS.md",
+          name: "AGENTS.MD",
           path: "/tmp/b/AGENTS.md",
           missing: false,
           rawChars: 140,
@@ -404,15 +404,15 @@ describe("bootstrap prompt warnings", () => {
       analysis,
       mode: "always",
     }).lines;
-    expect(lines.join("\n")).toContain("AGENTS.md (/tmp/a/AGENTS.md)");
-    expect(lines.join("\n")).toContain("AGENTS.md (/tmp/b/AGENTS.md)");
+    expect(lines.join("\n")).toContain("AGENTS.MD (/tmp/a/AGENTS.md)");
+    expect(lines.join("\n")).toContain("AGENTS.MD (/tmp/b/AGENTS.md)");
   });
 
   it("respects off/always warning modes", () => {
     const analysis = analyzeBootstrapBudget({
       files: [
         {
-          name: "AGENTS.md",
+          name: "AGENTS.MD",
           path: "/tmp/AGENTS.md",
           missing: false,
           rawChars: 150,
@@ -444,8 +444,8 @@ describe("bootstrap prompt warnings", () => {
     });
     expect(always.warningShown).toBe(true);
     expect(always.lines).toStrictEqual([
-      "AGENTS.md: 150 raw -> 100 injected (~33% removed; max/file).",
-      "AGENTS.md was truncated; read the full AGENTS.md before relying on scoped policy.",
+      "AGENTS.MD: 150 raw -> 100 injected (~33% removed; max/file).",
+      "AGENTS.MD was truncated; read the full AGENTS.MD before relying on scoped policy.",
       "If unintentional, raise agents.defaults.bootstrapMaxChars and/or agents.defaults.bootstrapTotalMaxChars.",
     ]);
   });
@@ -454,7 +454,7 @@ describe("bootstrap prompt warnings", () => {
     const left = analyzeBootstrapBudget({
       files: [
         {
-          name: "AGENTS.md",
+          name: "AGENTS.MD",
           path: "/tmp/a/AGENTS.md",
           missing: false,
           rawChars: 150,
@@ -468,7 +468,7 @@ describe("bootstrap prompt warnings", () => {
     const right = analyzeBootstrapBudget({
       files: [
         {
-          name: "AGENTS.md",
+          name: "AGENTS.MD",
           path: "/tmp/b/AGENTS.md",
           missing: false,
           rawChars: 150,
@@ -488,7 +488,7 @@ describe("bootstrap prompt warnings", () => {
     const analysis = analyzeBootstrapBudget({
       files: [
         {
-          name: "AGENTS.md",
+          name: "AGENTS.MD",
           path: "/tmp/AGENTS.md",
           missing: false,
           rawChars: 150,
@@ -517,8 +517,8 @@ describe("bootstrap prompt warnings", () => {
   });
 
   it("improves cache-relevant system prompt stability versus legacy warning injection", () => {
-    const contextFiles = [{ path: "AGENTS.md", content: "Follow AGENTS guidance." }];
-    const warningLines = ["AGENTS.md: 200 raw -> 0 injected"];
+    const contextFiles = [{ path: "AGENTS.MD", content: "Follow AGENTS guidance." }];
+    const warningLines = ["AGENTS.MD: 200 raw -> 0 injected"];
     const stableSystemPrompt = buildAgentSystemPrompt({
       workspaceDir: "/tmp/openclaw",
       contextFiles,
@@ -532,7 +532,7 @@ describe("bootstrap prompt warnings", () => {
         ...lines.map((line) => `- ${line}`),
         "",
       ].join("\n");
-      return prompt.replace("## AGENTS.md", `${warningBlock}## AGENTS.md`);
+      return prompt.replace("## AGENTS.MD", `${warningBlock}## AGENTS.MD`);
     };
     const legacyTurns = [
       injectLegacyWarning(optimizedTurns[0] ?? "", warningLines),

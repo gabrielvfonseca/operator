@@ -27,7 +27,6 @@ import {
   isKnownNativeApprovalPromptChannel,
 } from "../channels/plugins/native-approval-prompt.js";
 import type { SubagentDelegationMode } from "../config/types.agent-defaults.js";
-import type { MemoryCitationsMode } from "../config/types.memory.js";
 import type { AgentPromptSurfaceKind } from "../plugins/types.js";
 import { parseCronRunScopeSuffix } from "../sessions/session-key-utils.js";
 import { listDeliverableMessageChannels } from "../utils/message-channel.js";
@@ -64,7 +63,7 @@ import type { PromptMode, SilentReplyPromptMode } from "./system-prompt.types.js
 type OwnerIdDisplay = "raw" | "hash";
 
 const CONTEXT_FILE_ORDER = new Map<string, number>([
-  ["agents.md", 10],
+  ["AGENTS.MD", 10],
   ["soul.md", 20],
   ["identity.md", 30],
   ["user.md", 40],

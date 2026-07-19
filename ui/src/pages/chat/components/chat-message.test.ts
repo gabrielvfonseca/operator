@@ -80,6 +80,7 @@ type RenderMessageGroupOptions = Parameters<typeof renderMessageGroup>[1];
 function expectElement<T extends Element>(
   container: Element,
   selector: string,
+  // biome-ignore lint/suspicious/noShadowRestrictedNames: migrated from oxlint
   constructor: new () => T,
 ): T {
   const element = container.querySelector<T>(selector);
@@ -388,17 +389,17 @@ function stubDeleteConfirmGeometry(params: {
     offsetTop: params.viewport.top ?? 0,
     width: params.viewport.width,
   });
-  vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(
-    function (this: HTMLElement) {
-      if (this.classList.contains("chat-group-delete")) {
-        return domRect(params.trigger);
-      }
-      if (this.classList.contains("chat-delete-confirm")) {
-        return domRect(params.popover);
-      }
-      return domRect({});
-    },
-  );
+  vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(function (
+    this: HTMLElement,
+  ) {
+    if (this.classList.contains("chat-group-delete")) {
+      return domRect(params.trigger);
+    }
+    if (this.classList.contains("chat-delete-confirm")) {
+      return domRect(params.popover);
+    }
+    return domRect({});
+  });
 }
 
 function clickDeleteButtonIconPath(deleteButton: HTMLButtonElement) {

@@ -131,6 +131,7 @@ async function installFakeClaudeCli(
       `const promptLogPath = ${JSON.stringify(promptLogPath)};`,
       `const plannerResult = ${JSON.stringify(plannerResult)};`,
       'const promptLine = fs.readFileSync(0, "utf8").split(/\\r?\\n/u, 1)[0] ?? "";',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'fs.appendFileSync(promptLogPath, `${promptLine}\\n`, "utf8");',
       'const result = promptLine.includes("User request:") ? plannerResult : "OK";',
       "console.log(",

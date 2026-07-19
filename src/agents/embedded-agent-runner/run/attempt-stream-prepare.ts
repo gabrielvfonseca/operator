@@ -98,7 +98,7 @@ export function prepareEmbeddedAttemptStream(input: {
         isError: boolean;
         incompleteTerminalAssistant: boolean;
         hadDeterministicSideEffect: boolean;
-      }): Promise<void | { suppressTerminalDelivery: true }> => {
+      }): Promise<undefined | { suppressTerminalDelivery: true }> => {
         if (
           beforeAgentFinalizeRevisionReason ||
           event.willRetry ||

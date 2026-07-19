@@ -396,7 +396,7 @@ describe("push APNs send semantics", () => {
   it("bounds oversized direct APNs error bodies while preserving parseable reasons", async () => {
     const apnsServer = await startFakeApnsServer({
       status: 400,
-      responseBody: '{"reason":"BadDeviceToken"}' + " ".repeat(20_000),
+      responseBody: `{"reason":"BadDeviceToken"}${" ".repeat(20_000)}`,
     });
     const proxy = await startConnectProxy(apnsServer.port);
     let proxyHandle: ProxyHandle | null | undefined;

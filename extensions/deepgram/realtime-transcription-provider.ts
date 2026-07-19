@@ -206,6 +206,7 @@ function createDeepgramRealtimeTranscriptionSession(
         config.onSpeechStart?.();
         return;
       case "Error":
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
       case "error":
         config.onError?.(new Error(readErrorDetail(event.error ?? event.message)));
 

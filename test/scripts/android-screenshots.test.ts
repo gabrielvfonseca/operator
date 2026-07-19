@@ -52,6 +52,7 @@ describe("android screenshots script", () => {
   it("scales and restores display density with the screenshot size", () => {
     const script = readFileSync(SCRIPT, "utf8");
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('SCREENSHOT_SIZE="${ANDROID_SCREENSHOT_SIZE:-1440x2560}"');
     expect(script).toContain('shell wm density "$SCREENSHOT_DENSITY"');
     expect(script).toContain('shell wm density "$ORIGINAL_WM_DENSITY"');

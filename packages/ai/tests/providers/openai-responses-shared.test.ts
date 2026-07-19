@@ -997,7 +997,7 @@ describe("processResponsesStream", () => {
       );
       const block = output.content.find((entry) => entry.type === "toolCall");
       const end = events.find((event) => event.type === "toolcall_end");
-      if (!block || block.type !== "toolCall" || !end || end.type !== "toolcall_end") {
+      if (block?.type !== "toolCall" || !end || end.type !== "toolcall_end") {
         throw new Error("missing tool-call lifecycle");
       }
       return { blockId: block.id, endId: end.toolCall.id };
@@ -2021,7 +2021,7 @@ describe("processResponsesStream", () => {
 
     const block = output.content[0];
     const end = events.find((event) => event.type === "toolcall_end");
-    if (!block || block.type !== "toolCall" || !end || end.type !== "toolcall_end") {
+    if (block?.type !== "toolCall" || !end || end.type !== "toolcall_end") {
       throw new Error("missing item-only tool-call lifecycle");
     }
     expect(block.id).toMatch(/^call_[0-9a-f]{24}\|fc_item_only$/);

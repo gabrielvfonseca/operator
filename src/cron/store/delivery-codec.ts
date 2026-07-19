@@ -86,15 +86,15 @@ export function deliveryFromRow(row: CronJobRow): CronDelivery | undefined {
   const hasDeliveryColumns =
     Boolean(
       row.delivery_channel ||
-      row.delivery_to ||
-      threadId !== undefined ||
-      row.delivery_account_id ||
-      row.delivery_completion_mode ||
-      row.delivery_completion_to ||
-      row.failure_delivery_channel != null ||
-      row.failure_delivery_to != null ||
-      row.failure_delivery_mode != null ||
-      row.failure_delivery_account_id != null,
+        row.delivery_to ||
+        threadId !== undefined ||
+        row.delivery_account_id ||
+        row.delivery_completion_mode ||
+        row.delivery_completion_to ||
+        row.failure_delivery_channel != null ||
+        row.failure_delivery_to != null ||
+        row.failure_delivery_mode != null ||
+        row.failure_delivery_account_id != null,
     ) || row.delivery_best_effort != null;
   const completionDestination =
     rowMode === "announce" && row.delivery_completion_mode === "webhook"

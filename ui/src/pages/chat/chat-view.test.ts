@@ -3339,7 +3339,7 @@ describe("chat attachment picker", () => {
       ".agent-chat__composer-combobox > textarea",
       "composer textarea",
     );
-    const pastedText = "large paste\n" + "x".repeat(1100);
+    const pastedText = `large paste\n${"x".repeat(1100)}`;
     const event = new Event("paste", { bubbles: true, cancelable: true });
     Object.defineProperty(event, "clipboardData", {
       value: {
@@ -3666,7 +3666,7 @@ describe("chat attachment picker", () => {
       ".agent-chat__composer-combobox > textarea",
       "composer textarea",
     );
-    const pastedText = "large paste\n" + "x".repeat(1100);
+    const pastedText = `large paste\n${"x".repeat(1100)}`;
     const event = new Event("paste", { bubbles: true, cancelable: true });
     Object.defineProperty(event, "clipboardData", {
       value: {
@@ -5288,7 +5288,7 @@ describe("right-click Reply", () => {
     group.className = "chat-group";
     const bubble = document.createElement("div");
     bubble.className = "chat-bubble";
-    bubble.dataset.messageText = "x".repeat(499) + "🧠tail";
+    bubble.dataset.messageText = `${"x".repeat(499)}🧠tail`;
     group.appendChild(bubble);
     section!.querySelector(".chat-thread-inner")!.appendChild(group);
 
@@ -5416,7 +5416,7 @@ describe("right-click Reply", () => {
     const container = renderChatView({
       replyTarget: {
         messageId: "msg-emoji",
-        text: "x".repeat(119) + "🧠tail",
+        text: `${"x".repeat(119)}🧠tail`,
         senderLabel: "User",
       },
     });

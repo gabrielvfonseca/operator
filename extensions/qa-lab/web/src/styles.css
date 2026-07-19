@@ -656,6 +656,7 @@ select {
 }
 
 /* --- Main content --- */
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .main-content {
   flex: 1;
   display: flex;
@@ -702,6 +703,7 @@ select {
 }
 
 /* --- Tab content --- */
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .tab-content {
   flex: 1;
   overflow: hidden;
@@ -2328,6 +2330,7 @@ button.evidence-matrix-cell {
   font-size: 13px;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .capture-summary-label {
   font-size: 11px;
   font-weight: 700;
@@ -2337,6 +2340,7 @@ button.evidence-matrix-cell {
   margin-bottom: 6px;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .capture-summary-value {
   font-size: 14px;
   font-weight: 600;
@@ -3637,11 +3641,13 @@ button.evidence-matrix-cell {
   flex-wrap: wrap;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .capture-mono {
   font-family: "SF Mono", "Fira Code", "Cascadia Code", Menlo, monospace;
   word-break: break-word;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .capture-pre {
   max-height: 320px;
   margin-top: 6px;

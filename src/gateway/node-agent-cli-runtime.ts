@@ -29,7 +29,7 @@ export async function invokeNodeClaudeCliRun(params: {
     };
   }
   const node = context.nodeRegistry.get(params.nodeId);
-  if (!node || !node.commands.includes(NODE_AGENT_CLI_CLAUDE_RUN_COMMAND)) {
+  if (!node?.commands.includes(NODE_AGENT_CLI_CLAUDE_RUN_COMMAND)) {
     return {
       ok: false,
       error: {

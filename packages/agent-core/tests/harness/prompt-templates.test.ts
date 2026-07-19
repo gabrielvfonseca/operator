@@ -19,12 +19,16 @@ describe("prompt template argument substitution", () => {
   it("rejects unsafe slice starts and lengths", () => {
     const args = ["alpha", "beta", "gamma"];
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(substituteArgs("${@:9007199254740992}", args)).toBe("");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(substituteArgs("${@:1:9007199254740992}", args)).toBe("");
   });
 
   it("preserves zero slice compatibility", () => {
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(substituteArgs("${@:0:0}", ["alpha", "beta"])).toBe("");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(substituteArgs("${@:0:1}", ["alpha", "beta"])).toBe("alpha");
   });
 });

@@ -142,6 +142,7 @@ async function listDirectoryEntries(
   }
   const result = await backend.runShellCommand({
     script:
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'find "$1" -mindepth 1 -maxdepth 1 -exec sh -c \'for path do name=${path##*/}; if [ -L "$path" ]; then kind=o; elif [ -d "$path" ]; then kind=d; elif [ -f "$path" ]; then kind=f; else kind=o; fi; printf "%s\\t%s\\n" "$kind" "$name"; done\' sh {} +',
     args: [resolved.containerPath],
     allowFailure: true,

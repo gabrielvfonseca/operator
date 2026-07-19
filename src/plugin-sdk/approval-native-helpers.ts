@@ -313,7 +313,7 @@ export function shouldSuppressLocalNativeExecApprovalPrompt(params: {
     return false;
   }
   const metadata = getExecApprovalReplyMetadata(params.payload);
-  if (!metadata || metadata.approvalKind !== "exec") {
+  if (metadata?.approvalKind !== "exec") {
     return false;
   }
   const isDeliveryEnabled = params.isNativeDeliveryEnabled ?? params.isTransportEnabled;

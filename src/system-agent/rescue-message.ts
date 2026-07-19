@@ -230,7 +230,7 @@ function formatUnsupportedRemoteOperation(operation: SystemAgentOperation): stri
   if (operation.kind === "channel-setup") {
     return [
       "Operator rescue cannot host the interactive channel setup from a message channel.",
-      "Run `operator setup` locally and say `connect " + operation.channel + "` instead.",
+      `Run \`operator setup\` locally and say \`connect ${operation.channel}\` instead.`,
     ].join(" ");
   }
   if (operation.kind === "model-setup") {

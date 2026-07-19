@@ -77,7 +77,9 @@ describe("security-sensitive guard workflow", () => {
       const checkout = steps.find((step) => step.uses?.startsWith("actions/checkout@"));
 
       expect(checkout?.uses).toBe("actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd");
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(checkout?.with?.ref).toBe("${{ github.workflow_sha }}");
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(checkout?.with?.ref).not.toBe("${{ github.event.pull_request.base.sha }}");
       expect(checkout?.with?.["persist-credentials"]).toBe(false);
       expect(steps.at(-1)?.run).toBe("node scripts/github/security-sensitive-guard.mjs");

@@ -20,9 +20,11 @@ describe("buildDockerExecArgs", () => {
 
     const commandArg = args[args.length - 1];
     expect(args).toContain("OPERATOR_PREPEND_PATH=/custom/bin:/usr/local/bin:/usr/bin");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(commandArg).toContain('export PATH="${OPERATOR_PREPEND_PATH}:$PATH"');
     expect(commandArg).toContain("echo hello");
     expect(commandArg).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'export PATH="${OPERATOR_PREPEND_PATH}:$PATH"; unset OPERATOR_PREPEND_PATH; echo hello',
     );
   });

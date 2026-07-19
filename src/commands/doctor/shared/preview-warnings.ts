@@ -720,8 +720,9 @@ export async function collectDoctorPreviewNotes(params: {
   warnings.push(...collectVisibleReplyToolPolicyWarnings(params.cfg));
   warnings.push(...collectChannelBoundMessageToolPolicyWarnings(params.cfg));
   warnings.push(...collectProfileConfiguredToolSectionWarnings(params.cfg));
-  const { collectActiveToolSchemaProjectionWarnings } =
-    await import("./active-tool-schema-warnings.js");
+  const { collectActiveToolSchemaProjectionWarnings } = await import(
+    "./active-tool-schema-warnings.js"
+  );
   warnings.push(...collectActiveToolSchemaProjectionWarnings({ cfg: params.cfg, env }));
 
   const channelPluginRuntime = await import("./channel-plugin-blockers.js");
@@ -755,8 +756,9 @@ export async function collectDoctorPreviewNotes(params: {
       warnings.push(...channelDoctorWarnings);
     }
 
-    const { collectOpenPolicyAllowFromWarnings, maybeRepairOpenPolicyAllowFrom } =
-      await import("./open-policy-allowfrom.js");
+    const { collectOpenPolicyAllowFromWarnings, maybeRepairOpenPolicyAllowFrom } = await import(
+      "./open-policy-allowfrom.js"
+    );
     const allowFromScan = maybeRepairOpenPolicyAllowFrom(params.cfg);
     if (allowFromScan.changes.length > 0) {
       warnings.push(
@@ -798,8 +800,9 @@ export async function collectDoctorPreviewNotes(params: {
   );
 
   if (hasPluginConfig) {
-    const { collectContextEngineHostCompatibilityWarnings } =
-      await import("./context-engine-host-compat.js");
+    const { collectContextEngineHostCompatibilityWarnings } = await import(
+      "./context-engine-host-compat.js"
+    );
     warnings.push(
       ...(await collectContextEngineHostCompatibilityWarnings({
         cfg: params.cfg,
@@ -861,8 +864,9 @@ export async function collectDoctorPreviewNotes(params: {
   }
 
   if (hasToolsBySenderKey(params.cfg)) {
-    const { collectLegacyToolsBySenderWarnings, scanLegacyToolsBySenderKeys } =
-      await import("./legacy-tools-by-sender.js");
+    const { collectLegacyToolsBySenderWarnings, scanLegacyToolsBySenderKeys } = await import(
+      "./legacy-tools-by-sender.js"
+    );
     const toolsBySenderHits = scanLegacyToolsBySenderKeys(params.cfg);
     if (toolsBySenderHits.length > 0) {
       warnings.push(
@@ -897,8 +901,9 @@ export async function collectDoctorPreviewNotes(params: {
     }
   }
 
-  const { collectStaleOAuthProfileShadowWarnings, scanStaleOAuthProfileShadows } =
-    await import("./stale-oauth-profile-shadows.js");
+  const { collectStaleOAuthProfileShadowWarnings, scanStaleOAuthProfileShadows } = await import(
+    "./stale-oauth-profile-shadows.js"
+  );
   const staleOAuthProfileShadows = await scanStaleOAuthProfileShadows({
     cfg: params.cfg,
     env,

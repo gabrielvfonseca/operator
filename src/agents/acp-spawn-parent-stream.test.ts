@@ -103,8 +103,9 @@ function firstMockCall(
 describe("startAcpSpawnParentStreamRelay", () => {
   beforeAll(async () => {
     ({ emitAgentEvent } = await import("../infra/agent-events.js"));
-    ({ resolveAcpSpawnStreamLogPath, startAcpSpawnParentStreamRelay } =
-      await import("./acp-spawn-parent-stream.js"));
+    ({ resolveAcpSpawnStreamLogPath, startAcpSpawnParentStreamRelay } = await import(
+      "./acp-spawn-parent-stream.js"
+    ));
   });
 
   beforeEach(() => {

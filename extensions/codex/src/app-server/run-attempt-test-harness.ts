@@ -592,14 +592,14 @@ export function createRuntimeDynamicTool(name: string): RuntimeDynamicToolForTes
   return {
     name,
     label: name,
-    description: name + " test tool",
+    description: `${name} test tool`,
     parameters: {
       type: "object",
       properties: {},
       additionalProperties: false,
     },
     execute: vi.fn(async () => ({
-      content: [{ type: "text" as const, text: name + " done" }],
+      content: [{ type: "text" as const, text: `${name} done` }],
       details: {},
     })),
   };

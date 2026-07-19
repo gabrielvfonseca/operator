@@ -189,9 +189,9 @@ function collectActiveRegistryLookups() {
     .filter((options): options is { onlyPluginIds?: string[] } =>
       Boolean(
         options &&
-        typeof options === "object" &&
-        Object.hasOwn(options as Record<string, unknown>, "onlyPluginIds") &&
-        !Object.hasOwn(options as Record<string, unknown>, "activate"),
+          typeof options === "object" &&
+          Object.hasOwn(options as Record<string, unknown>, "onlyPluginIds") &&
+          !Object.hasOwn(options as Record<string, unknown>, "activate"),
       ),
     );
 }
@@ -282,10 +282,12 @@ function expectCompatChainApplied(params: {
 describe("resolvePluginCapabilityProviders", () => {
   beforeAll(async () => {
     vi.resetModules();
-    ({ resolvePluginCapabilityProvider, resolvePluginCapabilityProviders } =
-      await import("./capability-provider-runtime.js"));
-    ({ clearCurrentPluginMetadataSnapshot, setCurrentPluginMetadataSnapshot } =
-      await import("./current-plugin-metadata-snapshot.js"));
+    ({ resolvePluginCapabilityProvider, resolvePluginCapabilityProviders } = await import(
+      "./capability-provider-runtime.js"
+    ));
+    ({ clearCurrentPluginMetadataSnapshot, setCurrentPluginMetadataSnapshot } = await import(
+      "./current-plugin-metadata-snapshot.js"
+    ));
     ({ clearPluginMetadataLifecycleCaches } = await import("./plugin-metadata-lifecycle.js"));
     ({ clearLoadPluginMetadataSnapshotMemo } = await import("./plugin-metadata-snapshot.js"));
   });

@@ -342,12 +342,12 @@ export async function createBootstrapWorkspace(
 ): Promise<BootstrapWorkspaceContext> {
   const workspaceRootDir = path.join(tempDir, "workspace");
   const workspaceDir = path.join(workspaceRootDir, "dev");
-  const expectedInjectedFiles = ["AGENTS.md", "SOUL.md", "IDENTITY.md", "USER.md"];
+  const expectedInjectedFiles = ["AGENTS.MD", "SOUL.md", "IDENTITY.md", "USER.md"];
   await fs.mkdir(workspaceDir, { recursive: true });
   await fs.writeFile(
-    path.join(workspaceDir, "AGENTS.md"),
+    path.join(workspaceDir, "AGENTS.MD"),
     [
-      "# AGENTS.md",
+      "# AGENTS.MD",
       "",
       "Follow exact reply instructions from the user.",
       "Do not add extra punctuation when the user asks for an exact response.",

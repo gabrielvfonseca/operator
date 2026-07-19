@@ -554,6 +554,7 @@ describe("discord doctor", () => {
 
   it("formats repair guidance for unsafe numeric ids", () => {
     const warnings = collectDiscordNumericIdWarnings({
+      // biome-ignore lint/correctness/noPrecisionLoss: migrated from oxlint
       hits: [{ path: "channels.discord.allowFrom[0]", entry: 106232522769186816, safe: false }],
       doctorFixCommand: "openclaw doctor --fix",
     });

@@ -357,9 +357,9 @@ function legacyNpmInstallRecordSupersededByCurrent(params: {
   const currentIdentity = readAuthoritativeCurrentNpmIdentity(currentRecord);
   return Boolean(
     currentIdentity &&
-    legacyParsedSpec.selector &&
-    currentIdentity.name === legacyParsedSpec.name &&
-    currentIdentity.version === legacyParsedSpec.selector,
+      legacyParsedSpec.selector &&
+      currentIdentity.name === legacyParsedSpec.name &&
+      currentIdentity.version === legacyParsedSpec.selector,
   );
 }
 

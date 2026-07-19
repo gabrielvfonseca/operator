@@ -484,8 +484,9 @@ export function createAgentToolResultMiddlewareRunner(
   const middlewareContext = { ...ctx, harness: ctx.harness ?? ctx.runtime };
   let resolvedHandlers = handlers;
   const resolvedHandlersLoader = createLazyPromiseLoader(async () => {
-    const { loadAgentToolResultMiddlewaresForRuntime } =
-      await import("../../plugins/agent-tool-result-middleware-loader.js");
+    const { loadAgentToolResultMiddlewaresForRuntime } = await import(
+      "../../plugins/agent-tool-result-middleware-loader.js"
+    );
     return loadAgentToolResultMiddlewaresForRuntime({
       runtime: ctx.runtime,
     });

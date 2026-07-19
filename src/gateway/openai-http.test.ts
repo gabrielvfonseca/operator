@@ -2252,84 +2252,82 @@ describe("OpenAI-compatible HTTP API (e2e)", () => {
     }
   });
 
-  it(
-    "sends an initial SSE chunk before a streaming agent run settles",
-    { timeout: 15_000 },
-    async () => {
-      const port = enabledPort;
-      let serverAbortSignal: AbortSignal | undefined;
+  it("sends an initial SSE chunk before a streaming agent run settles", {
+    timeout: 15_000,
+  }, async () => {
+    const port = enabledPort;
+    let serverAbortSignal: AbortSignal | undefined;
 
-      agentCommand.mockClear();
-      agentCommand.mockImplementationOnce(
-        (opts: unknown) =>
-          new Promise<undefined>((resolve) => {
-            const signal = (opts as { abortSignal?: AbortSignal } | undefined)?.abortSignal;
-            serverAbortSignal = signal;
-            if (signal?.aborted) {
-              resolve(undefined);
-              return;
-            }
-            signal?.addEventListener("abort", () => resolve(undefined), { once: true });
-          }),
-      );
-
-      let settled = false;
-      const firstChunk = new Promise<string>((resolve, reject) => {
-        const clientReq = http.request(
-          {
-            hostname: "127.0.0.1",
-            port,
-            path: "/v1/chat/completions",
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-              authorization: "Bearer secret",
-            },
-          },
-          (res) => {
-            expect(res.statusCode).toBe(200);
-            expect(res.headers["content-type"] ?? "").toContain("text/event-stream");
-            res.setEncoding("utf8");
-            res.once("data", (chunk) => {
-              settled = true;
-              resolve(String(chunk));
-              clientReq.destroy();
-            });
-          },
-        );
-        clientReq.on("error", (err) => {
-          if (!settled) {
-            reject(err);
+    agentCommand.mockClear();
+    agentCommand.mockImplementationOnce(
+      (opts: unknown) =>
+        new Promise<undefined>((resolve) => {
+          const signal = (opts as { abortSignal?: AbortSignal } | undefined)?.abortSignal;
+          serverAbortSignal = signal;
+          if (signal?.aborted) {
+            resolve(undefined);
+            return;
           }
-        });
-        clientReq.setTimeout(2_000, () => {
-          if (!settled) {
-            settled = true;
-            clientReq.destroy(new Error("timed out waiting for first SSE chunk"));
-          }
-        });
-        clientReq.end(
-          JSON.stringify({
-            stream: true,
-            model: "@gabrielvfonseca/operator",
-            messages: [{ role: "user", content: "hi" }],
-          }),
-        );
-      });
+          signal?.addEventListener("abort", () => resolve(undefined), { once: true });
+        }),
+    );
 
-      await expect(firstChunk).resolves.toContain('"role":"assistant"');
-      await vi.waitFor(() => {
-        expect(agentCommand).toHaveBeenCalledTimes(1);
-      });
-
-      await vi.waitFor(
-        () => {
-          expect(serverAbortSignal?.aborted).toBe(true);
+    let settled = false;
+    const firstChunk = new Promise<string>((resolve, reject) => {
+      const clientReq = http.request(
+        {
+          hostname: "127.0.0.1",
+          port,
+          path: "/v1/chat/completions",
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            authorization: "Bearer secret",
+          },
         },
-        { timeout: 5_000, interval: 50 },
+        (res) => {
+          expect(res.statusCode).toBe(200);
+          expect(res.headers["content-type"] ?? "").toContain("text/event-stream");
+          res.setEncoding("utf8");
+          res.once("data", (chunk) => {
+            settled = true;
+            resolve(String(chunk));
+            clientReq.destroy();
+          });
+        },
       );
-    },
-  );
+      clientReq.on("error", (err) => {
+        if (!settled) {
+          reject(err);
+        }
+      });
+      clientReq.setTimeout(2_000, () => {
+        if (!settled) {
+          settled = true;
+          clientReq.destroy(new Error("timed out waiting for first SSE chunk"));
+        }
+      });
+      clientReq.end(
+        JSON.stringify({
+          stream: true,
+          model: "@gabrielvfonseca/operator",
+          messages: [{ role: "user", content: "hi" }],
+        }),
+      );
+    });
+
+    await expect(firstChunk).resolves.toContain('"role":"assistant"');
+    await vi.waitFor(() => {
+      expect(agentCommand).toHaveBeenCalledTimes(1);
+    });
+
+    await vi.waitFor(
+      () => {
+        expect(serverAbortSignal?.aborted).toBe(true);
+      },
+      { timeout: 5_000, interval: 50 },
+    );
+  });
 
   it("buffers replaceable assistant events for streaming chat completions", async () => {
     const port = enabledPort;
@@ -2538,64 +2536,62 @@ describe("OpenAI-compatible HTTP API (e2e)", () => {
     });
   });
 
-  it(
-    "cleans up usage-enabled stream when client disconnects before usage arrives",
-    { timeout: 15_000 },
-    async () => {
-      const port = enabledPort;
-      let serverAbortSignal: AbortSignal | undefined;
+  it("cleans up usage-enabled stream when client disconnects before usage arrives", {
+    timeout: 15_000,
+  }, async () => {
+    const port = enabledPort;
+    let serverAbortSignal: AbortSignal | undefined;
 
-      agentCommand.mockClear();
-      agentCommand.mockImplementationOnce(
-        (opts: unknown) =>
-          new Promise<undefined>((resolve) => {
-            const runId = (opts as { runId?: string } | undefined)?.runId ?? "";
-            const signal = (opts as { abortSignal?: AbortSignal } | undefined)?.abortSignal;
-            serverAbortSignal = signal;
-            emitAgentEvent({ runId, stream: "assistant", data: { delta: "hello" } });
-            emitAgentEvent({ runId, stream: "lifecycle", data: { phase: "end" } });
-            if (signal?.aborted) {
-              resolve(undefined);
-              return;
-            }
-            signal?.addEventListener("abort", () => resolve(undefined), { once: true });
-          }),
-      );
-
-      const clientReq = http.request({
-        hostname: "127.0.0.1",
-        port,
-        path: "/v1/chat/completions",
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          authorization: "Bearer secret",
-        },
-      });
-      clientReq.on("error", () => {});
-      clientReq.end(
-        JSON.stringify({
-          stream: true,
-          stream_options: { include_usage: true },
-          model: "@gabrielvfonseca/operator",
-          messages: [{ role: "user", content: "hi" }],
+    agentCommand.mockClear();
+    agentCommand.mockImplementationOnce(
+      (opts: unknown) =>
+        new Promise<undefined>((resolve) => {
+          const runId = (opts as { runId?: string } | undefined)?.runId ?? "";
+          const signal = (opts as { abortSignal?: AbortSignal } | undefined)?.abortSignal;
+          serverAbortSignal = signal;
+          emitAgentEvent({ runId, stream: "assistant", data: { delta: "hello" } });
+          emitAgentEvent({ runId, stream: "lifecycle", data: { phase: "end" } });
+          if (signal?.aborted) {
+            resolve(undefined);
+            return;
+          }
+          signal?.addEventListener("abort", () => resolve(undefined), { once: true });
         }),
-      );
+    );
 
-      await vi.waitFor(() => {
-        expect(agentCommand).toHaveBeenCalledTimes(1);
-      });
+    const clientReq = http.request({
+      hostname: "127.0.0.1",
+      port,
+      path: "/v1/chat/completions",
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: "Bearer secret",
+      },
+    });
+    clientReq.on("error", () => {});
+    clientReq.end(
+      JSON.stringify({
+        stream: true,
+        stream_options: { include_usage: true },
+        model: "@gabrielvfonseca/operator",
+        messages: [{ role: "user", content: "hi" }],
+      }),
+    );
 
-      clientReq.destroy();
+    await vi.waitFor(() => {
+      expect(agentCommand).toHaveBeenCalledTimes(1);
+    });
 
-      await vi.waitFor(
-        () => {
-          expect(serverAbortSignal?.aborted).toBe(true);
-        },
-        { timeout: 5_000, interval: 50 },
-      );
-    },
-  );
+    clientReq.destroy();
+
+    await vi.waitFor(
+      () => {
+        expect(serverAbortSignal?.aborted).toBe(true);
+      },
+      { timeout: 5_000, interval: 50 },
+    );
+  });
 
   it("does not require usage to finalize when include_usage is not requested", async () => {
     const port = enabledPort;
@@ -2707,58 +2703,56 @@ describe("OpenAI-compatible HTTP API (e2e)", () => {
     );
   });
 
-  it(
-    "aborts agent command when non-streaming client disconnects",
-    { timeout: 15_000 },
-    async () => {
-      const port = enabledPort;
-      let serverAbortSignal: AbortSignal | undefined;
+  it("aborts agent command when non-streaming client disconnects", {
+    timeout: 15_000,
+  }, async () => {
+    const port = enabledPort;
+    let serverAbortSignal: AbortSignal | undefined;
 
-      agentCommand.mockClear();
-      agentCommand.mockImplementationOnce(
-        (opts: unknown) =>
-          new Promise<undefined>((resolve) => {
-            const signal = (opts as { abortSignal?: AbortSignal } | undefined)?.abortSignal;
-            serverAbortSignal = signal;
-            if (signal?.aborted) {
-              resolve(undefined);
-              return;
-            }
-            signal?.addEventListener("abort", () => resolve(undefined), { once: true });
-          }),
-      );
-
-      const clientReq = http.request({
-        hostname: "127.0.0.1",
-        port,
-        path: "/v1/chat/completions",
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          authorization: "Bearer secret",
-        },
-      });
-      clientReq.on("error", () => {});
-      clientReq.end(
-        JSON.stringify({
-          model: "@gabrielvfonseca/operator",
-          messages: [{ role: "user", content: "hi" }],
+    agentCommand.mockClear();
+    agentCommand.mockImplementationOnce(
+      (opts: unknown) =>
+        new Promise<undefined>((resolve) => {
+          const signal = (opts as { abortSignal?: AbortSignal } | undefined)?.abortSignal;
+          serverAbortSignal = signal;
+          if (signal?.aborted) {
+            resolve(undefined);
+            return;
+          }
+          signal?.addEventListener("abort", () => resolve(undefined), { once: true });
         }),
-      );
+    );
 
-      await vi.waitFor(() => {
-        expect(agentCommand).toHaveBeenCalledTimes(1);
-      });
+    const clientReq = http.request({
+      hostname: "127.0.0.1",
+      port,
+      path: "/v1/chat/completions",
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: "Bearer secret",
+      },
+    });
+    clientReq.on("error", () => {});
+    clientReq.end(
+      JSON.stringify({
+        model: "@gabrielvfonseca/operator",
+        messages: [{ role: "user", content: "hi" }],
+      }),
+    );
 
-      clientReq.destroy();
+    await vi.waitFor(() => {
+      expect(agentCommand).toHaveBeenCalledTimes(1);
+    });
 
-      await vi.waitFor(
-        () => {
-          expect(serverAbortSignal?.aborted).toBe(true);
-        },
-        { timeout: 5_000, interval: 50 },
-      );
-    },
-  );
+    clientReq.destroy();
+
+    await vi.waitFor(
+      () => {
+        expect(serverAbortSignal?.aborted).toBe(true);
+      },
+      { timeout: 5_000, interval: 50 },
+    );
+  });
 });
 /* oxlint-disable max-lines -- TODO: split this grandfathered oversized file. */

@@ -22,6 +22,7 @@ describe("prepareCliBundleMcpConfig resume hash", () => {
             type: "http",
             url: "http://127.0.0.1:23119/mcp",
             headers: {
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               Authorization: "Bearer ${OPERATOR_MCP_TOKEN}",
             },
           },
@@ -35,6 +36,7 @@ describe("prepareCliBundleMcpConfig resume hash", () => {
             type: "http",
             url: "http://127.0.0.1:24567/mcp",
             headers: {
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               Authorization: "Bearer ${OPERATOR_MCP_TOKEN}",
             },
           },
@@ -57,6 +59,7 @@ describe("prepareCliBundleMcpConfig resume hash", () => {
             type: "http",
             url: "http://127.0.0.1:23119/mcp",
             headers: {
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               Authorization: "Bearer ${OPERATOR_MCP_TOKEN}",
             },
           },
@@ -70,6 +73,7 @@ describe("prepareCliBundleMcpConfig resume hash", () => {
             type: "http",
             url: "http://127.0.0.1:23119/other",
             headers: {
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               Authorization: "Bearer ${OPERATOR_MCP_TOKEN}",
             },
           },

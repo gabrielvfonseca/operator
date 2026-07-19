@@ -32,8 +32,9 @@ describe("resolveEnabledBundledManifestContractPlugins", () => {
     mocks.loadManifestContractSnapshot.mockReturnValue({
       plugins: [bundledContractPlugin],
     });
-    const { resolveEnabledBundledManifestContractPlugins } =
-      await import("./bundled-manifest-contract-plugins.js");
+    const { resolveEnabledBundledManifestContractPlugins } = await import(
+      "./bundled-manifest-contract-plugins.js"
+    );
 
     expect(
       resolveEnabledBundledManifestContractPlugins({

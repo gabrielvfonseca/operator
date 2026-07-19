@@ -1086,7 +1086,7 @@ async function buildSuiteResult(params: {
       id: commandCase.id,
       name: commandCase.name,
       args: commandCase.args,
-      ...(commandCase.expectedExitCodes && commandCase.expectedExitCodes.some((code) => code !== 0)
+      ...(commandCase.expectedExitCodes?.some((code) => code !== 0)
         ? { expectedExitCodes: [...commandCase.expectedExitCodes] }
         : {}),
       ...(commandCase.expectedNonzeroOutputIncludes

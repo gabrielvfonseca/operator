@@ -284,7 +284,7 @@ export function findSystemMarkLiteralViolations(content, fileName = "source.ts")
 
   const visit = (node) => {
     const text = readStringLiteral(node);
-    if (text && text.includes(systemMarkLiteral) && !isModuleSpecifierStringNode(node)) {
+    if (text?.includes(systemMarkLiteral) && !isModuleSpecifierStringNode(node)) {
       violations.push({
         line: toLine(sourceFile, node),
         reason: `hardcoded system mark literal (${JSON.stringify(text)})`,

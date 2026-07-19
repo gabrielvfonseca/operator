@@ -1506,6 +1506,7 @@ describe("config io write", () => {
           {
             gateway: {
               mode: "local",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               auth: { mode: "token", token: "${OPERATOR_GATEWAY_TOKEN}" },
             },
             channels: { "test-plugin-channel": { enabled: true } },
@@ -1543,6 +1544,7 @@ describe("config io write", () => {
           {
             gateway: {
               mode: "local",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               auth: { mode: "token", token: "${OPERATOR_GATEWAY_TOKEN}" },
             },
             channels: { "test-plugin-channel": { enabled: true } },
@@ -2071,6 +2073,7 @@ describe("config io write", () => {
         `${JSON.stringify(
           {
             mode: "local",
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             auth: { mode: "token", token: "${OPERATOR_GATEWAY_TOKEN}" },
             invalid: true,
           },
@@ -2107,6 +2110,7 @@ describe("config io write", () => {
 
       await expect(fs.readFile(configPath, "utf-8")).resolves.toBe(originalRootRaw);
       await expect(fs.readFile(includePath, "utf-8")).resolves.toContain(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         '"token": "${OPERATOR_GATEWAY_TOKEN}"',
       );
     });
@@ -2232,6 +2236,7 @@ describe("config io write", () => {
           configSchema: {
             type: "object",
             properties: {
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               token: { type: "string", const: "${ROOT_LITERAL_TOKEN}" },
             },
             required: ["token"],
@@ -2298,6 +2303,7 @@ describe("config io write", () => {
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.writeFile(
         includePath,
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         `${JSON.stringify({ id: "main", workspace: "${OPERATOR_AGENT_WORKSPACE}" }, null, 2)}\n`,
         "utf-8",
       );
@@ -2339,6 +2345,7 @@ describe("config io write", () => {
       expect(persistedRoot.agents?.defaults).toBeUndefined();
       expect(persistedRoot.agents?.list).toEqual([{ $include: "./main-agent.json5" }]);
       await expect(fs.readFile(includePath, "utf-8")).resolves.toContain(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         '"workspace": "${OPERATOR_AGENT_WORKSPACE}"',
       );
     });
@@ -2499,6 +2506,7 @@ describe("config io write", () => {
           {
             gateway: {
               mode: "local",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               auth: { mode: "token", token: "${OPERATOR_GATEWAY_TOKEN}" },
             },
             agents: { defaults: { model: { primary: "openai/gpt-5.4" } } },
@@ -2550,6 +2558,7 @@ describe("config io write", () => {
             const persisted = JSON.parse(await fs.readFile(configPath, "utf-8")) as {
               gateway?: { auth?: { token?: string } };
             };
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             expect(persisted.gateway?.auth?.token).toBe("${OPERATOR_GATEWAY_TOKEN}");
             expect(observedSources).toHaveLength(1);
             const observedSource = requireRecord(observedSources[0], "observed source config");
@@ -2624,6 +2633,7 @@ describe("config io write", () => {
       const initialAuthoredConfig = {
         gateway: {
           mode: "local" as const,
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           auth: { mode: "token" as const, token: "${OPERATOR_TEST_MANAGED_ROOT_ENV}" },
         },
         env: { vars: { [envKey]: "old" } },
@@ -2691,6 +2701,7 @@ describe("config io write", () => {
       } satisfies OperatorConfig;
       const candidate = {
         env: { vars: { [envKey]: "new" } },
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         gateway: { auth: { mode: "token" as const, token: "${OPERATOR_TEST_WATCHER_ENV}" } },
       } satisfies OperatorConfig;
       await fs.mkdir(path.dirname(configPath), { recursive: true });
@@ -2770,6 +2781,7 @@ describe("config io write", () => {
       const configPath = path.join(home, ".operator", "operator.json");
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       const originalRaw = `${JSON.stringify(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         { plugins: { allow: ["${PLUGIN_A}", "${PLUGIN_B}"] } },
         null,
         2,
@@ -2808,6 +2820,7 @@ describe("config io write", () => {
         logger: silentLogger,
       });
 
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       await io.writeConfigFile({ plugins: { allow: ["literal-plugin", "${PLUGIN_ID}"] } });
 
       const persisted = JSON.parse(await fs.readFile(configPath, "utf-8")) as {

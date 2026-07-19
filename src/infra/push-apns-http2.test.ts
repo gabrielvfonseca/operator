@@ -203,8 +203,9 @@ describe("connectApnsHttp2Session", () => {
   });
 
   it("rejects APNs authorities with non-origin URL components", async () => {
-    const { connectApnsHttp2Session, probeApnsHttp2ReachabilityViaProxy } =
-      await import("./push-apns-http2.js");
+    const { connectApnsHttp2Session, probeApnsHttp2ReachabilityViaProxy } = await import(
+      "./push-apns-http2.js"
+    );
 
     await expect(
       connectApnsHttp2Session({
@@ -411,8 +412,9 @@ describe("connectApnsHttp2Session", () => {
   });
 
   it("rejects non-APNs authorities", async () => {
-    const { connectApnsHttp2Session, probeApnsHttp2ReachabilityViaProxy } =
-      await import("./push-apns-http2.js");
+    const { connectApnsHttp2Session, probeApnsHttp2ReachabilityViaProxy } = await import(
+      "./push-apns-http2.js"
+    );
 
     await expect(
       connectApnsHttp2Session({

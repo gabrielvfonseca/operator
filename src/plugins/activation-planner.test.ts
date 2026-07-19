@@ -15,8 +15,9 @@ let resolveManifestActivationPlan: typeof import("./activation-planner.js").reso
 
 describe("activation planner", () => {
   beforeAll(async () => {
-    ({ resolveManifestActivationPlan, resolveManifestActivationPluginIds } =
-      await import("./activation-planner.js"));
+    ({ resolveManifestActivationPlan, resolveManifestActivationPluginIds } = await import(
+      "./activation-planner.js"
+    ));
   });
 
   beforeEach(() => {

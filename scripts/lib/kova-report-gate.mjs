@@ -245,6 +245,7 @@ function validateMetric(metricValue, sampleCount, label) {
     metric.classification === "stable" || metric.classification === "unstable",
     `${label} classification was invalid`,
   );
+  // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
   samples.forEach((sample) => finite(sample, `${label} sample`));
   return samples;
 }
@@ -320,6 +321,7 @@ function validatePerformance(report, records, repeat) {
     );
     profiledCount += matchingProfiled;
     const metrics = object(group.metrics, "group metrics");
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     Object.entries(metrics).forEach(([id, metric]) =>
       validateMetric(metric, group.sampleCount, `group metric ${id}`),
     );

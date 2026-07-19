@@ -129,14 +129,14 @@ describe("update-startup", () => {
   let tempDir: string;
   let testState: OperatorTestState;
 
-  let resolveOperatorPackageRoot: (typeof import("./openclaw-root.js"))["resolveOperatorPackageRoot"];
-  let checkUpdateStatus: (typeof import("./update-check.js"))["checkUpdateStatus"];
-  let resolveNpmChannelTag: (typeof import("./update-check.js"))["resolveNpmChannelTag"];
-  let runCommandWithTimeout: (typeof import("../process/exec.js"))["runCommandWithTimeout"];
-  let runGatewayUpdateCheck: (typeof import("./update-startup.js"))["runGatewayUpdateCheck"];
-  let scheduleGatewayUpdateCheck: (typeof import("./update-startup.js"))["scheduleGatewayUpdateCheck"];
-  let getUpdateAvailable: (typeof import("./update-startup.js"))["getUpdateAvailable"];
-  let resetUpdateAvailableStateForTest: (typeof import("./update-startup.js"))["resetUpdateAvailableStateForTest"];
+  let resolveOperatorPackageRoot: typeof import("./openclaw-root.js")["resolveOperatorPackageRoot"];
+  let checkUpdateStatus: typeof import("./update-check.js")["checkUpdateStatus"];
+  let resolveNpmChannelTag: typeof import("./update-check.js")["resolveNpmChannelTag"];
+  let runCommandWithTimeout: typeof import("../process/exec.js")["runCommandWithTimeout"];
+  let runGatewayUpdateCheck: typeof import("./update-startup.js")["runGatewayUpdateCheck"];
+  let scheduleGatewayUpdateCheck: typeof import("./update-startup.js")["scheduleGatewayUpdateCheck"];
+  let getUpdateAvailable: typeof import("./update-startup.js")["getUpdateAvailable"];
+  let resetUpdateAvailableStateForTest: typeof import("./update-startup.js")["resetUpdateAvailableStateForTest"];
   let loaded = false;
 
   function requireFirstRunCommandCall(): Parameters<typeof runCommandWithTimeout> {

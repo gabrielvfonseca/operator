@@ -34,7 +34,8 @@ export type SplitHealthCheckInput = HealthCheck & HealthCheckSelectionOptions;
 
 /** Health-check implementation that owns its own detect/repair orchestration. */
 export interface RunnableHealthCheck
-  extends Pick<HealthCheck, "id" | "kind" | "description" | "source">, HealthCheckSelectionOptions {
+  extends Pick<HealthCheck, "id" | "kind" | "description" | "source">,
+    HealthCheckSelectionOptions {
   run(ctx: HealthCheckRunContext, scope?: HealthCheckScope): Promise<HealthCheckRunResult>;
 }
 

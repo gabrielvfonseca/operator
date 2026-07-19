@@ -34,10 +34,9 @@ export function resolveSenderToolPolicy(
     senderUsername: params.senderUsername,
     senderE164: params.senderE164,
   };
-  const agentTools =
-    params.agentId && params.agentId.trim()
-      ? resolveAgentConfig(cfg, params.agentId)?.tools
-      : undefined;
+  const agentTools = params.agentId?.trim()
+    ? resolveAgentConfig(cfg, params.agentId)?.tools
+    : undefined;
   const agentPolicy = resolveToolsBySender({
     toolsBySender: agentTools?.toolsBySender,
     ...sender,

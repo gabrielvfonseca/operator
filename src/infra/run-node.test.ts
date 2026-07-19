@@ -233,12 +233,7 @@ async function setupTrackedProject(
   await touchProjectFiles(tmp, options.newPaths ?? [], NEW_TIME);
 }
 
-function createSpawnRecorder(
-  options: {
-    gitHead?: string;
-    gitStatus?: string;
-  } = {},
-) {
+function createSpawnRecorder(options: { gitHead?: string; gitStatus?: string } = {}) {
   const spawnCalls: string[][] = [];
   const spawn = (cmd: string, args: string[]) => {
     spawnCalls.push([cmd, ...args]);
@@ -437,17 +432,16 @@ describe("run-node script", () => {
       await writeRuntimePostBuildScaffold(tmp);
       await writeProjectFiles(tmp, {
         [EXTENSION_MANIFEST]: '{"id":"demo","configSchema":{"type":"object"}}\n',
-        [EXTENSION_PACKAGE]:
-          JSON.stringify(
-            {
-              name: "demo",
-              operator: {
-                extensions: ["./src/index.ts", "./nested/entry.mts"],
-              },
+        [EXTENSION_PACKAGE]: `${JSON.stringify(
+          {
+            name: "demo",
+            operator: {
+              extensions: ["./src/index.ts", "./nested/entry.mts"],
             },
-            null,
-            2,
-          ) + "\n",
+          },
+          null,
+          2,
+        )}\n`,
       });
 
       const spawnCalls: string[][] = [];

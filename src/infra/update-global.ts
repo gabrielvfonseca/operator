@@ -763,8 +763,8 @@ async function hasPnpmIsolatedProjectMetadata(
     .catch(() => null);
   return Boolean(
     manifest?.dependencies &&
-    packageName in manifest.dependencies &&
-    (await pathExists(path.join(installDir, "pnpm-lock.yaml"))),
+      packageName in manifest.dependencies &&
+      (await pathExists(path.join(installDir, "pnpm-lock.yaml"))),
   );
 }
 
@@ -993,7 +993,7 @@ async function resolveGlobalRoot(
   }
   const argv = [resolved.command, "root", "-g"];
   const res = await runCommand(argv, { timeoutMs }).catch(() => null);
-  if (!res || res.code !== 0) {
+  if (res?.code !== 0) {
     return null;
   }
   const root = readPackageManagerProbeValue(res.stdout);
@@ -1138,7 +1138,7 @@ export async function detectGlobalInstallManagerForRoot(
 
   for (const { manager, argv } of candidates) {
     const res = await runCommand(argv, { timeoutMs }).catch(() => null);
-    if (!res || res.code !== 0) {
+    if (res?.code !== 0) {
       continue;
     }
     const globalRoot = readPackageManagerProbeValue(res.stdout);

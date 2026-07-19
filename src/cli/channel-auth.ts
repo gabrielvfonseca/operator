@@ -60,9 +60,7 @@ function isConfiguredAuthPlugin(plugin: ChannelPlugin, cfg: OperatorConfig): boo
       if (enabled) {
         return true;
       }
-    } catch {
-      continue;
-    }
+    } catch {}
   }
 
   return false;
@@ -124,7 +122,7 @@ async function resolveChannelPluginForMode(
       formatUnsupportedChannelActionMessage({
         channel: channelId,
         action: mode,
-        inspectCommand: "openclaw channels status --channel " + channelId,
+        inspectCommand: `openclaw channels status --channel ${channelId}`,
       }),
     );
   }
@@ -239,7 +237,7 @@ export async function runChannelLogin(
       formatUnsupportedChannelActionMessage({
         channel: channelInput,
         action: "login",
-        inspectCommand: "openclaw channels status --channel " + channelInput,
+        inspectCommand: `openclaw channels status --channel ${channelInput}`,
       }),
     );
   }
@@ -288,7 +286,7 @@ export async function runChannelLogout(
       formatUnsupportedChannelActionMessage({
         channel: channelInput,
         action: "logout",
-        inspectCommand: "openclaw channels status --channel " + channelInput,
+        inspectCommand: `openclaw channels status --channel ${channelInput}`,
       }),
     );
   }

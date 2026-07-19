@@ -702,16 +702,16 @@ export function createAgentEventHandler({
       opts?.suppressRestartRecoveryProjection === true ||
       Boolean(
         evt.lifecycleGeneration &&
-        activeLifecycleGeneration &&
-        evt.lifecycleGeneration !== activeLifecycleGeneration,
+          activeLifecycleGeneration &&
+          evt.lifecycleGeneration !== activeLifecycleGeneration,
       ) ||
       restartRecoveryState?.suppress === true;
     const isSupersededRestartRecoveryEvent =
       suppressRestartRecoveryProjection &&
       Boolean(
         evt.lifecycleGeneration &&
-        currentLifecycleGeneration &&
-        evt.lifecycleGeneration !== currentLifecycleGeneration,
+          currentLifecycleGeneration &&
+          evt.lifecycleGeneration !== currentLifecycleGeneration,
       );
     if (isSupersededRestartRecoveryEvent) {
       return;
@@ -1319,8 +1319,8 @@ export function createAgentEventHandler({
       lifecyclePhase !== null &&
       (Boolean(
         evt.lifecycleGeneration &&
-        activeLifecycleGeneration &&
-        evt.lifecycleGeneration !== activeLifecycleGeneration,
+          activeLifecycleGeneration &&
+          evt.lifecycleGeneration !== activeLifecycleGeneration,
       ) ||
         restartRecoveryState?.suppress === true);
     if (suppressRestartRecoveryLifecycle) {

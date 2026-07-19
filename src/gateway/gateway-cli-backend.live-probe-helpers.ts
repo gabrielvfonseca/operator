@@ -137,7 +137,7 @@ function assertLoopbackObjectSchemasHaveProperties(params: {
   const missingProperties = params.tools
     .filter((tool) => {
       const schema = asLoopbackSchemaRecord(tool.inputSchema);
-      if (!schema || schema.type !== "object") {
+      if (schema?.type !== "object") {
         return false;
       }
       const properties = schema.properties;
@@ -169,8 +169,7 @@ function assertLoopbackObjectSchemasHaveProperties(params: {
   }
   const schema = asLoopbackSchemaRecord(tool.inputSchema);
   if (
-    !schema ||
-    schema.type !== "object" ||
+    schema?.type !== "object" ||
     !Object.hasOwn(schema, "properties") ||
     !asLoopbackSchemaRecord(schema.properties)
   ) {
@@ -213,6 +212,7 @@ async function callLoopbackJsonRpc(params: {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   let response: Response | undefined;
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let text;
   try {
     response = await fetch(`http://127.0.0.1:${runtime.port}/mcp`, {

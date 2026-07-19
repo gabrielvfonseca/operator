@@ -86,6 +86,7 @@ describe("iOS release shell wrapper arguments", () => {
       const script = readFileSync(path.join(process.cwd(), scriptPath), "utf8");
 
       expect(script).toContain('BUILD_NUMBER=""');
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(script).not.toContain('BUILD_NUMBER="${IOS_RELEASE_BUILD_NUMBER:-}"');
     },
   );
@@ -111,12 +112,16 @@ describe("iOS release shell wrapper arguments", () => {
 
     expect(script).toContain("OPENCLAW_REQUIRE_BUILD_METADATA=1");
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'RELEASE_SOURCE_HELPER="${ROOT_DIR}/scripts/apple-release-source-check.sh"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('--expected-commit "${RELEASE_GIT_COMMIT}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script.indexOf('bash "${RELEASE_SOURCE_HELPER}"')).toBeLessThan(
       script.lastIndexOf("prepare_build_dir"),
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('export GIT_COMMIT="${RELEASE_GIT_COMMIT}"');
   });
 });

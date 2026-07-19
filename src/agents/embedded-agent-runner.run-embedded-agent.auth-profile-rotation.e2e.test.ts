@@ -102,10 +102,12 @@ beforeAll(async () => {
   installRunEmbeddedMocks();
   ({ runEmbeddedAgent } = await import("./embedded-agent-runner/run.js"));
   ({ testing: authProfileUsageTesting } = await import("./auth-profiles/usage.test-support.js"));
-  ({ createDiagnosticLogRecordCapture: createDiagnosticLogRecordCaptureFn } =
-    await import("../logging/test-helpers/diagnostic-log-capture.js"));
-  ({ resetLogger: resetLoggerFn, setLoggerOverride: setLoggerOverrideFn } =
-    await import("../logging/logger.js"));
+  ({ createDiagnosticLogRecordCapture: createDiagnosticLogRecordCaptureFn } = await import(
+    "../logging/test-helpers/diagnostic-log-capture.js"
+  ));
+  ({ resetLogger: resetLoggerFn, setLoggerOverride: setLoggerOverrideFn } = await import(
+    "../logging/logger.js"
+  ));
 });
 
 type RunEmbeddedAgentTestParams = Parameters<typeof runEmbeddedAgent>[0] & {

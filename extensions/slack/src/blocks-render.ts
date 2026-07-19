@@ -592,7 +592,6 @@ export function canRenderSlackPresentation(
       continue;
     }
     if (block.type === "table") {
-      continue;
     }
   }
   return true;

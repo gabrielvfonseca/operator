@@ -144,6 +144,7 @@ export function resolveAccountBase(
   const qqbot = readQQBotSection(cfg);
 
   let accountConfig: Record<string, unknown>;
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let appId;
 
   if (resolvedAccountId === DEFAULT_ACCOUNT_ID) {
@@ -260,9 +261,9 @@ interface AccountSnapshot {
 export function isAccountConfigured(account: AccountSnapshot | undefined): boolean {
   return Boolean(
     account?.appId &&
-    (Boolean(account?.clientSecret) ||
-      getPlatformAdapter().hasConfiguredSecret(account?.config?.clientSecret) ||
-      Boolean(account?.config?.clientSecretFile?.trim())),
+      (Boolean(account?.clientSecret) ||
+        getPlatformAdapter().hasConfiguredSecret(account?.config?.clientSecret) ||
+        Boolean(account?.config?.clientSecretFile?.trim())),
   );
 }
 

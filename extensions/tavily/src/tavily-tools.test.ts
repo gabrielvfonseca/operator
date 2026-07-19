@@ -52,8 +52,9 @@ describe("tavily tools", () => {
 
   beforeAll(async () => {
     ({ createTavilyWebSearchProvider } = await import("./tavily-search-provider.js"));
-    ({ createTavilyWebSearchProvider: createTavilyContractWebSearchProvider } =
-      await import("../web-search-contract-api.js"));
+    ({ createTavilyWebSearchProvider: createTavilyContractWebSearchProvider } = await import(
+      "../web-search-contract-api.js"
+    ));
     ({ createTavilySearchTool } = await import("./tavily-search-tool.js"));
     ({ createTavilyExtractTool } = await import("./tavily-extract-tool.js"));
     ({ testing: tavilyClientTesting } =

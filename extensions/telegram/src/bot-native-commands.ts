@@ -527,14 +527,14 @@ function isEditableTelegramProgressResult(result: TelegramNativeReplyPayload): b
   const telegramData = resolveTelegramNativeReplyChannelData(result);
   return Boolean(
     typeof result.text === "string" &&
-    result.text.trim() &&
-    !result.mediaUrl &&
-    (!result.mediaUrls || result.mediaUrls.length === 0) &&
-    !result.presentation &&
-    !result.interactive &&
-    !result.btw &&
-    !hasTelegramNativeReplyReaction(result) &&
-    telegramData?.pin !== true,
+      result.text.trim() &&
+      !result.mediaUrl &&
+      (!result.mediaUrls || result.mediaUrls.length === 0) &&
+      !result.presentation &&
+      !result.interactive &&
+      !result.btw &&
+      !hasTelegramNativeReplyReaction(result) &&
+      telegramData?.pin !== true,
   );
 }
 

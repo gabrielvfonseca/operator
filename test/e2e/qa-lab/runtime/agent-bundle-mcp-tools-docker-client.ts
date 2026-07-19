@@ -199,7 +199,7 @@ async function main() {
     );
 
     process.stdout.write(
-      JSON.stringify(
+      `${JSON.stringify(
         {
           ok: true,
           tool: probeTool.name,
@@ -225,7 +225,7 @@ async function main() {
         },
         null,
         2,
-      ) + "\n",
+      )}\n`,
     );
   } finally {
     await disposeAllSessionMcpRuntimes();

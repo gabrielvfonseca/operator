@@ -576,7 +576,9 @@ describe("kitchen-sink plugin assertions", () => {
     const sweep = readFileSync(SWEEP_SCRIPT, "utf8");
 
     expect(sweep).toContain('mktemp -d "/tmp/openclaw-kitchen-sink.XXXXXX"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(sweep).toContain('mktemp -d "${KITCHEN_SINK_TMP_DIR}/clawhub.XXXXXX"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(sweep).not.toContain('KITCHEN_SINK_TMP_DIR="${KITCHEN_SINK_TMP_DIR:-/tmp}"');
     expect(sweep).not.toContain('mktemp -d "/tmp/openclaw-kitchen-sink-clawhub.XXXXXX"');
   });
@@ -615,6 +617,7 @@ test ! -e "$KITCHEN_SINK_TMP_DIR"
     const entry = path.join(parent, "entry.mjs");
     try {
       mkdirSync(scratchRoot, { recursive: true });
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       writeFileSync(entry, "console.log(`cli transcript: ${process.argv.slice(2).join(' ')}`);\n");
 
       const result = runSweepShell(
@@ -649,6 +652,7 @@ grep -q "cli transcript: plugins install demo" "$SCRATCH_ROOT/install_log.log"
       mkdirSync(scratchRoot, { recursive: true });
       writeFileSync(
         entry,
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'process.stdout.write(`prefix\\n${"x".repeat(2048)}\\nTAIL_MARKER\\n`);\n',
       );
 

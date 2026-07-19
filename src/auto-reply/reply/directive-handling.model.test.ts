@@ -313,8 +313,9 @@ beforeAll(async () => {
   ({ testing: cliBackendsTesting } = await import("../../agents/cli-backends.test-support.js"));
   ({ handleDirectiveOnly } = await import("./directive-handling.impl.js"));
   ({ maybeHandleModelDirectiveInfo } = await import("./directive-handling.model.js"));
-  ({ resolveModelSelectionFromDirective } =
-    await import("./directive-handling.model-selection.js"));
+  ({ resolveModelSelectionFromDirective } = await import(
+    "./directive-handling.model-selection.js"
+  ));
   ({ parseInlineDirectives } = await import("./directive-handling.parse.js"));
   ({ persistInlineDirectives } = await import("./directive-handling.persist.js"));
 });

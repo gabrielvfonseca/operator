@@ -45,7 +45,7 @@ describe("validatePrivateKey", () => {
     });
 
     it("rejects 65-char hex (too long)", () => {
-      expect(() => validatePrivateKey(TEST_HEX_PRIVATE_KEY + "0")).toThrow(
+      expect(() => validatePrivateKey(`${TEST_HEX_PRIVATE_KEY}0`)).toThrow(
         "Private key must be 64 hex characters",
       );
     });
@@ -55,7 +55,7 @@ describe("validatePrivateKey", () => {
     });
 
     it("rejects key with 0x prefix", () => {
-      expect(() => validatePrivateKey("0x" + TEST_HEX_PRIVATE_KEY)).toThrow(
+      expect(() => validatePrivateKey(`0x${TEST_HEX_PRIVATE_KEY}`)).toThrow(
         "Private key must be 64 hex characters",
       );
     });

@@ -237,6 +237,7 @@ describe("native app i18n inventory", () => {
         "Switch ready",
         "Switch waiting",
         "Kotlin first argument",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "Open ${row.title}",
         "When ready",
         "When waiting",
@@ -309,6 +310,7 @@ describe("native app i18n inventory", () => {
         new Set(["Request ID: \\(value)", "Request ID: %@"]).has(entry.source),
       ),
     ).toBe(true);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(entries.some((entry) => entry.source === "Open ${row.title}")).toBe(true);
     expect(entries.some((entry) => entry.source === "Preview · $domain")).toBe(true);
     expect(entries.some((entry) => entry.source === "Approval command copied")).toBe(true);
@@ -432,6 +434,7 @@ describe("native app i18n inventory", () => {
     expect(
       entries.some(
         (entry) =>
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           entry.source === 'OpenClaw needs ${labels.joinToString(", ")} permissions to continue.',
       ),
     ).toBe(true);
@@ -608,6 +611,7 @@ describe("native app i18n inventory", () => {
         kind: "ui-call",
         line: 3,
         path: "apps/android/example.kt",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         source: "Showing ${visibleApps.size} of ${apps.size}",
         surface: "android",
       },
@@ -631,6 +635,7 @@ describe("native app i18n inventory", () => {
               const translated = {
                 "native.android.hello": "Hej",
                 "native.apple.request": "Begärans-ID: \\(requestId)",
+                // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
                 "native.android.count": "${apps.size} totalt, ${visibleApps.size} visas",
                 "native.apple.permissions": "Av \\(total) behörigheter har \\(granted) beviljats",
               }[entry.id];
@@ -676,6 +681,7 @@ describe("native app i18n inventory", () => {
       expect(movedArtifact.entries.map((entry) => entry.translated)).toEqual([
         "moved:Hello",
         "moved:Request ID: \\(requestId)",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "moved:Showing ${visibleApps.size} of ${apps.size}",
         "moved:\\(granted) of \\(total) permissions granted",
       ]);
@@ -954,6 +960,7 @@ describe("native app i18n inventory", () => {
         kind: "ui-call",
         line: 1,
         path: "apps/android/Greeting.kt",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         source: "Hello ${name}\nNext",
         surface: "android",
       },
@@ -977,6 +984,7 @@ describe("native app i18n inventory", () => {
         {
           id: greeting.id,
           source: greeting.source,
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           translated: "Hej ${name}\nNästa",
         },
         {
@@ -1060,6 +1068,7 @@ describe("native app i18n inventory", () => {
           entries: [
             {
               ...artifactEntry(artifact, 0, "first structural native translation entry"),
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               translated: "Hej ${name} Nästa",
             },
             artifactEntry(artifact, 1, "second structural native translation entry"),

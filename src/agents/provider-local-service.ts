@@ -130,9 +130,7 @@ function normalizeProviderBaseUrl(value: string): string | undefined {
       url.hash = "";
       url.pathname = url.pathname.replace(/\/+$/u, "") || "/";
       return url.toString().replace(/\/$/u, "");
-    } catch {
-      continue;
-    }
+    } catch {}
   }
   return undefined;
 }

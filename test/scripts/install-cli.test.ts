@@ -282,6 +282,7 @@ describe("install-cli.sh", () => {
   it("fetches moving git refs without tags for git installs", () => {
     expect(script).toContain('git -C "$repo_dir" fetch --no-tags origin main');
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'git -C "$repo_dir" fetch --no-tags origin "refs/heads/${ref}:refs/remotes/origin/${ref}"',
     );
     expect(script).toContain('git -C "$repo_dir" pull --rebase --no-tags || true');
@@ -313,12 +314,14 @@ describe("install-cli.sh", () => {
     expect(result.stdout).toContain("branch=--no-frozen-lockfile");
     expect(result.stdout).toContain("tag=--frozen-lockfile");
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'CI="${CI:-true}" run_pnpm -C "$repo_dir" install "$install_lockfile_flag"',
     );
   });
 
   it("aligns pnpm to the checked-out repo packageManager before installing", () => {
     expect(script).toContain("activate_repo_pnpm_version()");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('"$corepack_cmd" prepare "pnpm@${version}" --activate');
     expect(script).toContain('activate_repo_pnpm_version "$repo_dir"');
   });
@@ -338,13 +341,16 @@ describe("install-cli.sh", () => {
     );
     writeFileSync(
       join(bin, "pnpm"),
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ["#!/bin/bash", '[[ "${1:-}" == "--version" ]] && echo "11.8.0"', ""].join("\n"),
     );
     writeFileSync(
       join(bin, "corepack"),
       [
         "#!/bin/bash",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "prepare" ]]; then exit 0; fi',
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "pnpm" && "${2:-}" == "--version" ]]; then',
         '  if grep -q "pnpm@11.2.2" package.json 2>/dev/null; then echo "11.2.2"; else exit 1; fi',
         "  exit 0",
@@ -363,6 +369,7 @@ describe("install-cli.sh", () => {
           `source ${JSON.stringify(SCRIPT_PATH)}`,
           `cd ${JSON.stringify(outer)}`,
           `activate_repo_pnpm_version ${JSON.stringify(repo)}`,
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           'printf "cmd=%s\\n" "${PNPM_CMD[*]}"',
           `printf "run=%s\\n" "$(run_pnpm -C ${JSON.stringify(repo)} --version)"`,
         ].join("\n"),
@@ -396,10 +403,12 @@ describe("install-cli.sh", () => {
       fakeNode,
       [
         "#!/bin/bash",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "-v" ]]; then',
         "  printf 'v22.22.3\\n'",
         "  exit 0",
         "fi",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "-e" ]]; then',
         "  exit 0",
         "fi",
@@ -473,10 +482,12 @@ describe("install-cli.sh", () => {
       staleNode,
       [
         "#!/bin/bash",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "-v" ]]; then',
         "  printf 'v22.22.3\\n'",
         "  exit 0",
         "fi",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "-e" ]]; then',
         "  exit 1",
         "fi",
@@ -488,10 +499,12 @@ describe("install-cli.sh", () => {
       fakeNode,
       [
         "#!/bin/bash",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "-v" ]]; then',
         "  printf 'v22.22.3\\n'",
         "  exit 0",
         "fi",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "-e" ]]; then',
         "  exit 0",
         "fi",
@@ -503,10 +516,12 @@ describe("install-cli.sh", () => {
       oldNode,
       [
         "#!/bin/bash",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "-v" ]]; then',
         "  printf 'v18.20.0\\n'",
         "  exit 0",
         "fi",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "-e" ]]; then',
         "  exit 1",
         "fi",
@@ -583,6 +598,7 @@ describe("install-cli.sh", () => {
       fakeNode,
       [
         "#!/bin/bash",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "-v" ]]; then',
         '  if [[ -f "$NODE_STATE" ]]; then',
         "    printf 'v22.22.3\\n'",
@@ -591,6 +607,7 @@ describe("install-cli.sh", () => {
         "  fi",
         "  exit 0",
         "fi",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "-e" ]]; then',
         '  [[ -f "$NODE_STATE" ]]',
         "  exit $?",
@@ -660,10 +677,12 @@ describe("install-cli.sh", () => {
       fakeNode,
       [
         "#!/bin/bash",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "-v" ]]; then',
         "  printf 'v22.18.0\\n'",
         "  exit 0",
         "fi",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "-e" ]]; then',
         "  exit 0",
         "fi",
@@ -723,10 +742,12 @@ describe("install-cli.sh", () => {
       staleNode,
       [
         "#!/bin/bash",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "-v" ]]; then',
         "  printf 'v22.18.0\\n'",
         "  exit 0",
         "fi",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "-e" ]]; then',
         "  exit 0",
         "fi",
@@ -739,10 +760,12 @@ describe("install-cli.sh", () => {
       newNode,
       [
         "#!/bin/bash",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "-v" ]]; then',
         "  printf 'v22.22.3\\n'",
         "  exit 0",
         "fi",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "-e" ]]; then',
         "  exit 0",
         "fi",
@@ -812,10 +835,12 @@ describe("install-cli.sh", () => {
       newNode,
       [
         "#!/bin/bash",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "-v" ]]; then',
         "  printf 'v22.22.2\\n'",
         "  exit 0",
         "fi",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "-e" ]]; then',
         "  exit 0",
         "fi",
@@ -1185,6 +1210,7 @@ describe("install-cli.sh", () => {
     writeNpmFreshnessConflictFixture(join(nodeBin, "npm"), argsLog);
 
     let result: ReturnType<typeof runInstallCliShell> | undefined;
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let argsOutput;
     try {
       result = runInstallCliShell(
@@ -1223,6 +1249,7 @@ describe("install-cli.sh", () => {
     writeNpmBeforePolicyFixture(join(nodeBin, "npm"), argsLog);
 
     let result: ReturnType<typeof runInstallCliShell> | undefined;
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let argsOutput;
     try {
       result = runInstallCliShell(
@@ -1232,7 +1259,7 @@ describe("install-cli.sh", () => {
           `HOME=${JSON.stringify(home)}`,
           `OPENCLAW_PREFIX=${JSON.stringify(prefix)}`,
           "OPENCLAW_VERSION=2026.5.19",
-          `source ${JSON.stringify(process.cwd() + "/" + SCRIPT_PATH)}`,
+          `source ${JSON.stringify(`${process.cwd()}/${SCRIPT_PATH}`)}`,
           "ensure_git() { return 0; }",
           "install_openclaw",
         ].join("\n"),

@@ -5,8 +5,10 @@ import { fileURLToPath } from "node:url";
 const DEFAULT_MAX_LOG_BYTES = 120_000;
 
 const normalizeScriptOutput = (value) => value.replace(/\r?\n/g, "").replace(/\r/g, "");
-const oscPattern = new RegExp(String.raw`\u001b\][^\u0007]*(?:\u0007|\u001b\\)`, "g");
-const csiPattern = new RegExp(String.raw`\u001b\[[0-?]*[ -/]*[@-~]`, "g");
+// biome-ignore lint/suspicious/noControlCharactersInRegex: migrated from oxlint
+const oscPattern = /\u001b\][^\u0007]*(?:\u0007|\u001b\\)/g;
+// biome-ignore lint/suspicious/noControlCharactersInRegex: migrated from oxlint
+const csiPattern = /\u001b\[[0-?]*[ -/]*[@-~]/g;
 
 const stripAnsi = (value) =>
   normalizeScriptOutput(value).replace(oscPattern, "").replace(csiPattern, "");

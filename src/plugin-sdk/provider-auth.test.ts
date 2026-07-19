@@ -95,8 +95,9 @@ async function runFallbackStoreCase(): Promise<FallbackStoreCaseResult> {
     updateAuthProfileStoreWithLock: vi.fn(),
   }));
 
-  const { listUsableProviderAuthProfileIds, resolveProviderAuthProfileApiKey } =
-    await import("./provider-auth.js");
+  const { listUsableProviderAuthProfileIds, resolveProviderAuthProfileApiKey } = await import(
+    "./provider-auth.js"
+  );
 
   return {
     profileIds: listUsableProviderAuthProfileIds({ provider: "openai" }).profileIds,
@@ -881,8 +882,9 @@ describe("provider auth profile helpers", () => {
       expect(secondA.token).toBe(firstA.token);
       expect(secondA.source).toBe("cache:plugin-state");
     } finally {
-      const { resetPluginStateStoreForTests } =
-        await import("../plugin-state/plugin-state-store.js");
+      const { resetPluginStateStoreForTests } = await import(
+        "../plugin-state/plugin-state-store.js"
+      );
       resetPluginStateStoreForTests();
       await fs.rm(stateDir, { recursive: true, force: true });
     }

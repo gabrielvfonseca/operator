@@ -25,8 +25,9 @@ vi.mock("./session-utils.js", async () => {
   };
 });
 
-const { resolveSessionKeyForRun, resetResolvedSessionKeyForRunCacheForTest } =
-  await import("./server-session-key.js");
+const { resolveSessionKeyForRun, resetResolvedSessionKeyForRunCacheForTest } = await import(
+  "./server-session-key.js"
+);
 
 function mockCombinedSessionStore(cfg: OperatorConfig, store: Record<string, unknown>) {
   hoisted.loadConfigMock.mockReturnValue(cfg);

@@ -8,6 +8,7 @@ export function sortCronJobs(
 ): CronJob[] {
   const dir = sortDir === "desc" ? -1 : 1;
   return jobs.toSorted((a, b) => {
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let cmp;
     if (sortBy === "name") {
       const aName = typeof a.name === "string" ? a.name : "";

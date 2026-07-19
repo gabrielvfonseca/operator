@@ -912,6 +912,7 @@ describe("config io write prepare", () => {
         },
       },
       "",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       new Map([["agents.defaults.cliBackends.codex.env.OPENAI_API_KEY", "${OPENAI_API_KEY}"]]),
       changedPaths,
     ) as {
@@ -919,6 +920,7 @@ describe("config io write prepare", () => {
       gateway: { port: number; auth: { mode: string } };
     };
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(restored.agents.defaults.cliBackends.codex.env.OPENAI_API_KEY).toBe("${OPENAI_API_KEY}");
     expect(restored.gateway).toEqual({
       port: 18789,
@@ -934,6 +936,7 @@ describe("config io write prepare", () => {
           defaults: {
             cliBackends: {
               codex: {
+                // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
                 args: ["${DISCORD_USER_ID}", "123"],
               },
             },
@@ -945,6 +948,7 @@ describe("config io write prepare", () => {
           defaults: {
             cliBackends: {
               codex: {
+                // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
                 args: ["${DISCORD_USER_ID}", "123", "456"],
               },
             },
@@ -968,6 +972,7 @@ describe("config io write prepare", () => {
         },
       },
       "",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       new Map([["agents.defaults.cliBackends.codex.args[0]", "${DISCORD_USER_ID}"]]),
       changedPaths,
     ) as {
@@ -975,6 +980,7 @@ describe("config io write prepare", () => {
     };
 
     expect(restored.agents.defaults.cliBackends.codex.args).toEqual([
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${DISCORD_USER_ID}",
       "123",
       "456",
@@ -985,13 +991,17 @@ describe("config io write prepare", () => {
     const restored = restoreEnvRefsFromMap(
       {
         agents: [
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           { id: "b", token: "${TOKEN_B}" },
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           { id: "a", token: "${TOKEN_A}" },
         ],
       },
       "",
       new Map([
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         ["agents[0].token", "${TOKEN_A}"],
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         ["agents[1].token", "${TOKEN_B}"],
       ]),
       new Set(["agents[0].id", "agents[1].id"]),
@@ -1000,7 +1010,9 @@ describe("config io write prepare", () => {
 
     expect(restored).toEqual({
       agents: [
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         { id: "b", token: "${TOKEN_B}" },
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         { id: "a", token: "${TOKEN_A}" },
       ],
     });
@@ -1029,11 +1041,13 @@ describe("config io write prepare", () => {
     const restored = restoreEnvRefsFromMap(
       {
         agents: [
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           { id: "real", token: "${TOKEN}" },
           { id: "literal", token: "$${TOKEN}" },
         ],
       },
       "",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       new Map([["agents[1].token", "${TOKEN}"]]),
       new Set(["agents[0].id", "agents[1].id"]),
       new Set(["agents[0].token", "agents[1].token"]),
@@ -1041,6 +1055,7 @@ describe("config io write prepare", () => {
 
     expect(restored).toEqual({
       agents: [
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         { id: "real", token: "${TOKEN}" },
         { id: "literal", token: "$${TOKEN}" },
       ],
@@ -1051,6 +1066,7 @@ describe("config io write prepare", () => {
     const restored = restoreEnvRefsFromMap(
       {
         included: {
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           first: "${SECOND}",
           second: "second-secret",
           third: "$${SECOND}",
@@ -1060,8 +1076,11 @@ describe("config io write prepare", () => {
       },
       "",
       new Map([
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         ["included.first", "${FIRST}"],
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         ["included.second", "${SECOND}"],
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         ["included.third", "${THIRD}"],
         ["included.escaped", "$${SECOND}"],
       ]),
@@ -1070,8 +1089,11 @@ describe("config io write prepare", () => {
 
     expect(restored).toEqual({
       included: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         first: "${FIRST}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         second: "${SECOND}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         third: "${THIRD}",
         escaped: "$${SECOND}",
       },

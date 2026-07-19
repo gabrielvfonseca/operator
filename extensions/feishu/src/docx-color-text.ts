@@ -77,6 +77,7 @@ function parseColorMarkup(content: string): Segment[] {
     `\\[(${KNOWN}(?:\\s+${KNOWN})*)\\](.*?)\\[\\/(?:[^\\]]+)\\]|([^[]+|\\[)`,
     "gis",
   );
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let match;
 
   while ((match = tagPattern.exec(content)) !== null) {

@@ -196,6 +196,7 @@ function collectLegacyPluginDependencyStagingDebrisPaths(packageRoot: string) {
       continue;
     }
     const distDir = join(packageRoot, rootEntry.name);
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let distEntries;
     try {
       distEntries = readdirSync(distDir, { withFileTypes: true });
@@ -210,6 +211,7 @@ function collectLegacyPluginDependencyStagingDebrisPaths(packageRoot: string) {
         continue;
       }
       const extensionsDir = join(distDir, distEntry.name);
+      // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
       let extensionEntries;
       try {
         extensionEntries = readdirSync(extensionsDir, { withFileTypes: true });
@@ -225,6 +227,7 @@ function collectLegacyPluginDependencyStagingDebrisPaths(packageRoot: string) {
           continue;
         }
         const extensionPath = join(extensionsDir, extensionEntry.name);
+        // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
         let stagingEntries;
         try {
           stagingEntries = readdirSync(extensionPath, { withFileTypes: true });

@@ -309,7 +309,7 @@ function queueSessionStoreTouch(params: {
       now: params.now,
     }),
   ).catch((err: unknown) => {
-    params.ctx.logGateway.warn("voice session-store update failed: " + formatForLog(err));
+    params.ctx.logGateway.warn(`voice session-store update failed: ${formatForLog(err)}`);
   });
 }
 
@@ -780,6 +780,7 @@ export const handleNodeEvent = async (
         (normalizeOptionalString(obj.reason) ?? "").replace(/[()]/g, ""),
       );
 
+      // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
       let text;
       if (evt.event === "exec.started") {
         text = `Exec started (node=${nodeId}${runId ? ` id=${runId}` : ""})`;

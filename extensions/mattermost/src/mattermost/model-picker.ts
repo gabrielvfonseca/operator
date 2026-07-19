@@ -184,7 +184,7 @@ export function resolveMattermostModelPickerEntry(
 export function parseMattermostModelPickerContext(
   context: Record<string, unknown>,
 ): MattermostModelPickerState | null {
-  if (!context || context[MATTERMOST_MODEL_PICKER_CONTEXT_KEY] !== true) {
+  if (context?.[MATTERMOST_MODEL_PICKER_CONTEXT_KEY] !== true) {
     return null;
   }
 

@@ -175,12 +175,9 @@ type RouterOutletInputs<TRouteId extends string, TLoadContext, TModule, TData> =
   onNotFound?: () => void;
 };
 
-class LitRouterOutletController<
-  TRouteId extends string,
-  TLoadContext,
-  TModule,
-  TData,
-> implements ReactiveController {
+class LitRouterOutletController<TRouteId extends string, TLoadContext, TModule, TData>
+  implements ReactiveController
+{
   private readonly controller: RouterOutletController<TRouteId, TLoadContext, TModule, TData>;
 
   constructor(

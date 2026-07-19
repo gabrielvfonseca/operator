@@ -10,9 +10,7 @@ type TestAcpConnection = AgentSideConnection & {
 
 /** Creates a mocked ACP connection with exposed permission and update spies. */
 export function createAcpConnection(
-  params: {
-    requestPermission?: ReturnType<typeof vi.fn>;
-  } = {},
+  params: { requestPermission?: ReturnType<typeof vi.fn> } = {},
 ): TestAcpConnection {
   const requestPermission =
     params.requestPermission ?? vi.fn(async () => ({ outcome: { outcome: "cancelled" } }));

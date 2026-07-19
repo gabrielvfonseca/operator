@@ -172,7 +172,7 @@ describe("CodexAppServerClient", () => {
     expect(notifications).toEqual([
       {
         method: "item/commandExecution/outputDelta",
-        params: { delta: largePrefix + "\nsecond" },
+        params: { delta: `${largePrefix}\nsecond` },
       },
     ]);
     expect(warn).not.toHaveBeenCalled();

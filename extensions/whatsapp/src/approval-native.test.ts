@@ -10,10 +10,7 @@ import { whatsappApprovalCapability } from "./approval-native.js";
 type WhatsAppConfig = NonNullable<NonNullable<OperatorConfig["channels"]>["whatsapp"]>;
 
 function buildConfig(
-  params: {
-    whatsapp?: Partial<WhatsAppConfig>;
-    approvals?: OperatorConfig["approvals"];
-  } = {},
+  params: { whatsapp?: Partial<WhatsAppConfig>; approvals?: OperatorConfig["approvals"] } = {},
 ): OperatorConfig {
   return {
     channels: {

@@ -33,8 +33,9 @@ async function runNonInteractiveMigrationImport(params: {
     params.runtime.exit(1);
     return;
   }
-  const { detectSetupMigrationSources, runSetupMigrationImport } =
-    await import("../wizard/setup.migration-import.js");
+  const { detectSetupMigrationSources, runSetupMigrationImport } = await import(
+    "../wizard/setup.migration-import.js"
+  );
   const detections = await detectSetupMigrationSources({
     config: params.baseConfig,
     runtime: params.runtime,

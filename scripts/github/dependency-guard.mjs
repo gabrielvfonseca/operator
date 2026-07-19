@@ -483,7 +483,7 @@ export function githubApi(token, options = {}) {
 }
 
 function decodeContentFile(payload) {
-  if (!payload || payload.type !== "file" || typeof payload.content !== "string") {
+  if (payload?.type !== "file" || typeof payload.content !== "string") {
     return null;
   }
   return Buffer.from(payload.content, payload.encoding ?? "base64").toString("utf8");

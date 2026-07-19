@@ -114,15 +114,16 @@ function resolveGoogleChatGroupConfig(params: {
     !entry &&
     Boolean(
       groupName &&
-      keys.some((key) => {
-        const trimmed = key.trim();
-        if (!trimmed || trimmed === "*" || /^spaces\//i.test(trimmed)) {
-          return false;
-        }
-        return (
-          trimmed === groupName || normalizeLowercaseStringOrEmpty(trimmed) === normalizedGroupName
-        );
-      }),
+        keys.some((key) => {
+          const trimmed = key.trim();
+          if (!trimmed || trimmed === "*" || /^spaces\//i.test(trimmed)) {
+            return false;
+          }
+          return (
+            trimmed === groupName ||
+            normalizeLowercaseStringOrEmpty(trimmed) === normalizedGroupName
+          );
+        }),
     );
   return {
     entry: deprecatedNameMatch ? undefined : (entry ?? fallback),

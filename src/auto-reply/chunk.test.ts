@@ -496,7 +496,7 @@ describe("chunkByNewline", () => {
     {
       name: "falls back to length-based for long lines",
       run: () => {
-        const text = "Short line\n" + "a".repeat(50) + "\nAnother short";
+        const text = `Short line\n${"a".repeat(50)}\nAnother short`;
         const chunks = chunkByNewline(text, 20);
         expect(chunks[0]).toBe("Short line");
         expectChunkLengths(chunks.slice(1, 4), [20, 20, 10]);

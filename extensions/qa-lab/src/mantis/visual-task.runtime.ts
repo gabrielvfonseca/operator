@@ -297,8 +297,8 @@ function parseImageDescribeText(stdout: string) {
     (value): value is { outputs?: Array<{ text?: unknown }> } =>
       Boolean(
         value &&
-        typeof value === "object" &&
-        Array.isArray((value as { outputs?: unknown }).outputs),
+          typeof value === "object" &&
+          Array.isArray((value as { outputs?: unknown }).outputs),
       ),
   );
   if (!parsed) {
@@ -394,7 +394,9 @@ function evaluateVisualExpectation(text: string | undefined, expectText: string 
 
 function browserLaunchScript() {
   return [
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'browser="${BROWSER:-${CHROME_BIN:-google-chrome}}"',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'profile="${TMPDIR:-/tmp}/operator-mantis-visual-chrome-profile"',
     'mkdir -p "$profile"',
     'exec "$browser" --user-data-dir="$profile" --no-first-run --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --window-size=1280,900 --window-position=0,0 "$0"',

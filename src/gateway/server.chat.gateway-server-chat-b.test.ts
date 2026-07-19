@@ -904,8 +904,9 @@ describe("gateway server chat", () => {
             chatRunBuffers: new Map(),
             getRuntimeConfig: () => config,
           } as unknown as GatewayRequestContext;
-          const { createGatewayAgentModelCatalogProjector } =
-            await import("./server-methods/models-list-result.js");
+          const { createGatewayAgentModelCatalogProjector } = await import(
+            "./server-methods/models-list-result.js"
+          );
           const persistedConfig = getRuntimeConfig();
           expect(persistedConfig.auth?.order?.openai).toEqual([
             "openai:api",
@@ -5634,7 +5635,7 @@ describe("gateway server chat", () => {
                 type: "toolCall",
                 id: "call-read",
                 name: "read",
-                arguments: { path: "AGENTS.md" },
+                arguments: { path: "AGENTS.MD" },
               },
             ],
             timestamp: 2,

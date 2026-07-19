@@ -14,7 +14,7 @@ describeLive("OpenAI-compatible Anthropic tool payload wrapper live", () => {
   it("projects and sends a custom pinned tool after quarantining an unreadable sibling", async () => {
     const liveModelId = process.env.OPERATOR_LIVE_OPENAI_CHAT_TOOL_MODEL || "gpt-5.6-luna";
     let projectedPayload: Record<string, unknown> | undefined;
-    const baseStreamFn: StreamFn = (model, context, options) => {
+    const baseStreamFn: StreamFn = (model, _context, options) => {
       const payload: Record<string, unknown> = {
         model: liveModelId,
         messages: [
@@ -76,7 +76,7 @@ describeLive("OpenAI-compatible Anthropic tool payload wrapper live", () => {
     );
     const toolCall = response.choices[0]?.message.tool_calls?.[0];
 
-    if (!toolCall || toolCall.type !== "function") {
+    if (toolCall?.type !== "function") {
       throw new Error("OpenAI did not return the expected function tool call");
     }
     expect(toolCall.function.name).toBe("live_probe");

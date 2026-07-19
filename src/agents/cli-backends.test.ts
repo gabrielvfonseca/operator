@@ -15,10 +15,10 @@ import { resolveCliBackendConfig, resolveCliBackendLiveTest } from "./cli-backen
 import { testing as cliBackendsTesting } from "./cli-backends.test-support.js";
 
 type RuntimeBackendEntry = ReturnType<
-  (typeof import("../plugins/cli-backends.runtime.js"))["resolveRuntimeCliBackends"]
+  typeof import("../plugins/cli-backends.runtime.js")["resolveRuntimeCliBackends"]
 >[number];
 type SetupBackendEntry = NonNullable<
-  ReturnType<(typeof import("../plugins/setup-registry.js"))["resolvePluginSetupCliBackend"]>
+  ReturnType<typeof import("../plugins/setup-registry.js")["resolvePluginSetupCliBackend"]>
 >;
 
 let runtimeBackendEntries: RuntimeBackendEntry[] = [];

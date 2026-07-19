@@ -111,7 +111,7 @@ export function formatList(values?: Array<string | null | undefined>): string {
   if (!values || values.length === 0) {
     return "none";
   }
-  return values.filter((v): v is string => Boolean(v && v.trim())).join(", ");
+  return values.filter((v): v is string => Boolean(v?.trim())).join(", ");
 }
 
 export function clampText(value: string, max = 120): string {

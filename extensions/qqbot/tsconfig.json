@@ -2,10 +2,7 @@
   "compilerOptions": {
     "rootDir": "."
   },
-  "include": [
-    "./*.ts",
-    "./src/**/*.ts"
-  ],
+  "include": ["./*.ts", "./src/**/*.ts"],
   "exclude": [
     "./**/*.test.ts",
     "./dist/**",

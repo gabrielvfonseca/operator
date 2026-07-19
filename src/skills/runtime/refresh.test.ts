@@ -899,9 +899,7 @@ describe("ensureSkillsWatcher", () => {
       config: { skills: { load: { watchDebounceMs: 10 } } },
     });
     const callPaths = (watchMock.mock.calls as unknown as Array<[string]>).map((call) => call[0]);
-    const idleSkillsIndex = callPaths.findIndex(
-      (target) => target === `${idleWorkspaceDir}/skills`,
-    );
+    const idleSkillsIndex = callPaths.indexOf(`${idleWorkspaceDir}/skills`);
     expect(idleSkillsIndex).toBeGreaterThanOrEqual(0);
     const firstVersion = bumpSkillsSnapshotVersion({
       workspaceDir: idleWorkspaceDir,
@@ -934,9 +932,7 @@ describe("ensureSkillsWatcher", () => {
       config: { skills: { load: { watchDebounceMs: 10 } } },
     });
     const callPaths = (watchMock.mock.calls as unknown as Array<[string]>).map((call) => call[0]);
-    const activeSkillsIndex = callPaths.findIndex(
-      (target) => target === `${activeWorkspaceDir}/skills`,
-    );
+    const activeSkillsIndex = callPaths.indexOf(`${activeWorkspaceDir}/skills`);
     expect(activeSkillsIndex).toBeGreaterThanOrEqual(0);
 
     vi.advanceTimersByTime(30 * 60_000);
@@ -964,7 +960,7 @@ describe("ensureSkillsWatcher", () => {
       config: { skills: { load: { extraDirs: ["/tmp/shared"], watchDebounceMs: 10 } } },
     });
     const callPaths1 = (watchMock.mock.calls as unknown as Array<[string]>).map((call) => call[0]);
-    const firstSharedIndex = callPaths1.findIndex((target) => target === "/tmp/shared");
+    const firstSharedIndex = callPaths1.indexOf("/tmp/shared");
 
     // ws-b subscribes to the same path with a different debounce: the shared
     // watcher is rebuilt once, the previous instance closed, and both

@@ -21,8 +21,9 @@ describe("mattermost target resolution", () => {
   let resolveMattermostOpaqueTarget: typeof import("./target-resolution.js").resolveMattermostOpaqueTarget;
 
   beforeAll(async () => {
-    ({ parseMattermostTarget, resolveMattermostOpaqueTarget } =
-      await import("./target-resolution.js"));
+    ({ parseMattermostTarget, resolveMattermostOpaqueTarget } = await import(
+      "./target-resolution.js"
+    ));
   });
 
   beforeEach(() => {

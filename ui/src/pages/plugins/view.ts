@@ -345,8 +345,9 @@ function renderRowMessage(
   return html`
     <div class="plugins-row-message plugins-row-message--${message.kind}" role=${role}>
       <span>${message.text}</span>
-      ${message.acknowledge
-        ? html`
+      ${
+        message.acknowledge
+          ? html`
             <button
               type="button"
               class="btn btn--sm"
@@ -363,7 +364,8 @@ function renderRowMessage(
               ${busy ? t("pluginsPage.installing") : t("pluginsPage.acknowledgeRisk")}
             </button>
           `
-        : nothing}
+          : nothing
+      }
     </div>
   `;
 }
@@ -392,11 +394,13 @@ function renderToggleButton(
         options.onToggle(enable);
       }}
     >
-      ${busy
-        ? t("pluginsPage.working")
-        : enable
-          ? t("pluginsPage.enableAction")
-          : t("pluginsPage.disableAction")}
+      ${
+        busy
+          ? t("pluginsPage.working")
+          : enable
+            ? t("pluginsPage.enableAction")
+            : t("pluginsPage.disableAction")
+      }
     </button>
   `;
 }
@@ -507,9 +511,11 @@ function renderCatalogActions(
       enabled: plugin.enabled,
       onToggle: (enabled) => props.onSetEnabled(plugin.id, enabled, rowKey),
     })}
-    ${plugin.removable
-      ? renderRemoveButton(props, busy, plugin.name, () => props.onRequestUninstall(rowKey))
-      : nothing}
+    ${
+      plugin.removable
+        ? renderRemoveButton(props, busy, plugin.name, () => props.onRequestUninstall(rowKey))
+        : nothing
+    }
   `;
 }
 
@@ -557,9 +563,9 @@ function renderInstalledRow(plugin: PluginCatalogItem, props: PluginsViewProps):
       <div class="settings-row__text">
         <h3 class="settings-row__title">
           ${plugin.name}
-          ${plugin.version
-            ? html`<span class="plugins-version">v${plugin.version}</span>`
-            : nothing}
+          ${
+            plugin.version ? html`<span class="plugins-version">v${plugin.version}</span>` : nothing
+          }
         </h3>
         <span class="settings-row__desc">
           ${plugin.description || t("pluginsPage.optionalCapability")}
@@ -574,11 +580,13 @@ function renderInstalledRow(plugin: PluginCatalogItem, props: PluginsViewProps):
       <div class="settings-row__control">
         ${stateStatus(plugin)} ${renderCatalogActions(plugin, props, busy, key)}
       </div>
-      ${plugin.error
-        ? html`<div class="plugins-row-message plugins-row-message--error" role="alert">
+      ${
+        plugin.error
+          ? html`<div class="plugins-row-message plugins-row-message--error" role="alert">
             ${plugin.error}
           </div>`
-        : nothing}
+          : nothing
+      }
       ${renderRowMessage(key, props.messages[key], busy, props)}
     </article>
   `;
@@ -627,15 +635,18 @@ function renderMcpSection(props: PluginsViewProps) {
     },
     html`
       ${props.mcpFormOpen ? renderMcpForm(props) : nothing}
-      ${props.mcpMessage
-        ? html`<div
-            class="plugins-row-message plugins-row-message--${props.mcpMessage
-              .kind} plugins-group-message"
+      ${
+        props.mcpMessage
+          ? html`<div
+            class="plugins-row-message plugins-row-message--${
+              props.mcpMessage.kind
+            } plugins-group-message"
             role=${props.mcpMessage.kind === "error" ? "alert" : "status"}
           >
             <span>${props.mcpMessage.text}</span>
           </div>`
-        : nothing}
+          : nothing
+      }
       ${body}
     `,
   );
@@ -724,25 +735,27 @@ function renderInstalled(props: PluginsViewProps) {
   const groups = groupInstalledByCategory(plugins);
   return html`
     ${renderInstalledFilter(props)}
-    ${groups.length === 0
-      ? renderEmpty(
-          props.query || props.installedFilter !== "all"
-            ? t("pluginsPage.noInstalledMatchTitle")
-            : t("pluginsPage.noInstalledTitle"),
-          props.query || props.installedFilter !== "all"
-            ? t("pluginsPage.noMatchBody")
-            : t("pluginsPage.noInstalledBody"),
-        )
-      : groups.map((group) =>
-          renderSettingsSection(
-            { title: group.label, count: group.plugins.length },
-            repeat(
-              group.plugins,
-              (plugin) => plugin.id,
-              (plugin) => renderInstalledRow(plugin, props),
+    ${
+      groups.length === 0
+        ? renderEmpty(
+            props.query || props.installedFilter !== "all"
+              ? t("pluginsPage.noInstalledMatchTitle")
+              : t("pluginsPage.noInstalledTitle"),
+            props.query || props.installedFilter !== "all"
+              ? t("pluginsPage.noMatchBody")
+              : t("pluginsPage.noInstalledBody"),
+          )
+        : groups.map((group) =>
+            renderSettingsSection(
+              { title: group.label, count: group.plugins.length },
+              repeat(
+                group.plugins,
+                (plugin) => plugin.id,
+                (plugin) => renderInstalledRow(plugin, props),
+              ),
             ),
-          ),
-        )}
+          )
+    }
     ${renderMcpSection(props)}
   `;
 }
@@ -769,9 +782,9 @@ function renderCatalogRow(plugin: PluginCatalogItem, props: PluginsViewProps): T
       <div class="settings-row__text">
         <h3 class="settings-row__title">
           ${plugin.name}
-          ${plugin.version
-            ? html`<span class="plugins-version">v${plugin.version}</span>`
-            : nothing}
+          ${
+            plugin.version ? html`<span class="plugins-version">v${plugin.version}</span>` : nothing
+          }
         </h3>
         <span class="settings-row__desc">
           ${plugin.description || t("pluginsPage.optionalCapability")}
@@ -782,11 +795,13 @@ function renderCatalogRow(plugin: PluginCatalogItem, props: PluginsViewProps): T
         ${plugin.installed ? stateStatus(plugin) : nothing}
         ${renderCatalogActions(plugin, props, busy, key)}
       </div>
-      ${plugin.error
-        ? html`<div class="plugins-row-message plugins-row-message--error" role="alert">
+      ${
+        plugin.error
+          ? html`<div class="plugins-row-message plugins-row-message--error" role="alert">
             ${plugin.error}
           </div>`
-        : nothing}
+          : nothing
+      }
       ${renderRowMessage(key, props.messages[key], busy, props)}
     </article>
   `;
@@ -824,10 +839,11 @@ function renderConnectorRow(
         )}
       </div>
       <div class="settings-row__control">
-        ${isMcp
-          ? installed
-            ? renderSettingsStatus({ kind: "ok", label: t("pluginsPage.connectorAdded") })
-            : html`
+        ${
+          isMcp
+            ? installed
+              ? renderSettingsStatus({ kind: "ok", label: t("pluginsPage.connectorAdded") })
+              : html`
                 <button
                   type="button"
                   class="btn btn--sm"
@@ -838,7 +854,7 @@ function renderConnectorRow(
                   ${busy ? t("pluginsPage.mcpAdding") : t("pluginsPage.connectorAdd")}
                 </button>
               `
-          : html`
+            : html`
               <button
                 type="button"
                 class="btn btn--sm"
@@ -849,7 +865,8 @@ function renderConnectorRow(
                 <span aria-hidden="true">${icons.search}</span>
                 ${t("pluginsPage.connectorSearch")}
               </button>
-            `}
+            `
+        }
       </div>
       ${renderRowMessage(key, props.messages[key], busy, props)}
     </article>
@@ -903,9 +920,11 @@ function renderClawHubResult(item: PluginSearchResult, props: PluginsViewProps):
       <div class="settings-row__text">
         <h3 class="settings-row__title">
           ${pkg.displayName}
-          ${pkg.latestVersion
-            ? html`<span class="plugins-version">v${pkg.latestVersion}</span>`
-            : nothing}
+          ${
+            pkg.latestVersion
+              ? html`<span class="plugins-version">v${pkg.latestVersion}</span>`
+              : nothing
+          }
         </h3>
         <span class="settings-row__desc">${pkg.summary || pkg.name}</span>
         ${renderMetaLine([
@@ -923,12 +942,14 @@ function renderClawHubResult(item: PluginSearchResult, props: PluginsViewProps):
         ])}
       </div>
       <div class="settings-row__control">
-        ${installed
-          ? html`${stateStatus(installed)}${renderCatalogActions(installed, props, busy, key)}`
-          : renderInstallButton(props, busy, key, pkg.displayName, {
-              source: "clawhub",
-              packageName: pkg.name,
-            })}
+        ${
+          installed
+            ? html`${stateStatus(installed)}${renderCatalogActions(installed, props, busy, key)}`
+            : renderInstallButton(props, busy, key, pkg.displayName, {
+                source: "clawhub",
+                packageName: pkg.name,
+              })
+        }
       </div>
       ${renderRowMessage(key, props.messages[key], busy, props)}
     </article>
@@ -988,9 +1009,11 @@ function renderDiscover(props: PluginsViewProps) {
   const clawHub = renderClawHubGroup(props);
   if (!featuredRows.length && !officialRows.length && !shelves.connectors.length) {
     return html`
-      ${clawHub === nothing
-        ? renderEmpty(t("pluginsPage.noDiscoverMatchTitle"), t("pluginsPage.noMatchBody"))
-        : nothing}
+      ${
+        clawHub === nothing
+          ? renderEmpty(t("pluginsPage.noDiscoverMatchTitle"), t("pluginsPage.noMatchBody"))
+          : nothing
+      }
       ${clawHub}
     `;
   }
@@ -1069,20 +1092,24 @@ function renderDetailOverlay(props: PluginsViewProps) {
         <div class="plugins-detail__body">
           <div class="plugins-detail__title">
             <h2>${plugin.name}</h2>
-            ${plugin.version
-              ? html`<span class="plugins-version">v${plugin.version}</span>`
-              : nothing}
+            ${
+              plugin.version
+                ? html`<span class="plugins-version">v${plugin.version}</span>`
+                : nothing
+            }
             ${stateStatus(plugin)}
           </div>
           <p class="plugins-detail__description">
             ${plugin.description || t("pluginsPage.optionalCapability")}
           </p>
           <div class="plugins-detail__actions">
-            ${props.pendingRemoval[key]
-              ? renderRemoveConfirm(plugin, props, busy, key)
-              : html`
-                  ${plugin.installed
-                    ? html`
+            ${
+              props.pendingRemoval[key]
+                ? renderRemoveConfirm(plugin, props, busy, key)
+                : html`
+                  ${
+                    plugin.installed
+                      ? html`
                         <button
                           type="button"
                           class="btn ${plugin.enabled ? "" : "primary"}"
@@ -1090,18 +1117,22 @@ function renderDetailOverlay(props: PluginsViewProps) {
                           ?disabled=${!props.canMutate || busy}
                           @click=${() => props.onSetEnabled(plugin.id, !plugin.enabled, key)}
                         >
-                          ${busy
-                            ? t("pluginsPage.working")
-                            : plugin.enabled
-                              ? t("pluginsPage.disableAction")
-                              : t("pluginsPage.enableAction")}
+                          ${
+                            busy
+                              ? t("pluginsPage.working")
+                              : plugin.enabled
+                                ? t("pluginsPage.disableAction")
+                                : t("pluginsPage.enableAction")
+                          }
                         </button>
                       `
-                    : plugin.install
-                      ? renderInstallButton(props, busy, key, plugin.name, plugin.install)
-                      : nothing}
-                  ${plugin.removable
-                    ? html`
+                      : plugin.install
+                        ? renderInstallButton(props, busy, key, plugin.name, plugin.install)
+                        : nothing
+                  }
+                  ${
+                    plugin.removable
+                      ? html`
                         <button
                           type="button"
                           class="btn plugins-detail__remove"
@@ -1113,28 +1144,41 @@ function renderDetailOverlay(props: PluginsViewProps) {
                           ${t("pluginsPage.remove")}
                         </button>
                       `
-                    : nothing}
-                `}
+                      : nothing
+                  }
+                `
+            }
           </div>
-          ${plugin.error
-            ? html`<div class="plugins-row-message plugins-row-message--error" role="alert">
+          ${
+            plugin.error
+              ? html`<div class="plugins-row-message plugins-row-message--error" role="alert">
                 ${plugin.error}
               </div>`
-            : nothing}
+              : nothing
+          }
           ${renderRowMessage(key, props.messages[key], busy, props)}
           <div class="plugins-detail__meta">
-            ${plugin.origin
-              ? detailMetaRow(t("pluginsPage.detailOrigin"), originLabel(plugin.origin))
-              : nothing}
-            ${plugin.category
-              ? detailMetaRow(t("pluginsPage.detailCategory"), pluginCategoryLabel(plugin.category))
-              : nothing}
-            ${plugin.packageName
-              ? detailMetaRow(
-                  t("pluginsPage.detailPackage"),
-                  html`<code>${plugin.packageName}</code>`,
-                )
-              : nothing}
+            ${
+              plugin.origin
+                ? detailMetaRow(t("pluginsPage.detailOrigin"), originLabel(plugin.origin))
+                : nothing
+            }
+            ${
+              plugin.category
+                ? detailMetaRow(
+                    t("pluginsPage.detailCategory"),
+                    pluginCategoryLabel(plugin.category),
+                  )
+                : nothing
+            }
+            ${
+              plugin.packageName
+                ? detailMetaRow(
+                    t("pluginsPage.detailPackage"),
+                    html`<code>${plugin.packageName}</code>`,
+                  )
+                : nothing
+            }
             ${detailMetaRow(t("pluginsPage.detailPluginId"), html`<code>${plugin.id}</code>`)}
           </div>
         </div>
@@ -1213,29 +1257,36 @@ export function renderPlugins(props: PluginsViewProps) {
         </button>
       </div>
 
-      ${props.mutationBlockedReason
-        ? html`<div class="plugins-readonly" role="note">
+      ${
+        props.mutationBlockedReason
+          ? html`<div class="plugins-readonly" role="note">
             <span aria-hidden="true">${icons.alertTriangle}</span>
             <span>${props.mutationBlockedReason}</span>
           </div>`
-        : nothing}
-      ${props.error
-        ? html`<div class="plugins-page-error" role="alert">
+          : nothing
+      }
+      ${
+        props.error
+          ? html`<div class="plugins-page-error" role="alert">
             <span>${props.error}</span>
             <button type="button" class="btn btn--sm" @click=${props.onRefresh}>
               ${t("pluginsPage.tryAgain")}
             </button>
           </div>`
-        : nothing}
-      ${props.pageNotice
-        ? html`<div
-            class="plugins-row-message plugins-row-message--${props.pageNotice
-              .kind} plugins-page-notice"
+          : nothing
+      }
+      ${
+        props.pageNotice
+          ? html`<div
+            class="plugins-row-message plugins-row-message--${
+              props.pageNotice.kind
+            } plugins-page-notice"
             role=${props.pageNotice.kind === "error" ? "alert" : "status"}
           >
             <span>${props.pageNotice.text}</span>
           </div>`
-        : nothing}
+          : nothing
+      }
 
       <wa-tab-panel
         id="plugins-hub-panel"
@@ -1244,13 +1295,15 @@ export function renderPlugins(props: PluginsViewProps) {
         active
         aria-labelledby=${`plugins-tab-${props.activeTab}`}
       >
-        ${props.loading && !canShowCatalog
-          ? html`<div class="plugins-search-state" role="status">${t("pluginsPage.loading")}</div>`
-          : props.error && !canShowCatalog
-            ? nothing
-            : !props.connected && !canShowCatalog
-              ? renderEmpty(t("pluginsPage.offlineTitle"), t("pluginsPage.offlineBody"))
-              : renderActivePanel(props)}
+        ${
+          props.loading && !canShowCatalog
+            ? html`<div class="plugins-search-state" role="status">${t("pluginsPage.loading")}</div>`
+            : props.error && !canShowCatalog
+              ? nothing
+              : !props.connected && !canShowCatalog
+                ? renderEmpty(t("pluginsPage.offlineTitle"), t("pluginsPage.offlineBody"))
+                : renderActivePanel(props)
+        }
       </wa-tab-panel>
       ${renderDetailOverlay(props)}
     `,

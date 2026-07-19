@@ -101,7 +101,7 @@ export function createBrowserRouteDispatcher(ctx: BrowserRouteContext) {
       }
 
       let status = 200;
-      let payload: unknown = undefined;
+      let payload: unknown;
       const res: BrowserResponse = {
         status(code) {
           status = code;

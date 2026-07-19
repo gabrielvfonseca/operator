@@ -200,16 +200,17 @@ export function renderSessionCatalogGroups(params: SessionCatalogGroupsParams) {
             <span class="sidebar-recent-sessions__label-text">${catalog.label}</span>
             ${renderCatalogHeaderStatus(hasActiveRun, hasUnread)}
             <span
-              class="sidebar-session-group-count ${hasError
-                ? "sidebar-session-group-count--error"
-                : ""}"
+              class="sidebar-session-group-count ${
+                hasError ? "sidebar-session-group-count--error" : ""
+              }"
               data-session-catalog-error=${hasError ? catalog.id : nothing}
               aria-hidden="true"
               >${hasError ? icons.alertTriangle : rows.length}</span
             >
           </button>
-          ${canCreateSession
-            ? html`<button
+          ${
+            canCreateSession
+              ? html`<button
                 type="button"
                 class="sidebar-session-sort sidebar-session-new sidebar-session-catalog-new"
                 title=${`${t("chat.runControls.newSession")} — ${catalog.label}`}
@@ -222,17 +223,20 @@ export function renderSessionCatalogGroups(params: SessionCatalogGroupsParams) {
               >
                 ${icons.plus}
               </button>`
-            : nothing}
+              : nothing
+          }
         </div>
-        ${collapsed
-          ? nothing
-          : html`<div class="sidebar-recent-sessions__list">
+        ${
+          collapsed
+            ? nothing
+            : html`<div class="sidebar-recent-sessions__list">
                 ${visibleHosts.map((host) =>
                   renderCatalogHostGroup(catalog, host, liveRowsByKey, params),
                 )}
               </div>
-              ${hasMore
-                ? html`<button
+              ${
+                hasMore
+                  ? html`<button
                     type="button"
                     class="sidebar-session-catalog-load-more"
                     data-session-catalog-load-more=${catalog.id}
@@ -242,7 +246,9 @@ export function renderSessionCatalogGroups(params: SessionCatalogGroupsParams) {
                   >
                     ${t("chat.selectors.loadMoreSessions")}
                   </button>`
-                : nothing}`}
+                  : nothing
+              }`
+        }
       </div>
     `;
   });
@@ -264,9 +270,9 @@ function renderCatalogHostGroup(
       >
         <span class="sidebar-session-catalog-host__label">${host.label}</span>
         <span
-          class="sidebar-session-catalog-host__count ${host.error
-            ? "sidebar-session-catalog-host__count--error"
-            : ""}"
+          class="sidebar-session-catalog-host__count ${
+            host.error ? "sidebar-session-catalog-host__count--error" : ""
+          }"
           aria-hidden="true"
           >${host.error ? icons.alertTriangle : host.sessions.length}</span
         >
@@ -326,9 +332,9 @@ function renderCatalogSessionRow(
     );
   return html`
     <div
-      class="sidebar-recent-session session-row-host ${active
-        ? "sidebar-recent-session--active"
-        : ""}"
+      class="sidebar-recent-session session-row-host ${
+        active ? "sidebar-recent-session--active" : ""
+      }"
       data-session-key=${key}
       role="listitem"
       @contextmenu=${(event: MouseEvent) => {

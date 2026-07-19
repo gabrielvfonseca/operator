@@ -22,7 +22,9 @@ describe("prepareCliBundleMcpConfig gemini", () => {
             type: "http",
             url: "http://127.0.0.1:23119/mcp",
             headers: {
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               Authorization: "Bearer ${OPERATOR_MCP_TOKEN}",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               "x-operator-client-caps": "${OPERATOR_MCP_CLIENT_CAPS}",
             },
           },
@@ -71,6 +73,7 @@ describe("prepareCliBundleMcpConfig gemini", () => {
               transport: "streamable-http",
               url: "https://mcp.context7.com/mcp",
               headers: {
+                // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
                 Authorization: "Bearer ${CONTEXT7_API_KEY}",
               },
             },
@@ -119,6 +122,7 @@ describe("prepareCliBundleMcpConfig gemini", () => {
             type: "http",
             url: "http://127.0.0.1:23119/mcp",
             headers: {
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               "x-operator-cli-capture-key": "${OPERATOR_MCP_CLI_CAPTURE_KEY}",
             },
           },

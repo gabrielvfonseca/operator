@@ -407,7 +407,7 @@ function resolveShellWrapperScriptArgv(params: {
   const scriptBase = normalizeLowercaseStringOrEmpty(
     path.basename(params.shellScriptCandidatePath),
   );
-  const cwdBase = params.cwd && params.cwd.trim() ? params.cwd.trim() : process.cwd();
+  const cwdBase = params.cwd?.trim() ? params.cwd.trim() : process.cwd();
   const resolveArgPath = (a: string): string => (path.isAbsolute(a) ? a : path.resolve(cwdBase, a));
   let idx = params.effectiveArgv.findIndex(
     (a) => resolveArgPath(a) === params.shellScriptCandidatePath,
@@ -1134,7 +1134,7 @@ function buildScriptArgPatternFromArgv(
     return undefined;
   }
   const scriptBase = normalizeLowercaseStringOrEmpty(path.basename(scriptPath));
-  const base = cwd && cwd.trim() ? cwd.trim() : process.cwd();
+  const base = cwd?.trim() ? cwd.trim() : process.cwd();
   const resolveArgPath = (arg: string): string =>
     path.isAbsolute(arg) ? arg : path.resolve(base, arg);
   let scriptIdx = argv.findIndex((arg) => resolveArgPath(arg) === scriptPath);

@@ -1773,7 +1773,7 @@ describe("resolvePluginProviders", () => {
     // Without the guard, this input causes catastrophic backtracking.
     // With compileSafeRegex, the pattern is rejected and the plugin is not matched.
     const start = performance.now();
-    expectModelOwningPluginIds("a".repeat(30) + "!", undefined);
+    expectModelOwningPluginIds(`${"a".repeat(30)}!`, undefined);
     expect(performance.now() - start).toBeLessThan(50);
   });
 

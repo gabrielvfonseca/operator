@@ -99,9 +99,7 @@ function buildTelegramMessageDispatchStoredReplayKey(params: {
 }
 
 export function createTelegramMessageDispatchReplayGuard(
-  params: {
-    onDiskError?: (error: unknown) => void;
-  } = {},
+  params: { onDiskError?: (error: unknown) => void } = {},
 ): TelegramMessageDispatchReplayGuard {
   return createClaimableDedupe({
     ttlMs: TELEGRAM_MESSAGE_DISPATCH_DEDUPE_TTL_MS,

@@ -143,7 +143,7 @@ describe("gateway restart intent", () => {
 
   it("backs off before an emoji that crosses the persisted reason limit", () => {
     const env = createIntentEnv();
-    insertIntentRow(env, { reason: "x".repeat(199) + "🧠tail" });
+    insertIntentRow(env, { reason: `${"x".repeat(199)}🧠tail` });
 
     expect(consumeGatewayRestartIntentPayloadSync(env)).toEqual({
       reason: "x".repeat(199),

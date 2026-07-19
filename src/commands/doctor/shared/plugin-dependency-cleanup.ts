@@ -393,10 +393,7 @@ async function collectLegacyPluginDependencyTargets(
 
 /** Find stale legacy plugin dependency state that doctor --fix can remove. */
 export async function detectLegacyPluginDependencyStateIssues(
-  params: {
-    env?: NodeJS.ProcessEnv;
-    packageRoot?: string | null;
-  } = {},
+  params: { env?: NodeJS.ProcessEnv; packageRoot?: string | null } = {},
 ): Promise<LegacyPluginDependencyStateIssue[]> {
   const env = params.env ?? process.env;
   const packageRoot =

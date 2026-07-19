@@ -40,9 +40,7 @@ export function createResolvedGatewayTokenAuth(token: string): ResolvedGatewayAu
 }
 
 export function createGatewayWsTestRequestContext(
-  overrides: {
-    nodeRegistry?: { unregister: ReturnType<typeof vi.fn> };
-  } = {},
+  overrides: { nodeRegistry?: { unregister: ReturnType<typeof vi.fn> } } = {},
 ) {
   return {
     unsubscribeAllSessionEvents: vi.fn(),
@@ -52,11 +50,7 @@ export function createGatewayWsTestRequestContext(
 }
 
 export function createGatewayWsTestSocket(
-  params: {
-    closeEmits?: boolean;
-    onSend?: (data: string) => void;
-    ping?: boolean;
-  } = {},
+  params: { closeEmits?: boolean; onSend?: (data: string) => void; ping?: boolean } = {},
 ): GatewayWsTestSocket {
   const socket = Object.assign(new EventEmitter(), {
     _socket: {

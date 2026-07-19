@@ -111,10 +111,10 @@ export function createTelegramProgressController(params: {
   const canPushToolProgress = () =>
     Boolean(
       answerLane.stream &&
-      !verboseProgressActive() &&
-      !answerLane.finalized &&
-      !finalAnswerDeliveryStarted &&
-      !finalAnswerDelivered,
+        !verboseProgressActive() &&
+        !answerLane.finalized &&
+        !finalAnswerDeliveryStarted &&
+        !finalAnswerDelivered,
     );
   const pushToolProgress = async (
     line?: string | ChannelProgressDraftLine,

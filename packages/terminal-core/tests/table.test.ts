@@ -72,7 +72,8 @@ describe("renderTable", () => {
       ],
     });
 
-    const ansiToken = new RegExp(String.raw`\u001b\[[0-9;]*m|\u001b\]8;;.*?\u001b\\`, "gs");
+    // biome-ignore lint/suspicious/noControlCharactersInRegex: migrated from oxlint
+    const ansiToken = /\u001b\[[0-9;]*m|\u001b\]8;;.*?\u001b\\/gs;
     let escapeIndex = out.indexOf("\u001b");
     while (escapeIndex >= 0) {
       ansiToken.lastIndex = escapeIndex;

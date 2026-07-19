@@ -14,7 +14,7 @@ import {
 
 function createPayloadCapture(opts?: { initialReasoning?: unknown }) {
   const payloads: Array<Record<string, unknown>> = [];
-  const baseStreamFn: StreamFn = (model, context, options) => {
+  const baseStreamFn: StreamFn = (model, _context, options) => {
     const payload: Record<string, unknown> = { model: model.id };
     if (opts?.initialReasoning !== undefined) {
       payload.reasoning = structuredClone(opts.initialReasoning);
@@ -57,7 +57,7 @@ describe("createOpenAIFastModeWrapper", () => {
 describe("createOpenAICompletionsToolsCompatWrapper", () => {
   it("strips tools fields when OpenAI-compatible models disable tool support", () => {
     const payloads: Array<Record<string, unknown>> = [];
-    const baseStreamFn: StreamFn = (model, context, options) => {
+    const baseStreamFn: StreamFn = (model, _context, options) => {
       const payload: Record<string, unknown> = {
         model: model.id,
         tools: [{ type: "function", function: { name: "noop" } }],
@@ -89,7 +89,7 @@ describe("createOpenAICompletionsToolsCompatWrapper", () => {
 
   it("keeps tools fields for OpenAI-compatible models without an explicit opt-out", () => {
     const payloads: Array<Record<string, unknown>> = [];
-    const baseStreamFn: StreamFn = (model, context, options) => {
+    const baseStreamFn: StreamFn = (model, _context, options) => {
       const payload: Record<string, unknown> = {
         model: model.id,
         tools: [{ type: "function", function: { name: "noop" } }],
@@ -118,7 +118,7 @@ describe("createOpenAICompletionsToolsCompatWrapper", () => {
 describe("createCodexNativeWebSearchWrapper", () => {
   it("does not inject native web_search when code mode owns the tool surface", () => {
     const payloads: Array<Record<string, unknown>> = [];
-    const baseStreamFn: StreamFn = (model, context, options) => {
+    const baseStreamFn: StreamFn = (model, _context, options) => {
       const payload: Record<string, unknown> = {
         model: model.id,
         tools: [
@@ -234,7 +234,7 @@ describe("createCodexNativeWebSearchWrapper", () => {
   it("does not enable code-mode transport enforcement when config is on but controls are inactive", () => {
     const observedOptions: Array<Record<string, unknown>> = [];
     const payloads: Array<Record<string, unknown>> = [];
-    const baseStreamFn: StreamFn = (model, context, options) => {
+    const baseStreamFn: StreamFn = (model, _context, options) => {
       observedOptions.push(options as Record<string, unknown>);
       const payload: Record<string, unknown> = { model: model.id };
       options?.onPayload?.(payload, model);
@@ -266,7 +266,7 @@ describe("createCodexNativeWebSearchWrapper", () => {
   it("enforces the code-mode transport surface when the run enables it at agent scope", () => {
     const observedOptions: Array<Record<string, unknown>> = [];
     const payloads: Array<Record<string, unknown>> = [];
-    const baseStreamFn: StreamFn = (model, context, options) => {
+    const baseStreamFn: StreamFn = (model, _context, options) => {
       observedOptions.push(options as Record<string, unknown>);
       const payload: Record<string, unknown> = {
         model: model.id,
@@ -309,7 +309,7 @@ describe("createCodexNativeWebSearchWrapper", () => {
 
   it("keeps grouped provider tool declarations when code mode filters the payload", () => {
     const payloads: Array<Record<string, unknown>> = [];
-    const baseStreamFn: StreamFn = (model, context, options) => {
+    const baseStreamFn: StreamFn = (model, _context, options) => {
       const payload: Record<string, unknown> = {
         model: model.id,
         tools: [
@@ -449,7 +449,7 @@ describe("createCodexNativeWebSearchWrapper", () => {
 describe("createOpenAICompletionsStrictMessageKeysWrapper", () => {
   it("strips message keys to role and content for strict OpenAI-compatible endpoints", () => {
     const payloads: Array<Record<string, unknown>> = [];
-    const baseStreamFn: StreamFn = (model, context, options) => {
+    const baseStreamFn: StreamFn = (model, _context, options) => {
       const payload: Record<string, unknown> = {
         model: model.id,
         messages: [
@@ -623,7 +623,7 @@ describe("createOpenAIThinkingLevelWrapper", () => {
 
   it("raises minimal reasoning for web_search on loopback Responses routes", () => {
     const payloads: Array<Record<string, unknown>> = [];
-    const baseStreamFn: StreamFn = (model, context, options) => {
+    const baseStreamFn: StreamFn = (model, _context, options) => {
       const payload: Record<string, unknown> = {
         reasoning: { effort: "minimal", summary: "auto" },
         tools: [{ type: "function", name: "web_search" }],
@@ -728,7 +728,7 @@ describe("createOpenAIAttributionHeadersWrapper", () => {
   it("routes native Codex traffic through the Operator transport so attribution survives Operator defaults", () => {
     let codexCalls = 0;
     let capturedHeaders: Record<string, string> | undefined;
-    const codexTransport: StreamFn = (model, context, options) => {
+    const codexTransport: StreamFn = (_model, _context, options) => {
       codexCalls += 1;
       capturedHeaders = options?.headers;
       return createAssistantMessageEventStream();
@@ -765,7 +765,7 @@ describe("createOpenAIAttributionHeadersWrapper", () => {
           headers?: Record<string, string>;
         }
       | undefined;
-    const upstream: StreamFn = (model, context, options) => {
+    const upstream: StreamFn = (_model, _context, options) => {
       upstreamCalls += 1;
       capturedOptions = options;
       return createAssistantMessageEventStream();

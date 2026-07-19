@@ -190,10 +190,10 @@ export async function resolveConnectAuthDecision(
 ): Promise<ConnectAuthDecision> {
   const shouldSerializeBootstrapAttempt = Boolean(
     params.rateLimiter &&
-    params.hasDeviceIdentity &&
-    params.deviceId &&
-    params.publicKey &&
-    params.state.bootstrapTokenCandidate,
+      params.hasDeviceIdentity &&
+      params.deviceId &&
+      params.publicKey &&
+      params.state.bootstrapTokenCandidate,
   );
   if (!shouldSerializeBootstrapAttempt) {
     return await resolveConnectAuthDecisionCore(params);

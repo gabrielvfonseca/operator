@@ -549,9 +549,7 @@ export function createMatrixVerificationEventRouter(params: {
       const flowId = signal.flowId;
       const sourceEventId = trimMaybeString(event?.event_id);
       const sourceFingerprint = sourceEventId ?? `${senderId}:${event.type}:${flowId ?? "none"}`;
-      const shouldRouteInRoom = await (
-        await loadMatrixDirectRoomDeps()
-      ).isStrictDirectRoom({
+      const shouldRouteInRoom = await (await loadMatrixDirectRoomDeps()).isStrictDirectRoom({
         client: params.client,
         roomId,
         remoteUserId: senderId,

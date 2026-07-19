@@ -4,11 +4,6 @@ import fs from "node:fs";
 import path from "node:path";
 import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { root, type Root } from "@openclaw/fs-safe";
-import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
-import {
-  openOperatorStateDatabase,
-  runOperatorStateWriteTransaction,
-} from "../state/openclaw-state-db.js";
 import { formatErrorMessage } from "./errors.js";
 import { acquireGatewayLock, GatewayLockError } from "./gateway-lock.js";
 import {
@@ -199,7 +194,7 @@ function parseLegacyApnsRegistration(
   const invalidRelayOrigin =
     transport === "relay" &&
     Object.hasOwn(rawRegistration, "relayOrigin") &&
-    (!registration || registration.transport !== "relay" || !registration.relayOrigin);
+    (registration?.transport !== "relay" || !registration.relayOrigin);
   const invalidTokenDebugSuffix =
     transport === "relay" &&
     Object.hasOwn(rawRegistration, "tokenDebugSuffix") &&

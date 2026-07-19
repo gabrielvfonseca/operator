@@ -105,7 +105,7 @@ export function isToolResultError(result: unknown): boolean {
   }
   const timedOut = details ? readToolErrorField(details, "timedOut") : undefined;
   const error = details ? readToolErrorField(details, "error") : undefined;
-  if (timedOut === true || Boolean(error)) {
+  if (timedOut === true || error) {
     return true;
   }
   const exitCode = details ? readToolErrorField(details, "exitCode") : undefined;

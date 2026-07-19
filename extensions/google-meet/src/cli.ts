@@ -799,9 +799,9 @@ function resolveArtifactTokenOptions(
 function hasCreateOAuth(config: GoogleMeetConfig, options: CreateOptions): boolean {
   return Boolean(
     options.accessToken?.trim() ||
-    options.refreshToken?.trim() ||
-    config.oauth.accessToken ||
-    config.oauth.refreshToken,
+      options.refreshToken?.trim() ||
+      config.oauth.accessToken ||
+      config.oauth.refreshToken,
   );
 }
 
@@ -1558,9 +1558,7 @@ export function registerGoogleMeetCli(params: {
       });
       const join =
         options.join !== false
-          ? await (
-              await params.ensureRuntime()
-            ).join({
+          ? await (await params.ensureRuntime()).join({
               url: result.meetingUri,
               transport: options.transport,
               mode: options.mode,
@@ -2190,9 +2188,10 @@ export function registerGoogleMeetCli(params: {
       });
       const result = delegated.ok
         ? (delegated.payload as Awaited<ReturnType<GoogleMeetRuntime["transcript"]>>)
-        : await (
-            await params.ensureRuntime()
-          ).transcript(sessionId, sinceIndex === undefined ? {} : { sinceIndex });
+        : await (await params.ensureRuntime()).transcript(
+            sessionId,
+            sinceIndex === undefined ? {} : { sinceIndex },
+          );
       if (!result.found) {
         throw new Error("session not found");
       }

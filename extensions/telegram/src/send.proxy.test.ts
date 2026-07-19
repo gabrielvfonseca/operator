@@ -244,10 +244,8 @@ describe("telegram proxy client", () => {
     {
       name: "an active send finishes",
       setupFirstSend: () => {
-        let resolveFirstSend: (value: {
-          message_id: number;
-          chat: { id: string };
-        }) => void = () => {};
+        let resolveFirstSend: (value: { message_id: number; chat: { id: string } }) => void =
+          () => {};
         botApi.sendMessage.mockImplementationOnce(
           () =>
             new Promise((resolve) => {
@@ -372,11 +370,8 @@ describe("telegram proxy client", () => {
         },
       },
     };
-    let resolveMedia: (value: {
-      buffer: Buffer;
-      contentType: string;
-      fileName: string;
-    }) => void = () => {};
+    let resolveMedia: (value: { buffer: Buffer; contentType: string; fileName: string }) => void =
+      () => {};
     loadWebMedia.mockImplementationOnce(
       () =>
         new Promise((resolve) => {

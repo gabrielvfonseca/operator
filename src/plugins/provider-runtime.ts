@@ -707,8 +707,9 @@ export async function resolveProviderUsageSnapshotWithPlugin(params: {
   if (!harness) {
     const workspaceDir =
       params.workspaceDir ?? getActivePluginRegistryWorkspaceDirFromState() ?? process.cwd();
-    const { ensureSelectedAgentHarnessPlugin } =
-      await import("../agents/harness/runtime-plugin.js");
+    const { ensureSelectedAgentHarnessPlugin } = await import(
+      "../agents/harness/runtime-plugin.js"
+    );
     await ensureSelectedAgentHarnessPlugin({
       provider: params.context.provider,
       modelId: "",

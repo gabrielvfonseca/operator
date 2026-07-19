@@ -85,12 +85,12 @@ export abstract class AppSidebarMenusElement extends AppSidebarSessionGroupsElem
   dismissTransientMenus(): boolean {
     const hadTransientMenu = Boolean(
       this.customizeMenuPosition ||
-      this.moreMenuPosition ||
-      this.sessionMenu ||
-      this.catalogMenu.isOpen ||
-      this.sessionGroupMenu ||
-      this.sessionSortMenuPosition ||
-      this.agentMenuPosition,
+        this.moreMenuPosition ||
+        this.sessionMenu ||
+        this.catalogMenu.isOpen ||
+        this.sessionGroupMenu ||
+        this.sessionSortMenuPosition ||
+        this.agentMenuPosition,
     );
     this.closeCustomizeMenu();
     this.closeMoreMenu();
@@ -411,10 +411,10 @@ export abstract class AppSidebarMenusElement extends AppSidebarSessionGroupsElem
           .archiveAllowed=${archiveAllowed}
           .cloudWorkerStopAllowed=${Boolean(
             !batchRows &&
-            session.cloudWorkerActive &&
-            !session.hasActiveRun &&
-            context &&
-            isGatewayMethodAdvertised(context.gateway.snapshot, "sessions.reclaim") === true,
+              session.cloudWorkerActive &&
+              !session.hasActiveRun &&
+              context &&
+              isGatewayMethodAdvertised(context.gateway.snapshot, "sessions.reclaim") === true,
           )}
           .groups=${this.knownSessionGroups()}
           .canOpenChat=${true}

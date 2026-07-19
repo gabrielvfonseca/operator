@@ -59,6 +59,7 @@ trap 'exit 0' HUP INT TERM
 while :; do sleep 3600; done
 `;
 
+// biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
 const REMOTE_SOCKET_CLEANUP_SCRIPT = String.raw`set -eu
 socket=$1
 directory=$2

@@ -260,7 +260,9 @@ export async function verifyDashboardAssetUrls(
 async function waitForDiscordMessage(params: { token: string; channelId: string; needle: string }) {
   const deadline = Date.now() + 3 * 60 * 1000;
   while (Date.now() < deadline) {
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let response;
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let text;
     try {
       const init = buildDiscordFetchInit(params.token);

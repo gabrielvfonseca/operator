@@ -31,7 +31,7 @@ export async function cleanStaleMatrixPluginConfig(cfg: OperatorConfig) {
     pluginId: "matrix",
     install: cfg.plugins?.installs?.matrix,
   });
-  if (!issue || issue.kind !== "missing-path") {
+  if (issue?.kind !== "missing-path") {
     return { config: cfg, changes: [] };
   }
   const { config, actions } = removePluginFromConfig(cfg, "matrix");

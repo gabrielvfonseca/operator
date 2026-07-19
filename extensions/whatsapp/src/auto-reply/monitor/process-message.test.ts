@@ -227,11 +227,7 @@ const baseRoute = {
 };
 
 function callProcessMessage(
-  overrides: {
-    cfg?: unknown;
-    groupHistories?: Map<string, unknown[]>;
-    msg?: unknown;
-  } = {},
+  overrides: { cfg?: unknown; groupHistories?: Map<string, unknown[]>; msg?: unknown } = {},
 ) {
   return processMessage({
     cfg: (overrides.cfg ?? {}) as never,

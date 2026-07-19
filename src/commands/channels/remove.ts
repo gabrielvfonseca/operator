@@ -151,8 +151,9 @@ export async function channelsRemoveCommand(
   const shouldResolveInstallablePlugin = Boolean(lookupChannel || channel);
   const resolvedPluginState = shouldResolveInstallablePlugin
     ? await (async () => {
-        const { resolveInstallableChannelPlugin } =
-          await import("../channel-setup/channel-plugin-resolution.js");
+        const { resolveInstallableChannelPlugin } = await import(
+          "../channel-setup/channel-plugin-resolution.js"
+        );
         return await resolveInstallableChannelPlugin({
           cfg,
           runtime,
@@ -202,7 +203,7 @@ export async function channelsRemoveCommand(
   if (deleteConfig) {
     if (!plugin.config.deleteAccount) {
       runtime.error(
-        `${formatUnsupportedChannelActionMessage({ channel, action: "delete" })} Use ${formatCliCommand("openclaw channels remove --channel " + channel)} to disable it without deleting config.`,
+        `${formatUnsupportedChannelActionMessage({ channel, action: "delete" })} Use ${formatCliCommand(`openclaw channels remove --channel ${channel}`)} to disable it without deleting config.`,
       );
       runtime.exit(1);
       return;
@@ -219,7 +220,7 @@ export async function channelsRemoveCommand(
   } else {
     if (!plugin.config.setAccountEnabled) {
       runtime.error(
-        `${formatUnsupportedChannelActionMessage({ channel, action: "disable" })} Use ${formatCliCommand("openclaw channels remove --channel " + channel + " --delete")} only if you want to remove config.`,
+        `${formatUnsupportedChannelActionMessage({ channel, action: "disable" })} Use ${formatCliCommand(`openclaw channels remove --channel ${channel} --delete`)} only if you want to remove config.`,
       );
       runtime.exit(1);
       return;

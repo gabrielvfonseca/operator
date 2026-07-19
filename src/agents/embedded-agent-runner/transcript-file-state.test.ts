@@ -468,7 +468,7 @@ describe("readTranscriptFileState", () => {
     const sessionFile = path.join(root, "session.jsonl");
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         {
           type: "session",
           version: 1,
@@ -488,7 +488,7 @@ describe("readTranscriptFileState", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf8",
     );
 
@@ -900,7 +900,7 @@ describe("readTranscriptFileState", () => {
     const sessionFile = path.join(root, "session.jsonl");
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         {
           type: "session",
           version: 3,
@@ -923,7 +923,7 @@ describe("readTranscriptFileState", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf-8",
     );
 
@@ -1103,9 +1103,9 @@ describe("readTranscriptFileState", () => {
     };
     await fs.writeFile(
       sessionFile,
-      [header, rootEntry, abandonedEntry, leafEntry]
+      `${[header, rootEntry, abandonedEntry, leafEntry]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf8",
     );
 
@@ -1137,7 +1137,7 @@ describe("readTranscriptFileState", () => {
     const sessionFile = path.join(root, "session.jsonl");
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         {
           type: "session",
           version: 3,
@@ -1166,7 +1166,7 @@ describe("readTranscriptFileState", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf8",
     );
 
@@ -1194,7 +1194,7 @@ describe("readTranscriptFileState", () => {
     const sessionFile = path.join(root, "session.jsonl");
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         {
           type: "session",
           version: 3,
@@ -1235,7 +1235,7 @@ describe("readTranscriptFileState", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf8",
     );
 
@@ -1267,7 +1267,7 @@ describe("readTranscriptFileState", () => {
     const sessionFile = path.join(root, "session.jsonl");
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         {
           type: "session",
           version: 3,
@@ -1305,7 +1305,7 @@ describe("readTranscriptFileState", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf8",
     );
 
@@ -1336,7 +1336,7 @@ describe("readTranscriptFileState", () => {
     const sessionFile = path.join(root, "session.jsonl");
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         {
           type: "session",
           version: 3,
@@ -1374,7 +1374,7 @@ describe("readTranscriptFileState", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf8",
     );
 
@@ -1469,7 +1469,7 @@ describe("readTranscriptFileState", () => {
 
     const branchText = state.getBranch().map((entry) => {
       const message = entry.type === "message" ? entry.message : null;
-      if (!message || message.role !== "user" || typeof message.content !== "string") {
+      if (message?.role !== "user" || typeof message.content !== "string") {
         throw new Error("expected string message branch");
       }
       return message.content;

@@ -301,7 +301,7 @@ function resolveOkfMarkdownTarget(sourceRelativePath: string, target: string): s
 
   const rawTargetWithoutSuffix = trimmed.split("#")[0]?.split("?")[0]?.replace(/\\/g, "/").trim();
   const targetWithoutSuffix = safeDecodeOkfLinkPath(rawTargetWithoutSuffix);
-  if (!targetWithoutSuffix || !targetWithoutSuffix.endsWith(".md")) {
+  if (!targetWithoutSuffix?.endsWith(".md")) {
     return null;
   }
 

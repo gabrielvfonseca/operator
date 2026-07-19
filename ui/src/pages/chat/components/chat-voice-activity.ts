@@ -126,8 +126,9 @@ export function renderChatVoiceError(props: ChatVoiceErrorProps): TemplateResult
   return html`
     <div class="agent-chat__stt-interim agent-chat__talk-status" role="alert">
       <span class="agent-chat__talk-status-text">${props.detail}</span>
-      ${props.onDismissError
-        ? html`
+      ${
+        props.onDismissError
+          ? html`
             <operator-tooltip .content=${t("chat.composer.dismissVoiceInputError")}>
               <button
                 class="callout__dismiss"
@@ -139,7 +140,8 @@ export function renderChatVoiceError(props: ChatVoiceErrorProps): TemplateResult
               </button>
             </operator-tooltip>
           `
-        : nothing}
+          : nothing
+      }
     </div>
   `;
 }

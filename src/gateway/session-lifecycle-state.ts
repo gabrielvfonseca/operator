@@ -244,10 +244,10 @@ export function isRestartRecoveryLifecycleEvent(params: {
   const interrupted = params.event.data?.stopReason === "restart";
   const matchesRecoveryRun = Boolean(
     runId &&
-    lifecycleGeneration &&
-    params.entry?.restartRecoveryRuns?.some(
-      (run) => run.runId === runId && run.lifecycleGeneration === lifecycleGeneration,
-    ),
+      lifecycleGeneration &&
+      params.entry?.restartRecoveryRuns?.some(
+        (run) => run.runId === runId && run.lifecycleGeneration === lifecycleGeneration,
+      ),
   );
   return (
     matchesRecoveryRun &&
@@ -266,8 +266,8 @@ export function isStaleLifecycleEventForSession(params: {
 }): boolean {
   return Boolean(
     params.owningSessionId &&
-    params.currentSessionId &&
-    params.owningSessionId !== params.currentSessionId,
+      params.currentSessionId &&
+      params.owningSessionId !== params.currentSessionId,
   );
 }
 

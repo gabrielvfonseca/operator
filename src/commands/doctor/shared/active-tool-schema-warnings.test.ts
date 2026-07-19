@@ -49,8 +49,9 @@ vi.mock("../../../agents/runtime-plan/tools.js", () => ({
     toolState.normalizeTools(options),
 }));
 
-const { collectActiveToolSchemaProjectionWarnings } =
-  await import("./active-tool-schema-warnings.js");
+const { collectActiveToolSchemaProjectionWarnings } = await import(
+  "./active-tool-schema-warnings.js"
+);
 
 function tool(name: string, parameters: unknown): AnyAgentTool {
   return {

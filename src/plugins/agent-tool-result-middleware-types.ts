@@ -37,7 +37,10 @@ export type AgentToolResultMiddlewareResult = {
 export type AgentToolResultMiddleware = (
   event: AgentToolResultMiddlewareEvent,
   ctx: AgentToolResultMiddlewareContext,
-) => Promise<AgentToolResultMiddlewareResult | void> | AgentToolResultMiddlewareResult | void;
+) =>
+  | Promise<AgentToolResultMiddlewareResult | undefined>
+  | AgentToolResultMiddlewareResult
+  | undefined;
 
 export type AgentToolResultMiddlewareOptions = {
   runtimes?: AgentToolResultMiddlewareRuntime[];

@@ -6,7 +6,7 @@ import { createLazyImportLoader } from "../shared/lazy-promise.js";
 import { createTestRuntime } from "./test-runtime-config-helpers.js";
 
 type ReplaceConfigFileResult = Awaited<
-  ReturnType<(typeof import("../config/config.js"))["replaceConfigFile"]>
+  ReturnType<typeof import("../config/config.js")["replaceConfigFile"]>
 >;
 
 export const readConfigFileSnapshotMock: Mock<(...args: unknown[]) => Promise<unknown>> = vi.fn();

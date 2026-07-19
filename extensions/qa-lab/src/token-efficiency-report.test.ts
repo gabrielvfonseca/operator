@@ -39,7 +39,7 @@ function makeCell(
 
 function makeRuntimeParity(
   scenarioId: string,
-  operator: RuntimeParityCell,
+  _operator: RuntimeParityCell,
   codex: RuntimeParityCell,
   runtimeParityUsage?: RuntimeParityUsagePolicy,
 ): RuntimeParityResult {

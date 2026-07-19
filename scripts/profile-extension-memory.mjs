@@ -133,6 +133,7 @@ export function parseArgs(argv) {
         options.skipCombined = true;
         break;
       case "--help":
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
       case "-h":
         printHelp();
         process.exit(0);

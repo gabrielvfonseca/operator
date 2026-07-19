@@ -54,14 +54,14 @@ describe("loadExtraBootstrapFilesWithDiagnostics", () => {
     const workspaceDir = await createWorkspaceDir("glob-current-dir");
     const packageDir = path.join(workspaceDir, "packages", "core");
     await fs.mkdir(packageDir, { recursive: true });
-    await fs.writeFile(path.join(packageDir, "AGENTS.md"), "agents", "utf-8");
+    await fs.writeFile(path.join(packageDir, "AGENTS.MD"), "agents", "utf-8");
 
-    const files = await loadExtraBootstrapFileList(workspaceDir, ["./packages/*/AGENTS.md"]);
+    const files = await loadExtraBootstrapFileList(workspaceDir, ["./packages/*/AGENTS.MD"]);
 
     expect(files).toStrictEqual([
       {
-        name: "AGENTS.md",
-        path: path.join(packageDir, "AGENTS.md"),
+        name: "AGENTS.MD",
+        path: path.join(packageDir, "AGENTS.MD"),
         content: "agents",
         missing: false,
       },
@@ -72,14 +72,14 @@ describe("loadExtraBootstrapFilesWithDiagnostics", () => {
     const workspaceDir = await createWorkspaceDir("literal-brackets");
     const packageDir = path.join(workspaceDir, "pkg[1]");
     await fs.mkdir(packageDir, { recursive: true });
-    await fs.writeFile(path.join(packageDir, "AGENTS.md"), "literal agents", "utf-8");
+    await fs.writeFile(path.join(packageDir, "AGENTS.MD"), "literal agents", "utf-8");
 
-    const files = await loadExtraBootstrapFileList(workspaceDir, ["pkg[1]/AGENTS.md"]);
+    const files = await loadExtraBootstrapFileList(workspaceDir, ["pkg[1]/AGENTS.MD"]);
 
     expect(files).toStrictEqual([
       {
-        name: "AGENTS.md",
-        path: path.join(packageDir, "AGENTS.md"),
+        name: "AGENTS.MD",
+        path: path.join(packageDir, "AGENTS.MD"),
         content: "literal agents",
         missing: false,
       },
@@ -92,7 +92,7 @@ describe("loadExtraBootstrapFilesWithDiagnostics", () => {
     const outsideDir = path.join(rootDir, "outside");
     await fs.mkdir(workspaceDir, { recursive: true });
     await fs.mkdir(outsideDir, { recursive: true });
-    await fs.writeFile(path.join(outsideDir, "AGENTS.md"), "outside", "utf-8");
+    await fs.writeFile(path.join(outsideDir, "AGENTS.MD"), "outside", "utf-8");
 
     const files = await loadExtraBootstrapFileList(workspaceDir, ["../outside/AGENTS.md"]);
 
@@ -108,15 +108,15 @@ describe("loadExtraBootstrapFilesWithDiagnostics", () => {
     const realWorkspace = path.join(rootDir, "real-workspace");
     const linkedWorkspace = path.join(rootDir, "linked-workspace");
     await fs.mkdir(realWorkspace, { recursive: true });
-    await fs.writeFile(path.join(realWorkspace, "AGENTS.md"), "linked agents", "utf-8");
+    await fs.writeFile(path.join(realWorkspace, "AGENTS.MD"), "linked agents", "utf-8");
     await fs.symlink(realWorkspace, linkedWorkspace, "dir");
 
-    const files = await loadExtraBootstrapFileList(linkedWorkspace, ["AGENTS.md"]);
+    const files = await loadExtraBootstrapFileList(linkedWorkspace, ["AGENTS.MD"]);
 
     expect(files).toStrictEqual([
       {
-        name: "AGENTS.md",
-        path: path.join(linkedWorkspace, "AGENTS.md"),
+        name: "AGENTS.MD",
+        path: path.join(linkedWorkspace, "AGENTS.MD"),
         content: "linked agents",
         missing: false,
       },
@@ -135,8 +135,8 @@ describe("loadExtraBootstrapFilesWithDiagnostics", () => {
     const outsideDir = path.join(rootDir, "outside");
     await fs.mkdir(workspaceDir, { recursive: true });
     await fs.mkdir(outsideDir, { recursive: true });
-    const outsideFile = path.join(outsideDir, "AGENTS.md");
-    const linkedFile = path.join(workspaceDir, "AGENTS.md");
+    const outsideFile = path.join(outsideDir, "AGENTS.MD");
+    const linkedFile = path.join(workspaceDir, "AGENTS.MD");
     await fs.writeFile(outsideFile, "outside", "utf-8");
     try {
       await fs.link(outsideFile, linkedFile);
@@ -147,17 +147,17 @@ describe("loadExtraBootstrapFilesWithDiagnostics", () => {
       throw err;
     }
 
-    const files = await loadExtraBootstrapFileList(workspaceDir, ["AGENTS.md"]);
+    const files = await loadExtraBootstrapFileList(workspaceDir, ["AGENTS.MD"]);
     expect(files).toHaveLength(0);
   });
 
   it("skips oversized bootstrap files and reports diagnostics", async () => {
     const workspaceDir = await createWorkspaceDir("oversized");
     const payload = "x".repeat(2 * 1024 * 1024 + 1);
-    await fs.writeFile(path.join(workspaceDir, "AGENTS.md"), payload, "utf-8");
+    await fs.writeFile(path.join(workspaceDir, "AGENTS.MD"), payload, "utf-8");
 
     const { files, diagnostics } = await loadExtraBootstrapFilesWithDiagnostics(workspaceDir, [
-      "AGENTS.md",
+      "AGENTS.MD",
     ]);
 
     expect(files).toHaveLength(0);

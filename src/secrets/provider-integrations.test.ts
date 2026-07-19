@@ -80,6 +80,7 @@ describe("secret provider integration presets", () => {
             displayName: "Acme Vault",
             description: "Acme exec resolver",
             source: "exec",
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             command: "${node}",
             args: ["./bin/resolve.mjs", "--profile", "work"],
             timeoutMs: 3000,
@@ -153,6 +154,7 @@ describe("secret provider integration presets", () => {
         secretProviderIntegrations: {
           bounded: {
             source: "exec",
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             command: "${node}",
             args: ["./resolve.mjs", "ok", "x".repeat(1025)],
             timeoutMs: 120001,
@@ -213,6 +215,7 @@ describe("secret provider integration presets", () => {
           bad: {
             providerAlias: "../bad",
             source: "exec",
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             command: "${node}",
           },
         },
@@ -253,6 +256,7 @@ describe("secret provider integration presets", () => {
           [longIntegrationId]: {
             providerAlias: "short-alias",
             source: "exec",
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             command: "${node}",
             args: ["./resolve.mjs"],
           },
@@ -273,6 +277,7 @@ describe("secret provider integration presets", () => {
           vault: {
             providerAlias: "short-plugin-alias",
             source: "exec",
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             command: "${node}",
             args: ["./resolve.mjs"],
           },
@@ -343,6 +348,7 @@ describe("secret provider integration presets", () => {
           vault: {
             providerAlias: "vault",
             source: "exec",
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             command: "${node}",
             args: ["./resolve.mjs"],
           },
@@ -397,6 +403,7 @@ describe("secret provider integration presets", () => {
           vault: {
             providerAlias: "vault",
             source: "exec",
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             command: "${node}",
             args: ["./resolve.mjs"],
           },
@@ -441,6 +448,7 @@ describe("secret provider integration presets", () => {
           vault: {
             providerAlias: "vault",
             source: "exec",
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             command: "${node}",
             args: ["./resolve.mjs"],
           },
@@ -484,6 +492,7 @@ describe("secret provider integration presets", () => {
             vault: {
               providerAlias: "vault",
               source: "exec",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               command: "${node}",
               args: ["./resolve.mjs"],
             },
@@ -527,6 +536,7 @@ describe("secret provider integration presets", () => {
             vault: {
               providerAlias: "vault",
               source: "exec",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               command: "${node}",
               args: ["./resolve.mjs"],
             },
@@ -561,6 +571,7 @@ describe("secret provider integration presets", () => {
         "process.stdin.on('data', (chunk) => { input += chunk; });",
         "process.stdin.on('end', () => {",
         "  const request = JSON.parse(input);",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "  const values = Object.fromEntries(request.ids.map((id) => [id, `value:${id}`]));",
         "  process.stdout.write(JSON.stringify({ protocolVersion: 1, values }));",
         "});",
@@ -575,6 +586,7 @@ describe("secret provider integration presets", () => {
           vault: {
             providerAlias: "vault",
             source: "exec",
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             command: "${node}",
             args: ["./bin/resolve.mjs"],
             allowInsecurePath: true,
@@ -634,6 +646,7 @@ describe("secret provider integration presets", () => {
           vault: {
             providerAlias: "vault",
             source: "exec",
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             command: "${node}",
             args: ["./resolve.mjs"],
           },
@@ -723,6 +736,7 @@ describe("secret provider integration presets", () => {
         secretProviderIntegrations: {
           bad: {
             source: "exec",
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             command: "${node}",
             args: ["--import", "./bin/hook.mjs", "./bin/resolve.mjs"],
           },
@@ -763,6 +777,7 @@ describe("secret provider integration presets", () => {
             vault: {
               providerAlias: "vault",
               source: "exec",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               command: "${node}",
               args: ["./bin/resolve.mjs"],
             },
@@ -801,6 +816,7 @@ describe("secret provider integration presets", () => {
           vault: {
             providerAlias: "vault",
             source: "exec",
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             command: "${node}",
             args: ["./bin/resolve.mjs"],
           },
@@ -858,6 +874,7 @@ describe("secret provider integration presets", () => {
               vault: {
                 providerAlias: "vault",
                 source: "exec",
+                // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
                 command: "${node}",
                 args: ["./bin/resolve.mjs"],
               },

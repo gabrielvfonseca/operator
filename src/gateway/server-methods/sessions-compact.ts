@@ -182,9 +182,9 @@ export const sessionCompactHandlers: GatewayRequestHandlers = {
           }).entry;
           sessionStillCurrent = Boolean(
             latestEntry &&
-            latestEntry.sessionId === sessionId &&
-            latestEntry.lifecycleRevision === lifecycleRevision &&
-            !resolveSessionWorkStartError(target.canonicalKey, latestEntry),
+              latestEntry.sessionId === sessionId &&
+              latestEntry.lifecycleRevision === lifecycleRevision &&
+              !resolveSessionWorkStartError(target.canonicalKey, latestEntry),
           );
           if (!sessionStillCurrent) {
             return;

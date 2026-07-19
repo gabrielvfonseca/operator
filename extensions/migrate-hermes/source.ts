@@ -223,14 +223,14 @@ async function hasHermesState(root: string): Promise<boolean> {
 export function hasHermesSource(source: HermesSource): boolean {
   return Boolean(
     source.configPath ||
-    source.envPath ||
-    source.authPath ||
-    source.globalAuthPath ||
-    source.soulPath ||
-    source.agentsPath ||
-    source.memoryPath ||
-    source.userPath ||
-    source.skillsDir ||
-    source.archivePaths.length > 0,
+      source.envPath ||
+      source.authPath ||
+      source.globalAuthPath ||
+      source.soulPath ||
+      source.agentsPath ||
+      source.memoryPath ||
+      source.userPath ||
+      source.skillsDir ||
+      source.archivePaths.length > 0,
   );
 }

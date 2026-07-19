@@ -59,8 +59,9 @@ async function installOpenShellBackendMocks() {
       runOpenShellCli: cliMocks.runOpenShellCli,
     };
   });
-  ({ createOpenShellSandboxBackendFactory, createOpenShellSandboxBackendManager } =
-    await import("./backend.js"));
+  ({ createOpenShellSandboxBackendFactory, createOpenShellSandboxBackendManager } = await import(
+    "./backend.js"
+  ));
 }
 
 function uninstallOpenShellBackendMocks() {

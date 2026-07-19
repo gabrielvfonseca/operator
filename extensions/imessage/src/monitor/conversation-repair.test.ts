@@ -177,8 +177,9 @@ describe("repairIMessageConversationAnchor", () => {
   });
 
   it("routes repaired direct replies to the remote peer instead of the stale local sender", async () => {
-    const { buildIMessageInboundContext, resolveIMessageInboundDecision } =
-      await import("./inbound-processing.js");
+    const { buildIMessageInboundContext, resolveIMessageInboundDecision } = await import(
+      "./inbound-processing.js"
+    );
     const message = anchorlessMessage({
       guid: "11111111-1111-4111-8111-111111111111",
       sender: "+15550000001",
@@ -241,8 +242,9 @@ describe("repairIMessageConversationAnchor", () => {
   });
 
   it("clears stale destination_caller_id on the monitor path when history omits it", async () => {
-    const { buildIMessageInboundContext, resolveIMessageInboundDecision } =
-      await import("./inbound-processing.js");
+    const { buildIMessageInboundContext, resolveIMessageInboundDecision } = await import(
+      "./inbound-processing.js"
+    );
     const message = anchorlessMessage({
       guid: "33333333-3333-4333-8333-333333333333",
       sender: "+15550000001",

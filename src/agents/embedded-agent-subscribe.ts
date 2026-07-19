@@ -1044,11 +1044,10 @@ export function subscribeEmbeddedAgentSession(params: SubscribeEmbeddedAgentSess
       : "";
     const prefixReplayCandidate = Boolean(
       state.blockReplyBreak === "text_end" &&
-      state.toolExecutionSinceLastBlockReply &&
-      lastDeliveredBlockReplyText &&
-      lastDeliveredBlockReplyText.trimEnd().endsWith(":") &&
-      blockReplyText.length > lastDeliveredBlockReplyText.length &&
-      blockReplyText.startsWith(lastDeliveredBlockReplyText),
+        state.toolExecutionSinceLastBlockReply &&
+        lastDeliveredBlockReplyText?.trimEnd().endsWith(":") &&
+        blockReplyText.length > lastDeliveredBlockReplyText.length &&
+        blockReplyText.startsWith(lastDeliveredBlockReplyText),
     );
     if (prefixReplayCandidate && !/^\s/.test(blockReplySuffix)) {
       chunk = blockReplySuffix;

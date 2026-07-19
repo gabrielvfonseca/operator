@@ -49,7 +49,8 @@ type QaAgentWaitResult = {
   stopReason?: string;
 };
 
-const ANSI_ESCAPE_PATTERN = new RegExp(String.raw`\x1B\[[0-?]*[ -/]*[@-~]`, "g");
+// biome-ignore lint/suspicious/noControlCharactersInRegex: migrated from oxlint
+const ANSI_ESCAPE_PATTERN = /\x1B\[[0-?]*[ -/]*[@-~]/g;
 const MANAGED_DREAMING_CRON_MARKER = "[managed-by=memory-core.short-term-promotion]";
 const MANAGED_DREAMING_CRON_NAME = "Memory Dreaming Promotion";
 const MANAGED_DREAMING_PROMPT = "__operator_memory_core_short_term_promotion_dream__";

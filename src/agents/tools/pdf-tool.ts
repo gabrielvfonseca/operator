@@ -405,14 +405,13 @@ export function createPdfTool(options?: {
         throw new ToolInputError("No PDF model configured.");
       }
 
-      const sandboxConfig: SandboxedBridgeMediaPathConfig | null =
-        options?.sandbox && options.sandbox.root.trim()
-          ? {
-              root: options.sandbox.root.trim(),
-              bridge: options.sandbox.bridge,
-              workspaceOnly: options.fsPolicy?.workspaceOnly === true,
-            }
-          : null;
+      const sandboxConfig: SandboxedBridgeMediaPathConfig | null = options?.sandbox?.root.trim()
+        ? {
+            root: options.sandbox.root.trim(),
+            bridge: options.sandbox.bridge,
+            workspaceOnly: options.fsPolicy?.workspaceOnly === true,
+          }
+        : null;
 
       // MARK: - Load each PDF
       const loadedPdfs: Array<{

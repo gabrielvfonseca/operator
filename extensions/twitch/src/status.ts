@@ -75,7 +75,7 @@ export function collectTwitchStatusIssues(
       continue;
     }
 
-    if (account && account.username && account.accessToken && !account.clientId) {
+    if (account?.username && account.accessToken && !account.clientId) {
       issues.push({
         channel: "twitch",
         accountId,

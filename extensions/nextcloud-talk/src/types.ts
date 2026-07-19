@@ -182,7 +182,7 @@ export type NextcloudTalkWebhookServerOptions = {
   shouldProcessMessage?: (message: NextcloudTalkInboundMessage) => boolean | Promise<boolean>;
   processMessage?: (
     message: NextcloudTalkInboundMessage,
-  ) => void | "processed" | "duplicate" | Promise<void | "processed" | "duplicate">;
+  ) => undefined | "processed" | "duplicate" | Promise<undefined | "processed" | "duplicate">;
   onMessage: (message: NextcloudTalkInboundMessage) => void | Promise<void>;
   onError?: (error: Error) => void;
   abortSignal?: AbortSignal;

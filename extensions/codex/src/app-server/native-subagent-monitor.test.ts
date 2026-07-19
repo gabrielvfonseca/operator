@@ -33,7 +33,7 @@ function createClient() {
   const threadTurns = new Map<string, JsonValue | Error>();
   const request = vi.fn(async (method: string, params?: unknown) => {
     if (method === "thread/turns/list") {
-      const childThreadId = ((params as ThreadTurnsParams | undefined) ?? {}).threadId ?? "";
+      const childThreadId = (params as ThreadTurnsParams | undefined)?.threadId ?? "";
       const response = threadTurns.get(childThreadId);
       if (response instanceof Error) {
         throw response;

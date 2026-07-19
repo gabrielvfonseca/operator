@@ -65,8 +65,8 @@ describe("embedded attempt context injection", () => {
 
   it("still resolves bootstrap context when continuation-skip has no completed assistant turn yet", async () => {
     const resolver = vi.fn(async () => ({
-      bootstrapFiles: [{ name: "AGENTS.md" }],
-      contextFiles: [{ path: "AGENTS.md" }],
+      bootstrapFiles: [{ name: "AGENTS.MD" }],
+      contextFiles: [{ path: "AGENTS.MD" }],
     }));
 
     const { result } = await resolveBootstrapContext({
@@ -76,8 +76,8 @@ describe("embedded attempt context injection", () => {
     });
 
     expect(result.isContinuationTurn).toBe(false);
-    expect(result.bootstrapFiles).toEqual([{ name: "AGENTS.md" }]);
-    expect(result.contextFiles).toEqual([{ path: "AGENTS.md" }]);
+    expect(result.bootstrapFiles).toEqual([{ name: "AGENTS.MD" }]);
+    expect(result.contextFiles).toEqual([{ path: "AGENTS.MD" }]);
     expect(resolver).toHaveBeenCalledTimes(1);
   });
 
@@ -164,8 +164,8 @@ describe("embedded attempt context injection", () => {
 
   it("runs full bootstrap injection after a successful non-heartbeat turn", async () => {
     const resolver = vi.fn(async () => ({
-      bootstrapFiles: [{ name: "AGENTS.md", content: "bootstrap context" }],
-      contextFiles: [{ path: "AGENTS.md", content: "bootstrap context" }],
+      bootstrapFiles: [{ name: "AGENTS.MD", content: "bootstrap context" }],
+      contextFiles: [{ path: "AGENTS.MD", content: "bootstrap context" }],
     }));
 
     const { result } = await resolveBootstrapContext({
@@ -176,7 +176,7 @@ describe("embedded attempt context injection", () => {
     });
 
     expect(result.shouldRecordCompletedBootstrapTurn).toBe(true);
-    expect(result.bootstrapFiles).toEqual([{ name: "AGENTS.md", content: "bootstrap context" }]);
+    expect(result.bootstrapFiles).toEqual([{ name: "AGENTS.MD", content: "bootstrap context" }]);
   });
 
   it.each(["heartbeat", "commitment-only"] as const)(

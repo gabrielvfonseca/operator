@@ -22,8 +22,9 @@ vi.mock("./commands.runtime.js", () => ({
   handleCommands: (...args: unknown[]) => handleCommandsMock(...args),
 }));
 
-const { maybeResolveNativeSlashCommandFastReply } =
-  await import("./get-reply-native-slash-fast-path.js");
+const { maybeResolveNativeSlashCommandFastReply } = await import(
+  "./get-reply-native-slash-fast-path.js"
+);
 
 const tempDirs = useAutoCleanupTempDirTracker(afterEach);
 

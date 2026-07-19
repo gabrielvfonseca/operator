@@ -30,6 +30,7 @@ function handleMcpAppSandboxHttpRequest(req: IncomingMessage, res: ServerRespons
     return;
   }
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let csp;
   try {
     csp = decodeMcpAppSandboxCsp(url.searchParams.get("csp"));

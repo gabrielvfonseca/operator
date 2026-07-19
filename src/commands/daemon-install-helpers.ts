@@ -150,7 +150,7 @@ function collectAuthProfileServiceEnvVars(params: {
   const entries: Record<string, string> = {};
 
   for (const ref of collectAuthProfileSecretRefs(params.authStore)) {
-    if (!ref || ref.source !== "env") {
+    if (ref?.source !== "env") {
       continue;
     }
     const key = normalizeEnvVarKey(ref.id, { portable: true });
@@ -203,7 +203,7 @@ function collectConfigSecretRefServiceEnvSources(params: {
       refValue: target.refValue,
       defaults: params.config.secrets?.defaults,
     });
-    if (!ref || ref.source !== "env") {
+    if (ref?.source !== "env") {
       continue;
     }
     const key = normalizeEnvVarKey(ref.id, { portable: true });
@@ -258,7 +258,7 @@ function collectExecSecretRefPassEnvServiceEnvVars(params: {
         refValue: target.refValue,
         defaults: params.config.secrets?.defaults,
       });
-      if (!ref || ref.source !== "exec") {
+      if (ref?.source !== "exec") {
         continue;
       }
       sources.push({ ref, warningTitle: "Config SecretRef" });
@@ -281,7 +281,7 @@ function collectExecSecretRefPassEnvServiceEnvVars(params: {
   }
   for (const { ref, warningTitle } of sources) {
     const provider = params.config.secrets?.providers?.[ref.provider];
-    if (!provider || provider.source !== "exec") {
+    if (provider?.source !== "exec") {
       continue;
     }
     const execProvider = isPluginIntegrationSecretProviderConfig(provider)

@@ -439,6 +439,7 @@ function buildSystemPrompt(targetLocale: string, glossary: readonly GlossaryEntr
     "- Translate all English prose; keep code, URLs, product names, CLI commands, config keys, and env vars in English.",
     "- Preserve placeholders exactly, including {count}, {time}, {shown}, {total}, and similar tokens.",
     "- Preserve Swift interpolation expressions such as \\(name) exactly, including the backslash and parentheses.",
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     "- Preserve Kotlin interpolation expressions such as $name and ${value} exactly.",
     "- Preserve punctuation, ellipses, arrows, and casing when they are part of literal UI text.",
     "- Preserve Markdown, inline code, HTML tags, and slash commands when present.",
@@ -1034,9 +1035,10 @@ async function translateBatch(
     logProgress(`${attemptLabel}: start keys=${items.length}`);
     let promptCompleted = false;
     try {
-      const raw = await (
-        await clientAccess.getClient()
-      ).prompt(buildBatchPrompt(items, validationError), attemptLabel);
+      const raw = await (await clientAccess.getClient()).prompt(
+        buildBatchPrompt(items, validationError),
+        attemptLabel,
+      );
       promptCompleted = true;
       const translated = parseTranslationBatchReply(raw, items, context.locale);
       logProgress(`${attemptLabel}: done (${formatDuration(Date.now() - startedAt)})`);

@@ -29,7 +29,7 @@ function isToolResultMessage(msg: AgentMessage): msg is ToolResultMessage {
 
 function toolText(msg: ToolResultMessage): string {
   const first = msg.content.find((b) => b.type === "text");
-  if (!first || first.type !== "text") {
+  if (first?.type !== "text") {
     return "";
   }
   return first.text;

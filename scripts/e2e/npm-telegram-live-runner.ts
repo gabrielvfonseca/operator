@@ -105,8 +105,9 @@ async function shouldFailPackageTelegramRun(
   if (parseBoolean(env.OPERATOR_NPM_TELEGRAM_ALLOW_FAILURES)) {
     return false;
   }
-  const { readQaSuiteFailedScenarioCountFromFile } =
-    await import("../../extensions/qa-lab/src/suite-summary.ts");
+  const { readQaSuiteFailedScenarioCountFromFile } = await import(
+    "../../extensions/qa-lab/src/suite-summary.ts"
+  );
   return (await readQaSuiteFailedScenarioCountFromFile(result.summaryPath)) > 0;
 }
 
@@ -141,8 +142,9 @@ async function resolveTrustedOperatorCommand(
 }
 
 async function main() {
-  const { runQaTelegramSuite } =
-    await import("../../extensions/qa-lab/src/live-transports/telegram/cli.runtime.ts");
+  const { runQaTelegramSuite } = await import(
+    "../../extensions/qa-lab/src/live-transports/telegram/cli.runtime.ts"
+  );
   const rawSutOperatorCommand = process.env.OPERATOR_NPM_TELEGRAM_SUT_COMMAND?.trim();
   if (!rawSutOperatorCommand) {
     throw new Error("Missing OPERATOR_NPM_TELEGRAM_SUT_COMMAND.");

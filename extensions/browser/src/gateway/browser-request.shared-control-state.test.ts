@@ -47,8 +47,9 @@ vi.mock("../browser/chrome.js", () => ({
   stopOperatorChrome: vi.fn(async () => {}),
 }));
 
-const { startBrowserControlServerFromConfig, stopBrowserControlServer } =
-  await import("../server.js");
+const { startBrowserControlServerFromConfig, stopBrowserControlServer } = await import(
+  "../server.js"
+);
 const { stopBrowserControlService } = await import("../control-service.js");
 const { getBridgeAuthForPort } = await import("../browser/bridge-auth-registry.js");
 const { browserHandlers } = await import("./browser-request.js");

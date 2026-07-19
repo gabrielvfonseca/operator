@@ -402,7 +402,7 @@ function createLedgerApi(params: {
     async readReplayBySessionId(replayParams) {
       return params.read(() => {
         const session = params.state.store.sessions[replayParams.sessionId];
-        if (!session || !session.complete) {
+        if (!session?.complete) {
           return { complete: false, events: [] };
         }
         return buildReplay(session);

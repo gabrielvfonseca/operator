@@ -559,8 +559,9 @@ async function runCliAgentInternal(params: RunCliAgentParams): Promise<EmbeddedA
   };
   if (params.cleanupCliLiveSessionOnRunEnd === true) {
     try {
-      const { closeClaudeLiveSessionForContext } =
-        await import("./cli-runner/claude-live-session.js");
+      const { closeClaudeLiveSessionForContext } = await import(
+        "./cli-runner/claude-live-session.js"
+      );
       await closeClaudeLiveSessionForContext(context);
     } catch (error) {
       recordCleanupError(error);

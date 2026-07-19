@@ -108,6 +108,7 @@ function getButtonByText(container: Element, text: string): HTMLButtonElement {
 function getElement<T extends Element>(
   container: Element,
   selector: string,
+  // biome-ignore lint/suspicious/noShadowRestrictedNames: migrated from oxlint
   constructor: new () => T,
 ): T {
   const element = container.querySelector<T>(selector);

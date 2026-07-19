@@ -156,7 +156,7 @@ type DispatchInboundParams = {
       summary?: string;
       title?: string;
       name?: string;
-    }) => Promise<false | void> | false | void;
+    }) => Promise<false | undefined> | false | undefined;
     onNarrationUpdate?: (payload: { text: string }) => Promise<void> | void;
     onProgressNarratorLifecycle?: (lifecycle: {
       beginTurn: () => void;
@@ -179,7 +179,7 @@ type DispatchInboundParams = {
       title?: string;
       status?: string;
       exitCode?: number | null;
-    }) => Promise<false | void> | false | void;
+    }) => Promise<false | undefined> | false | undefined;
     onPatchSummary?: (payload: {
       phase?: string;
       summary?: string;
@@ -484,12 +484,15 @@ async function processStreamOffDiscordMessage() {
 
 beforeAll(async () => {
   vi.useRealTimers();
-  ({ createBaseDiscordMessageContext, createDiscordDirectMessageContextOverrides } =
-    await import("./message-handler.test-harness.js"));
-  ({ testing: threadBindingTesting, createThreadBindingManager } =
-    await import("./thread-bindings.js"));
-  ({ processDiscordMessage, formatDiscordReplySkip } =
-    await import("./message-handler.process.js"));
+  ({ createBaseDiscordMessageContext, createDiscordDirectMessageContextOverrides } = await import(
+    "./message-handler.test-harness.js"
+  ));
+  ({ testing: threadBindingTesting, createThreadBindingManager } = await import(
+    "./thread-bindings.js"
+  ));
+  ({ processDiscordMessage, formatDiscordReplySkip } = await import(
+    "./message-handler.process.js"
+  ));
   ({ notifyDiscordInboundEventOutboundSuccess } = await import("../inbound-event-delivery.js"));
   ({ createDiscordReplyTypingFeedback } = await import("./reply-typing-feedback.js"));
 });
@@ -2422,7 +2425,7 @@ describe("processDiscordMessage draft streaming", () => {
 
   it("declines failed item progress without updating the Discord draft", async () => {
     const draftStream = createMockDraftStreamForTest();
-    let callbackResult: false | void = undefined;
+    let callbackResult: false | undefined;
 
     dispatchInboundMessage.mockImplementationOnce(async (params?: DispatchInboundParams) => {
       callbackResult = await params?.replyOptions?.onItemEvent?.({
@@ -2448,7 +2451,7 @@ describe("processDiscordMessage draft streaming", () => {
 
   it("declines failed command output without updating the Discord draft", async () => {
     const draftStream = createMockDraftStreamForTest();
-    let callbackResult: false | void = undefined;
+    let callbackResult: false | undefined;
 
     dispatchInboundMessage.mockImplementationOnce(async (params?: DispatchInboundParams) => {
       callbackResult = await params?.replyOptions?.onCommandOutput?.({

@@ -82,8 +82,9 @@ describe("extended-stable startup update integration", () => {
     process.env.OPERATOR_UPDATE_PACKAGE_SPEC = "@gabrielvfonseca/operator";
     process.env.NPM_CONFIG_REGISTRY = `http://127.0.0.1:${address.port}/`;
 
-    const { runGatewayUpdateCheck, resetUpdateAvailableStateForTest } =
-      await import("./update-startup.js");
+    const { runGatewayUpdateCheck, resetUpdateAvailableStateForTest } = await import(
+      "./update-startup.js"
+    );
     resetUpdateAvailableStateForTest();
     const log = { info: vi.fn() };
     const onUpdateAvailableChange = vi.fn();

@@ -2,6 +2,7 @@
 import { coerceSecretRef } from "../config/types.secrets.js";
 import {
   collectSecretInputAssignment,
+  // biome-ignore lint/suspicious/noShadowRestrictedNames: migrated from oxlint
   hasOwnProperty,
   isChannelAccountEffectivelyEnabled,
   isEnabledFlag,

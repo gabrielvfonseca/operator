@@ -182,9 +182,7 @@ function checkFormattedBodyMention(params: {
       ) {
         return true;
       }
-    } catch {
-      continue;
-    }
+    } catch {}
   }
   return false;
 }
@@ -221,8 +219,8 @@ export function resolveMentions(params: {
   // hidden metadata-only mentions do not trigger the handler.
   const metadataBackedUserMention = Boolean(
     params.userId &&
-    mentionedUsers.has(params.userId) &&
-    (mentionedInFormattedBody || textMentioned),
+      mentionedUsers.has(params.userId) &&
+      (mentionedInFormattedBody || textMentioned),
   );
   const metadataBackedRoomMention = Boolean(mentions?.room) && visibleRoomMention;
   const explicitMention =

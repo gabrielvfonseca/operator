@@ -357,12 +357,13 @@ const conversationBindingMocks = vi.hoisted(() => {
   };
 });
 const threadInfoMocks = vi.hoisted(() => ({
-  parseSessionThreadInfo: vi.fn<
-    (sessionKey: string | undefined) => {
-      baseSessionKey: string | undefined;
-      threadId: string | undefined;
-    }
-  >(),
+  parseSessionThreadInfo:
+    vi.fn<
+      (sessionKey: string | undefined) => {
+        baseSessionKey: string | undefined;
+        threadId: string | undefined;
+      }
+    >(),
 }));
 
 export {

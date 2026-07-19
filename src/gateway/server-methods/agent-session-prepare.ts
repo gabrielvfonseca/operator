@@ -127,7 +127,7 @@ export function prepareAgentSession(params: {
       );
       return undefined;
     }
-    if (!marker || marker.phase !== "ready" || !continuationSessionId) {
+    if (marker?.phase !== "ready" || !continuationSessionId) {
       params.respond(
         false,
         undefined,

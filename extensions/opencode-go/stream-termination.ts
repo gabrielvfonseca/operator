@@ -41,7 +41,7 @@ export const OPENCODE_GO_STREAM_IDLE_TIMEOUT_MS_DEFAULT = 120_000;
 export const OPENCODE_GO_STREAM_FIRST_EVENT_TIMEOUT_MS_DEFAULT = 300_000;
 
 function isOpencodeGoModel(model: unknown, providerId: string): boolean {
-  return Boolean(model) && typeof model === "object"
+  return model && typeof model === "object"
     ? (model as { provider?: unknown }).provider === providerId
     : false;
 }

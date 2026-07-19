@@ -54,14 +54,14 @@ function firstNonBlankEnv(...values: Array<string | undefined>): string | undefi
 function hasBaseAccount(channelCfg: SmsChannelConfig | undefined): boolean {
   return Boolean(
     channelCfg?.accountSid ||
-    hasConfiguredSecretInput(channelCfg?.authToken) ||
-    channelCfg?.fromNumber ||
-    channelCfg?.messagingServiceSid ||
-    process.env.TWILIO_ACCOUNT_SID ||
-    process.env.TWILIO_AUTH_TOKEN ||
-    process.env.TWILIO_PHONE_NUMBER ||
-    process.env.TWILIO_SMS_FROM ||
-    process.env.TWILIO_MESSAGING_SERVICE_SID,
+      hasConfiguredSecretInput(channelCfg?.authToken) ||
+      channelCfg?.fromNumber ||
+      channelCfg?.messagingServiceSid ||
+      process.env.TWILIO_ACCOUNT_SID ||
+      process.env.TWILIO_AUTH_TOKEN ||
+      process.env.TWILIO_PHONE_NUMBER ||
+      process.env.TWILIO_SMS_FROM ||
+      process.env.TWILIO_MESSAGING_SERVICE_SID,
   );
 }
 

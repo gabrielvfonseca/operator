@@ -423,7 +423,7 @@ function expectBundleCandidateMatch(params: {
 
 async function expectRejectedPackageExtensionEntry(params: {
   stateDir: string;
-  setup: (stateDir: string) => boolean | void;
+  setup: (stateDir: string) => boolean | undefined;
   expectedDiagnostic?: "escapes" | "none" | "not_found" | "runtime";
   expectedId?: string;
   expectedDiagnosticPluginId?: string;

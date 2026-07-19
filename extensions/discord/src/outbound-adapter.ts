@@ -283,13 +283,15 @@ export const discordOutbound: ChannelOutboundAdapter = {
       });
     },
     sendPoll: async ({ cfg, to, poll, accountId, threadId, silent }) =>
-      await (
-        await loadDiscordSendRuntime()
-      ).sendPollDiscord(resolveDiscordOutboundTarget({ to, threadId }), poll, {
-        accountId: accountId ?? undefined,
-        silent: silent ?? undefined,
-        cfg,
-      }),
+      await (await loadDiscordSendRuntime()).sendPollDiscord(
+        resolveDiscordOutboundTarget({ to, threadId }),
+        poll,
+        {
+          accountId: accountId ?? undefined,
+          silent: silent ?? undefined,
+          cfg,
+        },
+      ),
   }),
   afterDeliverPayload: async ({ target, payload }) => {
     notifyDiscordInboundEventOutboundPayloadSuccess({

@@ -257,6 +257,7 @@ describe("resolveGatewayCredentialsFromConfig", () => {
           mode: "local",
           auth: {
             mode: "token",
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             token: "${OPERATOR_GATEWAY_TOKEN}",
           },
         },
@@ -280,6 +281,7 @@ describe("resolveGatewayCredentialsFromConfig", () => {
             mode: "local",
             auth: {
               mode: "token",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               token: "${OPERATOR_GATEWAY_TOKEN}",
             },
           },
@@ -523,7 +525,9 @@ describe("resolveGatewayCredentialsFromValues", () => {
 
   it("rejects unresolved env var placeholders in config credentials", () => {
     const resolved = resolveGatewayCredentialsFromValues({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       configToken: "${OPERATOR_GATEWAY_TOKEN}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       configPassword: "${OPERATOR_GATEWAY_PASSWORD}",
       env: {} as NodeJS.ProcessEnv,
       tokenPrecedence: "config-first",

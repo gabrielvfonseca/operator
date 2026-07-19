@@ -74,14 +74,16 @@ export function renderSkillWorkshop(props: SkillWorkshopProps) {
 
   return html`
     <section class="skill-workshop sw-mode-${props.mode}">
-      ${props.error
-        ? html`<div class="sw-error" role="status">
+      ${
+        props.error
+          ? html`<div class="sw-error" role="status">
             <span>${props.error}</span>
             <button type="button" class="btn btn--sm" @click=${props.onRetry}>
               ${t("pluginsPage.tryAgain")}
             </button>
           </div>`
-        : nothing}
+          : nothing
+      }
       ${renderSelfLearningError(props.selfLearning)}
       ${renderSkillWorkshopHistoryScan({
         state: props.historyScan,
@@ -91,8 +93,9 @@ export function renderSkillWorkshop(props: SkillWorkshopProps) {
         ${keyed(props.mode, html`<div class="sw-view__pane">${body}</div>`)}
       </div>
     </section>
-    ${preview && selected
-      ? html`
+    ${
+      preview && selected
+        ? html`
           <operator-file-preview-modal
             .files=${selected.supportFiles}
             .activePath=${preview.path}
@@ -105,7 +108,8 @@ export function renderSkillWorkshop(props: SkillWorkshopProps) {
             @file-preview-close=${props.onClosePreview}
           ></operator-file-preview-modal>
         `
-      : nothing}
+        : nothing
+    }
     ${revisionProposal ? renderRevisionDialog(props, revisionProposal) : nothing}
   `;
 }
@@ -153,14 +157,16 @@ function renderRevisionDialog(props: SkillWorkshopProps, proposal: SkillWorkshop
           @input=${(event: Event) =>
             props.onRevisionDraftChange((event.target as HTMLTextAreaElement).value ?? "")}
         ></textarea>
-        ${busy
-          ? html`
+        ${
+          busy
+            ? html`
               <div class="sw-revision-dialog__status" role="status">
                 <span class="sw-revision-dialog__status-dot" aria-hidden="true"></span>
                 <span>${t("skillWorkshop.revision.preparing")}</span>
               </div>
             `
-          : nothing}
+            : nothing
+        }
         <div class="sw-revision-dialog__actions">
           <button
             type="button"
@@ -193,9 +199,11 @@ function renderBoard(
     ${renderLifecycleTabs(props)}
     <div class="sw-triage" style=${styleMap({ "--sw-queue-width": `${props.queueWidth}px` })}>
       ${renderQueue(props, groups, selected)} ${renderQueueResizer(props)}
-      ${selected
-        ? renderDetail(props, selected)
-        : renderBoardEmptyDetail(props.query, props.statusFilter)}
+      ${
+        selected
+          ? renderDetail(props, selected)
+          : renderBoardEmptyDetail(props.query, props.statusFilter)
+      }
     </div>
   `;
 }
@@ -293,17 +301,19 @@ function renderQueue(
         />
       </div>
       <div class="sw-queue__body">
-        ${total === 0
-          ? html`<div class="sw-queue__empty">${queueEmptyText(props)}</div>`
-          : groups.map(
-              (group) => html`
+        ${
+          total === 0
+            ? html`<div class="sw-queue__empty">${queueEmptyText(props)}</div>`
+            : groups.map(
+                (group) => html`
                 <div class="sw-queue__group">
                   ${t(group.label)}
                   <span class="settings-count">${group.items.length}</span>
                 </div>
                 ${group.items.map((proposal) => renderRow(props, proposal, selected))}
               `,
-            )}
+              )
+        }
       </div>
     </aside>
   `;
@@ -351,8 +361,9 @@ function renderDetail(props: SkillWorkshopProps, proposal: SkillWorkshopProposal
             <span>·</span>
             <span>v${proposal.version}</span>
             <span>·</span>
-            ${firstSupportFile
-              ? html`<button
+            ${
+              firstSupportFile
+                ? html`<button
                   class="sw-detail__meta-link"
                   @click=${() => props.onPreviewFile(proposal.key, firstSupportFile.path)}
                 >
@@ -360,7 +371,8 @@ function renderDetail(props: SkillWorkshopProps, proposal: SkillWorkshopProposal
                     count: String(proposal.supportFiles.length),
                   })}
                 </button>`
-              : html`<span>${t("skillWorkshop.detail.noSupportFiles")}</span>`}
+                : html`<span>${t("skillWorkshop.detail.noSupportFiles")}</span>`
+            }
           </div>
         </div>
         <div class="sw-detail__nav">
@@ -378,13 +390,16 @@ function renderDetail(props: SkillWorkshopProps, proposal: SkillWorkshopProposal
       <div class="sw-detail__body">
         <div class="sw-body-card">
           <h1>${proposal.slug}</h1>
-          ${detailLoading
-            ? html`<p class="sw-muted">${t("skillWorkshop.detail.loading")}</p>`
-            : renderProposalBody(proposal.body)}
+          ${
+            detailLoading
+              ? html`<p class="sw-muted">${t("skillWorkshop.detail.loading")}</p>`
+              : renderProposalBody(proposal.body)
+          }
         </div>
 
-        ${proposal.supportFiles.length > 0
-          ? html`
+        ${
+          proposal.supportFiles.length > 0
+            ? html`
               <div class="sw-section" style="margin-top: 18px;">
                 <h3 class="sw-section__label">${t("skillWorkshop.detail.supportFilesTitle")}</h3>
                 <div class="sw-files">
@@ -408,7 +423,8 @@ function renderDetail(props: SkillWorkshopProps, proposal: SkillWorkshopProposal
                 </div>
               </div>
             `
-          : nothing}
+            : nothing
+        }
       </div>
 
       ${props.actionNotice?.key === proposal.key ? renderActionNotice(props.actionNotice) : nothing}
@@ -444,18 +460,20 @@ function renderPendingActions(props: SkillWorkshopProps, proposal: SkillWorkshop
         ?disabled=${disabled}
         @click=${() => props.onRevise(proposal.key)}
       >
-        ${busy === "revise"
-          ? t("skillWorkshop.actions.opening")
-          : t("skillWorkshop.actions.revise")}
+        ${
+          busy === "revise" ? t("skillWorkshop.actions.opening") : t("skillWorkshop.actions.revise")
+        }
       </button>
       <button
         class="sw-btn sw-btn--ghost sw-btn--danger ${busy === "reject" ? "is-busy" : ""}"
         ?disabled=${disabled}
         @click=${() => props.onReject(proposal.key)}
       >
-        ${busy === "reject"
-          ? t("skillWorkshop.actions.rejecting")
-          : t("skillWorkshop.actions.reject")}
+        ${
+          busy === "reject"
+            ? t("skillWorkshop.actions.rejecting")
+            : t("skillWorkshop.actions.reject")
+        }
       </button>
     </div>
   `;
@@ -506,11 +524,14 @@ function renderToday(
         <h1 class="sw-today__h1">
           ${t("skillWorkshop.today.proposalsWaiting", { count: String(pending.length) })}
         </h1>
-        ${pending.length === 0
-          ? html`<div class="sw-today__sub">${t("skillWorkshop.today.browseApplied")}</div>`
-          : nothing}
-        ${pending.length > 0
-          ? html`
+        ${
+          pending.length === 0
+            ? html`<div class="sw-today__sub">${t("skillWorkshop.today.browseApplied")}</div>`
+            : nothing
+        }
+        ${
+          pending.length > 0
+            ? html`
               <div class="sw-today__progress">
                 <span
                   >${t("skillWorkshop.today.progress", {
@@ -522,18 +543,17 @@ function renderToday(
                   ${pending.map(
                     (_, i) => html`
                       <span
-                        class="sw-today__dot ${i < heroIndex
-                          ? "is-done"
-                          : i === heroIndex
-                            ? "is-now"
-                            : ""}"
+                        class="sw-today__dot ${
+                          i < heroIndex ? "is-done" : i === heroIndex ? "is-now" : ""
+                        }"
                       ></span>
                     `,
                   )}
                 </div>
               </div>
             `
-          : nothing}
+            : nothing
+        }
       </div>
 
       <article class="sw-today__hero">
@@ -551,8 +571,9 @@ function renderToday(
           <span>
             ${t("skillWorkshop.today.draftedBy")}
             <strong>${assistantName}</strong> · ${ageLabel}.
-            ${firstSupportFile
-              ? html`
+            ${
+              firstSupportFile
+                ? html`
                   <button
                     class="sw-today__files-link"
                     @click=${() => props.onPreviewFile(hero.key, firstSupportFile.path)}
@@ -566,21 +587,25 @@ function renderToday(
                   </button>
                   ${t("skillWorkshop.today.comeWithIt")}
                 `
-              : nothing}
+                : nothing
+            }
           </span>
         </div>
 
-        ${isPending
-          ? html`
+        ${
+          isPending
+            ? html`
               <div class="sw-today__actions" aria-busy=${busy ? "true" : "false"}>
                 <button
                   class="sw-today__big sw-today__big--primary ${busy === "apply" ? "is-busy" : ""}"
                   ?disabled=${disabled}
                   @click=${() => props.onApply(hero.key)}
                 >
-                  ${busy === "apply"
-                    ? t("skillWorkshop.actions.applying")
-                    : t("skillWorkshop.today.useIt")}
+                  ${
+                    busy === "apply"
+                      ? t("skillWorkshop.actions.applying")
+                      : t("skillWorkshop.today.useIt")
+                  }
                   <span class="sw-today__big-sub">${t("skillWorkshop.today.addToSkills")}</span>
                 </button>
                 <button
@@ -588,9 +613,11 @@ function renderToday(
                   ?disabled=${disabled}
                   @click=${() => props.onRevise(hero.key)}
                 >
-                  ${busy === "revise"
-                    ? t("skillWorkshop.actions.opening")
-                    : t("skillWorkshop.today.tweakIt")}
+                  ${
+                    busy === "revise"
+                      ? t("skillWorkshop.actions.opening")
+                      : t("skillWorkshop.today.tweakIt")
+                  }
                   <span class="sw-today__big-sub">${t("skillWorkshop.today.askAgent")}</span>
                 </button>
                 <button
@@ -598,19 +625,23 @@ function renderToday(
                   ?disabled=${disabled}
                   @click=${() => props.onReject(hero.key)}
                 >
-                  ${busy === "reject"
-                    ? t("skillWorkshop.today.skipping")
-                    : t("skillWorkshop.today.skip")}
+                  ${
+                    busy === "reject"
+                      ? t("skillWorkshop.today.skipping")
+                      : t("skillWorkshop.today.skip")
+                  }
                   <span class="sw-today__big-sub">${t("skillWorkshop.today.notForMe")}</span>
                 </button>
               </div>
             `
-          : nothing}
+            : nothing
+        }
         ${props.actionNotice?.key === hero.key ? renderActionNotice(props.actionNotice) : nothing}
       </article>
 
-      ${upNext.length > 0
-        ? html`
+      ${
+        upNext.length > 0
+          ? html`
             <section class="sw-today__section">
               <header class="sw-today__section-head">
                 <h3>
@@ -635,9 +666,11 @@ function renderToday(
               </div>
             </section>
           `
-        : nothing}
-      ${applied.length > 0
-        ? html`
+          : nothing
+      }
+      ${
+        applied.length > 0
+          ? html`
             <section class="sw-today__section">
               <header class="sw-today__section-head">
                 <h3>
@@ -673,7 +706,8 @@ function renderToday(
               </div>
             </section>
           `
-        : nothing}
+          : nothing
+      }
     </div>
   `;
 }

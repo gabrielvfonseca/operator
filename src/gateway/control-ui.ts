@@ -433,7 +433,7 @@ function verifyAssistantMediaTicket(ticket: string | null, source: string, nowMs
     return false;
   }
   const parts = ticket?.split(".");
-  if (!parts || parts.length !== 3 || parts[0] !== "v1") {
+  if (parts?.length !== 3 || parts[0] !== "v1") {
     return false;
   }
   const [, encodedPayload, sig] = parts;
@@ -580,6 +580,7 @@ export async function handleControlUiAssistantMediaRequest(
   }
 
   let opened: Awaited<ReturnType<typeof openLocalFileSafely>> | null = null;
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let localPath;
   let handleClosed = false;
   const closeOpenedHandle = async () => {

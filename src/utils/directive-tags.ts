@@ -48,7 +48,7 @@ function normalizeDirectiveWhitespace(text: string): string {
   const blockPlaceholderRe = new RegExp(`${blockSentinel}(\\d+)${blockSentinel}`, "g");
   const blocks: string[] = [];
   const masked = text.replace(
-    /(`{3,}|~{3,})[^\n]*\n[\s\S]*?\n\1[^\n]*|(?:(?:^|\n)(?:    |\t)[^\n]*)+/gm,
+    /(`{3,}|~{3,})[^\n]*\n[\s\S]*?\n\1[^\n]*|(?:(?:^|\n)(?: {4}|\t)[^\n]*)+/gm,
     (block) => {
       blocks.push(block);
       return `${blockSentinel}${blocks.length - 1}${blockSentinel}`;

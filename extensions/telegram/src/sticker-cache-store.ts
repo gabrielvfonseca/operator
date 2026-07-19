@@ -171,9 +171,7 @@ export function getCacheStats(): { count: number; oldestAt?: string; newestAt?: 
 }
 
 export function listTelegramLegacyStickerCacheEntries(
-  params: {
-    persistedPath?: string;
-  } = {},
+  params: { persistedPath?: string } = {},
 ): Array<{ key: string; value: CachedSticker }> {
   const cache = params.persistedPath ? loadCacheFile(params.persistedPath) : loadCache();
   return Object.entries(cache.stickers).map(([key, value]) => ({

@@ -51,9 +51,7 @@ const loadDiscordComponentSend = createLazyRuntimeNamedExport(
 export async function sendDiscordComponentMessageLazy(
   ...args: Parameters<DiscordComponentSendFn>
 ): ReturnType<DiscordComponentSendFn> {
-  return await (
-    await loadDiscordComponentSend()
-  )(...args);
+  return await (await loadDiscordComponentSend())(...args);
 }
 
 const loadDiscordSharedInteractive = createLazyRuntimeModule(

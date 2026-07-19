@@ -706,7 +706,7 @@ describeLive("subagent announce live", () => {
         "utf8",
       );
       await fs.writeFile(
-        path.join(state.workspaceDir, "AGENTS.md"),
+        path.join(state.workspaceDir, "AGENTS.MD"),
         "Operator live stress test workspace. Keep responses concise.\n",
         "utf8",
       );

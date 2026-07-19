@@ -178,7 +178,7 @@ function normalizeMemoryWikiImportRunRecord(raw: unknown): ChatGptImportRunRecor
 
 function normalizeMetaRecord(raw: unknown): MemoryWikiImportRunMetaStateRecord | null {
   const record = asRecord(raw);
-  if (!record || record.kind !== "meta") {
+  if (record?.kind !== "meta") {
     return null;
   }
   const normalized = normalizeMemoryWikiImportRunRecord({

@@ -1336,9 +1336,9 @@ async function createSessionMemoryPathVisibilityChecker(params: {
     }
     const archivedOwnerMatchesScope = Boolean(
       identity.archived &&
-      ((identity.ownerAgentId &&
-        (!normalizedScopedAgentId || normalizedOwnerAgentId === normalizedScopedAgentId)) ||
-        (isQmdSessionPath && scopedAgentId)),
+        ((identity.ownerAgentId &&
+          (!normalizedScopedAgentId || normalizedOwnerAgentId === normalizedScopedAgentId)) ||
+          (isQmdSessionPath && scopedAgentId)),
     );
     const archivedOwnerAgentId = archivedOwnerMatchesScope
       ? (identity.ownerAgentId ?? scopedAgentId)
@@ -1660,9 +1660,7 @@ export async function getMemoryWikiPage(params: {
         fromLine,
         lineCount,
       };
-    } catch {
-      continue;
-    }
+    } catch {}
   }
 
   return null;

@@ -61,8 +61,8 @@ export const mattermostSetupWizard: ChannelSetupWizard = {
         Boolean(resolvedAccount.config.baseUrl?.trim());
       return Boolean(
         process.env.MATTERMOST_BOT_TOKEN?.trim() &&
-        process.env.MATTERMOST_URL?.trim() &&
-        !hasConfigValues,
+          process.env.MATTERMOST_URL?.trim() &&
+          !hasConfigValues,
       );
     },
     apply: ({ cfg, accountId }) =>

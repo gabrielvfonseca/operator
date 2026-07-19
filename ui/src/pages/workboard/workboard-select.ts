@@ -48,9 +48,11 @@ export function renderWorkboardSelect<Value extends string>(params: {
           >
             <span class="workboard-select__copy">
               <span class="workboard-select__label">${option.label}</span>
-              ${option.description
-                ? html`<span class="workboard-select__description">${option.description}</span>`
-                : nothing}
+              ${
+                option.description
+                  ? html`<span class="workboard-select__description">${option.description}</span>`
+                  : nothing
+              }
             </span>
           </wa-option>
         `,

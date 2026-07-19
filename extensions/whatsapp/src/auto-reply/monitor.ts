@@ -277,6 +277,7 @@ export async function monitorWebChannel(
         });
       };
 
+      // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
       let connection;
       try {
         connection = await controller.openConnection({
@@ -366,10 +367,7 @@ export async function monitorWebChannel(
             statusController.noteTransportActivity(snapshot.lastTransportActivityAt);
 
             if (minutesSinceLastMessage && minutesSinceLastMessage > 30) {
-              heartbeatLogger.warn(
-                logData,
-                "⚠️ web gateway heartbeat - no messages in 30+ minutes",
-              );
+              heartbeatLogger.warn(logData, "⚠️ web gateway heartbeat - no messages in 30+ minutes");
             } else {
               heartbeatLogger.info(logData, "web gateway heartbeat");
             }

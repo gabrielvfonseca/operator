@@ -135,6 +135,7 @@ export async function runFleetDoctor(params: {
         return { tenant: record.tenantId, findings };
       }
 
+      // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
       let inspection;
       try {
         inspection = await params.containers.inspect(record.runtime, record.containerName);

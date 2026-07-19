@@ -31,9 +31,7 @@ export function resolveUsageCredentialType(
 }
 
 export function buildCodexSyntheticUsageAuth(
-  params: {
-    authProfileId?: string;
-  } = {},
+  params: { authProfileId?: string } = {},
 ): ProviderAuth {
   return {
     provider: CODEX_SYNTHETIC_USAGE_PROVIDER,

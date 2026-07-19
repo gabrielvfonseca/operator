@@ -258,8 +258,9 @@ async function closeCliMemoryManagers(): Promise<void> {
 
 async function disposeCliAgentHarnesses(): Promise<void> {
   try {
-    const { listRegisteredAgentHarnesses, disposeRegisteredAgentHarnesses } =
-      await import("../agents/harness/registry.js");
+    const { listRegisteredAgentHarnesses, disposeRegisteredAgentHarnesses } = await import(
+      "../agents/harness/registry.js"
+    );
     if (listRegisteredAgentHarnesses().length === 0) {
       return;
     }
@@ -370,8 +371,9 @@ async function resolveConfiguredTuiLaunchTarget(
     }
     return { kind: "onboarding" };
   }
-  const { resolveAgentEffectiveModelPrimary, resolveDefaultAgentId } =
-    await import("../agents/agent-scope.js");
+  const { resolveAgentEffectiveModelPrimary, resolveDefaultAgentId } = await import(
+    "../agents/agent-scope.js"
+  );
   if (!resolveAgentEffectiveModelPrimary(config, resolveDefaultAgentId(config))) {
     return { kind: "onboarding" };
   }
@@ -573,8 +575,9 @@ function isLoopbackGatewayHost(hostname: string): boolean {
 
 async function resolveValidatedRemoteGatewayUrl(config: OperatorConfig): Promise<string | null> {
   try {
-    const { buildGatewayConnectionDetailsWithResolvers } =
-      await import("../gateway/connection-details.js");
+    const { buildGatewayConnectionDetailsWithResolvers } = await import(
+      "../gateway/connection-details.js"
+    );
     return buildGatewayConnectionDetailsWithResolvers({
       config,
       ignoreEnvUrlOverride: true,
@@ -803,8 +806,9 @@ async function ensureCliEnvProxyDispatcher(): Promise<void> {
     if (!hasEnvHttpProxyAgentConfigured()) {
       return;
     }
-    const { ensureGlobalUndiciEnvProxyDispatcher } =
-      await import("../infra/net/undici-global-dispatcher.js");
+    const { ensureGlobalUndiciEnvProxyDispatcher } = await import(
+      "../infra/net/undici-global-dispatcher.js"
+    );
     ensureGlobalUndiciEnvProxyDispatcher();
   } catch {
     // Best-effort proxy bootstrap; CLI startup should continue without it.
@@ -1141,8 +1145,9 @@ export async function runCli(argv: string[] = process.argv) {
     }
 
     if (shouldUseSetupOnboardConfigureHelpFastPath(normalizedArgv)) {
-      const { tryOutputSetupOnboardConfigureHelp } =
-        await import("./setup-onboard-configure-help-fast-path.js");
+      const { tryOutputSetupOnboardConfigureHelp } = await import(
+        "./setup-onboard-configure-help-fast-path.js"
+      );
       if (await tryOutputSetupOnboardConfigureHelp(normalizedArgv)) {
         return;
       }
@@ -1183,8 +1188,9 @@ export async function runCli(argv: string[] = process.argv) {
           process.exitCode = 1;
           return;
         }
-        const { runRemoteGatewayInferenceOnboarding } =
-          await import("../commands/onboard-remote-gateway.js");
+        const { runRemoteGatewayInferenceOnboarding } = await import(
+          "../commands/onboard-remote-gateway.js"
+        );
         await runRemoteGatewayInferenceOnboarding(bareRootLaunchTarget.target);
         return;
       }
@@ -1364,8 +1370,9 @@ export async function runCli(argv: string[] = process.argv) {
       });
       if (!shouldSkipPluginRegistration) {
         const config = await startupTrace.measure("register-plugin-commands", async () => {
-          const { registerPluginCliCommandsFromValidatedConfig } =
-            await import("../plugins/cli.js");
+          const { registerPluginCliCommandsFromValidatedConfig } = await import(
+            "../plugins/cli.js"
+          );
           return await withConsoleLogsRoutedToStderrForJson(parseArgv, () =>
             registerPluginCliCommandsFromValidatedConfig(program, undefined, undefined, {
               mode: "lazy",

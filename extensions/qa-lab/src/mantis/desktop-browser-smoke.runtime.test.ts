@@ -92,9 +92,12 @@ describe("mantis desktop browser smoke runtime", () => {
     const remoteScript = commands
       .find((entry) => entry.command === "/tmp/crabbox" && entry.args[0] === "run")
       ?.args.at(-1);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(remoteScript).toContain("${BROWSER:-}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(remoteScript).toContain("${CHROME_BIN:-}");
     expect(remoteScript).toContain("chromium-browser");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(remoteScript).toContain("${OPERATOR_MANTIS_BROWSER_PROFILE_TGZ_B64:-}");
     expect(remoteScript).toContain('"browserProfileRestored": $profile_restored');
     expect(remoteScript).toContain('"temporaryBrowserProfile": $temporary_profile');
@@ -179,6 +182,7 @@ describe("mantis desktop browser smoke runtime", () => {
     const remoteScript = commands
       .find((entry) => entry.command === "/tmp/crabbox" && entry.args[0] === "run")
       ?.args.at(-1);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(remoteScript).toContain("${MANTIS_DISCORD_VIEWER_CHROME_PROFILE_TGZ_B64:-}");
     expect(remoteScript).toContain(
       "profile='$HOME/.config/operator-mantis/discord-viewer-chrome-profile'",

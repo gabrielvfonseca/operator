@@ -456,10 +456,8 @@ export interface AgentToolResult<T> {
 export type AgentToolUpdateCallback<T = unknown> = (partialResult: AgentToolResult<T>) => void;
 
 /** Tool definition used by the agent runtime. */
-export interface AgentTool<
-  TParameters extends TSchema = TSchema,
-  TDetails = unknown,
-> extends Tool<TParameters> {
+export interface AgentTool<TParameters extends TSchema = TSchema, TDetails = unknown>
+  extends Tool<TParameters> {
   /** Human-readable label for UI display. */
   label: string;
   /** Preserve lifecycle telemetry without rendering transient channel progress. */

@@ -182,7 +182,7 @@ function deriveGroupSessionPatch(params: {
     subjectLooksChannel && resolution.chatType !== "channel" ? normalizeChannelId(channel) : null;
   const isChannelProvider = Boolean(
     normalizedChannel &&
-    getLoadedChannelPlugin(normalizedChannel)?.capabilities.chatTypes.includes("channel"),
+      getLoadedChannelPlugin(normalizedChannel)?.capabilities.chatTypes.includes("channel"),
   );
   const nextGroupChannel =
     explicitChannel ??
@@ -295,11 +295,11 @@ export function deriveLastRoutePatch(params: {
     (threadId != null && threadId !== "" ? threadId : undefined);
   const explicitRouteProvided = Boolean(
     routeContext?.channel ||
-    routeContext?.to ||
-    explicitContext?.channel ||
-    explicitContext?.to ||
-    inlineContext?.channel ||
-    inlineContext?.to,
+      routeContext?.to ||
+      explicitContext?.channel ||
+      explicitContext?.to ||
+      inlineContext?.channel ||
+      inlineContext?.to,
   );
   const clearThreadFromFallback = explicitRouteProvided && explicitThreadValue == null;
   const fallbackContext = clearThreadFromFallback

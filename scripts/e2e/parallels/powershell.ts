@@ -11,6 +11,7 @@ export function encodePowerShell(script: string): string {
   );
 }
 
+// biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
 export const windowsScopedEnvFunction = String.raw`function Invoke-WithScopedEnv {
   param(
     [Parameter(Mandatory = $true)][hashtable] $Values,

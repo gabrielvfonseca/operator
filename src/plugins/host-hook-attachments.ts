@@ -172,8 +172,7 @@ async function validateAttachmentFiles(
         detectedMime = normalizeMimeType(await detectMime({ buffer: fileBuffer }));
       } catch (error) {
         return {
-          error:
-            `attachment file MIME detection failed for ${filePath}: ` + formatErrorMessage(error),
+          error: `attachment file MIME detection failed for ${filePath}: ${formatErrorMessage(error)}`,
         };
       }
       if (detectedMime !== options.forceDocumentMime) {

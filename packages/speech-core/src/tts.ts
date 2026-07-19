@@ -366,6 +366,7 @@ function asProviderConfigMap(value: unknown): Record<string, unknown> {
     : {};
 }
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: migrated from oxlint
 function hasOwnProperty(value: object, key: string): boolean {
   return Object.hasOwn(value, key);
 }

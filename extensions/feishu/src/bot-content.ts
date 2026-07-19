@@ -93,6 +93,7 @@ export function resolveFeishuGroupSession(params: {
         (replyInThread ? messageId : null))
       : null;
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let peerId;
   switch (groupSessionScope) {
     case "group_sender":

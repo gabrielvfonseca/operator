@@ -308,9 +308,11 @@ export class McpAppView extends LitElement {
 
   override render() {
     return html`<div ${ref(this.mount)} class="mount"></div>
-      ${this.error
-        ? html`<div class="error">${t("mcpApp.unavailable", { error: this.error })}</div>`
-        : nothing}`;
+      ${
+        this.error
+          ? html`<div class="error">${t("mcpApp.unavailable", { error: this.error })}</div>`
+          : nothing
+      }`;
   }
 }
 

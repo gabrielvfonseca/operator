@@ -670,6 +670,7 @@ export async function maybeWakeNodeWithApns(
         return withDuration({ available: false, throttled: false, path: "no-registration" });
       }
 
+      // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
       let wakeResult;
       if (registration.transport === "relay") {
         const relay = resolveRelayNodePushConfig(opts?.cfg ?? getRuntimeConfig(), registration);
@@ -772,6 +773,7 @@ export async function maybeSendNodeWakeNudge(
     return withDuration({ sent: false, throttled: false, reason: "no-registration" });
   }
   try {
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let result;
     if (registration.transport === "relay") {
       const relay = resolveRelayNodePushConfig(opts?.cfg ?? getRuntimeConfig(), registration);

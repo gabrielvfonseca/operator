@@ -70,8 +70,9 @@ async function runSystemAgentEntry(
   options: Record<string, unknown>,
   runtime: RuntimeEnv,
 ): Promise<void> {
-  const { runSystemAgentWithInference } =
-    await import("../../commands/system-agent-with-inference.js");
+  const { runSystemAgentWithInference } = await import(
+    "../../commands/system-agent-with-inference.js"
+  );
   await runSystemAgentWithInference(
     {
       message: optionalString(options.message),

@@ -25,9 +25,9 @@ const nameToLogin = normalizeMap(mapConfig.nameToLogin ?? {});
 const emailToLogin = normalizeMap(mapConfig.emailToLogin ?? {});
 const ensureLogins = (mapConfig.ensureLogins ?? []).map((login) => login.toLowerCase());
 
-const readmePath = resolve("README.md");
+const readmePath = resolve("README.MD");
 const seedCommit = mapConfig.seedCommit ?? null;
-const seedEntries = seedCommit ? parseReadmeEntries(run(`git show ${seedCommit}:README.md`)) : [];
+const seedEntries = seedCommit ? parseReadmeEntries(run(`git show ${seedCommit}:README.MD`)) : [];
 const currentReadme = readFileSync(readmePath, "utf8");
 const hiddenReadmeLogins = new Set(parseHiddenReadmeLogins(currentReadme));
 const raw = run(`gh api "repos/${REPO}/contributors?per_page=100&anon=1" --paginate`);
@@ -313,7 +313,7 @@ const readmeWithoutMeta = hiddenRange
 const range = findClawtributorsRange(readmeWithoutMeta);
 
 if (!range) {
-  throw new Error("README.md missing clawtributors block");
+  throw new Error("README.MD missing clawtributors block");
 }
 
 const next = `${readmeWithoutMeta.slice(0, range.start)}${block}\n${hiddenBlock}${readmeWithoutMeta.slice(range.end)}`;
@@ -469,7 +469,7 @@ async function probeDefaultGitHubAvatar(login: string): Promise<boolean> {
       const dimensions = readImageDimensions(buffer);
       return Boolean(
         dimensions &&
-        (dimensions.width > AVATAR_PROBE_SIZE || dimensions.height > AVATAR_PROBE_SIZE),
+          (dimensions.width > AVATAR_PROBE_SIZE || dimensions.height > AVATAR_PROBE_SIZE),
       );
     });
   } catch {
@@ -745,7 +745,7 @@ function resolveLogin(
     }
   }
 
-  if (email && email.endsWith("@users.noreply.github.com")) {
+  if (email?.endsWith("@users.noreply.github.com")) {
     const local = expectDefined(email.split("@", 1)[0], "GitHub noreply email local part");
     const login = local.includes("+")
       ? expectDefined(local.split("+")[1], "GitHub noreply email login suffix")
@@ -753,7 +753,7 @@ function resolveLogin(
     return normalizeLogin(login);
   }
 
-  if (email && email.endsWith("@github.com")) {
+  if (email?.endsWith("@github.com")) {
     const login = expectDefined(email.split("@", 1)[0], "GitHub email local part");
     if (apiByLoginValue.has(login.toLowerCase())) {
       return normalizeLogin(login);

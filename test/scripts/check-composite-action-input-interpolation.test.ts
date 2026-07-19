@@ -34,6 +34,7 @@ describe("check-composite-action-input-interpolation", () => {
         "  steps:",
         "    - shell: bash",
         "      run: |",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         '        echo "${{ inputs.token }}"',
       ].join("\n"),
     );
@@ -58,6 +59,7 @@ describe("check-composite-action-input-interpolation", () => {
         "  steps:",
         "    - shell: bash",
         "      env:",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "        TOKEN: ${{ inputs.token }}",
         "      run: |",
         '        echo "$TOKEN"',
@@ -72,6 +74,7 @@ describe("check-composite-action-input-interpolation", () => {
         "  using: node24",
         "  main: dist/index.js",
         "  steps:",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         '    - run: echo "${{ inputs.token }}"',
       ].join("\n"),
     );

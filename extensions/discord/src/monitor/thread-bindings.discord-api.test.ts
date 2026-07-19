@@ -35,8 +35,9 @@ let resolveChannelIdForBinding: typeof import("./thread-bindings.discord-api.js"
 let isDiscordThreadGoneError: typeof import("./thread-bindings.discord-api.js").isDiscordThreadGoneError;
 
 beforeAll(async () => {
-  ({ isDiscordThreadGoneError, maybeSendBindingMessage, resolveChannelIdForBinding } =
-    await import("./thread-bindings.discord-api.js"));
+  ({ isDiscordThreadGoneError, maybeSendBindingMessage, resolveChannelIdForBinding } = await import(
+    "./thread-bindings.discord-api.js"
+  ));
 });
 
 function resolveTestChannelIdForBinding(

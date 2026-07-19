@@ -463,10 +463,12 @@ const ALLOWED_UI_LITERALS = new Map<string, ReadonlySet<string>>([
   [
     "apps/android/app/src/main/java/ai/openclaw/app/ui/SettingsScreens.kt",
     // Discovered-gateway subtitles are host:port endpoints, not translatable copy.
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     new Set(["${endpoint.host}:${endpoint.port}"]),
   ],
   [
     "apps/android/app/src/main/java/ai/openclaw/app/ui/VoiceScreen.kt",
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     new Set(["${normalized.takeUtf16Safe(87)}..."]),
   ],
   [
@@ -1114,7 +1116,7 @@ async function buildCatalog(): Promise<GeneratedCatalog> {
     const generated = new Map<string, { source: string; value: string }>();
     for (const source of entriesBySource.keys()) {
       const key = sourceToKey.get(source);
-      if (!key || !key.startsWith(MANAGED_PREFIX)) {
+      if (!key?.startsWith(MANAGED_PREFIX)) {
         continue;
       }
       const translations = artifactTranslationsBySource.get(source) ?? [];

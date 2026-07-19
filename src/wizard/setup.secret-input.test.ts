@@ -17,6 +17,7 @@ describe("resolveSetupSecretInputString", () => {
   it("resolves env-template SecretInput strings", async () => {
     const resolved = await resolveSetupSecretInputString({
       config: makeConfig(),
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       value: "${OPERATOR_GATEWAY_PASSWORD}",
       path: "gateway.auth.password",
       env: {
@@ -41,6 +42,7 @@ describe("resolveSetupSecretInputString", () => {
     await expect(
       resolveSetupSecretInputString({
         config: makeConfig(),
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         value: "${OPERATOR_GATEWAY_PASSWORD}",
         path: "gateway.auth.password",
         env: {},

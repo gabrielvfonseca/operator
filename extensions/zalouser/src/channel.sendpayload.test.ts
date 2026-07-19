@@ -79,13 +79,13 @@ function requireRecord(value: unknown, label: string): Record<string, unknown> {
 }
 
 function requireSendOptions(
-  mockedSend: ReturnType<typeof vi.mocked<(typeof import("./send.js"))["sendMessageZalouser"]>>,
+  mockedSend: ReturnType<typeof vi.mocked<typeof import("./send.js")["sendMessageZalouser"]>>,
 ): Record<string, unknown> {
   return requireRecord(requireSendCall(mockedSend)[2], "Zalouser send options");
 }
 
 function requireSendCall(
-  mockedSend: ReturnType<typeof vi.mocked<(typeof import("./send.js"))["sendMessageZalouser"]>>,
+  mockedSend: ReturnType<typeof vi.mocked<typeof import("./send.js")["sendMessageZalouser"]>>,
 ): unknown[] {
   const [call] = mockedSend.mock.calls as unknown[][];
   if (!call) {
@@ -95,7 +95,7 @@ function requireSendCall(
 }
 
 describe("zalouserPlugin outbound sendPayload", () => {
-  let mockedSend: ReturnType<typeof vi.mocked<(typeof import("./send.js"))["sendMessageZalouser"]>>;
+  let mockedSend: ReturnType<typeof vi.mocked<typeof import("./send.js")["sendMessageZalouser"]>>;
 
   beforeEach(() => {
     setZalouserRuntime({

@@ -126,8 +126,8 @@ export function buildAgentSessionPatch(params: {
   const channelValue = params.freshEntry?.channel ?? params.recipientChannel?.trim();
   const freshSessionRotatedSinceLoad = Boolean(
     params.initialEntry?.sessionId &&
-    params.freshEntry?.sessionId &&
-    params.freshEntry.sessionId !== params.initialEntry.sessionId,
+      params.freshEntry?.sessionId &&
+      params.freshEntry.sessionId !== params.initialEntry.sessionId,
   );
   const freshLifecycleTimestamps = params.freshEntry
     ? resolveSessionLifecycleTimestamps({
@@ -187,7 +187,7 @@ export function buildAgentSessionPatch(params: {
     (!freshCanReuseSession && !freshUsableRequestedSessionId) ||
     Boolean(
       freshUsableRequestedSessionId &&
-      params.freshEntry?.sessionId !== freshUsableRequestedSessionId,
+        params.freshEntry?.sessionId !== freshUsableRequestedSessionId,
     );
   const freshRotatedSessionId = Boolean(
     params.freshEntry?.sessionId && params.freshEntry.sessionId !== freshSessionId,

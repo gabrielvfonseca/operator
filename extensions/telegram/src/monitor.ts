@@ -114,7 +114,7 @@ export async function monitorTelegramProvider(opts: MonitorTelegramOpts = {}) {
     const isTelegramPollingError = isTelegramPollingNetworkError(err);
 
     const activeRunner = pollingSession?.activeRunner;
-    if (isNetworkError && isTelegramPollingError && activeRunner && activeRunner.isRunning()) {
+    if (isNetworkError && isTelegramPollingError && activeRunner?.isRunning()) {
       pollingSession?.markForceRestarted();
       pollingSession?.markTransportDirty();
       pollingSession?.abortActiveFetch();

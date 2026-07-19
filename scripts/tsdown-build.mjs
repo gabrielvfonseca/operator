@@ -1,9 +1,7 @@
 #!/usr/bin/env node
 // Bun-native TypeScript build system
 
-import { execSync } from "node:child_process";
 import fs from "node:fs";
-import path from "node:path";
 
 console.error("[tsdown] TypeScript compilation starting...");
 
@@ -21,21 +19,21 @@ try {
   const packageJson = JSON.parse(fs.readFileSync("./package.json", "utf8"));
   const stripDist = (value) => {
     if (typeof value === "string" && value.startsWith("./dist/")) {
-      return "./" + value.slice("./dist/".length);
+      return `./${value.slice("./dist/".length)}`;
     }
     if (value && typeof value === "object") {
       for (const key of Object.keys(value)) value[key] = stripDist(value[key]);
     }
     return value;
   };
-  if (packageJson.main && packageJson.main.startsWith("dist/")) {
-    packageJson.main = "./" + packageJson.main.slice("dist/".length);
+  if (packageJson.main?.startsWith("dist/")) {
+    packageJson.main = `./${packageJson.main.slice("dist/".length)}`;
   }
-  if (packageJson.types && packageJson.types.startsWith("dist/")) {
-    packageJson.types = "./" + packageJson.types.slice("dist/".length);
+  if (packageJson.types?.startsWith("dist/")) {
+    packageJson.types = `./${packageJson.types.slice("dist/".length)}`;
   }
   if (packageJson.exports) stripDist(packageJson.exports);
-  fs.writeFileSync("./dist/package.json", JSON.stringify(packageJson, null, 2) + "\n");
+  fs.writeFileSync("./dist/package.json", `${JSON.stringify(packageJson, null, 2)}\n`);
   console.error("[tsdown] Copied package.json to dist");
 } catch (error) {
   console.error("[tsdown] Warning: Could not copy package.json:", error);

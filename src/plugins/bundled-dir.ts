@@ -237,11 +237,11 @@ function resolveBundledPluginsDirUncached(env: NodeJS.ProcessEnv): string | unde
     const argvRoot = resolveOperatorPackageRootSync({ argv1: process.argv[1] });
     const rejectedOverrideUsesArgvRoot = Boolean(
       argvRoot &&
-      rejectedExistingOverride &&
-      overrideResolvesUnderPackageBundledRoot({
-        resolvedOverride: rejectedExistingOverride,
-        packageRoot: argvRoot,
-      }),
+        rejectedExistingOverride &&
+        overrideResolvesUnderPackageBundledRoot({
+          resolvedOverride: rejectedExistingOverride,
+          packageRoot: argvRoot,
+        }),
     );
     const safeArgvRoot = rejectedOverrideUsesArgvRoot ? null : argvRoot;
     const moduleRoot = resolveOperatorPackageRootSync({ moduleUrl: import.meta.url });

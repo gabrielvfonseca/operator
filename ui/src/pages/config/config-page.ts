@@ -967,9 +967,11 @@ export class ConfigPage extends OperatorLightDomElement {
         </div>
         ${this.renderSettingsModeToggle()}
       </section>
-      ${this.pageId === "config"
-        ? html`<div class="config-view-toggle-row">${this.renderSettingsModeToggle()}</div>`
-        : nothing}
+      ${
+        this.pageId === "config"
+          ? html`<div class="config-view-toggle-row">${this.renderSettingsModeToggle()}</div>`
+          : nothing
+      }
       ${renderSettingsWorkspace(
         body,
         this.pageId === "config"

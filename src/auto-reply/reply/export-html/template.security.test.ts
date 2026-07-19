@@ -125,7 +125,10 @@ function selectorSpecificity(selector: string): [number, number, number] {
 function compareSpecificity(left: [number, number, number], right: [number, number, number]) {
   for (let index = 0; index < left.length; index += 1) {
     if (left[index] !== right[index]) {
-      return expectDefined(left[index], "left[index] test invariant") - expectDefined(right[index], "right[index] test invariant");
+      return (
+        expectDefined(left[index], "left[index] test invariant") -
+        expectDefined(right[index], "right[index] test invariant")
+      );
     }
   }
   return 0;
@@ -445,7 +448,10 @@ describe("export html security hardening", () => {
     const messages = requireElement(document.getElementById("messages"), "messages root missing");
     expect(messages.querySelector('img[src^="https://"]')).toBeNull();
     expect(messages.textContent).toContain("exfil");
-    requireElement(messages.querySelector(`img[src="${dataImage}"]`), "data markdown image missing");
+    requireElement(
+      messages.querySelector(`img[src="${dataImage}"]`),
+      "data markdown image missing",
+    );
   });
 
   it("flattens unsafe markdown links while preserving safe links", async () => {

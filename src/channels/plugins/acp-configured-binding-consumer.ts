@@ -40,7 +40,7 @@ function resolveAgentRuntimeAcpDefaults(params: { cfg: OperatorConfig; ownerAgen
   const agent = params.cfg.agents?.list?.find(
     (entry) => normalizeOptionalLowercaseString(entry.id) === ownerAgentId,
   );
-  if (!agent || agent.runtime?.type !== "acp") {
+  if (agent?.runtime?.type !== "acp") {
     return {};
   }
   return {

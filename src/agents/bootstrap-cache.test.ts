@@ -29,7 +29,7 @@ function makeFile(name: string, content: string): WorkspaceBootstrapFile {
 }
 
 describe("getOrLoadBootstrapFiles", () => {
-  const files = [makeFile("AGENTS.md", "# Agent"), makeFile("SOUL.md", "# Soul")];
+  const files = [makeFile("AGENTS.MD", "# Agent"), makeFile("SOUL.md", "# Soul")];
   const mockLoad = () => vi.mocked(loadWorkspaceBootstrapFiles);
 
   beforeEach(() => {
@@ -51,7 +51,7 @@ describe("getOrLoadBootstrapFiles", () => {
   });
 
   it("refreshes from disk on second call while preserving unchanged object identity", async () => {
-    const refreshedFiles = [makeFile("AGENTS.md", "# Agent"), makeFile("SOUL.md", "# Soul")];
+    const refreshedFiles = [makeFile("AGENTS.MD", "# Agent"), makeFile("SOUL.md", "# Soul")];
     mockLoad().mockResolvedValueOnce(files).mockResolvedValueOnce(refreshedFiles);
 
     const first = await getOrLoadBootstrapFiles({ workspaceDir, sessionKey: "session-1" });
@@ -64,7 +64,7 @@ describe("getOrLoadBootstrapFiles", () => {
   });
 
   it("replaces cached result when workspace bootstrap contents change", async () => {
-    const updatedFiles = [makeFile("AGENTS.md", "# Agent v2"), makeFile("SOUL.md", "# Soul")];
+    const updatedFiles = [makeFile("AGENTS.MD", "# Agent v2"), makeFile("SOUL.md", "# Soul")];
     mockLoad().mockResolvedValueOnce(files).mockResolvedValueOnce(updatedFiles);
 
     const first = await getOrLoadBootstrapFiles({ workspaceDir, sessionKey: "session-1" });
@@ -76,7 +76,7 @@ describe("getOrLoadBootstrapFiles", () => {
   });
 
   it("different session keys get independent caches", async () => {
-    const files2 = [makeFile("AGENTS.md", "# Agent v2")];
+    const files2 = [makeFile("AGENTS.MD", "# Agent v2")];
     mockLoad().mockResolvedValueOnce(files).mockResolvedValueOnce(files2);
 
     const r1 = await getOrLoadBootstrapFiles({ workspaceDir, sessionKey: "session-1" });
@@ -110,7 +110,7 @@ describe("clearBootstrapSnapshot", () => {
   const mockLoad = () => vi.mocked(loadWorkspaceBootstrapFiles);
 
   beforeEach(() => {
-    mockLoad().mockResolvedValue([makeFile("AGENTS.md", "content")]);
+    mockLoad().mockResolvedValue([makeFile("AGENTS.MD", "content")]);
   });
 
   afterEach(() => {

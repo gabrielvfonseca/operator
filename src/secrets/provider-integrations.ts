@@ -35,6 +35,7 @@ export type SecretProviderIntegrationResolution =
       reason: string;
     };
 
+// biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
 const NODE_COMMAND_PLACEHOLDER = "${node}";
 const PLUGIN_INTEGRATION_PROVIDER_ID_MAX_LENGTH = 128;
 

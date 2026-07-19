@@ -348,7 +348,7 @@ function hasOpenAIRealtimeConfiguredApiKeyInput(configuredApiKey: string | undef
 function hasOpenAIRealtimeApiKeyInput(configuredApiKey: string | undefined): boolean {
   return Boolean(
     normalizeSecretInputString(configuredApiKey) ??
-    normalizeSecretInputString(process.env.OPENAI_API_KEY),
+      normalizeSecretInputString(process.env.OPENAI_API_KEY),
   );
 }
 
@@ -1187,6 +1187,7 @@ class OpenAIRealtimeVoiceBridge implements RealtimeVoiceBridge {
         return;
       }
 
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
       case "error": {
         const detail = readRealtimeErrorDetail(event.error);
         const rejectsManualResponseCreate =

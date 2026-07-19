@@ -88,7 +88,7 @@ function shouldRemoveLocalOAuthShadow(params: {
   now: number;
 }): boolean {
   const { local, main, now } = params;
-  if (!main || main.type !== "oauth" || local.provider !== main.provider) {
+  if (main?.type !== "oauth" || local.provider !== main.provider) {
     return false;
   }
   if (!isSafeToAdoptMainStoreOAuthIdentity(local, main)) {

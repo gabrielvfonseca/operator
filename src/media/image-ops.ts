@@ -160,6 +160,7 @@ export async function optimizeImageToPng(
   resizeSide: number;
   compressionLevel: number;
 }> {
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let out;
   try {
     out = await createImageProcessor().encode(buffer, {

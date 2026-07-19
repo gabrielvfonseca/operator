@@ -27,10 +27,7 @@ import {
   type GatewayAuthResult,
   type ResolvedGatewayAuth,
 } from "./auth.js";
-import {
-  isControlUiApprovalDocumentPath,
-  isControlUiPluginManagerRequest,
-} from "./control-ui-routing.js";
+import { isControlUiApprovalDocumentPath } from "./control-ui-routing.js";
 import type { ControlUiRootState } from "./control-ui.js";
 import type { AuthorizedGatewayHttpRequest } from "./http-auth-utils.js";
 import { sendGatewayAuthFailure, setDefaultSecurityHeaders } from "./http-common.js";

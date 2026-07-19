@@ -198,8 +198,7 @@ export function createWorkerPlacementDispatchService(options: WorkerPlacementDis
         }
         const environment = environments.get(current.environmentId);
         if (
-          !environment ||
-          environment.state !== "attached" ||
+          environment?.state !== "attached" ||
           environment.ownerEpoch !== current.activeOwnerEpoch ||
           environment.attachedSessionIds.length !== 1 ||
           environment.attachedSessionIds[0] !== current.sessionId

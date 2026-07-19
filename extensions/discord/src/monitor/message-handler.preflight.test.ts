@@ -51,8 +51,9 @@ beforeAll(async () => {
     resolvePreflightMentionRequirement,
     shouldIgnoreBoundThreadWebhookMessage,
   } = await import("./message-handler.preflight.js"));
-  ({ testing: threadBindingTesting, createThreadBindingManager } =
-    await import("./thread-bindings.js"));
+  ({ testing: threadBindingTesting, createThreadBindingManager } = await import(
+    "./thread-bindings.js"
+  ));
 });
 
 beforeEach(() => {

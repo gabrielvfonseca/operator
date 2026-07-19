@@ -44,7 +44,7 @@ export function registerSlackReactionEvents(params: {
   const handleReactionEvent = async (event: SlackReactionEvent, action: string) => {
     try {
       const item = event.item;
-      if (!item || item.type !== "message") {
+      if (item?.type !== "message") {
         return;
       }
       if (ctx.reactionMode === "off") {

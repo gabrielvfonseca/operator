@@ -276,7 +276,7 @@ function resolveXaiFastMode(extraParams: Record<string, unknown> | undefined): b
 function hasXaiFastModeParam(extraParams: Record<string, unknown> | undefined): boolean {
   return Boolean(
     extraParams &&
-    (Object.hasOwn(extraParams, "fastMode") || Object.hasOwn(extraParams, "fast_mode")),
+      (Object.hasOwn(extraParams, "fastMode") || Object.hasOwn(extraParams, "fast_mode")),
   );
 }
 

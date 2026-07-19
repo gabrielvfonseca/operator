@@ -1594,7 +1594,7 @@ function getMessagesSnapshotInput(params: AttemptParamsLike): AgentMessage[] {
 // user record in the audit transcript.
 function readTailUserText(messages: AgentMessage[]): string | undefined {
   const tail = messages[messages.length - 1];
-  if (!tail || tail.role !== "user") {
+  if (tail?.role !== "user") {
     return undefined;
   }
   const content = (tail as { content?: unknown }).content;

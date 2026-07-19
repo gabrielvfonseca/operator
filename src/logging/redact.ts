@@ -17,10 +17,15 @@ const DEFAULT_REDACT_MIN_LENGTH = 18;
 const DEFAULT_REDACT_KEEP_START = 6;
 const DEFAULT_REDACT_KEEP_END = 4;
 
+// biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
 const PAYMENT_CREDENTIAL_ENV_KEYS = String.raw`CARD[_-]?NUMBER|CARD[_-]?CVC|CARD[_-]?CVV|CVC|CVV|SECURITY[_-]?CODE|PAYMENT[_-]?CREDENTIAL|SHARED[_-]?PAYMENT[_-]?TOKEN`;
+// biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
 const PAYMENT_CREDENTIAL_QUERY_KEYS = String.raw`card[-_]?number|card[-_]?cvc|card[-_]?cvv|cvc|cvv|security[-_]?code|payment[-_]?credential|shared[-_]?payment[-_]?token`;
+// biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
 const AUTH_QUERY_KEYS = String.raw`access[-_]?token|auth[-_]?token|hook[-_]?token|refresh[-_]?token|id[-_]?token|api[-_]?key|apikey|client[-_]?secret|app[-_]?secret|private[-_]?key|credential|authorization|token|key|secret|password|pass|passwd|auth|jwt|session|code|signature|x[-_]?amz[-_]?(?:signature|security[-_]?token)`;
+// biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
 const FORM_BODY_FIRST_PAIR_KEYS = String.raw`${AUTH_QUERY_KEYS}|app[-_]?secret|credential|${PAYMENT_CREDENTIAL_QUERY_KEYS}`;
+// biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
 const STANDALONE_ASSIGNMENT_SECRET_KEYS = String.raw`access_token|refresh_token|id_token|auth[-_]?token|hook[-_]?token|api[-_]?key|client[-_]?secret|app[-_]?secret|private[-_]?key|authorization|jwt|token|secret|password|pass|passwd|credential|${PAYMENT_CREDENTIAL_QUERY_KEYS}`;
 const BODY_SECRET_KEYS = new Set([
   "access_token",
@@ -59,22 +64,28 @@ const BODY_SECRET_KEYS = new Set([
 ]);
 const FORM_BODY_KEY_INVISIBLE_CHARS = String.raw`\p{C}\u00A0\u1680\u2000-\u200A\u202F\u205F\u3000\u115F\u1160\u3164\uFFA0`;
 const FORM_BODY_KEY_OBFUSCATION_RE = new RegExp(
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`[${FORM_BODY_KEY_INVISIBLE_CHARS}+]`,
   "gu",
 );
 const FORM_BODY_KEY_SEPARATOR_RE = /[\p{C}\p{Z}\u115F\u1160\u3164\uFFA0+]/gu;
 const FORM_BODY_PERCENT_ESCAPE_RE = /%[0-9A-Fa-f]{2}/u;
+// biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
 const FORM_BODY_KEY = String.raw`[${FORM_BODY_KEY_INVISIBLE_CHARS}+]*(?:[A-Za-z_]|%[0-9A-Fa-f]{2})(?:[A-Za-z0-9_.-]|%[0-9A-Fa-f]{2}|[${FORM_BODY_KEY_INVISIBLE_CHARS}+])*`;
 const FORM_BODY_VALUE = "[^&\\s<>]*";
 const URL_QUERY_VALUE = "[^&#\\s<>]*";
+// biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
 const FORM_BODY_PAIR = String.raw`${FORM_BODY_KEY}=${FORM_BODY_VALUE}`;
+// biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
 const FORM_BODY_RE = new RegExp(String.raw`^${FORM_BODY_PAIR}(?:&${FORM_BODY_PAIR})+$`, "u");
 const FORM_BODY_SUBSTRING_RE = new RegExp(
-  String.raw`(^|[\s:({\[,="'` + "`" + String.raw`])(${FORM_BODY_PAIR}(?:&${FORM_BODY_PAIR})+)`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
+  `${String.raw`(^|[\s:({\[,="'`}\`${String.raw`])(${FORM_BODY_PAIR}(?:&${FORM_BODY_PAIR})+)`}`,
   "gu",
 );
 const ENCODED_FORM_PAIR_RE = new RegExp(
-  String.raw`(^|[\s:({\[,="'` + "`" + String.raw`&])(${FORM_BODY_KEY})=(${FORM_BODY_VALUE})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
+  `${String.raw`(^|[\s:({\[,="'`}\`${String.raw`&])(${FORM_BODY_KEY})=(${FORM_BODY_VALUE})`}`,
   "gu",
 );
 const FORM_BODY_CONTEXT_SINGLE_PAIR_RE = new RegExp(
@@ -82,6 +93,7 @@ const FORM_BODY_CONTEXT_SINGLE_PAIR_RE = new RegExp(
   "giu",
 );
 const URL_QUERY_PAIR_RE = new RegExp(
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`([?&])(${FORM_BODY_KEY})=(${URL_QUERY_VALUE})`,
   "gu",
 );
@@ -90,8 +102,10 @@ const SECRET_VALUE_SUFFIX_RE = /^["'`,;)}\]]*$/u;
 const SECRET_VALUE_QUOTE_CHARS = new Set(['"', "'", "`"]);
 const FORM_BODY_LINE_BREAK_SPLIT_RE = /(\r\n|\r|\n)/u;
 const FORM_BODY_LINE_BREAK_SEGMENT_RE = /^(?:\r\n|\r|\n)$/u;
+// biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
 const PAYMENT_CREDENTIAL_JSON_KEYS = String.raw`cardNumber|card_number|cardCvc|card_cvc|cardCvv|card_cvv|cvc|cvv|securityCode|security_code|paymentCredential|payment_credential|sharedPaymentToken|shared_payment_token`;
 const STRUCTURED_SECRET_FIELD_RE = new RegExp(
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`^(?:api[-_]?key|apiKey|api[-_]?token|apiToken|bearer[-_]?token|bearerToken|token|secret|password|passwd|credential|authorization|private[-_]?key|privateKey|access[-_]?token|accessToken|refresh[-_]?token|refreshToken|id[-_]?token|idToken|auth[-_]?token|authToken|client[-_]?secret|clientSecret|app[-_]?secret|appSecret|secret[-_]?value|secretValue|raw[-_]?secret|rawSecret|secret[-_]?input|secretInput|key|key[-_]?material|keyMaterial|jwt|session|signature|cookie|set[-_]?cookie|${PAYMENT_CREDENTIAL_QUERY_KEYS}|${PAYMENT_CREDENTIAL_JSON_KEYS})$`,
   "i",
 );
@@ -112,6 +126,7 @@ const BENIGN_APP_PASSWORD_WORDS = new Set([
   "test",
 ]);
 const STRUCTURED_SECRET_ENV_FIELD_RE = new RegExp(
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`^(?:(?:[A-Z0-9]+[_-])+(?:KEY|TOKEN|SECRET|PASSWORD|PASSWD)|API[_-]?KEY|TOKEN|SECRET|PASSWORD|PASSWD|${PAYMENT_CREDENTIAL_ENV_KEYS})$`,
   "i",
 );
@@ -126,7 +141,9 @@ const STANDALONE_ASSIGNMENT_REDACT_PATTERN = String.raw`(^|[\s,;])(?:${STANDALON
 // Pure-base64-alphabet token prefixes: require a non-alphanumeric left boundary (URL/path
 // delimiters like `/` and `=` still qualify) but skip explicit `;base64,` payload spans, so
 // data-URL media is never corrupted while tokens in URL paths or assignments still redact.
+// biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
 const BASE64_SAFE_TOKEN_BOUNDARY = String.raw`(^|[^A-Za-z0-9])(?<!;base64,[A-Za-z0-9+/=]*)`;
+// biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
 const IDENTIFIER_SAFE_TOKEN_BOUNDARY = String.raw`(^|[^A-Za-z0-9_])`;
 const TELEGRAM_BOT_TOKEN_REDACT_PATTERN = String.raw`\bbot(\d{6,}:[A-Za-z0-9_-]{20,})\b`;
 const TELEGRAM_TOKEN_REDACT_PATTERN = String.raw`\b(\d{6,}:[A-Za-z0-9_-]{20,})\b`;
@@ -180,82 +197,139 @@ const DEFAULT_REDACT_PATTERNS: string[] = [
   String.raw`-----BEGIN [A-Z ]*PRIVATE KEY-----[\s\S]+?-----END [A-Z ]*PRIVATE KEY-----`,
   // Common token prefixes.
   String.raw`\b(sk-[A-Za-z0-9_-]{8,})\b`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(ghp_[A-Za-z0-9]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(github_pat_[A-Za-z0-9_]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(gho_[A-Za-z0-9]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(ghu_[A-Za-z0-9]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(ghs_[A-Za-z0-9]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(ghr_[A-Za-z0-9]{10,})`,
   String.raw`(glpat-[A-Za-z0-9._=\-]{20,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(gloas-[A-Fa-f0-9]{32,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(xox[baprs]-[A-Za-z0-9-]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(xapp-[A-Za-z0-9-]{10,})`,
   String.raw`(https:\/\/hooks\.slack\.com\/(?:services\/T[A-Z0-9]+\/B[A-Z0-9]+|workflows\/T[A-Z0-9]+\/A[A-Z0-9]+\/[0-9]{17,19})\/[A-Za-z0-9]{20,})`,
   String.raw`(https:\/\/discord(?:app)?\.com\/api\/webhooks\/[0-9]{17,20}\/[A-Za-z0-9_-]{60,})`,
   String.raw`discord(?:.|\n|\r){0,40}?\b([A-Za-z0-9_-]{24}\.[A-Za-z0-9_-]{6}\.[A-Za-z0-9_-]{27})\b`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(gsk_[A-Za-z0-9_-]{10,})`,
   String.raw`(AIza[0-9A-Za-z\-_]{20,})`,
   String.raw`(ya29\.[0-9A-Za-z_\-./+=]{10,})`,
   String.raw`(1//0[0-9A-Za-z_\-./+=]{10,})`,
   String.raw`(eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(pplx-[A-Za-z0-9_-]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(fal_[A-Za-z0-9_-]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(fc-[A-Za-z0-9]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(bb_live_[A-Za-z0-9_-]{10,})`,
   // Prefixes made only of standard-base64 characters need a non-base64 left boundary so they
   // do not fire inside unrelated base64 blobs (e.g. data-URL media), corrupting the payload.
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`${BASE64_SAFE_TOKEN_BOUNDARY}(gAAAA[A-Za-z0-9_=-]{20,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(sk_live_[A-Za-z0-9]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(sk_test_[A-Za-z0-9]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(rk_live_[A-Za-z0-9]{10,})`,
   String.raw`(SG\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(npm_[A-Za-z0-9]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(pypi-[A-Za-z0-9_-]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(dop_v1_[A-Za-z0-9]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(doo_v1_[A-Za-z0-9]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(dor_v1_[A-Za-z0-9]{10,})`,
   String.raw`(dp\.(?:ct|pt|sa|scim|audit)\.[A-Za-z0-9]{40,44})`,
   String.raw`(dp\.st\.[A-Za-z0-9]{40,44})`,
   String.raw`(dp\.st\.[a-z0-9_-]{2,35}\.[A-Za-z0-9]{40,44})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(dckr_(?:pat|oat)_[A-Za-z0-9_-]{27,32})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(bkua_[a-z0-9]{40})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(CCIPAT_[A-Za-z0-9]{22}_[A-Fa-f0-9]{40})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(sbp_[a-z0-9]{40})`,
   String.raw`${BASE64_SAFE_TOKEN_BOUNDARY}(dapi[0-9a-f]{32}(?:-\d)?)`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(dd[pw]_[A-Za-z0-9]{36})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(glsa_[A-Za-z0-9_]{41})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(glc_eyJ[A-Za-z0-9+/=]{60,160})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(nfp_[A-Za-z0-9_]{36})`,
   String.raw`(CFPAT-[A-Za-z0-9_\-]{40,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`${BASE64_SAFE_TOKEN_BOUNDARY}(ATCTT3xFfG[A-Za-z0-9+/=_-]+=[A-Za-z0-9]{8})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`${BASE64_SAFE_TOKEN_BOUNDARY}(ATATT[A-Za-z0-9+/=_-]+=[A-Za-z0-9]{8})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`${BASE64_SAFE_TOKEN_BOUNDARY}(ATBB[A-Za-z0-9_=.-]{16,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(BBDC-[A-Za-z0-9+/@_-]{40,50})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(HRKU-AA[A-Za-z0-9_-]{20,})`,
   String.raw`(pat-(?:eu|na)1-[A-Za-z0-9]{8}\-[A-Za-z0-9]{4}\-[A-Za-z0-9]{4}\-[A-Za-z0-9]{4}\-[A-Za-z0-9]{12})`,
   String.raw`(apify_api_[A-Za-z0-9\-]{20,})`,
   String.raw`(FlyV1 fm\d+_[A-Za-z0-9+/=,_-]{100,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(fio-u-[A-Za-z0-9_-]{40,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(^|[^A-Za-z0-9_])(am_[A-Za-z0-9_-]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(^|[^A-Za-z0-9_])(sk_[A-Za-z0-9_]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(tvly-[A-Za-z0-9]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(exa_[A-Za-z0-9]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(syt_[A-Za-z0-9]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(retaindb_[A-Za-z0-9]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(hsk-[A-Za-z0-9]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(mem0_[A-Za-z0-9]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(brv_[A-Za-z0-9]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(xai-[A-Za-z0-9]{30,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`${IDENTIFIER_SAFE_TOKEN_BOUNDARY}(fw-[A-Za-z0-9]{30,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`${IDENTIFIER_SAFE_TOKEN_BOUNDARY}(fw_[A-Za-z0-9]{30,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`${IDENTIFIER_SAFE_TOKEN_BOUNDARY}(fpk_[A-Za-z0-9]{30,})`,
   // Additional access-key and token-style prefixes.
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`${BASE64_SAFE_TOKEN_BOUNDARY}(AKIA[A-Z0-9]{16})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`${BASE64_SAFE_TOKEN_BOUNDARY}(ASIA[A-Z0-9]{16})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(AKID[A-Za-z0-9]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(LTAI[A-Za-z0-9]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(hf_[A-Za-z0-9]{10,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(api_org_[A-Za-z0-9]{20,})`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(r8_[A-Za-z0-9]{10,})`,
   // Telegram Bot API URLs embed the token as `/bot<token>/...` (no word-boundary before digits).
   TELEGRAM_BOT_TOKEN_REDACT_PATTERN,
@@ -269,6 +343,7 @@ let defaultResolvedPatterns: RegExp[] | undefined;
 // leaks that secret shape, so each family keeps a default-options fixture in redact.test.ts.
 const DEFAULT_REDACT_PREFILTER_SOURCES: string[] = [
   // Sensitive key names shared by the env/JSON/query/form/header/assignment families.
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`KEY|TOKEN|SECRET|PASSWORD|PASSWD|AUTH|COOKIE|SIGNATURE|CREDENTIAL|CARD|CVC|CVV|PAYMENT|PRIVATE KEY`,
   String.raw`security[-_]?code|\bpass=|jwt=|session=|code=`,
   String.raw`\bBearer\s+`,
@@ -276,7 +351,9 @@ const DEFAULT_REDACT_PREFILTER_SOURCES: string[] = [
   String.raw`:\/\/[^\/\s:@]*:[^\/\s@]+@`,
   // Vendor token prefixes and webhook hosts, ordered like DEFAULT_REDACT_PATTERNS.
   String.raw`sk-|gh[opsur]_|github_pat_|glpat-|gloas-|xox[baprs]-|xapp-|hooks\.slack\.com|discord|gsk_|AIza|ya29\.|1\/\/0|eyJ|pplx-|fal_|fc-|bb_live_|gAAAA|[sr]k_(?:live|test)_|\bSG\.|npm_|pypi-|do[opr]_v1_|dp\.(?:ct|pt|sa|st|scim|audit)\.|dckr_|bkua_|CCIPAT_|sbp_|dapi[0-9a-f]|dd[pw]_|glsa_|nfp_|CFPAT-|ATCTT3|ATATT|ATBB|BBDC-|HRKU-|pat-(?:eu|na)1-|apify_api_|FlyV1|fio-u-|tvly-|exa_|syt_|retaindb_|mem0_|brv_|xai-|fw-|fw_|fpk_`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`(?:^|[^A-Za-z0-9_])(?:am_|sk_)`,
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`A[KS]IA[A-Z0-9]|AKID|LTAI|hf_|api_org_|r8_`,
   String.raw`\bbot\d{6,}:|\b\d{6,}:[A-Za-z0-9_-]{20,}`,
   // Obfuscated form/URL keys: percent escapes can rewrite any key letter, while plus or
@@ -284,6 +361,7 @@ const DEFAULT_REDACT_PREFILTER_SOURCES: string[] = [
   // tail may mix further splices with key characters (e.g. an interior plus a trailing
   // filler), but at least one key character must follow a splice so bare `+=` or line-leading
   // `===` separators do not trip the fast path.
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   String.raw`%[0-9A-Fa-f]{2}[A-Za-z0-9_%.-]*=`,
   String.raw`(?:\+|[${FORM_BODY_KEY_INVISIBLE_CHARS}])(?:[${FORM_BODY_KEY_INVISIBLE_CHARS}+]*[A-Za-z0-9_%.-])+[${FORM_BODY_KEY_INVISIBLE_CHARS}+]*=`,
 ];
@@ -517,7 +595,7 @@ function markSensitiveFormEncodedPairValues(
 }
 
 function redactUrlQueryPairs(text: string): string {
-  if (!text || !text.includes("?")) {
+  if (!text?.includes("?")) {
     return text;
   }
   return text.replace(URL_QUERY_PAIR_RE, (match, prefix: string, key: string, token: string) => {
@@ -529,7 +607,7 @@ function redactUrlQueryPairs(text: string): string {
 }
 
 function markUrlQueryPairRedactions(text: string, bitmap: boolean[]): void {
-  if (!text || !text.includes("?")) {
+  if (!text?.includes("?")) {
     return;
   }
   for (const match of text.matchAll(URL_QUERY_PAIR_RE)) {

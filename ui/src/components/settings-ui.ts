@@ -50,18 +50,24 @@ export function renderSettingsSection(props: SettingsSectionProps, rows: unknown
     props.title || props.actions
       ? html`
           <div class="settings-section__header">
-            ${props.title
-              ? html`
+            ${
+              props.title
+                ? html`
                   <h2 class="settings-section__heading">
-                    ${props.title}${props.count !== undefined
-                      ? html` <span class="settings-count">${props.count}</span>`
-                      : nothing}
+                    ${props.title}${
+                      props.count !== undefined
+                        ? html` <span class="settings-count">${props.count}</span>`
+                        : nothing
+                    }
                   </h2>
                 `
-              : nothing}
-            ${props.actions
-              ? html`<div class="settings-section__actions">${props.actions}</div>`
-              : nothing}
+                : nothing
+            }
+            ${
+              props.actions
+                ? html`<div class="settings-section__actions">${props.actions}</div>`
+                : nothing
+            }
           </div>
         `
       : nothing;
@@ -89,13 +95,17 @@ export function renderSettingsRow(props: SettingsRowProps): TemplateResult {
     <div class=${className}>
       <div class="settings-row__text">
         <span class="settings-row__title">${props.title}</span>
-        ${props.description
-          ? html`<span class="settings-row__desc">${props.description}</span>`
-          : nothing}
+        ${
+          props.description
+            ? html`<span class="settings-row__desc">${props.description}</span>`
+            : nothing
+        }
       </div>
-      ${props.control !== undefined && props.control !== nothing
-        ? html`<div class="settings-row__control">${props.control}</div>`
-        : nothing}
+      ${
+        props.control !== undefined && props.control !== nothing
+          ? html`<div class="settings-row__control">${props.control}</div>`
+          : nothing
+      }
     </div>
   `;
 }
@@ -108,9 +118,11 @@ export function renderSettingsNavRow(
     <button type="button" class="settings-row settings-row--nav" @click=${props.onClick}>
       <div class="settings-row__text">
         <span class="settings-row__title">${props.title}</span>
-        ${props.description
-          ? html`<span class="settings-row__desc">${props.description}</span>`
-          : nothing}
+        ${
+          props.description
+            ? html`<span class="settings-row__desc">${props.description}</span>`
+            : nothing
+        }
       </div>
       <div class="settings-row__control">
         ${props.control ?? nothing}
@@ -165,9 +177,11 @@ export function renderSettingsToggleRow(props: {
     >
       <div class="settings-row__text">
         <span class="settings-row__title">${props.title}</span>
-        ${props.description
-          ? html`<span class="settings-row__desc">${props.description}</span>`
-          : nothing}
+        ${
+          props.description
+            ? html`<span class="settings-row__desc">${props.description}</span>`
+            : nothing
+        }
       </div>
       <div class="settings-row__control">
         <wa-switch
@@ -212,15 +226,17 @@ export function renderSettingsSegmented<T extends string>(props: {
         }
       }}
     >
-      ${props.ariaLabel
-        ? html`<span slot="label" class="settings-control__sr-label">${props.ariaLabel}</span>`
-        : nothing}
+      ${
+        props.ariaLabel
+          ? html`<span slot="label" class="settings-control__sr-label">${props.ariaLabel}</span>`
+          : nothing
+      }
       ${props.options.map(
         (option) => html`
           <wa-radio
-            class="settings-segmented__btn ${option.value === props.value
-              ? "settings-segmented__btn--active"
-              : ""}"
+            class="settings-segmented__btn ${
+              option.value === props.value ? "settings-segmented__btn--active" : ""
+            }"
             appearance="button"
             value=${option.value}
             .checked=${option.value === props.value}

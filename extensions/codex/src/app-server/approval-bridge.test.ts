@@ -1456,13 +1456,12 @@ describe("Codex app-server approval bridge", () => {
   it("fails closed when the native hook relay returns a non-deny decision", async () => {
     const params = createParams();
     mockInvokeNativeHookRelay.mockResolvedValueOnce({
-      stdout:
-        JSON.stringify({
-          hookSpecificOutput: {
-            hookEventName: "PreToolUse",
-            permissionDecision: "allow",
-          },
-        }) + "\n",
+      stdout: `${JSON.stringify({
+        hookSpecificOutput: {
+          hookEventName: "PreToolUse",
+          permissionDecision: "allow",
+        },
+      })}\n`,
       stderr: "",
       exitCode: 0,
     });

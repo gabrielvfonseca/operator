@@ -123,7 +123,7 @@ describe("ssrf pinning", () => {
   });
 
   it("falls back for non-matching hostnames", async () => {
-    const fallback = vi.fn((host: string, options?: unknown, callback?: unknown) => {
+    const fallback = vi.fn((_host: string, options?: unknown, callback?: unknown) => {
       const cb = typeof options === "function" ? options : (callback as () => void);
       (cb as (err: null, address: string, family: number) => void)(null, "1.2.3.4", 4);
     }) as unknown as Parameters<typeof createPinnedLookup>[0]["fallback"];

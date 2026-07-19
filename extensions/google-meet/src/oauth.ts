@@ -170,10 +170,10 @@ function shouldUseCachedGoogleMeetAccessToken(params: {
   const safetyWindowMs = params.safetyWindowMs ?? 60_000;
   return Boolean(
     params.accessToken?.trim() &&
-    typeof params.expiresAt === "number" &&
-    Number.isFinite(params.expiresAt) &&
-    params.expiresAt <= MAX_DATE_TIMESTAMP_MS &&
-    params.expiresAt > now + safetyWindowMs,
+      typeof params.expiresAt === "number" &&
+      Number.isFinite(params.expiresAt) &&
+      params.expiresAt <= MAX_DATE_TIMESTAMP_MS &&
+      params.expiresAt > now + safetyWindowMs,
   );
 }
 

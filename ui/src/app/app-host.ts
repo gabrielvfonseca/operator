@@ -336,12 +336,16 @@ class OperatorApp extends OperatorLightDomElement {
           .themeMode=${resolveTerminalThemeMode()}
           fullscreen
         ></operator-terminal-panel>
-        ${!isOptionalElementDefined(TERMINAL_PANEL_ELEMENT) && terminalAvailable
-          ? renderConnectingSplash(context.basePath)
-          : nothing}
-        ${!terminalAvailable && (gatewaySnapshot.connected || gatewaySnapshot.lastError)
-          ? html`<div class="terminal-view-unavailable">${t("terminal.unavailable")}</div>`
-          : nothing}
+        ${
+          !isOptionalElementDefined(TERMINAL_PANEL_ELEMENT) && terminalAvailable
+            ? renderConnectingSplash(context.basePath)
+            : nothing
+        }
+        ${
+          !terminalAvailable && (gatewaySnapshot.connected || gatewaySnapshot.lastError)
+            ? html`<div class="terminal-view-unavailable">${t("terminal.unavailable")}</div>`
+            : nothing
+        }
       `;
     }
     // Transport drops after an established session keep the shell mounted
@@ -1155,8 +1159,9 @@ class OperatorShell extends OperatorLightDomElement {
     // Optional tags stay mounted before definition. Lit replays their properties on upgrade,
     // and the upgraded panels catch the first toggle instead of dropping the event.
     return html`
-      ${isOptionalElementDefined(this.commandPaletteElement)
-        ? html`<operator-command-palette
+      ${
+        isOptionalElementDefined(this.commandPaletteElement)
+          ? html`<operator-command-palette
             .onNavigate=${(routeId: RouteId) => this.navigate(routeId)}
             .onSelectSession=${(sessionKey: string) => {
               context.gateway.setSessionKey(sessionKey);
@@ -1164,15 +1169,16 @@ class OperatorShell extends OperatorLightDomElement {
             }}
             .onSlashCommand=${this.handleCommandPaletteSlashCommand}
           ></operator-command-palette>`
-        : nothing}
+          : nothing
+      }
       <div
-        class="shell ${chatLikeRoute ? "shell--chat" : ""} ${navCollapsed
-          ? "shell--nav-collapsed"
-          : ""} ${mobileNavLayout ? "shell--mobile-nav" : ""} ${navDrawerOpen
-          ? "shell--nav-drawer-open"
-          : ""} ${this.onboarding ? "shell--onboarding" : ""} ${settingsTakeover
-          ? "shell--settings"
-          : ""}"
+        class="shell ${chatLikeRoute ? "shell--chat" : ""} ${
+          navCollapsed ? "shell--nav-collapsed" : ""
+        } ${mobileNavLayout ? "shell--mobile-nav" : ""} ${
+          navDrawerOpen ? "shell--nav-drawer-open" : ""
+        } ${this.onboarding ? "shell--onboarding" : ""} ${
+          settingsTakeover ? "shell--settings" : ""
+        }"
         style=${`--shell-nav-expanded-width: ${navigationSnapshot.navWidth}px`}
         @keydown=${this.handleShellKeydown}
         @theme-change=${this.handleThemeChange}
@@ -1184,8 +1190,9 @@ class OperatorShell extends OperatorLightDomElement {
           aria-label=${t("nav.close")}
           @click=${() => this.closeNavDrawer({ restoreFocus: true })}
         ></button>
-        ${isNativeWebChromeHost() && !this.onboarding
-          ? html`
+        ${
+          isNativeWebChromeHost() && !this.onboarding
+            ? html`
               <operator-macos-titlebar-controls
                 .navCollapsed=${this.nativeNavCollapsed()}
                 .historyOnly=${settingsTakeover}
@@ -1196,7 +1203,8 @@ class OperatorShell extends OperatorLightDomElement {
                 .onOpenNewSession=${this.handleNativeNewSession}
               ></operator-macos-titlebar-controls>
             `
-          : nothing}
+            : nothing
+        }
         <operator-app-topbar
           .basePath=${context.basePath}
           .searchDisabled=${false}
@@ -1205,8 +1213,9 @@ class OperatorShell extends OperatorLightDomElement {
           .onOpenPalette=${this.openPalette}
           .onToggleDrawer=${(trigger: HTMLElement) => this.toggleNavigationSurface(trigger)}
         ></operator-app-topbar>
-        ${navCollapsed && !this.onboarding
-          ? html`
+        ${
+          navCollapsed && !this.onboarding
+            ? html`
               <operator-tooltip .content=${`${t("nav.expand")} (⌘B)`}>
                 <button
                   type="button"
@@ -1219,33 +1228,35 @@ class OperatorShell extends OperatorLightDomElement {
                 </button>
               </operator-tooltip>
             `
-          : nothing}
+            : nothing
+        }
         <div class="shell-nav">
-          ${settingsTakeover
-            ? renderSettingsSidebar({
-                basePath: context.basePath,
-                activeRouteId: activeRoute,
-                activeSearch: this.routeState.location?.search ?? "",
-                activeHash: this.routeState.location?.hash ?? "",
-                connected: gatewaySnapshot.connected,
-                version:
-                  context.config.current.serverVersion ??
-                  gatewaySnapshot.hello?.server?.version ??
-                  "",
-                updateAvailable: navigationSurfaceHidden ? null : overlaySnapshot.updateAvailable,
-                updateRunning: overlaySnapshot.updateRunning,
-                onUpdate: () => void context.overlays.runUpdate(),
-                searchQuery: this.settingsSearchQuery,
-                searchBlockMatches: settingsSearchBlocks,
-                onExit: () => this.exitSettings(),
-                onNavigate: (routeId, options) => this.navigate(routeId, options),
-                onPreload: (routeId) => context.preload(routeId),
-                onSearchQueryChange: (nextQuery) => {
-                  void this.handleSettingsSearchQueryChange(nextQuery);
-                },
-                preloadTimers: this.settingsPreloadTimers,
-              })
-            : html`<operator-app-sidebar
+          ${
+            settingsTakeover
+              ? renderSettingsSidebar({
+                  basePath: context.basePath,
+                  activeRouteId: activeRoute,
+                  activeSearch: this.routeState.location?.search ?? "",
+                  activeHash: this.routeState.location?.hash ?? "",
+                  connected: gatewaySnapshot.connected,
+                  version:
+                    context.config.current.serverVersion ??
+                    gatewaySnapshot.hello?.server?.version ??
+                    "",
+                  updateAvailable: navigationSurfaceHidden ? null : overlaySnapshot.updateAvailable,
+                  updateRunning: overlaySnapshot.updateRunning,
+                  onUpdate: () => void context.overlays.runUpdate(),
+                  searchQuery: this.settingsSearchQuery,
+                  searchBlockMatches: settingsSearchBlocks,
+                  onExit: () => this.exitSettings(),
+                  onNavigate: (routeId, options) => this.navigate(routeId, options),
+                  onPreload: (routeId) => context.preload(routeId),
+                  onSearchQueryChange: (nextQuery) => {
+                    void this.handleSettingsSearchQueryChange(nextQuery);
+                  },
+                  preloadTimers: this.settingsPreloadTimers,
+                })
+              : html`<operator-app-sidebar
                 .basePath=${context.basePath}
                 .activeRouteId=${activeRoute}
                 .activePluginTabId=${activePluginTabId}
@@ -1254,16 +1265,20 @@ class OperatorShell extends OperatorLightDomElement {
                 .connected=${gatewaySnapshot.connected}
                 .terminalAvailable=${terminalAvailable}
                 .catalogOpenTarget=${normalizeCatalogOpenTarget(uiSettings.catalogOpenTarget)}
-                .canPairDevice=${gatewaySnapshot.connected &&
-                hasOperatorAdminAccess(gatewaySnapshot.hello?.auth ?? null)}
+                .canPairDevice=${
+                  gatewaySnapshot.connected &&
+                  hasOperatorAdminAccess(gatewaySnapshot.hello?.auth ?? null)
+                }
                 .sidebarPinnedRoutes=${navigationSnapshot.sidebarPinnedRoutes}
                 .pinnedAgentIds=${navigationSnapshot.pinnedAgentIds}
                 .themeMode=${context.theme.mode}
                 .lobsterPetVisits=${uiSettings.lobsterPetVisits !== false}
                 .lobsterPetSounds=${uiSettings.lobsterPetSounds === true}
-                .gatewayVersion=${context.config.current.serverVersion ??
-                gatewaySnapshot.hello?.server?.version ??
-                null}
+                .gatewayVersion=${
+                  context.config.current.serverVersion ??
+                  gatewaySnapshot.hello?.server?.version ??
+                  null
+                }
                 .devGitBranch=${context.config.current.devGitBranch}
                 .updateAvailable=${navigationSurfaceHidden ? null : overlaySnapshot.updateAvailable}
                 .updateRunning=${overlaySnapshot.updateRunning}
@@ -1282,10 +1297,12 @@ class OperatorShell extends OperatorLightDomElement {
                   this.navigate(routeId, options)}
                 .onPreloadRoute=${(routeId: string) =>
                   isRouteId(routeId) ? context.preload(routeId) : Promise.resolve()}
-              ></operator-app-sidebar>`}
+              ></operator-app-sidebar>`
+          }
         </div>
-        ${!navCollapsed && !this.onboarding && !settingsTakeover
-          ? html`
+        ${
+          !navCollapsed && !this.onboarding && !settingsTakeover
+            ? html`
               <resizable-divider
                 class="sidebar-resizer"
                 .label=${t("nav.resize")}
@@ -1298,22 +1315,25 @@ class OperatorShell extends OperatorLightDomElement {
                   this.resizeNavigation(event.detail.splitRatio)}
               ></resizable-divider>
             `
-          : nothing}
+            : nothing
+        }
         <main
           id="control-ui-main"
-          class="content ${chatLikeRoute ? "content--chat" : ""} ${activeRoute === "workboard"
-            ? "content--workboard"
-            : ""}"
+          class="content ${chatLikeRoute ? "content--chat" : ""} ${
+            activeRoute === "workboard" ? "content--workboard" : ""
+          }"
           .tabIndex=${-1}
         >
-          ${gatewaySnapshot.connected
-            ? nothing
-            : html`<operator-connection-banner
+          ${
+            gatewaySnapshot.connected
+              ? nothing
+              : html`<operator-connection-banner
                 .props=${{
                   lastError: gatewaySnapshot.lastError,
                   onRetry: () => context.gateway.connect(),
                 }}
-              ></operator-connection-banner>`}
+              ></operator-connection-banner>`
+          }
           <operator-update-banner
             .props=${{
               statusBanner: overlaySnapshot.updateStatusBanner,

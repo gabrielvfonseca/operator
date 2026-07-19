@@ -187,8 +187,8 @@ export function isSameProcessSpecificIpv4WithLoopbackListeners(
   const parsed = parsePortListeners(listeners, port);
   return Boolean(
     parsed &&
-    parsedListenersOwnSpecificIpv4WithLoopback(parsed) &&
-    parsed.some(({ host }) => host === expectedSpecificHost),
+      parsedListenersOwnSpecificIpv4WithLoopback(parsed) &&
+      parsed.some(({ host }) => host === expectedSpecificHost),
   );
 }
 

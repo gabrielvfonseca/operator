@@ -182,7 +182,7 @@ describe("auth external oauth helpers", () => {
 
     const overlaidProfile = overlaid.profiles["openai:default"];
     expect(overlaidProfile?.type).toBe("oauth");
-    if (!overlaidProfile || overlaidProfile.type !== "oauth") {
+    if (overlaidProfile?.type !== "oauth") {
       throw new Error("expected overlaid OAuth profile");
     }
     expect(overlaidProfile.access).toBe("fresh-cli-access-token");

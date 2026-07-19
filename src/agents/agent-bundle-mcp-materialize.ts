@@ -399,6 +399,7 @@ export async function materializeBundleMcpToolsForRun(params: {
   let allowedAppToolsByServer: Map<string, Set<string>> | undefined;
   const releaseLease = params.runtime.acquireLease?.();
   params.runtime.markUsed();
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let catalog;
   try {
     catalog = await params.runtime.getCatalog();
@@ -508,7 +509,7 @@ export async function materializeBundleMcpToolsForRun(params: {
       const next = new Map<string, Set<string>>();
       for (const allowedTool of allowedTools) {
         const mcp = getPluginToolMeta(allowedTool)?.mcp;
-        if (!mcp || mcp.operation !== "tool") {
+        if (mcp?.operation !== "tool") {
           continue;
         }
         const names = next.get(mcp.serverName) ?? new Set<string>();

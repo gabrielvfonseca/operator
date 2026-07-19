@@ -163,7 +163,7 @@ export async function listSlackDirectoryGroupsLive(
     if (!query) {
       return true;
     }
-    return Boolean(name && name.includes(query));
+    return Boolean(name?.includes(query));
   });
 
   const rows = filtered

@@ -38,8 +38,11 @@ describe("Dockerfile", () => {
     expect(dockerfile).toContain(
       'ARG OPERATOR_BUN_IMAGE="docker.io/oven/bun:1.3.13@sha256:87416c977a612a204eb54ab9f3927023c2a3c971f4f345a01da08ea6262ae30e"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(dockerfile).toContain("FROM ${OPERATOR_NODE_BOOKWORM_IMAGE} AS workspace-deps");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(dockerfile).toContain("FROM ${OPERATOR_NODE_BOOKWORM_IMAGE} AS build");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(dockerfile).toContain("FROM ${OPERATOR_NODE_BOOKWORM_SLIM_IMAGE} AS base-runtime");
     expect(dockerfile).toContain("FROM base-runtime");
     expect(dockerfile).toContain("current multi-arch manifest list entries");
@@ -51,6 +54,7 @@ describe("Dockerfile", () => {
     const dockerfile = await readFile(dockerfilePath, "utf8");
     const collapsed = collapseDockerContinuations(dockerfile);
     const runtimeIndex = collapsed.indexOf(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "FROM ${OPERATOR_NODE_BOOKWORM_SLIM_IMAGE} AS base-runtime",
     );
     const caInstallIndex = collapsed.indexOf(
@@ -67,6 +71,7 @@ describe("Dockerfile", () => {
   it("installs python3 and tini in the slim runtime stage", async () => {
     const dockerfile = collapseDockerContinuations(await readFile(dockerfilePath, "utf8"));
     const runtimeIndex = dockerfile.indexOf(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "FROM ${OPERATOR_NODE_BOOKWORM_SLIM_IMAGE} AS base-runtime",
     );
     const pythonInstallIndex = dockerfile.indexOf(
@@ -133,8 +138,10 @@ describe("Dockerfile", () => {
   it("uses portable copies for workspace dependency inputs", async () => {
     const dockerfile = await readFile(dockerfilePath, "utf8");
     const workspaceDepsStart = dockerfile.indexOf(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "FROM ${OPERATOR_NODE_BOOKWORM_IMAGE} AS workspace-deps",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const workspaceDepsEnd = dockerfile.indexOf("FROM ${OPERATOR_BUN_IMAGE} AS bun-binary");
 
     expect(workspaceDepsStart).toBeGreaterThan(-1);
@@ -142,11 +149,13 @@ describe("Dockerfile", () => {
 
     const workspaceDeps = dockerfile.slice(workspaceDepsStart, workspaceDepsEnd);
     const extractionIndex = workspaceDeps.indexOf(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'RUN mkdir -p /out/packages "/out/${OPERATOR_BUNDLED_PLUGIN_DIR}"',
     );
     const inputCopies = [
       "COPY scripts/lib/docker-plugin-selection.mjs /tmp/docker-plugin-selection.mjs",
       "COPY packages /tmp/packages",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "COPY ${OPERATOR_BUNDLED_PLUGIN_DIR} /tmp/${OPERATOR_BUNDLED_PLUGIN_DIR}",
     ];
 
@@ -171,6 +180,7 @@ describe("Dockerfile", () => {
       "COPY --from=workspace-deps /out/packages/ ./packages/",
     );
     const extensionManifestIndex = dockerfile.indexOf(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "COPY --from=workspace-deps /out/${OPERATOR_BUNDLED_PLUGIN_DIR}/ ./${OPERATOR_BUNDLED_PLUGIN_DIR}/",
     );
 
@@ -181,6 +191,7 @@ describe("Dockerfile", () => {
     expect(extensionManifestIndex).toBeGreaterThan(-1);
     expect(dockerfile).toContain("for manifest in /tmp/packages/*/package.json");
     expect(dockerfile).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'node /tmp/docker-plugin-selection.mjs "/tmp/${OPERATOR_BUNDLED_PLUGIN_DIR}" "$OPERATOR_EXTENSIONS"',
     );
     expect(dockerfile).toContain("done < /out/operator-selected-plugin-dirs");
@@ -286,6 +297,7 @@ describe("Dockerfile", () => {
     const installIndex = dockerfile.indexOf("pnpm install --frozen-lockfile");
     const commitArgIndex = dockerfile.indexOf('ARG GIT_COMMIT=""');
     const timestampArgIndex = dockerfile.indexOf('ARG OPERATOR_BUILD_TIMESTAMP=""');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const provenanceEnvIndex = dockerfile.indexOf("ENV GIT_COMMIT=${GIT_COMMIT}");
     const backendBuildIndex = dockerfile.indexOf("pnpm build:docker");
     const uiBuildIndex = dockerfile.indexOf("pnpm ui:build");
@@ -293,6 +305,7 @@ describe("Dockerfile", () => {
     expect(commitArgIndex).toBeGreaterThan(installIndex);
     expect(timestampArgIndex).toBeGreaterThan(commitArgIndex);
     expect(provenanceEnvIndex).toBeGreaterThan(timestampArgIndex);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(dockerfile).toContain("OPERATOR_BUILD_TIMESTAMP=${OPERATOR_BUILD_TIMESTAMP}");
     expect(dockerfile).toContain('OPERATOR_BUILD_TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"');
     expect(backendBuildIndex).toBeGreaterThan(provenanceEnvIndex);
@@ -307,15 +320,19 @@ describe("Dockerfile", () => {
 
     expect(docs).toContain('BUILD_GIT_COMMIT="$(git rev-parse HEAD)"');
     expect(docs).toContain('BUILD_TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(docs).toContain('--build-arg "GIT_COMMIT=${BUILD_GIT_COMMIT}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(docs).toContain('--build-arg "OPERATOR_BUILD_TIMESTAMP=${BUILD_TIMESTAMP}"');
     expect(docs).toContain("The Docker context excludes `.git`.");
     expect(selectedPluginStart).toBeGreaterThan(-1);
     expect(selectedPluginEnd).toBeGreaterThan(selectedPluginStart);
     expect(selectedPluginDocs).toContain('SOURCE_SHA="$(git rev-parse HEAD)"');
     expect(selectedPluginDocs).toContain('BUILD_TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(selectedPluginDocs).toContain('--build-arg "GIT_COMMIT=${SOURCE_SHA}"');
     expect(selectedPluginDocs).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '--build-arg "OPERATOR_BUILD_TIMESTAMP=${BUILD_TIMESTAMP}"',
     );
   });
@@ -341,6 +358,7 @@ describe("Dockerfile", () => {
     );
     expect(dockerfile).toContain("COPY --from=workspace-deps /out/packages/ ./packages/");
     expect(dockerfile).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "COPY --from=workspace-deps /out/${OPERATOR_BUNDLED_PLUGIN_DIR}/ ./${OPERATOR_BUNDLED_PLUGIN_DIR}/",
     );
     expect(dockerfile).toContain(
@@ -421,22 +439,28 @@ describe("Dockerfile", () => {
     const workflow = await readFile(dockerReleaseWorkflowPath, "utf8");
 
     expect(workflow).toContain("resolve_build_provenance:");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("built_at: ${{ steps.build_provenance.outputs.built_at }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("source_sha: ${{ steps.build_provenance.outputs.source_sha }}");
     expect(workflow.match(/date -u \+%Y-%m-%dT%H:%M:%SZ/gu)).toHaveLength(1);
     expect(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       workflow.split("BUILD_TIMESTAMP: ${{ needs.resolve_build_provenance.outputs.built_at }}")
         .length - 1,
     ).toBe(2);
     expect(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       workflow.split("ref: ${{ needs.resolve_build_provenance.outputs.source_sha }}").length - 1,
     ).toBe(4);
     expect(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       workflow.split("GIT_COMMIT=${{ needs.resolve_build_provenance.outputs.source_sha }}").length -
         1,
     ).toBe(4);
     expect(
       workflow.split(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "OPERATOR_BUILD_TIMESTAMP=${{ needs.resolve_build_provenance.outputs.built_at }}",
       ).length - 1,
     ).toBe(4);
@@ -448,11 +472,17 @@ describe("Dockerfile", () => {
     expect(workflow).toContain("Build and push amd64 browser image");
     expect(workflow).toContain("Build and push arm64 browser image");
     expect(workflow).toContain("OPERATOR_INSTALL_BROWSER=1");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain('${GHCR_IMAGE}:${version}-browser"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain('${DOCKERHUB_IMAGE}:${version}-browser"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain('${GHCR_IMAGE}:latest-browser"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain('${DOCKERHUB_IMAGE}:latest-browser"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain('${GHCR_IMAGE}:main-browser"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain('${DOCKERHUB_IMAGE}:main-browser"');
     expect(workflow).not.toContain("main-browser-amd64");
     expect(workflow).not.toContain("main-browser-arm64");
@@ -461,7 +491,9 @@ describe("Dockerfile", () => {
     expect(workflow).toContain("chrome-headless-shell");
     expect(workflow).toContain("grep -q '^ARG OPERATOR_INSTALL_BROWSER' Dockerfile");
     expect(workflow).toContain("if: steps.tags.outputs.browser != ''");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).not.toContain('git show "${SOURCE_REF}:Dockerfile"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain('if [[ -n "${BROWSER_TAGS}" ]]; then');
   });
 
@@ -475,10 +507,15 @@ describe("Dockerfile", () => {
     expect(workflow).toContain("DOCKERHUB_USERNAME and DOCKERHUB_TOKEN secrets");
     expect(workflow).toContain("Login to GitHub Container Registry");
     expect(workflow).toContain("Login to Docker Hub");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain('images=("${GHCR_IMAGE}" "${DOCKERHUB_IMAGE}")');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("DOCKERHUB_TAGS: ${{ steps.tags.outputs.dockerhub }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("${DOCKERHUB_IMAGE}:${version}-amd64");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("${DOCKERHUB_IMAGE}:${version}-arm64");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("DOCKERHUB_MULTI_REFS: ${{ steps.refs.outputs.dockerhub_multi }}");
   });
 
@@ -486,10 +523,14 @@ describe("Dockerfile", () => {
     const workflow = await readFile(dockerReleaseWorkflowPath, "utf8");
 
     expect(workflow).toContain("Existing stable or beta release tag to backfill");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain('! "${RELEASE_TAG}" =~ ^v[0-9]{4}');
     expect(workflow).toContain("(-beta\\.[1-9][0-9]*)?");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("${DOCKERHUB_IMAGE}:${version}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("${DOCKERHUB_IMAGE}:${version}-slim");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("${DOCKERHUB_IMAGE}:${version}-browser");
     expect(workflow.split("do not advance latest/main aliases from those flows")).toHaveLength(3);
     expect(workflow.split('"$version" =~ ^[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9]+)?$')).toHaveLength(3);
@@ -502,6 +543,7 @@ describe("Dockerfile", () => {
     expect(workflow).toContain("Smoke test arm64 runtime workspace templates");
     expect(workflow).toContain("test -f /app/src/agents/templates/HEARTBEAT.md");
     expect(workflow).toContain('grep -F "Missing workspace template:"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain('test -f "${temp_root}/home/.operator/workspace/HEARTBEAT.md"');
   });
 
@@ -513,6 +555,7 @@ describe("Dockerfile", () => {
     expect(workflow).not.toContain("Build and smoke test final Docker runtime image");
     expect(workflow).not.toContain("test -f /app/src/agents/templates/HEARTBEAT.md");
     expect(workflow).not.toContain('grep -F "Missing workspace template:"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).not.toContain('test -f "${temp_root}/home/.operator/workspace/HEARTBEAT.md"');
     expect(workflow).not.toContain("scripts/docker/runtime-workspace-template-smoke.sh");
   });
@@ -526,6 +569,7 @@ describe("Dockerfile", () => {
   it("normalizes plugin and agent paths permissions in image layers", async () => {
     const dockerfile = await readFile(dockerfilePath, "utf8");
     expect(dockerfile).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "RUN for dir in /app/${OPERATOR_BUNDLED_PLUGIN_DIR} /app/.agent /app/.agents; do \\",
     );
     expect(dockerfile).toContain('find "$dir" -type d -exec chmod 755 {} +');

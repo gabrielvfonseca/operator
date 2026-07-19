@@ -2,7 +2,6 @@
 // Bundle plugin assets (stub version for Bun)
 
 import fs from "node:fs";
-import path from "node:path";
 
 console.error("[plugins:assets:build] Building plugin assets...");
 

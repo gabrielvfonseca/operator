@@ -58,7 +58,7 @@ export function createMemorySearchTool(ctx: MemoryToolContext): AnyAgentTool {
   } as AnyAgentTool;
 }
 
-export function createMemoryGetTool(ctx: MemoryToolContext): AnyAgentTool {
+export function createMemoryGetTool(_ctx: MemoryToolContext): AnyAgentTool {
   return {
     name: "memory_get",
     label: "Memory Get",

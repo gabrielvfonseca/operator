@@ -151,6 +151,7 @@ function copyRuntimeMessageFields(source: Message, target: Message): void {
 }
 
 function shouldHydrateDiscordMessagePayload(params: { message: Message }) {
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let currentText;
   try {
     currentText = resolveDiscordMessageText(params.message, {

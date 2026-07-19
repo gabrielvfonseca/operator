@@ -222,6 +222,7 @@ describe("createWebOnMessageHandler audio preflight", () => {
     processMessageMock.mockResolvedValue(true);
     createStatusReactionControllerMock.mockReset();
     createStatusReactionControllerMock.mockResolvedValue(statusReactionController);
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     Object.values(statusReactionController).forEach((mock) => mock.mockClear());
     ackReactionHandle.remove.mockClear();
     updateLastRouteInBackgroundMock.mockReset();

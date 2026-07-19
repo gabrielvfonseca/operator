@@ -123,9 +123,9 @@ function hasLegacyAllowPrivateNetworkInAccounts(value: unknown): boolean {
   const accounts = asNullableRecord(value);
   return Boolean(
     accounts &&
-    Object.values(accounts).some((account) =>
-      hasLegacyFlatAllowPrivateNetworkAlias(asNullableRecord(account) ?? {}),
-    ),
+      Object.values(accounts).some((account) =>
+        hasLegacyFlatAllowPrivateNetworkAlias(asNullableRecord(account) ?? {}),
+      ),
   );
 }
 

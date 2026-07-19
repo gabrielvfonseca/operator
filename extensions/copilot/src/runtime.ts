@@ -19,10 +19,11 @@ export interface PoolKey {
   readonly authProfileVersion?: string;
 }
 
-export interface ClientCreateOptions extends Omit<
-  CopilotClientOptions,
-  "baseDirectory" | "workingDirectory" | "useLoggedInUser" | "gitHubToken"
-> {
+export interface ClientCreateOptions
+  extends Omit<
+    CopilotClientOptions,
+    "baseDirectory" | "workingDirectory" | "useLoggedInUser" | "gitHubToken"
+  > {
   readonly copilotHome: string;
   readonly useLoggedInUser?: boolean;
   readonly gitHubToken?: string;

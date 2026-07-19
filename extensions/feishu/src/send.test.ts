@@ -388,6 +388,7 @@ describe("getMessageFeishu", () => {
                   en_us: [
                     {
                       tag: "markdown",
+                      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
                       content: "hello ${count} {{label}} {{metadata}}",
                     },
                   ],

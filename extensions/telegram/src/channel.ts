@@ -314,7 +314,7 @@ const telegramMessageActions: ChannelMessageActionAdapter = {
 
 function normalizeTelegramAcpConversationId(conversationId: string) {
   const parsed = parseTelegramTopicConversation({ conversationId });
-  if (!parsed || !parsed.chatId.startsWith("-")) {
+  if (!parsed?.chatId.startsWith("-")) {
     return null;
   }
   return {
@@ -336,7 +336,7 @@ function matchTelegramAcpConversation(params: {
     conversationId: params.conversationId,
     parentConversationId: params.parentConversationId,
   });
-  if (!incoming || !incoming.chatId.startsWith("-")) {
+  if (!incoming?.chatId.startsWith("-")) {
     return null;
   }
   if (binding.conversationId !== incoming.canonicalConversationId) {

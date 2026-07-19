@@ -197,9 +197,7 @@ export function collectExtensionPackageJsonCandidates<
         packageJson: readPluginPackageJson(packageJsonPath) as TPackageJson,
         readmeText: readOptionalTextFile(join(absolutePackageDir, "README.md")),
       });
-    } catch {
-      continue;
-    }
+    } catch {}
   }
 
   return candidates;

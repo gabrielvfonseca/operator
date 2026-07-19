@@ -46,8 +46,9 @@ function signalHandoffReady(child: ReturnType<typeof createSpawnMock>): void {
 }
 
 vi.mock("node:child_process", async () => {
-  const { mockNodeChildProcessModule } =
-    await import("../gateway/server-methods/node-child-process.test-support.js");
+  const { mockNodeChildProcessModule } = await import(
+    "../gateway/server-methods/node-child-process.test-support.js"
+  );
   return mockNodeChildProcessModule({
     spawn: spawnMock as unknown as typeof import("node:child_process").spawn,
   });
@@ -377,8 +378,9 @@ describe("managed service update handoff", () => {
   it("reports started only after the detached helper signals readiness", async () => {
     const child = createSpawnMock();
     spawnMock.mockReturnValueOnce(child);
-    const { startManagedServiceUpdateHandoff } =
-      await import("./update-managed-service-handoff.js");
+    const { startManagedServiceUpdateHandoff } = await import(
+      "./update-managed-service-handoff.js"
+    );
 
     const resultPromise = startManagedServiceUpdateHandoff({
       root: "/tmp/openclaw",
@@ -411,8 +413,9 @@ describe("managed service update handoff", () => {
   it("rejects failed helper spawns and removes the sensitive handoff directory", async () => {
     const child = createSpawnMock();
     spawnMock.mockReturnValueOnce(child);
-    const { startManagedServiceUpdateHandoff } =
-      await import("./update-managed-service-handoff.js");
+    const { startManagedServiceUpdateHandoff } = await import(
+      "./update-managed-service-handoff.js"
+    );
 
     const resultPromise = startManagedServiceUpdateHandoff({
       root: "/tmp/openclaw",
@@ -443,8 +446,9 @@ describe("managed service update handoff", () => {
     const binDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-systemd-run-bin-"));
     tempDirs.add(binDir);
     await fs.writeFile(path.join(binDir, "systemd-run"), "#!/bin/sh\nexit 0\n", { mode: 0o755 });
-    const { startManagedServiceUpdateHandoff } =
-      await import("./update-managed-service-handoff.js");
+    const { startManagedServiceUpdateHandoff } = await import(
+      "./update-managed-service-handoff.js"
+    );
 
     const resultPromise = startManagedServiceUpdateHandoff({
       root: "/tmp/openclaw",
@@ -477,8 +481,9 @@ describe("managed service update handoff", () => {
     vi.useFakeTimers();
     const child = createSpawnMock();
     spawnMock.mockReturnValueOnce(child);
-    const { startManagedServiceUpdateHandoff } =
-      await import("./update-managed-service-handoff.js");
+    const { startManagedServiceUpdateHandoff } = await import(
+      "./update-managed-service-handoff.js"
+    );
 
     const resultPromise = startManagedServiceUpdateHandoff({
       root: "/tmp/openclaw",
@@ -508,8 +513,9 @@ describe("managed service update handoff", () => {
   });
 
   it("strips supervisor hints while preserving service identity for the CLI handoff", async () => {
-    const { startManagedServiceUpdateHandoff } =
-      await import("./update-managed-service-handoff.js");
+    const { startManagedServiceUpdateHandoff } = await import(
+      "./update-managed-service-handoff.js"
+    );
     const serviceIdentityEnv = {
       OPERATOR_LAUNCHD_LABEL: "com.example.operator.test",
       OPERATOR_SYSTEMD_UNIT: "operator-test.service",
@@ -563,8 +569,9 @@ describe("managed service update handoff", () => {
   });
 
   it("launches systemd handoffs through a transient user scope", async () => {
-    const { startManagedServiceUpdateHandoff } =
-      await import("./update-managed-service-handoff.js");
+    const { startManagedServiceUpdateHandoff } = await import(
+      "./update-managed-service-handoff.js"
+    );
     const binDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-systemd-run-bin-"));
     tempDirs.add(binDir);
     const systemdRunPath = path.join(binDir, "systemd-run");
@@ -643,8 +650,9 @@ describe("managed service update handoff", () => {
   });
 
   it("serializes extended-stable into the detached CLI command", async () => {
-    const { startManagedServiceUpdateHandoff } =
-      await import("./update-managed-service-handoff.js");
+    const { startManagedServiceUpdateHandoff } = await import(
+      "./update-managed-service-handoff.js"
+    );
 
     const result = await startManagedServiceUpdateHandoff({
       root: "/tmp/openclaw",
@@ -730,8 +738,9 @@ describe("managed service update handoff", () => {
   });
 
   it("passes a gateway service recovery descriptor for each supervisor", async () => {
-    const { startManagedServiceUpdateHandoff } =
-      await import("./update-managed-service-handoff.js");
+    const { startManagedServiceUpdateHandoff } = await import(
+      "./update-managed-service-handoff.js"
+    );
     const cases = [
       {
         supervisor: "launchd" as const,
@@ -927,8 +936,9 @@ describe("managed service update handoff", () => {
     const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-handoff-timeout-test-"));
     tempDirs.add(tmpDir);
 
-    const { startManagedServiceUpdateHandoff } =
-      await import("./update-managed-service-handoff.js");
+    const { startManagedServiceUpdateHandoff } = await import(
+      "./update-managed-service-handoff.js"
+    );
     await startManagedServiceUpdateHandoff({
       root: tmpDir,
       timeoutMs: 1_800_000,
@@ -956,8 +966,9 @@ describe("managed service update handoff", () => {
     );
     tempDirs.add(tmpDir);
 
-    const { startManagedServiceUpdateHandoff } =
-      await import("./update-managed-service-handoff.js");
+    const { startManagedServiceUpdateHandoff } = await import(
+      "./update-managed-service-handoff.js"
+    );
     await startManagedServiceUpdateHandoff({
       root: tmpDir,
       restartDrainTimeoutMs: undefined,

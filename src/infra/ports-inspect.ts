@@ -318,7 +318,7 @@ function parseSsListeners(output: string, port: number): PortListener[] {
   const lines = output.split(/\r?\n/).map((line) => line.trim());
   const listeners: PortListener[] = [];
   for (const line of lines) {
-    if (!line || !line.includes("LISTEN")) {
+    if (!line?.includes("LISTEN")) {
       continue;
     }
     const parts = line.split(/\s+/);

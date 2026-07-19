@@ -142,6 +142,7 @@ export abstract class XaiRealtimeVoiceEvents extends XaiRealtimeVoiceProtocol {
         this.toolCallBuffers.delete(key);
         return;
       }
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
       case "error":
         this.handleErrorEvent(event.error);
       default:

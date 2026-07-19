@@ -396,7 +396,7 @@ describe("normalizePlainTextToolCallStreamEvents over-cap XML", () => {
     for (let split = 1; split < marker.length; split += 1) {
       const events = await normalize([
         { type: "text_delta", contentIndex: 0, delta: call + marker.slice(0, split) },
-        { type: "text_delta", contentIndex: 0, delta: marker.slice(split) + `\n${visible}` },
+        { type: "text_delta", contentIndex: 0, delta: `${marker.slice(split)}\n${visible}` },
       ]);
 
       expect(textDeltas(events)).toEqual([visible]);

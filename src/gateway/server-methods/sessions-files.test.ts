@@ -132,6 +132,7 @@ describe("sessions.files RPC handlers", () => {
         assistantToolCall("apply_patch", {
           input: "*** Begin Patch\n*** Update File: package.json\n*** End Patch\n",
         }),
+        // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
       ].forEach((message, index) => visit(message, index + 1));
       return 3;
     });
@@ -517,6 +518,7 @@ describe("sessions.files RPC handlers", () => {
         "..cache/missing.txt",
         "missing.txt",
         "src/readme.md",
+        // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
       ].forEach((filePath, index) =>
         visit(assistantToolCall("read", { path: filePath }), index + 1),
       );

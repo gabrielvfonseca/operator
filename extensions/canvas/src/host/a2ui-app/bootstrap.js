@@ -430,7 +430,7 @@ class OperatorA2UIHost extends LitElement {
 
   #handleA2UIAction(evt) {
     const payload = evt?.detail ?? evt?.payload ?? null;
-    if (!payload || payload.eventType !== "a2ui.action") {
+    if (payload?.eventType !== "a2ui.action") {
       return;
     }
 
@@ -480,7 +480,6 @@ class OperatorA2UIHost extends LitElement {
       }
       if (Object.hasOwn(value, "literalBoolean")) {
         context[key] = value.literalBoolean ?? false;
-        continue;
       }
     }
 
@@ -579,17 +578,21 @@ class OperatorA2UIHost extends LitElement {
             ? `Failed: ${this.pendingAction.name}`
             : "";
 
-    return html` ${this.pendingAction && this.pendingAction.phase !== "error"
+    return html` ${
+      this.pendingAction && this.pendingAction.phase !== "error"
         ? html`<div class="status">
             <div class="spinner"></div>
             <div>${statusText}</div>
           </div>`
-        : ""}
-      ${this.toast
-        ? html`<div class="toast ${this.toast.kind === "error" ? "error" : ""}">
+        : ""
+    }
+      ${
+        this.toast
+          ? html`<div class="toast ${this.toast.kind === "error" ? "error" : ""}">
             ${this.toast.text}
           </div>`
-        : ""}
+          : ""
+      }
       <section id="surfaces">
         ${repeat(
           this.surfaces,

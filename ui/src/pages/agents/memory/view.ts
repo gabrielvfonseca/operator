@@ -311,11 +311,13 @@ export function renderDreaming(props: DreamingProps) {
         </nav>
       </div>
 
-      ${state.activeSubTab === "scene"
-        ? renderScene(props, idle, dreamText)
-        : state.activeSubTab === "diary"
-          ? renderDiarySection(props)
-          : renderAdvancedSection(props)}
+      ${
+        state.activeSubTab === "scene"
+          ? renderScene(props, idle, dreamText)
+          : state.activeSubTab === "diary"
+            ? renderDiarySection(props)
+            : renderAdvancedSection(props)
+      }
     </div>
   `;
 }
@@ -380,8 +382,9 @@ function renderScene(props: DreamingProps, idle: boolean, dreamText: string) {
 
       <div class="dreams__moon"></div>
 
-      ${props.active
-        ? html`
+      ${
+        props.active
+          ? html`
             <div class="dreams__bubble">
               <span class="dreams__bubble-text">${dreamText}</span>
             </div>
@@ -394,7 +397,8 @@ function renderScene(props: DreamingProps, idle: boolean, dreamText: string) {
               style="top: calc(50% - 120px); left: calc(50% - 90px); width: 8px; height: 8px; animation-delay: 0.4s;"
             ></div>
           `
-        : nothing}
+          : nothing
+      }
 
       <div class="dreams__glow"></div>
       ${renderDreamsCameo(props.selectedAgentId)}
@@ -410,9 +414,11 @@ function renderScene(props: DreamingProps, idle: boolean, dreamText: string) {
           <div class="dreams__status-dot"></div>
           <span>
             ${props.promotedCount} ${t("dreaming.status.promotedSuffix")}
-            ${props.nextCycle
-              ? html`· ${t("dreaming.status.nextSweepPrefix")} ${props.nextCycle}`
-              : nothing}
+            ${
+              props.nextCycle
+                ? html`· ${t("dreaming.status.nextSweepPrefix")} ${props.nextCycle}`
+                : nothing
+            }
             ${props.timezone ? html`· ${props.timezone}` : nothing}
           </span>
         </div>
@@ -439,9 +445,11 @@ function renderScene(props: DreamingProps, idle: boolean, dreamText: string) {
         )}
       </div>
 
-      ${props.statusError
-        ? html`<div class="dreams__controls-error">${props.statusError}</div>`
-        : nothing}
+      ${
+        props.statusError
+          ? html`<div class="dreams__controls-error">${props.statusError}</div>`
+          : nothing
+      }
     </section>
   `;
 }
@@ -658,23 +666,29 @@ function renderWikiPreviewOverlay(props: DreamingProps) {
           </button>
         </div>
         <div class="dreams-diary__preview-body">
-          ${state.wikiPreviewLoading
-            ? html`<div class="dreams-diary__empty-text">${t("dreaming.wiki.loadingPage")}</div>`
-            : state.wikiPreviewError
-              ? html`<div class="dreams-diary__error">${state.wikiPreviewError}</div>`
-              : html`
-                  ${state.wikiPreviewTruncated
-                    ? html`
+          ${
+            state.wikiPreviewLoading
+              ? html`<div class="dreams-diary__empty-text">${t("dreaming.wiki.loadingPage")}</div>`
+              : state.wikiPreviewError
+                ? html`<div class="dreams-diary__error">${state.wikiPreviewError}</div>`
+                : html`
+                  ${
+                    state.wikiPreviewTruncated
+                      ? html`
                         <div class="dreams-diary__preview-hint">
                           Showing the first chunk of this
-                          page${state.wikiPreviewTotalLines !== null
-                            ? ` (${state.wikiPreviewTotalLines} total lines)`
-                            : ""}.
+                          page${
+                            state.wikiPreviewTotalLines !== null
+                              ? ` (${state.wikiPreviewTotalLines} total lines)`
+                              : ""
+                          }.
                         </div>
                       `
-                    : nothing}
+                      : nothing
+                  }
                   <pre class="dreams-diary__preview-pre">${state.wikiPreviewContent}</pre>
-                `}
+                `
+          }
         </div>
       </div>
     </operator-modal-dialog>
@@ -765,21 +779,26 @@ function renderAdvancedEntryList(params: {
           <span class="dreams-advanced__section-count">${params.entries.length}</span>
         </div>
       </div>
-      ${params.entries.length === 0
-        ? html`<div class="dreams-advanced__empty">${t(params.emptyKey)}</div>`
-        : html`
+      ${
+        params.entries.length === 0
+          ? html`<div class="dreams-advanced__empty">${t(params.emptyKey)}</div>`
+          : html`
             <div class="dreams-advanced__list">
               ${params.entries.map(
                 (entry) => html`
                   <article class="dreams-advanced__item" data-entry-key=${entry.key}>
-                    ${params.badge
-                      ? (() => {
-                          const label = params.badge?.(entry);
-                          return label
-                            ? html`<span class="dreams-advanced__badge">${label}</span>`
-                            : nothing;
-                        })()
-                      : nothing}
+                    ${
+                      params.badge
+                        ? (
+                            () => {
+                              const label = params.badge?.(entry);
+                              return label
+                                ? html`<span class="dreams-advanced__badge">${label}</span>`
+                                : nothing;
+                            }
+                          )()
+                        : nothing
+                    }
                     <div class="dreams-advanced__snippet">${entry.snippet}</div>
                     <div class="dreams-advanced__source">
                       ${formatRange(entry.path, entry.startLine, entry.endLine)}
@@ -794,7 +813,8 @@ function renderAdvancedEntryList(params: {
                 `,
               )}
             </div>
-          `}
+          `
+      }
     </section>
   `;
 }
@@ -816,9 +836,9 @@ function renderAdvancedSection(props: DreamingProps) {
         <div class="dreams-advanced__intro">
           <span class="dreams-advanced__eyebrow">${t("dreaming.advanced.eyebrow")}</span>
           <h2 class="dreams-advanced__title">${t("dreaming.advanced.title")}</h2>
-          ${description
-            ? html`<p class="dreams-advanced__description">${description}</p>`
-            : nothing}
+          ${
+            description ? html`<p class="dreams-advanced__description">${description}</p>` : nothing
+          }
           <div class="dreams-advanced__summary">${summary}</div>
         </div>
         <div class="dreams-advanced__actions">
@@ -841,9 +861,11 @@ function renderAdvancedSection(props: DreamingProps) {
             ?disabled=${props.modeSaving || props.dreamDiaryActionLoading}
             @click=${() => props.onBackfillDiary()}
           >
-            ${props.dreamDiaryActionLoading
-              ? t("dreaming.scene.working")
-              : t("dreaming.scene.backfill")}
+            ${
+              props.dreamDiaryActionLoading
+                ? t("dreaming.scene.working")
+                : t("dreaming.scene.backfill")
+            }
           </button>
           <button
             class="btn btn--subtle btn--sm"
@@ -861,18 +883,20 @@ function renderAdvancedSection(props: DreamingProps) {
           </button>
         </div>
       </div>
-      ${props.dreamDiaryActionMessage
-        ? html`
+      ${
+        props.dreamDiaryActionMessage
+          ? html`
             <div
-              class="callout ${props.dreamDiaryActionMessage.kind === "success"
-                ? "success"
-                : "danger"}"
+              class="callout ${
+                props.dreamDiaryActionMessage.kind === "success" ? "success" : "danger"
+              }"
               role="status"
             >
               <div class="row wrap items-center gap-2">
                 <span>${props.dreamDiaryActionMessage.text}</span>
-                ${props.dreamDiaryActionArchivePath
-                  ? html`
+                ${
+                  props.dreamDiaryActionArchivePath
+                    ? html`
                       <button
                         class="btn btn--subtle btn--sm"
                         ?disabled=${props.dreamDiaryActionLoading}
@@ -881,11 +905,13 @@ function renderAdvancedSection(props: DreamingProps) {
                         ${t("dreaming.wiki.copyArchivePath")}
                       </button>
                     `
-                  : nothing}
+                    : nothing
+                }
               </div>
             </div>
           `
-        : nothing}
+          : nothing
+      }
 
       <div class="dreams-advanced__sections">
         ${renderAdvancedEntryList({
@@ -919,9 +945,9 @@ function renderAdvancedSection(props: DreamingProps) {
           controls: html`
             <div class="dreams-advanced__sort">
               <button
-                class="dreams-advanced__sort-btn ${state.advancedWaitingSort === "recent"
-                  ? "dreams-advanced__sort-btn--active"
-                  : ""}"
+                class="dreams-advanced__sort-btn ${
+                  state.advancedWaitingSort === "recent" ? "dreams-advanced__sort-btn--active" : ""
+                }"
                 @click=${() => {
                   state.advancedWaitingSort = "recent";
                   props.onViewStateChange();
@@ -930,9 +956,9 @@ function renderAdvancedSection(props: DreamingProps) {
                 ${t("dreaming.advanced.sortRecent")}
               </button>
               <button
-                class="dreams-advanced__sort-btn ${state.advancedWaitingSort === "signals"
-                  ? "dreams-advanced__sort-btn--active"
-                  : ""}"
+                class="dreams-advanced__sort-btn ${
+                  state.advancedWaitingSort === "signals" ? "dreams-advanced__sort-btn--active" : ""
+                }"
                 @click=${() => {
                   state.advancedWaitingSort = "signals";
                   props.onViewStateChange();
@@ -973,9 +999,11 @@ function renderAdvancedSection(props: DreamingProps) {
         })}
       </div>
 
-      ${props.statusError
-        ? html`<div class="dreams__controls-error">${props.statusError}</div>`
-        : nothing}
+      ${
+        props.statusError
+          ? html`<div class="dreams__controls-error">${props.statusError}</div>`
+          : nothing
+      }
     </section>
   `;
 }
@@ -1010,9 +1038,9 @@ function renderDiaryImportsSection(props: DreamingProps) {
       ${clusters.map(
         (entry, index) => html`
           <button
-            class="dreams-diary__day-chip ${index === clusterIndex
-              ? "dreams-diary__day-chip--active"
-              : ""}"
+            class="dreams-diary__day-chip ${
+              index === clusterIndex ? "dreams-diary__day-chip--active" : ""
+            }"
             @click=${() => {
               setDiaryPage(state, index, clusters.length);
               props.onViewStateChange();
@@ -1029,16 +1057,20 @@ function renderDiaryImportsSection(props: DreamingProps) {
       <div class="dreams-diary__date">
         ${cluster.label} · ${cluster.itemCount} chats
         ${cluster.highRiskCount > 0 ? html`· ${cluster.highRiskCount} sensitive` : nothing}
-        ${cluster.preferenceSignalCount > 0
-          ? html`· ${cluster.preferenceSignalCount} signals`
-          : nothing}
+        ${
+          cluster.preferenceSignalCount > 0
+            ? html`· ${cluster.preferenceSignalCount} signals`
+            : nothing
+        }
       </div>
       <div class="dreams-diary__prose">
         <p class="dreams-diary__para">
           Imported chats clustered around ${cluster.label.toLowerCase()}.
-          ${cluster.withheldCount > 0
-            ? ` ${cluster.withheldCount} digest${cluster.withheldCount === 1 ? " was" : "s were"} withheld pending review.`
-            : ""}
+          ${
+            cluster.withheldCount > 0
+              ? ` ${cluster.withheldCount} digest${cluster.withheldCount === 1 ? " was" : "s were"} withheld pending review.`
+              : ""
+          }
         </p>
       </div>
       <div class="dreams-diary__insights">
@@ -1068,8 +1100,9 @@ function renderDiaryImportsSection(props: DreamingProps) {
                 ${item.activeBranchMessages > 0 ? ` · ${item.activeBranchMessages} messages` : ""}
               </div>
               <p class="dreams-diary__insight-line">${item.summary}</p>
-              ${item.candidateSignals.length > 0
-                ? html`
+              ${
+                item.candidateSignals.length > 0
+                  ? html`
                     <div class="dreams-diary__insight-list">
                       <strong>${t("dreaming.wiki.candidateSignals")}</strong>
                       ${item.candidateSignals.map(
@@ -1077,9 +1110,11 @@ function renderDiaryImportsSection(props: DreamingProps) {
                       )}
                     </div>
                   `
-                : nothing}
-              ${item.correctionSignals.length > 0
-                ? html`
+                  : nothing
+              }
+              ${
+                item.correctionSignals.length > 0
+                  ? html`
                     <div class="dreams-diary__insight-list">
                       <strong>${t("dreaming.wiki.corrections")}</strong>
                       ${item.correctionSignals.map(
@@ -1087,52 +1122,64 @@ function renderDiaryImportsSection(props: DreamingProps) {
                       )}
                     </div>
                   `
-                : nothing}
-              ${expanded
-                ? html`
+                  : nothing
+              }
+              ${
+                expanded
+                  ? html`
                     <div class="dreams-diary__insight-list">
                       <strong>${t("dreaming.wiki.importDetails")}</strong>
-                      ${item.firstUserLine
-                        ? html`
+                      ${
+                        item.firstUserLine
+                          ? html`
                             <p class="dreams-diary__insight-line">
                               <strong>${t("dreaming.wiki.startedWith")}</strong>
                               ${item.firstUserLine}
                             </p>
                           `
-                        : nothing}
-                      ${item.lastUserLine && item.lastUserLine !== item.firstUserLine
-                        ? html`
+                          : nothing
+                      }
+                      ${
+                        item.lastUserLine && item.lastUserLine !== item.firstUserLine
+                          ? html`
                             <p class="dreams-diary__insight-line">
                               <strong>${t("dreaming.wiki.endedOn")}</strong>
                               ${item.lastUserLine}
                             </p>
                           `
-                        : nothing}
+                          : nothing
+                      }
                       <p class="dreams-diary__insight-line">
                         <strong>${t("dreaming.wiki.messages")}</strong>
                         ${item.userMessageCount} user · ${item.assistantMessageCount} assistant
                       </p>
-                      ${item.riskReasons.length > 0
-                        ? html`
+                      ${
+                        item.riskReasons.length > 0
+                          ? html`
                             <p class="dreams-diary__insight-line">
                               <strong>${t("dreaming.wiki.riskReasons")}</strong>
                               ${item.riskReasons.join(", ")}
                             </p>
                           `
-                        : nothing}
-                      ${item.labels.length > 0
-                        ? html`
+                          : nothing
+                      }
+                      ${
+                        item.labels.length > 0
+                          ? html`
                             <p class="dreams-diary__insight-line">
                               <strong>${t("dreaming.wiki.labels")}</strong>
                               ${item.labels.join(", ")}
                             </p>
                           `
-                        : nothing}
+                          : nothing
+                      }
                     </div>
                   `
-                : nothing}
-              ${item.preferenceSignals.length > 0
-                ? html`
+                  : nothing
+              }
+              ${
+                item.preferenceSignals.length > 0
+                  ? html`
                     <div class="dreams-diary__insight-signals">
                       ${item.preferenceSignals.map(
                         (signal) =>
@@ -1140,7 +1187,8 @@ function renderDiaryImportsSection(props: DreamingProps) {
                       )}
                     </div>
                   `
-                : nothing}
+                  : nothing
+              }
               <div class="dreams-diary__insight-actions">
                 <button
                   class="btn btn--subtle btn--sm"
@@ -1211,9 +1259,9 @@ function renderMemoryPalaceSection(props: DreamingProps) {
       ${clusters.map(
         (entry, index) => html`
           <button
-            class="dreams-diary__day-chip ${index === clusterIndex
-              ? "dreams-diary__day-chip--active"
-              : ""}"
+            class="dreams-diary__day-chip ${
+              index === clusterIndex ? "dreams-diary__day-chip--active" : ""
+            }"
             @click=${() => {
               setDiaryPage(state, index, clusters.length);
               props.onViewStateChange();
@@ -1231,9 +1279,11 @@ function renderMemoryPalaceSection(props: DreamingProps) {
         Vault · ${formatCount(totalPages, "page")}
         ${totalClaims > 0 ? html`· ${formatCount(totalClaims, "claim row")}` : nothing}
         ${totalQuestions > 0 ? html`· ${formatCount(totalQuestions, "open question")}` : nothing}
-        ${totalContradictions > 0
-          ? html`· ${formatCount(totalContradictions, "contradiction")}`
-          : nothing}
+        ${
+          totalContradictions > 0
+            ? html`· ${formatCount(totalContradictions, "contradiction")}`
+            : nothing
+        }
       </div>
       <div class="dreams-diary__prose">
         <p class="dreams-diary__para">Full vault breakdown: ${pageBreakdown}.</p>
@@ -1271,11 +1321,14 @@ function renderMemoryPalaceSection(props: DreamingProps) {
                 ${item.updatedAt ? formatCompactDateTime(item.updatedAt) : basename(item.pagePath)}
                 · ${item.pagePath}
               </div>
-              ${item.snippet
-                ? html`<p class="dreams-diary__insight-line">${item.snippet}</p>`
-                : nothing}
-              ${item.claims.length > 0
-                ? html`
+              ${
+                item.snippet
+                  ? html`<p class="dreams-diary__insight-line">${item.snippet}</p>`
+                  : nothing
+              }
+              ${
+                item.claims.length > 0
+                  ? html`
                     <div class="dreams-diary__insight-list">
                       <strong>${t("dreaming.wiki.claims")}</strong>
                       ${item.claims.map(
@@ -1283,9 +1336,11 @@ function renderMemoryPalaceSection(props: DreamingProps) {
                       )}
                     </div>
                   `
-                : nothing}
-              ${item.questions.length > 0
-                ? html`
+                  : nothing
+              }
+              ${
+                item.questions.length > 0
+                  ? html`
                     <div class="dreams-diary__insight-list">
                       <strong>${t("dreaming.wiki.openQuestions")}</strong>
                       ${item.questions.map(
@@ -1293,9 +1348,11 @@ function renderMemoryPalaceSection(props: DreamingProps) {
                       )}
                     </div>
                   `
-                : nothing}
-              ${item.contradictions.length > 0
-                ? html`
+                  : nothing
+              }
+              ${
+                item.contradictions.length > 0
+                  ? html`
                     <div class="dreams-diary__insight-list">
                       <strong>${t("dreaming.wiki.contradictions")}</strong>
                       ${item.contradictions.map(
@@ -1303,26 +1360,31 @@ function renderMemoryPalaceSection(props: DreamingProps) {
                       )}
                     </div>
                   `
-                : nothing}
-              ${expanded
-                ? html`
+                  : nothing
+              }
+              ${
+                expanded
+                  ? html`
                     <div class="dreams-diary__insight-list">
                       <strong>${t("dreaming.wiki.pageDetails")}</strong>
                       <p class="dreams-diary__insight-line">
                         <strong>${t("dreaming.wiki.wikiPage")}</strong>
                         ${item.pagePath}
                       </p>
-                      ${item.id
-                        ? html`
+                      ${
+                        item.id
+                          ? html`
                             <p class="dreams-diary__insight-line">
                               <strong>${t("dreaming.wiki.id")}</strong>
                               ${item.id}
                             </p>
                           `
-                        : nothing}
+                          : nothing
+                      }
                     </div>
                   `
-                : nothing}
+                  : nothing
+              }
               <div class="dreams-diary__insight-actions">
                 <button
                   class="btn btn--subtle btn--sm"
@@ -1391,9 +1453,9 @@ function renderDreamDiaryEntries(props: DreamingProps) {
       ${reversed.map(
         (e) => html`
           <button
-            class="dreams-diary__day-chip ${e.page === page
-              ? "dreams-diary__day-chip--active"
-              : ""}"
+            class="dreams-diary__day-chip ${
+              e.page === page ? "dreams-diary__day-chip--active" : ""
+            }"
             @click=${() => {
               setDiaryPage(state, e.page, reversed.length);
               props.onViewStateChange();
@@ -1447,9 +1509,9 @@ function renderDiarySection(props: DreamingProps) {
           <span class="dreams-diary__title">${t("dreaming.diary.title")}</span>
           <div class="dreams-diary__subtabs">
             <button
-              class="dreams-diary__subtab ${activeDiarySubTab === "dreams"
-                ? "dreams-diary__subtab--active"
-                : ""}"
+              class="dreams-diary__subtab ${
+                activeDiarySubTab === "dreams" ? "dreams-diary__subtab--active" : ""
+              }"
               @click=${() => {
                 resetWikiPreview(state);
                 state.activeDiarySubTab = "dreams";
@@ -1460,9 +1522,9 @@ function renderDiarySection(props: DreamingProps) {
               ${t("dreaming.wiki.dreamsTab")}
             </button>
             <button
-              class="dreams-diary__subtab ${activeDiarySubTab === "insights"
-                ? "dreams-diary__subtab--active"
-                : ""}"
+              class="dreams-diary__subtab ${
+                activeDiarySubTab === "insights" ? "dreams-diary__subtab--active" : ""
+              }"
               @click=${() => {
                 resetWikiPreview(state);
                 state.activeDiarySubTab = "insights";
@@ -1473,9 +1535,9 @@ function renderDiarySection(props: DreamingProps) {
               ${t("dreaming.wiki.insightsTab")}
             </button>
             <button
-              class="dreams-diary__subtab ${activeDiarySubTab === "palace"
-                ? "dreams-diary__subtab--active"
-                : ""}"
+              class="dreams-diary__subtab ${
+                activeDiarySubTab === "palace" ? "dreams-diary__subtab--active" : ""
+              }"
               @click=${() => {
                 resetWikiPreview(state);
                 state.activeDiarySubTab = "palace";
@@ -1488,14 +1550,18 @@ function renderDiarySection(props: DreamingProps) {
           </div>
           <button
             class="btn btn--subtle btn--sm"
-            ?disabled=${memoryWikiUnavailable
-              ? false
-              : props.modeSaving ||
-                (activeDiarySubTab === "dreams"
-                  ? props.dreamDiaryLoading
-                  : activeDiarySubTab === "insights"
-                    ? props.wikiImportInsightsLoading
-                    : props.wikiMemoryPalaceLoading)}
+            ?disabled=${
+              memoryWikiUnavailable
+                ? false
+                : props.modeSaving ||
+                  (
+                    activeDiarySubTab === "dreams"
+                      ? props.dreamDiaryLoading
+                      : activeDiarySubTab === "insights"
+                        ? props.wikiImportInsightsLoading
+                        : props.wikiMemoryPalaceLoading
+                  )
+            }
             @click=${() => {
               state.diaryPage = 0;
               if (memoryWikiUnavailable) {
@@ -1509,26 +1575,29 @@ function renderDiarySection(props: DreamingProps) {
               }
             }}
           >
-            ${memoryWikiUnavailable
-              ? t("dreaming.wiki.howToEnable")
-              : activeDiarySubTab === "dreams"
-                ? props.dreamDiaryLoading
-                  ? t("dreaming.diary.reloading")
-                  : t("dreaming.diary.reload")
-                : activeDiarySubTab === "insights"
-                  ? props.wikiImportInsightsLoading
-                    ? "Reloading…"
-                    : "Reload"
-                  : props.wikiMemoryPalaceLoading
-                    ? "Reloading…"
-                    : "Reload"}
+            ${
+              memoryWikiUnavailable
+                ? t("dreaming.wiki.howToEnable")
+                : activeDiarySubTab === "dreams"
+                  ? props.dreamDiaryLoading
+                    ? t("dreaming.diary.reloading")
+                    : t("dreaming.diary.reload")
+                  : activeDiarySubTab === "insights"
+                    ? props.wikiImportInsightsLoading
+                      ? "Reloading…"
+                      : "Reload"
+                    : props.wikiMemoryPalaceLoading
+                      ? "Reloading…"
+                      : "Reload"
+            }
           </button>
         </div>
         ${renderDiarySubtabExplainer(activeDiarySubTab)}
       </div>
 
-      ${memoryWikiUnavailable
-        ? html`
+      ${
+        memoryWikiUnavailable
+          ? html`
             <div class="dreams-diary__empty">
               <div class="dreams-diary__empty-text">${t("dreaming.wiki.unavailable")}</div>
               <div class="dreams-diary__empty-hint">
@@ -1548,11 +1617,12 @@ function renderDiarySection(props: DreamingProps) {
               </div>
             </div>
           `
-        : activeDiarySubTab === "dreams"
-          ? renderDreamDiaryEntries(props)
-          : activeDiarySubTab === "insights"
-            ? renderDiaryImportsSection(props)
-            : renderMemoryPalaceSection(props)}
+          : activeDiarySubTab === "dreams"
+            ? renderDreamDiaryEntries(props)
+            : activeDiarySubTab === "insights"
+              ? renderDiaryImportsSection(props)
+              : renderMemoryPalaceSection(props)
+      }
       ${renderWikiPreviewOverlay(props)}
     </section>
   `;

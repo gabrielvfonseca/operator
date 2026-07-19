@@ -16,9 +16,7 @@ export const COPILOT_INTEGRATION_ID = "vscode-chat";
 
 /** @deprecated GitHub Copilot provider-owned helper; do not use from third-party plugins. */
 export function buildCopilotIdeHeaders(
-  params: {
-    includeApiVersion?: boolean;
-  } = {},
+  params: { includeApiVersion?: boolean } = {},
 ): Record<string, string> {
   return {
     "Accept-Encoding": "identity",

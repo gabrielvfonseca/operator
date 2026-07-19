@@ -187,10 +187,10 @@ function sameSessionFileIdentityAndSize(
 ): boolean {
   return Boolean(
     left?.exists &&
-    right.exists &&
-    left.dev === right.dev &&
-    left.ino === right.ino &&
-    left.size === right.size,
+      right.exists &&
+      left.dev === right.dev &&
+      left.ino === right.ino &&
+      left.size === right.size,
   );
 }
 
@@ -1233,7 +1233,10 @@ export async function createEmbeddedAttemptSessionLockController(params: {
   lockOptions: LockOptions;
   mergePromptReleasedSessionEntries?: (
     entries: readonly PromptReleasedSessionEntry[],
-  ) => Promise<PromptReleasedSessionMergeResult | void> | PromptReleasedSessionMergeResult | void;
+  ) =>
+    | Promise<PromptReleasedSessionMergeResult | undefined>
+    | PromptReleasedSessionMergeResult
+    | undefined;
   reloadPromptReleasedSessionFile?: () => Promise<void> | void;
 }): Promise<EmbeddedAttemptSessionLockController> {
   const acquireLock = async (signal?: AbortSignal): Promise<SessionLock> =>
@@ -1342,7 +1345,7 @@ export async function createEmbeddedAttemptSessionLockController(params: {
     ) {
       return undefined;
     }
-    let mergeResult: PromptReleasedSessionMergeResult | void;
+    let mergeResult: PromptReleasedSessionMergeResult | undefined;
     try {
       mergeResult = await params.mergePromptReleasedSessionEntries(change.entries);
     } catch (error) {

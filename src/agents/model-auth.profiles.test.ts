@@ -159,7 +159,9 @@ vi.mock("./model-auth-env-vars.js", () => {
           type: "local-file-with-env",
           fileEnvVar: "GOOGLE_APPLICATION_CREDENTIALS",
           fallbackPaths: [
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             "${HOME}/.config/gcloud/application_default_credentials.json",
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             "${APPDATA}/gcloud/application_default_credentials.json",
           ],
           requiresAnyEnv: ["GOOGLE_CLOUD_PROJECT", "GCLOUD_PROJECT"],

@@ -19,9 +19,13 @@ describe("resolveIosVersion", () => {
   it("writes shared full commit and UTC timestamp settings for iOS builds", () => {
     const script = fs.readFileSync("scripts/ios-write-version-xcconfig.sh", "utf8");
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('source "${ROOT_DIR}/scripts/lib/build-metadata.sh"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain("OPENCLAW_GIT_COMMIT = ${RESOLVED_GIT_COMMIT}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain("OPENCLAW_BUILD_TIMESTAMP = ${RESOLVED_BUILD_TIMESTAMP}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('openclaw_resolve_git_commit "${ROOT_DIR}"');
     expect(script).toContain("openclaw_resolve_build_timestamp");
   });

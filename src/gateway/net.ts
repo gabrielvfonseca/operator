@@ -65,6 +65,7 @@ export function resolveLocalInterfaceAddressMatch(
   if (!normalized) {
     return false;
   }
+  // biome-ignore lint/complexity/noArguments: migrated from oxlint
   const effectiveSnapshot = arguments.length >= 2 ? snapshot : safeNetworkInterfaces();
   if (!effectiveSnapshot) {
     return undefined;

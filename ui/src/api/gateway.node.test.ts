@@ -139,8 +139,9 @@ vi.mock("../lib/nodes/index.ts", async (importOriginal) => ({
   signDevicePayload: signDevicePayloadMock,
 }));
 
-const { GatewayBrowserClient, GatewayRequestError, resolveGatewayErrorDetailCode } =
-  await import("./gateway.ts");
+const { GatewayBrowserClient, GatewayRequestError, resolveGatewayErrorDetailCode } = await import(
+  "./gateway.ts"
+);
 
 type ConnectFrame = {
   id?: string;

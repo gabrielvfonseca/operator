@@ -168,8 +168,8 @@ function handleChatEvent(state: ChatState, payload?: ChatEventPayload) {
     payload.runId === state.chatRunId;
   const authoritativeTerminalMatches = Boolean(
     payload.runId &&
-    authoritativeHistoryAppliedForRun(state, payload.runId) &&
-    chatEventSessionMatches(state, payload),
+      authoritativeHistoryAppliedForRun(state, payload.runId) &&
+      chatEventSessionMatches(state, payload),
   );
   if (!sessionMatches && !activeRunMatches) {
     if (payload.state === "final") {

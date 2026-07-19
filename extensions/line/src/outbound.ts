@@ -322,9 +322,7 @@ export const lineOutboundAdapter: NonNullable<ChannelPlugin<ResolvedLineAccount>
       return result;
     },
     sendMedia: async ({ cfg, to, text, mediaUrl, accountId }) =>
-      await (
-        await loadLineOutboundRuntime()
-      ).sendMessageLine(to, text, {
+      await (await loadLineOutboundRuntime()).sendMessageLine(to, text, {
         verbose: false,
         mediaUrl,
         cfg,

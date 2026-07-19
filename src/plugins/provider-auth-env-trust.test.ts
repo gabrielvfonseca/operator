@@ -36,6 +36,7 @@ describe("provider auth env trust", () => {
   it("buildApiKeyCredential keeps secret-ref-like input literal in plaintext mode", async () => {
     const { buildApiKeyCredential } = await import("./provider-auth-helpers.js");
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const credential = buildApiKeyCredential("ollama", "${AWS_SECRET_ACCESS_KEY}", undefined, {
       secretInputMode: "plaintext",
     });
@@ -43,6 +44,7 @@ describe("provider auth env trust", () => {
     expect(credential).toEqual({
       type: "api_key",
       provider: "ollama",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       key: "${AWS_SECRET_ACCESS_KEY}",
     });
   });

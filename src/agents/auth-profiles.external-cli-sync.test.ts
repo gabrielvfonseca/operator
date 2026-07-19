@@ -117,8 +117,9 @@ describe("external cli oauth resolution", () => {
     mocks.readClaudeCliCredentialsCached.mockReset().mockReturnValue(null);
     mocks.readCodexCliCredentialsCached.mockReset().mockReturnValue(null);
     mocks.readMiniMaxCliCredentialsCached.mockReset().mockReturnValue(null);
-    ({ readExternalCliBootstrapCredential, resolveExternalCliAuthProfiles } =
-      await import("./auth-profiles/external-cli-sync.js"));
+    ({ readExternalCliBootstrapCredential, resolveExternalCliAuthProfiles } = await import(
+      "./auth-profiles/external-cli-sync.js"
+    ));
     ({
       hasUsableOAuthCredential,
       shouldBootstrapFromExternalCliCredential,

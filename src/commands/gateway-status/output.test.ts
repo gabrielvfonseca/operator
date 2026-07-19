@@ -22,8 +22,9 @@ vi.mock("../../../packages/terminal-core/src/theme.js", async () => {
   };
 });
 
-const { buildGatewayStatusWarnings, writeGatewayStatusJson, writeGatewayStatusText } =
-  await import("./output.js");
+const { buildGatewayStatusWarnings, writeGatewayStatusJson, writeGatewayStatusText } = await import(
+  "./output.js"
+);
 
 function createRuntimeCapture(): RuntimeEnv {
   return {

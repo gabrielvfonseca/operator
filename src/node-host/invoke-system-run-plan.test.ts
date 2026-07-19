@@ -187,9 +187,7 @@ function resolveNativeBinaryFixturePath(): string {
         cachedNativeBinaryFixturePath = candidate;
         return candidate;
       }
-    } catch {
-      continue;
-    }
+    } catch {}
   }
   throw new Error("expected a native binary fixture path");
 }

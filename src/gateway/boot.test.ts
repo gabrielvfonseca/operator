@@ -106,11 +106,7 @@ describe("runBootOnce", () => {
   };
 
   const runBootAndReturnCall = async (
-    params: {
-      content?: string;
-      cfg?: OperatorConfig;
-      agentId?: string;
-    } = {},
+    params: { content?: string; cfg?: OperatorConfig; agentId?: string } = {},
   ): Promise<Record<string, unknown>> => {
     let call: Record<string, unknown> | undefined;
     const cfg = params.cfg ?? {};

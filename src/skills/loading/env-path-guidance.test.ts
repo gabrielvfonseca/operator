@@ -40,6 +40,7 @@ const CASES: GuidanceCase[] = [
     required: [
       "OPERATOR_STATE_DIR",
       "OPERATOR_CONFIG_PATH",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'STATE_DIR="${OPERATOR_STATE_DIR:-$HOME/.openclaw}"',
     ],
     forbidden: [

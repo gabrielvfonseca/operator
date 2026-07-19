@@ -557,8 +557,9 @@ async function collectLegacyPairingStoreIssues(cfg: OperatorConfig): Promise<str
     return [];
   }
   // Lazy import keeps the migration module a startup-only boundary.
-  const { listLegacyDevicePairingStoreFiles } =
-    await import("../infra/device-pairing-migration.js");
+  const { listLegacyDevicePairingStoreFiles } = await import(
+    "../infra/device-pairing-migration.js"
+  );
   return (await listLegacyDevicePairingStoreFiles()).map(formatLegacyPairingStoreIssue);
 }
 

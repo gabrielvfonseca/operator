@@ -210,6 +210,7 @@ export async function maybeRepairGatewayDaemon(params: {
   const isLocalDarwinGateway =
     process.platform === "darwin" && params.cfg.gateway?.mode !== "remote";
   // systemd can throw in containers/WSL; treat as "not loaded" and fall back to hints.
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let loaded;
   try {
     loaded = await service.isLoaded({ env: process.env });

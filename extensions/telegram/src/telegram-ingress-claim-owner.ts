@@ -160,10 +160,10 @@ export function isTelegramSpooledUpdateClaimOwnedByOtherLiveProcess(
 ): boolean {
   return Boolean(
     claim.claim &&
-    claim.claim.processId !== TELEGRAM_SPOOLED_UPDATE_PROCESS_ID &&
-    claim.claim.processPid !== process.pid &&
-    isFreshClaimOwner(claim.claim, options) &&
-    isClaimOwnerProcessInstanceLive(claim.claim, options),
+      claim.claim.processId !== TELEGRAM_SPOOLED_UPDATE_PROCESS_ID &&
+      claim.claim.processPid !== process.pid &&
+      isFreshClaimOwner(claim.claim, options) &&
+      isClaimOwnerProcessInstanceLive(claim.claim, options),
   );
 }
 

@@ -156,8 +156,9 @@ async function applyDefaultModelFromAuthChoice(params: {
     preserveExistingPrimary: params.preserveExistingDefaultModel === true,
   });
   if (!preservesDifferentPrimary) {
-    const { CODEX_RUNTIME_PLUGIN_ID, ensureCodexRuntimePluginForModelSelection } =
-      await import("../commands/codex-runtime-plugin-install.js");
+    const { CODEX_RUNTIME_PLUGIN_ID, ensureCodexRuntimePluginForModelSelection } = await import(
+      "../commands/codex-runtime-plugin-install.js"
+    );
     const codexInstall = await ensureCodexRuntimePluginForModelSelection({
       cfg: nextConfig,
       model: params.selectedModel,
@@ -173,8 +174,9 @@ async function applyDefaultModelFromAuthChoice(params: {
       // or a repair against an already-present harness. The user can always
       // decline the prompt; surfacing it again costs nothing if there is no
       // migratable state to find.
-      const { offerPostInstallMigrations } =
-        await import("../wizard/setup.post-install-migration.js");
+      const { offerPostInstallMigrations } = await import(
+        "../wizard/setup.post-install-migration.js"
+      );
       const migrationResult = await offerPostInstallMigrations({
         config: nextConfig,
         runtime: params.runtime,
@@ -183,8 +185,9 @@ async function applyDefaultModelFromAuthChoice(params: {
       });
       nextConfig = migrationResult.config;
     }
-    const { ensureCopilotRuntimePluginForModelSelection } =
-      await import("../commands/copilot-runtime-plugin-install.js");
+    const { ensureCopilotRuntimePluginForModelSelection } = await import(
+      "../commands/copilot-runtime-plugin-install.js"
+    );
     const copilotInstall = await ensureCopilotRuntimePluginForModelSelection({
       cfg: nextConfig,
       model: params.selectedModel,
@@ -437,8 +440,9 @@ export async function applyAuthChoiceLoadedPluginProvider(
     });
   }
   if (!resolved && installCatalogEntry) {
-    const { ensureOnboardingPluginInstalled } =
-      await import("../commands/onboarding-plugin-install.js");
+    const { ensureOnboardingPluginInstalled } = await import(
+      "../commands/onboarding-plugin-install.js"
+    );
     const installResult = await ensureOnboardingPluginInstalled({
       cfg: nextConfig,
       entry: {

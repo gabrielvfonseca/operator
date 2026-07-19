@@ -481,8 +481,8 @@ function getManifestInstallSourceRefCandidate(
   }
   const hasInstallSpec = Boolean(
     normalizeOptionalString(install.clawhubSpec) ||
-    normalizeOptionalString(install.npmSpec) ||
-    normalizeOptionalString(install.localPath),
+      normalizeOptionalString(install.npmSpec) ||
+      normalizeOptionalString(install.localPath),
   );
   if (!hasInstallSpec) {
     return undefined;
@@ -643,8 +643,9 @@ async function parseHostedCatalogFeedBody(params: {
 }> {
   const raw = JSON.parse(params.body) as unknown;
   if (params.verification?.mode === "signed") {
-    const { verifyOfficialExternalPluginCatalogSignedEnvelope } =
-      await import("./official-external-plugin-catalog-envelope.js");
+    const { verifyOfficialExternalPluginCatalogSignedEnvelope } = await import(
+      "./official-external-plugin-catalog-envelope.js"
+    );
     const threshold = params.verification.threshold ?? 1;
     const verification = verifyOfficialExternalPluginCatalogSignedEnvelope(raw, {
       trustedKeys: params.verification.keys,
@@ -799,8 +800,9 @@ async function resolveHostedCatalogSnapshotStore(params: {
   if (params.snapshotStore !== undefined) {
     return params.snapshotStore ?? undefined;
   }
-  const { createSqliteHostedOfficialExternalPluginCatalogSnapshotStore } =
-    await import("./official-external-plugin-catalog-snapshot-store.js");
+  const { createSqliteHostedOfficialExternalPluginCatalogSnapshotStore } = await import(
+    "./official-external-plugin-catalog-snapshot-store.js"
+  );
   return createSqliteHostedOfficialExternalPluginCatalogSnapshotStore({
     ...(params.env ? { env: params.env } : {}),
     ...(params.stateDir ? { stateDir: params.stateDir } : {}),

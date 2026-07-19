@@ -111,6 +111,7 @@ describe("resolveGatewayInstallToken", () => {
 
     const result = await resolveGatewayInstallToken({
       config: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         gateway: { auth: { mode: "token", token: "${MISSING_GATEWAY_TOKEN}" } },
       } as OperatorConfig,
       env: {} as NodeJS.ProcessEnv,
@@ -200,6 +201,7 @@ describe("resolveGatewayInstallToken", () => {
       config: {
         gateway: {
           auth: {
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             token: "${OPERATOR_GATEWAY_TOKEN}",
           },
         },

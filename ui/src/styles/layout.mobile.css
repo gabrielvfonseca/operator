@@ -238,7 +238,7 @@ html.openclaw-native-macos body .shell--mobile-nav {
 }
 
 html.openclaw-native-macos body .shell--mobile-nav .topbar {
-  padding: 0 12px 0 92px !important;
+  padding: 0 12px 0 92px;
 }
 
 html.openclaw-native-macos body .shell--mobile-nav .topnav-shell {
@@ -322,6 +322,7 @@ html.openclaw-native-macos body .shell--mobile-nav .topnav-shell__actions {
   }
 
   /* Content */
+  /* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
   .content-header {
     display: none;
   }
@@ -677,6 +678,7 @@ html.openclaw-native-macos body .shell--mobile-nav .topnav-shell__actions {
     --shell-pad: 4px;
   }
 
+  /* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
   .topbar {
     padding: 8px 10px;
   }
@@ -685,6 +687,7 @@ html.openclaw-native-macos body .shell--mobile-nav .topnav-shell__actions {
     font-size: 13px;
   }
 
+  /* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
   .nav-item {
     padding: 6px 8px;
     font-size: 12px; /* was 11px */

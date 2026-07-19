@@ -37,17 +37,17 @@ export function runNodeMain(params?: {
     args: string[],
     options: unknown,
   ) => {
-    kill?: (signal?: string) => boolean | void;
+    kill?: (signal?: string) => boolean | undefined;
     on: (
       event: "exit",
       cb: (code: number | null, signal: string | null) => void,
-    ) => void | undefined;
+    ) => undefined | undefined;
   };
   spawnSync?: unknown;
   fs?: unknown;
   stderr?: { write: (value: string) => void };
   process?: NodeJS.Process;
-  signalProcess?: (pid: number, signal?: NodeJS.Signals | number) => boolean | void;
+  signalProcess?: (pid: number, signal?: NodeJS.Signals | number) => boolean | undefined;
   execPath?: string;
   cwd?: string;
   args?: string[];

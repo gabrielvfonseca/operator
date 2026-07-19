@@ -257,7 +257,7 @@ describe("createWebhookHandler", () => {
 
   it("rejects excess concurrent pre-auth body reads from the same remote IP", async () => {
     const handler = createWebhookHandler({
-      account: makeAccount({ accountId: "preauth-inflight-test-" + Date.now() }),
+      account: makeAccount({ accountId: `preauth-inflight-test-${Date.now()}` }),
       deliver: vi.fn(),
       log,
     });
@@ -307,7 +307,7 @@ describe("createWebhookHandler", () => {
     const deliver = vi.fn().mockResolvedValue(null);
     const handler = createWebhookHandler({
       account: makeAccount({
-        accountId: "weak-token-bruteforce-" + Date.now(),
+        accountId: `weak-token-bruteforce-${Date.now()}`,
         token: weakToken,
         rateLimitPerMinute: 5,
       }),
@@ -369,7 +369,7 @@ describe("createWebhookHandler", () => {
     const deliver = vi.fn().mockResolvedValue(null);
     const handler = createWebhookHandler({
       account: makeAccount({
-        accountId: "preauth-ip-scope-" + Date.now(),
+        accountId: `preauth-ip-scope-${Date.now()}`,
         rateLimitPerMinute: 1,
       }),
       deliver,
@@ -403,7 +403,7 @@ describe("createWebhookHandler", () => {
     const deliver = vi.fn().mockResolvedValue(null);
     const handler = createWebhookHandler({
       account: makeAccount({
-        accountId: "preauth-forwarded-ip-scope-" + Date.now(),
+        accountId: `preauth-forwarded-ip-scope-${Date.now()}`,
         rateLimitPerMinute: 1,
       }),
       trustedProxies: ["127.0.0.1"],
@@ -443,7 +443,7 @@ describe("createWebhookHandler", () => {
     const deliver = vi.fn().mockResolvedValue(null);
     const handler = createWebhookHandler({
       account: makeAccount({
-        accountId: "invalid-token-budget-" + Date.now(),
+        accountId: `invalid-token-budget-${Date.now()}`,
         rateLimitPerMinute: 30,
       }),
       deliver,
@@ -464,7 +464,7 @@ describe("createWebhookHandler", () => {
   it("accepts application/json with alias fields", async () => {
     const deliver = vi.fn().mockResolvedValue(null);
     const handler = createWebhookHandler({
-      account: makeAccount({ accountId: "json-test-" + Date.now() }),
+      account: makeAccount({ accountId: `json-test-${Date.now()}` }),
       deliver,
       log,
     });
@@ -496,7 +496,7 @@ describe("createWebhookHandler", () => {
   it("rejects malformed application/json with a stable parser error", async () => {
     const deliver = vi.fn().mockResolvedValue(null);
     const handler = createWebhookHandler({
-      account: makeAccount({ accountId: "json-malformed-" + Date.now() }),
+      account: makeAccount({ accountId: `json-malformed-${Date.now()}` }),
       deliver,
       log,
     });
@@ -569,7 +569,7 @@ describe("createWebhookHandler", () => {
 
   it("returns 429 when rate limited", async () => {
     const account = makeAccount({
-      accountId: "rate-test-" + Date.now(),
+      accountId: `rate-test-${Date.now()}`,
       rateLimitPerMinute: 1,
     });
     const handler = createWebhookHandler({
@@ -594,7 +594,7 @@ describe("createWebhookHandler", () => {
   it("strips trigger word from message", async () => {
     const deliver = vi.fn().mockResolvedValue(null);
     const handler = createWebhookHandler({
-      account: makeAccount({ accountId: "trigger-test-" + Date.now() }),
+      account: makeAccount({ accountId: `trigger-test-${Date.now()}` }),
       deliver,
       log,
     });
@@ -671,7 +671,7 @@ describe("createWebhookHandler", () => {
     try {
       const deliver = vi.fn().mockResolvedValue("late reply");
       const handler = createWebhookHandler({
-        account: makeAccount({ accountId: "no-hardcoded-timeout-" + Date.now() }),
+        account: makeAccount({ accountId: `no-hardcoded-timeout-${Date.now()}` }),
         deliver,
         log,
       });
@@ -696,7 +696,7 @@ describe("createWebhookHandler", () => {
   it("sanitizes input before delivery", async () => {
     const deliver = vi.fn().mockResolvedValue(null);
     const handler = createWebhookHandler({
-      account: makeAccount({ accountId: "sanitize-test-" + Date.now() }),
+      account: makeAccount({ accountId: `sanitize-test-${Date.now()}` }),
       deliver,
       log,
     });

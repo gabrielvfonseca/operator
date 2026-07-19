@@ -25,8 +25,9 @@ vi.mock("../../utils/provider-utils.js", () => ({
 const { buildThreadingToolContext, buildEmbeddedRunExecutionParams, resolveModelFallbackOptions } =
   await import("./agent-runner-utils.js");
 const { resolveProviderScopedAuthProfile } = await import("./agent-runner-auth-profile.js");
-const { buildEmbeddedRunBaseParams: buildEmbeddedRunBaseParamsCore } =
-  await import("./agent-runner-run-params.js");
+const { buildEmbeddedRunBaseParams: buildEmbeddedRunBaseParamsCore } = await import(
+  "./agent-runner-run-params.js"
+);
 const { setChannelSourceTurnId } = await import("./source-turn-id.js");
 
 function buildEmbeddedRunBaseParams(

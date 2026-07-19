@@ -353,11 +353,7 @@ module.exports = {
 }
 
 function writeBundledSetupChannelPlugin(
-  options: {
-    pluginId?: string;
-    channelId?: string;
-    envVar?: string;
-  } = {},
+  options: { pluginId?: string; channelId?: string; envVar?: string } = {},
 ) {
   const bundledRoot = makeTempDir();
   process.env.OPERATOR_BUNDLED_PLUGINS_DIR = bundledRoot;

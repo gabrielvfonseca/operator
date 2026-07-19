@@ -90,6 +90,7 @@ vi.mock("./shared/channel-doctor.js", () => ({
         },
       ];
     }
+    // biome-ignore lint/correctness/noPrecisionLoss: migrated from oxlint
     if (allowFrom?.[0] === 106232522769186816) {
       return [
         {
@@ -522,6 +523,7 @@ describe("doctor repair sequencing", () => {
         cfg: {
           channels: {
             discord: {
+              // biome-ignore lint/correctness/noPrecisionLoss: migrated from oxlint
               allowFrom: [106232522769186816],
             },
           },
@@ -529,6 +531,7 @@ describe("doctor repair sequencing", () => {
         candidate: {
           channels: {
             discord: {
+              // biome-ignore lint/correctness/noPrecisionLoss: migrated from oxlint
               allowFrom: [106232522769186816],
             },
           },
@@ -544,6 +547,7 @@ describe("doctor repair sequencing", () => {
       "channels.discord.allowFrom[0] cannot be auto-repaired because it is not a safe integer",
     ]);
     expect(result.state.pendingChanges).toBe(false);
+    // biome-ignore lint/correctness/noPrecisionLoss: migrated from oxlint
     expect(result.state.candidate.channels?.discord?.allowFrom).toEqual([106232522769186816]);
   });
 

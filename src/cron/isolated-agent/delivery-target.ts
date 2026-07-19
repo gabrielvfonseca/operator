@@ -89,10 +89,10 @@ function isNonEmptyThreadId(value: string | number | undefined | null): value is
 function routesSharePeer(left?: OutboundSessionRoute | null, right?: OutboundSessionRoute | null) {
   return Boolean(
     left &&
-    right &&
-    left.baseSessionKey === right.baseSessionKey &&
-    left.peer.kind === right.peer.kind &&
-    left.peer.id === right.peer.id,
+      right &&
+      left.baseSessionKey === right.baseSessionKey &&
+      left.peer.kind === right.peer.kind &&
+      left.peer.id === right.peer.id,
   );
 }
 

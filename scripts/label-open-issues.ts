@@ -653,7 +653,7 @@ function buildItemPrompt(item: LabelItem, kind: "issue" | "pull request"): strin
 }
 
 function extractResponseText(payload: OpenAIResponse): string {
-  if (payload.output_text && payload.output_text.trim()) {
+  if (payload.output_text?.trim()) {
     return payload.output_text.trim();
   }
 
@@ -771,7 +771,7 @@ async function classifyItem(
     },
   );
   const rawText = extractResponseText(payload);
-  let parsed: unknown = undefined;
+  let parsed: unknown;
 
   if (rawText) {
     try {

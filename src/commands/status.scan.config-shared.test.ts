@@ -134,6 +134,7 @@ describe("status.scan.config-shared", () => {
     });
 
     expect(result.secretDiagnostics).toEqual([
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "OPERATOR_GATEWAY_TOKEN conflicts with gateway.auth.token: Remove OPERATOR_GATEWAY_TOKEN from the shell, ~/.operator/.env, or launchctl env if gateway.auth.token is intended, or point gateway.auth.token at ${OPERATOR_GATEWAY_TOKEN} if the env var should be canonical.",
     ]);
   });
@@ -166,6 +167,7 @@ describe("status.scan.config-shared", () => {
 
   it("does not add a status diagnostic when config uses OPERATOR_GATEWAY_TOKEN", async () => {
     const sourceConfig = {
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       gateway: { auth: { token: "${OPERATOR_GATEWAY_TOKEN}" } },
       secrets: { providers: { default: { source: "env" as const } } },
     };

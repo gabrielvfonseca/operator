@@ -680,6 +680,7 @@ function registerDiagnosticRunActivityListener(): void {
       case "run.progress":
         recordRunProgress(event);
         return;
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
       case "run.completed":
         recordRunCompleted(event);
 

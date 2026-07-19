@@ -589,9 +589,7 @@ describe("resolveIMessageInboundDecision echo detection", () => {
     if (decision.kind !== "reaction") {
       throw new Error("expected reaction decision");
     }
-    expect(decision.text).toBe(
-      "iMessage reaction added: ❤️ by +15555550123 on msg imsg-production",
-    );
+    expect(decision.text).toBe("iMessage reaction added: ❤️ by +15555550123 on msg imsg-production");
   });
 
   it("matches prefixed tapback targets against prefixed echo-cache ids in own mode", async () => {

@@ -74,7 +74,9 @@ describe("buildCodexUserMcpServersThreadConfigPatch", () => {
             transport: "streamable-http",
             url: "https://notes.example.org/mcp",
             headers: {
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               Authorization: "Bearer ${NOTES_TOKEN}",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               "x-tenant": "${NOTES_TENANT}",
             },
           },

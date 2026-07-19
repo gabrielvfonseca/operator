@@ -253,6 +253,7 @@ export function parseArgs(argv: string[]): MacosOptions {
         options.json = true;
         break;
       case "-h":
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
       case "--help":
         process.stdout.write(usage());
         process.exit(0);
@@ -829,8 +830,7 @@ ${guestOperator} --version`,
       ? `NPM_CONFIG_REGISTRY=${shellQuote(this.options.npmRegistry)} npm_config_registry=${shellQuote(this.options.npmRegistry)} `
       : "";
     if (this.targetInstallsDirectly()) {
-      this
-        .guestSh(`printf 'install-source: registry-spec %s\\n' ${shellQuote(this.options.targetPackageSpec || "")}
+      this.guestSh(`printf 'install-source: registry-spec %s\\n' ${shellQuote(this.options.targetPackageSpec || "")}
 for attempt in 1 2; do
   if ${npmRegistryEnv}${guestNpm} install -g ${shellQuote(this.options.targetPackageSpec || "")}; then
     break
@@ -878,6 +878,7 @@ ${guestOperator} --version`);
   }
 
   private verifyBundlePermissions(): void {
+    // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
     this.guestSh(String.raw`set -eu
 root=$(npm root -g)
 check_path() {
@@ -930,6 +931,7 @@ fi`);
   }
 
   private ensureGuestPnpm(): void {
+    // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
     this.guestSh(String.raw`set -eu
 bootstrap_root=/tmp/operator-smoke-pnpm-bootstrap
 bootstrap_bin="$bootstrap_root/node_modules/.bin"

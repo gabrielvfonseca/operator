@@ -456,10 +456,10 @@ function formatAccountResetTime(resetsAtMs: number, nowMs: number): string {
 function snapshotHasLimitBlock(snapshot: JsonObject): boolean {
   return Boolean(
     readString(snapshot, "rateLimitReachedType") ??
-    readString(snapshot, "rate_limit_reached_type") ??
-    readWindowEntries(snapshot).some(
-      (entry) => entry.window.usedPercent !== undefined && entry.window.usedPercent >= 100,
-    ),
+      readString(snapshot, "rate_limit_reached_type") ??
+      readWindowEntries(snapshot).some(
+        (entry) => entry.window.usedPercent !== undefined && entry.window.usedPercent >= 100,
+      ),
   );
 }
 

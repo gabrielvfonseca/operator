@@ -74,7 +74,7 @@ function isTelegramPollingBacklogStallError(lastError: unknown): boolean {
   const error = asString(lastError);
   return Boolean(
     error?.includes("isolated polling spool backlog stalled") ||
-    error?.includes("isolated polling spool handler timed out"),
+      error?.includes("isolated polling spool handler timed out"),
   );
 }
 

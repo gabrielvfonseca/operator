@@ -10,6 +10,7 @@ export async function prepareMinGitZip(tgzDir: string): Promise<string> {
     "python3",
     [
       "-c",
+      // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
       String.raw`import json
 import urllib.request
 

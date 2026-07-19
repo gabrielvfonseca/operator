@@ -61,8 +61,9 @@ function mockArg(mock: ReturnType<typeof vi.fn>, callIndex = 0): Record<string, 
 
 describe("web-provider-runtime-shared", () => {
   beforeAll(async () => {
-    ({ resolvePluginWebProviders, resolveRuntimeWebProviders } =
-      await import("./web-provider-runtime-shared.js"));
+    ({ resolvePluginWebProviders, resolveRuntimeWebProviders } = await import(
+      "./web-provider-runtime-shared.js"
+    ));
   });
 
   beforeEach(() => {

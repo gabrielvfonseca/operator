@@ -77,7 +77,7 @@ describe("jsonl byte-fidelity", () => {
 
   it("large log (1000 lines) preserved", () => {
     const lines = Array.from({ length: 1000 }, (_, i) => `{"i":${i}}`);
-    const raw = lines.join("\n") + "\n";
+    const raw = `${lines.join("\n")}\n`;
     expect(rt(raw)).toBe(raw);
   });
 

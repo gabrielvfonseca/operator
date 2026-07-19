@@ -7,7 +7,7 @@ const hasUnpairedUtf16Surrogate = (text: string): boolean =>
 
 describe("projectBoundedTextTail", () => {
   it("keeps final error projection UTF-16 safe when the boundary bisects an emoji", () => {
-    const stderr = "p".repeat(5) + "🤖fail";
+    const stderr = `${"p".repeat(5)}🤖fail`;
     const projected = projectBoundedTextTail(stderr, 5);
 
     expect(projected).toBe("fail");

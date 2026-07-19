@@ -2,6 +2,7 @@
 import {
   createChannelSecretTargetRegistryEntries,
   getChannelSurface,
+  // biome-ignore lint/suspicious/noShadowRestrictedNames: migrated from oxlint
   hasOwnProperty,
   pushAssignment,
   pushInactiveSurfaceWarning,

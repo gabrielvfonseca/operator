@@ -156,7 +156,7 @@ function migrateLegacyTrustedDmPolicy(params: {
   changes: string[];
 }): { entry: Record<string, unknown>; changed: boolean } {
   const dm = isRecord(params.entry.dm) ? params.entry.dm : null;
-  if (!dm || dm.policy !== "trusted") {
+  if (dm?.policy !== "trusted") {
     return { entry: params.entry, changed: false };
   }
   const allowFromRaw = dm.allowFrom;

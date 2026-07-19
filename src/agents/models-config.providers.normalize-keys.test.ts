@@ -11,7 +11,7 @@ import { enforceSourceManagedProviderSecrets } from "./models-config.providers.s
 
 function normalizeLmstudioBaseUrl(baseUrl: string): string {
   const trimmed = baseUrl.trim().replace(/\/+$/, "");
-  return trimmed.replace(/\/api\/v1$/, "").replace(/\/v1$/, "") + "/v1";
+  return `${trimmed.replace(/\/api\/v1$/, "").replace(/\/v1$/, "")}/v1`;
 }
 
 vi.mock("./models-config.providers.policy.runtime.js", () => {

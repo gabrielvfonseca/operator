@@ -1355,7 +1355,7 @@ describe("memory index", () => {
       const sessionFile = path.join(sessionsDir, "session-targeted-cutover.jsonl");
       await fs.writeFile(
         sessionFile,
-        [
+        `${[
           JSON.stringify({
             type: "session",
             id: "session-targeted-cutover",
@@ -1369,7 +1369,7 @@ describe("memory index", () => {
               content: [{ type: "text", text: "Targeted cutover marker." }],
             },
           }),
-        ].join("\n") + "\n",
+        ].join("\n")}\n`,
         "utf8",
       );
 
@@ -1418,7 +1418,7 @@ describe("memory index", () => {
       await fs.mkdir(sessionsDir, { recursive: true });
       await fs.writeFile(
         path.join(sessionsDir, "session-dirty-during-reindex.jsonl"),
-        [
+        `${[
           JSON.stringify({
             type: "session",
             id: "session-dirty-during-reindex",
@@ -1432,7 +1432,7 @@ describe("memory index", () => {
               content: [{ type: "text", text: "Dirty during session marker." }],
             },
           }),
-        ].join("\n") + "\n",
+        ].join("\n")}\n`,
         "utf8",
       );
 

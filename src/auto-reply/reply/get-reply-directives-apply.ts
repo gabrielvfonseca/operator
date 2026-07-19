@@ -327,9 +327,7 @@ export async function applyInlineDirectiveOverrides(params: {
       }
       const modelSelection = modelResolution.modelSelection;
       if (modelSelection) {
-        const persisted = await (
-          await loadDirectivePersist()
-        ).persistInlineDirectives({
+        const persisted = await (await loadDirectivePersist()).persistInlineDirectives({
           ...directivePersistenceContext,
           provider,
           model,
@@ -374,9 +372,7 @@ export async function applyInlineDirectiveOverrides(params: {
       currentVerboseLevel,
       currentReasoningLevel,
       currentElevatedLevel,
-    } = await (
-      await loadDirectiveLevels()
-    ).resolveCurrentDirectiveLevels({
+    } = await (await loadDirectiveLevels()).resolveCurrentDirectiveLevels({
       sessionEntry,
       agentEntry,
       agentCfg,
@@ -384,9 +380,7 @@ export async function applyInlineDirectiveOverrides(params: {
     });
     const currentThinkLevel = resolvedDefaultThinkLevel;
     const thinkingCatalog = await modelState.resolveThinkingCatalog();
-    const directiveReply = await (
-      await loadDirectiveImpl()
-    ).handleDirectiveOnly({
+    const directiveReply = await (await loadDirectiveImpl()).handleDirectiveOnly({
       ...createDirectiveHandlingBase(),
       thinkingCatalog,
       currentThinkLevel,
@@ -439,9 +433,7 @@ export async function applyInlineDirectiveOverrides(params: {
   }
 
   if (hasAnyDirective && command.isAuthorizedSender) {
-    const fastLane = await (
-      await loadDirectiveFastLane()
-    ).applyInlineDirectivesFastLane({
+    const fastLane = await (await loadDirectiveFastLane()).applyInlineDirectivesFastLane({
       directives,
       commandAuthorized: command.isAuthorizedSender,
       senderIsOwner: command.senderIsOwner,
@@ -489,9 +481,7 @@ export async function applyInlineDirectiveOverrides(params: {
     }
   }
 
-  const persisted = await (
-    await loadDirectivePersist()
-  ).persistInlineDirectives({
+  const persisted = await (await loadDirectivePersist()).persistInlineDirectives({
     ...directivePersistenceContext,
     provider,
     model,

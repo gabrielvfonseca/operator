@@ -95,7 +95,7 @@ describe("formatSkillsCompact", () => {
     ]);
     expect(out).toContain("<name>weather</name>");
     expect(out).toContain("<description>Get weather data</description>");
-    expect(out).toContain("<location>/skills/weather/SKILL.md</location>");
+    expect(out).toContain("<location>/skills/weather/SKILL.MD</location>");
     expect(out).toContain("<version>sha256:abc123</version>");
   });
 

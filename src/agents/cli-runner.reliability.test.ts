@@ -1808,7 +1808,7 @@ describe("runCliAgent reliability", () => {
           pid: 3301,
           startedAtMs: Date.now(),
           stdin: {
-            write: vi.fn((dataValue: string, cb?: (err?: Error | null) => void) => cb?.()),
+            write: vi.fn((_dataValue: string, cb?: (err?: Error | null) => void) => cb?.()),
             end: vi.fn(),
           },
           wait: vi.fn(() => exited),
@@ -1833,12 +1833,12 @@ describe("runCliAgent reliability", () => {
         pid: 3302,
         startedAtMs: Date.now(),
         stdin: {
-          write: vi.fn((dataValue: string, cb?: (err?: Error | null) => void) => {
+          write: vi.fn((_dataValue: string, cb?: (err?: Error | null) => void) => {
             stdoutListener?.(
-              [
+              `${[
                 JSON.stringify({ type: "system", subtype: "init", session_id: "fresh-live" }),
                 JSON.stringify({ type: "result", session_id: "fresh-live", result: "fresh ok" }),
-              ].join("\n") + "\n",
+              ].join("\n")}\n`,
             );
             cb?.();
           }),

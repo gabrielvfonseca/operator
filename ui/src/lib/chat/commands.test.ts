@@ -268,7 +268,7 @@ describe("parseSlashCommand", () => {
     expect(first.aliases).toHaveLength(19);
     expect(first.description).toBe("d".repeat(1_999));
     expect(first.args?.split(" ")).toHaveLength(20);
-    expect(first.args?.split(" ")[0]).toBe("[" + "n".repeat(199) + "]");
+    expect(first.args?.split(" ")[0]).toBe(`[${"n".repeat(199)}]`);
     expect(first.argOptions).toHaveLength(50);
   });
 

@@ -67,7 +67,7 @@ export function createProceduralClient(config: MemoryProceduralConfig): Procedur
   async function ensureNeo4j() {
     if (neo4j) return neo4j;
     try {
-      // @ts-ignore external module
+      // @ts-expect-error external module
       const mod = await import("neo4j-driver");
       const driver = mod.driver(
         config.neo4jUrl ?? "bolt://localhost:7687",
@@ -85,7 +85,7 @@ export function createProceduralClient(config: MemoryProceduralConfig): Procedur
   async function ensureTemporal() {
     if (temporal) return temporal;
     try {
-      // @ts-ignore external module
+      // @ts-expect-error external module
       const { TemporalClient } = await import("@temporalio/client");
       const client = new TemporalClient({
         address: `${config.temporalHost ?? "localhost"}:${config.temporalPort ?? 7233}`,

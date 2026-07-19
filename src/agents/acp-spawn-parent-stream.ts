@@ -625,7 +625,7 @@ export function startAcpSpawnParentStreamRelay(params: {
       }
 
       const delta = typeof deltaCandidate === "string" ? deltaCandidate : snapshot;
-      if (!delta || !delta.trim()) {
+      if (!delta?.trim()) {
         return;
       }
       logEvent("assistant_delta", {

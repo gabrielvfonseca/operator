@@ -25,13 +25,13 @@ type CreatedDraftStreamLoop = DraftStreamLoop & {
 export function createDraftStreamLoop(params: {
   throttleMs: number;
   isStopped: () => boolean;
-  sendOrEditStreamMessage: (text: string) => Promise<void | boolean>;
+  sendOrEditStreamMessage: (text: string) => Promise<undefined | boolean>;
   onBackgroundFlushError?: (err: unknown) => void;
 }): CreatedDraftStreamLoop {
   const throttleMs = resolveTimerTimeoutMs(params.throttleMs, 0, 0);
   let lastSentAt = 0;
   let pendingText = "";
-  let inFlightPromise: Promise<void | boolean> | undefined;
+  let inFlightPromise: Promise<undefined | boolean> | undefined;
   let timer: ReturnType<typeof setTimeout> | undefined;
 
   const flush = async () => {
@@ -50,7 +50,7 @@ export function createDraftStreamLoop(params: {
         return;
       }
       pendingText = "";
-      let current: Promise<void | boolean> | undefined;
+      let current: Promise<undefined | boolean> | undefined;
       try {
         current = Promise.resolve(params.sendOrEditStreamMessage(text)).finally(() => {
           if (inFlightPromise === current) {
@@ -62,7 +62,7 @@ export function createDraftStreamLoop(params: {
         throw err;
       }
       inFlightPromise = current;
-      let sent: void | boolean;
+      let sent: undefined | boolean;
       try {
         sent = await current;
       } catch (err) {

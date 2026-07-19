@@ -17,8 +17,9 @@ describe("msteams sent message cache", () => {
     sentMessageMemory.clear();
     vi.resetModules();
     ({ setMSTeamsRuntime } = await import("./runtime.js"));
-    ({ recordMSTeamsSentMessage, wasMSTeamsMessageSentWithPersistence } =
-      await import("./sent-message-cache.js"));
+    ({ recordMSTeamsSentMessage, wasMSTeamsMessageSentWithPersistence } = await import(
+      "./sent-message-cache.js"
+    ));
   });
 
   afterEach(() => {

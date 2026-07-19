@@ -5,7 +5,6 @@ import path from "node:path";
 import type { DatabaseSync } from "node:sqlite";
 import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { root, type Root } from "@openclaw/fs-safe";
-import { runOperatorStateWriteTransaction } from "../state/openclaw-state-db.js";
 import { formatErrorMessage } from "./errors.js";
 import { acquireGatewayLock, GatewayLockError } from "./gateway-lock.js";
 import {

@@ -125,7 +125,6 @@ export function convertAnthropicMessagesToResponsesInput(params: {
           arguments: JSON.stringify(block.input ?? {}),
           call_id: block.id,
         });
-        continue;
       }
     }
     if (textPieces.length > 0 || imagePieces.length > 0) {

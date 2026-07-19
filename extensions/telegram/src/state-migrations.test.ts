@@ -103,7 +103,7 @@ describe("telegram state migrations", () => {
         namespace: "telegram.bot-info-cache",
         scopeKey: "",
       });
-      if (!botInfoPlan || botInfoPlan.kind !== "plugin-state-import") {
+      if (botInfoPlan?.kind !== "plugin-state-import") {
         throw new Error("expected Telegram bot-info plugin-state import plan");
       }
 
@@ -180,7 +180,7 @@ describe("telegram state migrations", () => {
         pluginId: "telegram",
         namespace: "telegram.message-cache",
       });
-      if (!messageCachePlan || messageCachePlan.kind !== "plugin-state-import") {
+      if (messageCachePlan?.kind !== "plugin-state-import") {
         throw new Error("expected Telegram message-cache plugin-state import plan");
       }
       const entries = await messageCachePlan.readEntries();
@@ -249,7 +249,7 @@ describe("telegram state migrations", () => {
         namespace,
         scopeKey: "",
       });
-      if (!topicNamePlan || topicNamePlan.kind !== "plugin-state-import") {
+      if (topicNamePlan?.kind !== "plugin-state-import") {
         throw new Error("expected Telegram topic-name plugin-state import plan");
       }
 
@@ -316,7 +316,7 @@ describe("telegram state migrations", () => {
         namespace,
         scopeKey: "",
       });
-      if (!topicNamePlan || topicNamePlan.kind !== "plugin-state-import") {
+      if (topicNamePlan?.kind !== "plugin-state-import") {
         throw new Error("expected Telegram topic-name plugin-state import plan");
       }
 
@@ -444,7 +444,7 @@ describe("telegram state migrations", () => {
         cleanupWhenEmpty: true,
       });
       const dispatchPlan = byLabel.get("Telegram message dispatch dedupe");
-      if (!dispatchPlan || dispatchPlan.kind !== "plugin-state-import") {
+      if (dispatchPlan?.kind !== "plugin-state-import") {
         throw new Error("expected Telegram message dispatch dedupe import plan");
       }
       await expect(dispatchPlan.readEntries()).resolves.toMatchObject([
@@ -468,7 +468,7 @@ describe("telegram state migrations", () => {
         "Telegram message dispatch dedupe",
       ]) {
         const plan = byLabel.get(label);
-        if (!plan || plan.kind !== "plugin-state-import") {
+        if (plan?.kind !== "plugin-state-import") {
           throw new Error(`expected plugin-state import plan: ${label}`);
         }
         expect(await plan.readEntries()).toHaveLength(1);
@@ -586,7 +586,7 @@ describe("telegram state migrations", () => {
         namespace: dispatchNamespace,
         cleanupWhenEmpty: true,
       });
-      if (!plan || plan.kind !== "plugin-state-import") {
+      if (plan?.kind !== "plugin-state-import") {
         throw new Error("expected Telegram message dispatch plugin-state import plan");
       }
       const entries = await plan.readEntries();
@@ -695,10 +695,10 @@ describe("telegram state migrations", () => {
         label: "Telegram thread bindings",
         namespace: "telegram.thread-bindings",
       });
-      if (!updateOffsetPlan || updateOffsetPlan.kind !== "plugin-state-import") {
+      if (updateOffsetPlan?.kind !== "plugin-state-import") {
         throw new Error("expected orphaned update offset import plan");
       }
-      if (!threadBindingsPlan || threadBindingsPlan.kind !== "plugin-state-import") {
+      if (threadBindingsPlan?.kind !== "plugin-state-import") {
         throw new Error("expected orphaned thread bindings import plan");
       }
       expect(await updateOffsetPlan.readEntries()).toHaveLength(1);

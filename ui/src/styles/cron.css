@@ -340,6 +340,7 @@
   opacity: 1;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .cron-table__name-text {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -351,6 +352,7 @@
   font-size: var(--control-ui-text-xs);
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .cron-table__cell {
   color: var(--text);
   font-size: 12.5px;
@@ -602,6 +604,7 @@
   width: 100%;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .cron-help {
   color: var(--muted);
   font-size: var(--control-ui-text-sm);
@@ -1045,6 +1048,7 @@
     grid-row: 1;
   }
 
+  /* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
   .cron-table__cell {
     grid-column: 1;
     color: var(--muted);

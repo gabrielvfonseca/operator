@@ -105,8 +105,9 @@ function createBuiltinAdapter(): PlatformAdapter {
     async resolveApproval(params): Promise<ApprovalResolveResult> {
       try {
         const { getRuntimeConfig } = await import("openclaw/plugin-sdk/runtime-config-snapshot");
-        const { resolveApprovalOverGateway } =
-          await import("openclaw/plugin-sdk/approval-gateway-runtime");
+        const { resolveApprovalOverGateway } = await import(
+          "openclaw/plugin-sdk/approval-gateway-runtime"
+        );
         const cfg = getRuntimeConfig();
         return await resolveApprovalOverGateway({
           cfg,

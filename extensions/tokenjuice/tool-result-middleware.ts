@@ -17,7 +17,10 @@ type TokenjuiceToolResultHandler = (
     isError?: boolean;
   },
   ctx: { cwd: string },
-) => Promise<Partial<OperatorAgentToolResult> | void> | Partial<OperatorAgentToolResult> | void;
+) =>
+  | Promise<Partial<OperatorAgentToolResult> | undefined>
+  | Partial<OperatorAgentToolResult>
+  | undefined;
 
 function normalizeDetails(
   event: AgentToolResultMiddlewareEvent,

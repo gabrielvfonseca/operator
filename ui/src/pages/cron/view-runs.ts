@@ -105,9 +105,9 @@ function renderFilterDropdown(params: {
         <button
           slot="trigger"
           type="button"
-          class="btn btn--sm cron-filter-dropdown__trigger ${params.selected.length > 0
-            ? "active"
-            : ""}"
+          class="btn btn--sm cron-filter-dropdown__trigger ${
+            params.selected.length > 0 ? "active" : ""
+          }"
           title=${params.title}
           aria-label=${params.title}
         >
@@ -214,22 +214,25 @@ export function renderRunsSection(props: CronRunsSectionProps) {
           <option value="asc">${t("cron.runs.oldestFirst")}</option>
         </select>
       </div>
-      ${runs.length === 0
-        ? hasRunFilters
-          ? html`<div class="muted cron-runs__empty">${t("cron.runs.noMatching")}</div>`
-          : html`
+      ${
+        runs.length === 0
+          ? hasRunFilters
+            ? html`<div class="muted cron-runs__empty">${t("cron.runs.noMatching")}</div>`
+            : html`
               <div class="cron-empty-state">
                 <div class="cron-empty-state__title">${t("cron.runs.emptyTitle")}</div>
                 <div class="cron-empty-state__copy">${t("cron.runs.emptyHint")}</div>
               </div>
             `
-        : html`
+          : html`
             <div class="cron-runs__list">
               ${runs.map((entry) => renderRun(entry, props.basePath, props.onNavigateToChat))}
             </div>
-          `}
-      ${props.runsHasMore
-        ? html`
+          `
+      }
+      ${
+        props.runsHasMore
+          ? html`
             <button
               class="btn btn--sm cron-load-more"
               ?disabled=${props.runsLoadingMore}
@@ -238,7 +241,8 @@ export function renderRunsSection(props: CronRunsSectionProps) {
               ${props.runsLoadingMore ? t("cron.list.loading") : t("cron.runs.loadMore")}
             </button>
           `
-        : nothing}
+          : nothing
+      }
     </div>
   `;
 }
@@ -307,15 +311,20 @@ function renderRun(
         </div>
         <div class="cron-run-entry__meta">
           <div>${formatMs(entry.ts)}</div>
-          ${typeof entry.runAtMs === "number"
-            ? html`<div class="muted">${t("cron.runEntry.runAt")} ${formatMs(entry.runAtMs)}</div>`
-            : nothing}
+          ${
+            typeof entry.runAtMs === "number"
+              ? html`<div class="muted">${t("cron.runEntry.runAt")} ${formatMs(entry.runAtMs)}</div>`
+              : nothing
+          }
           <div class="muted">${entry.durationMs ?? 0}ms</div>
-          ${typeof entry.nextRunAtMs === "number"
-            ? html`<div class="muted">${formatRunNextLabel(entry.nextRunAtMs)}</div>`
-            : nothing}
-          ${chatUrl
-            ? html`<div>
+          ${
+            typeof entry.nextRunAtMs === "number"
+              ? html`<div class="muted">${formatRunNextLabel(entry.nextRunAtMs)}</div>`
+              : nothing
+          }
+          ${
+            chatUrl
+              ? html`<div>
                 <a
                   class="session-link"
                   href=${chatUrl}
@@ -338,7 +347,8 @@ function renderRun(
                   >${t("cron.runEntry.openRunChat")}</a
                 >
               </div>`
-            : nothing}
+              : nothing
+          }
           ${showErrorInMeta ? html`<div class="muted">${entry.error}</div>` : nothing}
           ${entry.deliveryError ? html`<div class="muted">${entry.deliveryError}</div>` : nothing}
         </div>

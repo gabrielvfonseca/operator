@@ -479,10 +479,10 @@ export function createBrowserTool(opts?: {
 
       const allowAutomaticHostFallback = Boolean(
         nodeTarget &&
-        !target &&
-        !requestedNode &&
-        !configuredNode &&
-        opts?.allowHostControl !== false,
+          !target &&
+          !requestedNode &&
+          !configuredNode &&
+          opts?.allowHostControl !== false,
       );
       const proxyRequest = nodeTarget
         ? createBrowserNodeProxyRequest({ nodeTarget, allowAutomaticHostFallback })

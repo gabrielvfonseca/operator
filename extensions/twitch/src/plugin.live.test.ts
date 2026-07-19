@@ -25,9 +25,9 @@ import { describe, expect, it } from "vitest";
 const LIVE = process.env.TWITCH_LIVE_TEST === "1";
 const HAS_CREDS = Boolean(
   process.env.TWITCH_USERNAME &&
-  process.env.TWITCH_ACCESS_TOKEN &&
-  process.env.TWITCH_CLIENT_ID &&
-  process.env.TWITCH_CHANNEL,
+    process.env.TWITCH_ACCESS_TOKEN &&
+    process.env.TWITCH_CLIENT_ID &&
+    process.env.TWITCH_CHANNEL,
 );
 
 const maybeDescribe = LIVE && HAS_CREDS ? describe : describe.skip;

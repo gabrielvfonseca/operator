@@ -519,7 +519,7 @@ export function abortChatRunById(
   }
 
   const bufferedText = ops.chatRunBuffers.get(runId);
-  const partialText = bufferedText && bufferedText.trim() ? bufferedText : undefined;
+  const partialText = bufferedText?.trim() ? bufferedText : undefined;
   ops.chatAbortedRuns.set(runId, createChatAbortMarker());
   if (stopReason) {
     active.abortStopReason = stopReason;

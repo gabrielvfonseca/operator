@@ -127,18 +127,21 @@ export function renderLogs(props: LogsProps) {
           <span class="settings-row__value">${t("logsView.autoFollow")}</span>
         </div>
       </div>
-      ${props.truncated
-        ? html`
+      ${
+        props.truncated
+          ? html`
             <div class="settings-row">
               ${renderSettingsStatus({ kind: "warn", label: t("logsView.truncated") })}
             </div>
           `
-        : nothing}
+          : nothing
+      }
       <div class="log-stream" @scroll=${props.onScroll}>
-        ${filtered.length === 0
-          ? renderSettingsEmpty(t("logsView.empty"))
-          : filtered.map(
-              (entry) => html`
+        ${
+          filtered.length === 0
+            ? renderSettingsEmpty(t("logsView.empty"))
+            : filtered.map(
+                (entry) => html`
                 <div class="log-row">
                   <div class="log-time mono">${formatTime(entry.time)}</div>
                   <div class="log-level ${entry.level ?? ""}">${entry.level ?? ""}</div>
@@ -146,7 +149,8 @@ export function renderLogs(props: LogsProps) {
                   <div class="log-message mono">${entry.message ?? entry.raw}</div>
                 </div>
               `,
-            )}
+              )
+        }
       </div>
     </div>
   `;

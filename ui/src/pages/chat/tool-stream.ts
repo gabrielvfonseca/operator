@@ -217,7 +217,7 @@ function readRecord(value: unknown): Record<string, unknown> | null {
 
 function resolveSessionStatusModelOverride(result: unknown): string | null | undefined {
   const details = readRecord(readRecord(result)?.details);
-  if (!details || details.changedModel !== true) {
+  if (details?.changedModel !== true) {
     return undefined;
   }
   if (Object.hasOwn(details, "modelOverride")) {
@@ -399,7 +399,7 @@ export function handleSessionOperationEvent(
   host: ToolStreamHost,
   payload?: SessionOperationEventPayload,
 ) {
-  if (!payload || payload.operation !== "compact") {
+  if (payload?.operation !== "compact") {
     return;
   }
   const sessionKey = toTrimmedString(payload.sessionKey);

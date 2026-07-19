@@ -74,8 +74,9 @@ function requireApprovalRequestPayload(callIndex: number): ApprovalRequestPayloa
 describe("exec approval requests", () => {
   beforeAll(async () => {
     ({ callGatewayTool } = await import("./tools/gateway.js"));
-    ({ registerExecApprovalRequestForHostOrThrow } =
-      await import("./bash-tools.exec-approval-request.js"));
+    ({ registerExecApprovalRequestForHostOrThrow } = await import(
+      "./bash-tools.exec-approval-request.js"
+    ));
   });
 
   beforeEach(() => {

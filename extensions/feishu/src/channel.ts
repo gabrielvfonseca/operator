@@ -1109,6 +1109,7 @@ export const feishuPlugin: ChannelPlugin<ResolvedFeishuAccount, FeishuProbeResul
               throw new Error("Feishu media sending is not available.");
             }
             const sendMedia = maybeSendMedia;
+            // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
             let result;
             if (presentationFellBack && presentation) {
               const sendPayload = runtime.feishuOutbound.sendPayload;

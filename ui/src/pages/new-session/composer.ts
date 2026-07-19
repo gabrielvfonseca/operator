@@ -96,18 +96,22 @@ function renderNewSessionComposer(options: NewSessionComposerOptions) {
             </operator-tooltip>
           </div>
         </div>
-        ${options.modelControl && options.modelControl !== nothing
-          ? html`<div class="agent-chat__composer-footer">
+        ${
+          options.modelControl && options.modelControl !== nothing
+            ? html`<div class="agent-chat__composer-footer">
               <div class="agent-chat__composer-controls">
                 <div class="chat-composer-model-control">${options.modelControl}</div>
               </div>
             </div>`
-          : nothing}
-        ${options.pendingAttachmentReads > 0
-          ? html`<span class="agent-chat__sr-only" role="status"
+            : nothing
+        }
+        ${
+          options.pendingAttachmentReads > 0
+            ? html`<span class="agent-chat__sr-only" role="status"
               >${t("newSession.readingAttachment")}</span
             >`
-          : nothing}
+            : nothing
+        }
       </div>
     </div>
   `;

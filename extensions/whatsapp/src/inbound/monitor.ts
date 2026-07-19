@@ -519,6 +519,7 @@ export async function attachWebInboxToSocket(
     );
     const retryableError = resolveRetryableWhatsAppInboundError(error);
     if (retryableError) {
+      // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
       dedupeKeys.forEach((dedupeKey) => releaseRecentInboundMessage(dedupeKey, retryableError));
       await Promise.all(
         durableEntries.map((entry) =>
@@ -985,7 +986,7 @@ export async function attachWebInboxToSocket(
     // Applies to both groups and DMs/self-chat — without this, self-chat mode
     // re-processes the bot's own replies as new inbound user messages.
     if (
-      Boolean(msg.key?.fromMe) &&
+      msg.key?.fromMe &&
       id &&
       isRecentOutboundMessage({
         accountId: options.accountId,

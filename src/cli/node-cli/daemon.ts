@@ -125,6 +125,7 @@ export async function runNodeDaemonInstall(opts: NodeDaemonInstallOptions) {
   }
 
   const service = resolveNodeService();
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let loaded;
   try {
     loaded = await service.isLoaded({ env: process.env });

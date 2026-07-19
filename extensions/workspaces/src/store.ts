@@ -208,7 +208,7 @@ export class WorkspaceStore {
    * serializes concurrent RPC / CLI / agent-tool callers.
    */
   mutate(
-    fn: (draft: WorkspaceDoc) => WorkspaceDoc | void,
+    fn: (draft: WorkspaceDoc) => WorkspaceDoc | undefined,
     _options: WorkspaceMutationOptions,
   ): WorkspaceMutationResult {
     return this.transact((current) => {

@@ -241,6 +241,7 @@ export async function handleBrowserGatewayRequest({
     return;
   }
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let dispatcher;
   try {
     dispatcher = createBrowserRouteDispatcher(createBrowserControlContext());
@@ -249,6 +250,7 @@ export async function handleBrowserGatewayRequest({
     return;
   }
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let result;
   try {
     result = timeoutMs

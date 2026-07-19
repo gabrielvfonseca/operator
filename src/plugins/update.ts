@@ -176,8 +176,8 @@ export function pluginInstallRecordMayMigrateConfigId(params: {
     resolveNpmSpecPackageName(params.record.resolvedSpec);
   return Boolean(
     packageName &&
-    packageName !== params.pluginId &&
-    unscopedPackageName(packageName) === params.pluginId,
+      packageName !== params.pluginId &&
+      unscopedPackageName(packageName) === params.pluginId,
   );
 }
 
@@ -269,8 +269,8 @@ function shouldSkipClawHubTrustFailureForExistingInstall(params: {
   }
   return Boolean(
     params.result.version &&
-    params.currentVersion &&
-    params.result.version !== params.currentVersion,
+      params.currentVersion &&
+      params.result.version !== params.currentVersion,
   );
 }
 
@@ -373,10 +373,10 @@ function shouldBypassTrustedOfficialUnchangedNpmCheck(params: {
   const parsedSpec = parseRegistryNpmSpec(params.spec);
   return Boolean(
     parsedSpec &&
-    !isPrereleaseResolutionAllowed({
-      spec: parsedSpec,
-      resolvedVersion: params.metadata.version,
-    }),
+      !isPrereleaseResolutionAllowed({
+        spec: parsedSpec,
+        resolvedVersion: params.metadata.version,
+      }),
   );
 }
 
@@ -463,7 +463,7 @@ async function loadNpmPackageVersionsForUpdate(params: {
       env: createNpmMetadataEnv(),
     },
   );
-  if (!versions || versions.code !== 0) {
+  if (versions?.code !== 0) {
     return null;
   }
 
@@ -491,8 +491,7 @@ async function resolveTrustedOfficialPrereleaseFallbackMetadataForUpdate(params:
 > {
   const parsedSpec = parseRegistryNpmSpec(params.spec);
   if (
-    !parsedSpec ||
-    !parsedSpec.name.startsWith("@gabrielvfonseca/") ||
+    !parsedSpec?.name.startsWith("@gabrielvfonseca/") ||
     !params.metadata.version ||
     isPrereleaseResolutionAllowed({
       spec: parsedSpec,

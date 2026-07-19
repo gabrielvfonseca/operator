@@ -225,8 +225,7 @@ export function createLlmTaskTool(api: OperatorPluginApi) {
 
       const thinkingRaw =
         typeof params.thinking === "string" && params.thinking.trim() ? params.thinking : undefined;
-      let thinkLevel: ReturnType<OperatorPluginApi["runtime"]["agent"]["normalizeThinkingLevel"]> =
-        undefined;
+      let thinkLevel: ReturnType<OperatorPluginApi["runtime"]["agent"]["normalizeThinkingLevel"]>;
       if (thinkingRaw) {
         const thinkingPolicy = api.runtime.agent.resolveThinkingPolicy({
           provider,

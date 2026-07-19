@@ -46,6 +46,7 @@ function writePluginsList(root: string, plugins: PluginListEntry[]): void {
     [
       `const plugins = ${JSON.stringify(plugins)};`,
       "if (process.argv.slice(2).join(' ') !== 'plugins list --json') {",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "  console.error(`unexpected argv: ${process.argv.slice(2).join(' ')}`);",
       "  process.exit(1);",
       "}",

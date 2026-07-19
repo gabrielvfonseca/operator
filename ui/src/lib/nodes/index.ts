@@ -670,7 +670,7 @@ function parseDeviceAuthStore(raw: string | null): DeviceAuthStore | null {
   }
   try {
     const parsed = JSON.parse(raw) as DeviceAuthStore;
-    if (!parsed || parsed.version !== 1) {
+    if (parsed?.version !== 1) {
       return null;
     }
     if (!parsed.deviceId || typeof parsed.deviceId !== "string") {

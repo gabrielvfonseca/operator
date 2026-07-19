@@ -89,6 +89,7 @@ function printSessionUpdate(notification: SessionNotification): void {
       }
       return;
     }
+    // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
     case "available_commands_update": {
       const names = update.availableCommands?.map((cmd) => `/${cmd.name}`).join(" ");
       if (names) {

@@ -55,7 +55,8 @@ export async function collectInvalidConfigLegacyIssues(
   if (!raw || typeof raw !== "object") {
     return [];
   }
-  const { findDoctorLegacyConfigIssues } =
-    await import("../commands/doctor/shared/legacy-config-issues.js");
+  const { findDoctorLegacyConfigIssues } = await import(
+    "../commands/doctor/shared/legacy-config-issues.js"
+  );
   return findDoctorLegacyConfigIssues(raw, sourceRaw);
 }

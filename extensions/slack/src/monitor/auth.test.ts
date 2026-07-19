@@ -57,8 +57,9 @@ function makeAuthorizeCtx(params?: {
 
 describe("resolveSlackEffectiveAllowFrom", () => {
   beforeAll(async () => {
-    ({ authorizeSlackSystemEventSender, resolveSlackEffectiveAllowFrom } =
-      await import("./auth.js"));
+    ({ authorizeSlackSystemEventSender, resolveSlackEffectiveAllowFrom } = await import(
+      "./auth.js"
+    ));
   });
 
   beforeEach(() => {

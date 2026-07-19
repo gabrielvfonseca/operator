@@ -9,15 +9,19 @@ describe("restoreEnvVarRefs", () => {
     MY_TOKEN: "tok-12345",
   } as unknown as NodeJS.ProcessEnv;
 
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   it("restores a simple ${VAR} reference when value matches", () => {
     const incoming = { apiKey: "sk-ant-api03-real-key" };
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const parsed = { apiKey: "${ANTHROPIC_API_KEY}" };
     const result = restoreEnvVarRefs(incoming, parsed, env);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(result).toEqual({ apiKey: "${ANTHROPIC_API_KEY}" });
   });
 
   it("keeps new value when caller intentionally changed it", () => {
     const incoming = { apiKey: "sk-ant-new-different-key" };
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const parsed = { apiKey: "${ANTHROPIC_API_KEY}" };
     const result = restoreEnvVarRefs(incoming, parsed, env);
     expect(result).toEqual({ apiKey: "sk-ant-new-different-key" });
@@ -35,7 +39,9 @@ describe("restoreEnvVarRefs", () => {
     const parsed = {
       models: {
         providers: {
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           anthropic: { apiKey: "${ANTHROPIC_API_KEY}" },
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           openai: { apiKey: "${OPENAI_API_KEY}" },
         },
       },
@@ -44,7 +50,9 @@ describe("restoreEnvVarRefs", () => {
     expect(result).toEqual({
       models: {
         providers: {
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           anthropic: { apiKey: "${ANTHROPIC_API_KEY}" },
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           openai: { apiKey: "${OPENAI_API_KEY}" },
         },
       },
@@ -53,8 +61,10 @@ describe("restoreEnvVarRefs", () => {
 
   it("preserves new keys not in parsed", () => {
     const incoming = { apiKey: "sk-ant-api03-real-key", newField: "hello" };
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const parsed = { apiKey: "${ANTHROPIC_API_KEY}" };
     const result = restoreEnvVarRefs(incoming, parsed, env);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(result).toEqual({ apiKey: "${ANTHROPIC_API_KEY}", newField: "hello" });
   });
 
@@ -67,8 +77,10 @@ describe("restoreEnvVarRefs", () => {
 
   it("handles arrays", () => {
     const incoming = ["sk-ant-api03-real-key", "literal"];
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const parsed = ["${ANTHROPIC_API_KEY}", "literal"];
     const result = restoreEnvVarRefs(incoming, parsed, env);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(result).toEqual(["${ANTHROPIC_API_KEY}", "literal"]);
   });
 
@@ -81,26 +93,33 @@ describe("restoreEnvVarRefs", () => {
   it("handles missing env var (cannot verify match)", () => {
     const envMissing = {} as unknown as NodeJS.ProcessEnv;
     const incoming = { apiKey: "some-value" };
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const parsed = { apiKey: "${MISSING_VAR}" };
     // Can't resolve the template, so keep incoming as-is
     const result = restoreEnvVarRefs(incoming, parsed, envMissing);
     expect(result).toEqual({ apiKey: "some-value" });
   });
 
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   it("handles composite template strings like prefix-${VAR}-suffix", () => {
     const incoming = { url: "https://tok-12345.example.com" };
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const parsed = { url: "https://${MY_TOKEN}.example.com" };
     const result = restoreEnvVarRefs(incoming, parsed, env);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(result).toEqual({ url: "https://${MY_TOKEN}.example.com" });
   });
 
   it("restores partially resolved templates when missing vars remain literal", () => {
     const partialEnv = { API_TOKEN: "secret" } as unknown as NodeJS.ProcessEnv;
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const incoming = { value: "secret:${OPTIONAL_SUFFIX}" };
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const parsed = { value: "${API_TOKEN}:${OPTIONAL_SUFFIX}" };
 
     const result = restoreEnvVarRefs(incoming, parsed, partialEnv);
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(result).toEqual({ value: "${API_TOKEN}:${OPTIONAL_SUFFIX}" });
   });
 
@@ -111,12 +130,14 @@ describe("restoreEnvVarRefs", () => {
     } as unknown as NodeJS.ProcessEnv;
 
     expect(() =>
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       restoreEnvVarRefs(["same-plugin"], ["${PLUGIN_A}", "${PLUGIN_B}"], duplicateEnv),
     ).toThrow("Config write would reorder or modify an array containing environment references");
   });
 
   it("allows array edits when placeholders are escaped literals", () => {
     const result = restoreEnvVarRefs(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ["${ESCAPED}", "changed"],
       ["$${ESCAPED}", "literal"],
       {} as NodeJS.ProcessEnv,
@@ -126,22 +147,27 @@ describe("restoreEnvVarRefs", () => {
   });
 
   it("restores escaped literals beside real environment-backed array entries", () => {
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const result = restoreEnvVarRefs(["secret", "${ESCAPED}"], ["${TOKEN}", "$${ESCAPED}"], {
       TOKEN: "secret",
     } as unknown as NodeJS.ProcessEnv);
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(result).toEqual(["${TOKEN}", "$${ESCAPED}"]);
   });
 
   it("allows appending after stable environment-backed array entries", () => {
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const result = restoreEnvVarRefs(["base-plugin", "extra-plugin"], ["${BASE_PLUGIN}"], {
       BASE_PLUGIN: "base-plugin",
     } as unknown as NodeJS.ProcessEnv);
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(result).toEqual(["${BASE_PLUGIN}", "extra-plugin"]);
   });
 
   it("allows removing a unique environment-backed array entry", () => {
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const result = restoreEnvVarRefs([], ["${BASE_PLUGIN}"], {
       BASE_PLUGIN: "base-plugin",
     } as unknown as NodeJS.ProcessEnv);
@@ -159,7 +185,9 @@ describe("restoreEnvVarRefs", () => {
       },
       {
         plugins: {
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           allow: ["${BASE_PLUGIN}"],
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           deny: ["${DENIED_PLUGIN}", "keep"],
         },
       },
@@ -171,6 +199,7 @@ describe("restoreEnvVarRefs", () => {
 
     expect(result).toEqual({
       plugins: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         allow: ["${BASE_PLUGIN}", "demo"],
         deny: ["keep"],
       },
@@ -178,6 +207,7 @@ describe("restoreEnvVarRefs", () => {
   });
 
   it("allows replacing a unique environment-backed array entry", () => {
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const result = restoreEnvVarRefs(["replacement"], ["${BASE_PLUGIN}"], {
       BASE_PLUGIN: "base-plugin",
     } as unknown as NodeJS.ProcessEnv);
@@ -188,31 +218,37 @@ describe("restoreEnvVarRefs", () => {
   it("allows in-place object edits when stable ids preserve array identity", () => {
     const result = restoreEnvVarRefs(
       [{ id: "main", workspace: "/workspace/main", name: "new" }],
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       [{ id: "main", workspace: "${WORKSPACE}", name: "old" }],
       { WORKSPACE: "/workspace/main" } as unknown as NodeJS.ProcessEnv,
     );
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(result).toEqual([{ id: "main", workspace: "${WORKSPACE}", name: "new" }]);
   });
 
   it("allows single-position edits to env-backed array objects without stable ids", () => {
     const result = restoreEnvVarRefs(
       [{ name: "new", token: "secret" }],
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       [{ name: "old", token: "${TOKEN}" }],
       { TOKEN: "secret" } as unknown as NodeJS.ProcessEnv,
     );
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(result).toEqual([{ name: "new", token: "${TOKEN}" }]);
   });
 
   it("allows appending after unchanged env-backed array objects without ids", () => {
     const result = restoreEnvVarRefs(
       [{ match: { peer: { id: "peer-1" } } }, { match: { peer: { id: "peer-2" } } }],
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       [{ match: { peer: { id: "${PEER_ID}" } } }],
       { PEER_ID: "peer-1" } as unknown as NodeJS.ProcessEnv,
     );
 
     expect(result).toEqual([
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       { match: { peer: { id: "${PEER_ID}" } } },
       { match: { peer: { id: "peer-2" } } },
     ]);
@@ -225,6 +261,7 @@ describe("restoreEnvVarRefs", () => {
           { name: "new", token: "secret" },
           { name: "second", token: "literal" },
         ],
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         [{ name: "old", token: "${TOKEN}" }],
         { TOKEN: "secret" } as unknown as NodeJS.ProcessEnv,
       ),
@@ -239,7 +276,9 @@ describe("restoreEnvVarRefs", () => {
           { name: "first-next", token: "secret-a" },
         ],
         [
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           { name: "first", token: "${TOKEN_A}" },
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           { name: "second", token: "${TOKEN_B}" },
         ],
         {
@@ -258,7 +297,9 @@ describe("restoreEnvVarRefs", () => {
           { account: "first", token: "secret-b" },
         ],
         [
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           { account: "first", token: "${TOKEN_A}" },
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           { account: "second", token: "${TOKEN_B}" },
         ],
         {
@@ -276,7 +317,9 @@ describe("restoreEnvVarRefs", () => {
         { agentId: "second", name: "second-next", match: { peer: { id: "peer-b" } } },
       ],
       [
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         { agentId: "first", name: "first", match: { peer: { id: "${PEER_A}" } } },
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         { agentId: "second", name: "second", match: { peer: { id: "${PEER_B}" } } },
       ],
       {
@@ -286,7 +329,9 @@ describe("restoreEnvVarRefs", () => {
     );
 
     expect(result).toEqual([
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       { agentId: "first", name: "first-next", match: { peer: { id: "${PEER_A}" } } },
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       { agentId: "second", name: "second-next", match: { peer: { id: "${PEER_B}" } } },
     ]);
   });
@@ -294,20 +339,24 @@ describe("restoreEnvVarRefs", () => {
   it("allows nested accountId changes when agentId preserves array identity", () => {
     const result = restoreEnvVarRefs(
       [{ agentId: "main", match: { accountId: "next" }, token: "secret" }],
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       [{ agentId: "main", match: { accountId: "old" }, token: "${TOKEN}" }],
       { TOKEN: "secret" } as unknown as NodeJS.ProcessEnv,
     );
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(result).toEqual([{ agentId: "main", match: { accountId: "next" }, token: "${TOKEN}" }]);
   });
 
   it("allows changing an accountId routing field on a single env-backed target", () => {
     const result = restoreEnvVarRefs(
       [{ accountId: "next", to: "user@example.com" }],
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       [{ accountId: "old", to: "${APPROVAL_TARGET}" }],
       { APPROVAL_TARGET: "user@example.com" } as unknown as NodeJS.ProcessEnv,
     );
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(result).toEqual([{ accountId: "next", to: "${APPROVAL_TARGET}" }]);
   });
 
@@ -318,7 +367,9 @@ describe("restoreEnvVarRefs", () => {
         { accountId: "second", to: "user-b@example.com" },
       ],
       [
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         { accountId: "old", to: "${APPROVAL_TARGET_A}" },
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         { accountId: "second", to: "${APPROVAL_TARGET_B}" },
       ],
       {
@@ -328,7 +379,9 @@ describe("restoreEnvVarRefs", () => {
     );
 
     expect(result).toEqual([
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       { accountId: "next", to: "${APPROVAL_TARGET_A}" },
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       { accountId: "second", to: "${APPROVAL_TARGET_B}" },
     ]);
   });
@@ -340,7 +393,9 @@ describe("restoreEnvVarRefs", () => {
         { account: "second", enabled: false, token: "secret-b" },
       ],
       [
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         { account: "first", enabled: false, token: "${TOKEN_A}" },
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         { account: "second", enabled: true, token: "${TOKEN_B}" },
       ],
       {
@@ -350,7 +405,9 @@ describe("restoreEnvVarRefs", () => {
     );
 
     expect(result).toEqual([
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       { account: "first", enabled: true, token: "${TOKEN_A}" },
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       { account: "second", enabled: false, token: "${TOKEN_B}" },
     ]);
   });
@@ -359,6 +416,7 @@ describe("restoreEnvVarRefs", () => {
     const result = restoreEnvVarRefs(
       [{ agentId: "second", match: { peer: { id: "peer-b" } } }],
       [
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         { agentId: "first", match: { peer: { id: "${PEER_A}" } } },
         { agentId: "second", match: { peer: { id: "peer-b" } } },
       ],
@@ -372,7 +430,9 @@ describe("restoreEnvVarRefs", () => {
     const result = restoreEnvVarRefs(
       [{ agentId: "retained", match: { peer: { id: "peer-c" } } }],
       [
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         { agentId: "first", match: { peer: { id: "${PEER_A}" } } },
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         { agentId: "second", match: { peer: { id: "${PEER_B}" } } },
         { agentId: "retained", match: { peer: { id: "peer-c" } } },
       ],
@@ -393,7 +453,9 @@ describe("restoreEnvVarRefs", () => {
           { id: "duplicate", workspace: "/workspace/a", name: "a" },
         ],
         [
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           { id: "duplicate", workspace: "${WORKSPACE_A}", name: "a" },
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           { id: "duplicate", workspace: "${WORKSPACE_B}", name: "b" },
         ],
         {
@@ -409,7 +471,9 @@ describe("restoreEnvVarRefs", () => {
       restoreEnvVarRefs(
         [{ id: "duplicate", sessionKey: "same" }],
         [
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           { id: "duplicate", sessionKey: "${SESSION_A}" },
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           { id: "duplicate", sessionKey: "${SESSION_B}" },
         ],
         {
@@ -424,6 +488,7 @@ describe("restoreEnvVarRefs", () => {
     const result = restoreEnvVarRefs(
       [{ id: "duplicate", sessionKey: "literal" }],
       [
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         { id: "duplicate", sessionKey: "${SESSION_KEY}" },
         { id: "duplicate", sessionKey: "literal" },
       ],
@@ -435,6 +500,7 @@ describe("restoreEnvVarRefs", () => {
 
   it("rejects renaming stable ids on env-backed array objects", () => {
     expect(() =>
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       restoreEnvVarRefs([{ id: "new", token: "secret" }], [{ id: "old", token: "${TOKEN}" }], {
         TOKEN: "secret",
       } as unknown as NodeJS.ProcessEnv),
@@ -446,6 +512,7 @@ describe("restoreEnvVarRefs", () => {
       [{ id: "main", workspace: "/workspace/main" }],
       [
         { id: "main", workspace: "/workspace/main" },
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         { id: "ops", workspace: "${OPS_WORKSPACE}" },
       ],
       { OPS_WORKSPACE: "/workspace/ops" } as unknown as NodeJS.ProcessEnv,
@@ -458,6 +525,7 @@ describe("restoreEnvVarRefs", () => {
     const result = restoreEnvVarRefs(
       [{ id: "main", name: "new" }],
       [
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         { id: "ops", workspace: "${OPS_WORKSPACE}" },
         { id: "main", name: "old" },
       ],
@@ -469,6 +537,7 @@ describe("restoreEnvVarRefs", () => {
 
   it("rejects same-index template matches against authored literal duplicates", () => {
     expect(() =>
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       restoreEnvVarRefs(["same"], ["${PLUGIN_PATH}", "same"], {
         PLUGIN_PATH: "same",
       } as unknown as NodeJS.ProcessEnv),
@@ -477,6 +546,7 @@ describe("restoreEnvVarRefs", () => {
 
   it("rejects same-index scalar matches after surrounding array restructuring", () => {
     expect(() =>
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       restoreEnvVarRefs(["tail", "secret"], ["old", "${TOKEN}", "tail"], {
         TOKEN: "secret",
       } as unknown as NodeJS.ProcessEnv),
@@ -484,23 +554,28 @@ describe("restoreEnvVarRefs", () => {
   });
 
   it("allows trailing sibling edits beside a scalar environment reference", () => {
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const result = restoreEnvVarRefs(["base-plugin", "replacement"], ["${BASE_PLUGIN}", "old"], {
       BASE_PLUGIN: "base-plugin",
     } as unknown as NodeJS.ProcessEnv);
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(result).toEqual(["${BASE_PLUGIN}", "replacement"]);
   });
 
   it("allows prefix edits before a same-index scalar environment reference", () => {
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const result = restoreEnvVarRefs(["new", "base-plugin"], ["old", "${BASE_PLUGIN}"], {
       BASE_PLUGIN: "base-plugin",
     } as unknown as NodeJS.ProcessEnv);
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(result).toEqual(["new", "${BASE_PLUGIN}"]);
   });
 
   it("restores escaped literal moves without activating the reference", () => {
     const result = restoreEnvVarRefs(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ["literal", "${TOKEN}"],
       ["$${TOKEN}", "literal"],
       {} as NodeJS.ProcessEnv,
@@ -511,16 +586,20 @@ describe("restoreEnvVarRefs", () => {
 
   it("restores an escaped literal move beside a stable real environment reference", () => {
     const result = restoreEnvVarRefs(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ["secret", "literal", "${ESCAPED}"],
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ["${TOKEN}", "$${ESCAPED}", "literal"],
       { TOKEN: "secret" } as unknown as NodeJS.ProcessEnv,
     );
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(result).toEqual(["${TOKEN}", "literal", "$${ESCAPED}"]);
   });
 
   it("preserves duplicate escaped literals when their positions stay stable", () => {
     const result = restoreEnvVarRefs(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ["${TOKEN}", "${TOKEN}"],
       ["$${TOKEN}", "$${TOKEN}"],
       {} as NodeJS.ProcessEnv,
@@ -532,6 +611,7 @@ describe("restoreEnvVarRefs", () => {
   it("rejects ambiguous escaped literal moves beside a new active reference", () => {
     expect(() =>
       restoreEnvVarRefs(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         ["literal", "${TOKEN}", "${TOKEN}"],
         ["$${TOKEN}", "literal"],
         {} as NodeJS.ProcessEnv,
@@ -543,6 +623,7 @@ describe("restoreEnvVarRefs", () => {
     const result = restoreEnvVarRefs(
       [
         { id: "literal", token: "plain" },
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         { id: "escaped", token: "${TOKEN}", enabled: true },
       ],
       [
@@ -579,6 +660,7 @@ describe("restoreEnvVarRefs", () => {
 
   it("restores escaped literals during a same-index object edit with stable neighbors", () => {
     const result = restoreEnvVarRefs(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       [{ token: "${TOKEN}", enabled: true }, "tail"],
       [{ token: "$${TOKEN}", enabled: false }, "tail"],
       {},
@@ -590,6 +672,7 @@ describe("restoreEnvVarRefs", () => {
   it("rejects restoring escaped literals onto a replacement stable-id entry", () => {
     expect(() =>
       restoreEnvVarRefs(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         [{ id: "new", token: "${TOKEN}" }],
         [{ id: "old", token: "$${TOKEN}" }],
         {},
@@ -608,6 +691,7 @@ describe("restoreEnvVarRefs", () => {
   });
 
   it("allows changing one of multiple identical escaped literals", () => {
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const result = restoreEnvVarRefs(["new", "${TOKEN}"], ["$${TOKEN}", "$${TOKEN}"], {});
 
     expect(result).toEqual(["new", "$${TOKEN}"]);
@@ -617,7 +701,9 @@ describe("restoreEnvVarRefs", () => {
     expect(() =>
       restoreEnvVarRefs(
         [
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           { token: "${A}", enabled: true },
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           { token: "${B}", enabled: true },
         ],
         [
@@ -631,6 +717,7 @@ describe("restoreEnvVarRefs", () => {
 
   it("rejects escaped literal moves onto indexes claimed by real references", () => {
     expect(() =>
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       restoreEnvVarRefs(["${B}", "changed"], ["${A}", "$${B}", "tail"], {
         A: "x",
       } as unknown as NodeJS.ProcessEnv),
@@ -641,6 +728,7 @@ describe("restoreEnvVarRefs", () => {
     expect(() =>
       restoreEnvVarRefs(
         [
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           { id: "b", token: "${TOKEN}" },
           { id: "a", token: "changed" },
         ],
@@ -654,15 +742,18 @@ describe("restoreEnvVarRefs", () => {
   });
 
   it("preserves intentional real references beside same-name escaped literals", () => {
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const result = restoreEnvVarRefs(["secret", "${TOKEN}"], ["${TOKEN}", "$${TOKEN}"], {
       TOKEN: "secret",
     } as unknown as NodeJS.ProcessEnv);
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(result).toEqual(["${TOKEN}", "$${TOKEN}"]);
   });
 
   it("rejects ambiguous same-name real and escaped reference reorders", () => {
     expect(() =>
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       restoreEnvVarRefs(["${TOKEN}", "secret"], ["${TOKEN}", "$${TOKEN}"], {
         TOKEN: "secret",
       } as unknown as NodeJS.ProcessEnv),
@@ -670,12 +761,14 @@ describe("restoreEnvVarRefs", () => {
   });
 
   it("rejects escaped references activated inside edited strings", () => {
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(() => restoreEnvVarRefs(["changed-${TOKEN}"], ["prefix-$${TOKEN}"], {})).toThrow(
       "Config write would reorder or modify an array containing environment references",
     );
   });
 
   it("rejects escaped references activated under a different object key", () => {
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(() => restoreEnvVarRefs([{ next: "${TOKEN}" }], [{ old: "$${TOKEN}" }], {})).toThrow(
       "Config write would reorder or modify an array containing environment references",
     );
@@ -684,7 +777,9 @@ describe("restoreEnvVarRefs", () => {
   it("does not let an existing active reference mask activation at another key", () => {
     expect(() =>
       restoreEnvVarRefs(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         [{ id: "x", moved: "${TOKEN}", active: "changed" }],
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         [{ id: "x", literal: "$${TOKEN}", active: "${TOKEN}" }],
         {},
       ),
@@ -693,6 +788,7 @@ describe("restoreEnvVarRefs", () => {
 
   it("does not let a same-path active reference mask an activated escaped literal", () => {
     expect(() =>
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       restoreEnvVarRefs(["changed-${TOKEN}"], ["${TOKEN}-$${TOKEN}"], {
         TOKEN: "secret",
       } as unknown as NodeJS.ProcessEnv),
@@ -702,7 +798,9 @@ describe("restoreEnvVarRefs", () => {
   it("allows adding an active reference when a stable escaped entry remains preserved", () => {
     const result = restoreEnvVarRefs(
       [
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         { id: "literal", token: "${TOKEN}" },
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         { id: "new", token: "${TOKEN}" },
       ],
       [{ id: "literal", token: "$${TOKEN}" }],
@@ -711,6 +809,7 @@ describe("restoreEnvVarRefs", () => {
 
     expect(result).toEqual([
       { id: "literal", token: "$${TOKEN}" },
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       { id: "new", token: "${TOKEN}" },
     ]);
   });
@@ -720,10 +819,12 @@ describe("restoreEnvVarRefs", () => {
       restoreEnvVarRefs(
         [
           { id: "literal", token: "secret" },
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           { id: "active", token: "${TOKEN}" },
         ],
         [
           { id: "literal", token: "$${TOKEN}" },
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           { id: "active", token: "${TOKEN}" },
         ],
         { TOKEN: "secret" } as unknown as NodeJS.ProcessEnv,
@@ -733,6 +834,7 @@ describe("restoreEnvVarRefs", () => {
 
   it("rejects replacing a scalar template while adding its resolved value elsewhere", () => {
     expect(() =>
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       restoreEnvVarRefs(["replacement", "admin"], ["${ADMIN_ID}", "old"], {
         ADMIN_ID: "admin",
       } as unknown as NodeJS.ProcessEnv),
@@ -741,6 +843,7 @@ describe("restoreEnvVarRefs", () => {
 
   it("rejects replacing a scalar template while adding its resolved value in a longer array", () => {
     expect(() =>
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       restoreEnvVarRefs(["old", "replacement", "admin"], ["${ADMIN_ID}", "old"], {
         ADMIN_ID: "admin",
       } as unknown as NodeJS.ProcessEnv),
@@ -771,6 +874,7 @@ describe("restoreEnvVarRefs", () => {
     // Caller is writing back "original-value" (the value they got from the read)
     const mutatedEnv = { MY_VAR: "mutated-value" } as unknown as NodeJS.ProcessEnv;
     const incoming = { key: "original-value" };
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const parsed = { key: "${MY_VAR}" };
 
     const result = restoreEnvVarRefs(incoming, parsed, mutatedEnv);
@@ -782,10 +886,12 @@ describe("restoreEnvVarRefs", () => {
   it("correctly restores when env var value hasn't changed", () => {
     const stableEnv = { MY_VAR: "stable-value" } as unknown as NodeJS.ProcessEnv;
     const incoming = { key: "stable-value" };
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const parsed = { key: "${MY_VAR}" };
 
     const result = restoreEnvVarRefs(incoming, parsed, stableEnv);
     // Env value matches incoming — safe to restore
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(result).toEqual({ key: "${MY_VAR}" });
   });
 
@@ -795,6 +901,7 @@ describe("restoreEnvVarRefs", () => {
     // But using the READ-TIME snapshot ("old-value"), we correctly see mismatch and keep incoming.
     const readTimeEnv = { MY_VAR: "old-value" } as unknown as NodeJS.ProcessEnv;
     const incoming = { key: "new-value" }; // caller intentionally changed this
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const parsed = { key: "${MY_VAR}" };
 
     const result = restoreEnvVarRefs(incoming, parsed, readTimeEnv);
@@ -804,10 +911,12 @@ describe("restoreEnvVarRefs", () => {
   });
 
   // Edge case: $${VAR} escape sequence (Greptile comment #2)
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   it("handles $${VAR} escape sequence (literal ${VAR} in output)", () => {
     // In the config file: $${ANTHROPIC_API_KEY}
     // substituteString resolves this to literal "${ANTHROPIC_API_KEY}"
     // So incoming would be "${ANTHROPIC_API_KEY}" (the literal text)
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const incoming = { note: "${ANTHROPIC_API_KEY}" };
     const parsed = { note: "$${ANTHROPIC_API_KEY}" };
 
@@ -816,20 +925,24 @@ describe("restoreEnvVarRefs", () => {
     expect(result).toEqual({ note: "$${ANTHROPIC_API_KEY}" });
   });
 
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   it("does not confuse $${VAR} escape with ${VAR} substitution", () => {
     // Config has both: an escaped ref and a real ref
     const incoming = {
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       literal: "${MY_TOKEN}", // from $${MY_TOKEN} → literal "${MY_TOKEN}"
       resolved: "tok-12345", // from ${MY_TOKEN} → "tok-12345"
     };
     const parsed = {
       literal: "$${MY_TOKEN}", // escape sequence
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       resolved: "${MY_TOKEN}", // real env var ref
     };
 
     const result = restoreEnvVarRefs(incoming, parsed, env);
     expect(result).toEqual({
       literal: "$${MY_TOKEN}", // should restore escape
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       resolved: "${MY_TOKEN}", // should restore ref
     });
   });

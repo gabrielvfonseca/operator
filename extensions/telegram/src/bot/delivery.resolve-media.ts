@@ -283,6 +283,7 @@ async function downloadAndSaveTelegramFile(params: {
     params.trustedLocalFileRoots,
   );
   if (trustedLocalFile) {
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let localFile;
     try {
       const root = await fsRoot(trustedLocalFile.rootDir);
@@ -310,6 +311,7 @@ async function downloadAndSaveTelegramFile(params: {
   );
   for (const rootDir of params.trustedLocalFileRoots ?? []) {
     for (const relativePath of containerRelativePaths) {
+      // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
       let localFile;
       try {
         const root = await fsRoot(rootDir);

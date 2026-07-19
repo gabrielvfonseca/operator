@@ -232,9 +232,7 @@ async function setSlackHeartbeatThreadStatus(params: {
     const channelId =
       target.kind === "channel"
         ? apiTargetId
-        : await (
-            await loadSlackSendRuntime()
-          ).resolveSlackDmChannelId({
+        : await (await loadSlackSendRuntime()).resolveSlackDmChannelId({
             client,
             userId: apiTargetId,
             accountId: account.accountId,
@@ -766,9 +764,11 @@ export const slackPlugin: ChannelPlugin<ResolvedSlackAccount, SlackProbe> = crea
     },
     actions: createSlackActions(SLACK_CHANNEL, {
       invoke: async (action, cfg, toolContext) =>
-        await (
-          await resolveSlackHandleAction()
-        )(action, cfg as OperatorConfig, toolContext as SlackActionContext | undefined),
+        await (await resolveSlackHandleAction())(
+          action,
+          cfg as OperatorConfig,
+          toolContext as SlackActionContext | undefined,
+        ),
     }),
     message: slackMessageAdapter,
     heartbeat: {
@@ -805,9 +805,7 @@ export const slackPlugin: ChannelPlugin<ResolvedSlackAccount, SlackProbe> = crea
         if (!token) {
           return { ok: false, error: "missing token" };
         }
-        return await (
-          await loadSlackProbeModule()
-        ).probeSlack(token, timeoutMs, {
+        return await (await loadSlackProbeModule()).probeSlack(token, timeoutMs, {
           accountId: account.accountId,
         });
       },

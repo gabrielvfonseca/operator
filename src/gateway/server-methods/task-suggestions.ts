@@ -60,9 +60,9 @@ async function rollbackSuggestedTaskSession(params: {
       respond: (ok, payload) => {
         deletionConfirmed = Boolean(
           ok &&
-          payload &&
-          typeof payload === "object" &&
-          typeof (payload as { deleted?: unknown }).deleted === "boolean",
+            payload &&
+            typeof payload === "object" &&
+            typeof (payload as { deleted?: unknown }).deleted === "boolean",
         );
       },
     });

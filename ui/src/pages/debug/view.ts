@@ -108,9 +108,11 @@ export function renderDebug(props: DebugProps) {
             .value=${props.callMethod}
             @change=${(e: Event) => props.onCallMethodChange((e.target as HTMLSelectElement).value)}
           >
-            ${!props.callMethod
-              ? html` <option value="" disabled>${t("debug.selectMethod")}</option> `
-              : nothing}
+            ${
+              !props.callMethod
+                ? html` <option value="" disabled>${t("debug.selectMethod")}</option> `
+                : nothing
+            }
             ${props.methods.map((m) => html`<option value=${m}>${m}</option>`)}
           </select>
         `,
@@ -135,22 +137,26 @@ export function renderDebug(props: DebugProps) {
           <button class="btn primary" @click=${props.onCall}>${t("common.call")}</button>
         `,
       })}
-      ${props.callError
-        ? html`
+      ${
+        props.callError
+          ? html`
             <div class="settings-row settings-row--stacked">
               ${renderSettingsStatus({ kind: "danger", label: t("debug.callFailed") })}
               <pre class="code-block">${props.callError}</pre>
             </div>
           `
-        : nothing}
-      ${props.callResult
-        ? html`
+          : nothing
+      }
+      ${
+        props.callResult
+          ? html`
             <div class="settings-row settings-row--stacked">
               ${renderSettingsStatus({ kind: "ok", label: t("common.ok") })}
               <pre class="code-block">${props.callResult}</pre>
             </div>
           `
-        : nothing}
+          : nothing
+      }
     `,
   );
 

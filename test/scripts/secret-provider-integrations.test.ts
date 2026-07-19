@@ -119,6 +119,7 @@ function writeStallingOpenClaw(
       "  await delay(60_000);",
       "  process.exit(0);",
       "}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "console.error(`unexpected fake openclaw args: ${args.join(' ')}`);",
       "process.exit(2);",
       "",

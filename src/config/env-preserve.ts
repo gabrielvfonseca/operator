@@ -114,10 +114,12 @@ function countAuthoredEnvRefsByPath(
       return;
     }
     if (Array.isArray(item)) {
+      // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
       item.forEach((child, index) => visit(child, [...path, String(index)]));
       return;
     }
     if (isPlainObject(item)) {
+      // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
       Object.entries(item).forEach(([key, child]) => visit(child, [...path, key]));
     }
   };
@@ -147,12 +149,14 @@ function countResolvedActiveEnvRefsByPath(
       return;
     }
     if (Array.isArray(incomingItem) && Array.isArray(parsedItem)) {
+      // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
       parsedItem.forEach((child, index) =>
         visit(incomingItem[index], child, [...path, String(index)]),
       );
       return;
     }
     if (isPlainObject(incomingItem) && isPlainObject(parsedItem)) {
+      // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
       Object.entries(parsedItem).forEach(([key, child]) =>
         visit(incomingItem[key], child, [...path, key]),
       );
@@ -643,7 +647,6 @@ function matchAuthoredEscapedTemplateArrayItems(params: {
         (isSinglePositionEdit || hasSameIndexLiteralIdentity || hasSameIndexNeighbors)
       ) {
         addMatch(parsedIndex, parsedIndex);
-        continue;
       }
     }
   }

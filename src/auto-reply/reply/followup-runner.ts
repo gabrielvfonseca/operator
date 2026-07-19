@@ -846,6 +846,7 @@ export function createFollowupRunner(params: {
         });
       }
       const prePreflightCompactionCount = activeSessionEntry?.compactionCount ?? 0;
+      // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
       let preflightCompactionApplied;
       try {
         activeSessionEntry = await runPreflightCompactionIfNeeded({
@@ -1819,7 +1820,7 @@ export function createFollowupRunner(params: {
       const hasCompletedTerminalDelivery = hasCompletedTerminalDeliveryEvidence(runResult);
       const hasDeliveryDestination = Boolean(
         (isRoutableChannel(queued.originatingChannel) && queued.originatingTo) ||
-        opts?.onBlockReply,
+          opts?.onBlockReply,
       );
       const isInteractive =
         hasDeliveryDestination &&

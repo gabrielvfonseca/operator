@@ -19,7 +19,7 @@ export type RegisteredWebhookTarget<T> = {
 /** Lifecycle hooks for path-level webhook target registration. */
 export type RegisterWebhookTargetOptions<T extends { path: string }> = {
   /** Called before the first target for a normalized path is stored; may return path teardown. */
-  onFirstPathTarget?: (params: { path: string; target: T }) => void | (() => void);
+  onFirstPathTarget?: (params: { path: string; target: T }) => undefined | (() => void);
   /** Called after the last target for a normalized path has been removed. */
   onLastPathTargetRemoved?: (params: { path: string }) => void;
 };
@@ -160,7 +160,10 @@ export async function withResolvedWebhookRequestPipeline<T>(params: {
   /** Response body returned when the in-flight guard rejects. */
   inFlightLimitMessage?: string;
   /** Handler invoked only after target resolution and common guards succeed. */
-  handle: (args: { path: string; targets: T[] }) => Promise<boolean | void> | boolean | void;
+  handle: (args: {
+    path: string;
+    targets: T[];
+  }) => Promise<boolean | undefined> | boolean | undefined;
 }): Promise<boolean> {
   const resolved = resolveWebhookTargets(params.req, params.targetsByPath);
   if (!resolved) {

@@ -77,7 +77,7 @@ async function preflightDu(dirPath: string, maxBytes: number): Promise<boolean> 
     maxOutputBytes: 64 * 1024,
     timeoutMs: 10_000,
   }).catch(() => null);
-  if (!result || result.termination !== "exit" || result.code !== 0) {
+  if (result?.termination !== "exit" || result.code !== 0) {
     // `du` is optional; the capped tar command remains authoritative.
     return true;
   }
@@ -92,7 +92,7 @@ async function listTarEntries(tarBuffer: Buffer): Promise<string[] | null> {
     maxOutputBytes: { stdout: 32 * 1024 * 1024, stderr: 64 * 1024 },
     timeoutMs: 10_000,
   }).catch(() => null);
-  if (!result || result.termination !== "exit" || result.code !== 0) {
+  if (result?.termination !== "exit" || result.code !== 0) {
     return null;
   }
   const entries: string[] = [];

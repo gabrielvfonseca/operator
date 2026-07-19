@@ -580,7 +580,7 @@ function normalizePersistedToolResultName(
 }
 
 function isTranscriptOnlyOperatorAssistantMessage(message: AgentMessage): boolean {
-  if (!message || message.role !== "assistant") {
+  if (message?.role !== "assistant") {
     return false;
   }
   const provider = normalizeOptionalString((message as { provider?: unknown }).provider) ?? "";

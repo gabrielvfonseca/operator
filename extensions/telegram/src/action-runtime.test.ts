@@ -112,7 +112,7 @@ const sendDurableMessageBatch = vi.fn(
     const pin =
       payload.delivery?.pin === true
         ? { enabled: true }
-        : payload.delivery?.pin && payload.delivery.pin.enabled
+        : payload.delivery?.pin?.enabled
           ? payload.delivery.pin
           : undefined;
     if (pin && last.messageId) {

@@ -51,8 +51,9 @@ async function openDeviceTokenWsWithDetails(
   };
 }> {
   const identityPath = path.join(os.tmpdir(), `operator-shared-auth-${process.pid}-${port}.json`);
-  const { loadOrCreateDeviceIdentity, publicKeyRawBase64UrlFromPem } =
-    await import("../infra/device-identity.js");
+  const { loadOrCreateDeviceIdentity, publicKeyRawBase64UrlFromPem } = await import(
+    "../infra/device-identity.js"
+  );
   const { approveDevicePairing, ensureDeviceToken, requestDevicePairing, rotateDeviceToken } =
     await import("../infra/device-pairing.js");
   const client = params.browserClient
@@ -81,6 +82,7 @@ async function openDeviceTokenWsWithDetails(
   await approveDevicePairing(pending.request.requestId, {
     callerScopes: ["operator.admin"],
   });
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let issuedDeviceToken;
   if (params.issuerGeneration) {
     const deviceToken = await ensureDeviceToken({
@@ -180,8 +182,9 @@ async function expectGatewayAuthChangedClose(closed: ReturnType<typeof waitForGa
 }
 
 async function resolveRequiredSharedGatewayGeneration() {
-  const { resolveSharedGatewaySessionGeneration } =
-    await import("./server/ws-shared-generation.js");
+  const { resolveSharedGatewaySessionGeneration } = await import(
+    "./server/ws-shared-generation.js"
+  );
   const issuerGeneration = resolveSharedGatewaySessionGeneration({
     mode: "token",
     token: OLD_TOKEN,

@@ -59,7 +59,7 @@ type ResetAcpState = {
   cwd?: string;
   state?: string;
 };
-type ConfigFilePatch = Parameters<(typeof import("../config/config.js"))["writeConfigFile"]>[0];
+type ConfigFilePatch = Parameters<typeof import("../config/config.js")["writeConfigFile"]>[0];
 
 afterEach(() => {
   closeOperatorStateDatabaseForTest();

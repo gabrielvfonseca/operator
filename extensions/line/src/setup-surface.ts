@@ -123,11 +123,11 @@ export const lineSetupWizard: ChannelSetupWizard = {
         return {
           accountConfigured: Boolean(
             normalizeOptionalString(resolved.channelAccessToken) &&
-            normalizeOptionalString(resolved.channelSecret),
+              normalizeOptionalString(resolved.channelSecret),
           ),
           hasConfiguredValue: Boolean(
             normalizeOptionalString(resolved.config.channelAccessToken) ??
-            normalizeOptionalString(resolved.config.tokenFile),
+              normalizeOptionalString(resolved.config.tokenFile),
           ),
           resolvedValue: normalizeOptionalString(resolved.channelAccessToken),
           envValue:
@@ -169,11 +169,11 @@ export const lineSetupWizard: ChannelSetupWizard = {
         return {
           accountConfigured: Boolean(
             normalizeOptionalString(resolved.channelAccessToken) &&
-            normalizeOptionalString(resolved.channelSecret),
+              normalizeOptionalString(resolved.channelSecret),
           ),
           hasConfiguredValue: Boolean(
             normalizeOptionalString(resolved.config.channelSecret) ??
-            normalizeOptionalString(resolved.config.secretFile),
+              normalizeOptionalString(resolved.config.secretFile),
           ),
           resolvedValue: normalizeOptionalString(resolved.channelSecret),
           envValue:

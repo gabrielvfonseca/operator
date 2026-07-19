@@ -103,7 +103,7 @@ describe("gateway.restart.request handler", () => {
   it("backs off before an emoji that crosses the reason limit", async () => {
     mockScheduledRestart({ safe: true, summary: "safe to restart now" });
 
-    await invokeRestartRequest({ reason: "x".repeat(199) + "🧠tail" });
+    await invokeRestartRequest({ reason: `${"x".repeat(199)}🧠tail` });
 
     expect(requestSafeGatewayRestart).toHaveBeenCalledWith({
       reason: "x".repeat(199),

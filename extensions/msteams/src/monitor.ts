@@ -200,7 +200,7 @@ export async function monitorMSTeamsProvider(
   // the SDK's route-level parser and full JWT validation.
   expressApp.use((req: Request, res: Response, next: (err?: unknown) => void) => {
     const auth = req.headers.authorization;
-    if (!auth || !auth.startsWith("Bearer ")) {
+    if (!auth?.startsWith("Bearer ")) {
       res.status(401).json({ error: "Unauthorized" });
       return;
     }

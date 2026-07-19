@@ -595,7 +595,7 @@ async function consumeChatStream(
       for (const item of contentItems) {
         if (typeof item === "string") {
           const textDelta = sanitizeSurrogates(item);
-          if (!currentBlock || currentBlock.type !== "text") {
+          if (currentBlock?.type !== "text") {
             finishCurrentBlock(currentBlock);
             currentBlock = { type: "text", text: "" };
             output.content.push(currentBlock);
@@ -620,7 +620,7 @@ async function consumeChatStream(
           if (!thinkingDelta) {
             continue;
           }
-          if (!currentBlock || currentBlock.type !== "thinking") {
+          if (currentBlock?.type !== "thinking") {
             finishCurrentBlock(currentBlock);
             currentBlock = { type: "thinking", thinking: "" };
             output.content.push(currentBlock);
@@ -638,7 +638,7 @@ async function consumeChatStream(
 
         if (item.type === "text") {
           const textDelta = sanitizeSurrogates(item.text);
-          if (!currentBlock || currentBlock.type !== "text") {
+          if (currentBlock?.type !== "text") {
             finishCurrentBlock(currentBlock);
             currentBlock = { type: "text", text: "" };
             output.content.push(currentBlock);

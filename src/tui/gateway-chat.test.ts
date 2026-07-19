@@ -424,6 +424,7 @@ describe("resolveGatewayConnection", () => {
       },
       gateway: {
         mode: "local",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         auth: { token: "${CUSTOM_GATEWAY_TOKEN}" },
       },
     });
@@ -438,6 +439,7 @@ describe("resolveGatewayConnection", () => {
     loadConfig.mockReturnValue({
       gateway: {
         mode: "local",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         auth: { token: "${MISSING_GATEWAY_TOKEN}" },
       },
     });

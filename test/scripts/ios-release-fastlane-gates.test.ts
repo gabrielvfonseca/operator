@@ -52,10 +52,13 @@ describe("iOS Fastlane release upload gates", () => {
 
     expect(script).toContain("OPENCLAW_IOS_RELEASE_WRAPPER=1");
     expect(script).toContain("Missing required --version.");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('"release_version:${RELEASE_VERSION}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('"build_number:${BUILD_NUMBER}"');
     expect(script).toContain("DELIVER_NUMBER_OF_THREADS=1");
     expect(script).toContain("FL_MAX_NUMBER_OF_THREADS=1");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('run_ios_fastlane "${FASTLANE_ARGS[@]}"');
   });
 

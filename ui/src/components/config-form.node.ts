@@ -170,25 +170,31 @@ function renderFieldRow(params: FieldRowParams): TemplateResult {
   const className = stacked ? "settings-row settings-row--stacked" : "settings-row";
   return html`
     <div class=${className}>
-      ${hasText
-        ? html`
+      ${
+        hasText
+          ? html`
             <div class="settings-row__text">
-              ${params.showLabel
-                ? html`<span class="settings-row__title">${params.label}</span>`
-                : nothing}
-              ${params.help
-                ? html`<span class="settings-row__desc">${params.help}</span>`
-                : nothing}
+              ${
+                params.showLabel
+                  ? html`<span class="settings-row__title">${params.label}</span>`
+                  : nothing
+              }
+              ${
+                params.help ? html`<span class="settings-row__desc">${params.help}</span>` : nothing
+              }
               ${renderTags(params.tags)}
-              ${params.error
-                ? html`<span class="cfg-field__error">${params.error}</span>`
-                : nothing}
+              ${
+                params.error ? html`<span class="cfg-field__error">${params.error}</span>` : nothing
+              }
             </div>
           `
-        : nothing}
-      ${params.control !== nothing
-        ? html`<div class="settings-row__control">${params.control}</div>`
-        : nothing}
+          : nothing
+      }
+      ${
+        params.control !== nothing
+          ? html`<div class="settings-row__control">${params.control}</div>`
+          : nothing
+      }
     </div>
   `;
 }
@@ -521,16 +527,19 @@ function renderTextInput(params: {
         onPatch(path, raw.trim());
       }}
     />
-    ${isStructuredSecretRef
-      ? nothing
-      : renderSensitiveToggleButton({
-          path,
-          state: sensitiveState,
-          disabled,
-          onToggleSensitivePath: params.onToggleSensitivePath,
-        })}
-    ${schema.default !== undefined
-      ? html`
+    ${
+      isStructuredSecretRef
+        ? nothing
+        : renderSensitiveToggleButton({
+            path,
+            state: sensitiveState,
+            disabled,
+            onToggleSensitivePath: params.onToggleSensitivePath,
+          })
+    }
+    ${
+      schema.default !== undefined
+        ? html`
           <operator-tooltip .content=${t("configForm.resetToDefault")}>
             <button
               type="button"
@@ -544,7 +553,8 @@ function renderTextInput(params: {
             </button>
           </operator-tooltip>
         `
-      : nothing}
+        : nothing
+    }
   `;
 
   return renderFieldRow({ label, help, tags, showLabel, control });
@@ -821,23 +831,25 @@ function renderObject(params: {
         onPatch,
       }),
     )}
-    ${allowExtra
-      ? renderMapField({
-          schema: additional,
-          value: obj,
-          path,
-          hints,
-          rawAvailable,
-          unsupported,
-          disabled,
-          reservedKeys: reserved,
-          searchCriteria: childSearchCriteria,
-          revealSensitive,
-          isSensitivePathRevealed,
-          onToggleSensitivePath,
-          onPatch,
-        })
-      : nothing}
+    ${
+      allowExtra
+        ? renderMapField({
+            schema: additional,
+            value: obj,
+            path,
+            hints,
+            rawAvailable,
+            unsupported,
+            disabled,
+            reservedKeys: reserved,
+            searchCriteria: childSearchCriteria,
+            revealSensitive,
+            isSensitivePathRevealed,
+            onToggleSensitivePath,
+            onPatch,
+          })
+        : nothing
+    }
   `;
 
   // Top-level objects and label-less contexts emit rows directly into the
@@ -939,9 +951,10 @@ function renderArray(params: {
           </button>
         </div>
       </div>
-      ${arr.length === 0
-        ? renderSettingsEmpty(t("configForm.noItems"))
-        : html`
+      ${
+        arr.length === 0
+          ? renderSettingsEmpty(t("configForm.noItems"))
+          : html`
             <div class="settings-subrows">
               ${arr.map(
                 (item, idx) => html`
@@ -986,7 +999,8 @@ function renderArray(params: {
                 `,
               )}
             </div>
-          `}
+          `
+      }
     </div>
   `;
 }
@@ -1064,9 +1078,10 @@ function renderMapField(params: {
         </div>
       </div>
 
-      ${visibleEntries.length === 0
-        ? renderSettingsEmpty(t("configForm.noCustomEntries"))
-        : html`
+      ${
+        visibleEntries.length === 0
+          ? renderSettingsEmpty(t("configForm.noCustomEntries"))
+          : html`
             <div class="settings-subrows">
               ${visibleEntries.map(([key, entryValue]) => {
                 const valuePath = [...path, key];
@@ -1122,41 +1137,44 @@ function renderMapField(params: {
                       </operator-tooltip>
                     </div>
                   </div>
-                  ${anySchema
-                    ? renderFieldRow({
-                        label: key,
-                        tags: [],
-                        showLabel: false,
-                        stacked: true,
-                        control: renderJsonTextareaControl({
+                  ${
+                    anySchema
+                      ? renderFieldRow({
+                          label: key,
+                          tags: [],
+                          showLabel: false,
+                          stacked: true,
+                          control: renderJsonTextareaControl({
+                            path: valuePath,
+                            fallback,
+                            rows: 2,
+                            sensitiveState,
+                            disabled,
+                            onToggleSensitivePath,
+                            onPatch,
+                          }),
+                        })
+                      : renderNode({
+                          schema,
+                          value: entryValue,
                           path: valuePath,
-                          fallback,
-                          rows: 2,
-                          sensitiveState,
+                          hints,
+                          rawAvailable,
+                          unsupported,
                           disabled,
+                          searchCriteria,
+                          showLabel: false,
+                          revealSensitive,
+                          isSensitivePathRevealed,
                           onToggleSensitivePath,
                           onPatch,
-                        }),
-                      })
-                    : renderNode({
-                        schema,
-                        value: entryValue,
-                        path: valuePath,
-                        hints,
-                        rawAvailable,
-                        unsupported,
-                        disabled,
-                        searchCriteria,
-                        showLabel: false,
-                        revealSensitive,
-                        isSensitivePathRevealed,
-                        onToggleSensitivePath,
-                        onPatch,
-                      })}
+                        })
+                  }
                 `;
               })}
             </div>
-          `}
+          `
+      }
     </div>
   `;
 }

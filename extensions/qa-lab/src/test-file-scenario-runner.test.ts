@@ -78,7 +78,8 @@ function makeTestFileScenario(
       path: pathLocal,
       ...(testNamePattern ? { testNamePattern } : {}),
       ...(executionKind === "script"
-        ? { args: ["--once", "--artifact-base", "${outputDir}"] }
+        ? // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
+          { args: ["--once", "--artifact-base", "${outputDir}"] }
         : {}),
     },
   };

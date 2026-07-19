@@ -1169,7 +1169,7 @@ describe("createCliJsonlStreamingParser", () => {
     });
 
     parser.push(
-      [
+      `${[
         JSON.stringify({ type: "init", session_id: "session-stream-no-result" }),
         JSON.stringify({
           type: "stream_event",
@@ -1178,7 +1178,7 @@ describe("createCliJsonlStreamingParser", () => {
             delta: { type: "text_delta", text: "streamed answer" },
           },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
     parser.finish();
 
@@ -1792,7 +1792,7 @@ describe("createCliJsonlStreamingParser", () => {
     });
 
     parser.push(
-      [
+      `${[
         JSON.stringify({
           type: "init",
           timestamp: "2026-06-16T19:36:46.000Z",
@@ -1833,7 +1833,7 @@ describe("createCliJsonlStreamingParser", () => {
           status: "success",
           stats: { total_tokens: 9, input_tokens: 4, output_tokens: 5 },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
     parser.finish();
 
@@ -1888,7 +1888,7 @@ describe("createCliJsonlStreamingParser", () => {
     });
 
     parser.push(
-      [
+      `${[
         JSON.stringify({
           type: "message",
           timestamp: "2026-06-16T19:36:47.000Z",
@@ -1902,7 +1902,7 @@ describe("createCliJsonlStreamingParser", () => {
           status: "error",
           error: { message: "Gemini stream failed" },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
     parser.finish();
 
@@ -1934,7 +1934,7 @@ describe("createCliJsonlStreamingParser", () => {
     });
 
     parser.push(
-      [
+      `${[
         JSON.stringify({
           type: "error",
           timestamp: "2026-06-16T19:36:48.000Z",
@@ -1947,7 +1947,7 @@ describe("createCliJsonlStreamingParser", () => {
           status: "error",
           stats: { total_tokens: 1 },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
     parser.finish();
 
@@ -2031,7 +2031,7 @@ describe("createCliJsonlStreamingParser", () => {
     });
 
     parser.push(
-      [
+      `${[
         JSON.stringify({
           type: "assistant",
           message: {
@@ -2055,7 +2055,7 @@ describe("createCliJsonlStreamingParser", () => {
             ],
           },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
     parser.finish();
 
@@ -2082,7 +2082,7 @@ describe("createCliJsonlStreamingParser", () => {
     });
 
     parser.push(
-      [
+      `${[
         JSON.stringify({
           type: "stream_event",
           event: {
@@ -2111,7 +2111,7 @@ describe("createCliJsonlStreamingParser", () => {
           type: "stream_event",
           event: { type: "content_block_stop", index: 0 },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
     parser.finish();
 
@@ -2140,7 +2140,7 @@ describe("createCliJsonlStreamingParser", () => {
     });
 
     parser.push(
-      [
+      `${[
         JSON.stringify({
           type: "stream_event",
           event: {
@@ -2161,7 +2161,7 @@ describe("createCliJsonlStreamingParser", () => {
           type: "stream_event",
           event: { type: "content_block_stop", index: 0 },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
     parser.finish();
 
@@ -2183,7 +2183,7 @@ describe("createCliJsonlStreamingParser", () => {
     });
 
     parser.push(
-      [
+      `${[
         JSON.stringify({
           type: "stream_event",
           event: {
@@ -2207,7 +2207,7 @@ describe("createCliJsonlStreamingParser", () => {
           type: "stream_event",
           event: { type: "content_block_stop", index: 0 },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
     parser.finish();
 
@@ -2258,7 +2258,7 @@ describe("createCliJsonlStreamingParser", () => {
     });
 
     parser.push(
-      [
+      `${[
         JSON.stringify({
           type: "assistant",
           message: {
@@ -2279,7 +2279,7 @@ describe("createCliJsonlStreamingParser", () => {
             ],
           },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
     parser.finish();
 
@@ -2318,7 +2318,7 @@ describe("createCliJsonlStreamingParser", () => {
     });
 
     parser.push(
-      [
+      `${[
         JSON.stringify({
           type: "stream_event",
           event: {
@@ -2346,7 +2346,7 @@ describe("createCliJsonlStreamingParser", () => {
             },
           },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
     parser.finish();
 
@@ -2376,7 +2376,7 @@ describe("createCliJsonlStreamingParser", () => {
     });
 
     parser.push(
-      [
+      `${[
         JSON.stringify({ type: "init", session_id: "session-commentary" }),
         JSON.stringify({
           type: "stream_event",
@@ -2400,7 +2400,7 @@ describe("createCliJsonlStreamingParser", () => {
             content_block: { type: "tool_use", id: "toolu_1", name: "Bash", input: {} },
           },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
     parser.finish();
 
@@ -2424,7 +2424,7 @@ describe("createCliJsonlStreamingParser", () => {
     });
 
     parser.push(
-      [
+      `${[
         JSON.stringify({ type: "init", session_id: "session-answer" }),
         JSON.stringify({
           type: "stream_event",
@@ -2446,7 +2446,7 @@ describe("createCliJsonlStreamingParser", () => {
             type: "message_stop",
           },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
     parser.finish();
 
@@ -2468,7 +2468,7 @@ describe("createCliJsonlStreamingParser", () => {
     });
 
     parser.push(
-      [
+      `${[
         JSON.stringify({ type: "init", session_id: "session-drop-commentary" }),
         JSON.stringify({
           type: "stream_event",
@@ -2485,7 +2485,7 @@ describe("createCliJsonlStreamingParser", () => {
             content_block: { type: "tool_use", id: "toolu_1", name: "Read", input: {} },
           },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
     parser.finish();
 
@@ -2509,7 +2509,7 @@ describe("createCliJsonlStreamingParser", () => {
     });
 
     parser.push(
-      [
+      `${[
         JSON.stringify({ type: "init", session_id: "session-no-commentary" }),
         JSON.stringify({
           type: "stream_event",
@@ -2519,7 +2519,7 @@ describe("createCliJsonlStreamingParser", () => {
             content_block: { type: "tool_use", id: "toolu_1", name: "Bash", input: {} },
           },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
     parser.finish();
 
@@ -2541,7 +2541,7 @@ describe("createCliJsonlStreamingParser", () => {
     });
 
     parser.push(
-      [
+      `${[
         JSON.stringify({ type: "init", session_id: "session-multi-commentary" }),
         JSON.stringify({
           type: "stream_event",
@@ -2566,7 +2566,7 @@ describe("createCliJsonlStreamingParser", () => {
             content_block: { type: "tool_use", id: "toolu_2", name: "Bash", input: {} },
           },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
     parser.finish();
 
@@ -2588,7 +2588,7 @@ describe("createCliJsonlStreamingParser", () => {
     });
 
     parser.push(
-      [
+      `${[
         JSON.stringify({ type: "init", session_id: "session-segment" }),
         JSON.stringify({
           type: "stream_event",
@@ -2620,7 +2620,7 @@ describe("createCliJsonlStreamingParser", () => {
             content_block: { type: "tool_use", id: "toolu_b", name: "Grep", input: {} },
           },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
     parser.finish();
 

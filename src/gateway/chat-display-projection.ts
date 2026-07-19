@@ -1502,7 +1502,7 @@ function readChatHistoryRecordTimestampMs(message: unknown): number | undefined 
 
 function isSubagentAnnounceInterSessionUserChatHistoryMessage(message: unknown): boolean {
   const record = readRecord(message);
-  if (!record || record.role !== "user") {
+  if (record?.role !== "user") {
     return false;
   }
   const provenance = normalizeInputProvenance(record.provenance);

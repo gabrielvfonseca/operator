@@ -122,6 +122,7 @@ async function runNpmProofCommand(params: {
   failureMessage: string;
   runCommand: WorkerNpmProofCommandRunner;
 }): Promise<unknown> {
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let result;
   try {
     result = await params.runCommand(params.argv, {

@@ -194,7 +194,9 @@ describe("mantis Slack desktop smoke runtime", () => {
     expect(runArgs).not.toContain("--no-sync");
     const remoteScript = runArgs?.at(-1);
     expect(remoteScript).toContain("hydrate_mode='source'");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(remoteScript).toContain("${BROWSER:-}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(remoteScript).toContain("${CHROME_BIN:-}");
     expect(remoteScript).toContain("PNPM_STORE_DIR");
     expect(remoteScript).toContain("build-essential python3");
@@ -245,6 +247,7 @@ describe("mantis Slack desktop smoke runtime", () => {
     expect(remoteScript).toContain("remote_command_timeout_seconds=");
     expect(remoteScript).toContain("remote-command-timeout.txt");
     expect(remoteScript).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'timeout --kill-after=15s "${remote_command_timeout_seconds}s" bash -c run_mantis_remote_body >"$out/slack-desktop-command.log" 2>&1 &',
     );
     expect(remoteScript).toContain("MANTIS_REMOTE_HEARTBEAT");
@@ -257,8 +260,9 @@ describe("mantis Slack desktop smoke runtime", () => {
     expect(remoteScript).toContain("Slack desktop screenshot is missing or empty");
     expect(remoteScript).not.toContain('test -s "$out/slack-desktop-smoke.png"');
     expect(remoteScript).toContain("OPENCLAW_MANTIS_SLACK_BROWSER_PROFILE_DIR");
-    expect(remoteScript)
-      .toContain(`const response = await fetch("https://slack.com/api/auth.test", {
+    expect(
+      remoteScript,
+    ).toContain(`const response = await fetch("https://slack.com/api/auth.test", {
   method: "POST",
   headers: { authorization: \`Bearer \${token}\` },
   signal: AbortSignal.timeout(15_000),

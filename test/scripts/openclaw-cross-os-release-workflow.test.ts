@@ -57,6 +57,7 @@ describe("cross-OS release checks workflow", () => {
 
     expect(workflow).toContain(HARNESS);
     expect(workflow).toContain("suite_filter:");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain('--suite-filter "${INPUT_SUITE_FILTER}"');
     expect(workflow).not.toContain("TSX_VERSION");
   });
@@ -76,6 +77,7 @@ describe("cross-OS release checks workflow", () => {
     expect(workflow).toContain("Baseline npm pack filename");
     expect(workflow).toContain("fileName !== path.basename(fileName)");
     expect(workflow).toContain("fileName !== path.win32.basename(fileName)");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("process.stdout.write(`file_name=${fileName}\\n`);");
   });
 
@@ -83,44 +85,65 @@ describe("cross-OS release checks workflow", () => {
     const release = readWorkflow(RELEASE_CHECKS_PATH);
     const producer = job(release, "prepare_release_package");
     expect(producer.outputs).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       artifact_digest: "${{ steps.release_package_upload.outputs.artifact-digest }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       artifact_id: "${{ steps.release_package_upload.outputs.artifact-id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       artifact_name: "${{ steps.artifact.outputs.name }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       artifact_run_attempt: "${{ steps.artifact.outputs.run_attempt }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       artifact_run_id: "${{ steps.artifact.outputs.run_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       package_file_name: "${{ steps.artifact.outputs.file_name }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       package_sha256: "${{ steps.package.outputs.sha256 }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       package_version: "${{ steps.package.outputs.package_version }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       source_sha: "${{ steps.package.outputs.source_sha }}",
     });
     expect(step(producer, "Checkout trusted workflow ref").with).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ref: "${{ github.sha }}",
       "persist-credentials": false,
     });
 
     const metadata = step(producer, "Set artifact metadata");
     expect(metadata.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "name=release-package-under-test-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}",
     );
     expect(metadata.run).toContain("file_name=openclaw-current.tgz");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(metadata.run).toContain("run_attempt=${GITHUB_RUN_ATTEMPT}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(metadata.run).toContain("run_id=${GITHUB_RUN_ID}");
 
     const upload = step(producer, "Upload release package artifact");
     expect(upload.id).toBe("release_package_upload");
     expect(upload.with).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       name: "${{ steps.artifact.outputs.name }}",
       "if-no-files-found": "error",
     });
 
     const binding = step(producer, "Validate release package artifact binding");
     expect(binding.env).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ARTIFACT_DIGEST: "${{ steps.release_package_upload.outputs.artifact-digest }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ARTIFACT_ID: "${{ steps.release_package_upload.outputs.artifact-id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ARTIFACT_RUN_ATTEMPT: "${{ steps.artifact.outputs.run_attempt }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ARTIFACT_RUN_ID: "${{ steps.artifact.outputs.run_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       PACKAGE_SHA256: "${{ steps.package.outputs.sha256 }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       PACKAGE_SOURCE_SHA: "${{ steps.package.outputs.source_sha }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       PACKAGE_VERSION: "${{ steps.package.outputs.package_version }}",
     });
     expect(binding.run).toContain('[[ "$ARTIFACT_DIGEST" =~ ^[a-f0-9]{64}$ ]]');
@@ -131,39 +154,66 @@ describe("cross-OS release checks workflow", () => {
 
     const crossOs = job(release, "cross_os_release_checks");
     expect(crossOs.with).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       candidate_artifact_digest: "${{ needs.prepare_release_package.outputs.artifact_digest }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       candidate_artifact_id: "${{ needs.prepare_release_package.outputs.artifact_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       candidate_artifact_name: "${{ needs.prepare_release_package.outputs.artifact_name }}",
       candidate_artifact_run_attempt:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ needs.prepare_release_package.outputs.artifact_run_attempt }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       candidate_artifact_run_id: "${{ needs.prepare_release_package.outputs.artifact_run_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       candidate_file_name: "${{ needs.prepare_release_package.outputs.package_file_name }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       candidate_sha256: "${{ needs.prepare_release_package.outputs.package_sha256 }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       candidate_source_sha: "${{ needs.prepare_release_package.outputs.source_sha }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       candidate_version: "${{ needs.prepare_release_package.outputs.package_version }}",
     });
 
     expect(job(release, "docker_e2e_release_checks").with).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       package_artifact_digest: "${{ needs.prepare_release_package.outputs.artifact_digest }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       package_artifact_id: "${{ needs.prepare_release_package.outputs.artifact_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       package_artifact_name: "${{ needs.prepare_release_package.outputs.artifact_name }}",
       package_artifact_run_attempt:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ needs.prepare_release_package.outputs.artifact_run_attempt }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       package_artifact_run_id: "${{ needs.prepare_release_package.outputs.artifact_run_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       package_file_name: "${{ needs.prepare_release_package.outputs.package_file_name }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       package_sha256: "${{ needs.prepare_release_package.outputs.package_sha256 }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       package_source_sha: "${{ needs.prepare_release_package.outputs.source_sha }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       package_version: "${{ needs.prepare_release_package.outputs.package_version }}",
     });
     expect(job(release, "package_acceptance_release_checks").with).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       artifact_digest: "${{ needs.prepare_release_package.outputs.artifact_digest }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       artifact_id: "${{ needs.prepare_release_package.outputs.artifact_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       artifact_name: "${{ needs.prepare_release_package.outputs.artifact_name }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       artifact_run_attempt: "${{ needs.prepare_release_package.outputs.artifact_run_attempt }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       artifact_run_id: "${{ needs.prepare_release_package.outputs.artifact_run_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       package_file_name: "${{ needs.prepare_release_package.outputs.package_file_name }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       package_source_sha: "${{ needs.prepare_release_package.outputs.source_sha }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       package_version: "${{ needs.prepare_release_package.outputs.package_version }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       workflow_ref: "${{ github.sha }}",
     });
   });
@@ -193,17 +243,29 @@ describe("cross-OS release checks workflow", () => {
 
     const prepare = job(workflow, "prepare");
     expect(prepare.outputs).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       baseline_artifact_digest: "${{ steps.upload_baseline.outputs.artifact-digest }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       baseline_artifact_id: "${{ steps.upload_baseline.outputs.artifact-id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       baseline_artifact_run_attempt: "${{ github.run_attempt }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       baseline_artifact_run_id: "${{ github.run_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       baseline_sha256: "${{ steps.baseline_metadata.outputs.sha256 }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       candidate_artifact_digest: "${{ steps.upload_candidate.outputs.artifact-digest }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       candidate_artifact_id: "${{ steps.upload_candidate.outputs.artifact-id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       candidate_artifact_run_attempt: "${{ github.run_attempt }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       candidate_artifact_run_id: "${{ github.run_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       candidate_sha256: "${{ steps.candidate_metadata.outputs.sha256 }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       candidate_version: "${{ steps.candidate_metadata.outputs.version }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       source_sha: "${{ steps.candidate_metadata.outputs.source_sha }}",
     });
     for (const [jobName, workflowJob] of Object.entries(workflow.jobs)) {
@@ -216,28 +278,40 @@ describe("cross-OS release checks workflow", () => {
 
     const inputBinding = step(prepare, "Validate provided candidate artifact binding");
     expect(inputBinding.env).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ARTIFACT_DIGEST: "${{ inputs.candidate_artifact_digest }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ARTIFACT_ID: "${{ inputs.candidate_artifact_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ARTIFACT_RUN_ATTEMPT: "${{ inputs.candidate_artifact_run_attempt }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ARTIFACT_RUN_ID: "${{ inputs.candidate_artifact_run_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       CANDIDATE_SHA256: "${{ inputs.candidate_sha256 }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       CANDIDATE_SOURCE_SHA: "${{ inputs.candidate_source_sha }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       CANDIDATE_VERSION: "${{ inputs.candidate_version }}",
     });
     expect(inputBinding.run).toContain('! "$ARTIFACT_ID" =~ ^[1-9][0-9]*$');
     expect(inputBinding.run).toContain('! "$ARTIFACT_DIGEST" =~ ^[a-f0-9]{64}$');
     expect(inputBinding.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '[[ "$ARTIFACT_NAME" == *"-${ARTIFACT_RUN_ID}-${ARTIFACT_RUN_ATTEMPT}" ]]',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(inputBinding.run).toContain('--arg digest "sha256:${ARTIFACT_DIGEST}"');
     expect(inputBinding.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "actions/runs/${ARTIFACT_RUN_ID}/attempts/${ARTIFACT_RUN_ATTEMPT}",
     );
     expect(inputBinding.run).toContain('"$CANDIDATE_SOURCE_SHA" != "$INPUT_REF"');
 
     const inputDownload = step(prepare, "Download provided candidate artifact");
     expect(inputDownload.with).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "artifact-ids": "${{ inputs.candidate_artifact_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "run-id": "${{ inputs.candidate_artifact_run_id }}",
     });
     expect(inputDownload.with?.name).toBeUndefined();
@@ -262,51 +336,74 @@ describe("cross-OS release checks workflow", () => {
     const upload = step(prepare, "Upload candidate artifact");
     expect(upload.id).toBe("upload_candidate");
     expect(upload.with?.name).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "openclaw-cross-os-release-checks-candidate-${{ github.run_id }}-${{ github.run_attempt }}",
     );
     const baselineUpload = step(prepare, "Upload baseline artifact");
     expect(baselineUpload.id).toBe("upload_baseline");
     expect(baselineUpload.with?.name).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "openclaw-cross-os-release-checks-baseline-${{ github.run_id }}-${{ github.run_attempt }}",
     );
 
     const consumer = job(workflow, "cross_os_release_checks");
     const binding = step(consumer, "Validate prepared candidate artifact binding");
     expect(binding.env).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ARTIFACT_DIGEST: "${{ needs.prepare.outputs.candidate_artifact_digest }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ARTIFACT_ID: "${{ needs.prepare.outputs.candidate_artifact_id }}",
       ARTIFACT_NAME:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ format('openclaw-cross-os-release-checks-candidate-{0}-{1}', needs.prepare.outputs.candidate_artifact_run_id, needs.prepare.outputs.candidate_artifact_run_attempt) }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ARTIFACT_RUN_ATTEMPT: "${{ needs.prepare.outputs.candidate_artifact_run_attempt }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ARTIFACT_RUN_ID: "${{ needs.prepare.outputs.candidate_artifact_run_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       BASELINE_ARTIFACT_DIGEST: "${{ needs.prepare.outputs.baseline_artifact_digest }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       BASELINE_ARTIFACT_ID: "${{ needs.prepare.outputs.baseline_artifact_id }}",
       BASELINE_ARTIFACT_NAME:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ format('openclaw-cross-os-release-checks-baseline-{0}-{1}', needs.prepare.outputs.baseline_artifact_run_id, needs.prepare.outputs.baseline_artifact_run_attempt) }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       BASELINE_ARTIFACT_RUN_ATTEMPT: "${{ needs.prepare.outputs.baseline_artifact_run_attempt }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       BASELINE_ARTIFACT_RUN_ID: "${{ needs.prepare.outputs.baseline_artifact_run_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       BASELINE_SHA256: "${{ needs.prepare.outputs.baseline_sha256 }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       CANDIDATE_SHA256: "${{ needs.prepare.outputs.candidate_sha256 }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       CANDIDATE_SOURCE_SHA: "${{ needs.prepare.outputs.source_sha }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       CANDIDATE_VERSION: "${{ needs.prepare.outputs.candidate_version }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       GH_TOKEN: "${{ github.token }}",
     });
     expect(binding.run).not.toContain('"$ARTIFACT_RUN_ATTEMPT" == "$GITHUB_RUN_ATTEMPT"');
     expect(binding.run).not.toContain('"$BASELINE_ARTIFACT_RUN_ATTEMPT" == "$GITHUB_RUN_ATTEMPT"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(binding.run).toContain("actions/artifacts/${tuple.id}");
     expect(binding.run).toContain("artifact.expired !== false");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(binding.run).toContain("artifact.digest !== `sha256:${tuple.digest}`");
     expect(binding.run).toContain("String(artifact.workflow_run?.id) !== tuple.runId");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(binding.run).toContain("actions/runs/${tuple.runId}/attempts/${tuple.runAttempt}");
     expect(binding.run).toContain("String(attempt.run_attempt) !== tuple.runAttempt");
 
     for (const name of ["Download candidate artifact", "Retry candidate artifact download"]) {
       const download = step(consumer, name);
       expect(download.with?.["artifact-ids"], name).toBe(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ needs.prepare.outputs.candidate_artifact_id }}",
       );
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(download.with?.["github-token"], name).toBe("${{ github.token }}");
       expect(download.with?.["run-id"], name).toBe(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ needs.prepare.outputs.candidate_artifact_run_id }}",
       );
       expect(download.with?.name, name).toBeUndefined();
@@ -314,20 +411,25 @@ describe("cross-OS release checks workflow", () => {
     for (const name of ["Download baseline artifact", "Retry baseline artifact download"]) {
       const download = step(consumer, name);
       expect(download.with?.["artifact-ids"], name).toBe(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ needs.prepare.outputs.baseline_artifact_id }}",
       );
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(download.with?.["github-token"], name).toBe("${{ github.token }}");
       expect(download.with?.["run-id"], name).toBe(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ needs.prepare.outputs.baseline_artifact_run_id }}",
       );
       expect(download.with?.name, name).toBeUndefined();
     }
     const verify = step(consumer, "Verify release-check inputs");
     expect(verify.env?.EXPECTED_CANDIDATE_SHA256).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ needs.prepare.outputs.candidate_sha256 }}",
     );
     expect(verify.run).toContain('"$actual_sha256" != "$EXPECTED_CANDIDATE_SHA256"');
     expect(verify.env?.EXPECTED_BASELINE_SHA256).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ needs.prepare.outputs.baseline_sha256 }}",
     );
     expect(verify.run).toContain('"$actual_baseline_sha256" != "$EXPECTED_BASELINE_SHA256"');
@@ -340,6 +442,7 @@ describe("cross-OS release checks workflow", () => {
       scripts: Record<string, string>;
     };
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(wrapper).toContain('exec "${node_cmd}" "${script_path}" "$@"');
     expect(wrapper).not.toContain("npm");
     expect(wrapper).not.toContain("tsx");

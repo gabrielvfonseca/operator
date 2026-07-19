@@ -998,6 +998,7 @@ describe("scripts/github/find-reusable-release-validation.sh", () => {
     const workflow = readFileSync(".github/workflows/full-release-validation.yml", "utf8");
     expect(workflow).toContain('--arg workflowSha "$GITHUB_SHA"');
     expect(workflow).toContain("workflowSha: $workflowSha");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("ref: ${{ github.sha }}");
   });
 });

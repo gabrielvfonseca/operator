@@ -430,10 +430,11 @@ export function renderAttachmentPreview(props: ChatAttachmentControlsProps) {
               .filter(Boolean)
               .join(" ")}
           >
-            ${att.mimeType.startsWith("image/") && getChatAttachmentPreviewUrl(att)
-              ? html`<img src=${getChatAttachmentPreviewUrl(att)!} alt="Attachment preview" />`
-              : isLargePastedTextAttachment(att)
-                ? html`
+            ${
+              att.mimeType.startsWith("image/") && getChatAttachmentPreviewUrl(att)
+                ? html`<img src=${getChatAttachmentPreviewUrl(att)!} alt="Attachment preview" />`
+                : isLargePastedTextAttachment(att)
+                  ? html`
                     <div class="chat-attachment-file chat-attachment-file--pasted-text">
                       <span class="chat-attachment-file__icon">${icons.fileText}</span>
                       <span class="chat-attachment-file__body">
@@ -451,7 +452,7 @@ export function renderAttachmentPreview(props: ChatAttachmentControlsProps) {
                       </span>
                     </div>
                   `
-                : html`
+                  : html`
                     <operator-tooltip .content=${att.fileName ?? "Attached file"}>
                       <div class="chat-attachment-file">
                         <span class="chat-attachment-file__icon">${icons.paperclip}</span>
@@ -460,7 +461,8 @@ export function renderAttachmentPreview(props: ChatAttachmentControlsProps) {
                         >
                       </div>
                     </operator-tooltip>
-                  `}
+                  `
+            }
             <operator-tooltip .content=${t("chat.composer.removeAttachment")}>
               <button
                 class="chat-attachment-remove"

@@ -41,7 +41,7 @@ type MutationParams = {
   actor: WorkspaceActor;
   broadcast?: WorkspaceBroadcast;
   changedTabSlug?: string;
-  mutate: (draft: WorkspaceDoc) => void | WorkspaceDoc;
+  mutate: (draft: WorkspaceDoc) => undefined | WorkspaceDoc;
 };
 
 const TAB_SLUG_PATTERN = /^[a-z0-9-]{1,40}$/;

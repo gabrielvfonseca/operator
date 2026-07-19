@@ -1099,7 +1099,7 @@ export type PluginHookBeforeAgentRunEvent = {
 };
 
 /** Result type for before_agent_run. Returns pass/block or void (= pass). */
-type PluginHookBeforeAgentRunResult = InputGateDecision | void;
+type PluginHookBeforeAgentRunResult = InputGateDecision | undefined;
 
 export type PluginHookResolveExecEnvEvent = {
   sessionKey?: string;
@@ -1113,27 +1113,36 @@ export type PluginHookHandlerMap = {
   agent_turn_prepare: (
     event: PluginAgentTurnPrepareEvent,
     ctx: PluginHookAgentContext,
-  ) => Promise<PluginAgentTurnPrepareResult | void> | PluginAgentTurnPrepareResult | void;
+  ) => Promise<PluginAgentTurnPrepareResult | undefined> | PluginAgentTurnPrepareResult | undefined;
   before_model_resolve: (
     event: PluginHookBeforeModelResolveEvent,
     ctx: PluginHookAgentContext,
   ) =>
-    | Promise<PluginHookBeforeModelResolveResult | void>
+    | Promise<PluginHookBeforeModelResolveResult | undefined>
     | PluginHookBeforeModelResolveResult
-    | void;
+    | undefined;
   before_prompt_build: (
     event: PluginHookBeforePromptBuildEvent,
     ctx: PluginHookAgentContext,
-  ) => Promise<PluginHookBeforePromptBuildResult | void> | PluginHookBeforePromptBuildResult | void;
+  ) =>
+    | Promise<PluginHookBeforePromptBuildResult | undefined>
+    | PluginHookBeforePromptBuildResult
+    | undefined;
   /** @deprecated Use before_model_resolve and before_prompt_build. */
   before_agent_start: (
     event: PluginHookBeforeAgentStartEvent,
     ctx: PluginHookAgentContext,
-  ) => Promise<PluginHookBeforeAgentStartResult | void> | PluginHookBeforeAgentStartResult | void;
+  ) =>
+    | Promise<PluginHookBeforeAgentStartResult | undefined>
+    | PluginHookBeforeAgentStartResult
+    | undefined;
   before_agent_reply: (
     event: PluginHookBeforeAgentReplyEvent,
     ctx: PluginHookAgentContext,
-  ) => Promise<PluginHookBeforeAgentReplyResult | void> | PluginHookBeforeAgentReplyResult | void;
+  ) =>
+    | Promise<PluginHookBeforeAgentReplyResult | undefined>
+    | PluginHookBeforeAgentReplyResult
+    | undefined;
   model_call_started: (
     event: PluginHookModelCallStartedEvent,
     ctx: PluginHookAgentContext,
@@ -1151,9 +1160,9 @@ export type PluginHookHandlerMap = {
     event: PluginHookBeforeAgentFinalizeEvent,
     ctx: PluginHookAgentContext,
   ) =>
-    | Promise<PluginHookBeforeAgentFinalizeResult | void>
+    | Promise<PluginHookBeforeAgentFinalizeResult | undefined>
     | PluginHookBeforeAgentFinalizeResult
-    | void;
+    | undefined;
   agent_end: (event: PluginHookAgentEndEvent, ctx: PluginHookAgentContext) => Promise<void> | void;
   before_compaction: (
     event: PluginHookBeforeCompactionEvent,
@@ -1170,7 +1179,7 @@ export type PluginHookHandlerMap = {
   inbound_claim: (
     event: PluginHookInboundClaimEvent,
     ctx: PluginHookInboundClaimContext,
-  ) => Promise<PluginHookInboundClaimResult | void> | PluginHookInboundClaimResult | void;
+  ) => Promise<PluginHookInboundClaimResult | undefined> | PluginHookInboundClaimResult | undefined;
   channel_pairing_requested: (
     event: PluginHookChannelPairingRequestedEvent,
     ctx: PluginHookChannelPairingContext,
@@ -1178,18 +1187,24 @@ export type PluginHookHandlerMap = {
   before_dispatch: (
     event: PluginHookBeforeDispatchEvent,
     ctx: PluginHookBeforeDispatchContext,
-  ) => Promise<PluginHookBeforeDispatchResult | void> | PluginHookBeforeDispatchResult | void;
+  ) =>
+    | Promise<PluginHookBeforeDispatchResult | undefined>
+    | PluginHookBeforeDispatchResult
+    | undefined;
   reply_dispatch: (
     event: PluginHookReplyDispatchEvent,
     ctx: PluginHookReplyDispatchContext,
-  ) => Promise<PluginHookReplyDispatchResult | void> | PluginHookReplyDispatchResult | void;
+  ) =>
+    | Promise<PluginHookReplyDispatchResult | undefined>
+    | PluginHookReplyDispatchResult
+    | undefined;
   reply_payload_sending: (
     event: PluginHookReplyPayloadSendingEvent,
     ctx: PluginHookReplyPayloadSendingContext,
   ) =>
-    | Promise<PluginHookReplyPayloadSendingResult | void>
+    | Promise<PluginHookReplyPayloadSendingResult | undefined>
     | PluginHookReplyPayloadSendingResult
-    | void;
+    | undefined;
   message_received: (
     event: PluginHookMessageReceivedEvent,
     ctx: PluginHookMessageContext,
@@ -1197,7 +1212,10 @@ export type PluginHookHandlerMap = {
   message_sending: (
     event: PluginHookMessageSendingEvent,
     ctx: PluginHookMessageContext,
-  ) => Promise<PluginHookMessageSendingResult | void> | PluginHookMessageSendingResult | void;
+  ) =>
+    | Promise<PluginHookMessageSendingResult | undefined>
+    | PluginHookMessageSendingResult
+    | undefined;
   message_sent: (
     event: PluginHookMessageSentEvent,
     ctx: PluginHookMessageContext,
@@ -1205,7 +1223,10 @@ export type PluginHookHandlerMap = {
   before_tool_call: (
     event: PluginHookBeforeToolCallEvent,
     ctx: PluginHookToolContext,
-  ) => Promise<PluginHookBeforeToolCallResult | void> | PluginHookBeforeToolCallResult | void;
+  ) =>
+    | Promise<PluginHookBeforeToolCallResult | undefined>
+    | PluginHookBeforeToolCallResult
+    | undefined;
   after_tool_call: (
     event: PluginHookAfterToolCallEvent,
     ctx: PluginHookToolContext,
@@ -1213,11 +1234,11 @@ export type PluginHookHandlerMap = {
   tool_result_persist: (
     event: PluginHookToolResultPersistEvent,
     ctx: PluginHookToolResultPersistContext,
-  ) => PluginHookToolResultPersistResult | void;
+  ) => PluginHookToolResultPersistResult | undefined;
   before_message_write: (
     event: PluginHookBeforeMessageWriteEvent,
     ctx: { agentId?: string; sessionKey?: string },
-  ) => PluginHookBeforeMessageWriteResult | void;
+  ) => PluginHookBeforeMessageWriteResult | undefined;
   session_start: (
     event: PluginHookSessionStartEvent,
     ctx: PluginHookSessionContext,
@@ -1234,14 +1255,17 @@ export type PluginHookHandlerMap = {
   subagent_spawning: (
     event: PluginHookSubagentSpawningEvent,
     ctx: PluginHookSubagentContext,
-  ) => Promise<PluginHookSubagentSpawningResult | void> | PluginHookSubagentSpawningResult | void;
+  ) =>
+    | Promise<PluginHookSubagentSpawningResult | undefined>
+    | PluginHookSubagentSpawningResult
+    | undefined;
   subagent_delivery_target: (
     event: PluginHookSubagentDeliveryTargetEvent,
     ctx: PluginHookSubagentContext,
   ) =>
-    | Promise<PluginHookSubagentDeliveryTargetResult | void>
+    | Promise<PluginHookSubagentDeliveryTargetResult | undefined>
     | PluginHookSubagentDeliveryTargetResult
-    | void;
+    | undefined;
   subagent_spawned: (
     event: PluginHookSubagentSpawnedEvent,
     ctx: PluginHookSubagentContext,
@@ -1275,9 +1299,9 @@ export type PluginHookHandlerMap = {
     event: PluginHeartbeatPromptContributionEvent,
     ctx: PluginHookAgentContext,
   ) =>
-    | Promise<PluginHeartbeatPromptContributionResult | void>
+    | Promise<PluginHeartbeatPromptContributionResult | undefined>
     | PluginHeartbeatPromptContributionResult
-    | void;
+    | undefined;
   cron_reconciled: (
     event: PluginHookCronReconciledEvent,
     ctx: PluginHookCronReconciledContext,
@@ -1289,7 +1313,10 @@ export type PluginHookHandlerMap = {
   before_install: (
     event: PluginHookBeforeInstallEvent,
     ctx: PluginHookBeforeInstallContext,
-  ) => Promise<PluginHookBeforeInstallResult | void> | PluginHookBeforeInstallResult | void;
+  ) =>
+    | Promise<PluginHookBeforeInstallResult | undefined>
+    | PluginHookBeforeInstallResult
+    | undefined;
   before_agent_run: (
     event: PluginHookBeforeAgentRunEvent,
     ctx: PluginHookAgentContext,
@@ -1297,7 +1324,7 @@ export type PluginHookHandlerMap = {
   resolve_exec_env: (
     event: PluginHookResolveExecEnvEvent,
     ctx: PluginHookResolveExecEnvContext,
-  ) => Promise<Record<string, string> | void> | Record<string, string> | void;
+  ) => Promise<Record<string, string> | undefined> | Record<string, string> | undefined;
 };
 
 export type PluginHookRegistration<K extends PluginHookName = PluginHookName> = {

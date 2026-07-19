@@ -379,9 +379,9 @@ export function workboardMutationsReady(state: WorkboardUiState): boolean {
 export function workboardHasActiveWrites(state: WorkboardUiState): boolean {
   return Boolean(
     state.draftSaving ||
-    state.busyCardIds.size ||
-    state.syncingCardIds.size ||
-    state.capturingSessionKeys.size,
+      state.busyCardIds.size ||
+      state.syncingCardIds.size ||
+      state.capturingSessionKeys.size,
   );
 }
 
@@ -395,11 +395,11 @@ export function workboardLifecycleSyncBlocked(
 ): boolean {
   return Boolean(
     state.draftOpen ||
-    state.editingCardId ||
-    state.draggedCardId ||
-    state.dispatching ||
-    workboardHasActiveWrites(state) ||
-    workboardHasActiveLoad(host),
+      state.editingCardId ||
+      state.draggedCardId ||
+      state.dispatching ||
+      workboardHasActiveWrites(state) ||
+      workboardHasActiveLoad(host),
   );
 }
 

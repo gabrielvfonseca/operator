@@ -43,7 +43,7 @@ describe("scpFile", () => {
     // would keep a lone surrogate half before the thrown error is built.
     const lowSurrogateTailStart = 100;
     const padding = "n".repeat(lowSurrogateTailStart - 1);
-    const recent = "🤖" + "n".repeat(SCP_STDERR_TAIL_CHARS - 5) + "fail";
+    const recent = `🤖${"n".repeat(SCP_STDERR_TAIL_CHARS - 5)}fail`;
     runCommandWithTimeoutMock.mockResolvedValue({
       code: 1,
       stdout: "",

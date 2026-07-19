@@ -346,9 +346,11 @@ export function renderBackgroundTasksToggle(
         @click=${backgroundTasks.onToggleCollapsed}
       >
         ${icons.activity}
-        ${!expanded && activeCount > 0
-          ? html`<span class="chat-tasks-toggle__badge" aria-hidden="true">${activeCount}</span>`
-          : nothing}
+        ${
+          !expanded && activeCount > 0
+            ? html`<span class="chat-tasks-toggle__badge" aria-hidden="true">${activeCount}</span>`
+            : nothing
+        }
       </button>
     </operator-tooltip>
   `;
@@ -384,14 +386,17 @@ function renderTaskRow(task: TaskSummary, props: BackgroundTasksProps): Template
   return html`
     <div class="chat-tasks-rail__task" role="listitem" data-task-id=${task.id}>
       <div class="chat-tasks-rail__task-head">
-        ${task.status === "running"
-          ? html`<span class="chat-tasks-rail__task-pulse" aria-hidden="true"></span>`
-          : nothing}
+        ${
+          task.status === "running"
+            ? html`<span class="chat-tasks-rail__task-pulse" aria-hidden="true"></span>`
+            : nothing
+        }
         <operator-tooltip .content=${title}>
           <span class="chat-tasks-rail__task-title">${title}</span>
         </operator-tooltip>
-        ${active && props.canCancel
-          ? html`
+        ${
+          active && props.canCancel
+            ? html`
               <operator-tooltip .content=${t("chat.backgroundTasks.stopTask", { title })}>
                 <button
                   class="chat-tasks-rail__task-stop"
@@ -404,7 +409,8 @@ function renderTaskRow(task: TaskSummary, props: BackgroundTasksProps): Template
                 </button>
               </operator-tooltip>
             `
-          : nothing}
+            : nothing
+        }
       </div>
       <div class="chat-tasks-rail__task-meta">
         <span class="chat-tasks-rail__task-status chat-tasks-rail__task-status--${tone}"
@@ -412,32 +418,45 @@ function renderTaskRow(task: TaskSummary, props: BackgroundTasksProps): Template
         >
         <span class="chat-tasks-rail__task-sep" aria-hidden="true">·</span>
         <span>${taskRuntimeLabel(task)}</span>
-        ${active && startedMs > 0
-          ? html`<span class="chat-tasks-rail__task-sep" aria-hidden="true">·</span>
+        ${
+          active && startedMs > 0
+            ? html`<span class="chat-tasks-rail__task-sep" aria-hidden="true">·</span>
               <span><operator-elapsed-time .startMs=${startedMs}></operator-elapsed-time></span>`
-          : nothing}
-        ${finishedDuration
-          ? html`<span class="chat-tasks-rail__task-sep" aria-hidden="true">·</span>
+            : nothing
+        }
+        ${
+          finishedDuration
+            ? html`<span class="chat-tasks-rail__task-sep" aria-hidden="true">·</span>
               <span>${finishedDuration}</span>`
-          : nothing}
-        ${!active && timestamp > 0
-          ? html`<span class="chat-tasks-rail__task-sep" aria-hidden="true">·</span>
+            : nothing
+        }
+        ${
+          !active && timestamp > 0
+            ? html`<span class="chat-tasks-rail__task-sep" aria-hidden="true">·</span>
               <span title=${formatMs(timestamp)}>${formatRelativeTimestamp(timestamp)}</span>`
-          : nothing}
-        ${toolUseCount > 0
-          ? html`<span class="chat-tasks-rail__task-sep" aria-hidden="true">·</span>
+            : nothing
+        }
+        ${
+          toolUseCount > 0
+            ? html`<span class="chat-tasks-rail__task-sep" aria-hidden="true">·</span>
               <span
-                >${toolUseCount === 1
-                  ? t("chat.backgroundTasks.toolUseOne")
-                  : t("chat.backgroundTasks.toolUseMany", { count: String(toolUseCount) })}</span
+                >${
+                  toolUseCount === 1
+                    ? t("chat.backgroundTasks.toolUseOne")
+                    : t("chat.backgroundTasks.toolUseMany", { count: String(toolUseCount) })
+                }</span
               >`
-          : nothing}
-        ${active && task.lastToolName
-          ? html`<span class="chat-tasks-rail__task-sep" aria-hidden="true">·</span>
+            : nothing
+        }
+        ${
+          active && task.lastToolName
+            ? html`<span class="chat-tasks-rail__task-sep" aria-hidden="true">·</span>
               <span class="chat-tasks-rail__task-tool">${task.lastToolName}</span>`
-          : nothing}
-        ${transcriptSessionKey
-          ? html`
+            : nothing
+        }
+        ${
+          transcriptSessionKey
+            ? html`
               <button
                 class="chat-tasks-rail__task-transcript"
                 type="button"
@@ -446,7 +465,8 @@ function renderTaskRow(task: TaskSummary, props: BackgroundTasksProps): Template
                 ${t("chat.backgroundTasks.viewTranscript")}
               </button>
             `
-          : nothing}
+            : nothing
+        }
       </div>
       ${detail ? html`<div class="chat-tasks-rail__task-detail">${detail}</div>` : nothing}
     </div>
@@ -507,31 +527,40 @@ export function renderBackgroundTasksRail(
               @click=${backgroundTasks.onToggleCollapsed}
             >
               <span class="nav-collapse-toggle__icon" aria-hidden="true"
-                >${backgroundTasks.narrowLayout
-                  ? icons.panelBottomClose
-                  : icons.panelRightClose}</span
+                >${
+                  backgroundTasks.narrowLayout ? icons.panelBottomClose : icons.panelRightClose
+                }</span
               >
             </button>
           </operator-tooltip>
         </div>
       </div>
-      ${!backgroundTasks.connected
-        ? html`<div class="chat-tasks-rail__state">${t("tasksPage.disconnected")}</div>`
-        : nothing}
-      ${backgroundTasks.error
-        ? html`<div class="chat-tasks-rail__state chat-tasks-rail__state--error">
+      ${
+        !backgroundTasks.connected
+          ? html`<div class="chat-tasks-rail__state">${t("tasksPage.disconnected")}</div>`
+          : nothing
+      }
+      ${
+        backgroundTasks.error
+          ? html`<div class="chat-tasks-rail__state chat-tasks-rail__state--error">
             ${backgroundTasks.error}
           </div>`
-        : nothing}
-      ${backgroundTasks.loading && !loaded
-        ? html`<div class="chat-tasks-rail__state">${t("chat.backgroundTasks.loading")}</div>`
-        : nothing}
-      ${empty
-        ? html`<div class="chat-tasks-rail__state">${t("chat.backgroundTasks.empty")}</div>`
-        : nothing}
+          : nothing
+      }
+      ${
+        backgroundTasks.loading && !loaded
+          ? html`<div class="chat-tasks-rail__state">${t("chat.backgroundTasks.loading")}</div>`
+          : nothing
+      }
+      ${
+        empty
+          ? html`<div class="chat-tasks-rail__state">${t("chat.backgroundTasks.empty")}</div>`
+          : nothing
+      }
       <div class="chat-tasks-rail__scroll">
-        ${active.length > 0
-          ? html`
+        ${
+          active.length > 0
+            ? html`
               <section class="chat-tasks-rail__section" data-tasks-section="running">
                 <div class="chat-tasks-rail__section-title">
                   ${t("chat.backgroundTasks.running", { count: String(active.length) })}
@@ -539,9 +568,11 @@ export function renderBackgroundTasksRail(
                 ${renderTaskRows(active, backgroundTasks)}
               </section>
             `
-          : nothing}
-        ${recent.length > 0
-          ? html`
+            : nothing
+        }
+        ${
+          recent.length > 0
+            ? html`
               <section class="chat-tasks-rail__section" data-tasks-section="finished">
                 <button
                   class="chat-tasks-rail__section-toggle"
@@ -556,12 +587,15 @@ export function renderBackgroundTasksRail(
                     ${backgroundTasks.finishedCollapsed ? icons.chevronRight : icons.chevronDown}
                   </span>
                 </button>
-                ${backgroundTasks.finishedCollapsed
-                  ? nothing
-                  : renderTaskRows(recent, backgroundTasks)}
+                ${
+                  backgroundTasks.finishedCollapsed
+                    ? nothing
+                    : renderTaskRows(recent, backgroundTasks)
+                }
               </section>
             `
-          : nothing}
+            : nothing
+        }
       </div>
     </aside>
   `;

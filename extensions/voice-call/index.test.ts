@@ -912,10 +912,10 @@ describe("voice-call plugin", () => {
     const tmpFile = path.join(os.tmpdir(), `voicecall-latency-${Date.now()}.jsonl`);
     fs.writeFileSync(
       tmpFile,
-      [
+      `${[
         JSON.stringify({ metadata: { lastTurnLatencyMs: 100, lastTurnListenWaitMs: 70 } }),
         JSON.stringify({ metadata: { lastTurnLatencyMs: 200, lastTurnListenWaitMs: 110 } }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf8",
     );
 

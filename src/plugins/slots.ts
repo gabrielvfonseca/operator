@@ -136,7 +136,7 @@ export function applyExclusiveSlotSelection(params: {
           continue;
         }
         const entry = entries[plugin.id];
-        if (!entry || entry.enabled !== false) {
+        if (entry?.enabled !== false) {
           entries[plugin.id] = { ...entry, enabled: false };
           disabledIds.push(plugin.id);
         }

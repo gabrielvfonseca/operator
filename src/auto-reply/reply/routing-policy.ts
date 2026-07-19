@@ -21,10 +21,10 @@ export function resolveReplyRoutingDecision(params: {
     params.explicitDeliverRoute !== true;
   const shouldRouteToOriginating = Boolean(
     !params.suppressDirectUserDelivery &&
-    !isInternalWebchatTurn &&
-    params.isRoutableChannel(originatingChannel) &&
-    params.originatingTo &&
-    originatingChannel !== currentSurface,
+      !isInternalWebchatTurn &&
+      params.isRoutableChannel(originatingChannel) &&
+      params.originatingTo &&
+      originatingChannel !== currentSurface,
   );
   return {
     originatingChannel,

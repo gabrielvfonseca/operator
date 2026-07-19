@@ -114,43 +114,47 @@ function renderProviderCostHistory(snapshot: ProviderUsageSnapshot) {
         })}
       </div>
       <div class="provider-cost-tokens">
-        ${totals.requests > 0
-          ? html`<span
+        ${
+          totals.requests > 0
+            ? html`<span
               >${t("usage.providerUsage.requests", {
                 count: new Intl.NumberFormat().format(totals.requests),
               })}</span
             >`
-          : nothing}
+            : nothing
+        }
         <span>${t("usage.providerUsage.inputTokens", { count: formatTokens(totals.input) })}</span>
         <span>${t("usage.providerUsage.cacheTokens", { count: formatTokens(totals.cache) })}</span>
         <span
           >${t("usage.providerUsage.outputTokens", { count: formatTokens(totals.output) })}</span
         >
       </div>
-      ${history.models.length > 0 || history.categories.length > 0
-        ? html`
+      ${
+        history.models.length > 0 || history.categories.length > 0
+          ? html`
             <div class="provider-cost-breakdowns">
-              ${history.models.length > 0
-                ? html`
+              ${
+                history.models.length > 0
+                  ? html`
                     <div class="provider-cost-breakdown">
                       <span class="provider-cost-breakdown__title"
                         >${t("usage.providerUsage.topModels")}</span
                       >
-                      ${history.models
-                        .slice(0, 3)
-                        .map(
-                          (model) => html`
+                      ${history.models.slice(0, 3).map(
+                        (model) => html`
                             <div>
                               <span>${model.name}</span
                               ><strong>${formatTokens(model.totalTokens)}</strong>
                             </div>
                           `,
-                        )}
+                      )}
                     </div>
                   `
-                : nothing}
-              ${history.categories.length > 0
-                ? html`
+                  : nothing
+              }
+              ${
+                history.categories.length > 0
+                  ? html`
                     <div class="provider-cost-breakdown">
                       <span class="provider-cost-breakdown__title"
                         >${t("usage.providerUsage.costCategories")}</span
@@ -165,10 +169,12 @@ function renderProviderCostHistory(snapshot: ProviderUsageSnapshot) {
                       )}
                     </div>
                   `
-                : nothing}
+                  : nothing
+              }
             </div>
           `
-        : nothing}
+          : nothing
+      }
     </div>
   `;
 }
@@ -183,8 +189,9 @@ export function renderProviderUsageDetails(snapshot: ProviderUsageSnapshot) {
     return html`<div class="provider-usage-error">${snapshot.error}</div>`;
   }
   return html`
-    ${snapshot.windows.length > 0
-      ? html`
+    ${
+      snapshot.windows.length > 0
+        ? html`
           <div class="provider-usage-windows">
             ${snapshot.windows.map((window) => {
               const used = Math.max(0, Math.min(100, window.usedPercent));
@@ -210,23 +217,30 @@ export function renderProviderUsageDetails(snapshot: ProviderUsageSnapshot) {
                   >
                     <span style=${`width: ${used}%`}></span>
                   </div>
-                  ${reset
-                    ? html`<div class="provider-usage-reset">
+                  ${
+                    reset
+                      ? html`<div class="provider-usage-reset">
                         ${t("usage.providerUsage.resets", { date: reset })}
                       </div>`
-                    : nothing}
+                      : nothing
+                  }
                 </div>
               `;
             })}
           </div>
         `
-      : nothing}
-    ${snapshot.billing && snapshot.billing.length > 0
-      ? html`<div class="provider-usage-billing">${renderProviderBilling(snapshot)}</div>`
-      : nothing}
+        : nothing
+    }
+    ${
+      snapshot.billing && snapshot.billing.length > 0
+        ? html`<div class="provider-usage-billing">${renderProviderBilling(snapshot)}</div>`
+        : nothing
+    }
     ${renderProviderCostHistory(snapshot)}
-    ${snapshot.summary
-      ? html`<div class="provider-usage-summary">${snapshot.summary}</div>`
-      : nothing}
+    ${
+      snapshot.summary
+        ? html`<div class="provider-usage-summary">${snapshot.summary}</div>`
+        : nothing
+    }
   `;
 }

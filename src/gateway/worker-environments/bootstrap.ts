@@ -49,6 +49,7 @@ try { const { DatabaseSync } = require("node:sqlite"); const db = new DatabaseSy
   const sqliteSafe = atLeast(sqlite, [3, 51, 3]) || (sqlite[0] === 3 && ((sqlite[1] === 50 && sqlite[2] >= 7) || (sqlite[1] === 44 && sqlite[2] >= 6)));
   process.exit(sqliteSafe ? 0 : 1); } catch { process.exit(1); }`;
 
+// biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
 const RECEIPT_MATCH_JS = String.raw`const fs = require("node:fs");
 try {
   const actual = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
@@ -72,6 +73,7 @@ try {
   process.exit(1);
 }`;
 
+// biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
 const VERIFY_ARCHIVE_JS = String.raw`const crypto = require("node:crypto");
 const fs = require("node:fs");
 try {
@@ -81,6 +83,7 @@ try {
   process.exit(1);
 }`;
 
+// biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
 const VERIFY_NPM_PACKAGE_JS = String.raw`const crypto = require("node:crypto");
 const fs = require("node:fs");
 try {
@@ -90,6 +93,7 @@ try {
   process.exit(1);
 }`;
 
+// biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
 const READ_NPM_PACK_FILENAME_JS = String.raw`const fs = require("node:fs");
 const path = require("node:path");
 try {
@@ -617,6 +621,7 @@ async function runSshScript(params: {
   );
 }
 
+// biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
 const CLEANUP_UPLOAD_SCRIPT = String.raw`set -eu
 rm -f -- "$1"
 `;

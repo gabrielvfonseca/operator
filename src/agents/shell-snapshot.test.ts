@@ -295,6 +295,7 @@ describe("exec shell snapshots", () => {
     tempDirs.push(home, stateDir, cwd);
     setSnapshotStateForTest(stateDir, { home });
     process.env.PNPM_HOME = "/trusted";
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     fs.writeFileSync(path.join(home, ".bashrc"), 'export PNPM_HOME="${PNPM_HOME}/from-rc"\n');
 
     const shellArgs = getPosixShellArgs(bash);

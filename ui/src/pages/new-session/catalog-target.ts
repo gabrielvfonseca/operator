@@ -87,8 +87,9 @@ export function renderBar(params: {
     <div class="new-session-page__triggers">
       ${renderTarget(params.data)} ${isTarget(params.data) ? nothing : params.agentSelect}
       ${params.folderSelect} ${params.whereSelect}
-      ${pending
-        ? html`<span class="new-session-page__catalog-unavailable">
+      ${
+        pending
+          ? html`<span class="new-session-page__catalog-unavailable">
             ${t("newSession.catalogUnavailable")}
             <button
               class="btn btn--sm"
@@ -99,7 +100,8 @@ export function renderBar(params: {
               ${params.retrying ? t("common.loading") : t("lazyView.retry")}
             </button>
           </span>`
-        : nothing}
+          : nothing
+      }
     </div>
   `;
 }

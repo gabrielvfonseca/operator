@@ -6,6 +6,7 @@ import { hasInterSessionUserProvenance } from "../../../sessions/input-provenanc
 import { isOperatorDeliveryMirrorAssistantMessage } from "../../../shared/transcript-only-openclaw-assistant.js";
 
 const SESSION_MEMORY_TOOL_DIRECTIVE_PREFIX = String.raw`(?:(?:\|DSML\|)|(?:\uFF5CDSML\uFF5C))?`;
+// biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
 const SESSION_MEMORY_TOOL_DIRECTIVE_KIND = String.raw`(?:tool_calls?|function_calls?|tool_use_error)`;
 const SESSION_MEMORY_DROP_BLOCK_RE = new RegExp(
   String.raw`<${SESSION_MEMORY_TOOL_DIRECTIVE_PREFIX}${SESSION_MEMORY_TOOL_DIRECTIVE_KIND}\b[^>]*>` +

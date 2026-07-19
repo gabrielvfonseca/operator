@@ -366,6 +366,7 @@ wa-radio-group.settings-segmented::part(radios) {
   gap: 2px;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .settings-segmented__btn {
   font-size: var(--control-ui-text-sm);
   font-weight: 550;

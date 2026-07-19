@@ -549,10 +549,7 @@ export class MatrixClient {
   }
 
   private async waitForInitialSyncReady(
-    params: {
-      timeoutMs?: number;
-      abortSignal?: AbortSignal;
-    } = {},
+    params: { timeoutMs?: number; abortSignal?: AbortSignal } = {},
   ): Promise<void> {
     const timeoutMs = params.timeoutMs ?? 30_000;
     if (isMatrixReadySyncState(this.currentSyncState)) {
@@ -1556,9 +1553,7 @@ export class MatrixClient {
   }
 
   async restoreRoomKeyBackup(
-    params: {
-      recoveryKey?: string;
-    } = {},
+    params: { recoveryKey?: string } = {},
   ): Promise<MatrixRoomKeyBackupRestoreResult> {
     let loadedFromSecretStorage = false;
     const fail = async (error: string): Promise<MatrixRoomKeyBackupRestoreResult> => {

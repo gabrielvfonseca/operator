@@ -167,6 +167,7 @@ describe("create-dmg plist validation", () => {
     const script = readFileSync(scriptPath, "utf8");
     const readBlock = script.slice(
       script.indexOf("APP_NAME="),
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       script.indexOf('DMG_NAME="${APP_NAME}-${VERSION}.dmg"'),
     );
 
@@ -184,6 +185,7 @@ describe("create-dmg plist validation", () => {
   it("keeps temporary DMG artifacts scoped to one run", () => {
     const script = readFileSync(scriptPath, "utf8");
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('DMG_TEMP="$(mktemp -d "${TMPDIR:-/tmp}/openclaw-dmg.XXXXXX")"');
     expect(script).toContain('DMG_SOURCE="$DMG_TEMP/source"');
     expect(script).toContain('MOUNT_POINT="$DMG_TEMP/mount"');
@@ -204,9 +206,13 @@ describe("create-dmg plist validation", () => {
   it("keeps the larger Finder layout aligned with the packaged backgrounds", () => {
     const script = readFileSync(scriptPath, "utf8");
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('DMG_WINDOW_BOUNDS="${DMG_WINDOW_BOUNDS:-400 100 1080 530}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('DMG_ICON_SIZE="${DMG_ICON_SIZE:-144}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('DMG_APP_POS="${DMG_APP_POS:-170 305}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('DMG_APPS_POS="${DMG_APPS_POS:-510 305}"');
     expect(readPngDimensions("apps/macos/Packaging/dmg-background-small.png")).toEqual({
       width: 680,

@@ -369,7 +369,7 @@ describe("session.message websocket events", () => {
     const transcriptPath = path.join(path.dirname(storePath), "sess-main.jsonl");
     await fs.writeFile(
       transcriptPath,
-      JSON.stringify({ type: "session", version: 1, id: "sess-main" }) + "\n",
+      `${JSON.stringify({ type: "session", version: 1, id: "sess-main" })}\n`,
       "utf-8",
     );
 

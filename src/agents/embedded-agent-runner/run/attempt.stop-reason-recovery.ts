@@ -92,7 +92,7 @@ function wrapStreamHandleUnhandledStopReason(
 
   const originalAsyncIterator = stream[Symbol.asyncIterator].bind(stream);
   (stream as { [Symbol.asyncIterator]: typeof originalAsyncIterator })[Symbol.asyncIterator] =
-    function () {
+    () => {
       const iterator = originalAsyncIterator();
       let emittedSyntheticTerminal = false;
       return createStreamIteratorWrapper({

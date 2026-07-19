@@ -7,7 +7,7 @@ export {
   handleDiscordSubagentSpawning,
 } from "./src/subagent-hooks.js";
 export { inspectDiscordAccount, type InspectedDiscordAccount } from "./src/account-inspect.js";
-export { type DiscordCredentialStatus } from "./src/token.js";
+export type { DiscordCredentialStatus } from "./src/token.js";
 export {
   createDiscordActionGate,
   listDiscordAccountIds,

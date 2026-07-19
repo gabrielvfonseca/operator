@@ -70,22 +70,19 @@ const MAX_DISPLAY_VALUE_ARRAY_ITEMS = 8;
 const MAX_DISPLAY_VALUE_OBJECT_KEYS = 8;
 const MAX_DISPLAY_VALUE_DEPTH = 3;
 const DISPLAY_TEXT_SCAN_MAX_LENGTH = 4096;
-const ANSI_OSC_SEQUENCE_RE = new RegExp(
-  String.raw`(?:\u001b]|\u009d)[^\u001b\u009c\u0007]*(?:\u0007|\u001b\\|\u009c)`,
-  "g",
-);
-const ANSI_CONTROL_SEQUENCE_RE = new RegExp(
-  String.raw`(?:\u001b\[[0-?]*[ -/]*[@-~]|\u009b[0-?]*[ -/]*[@-~]|\u001b[@-Z\\-_])`,
-  "g",
-);
-const CONTROL_CHARACTER_RE = new RegExp(String.raw`[\u0000-\u001f\u007f-\u009f]+`, "g");
-const INVISIBLE_FORMATTING_CONTROL_RE = new RegExp(
-  String.raw`[\u00ad\u034f\u061c\u200b-\u200f\u202a-\u202e\u2060-\u206f\ufeff\ufe00-\ufe0f\u{e0100}-\u{e01ef}]`,
-  "gu",
-);
-const DANGLING_TERMINAL_SEQUENCE_SUFFIX_RE = new RegExp(
-  String.raw`(?:\u001b\][^\u001b\u009c\u0007]*|\u009d[^\u001b\u009c\u0007]*|\u001b\[[0-?]*[ -/]*|\u009b[0-?]*[ -/]*|\u001b)$`,
-);
+// biome-ignore lint/suspicious/noControlCharactersInRegex: migrated from oxlint
+const ANSI_OSC_SEQUENCE_RE = /(?:\u001b]|\u009d)[^\u001b\u009c\u0007]*(?:\u0007|\u001b\\|\u009c)/g;
+const ANSI_CONTROL_SEQUENCE_RE =
+  // biome-ignore lint/suspicious/noControlCharactersInRegex: migrated from oxlint
+  /(?:\u001b\[[0-?]*[ -/]*[@-~]|\u009b[0-?]*[ -/]*[@-~]|\u001b[@-Z\\-_])/g;
+// biome-ignore lint/suspicious/noControlCharactersInRegex: migrated from oxlint
+const CONTROL_CHARACTER_RE = /[\u0000-\u001f\u007f-\u009f]+/g;
+const INVISIBLE_FORMATTING_CONTROL_RE =
+  // biome-ignore lint/suspicious/noMisleadingCharacterClass: migrated from oxlint
+  /[\u00ad\u034f\u061c\u200b-\u200f\u202a-\u202e\u2060-\u206f\ufeff\ufe00-\ufe0f\u{e0100}-\u{e01ef}]/gu;
+const DANGLING_TERMINAL_SEQUENCE_SUFFIX_RE =
+  // biome-ignore lint/suspicious/noControlCharactersInRegex: migrated from oxlint
+  /(?:\u001b\][^\u001b\u009c\u0007]*|\u009d[^\u001b\u009c\u0007]*|\u001b\[[0-?]*[ -/]*|\u009b[0-?]*[ -/]*|\u001b)$/;
 
 export async function handleCodexAppServerElicitationRequest(params: {
   requestParams: JsonValue | undefined;

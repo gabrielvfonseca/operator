@@ -9,14 +9,16 @@ import {
 } from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
 import type { ModalInputSummary } from "./monitor/events/modal-input-summary.js";
 
-type SlackInteractiveHandlerResult = {
-  handled?: boolean;
-  systemEvent?: {
-    summary?: string;
-    reference?: string;
-    data?: Record<string, unknown>;
-  };
-} | void;
+type SlackInteractiveHandlerResult =
+  | {
+      handled?: boolean;
+      systemEvent?: {
+        summary?: string;
+        reference?: string;
+        data?: Record<string, unknown>;
+      };
+    }
+  | undefined;
 
 type SlackBlockInteractivePayload = {
   kind: "button" | "select";

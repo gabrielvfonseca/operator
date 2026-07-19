@@ -613,7 +613,7 @@ function assertInstalled() {
 
   const list = readJson("/tmp/operator-plugins-list.json");
   const plugin = (list.plugins || []).find((entry) => entry.id === pluginId);
-  if (!plugin || plugin.enabled !== true || plugin.status !== "loaded") {
+  if (plugin?.enabled !== true || plugin.status !== "loaded") {
     throw new Error(`fixture plugin was not enabled+loaded: ${JSON.stringify(plugin)}`);
   }
   const inspect = readJson("/tmp/operator-plugin-inspect.json");

@@ -116,6 +116,7 @@ describeLive("openai reasoning compat live", () => {
         return;
       }
 
+      // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
       let apiKeyInfo;
       try {
         apiKeyInfo = await getApiKeyForModel({
@@ -176,6 +177,7 @@ describeLive("openai reasoning compat live", () => {
         return;
       }
 
+      // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
       let apiKeyInfo;
       try {
         apiKeyInfo = await getApiKeyForModel({

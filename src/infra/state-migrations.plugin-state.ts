@@ -271,6 +271,7 @@ export async function runLegacyMigrationPlans(
     if (plan.kind === "plugin-state-import") {
       await withPluginStateImportEnv(plan, async () => {
         let storeEntries: Array<{ key: string; value: unknown }>;
+        // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
         let pluginEntryCount;
         const store = createPluginStateKeyedStore<unknown>(plan.pluginId, {
           namespace: plan.namespace,

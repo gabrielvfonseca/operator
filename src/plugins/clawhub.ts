@@ -353,10 +353,10 @@ function buildClawHubInstallFailure(
 function isClawHubInstallFailure(value: unknown): value is ClawHubInstallFailure {
   return Boolean(
     value &&
-    typeof value === "object" &&
-    "ok" in value &&
-    Object.is((value as { ok?: unknown }).ok, false) &&
-    "error" in value,
+      typeof value === "object" &&
+      "ok" in value &&
+      Object.is((value as { ok?: unknown }).ok, false) &&
+      "error" in value,
   );
 }
 
@@ -1321,6 +1321,7 @@ export async function installPluginFromClawHub(
   }
   const releaseLabel = formatClawHubReleaseLabel(canonicalPackageName, versionState.version);
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let archive;
   try {
     archive = await downloadClawHubPackageArchive({

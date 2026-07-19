@@ -344,11 +344,11 @@ export async function refreshWorkboard(params: {
 export function shouldDeferWorkboardLiveRefresh(state: WorkboardUiState): boolean {
   return Boolean(
     state.draftOpen ||
-    state.editingCardId ||
-    workboardHasActiveWrites(state) ||
-    state.draggedCardId ||
-    state.dispatching ||
-    state.detailCommentBody.trim() ||
-    state.draftCommentBody.trim(),
+      state.editingCardId ||
+      workboardHasActiveWrites(state) ||
+      state.draggedCardId ||
+      state.dispatching ||
+      state.detailCommentBody.trim() ||
+      state.draftCommentBody.trim(),
   );
 }

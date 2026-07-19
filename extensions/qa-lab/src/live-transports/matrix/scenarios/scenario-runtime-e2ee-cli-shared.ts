@@ -70,9 +70,9 @@ export function isMatrixQaCliBackupUsable(
 ): boolean {
   return Boolean(
     (backup?.trusted || opts.allowUntrustedMatchingKey === true) &&
-    backup?.matchesDecryptionKey &&
-    backup.decryptionKeyCached &&
-    !backup.keyLoadError,
+      backup?.matchesDecryptionKey &&
+      backup.decryptionKeyCached &&
+      !backup.keyLoadError,
   );
 }
 

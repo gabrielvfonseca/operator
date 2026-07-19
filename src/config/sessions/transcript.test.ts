@@ -1350,7 +1350,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
     const transcriptPath = path.join(fixture.sessionsDir(), "file-backed-delivery-tail.jsonl");
     fs.writeFileSync(
       transcriptPath,
-      [
+      `${[
         {
           type: "message",
           id: "real-assistant",
@@ -1369,7 +1369,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
         },
       ]
         .map((event) => JSON.stringify(event))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf-8",
     );
 
@@ -1569,7 +1569,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
     const sessionFile = resolveSessionTranscriptPathInDir(sessionId, fixture.sessionsDir());
     fs.writeFileSync(
       sessionFile,
-      [
+      `${[
         JSON.stringify({
           type: "session",
           version: 1,
@@ -1586,7 +1586,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
             content: [{ type: "text", text: "Hello from delivery mirror!" }],
           },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf-8",
     );
 
@@ -1929,7 +1929,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
     );
     fs.writeFileSync(
       sessionFile,
-      [
+      `${[
         JSON.stringify({
           type: "session",
           version: 1,
@@ -1944,7 +1944,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
           timestamp: new Date().toISOString(),
           message: { role: "user", content: "root" },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf-8",
     );
 
@@ -2187,7 +2187,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
     };
     fs.writeFileSync(
       sessionFile,
-      [
+      `${[
         {
           type: "session",
           version: 3,
@@ -2200,7 +2200,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
         leafEntry,
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
     );
 
     const appended = await appendSessionTranscriptMessage({
@@ -2236,7 +2236,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
     };
     fs.writeFileSync(
       sessionFile,
-      [
+      `${[
         {
           type: "session",
           version: 3,
@@ -2256,7 +2256,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
     );
 
     const appended = await appendSessionTranscriptMessage({
@@ -2294,7 +2294,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
     };
     fs.writeFileSync(
       sessionFile,
-      [
+      `${[
         {
           type: "session",
           version: 3,
@@ -2315,7 +2315,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
     );
 
     const appended = await appendSessionTranscriptMessage({
@@ -2401,7 +2401,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
     };
     fs.writeFileSync(
       sessionFile,
-      [
+      `${[
         {
           type: "session",
           version: 3,
@@ -2415,7 +2415,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
         metadata,
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
     );
 
     const appended = await appendSessionTranscriptMessage({
@@ -2466,7 +2466,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
     };
     fs.writeFileSync(
       sessionFile,
-      [
+      `${[
         {
           type: "session",
           version: 3,
@@ -2493,7 +2493,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
     );
 
     const appended = await appendSessionTranscriptMessage({
@@ -2524,7 +2524,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
     };
     fs.writeFileSync(
       sessionFile,
-      [
+      `${[
         {
           type: "session",
           version: 3,
@@ -2549,7 +2549,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
     );
 
     const appended = await appendSessionTranscriptMessage({
@@ -2586,7 +2586,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
     };
     fs.writeFileSync(
       sessionFile,
-      [
+      `${[
         {
           type: "session",
           version: 3,
@@ -2605,7 +2605,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
     );
 
     const appended = await appendSessionTranscriptMessage({
@@ -2663,7 +2663,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
     );
     fs.writeFileSync(
       sessionFile,
-      [
+      `${[
         JSON.stringify({
           type: "session",
           version: 3,
@@ -2683,7 +2683,7 @@ describe("appendAssistantMessageToSessionTranscript", () => {
           timestamp: new Date().toISOString(),
           message: { role: "assistant", content: "legacy second" },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf-8",
     );
 

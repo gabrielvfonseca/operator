@@ -841,8 +841,8 @@ function scanKnownModelRefs(value: unknown, key?: string, path = ""): boolean {
   if (typeof value === "string") {
     return Boolean(
       key &&
-      (MODEL_REF_STRING_KEYS.has(key) || isChannelModelOverridePath(path)) &&
-      upgradeRetiredModelRef(value),
+        (MODEL_REF_STRING_KEYS.has(key) || isChannelModelOverridePath(path)) &&
+        upgradeRetiredModelRef(value),
     );
   }
   if (Array.isArray(value)) {

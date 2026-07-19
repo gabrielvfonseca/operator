@@ -9,7 +9,7 @@ function runSystemCacheWrapper(model: Partial<Model<"openai-completions">>) {
   const payload = {
     messages: [{ role: "system", content: "system prompt" }],
   };
-  const baseStreamFn: StreamFn = (resolvedModel, context, options) => {
+  const baseStreamFn: StreamFn = (resolvedModel, _context, options) => {
     options?.onPayload?.(payload, resolvedModel);
     return createAssistantMessageEventStream();
   };
@@ -32,7 +32,7 @@ function runSystemCacheWrapper(model: Partial<Model<"openai-completions">>) {
 describe("proxy stream wrappers", () => {
   it("adds OpenRouter attribution headers to stream options", () => {
     const calls: Array<{ headers?: Record<string, string> }> = [];
-    const baseStreamFn: StreamFn = (model, context, options) => {
+    const baseStreamFn: StreamFn = (_model, _context, options) => {
       calls.push({
         headers: options?.headers,
       });
@@ -64,7 +64,7 @@ describe("proxy stream wrappers", () => {
 
   it("adds opt-in OpenRouter response caching headers", () => {
     const calls: Array<{ headers?: Record<string, string> }> = [];
-    const baseStreamFn: StreamFn = (model, context, options) => {
+    const baseStreamFn: StreamFn = (_model, _context, options) => {
       calls.push({ headers: options?.headers });
       return createAssistantMessageEventStream();
     };
@@ -92,7 +92,7 @@ describe("proxy stream wrappers", () => {
 
   it("sends OpenRouter response cache disables for preset opt-outs", () => {
     const calls: Array<{ headers?: Record<string, string> }> = [];
-    const baseStreamFn: StreamFn = (model, context, options) => {
+    const baseStreamFn: StreamFn = (_model, _context, options) => {
       calls.push({ headers: options?.headers });
       return createAssistantMessageEventStream();
     };
@@ -118,7 +118,7 @@ describe("proxy stream wrappers", () => {
 
   it("supports OpenRouter response cache refresh and TTL clamping", () => {
     const calls: Array<{ headers?: Record<string, string> }> = [];
-    const baseStreamFn: StreamFn = (model, context, options) => {
+    const baseStreamFn: StreamFn = (_model, _context, options) => {
       calls.push({ headers: options?.headers });
       return createAssistantMessageEventStream();
     };
@@ -145,7 +145,7 @@ describe("proxy stream wrappers", () => {
 
   it("does not add OpenRouter response caching headers to custom proxy routes", () => {
     const calls: Array<{ headers?: Record<string, string> }> = [];
-    const baseStreamFn: StreamFn = (model, context, options) => {
+    const baseStreamFn: StreamFn = (_model, _context, options) => {
       calls.push({ headers: options?.headers });
       return createAssistantMessageEventStream();
     };

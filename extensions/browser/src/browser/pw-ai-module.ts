@@ -7,7 +7,7 @@
 import { extractErrorCode, formatErrorMessage } from "../infra/errors.js";
 
 /** Type of the Playwright-backed browser helper module. */
-export type PwAiModule = (typeof import("./pw-ai.js"))["pwAi"];
+export type PwAiModule = typeof import("./pw-ai.js")["pwAi"];
 
 type PwAiLoadMode = "soft" | "strict";
 

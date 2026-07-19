@@ -44,8 +44,9 @@ function makeModel(): Model<"anthropic-messages"> {
 
 describe("Anthropic Vertex API stream factories", () => {
   beforeAll(async () => {
-    ({ createAnthropicVertexStreamFn, createAnthropicVertexStreamFnForModel } =
-      await import("./api.js"));
+    ({ createAnthropicVertexStreamFn, createAnthropicVertexStreamFnForModel } = await import(
+      "./api.js"
+    ));
   });
 
   it("reuses the runtime stream factory across direct stream calls", async () => {

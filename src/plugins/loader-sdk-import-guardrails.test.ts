@@ -9,6 +9,7 @@ const ALLOWED_PLUGIN_SDK_FIXTURE_IMPORTS = new Set([
   'src/plugins/loader.test.ts:const { onDiagnosticEvent } = require("operator/plugin-sdk");',
   // Intentional jiti alias regression test.
   'src/plugins/loader.git-path-regression.test.ts:`import { resolveOutboundSendDep } from "operator/plugin-sdk/channel-outbound";',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   'src/plugins/loader.git-path-regression.test.ts:          "operator/plugin-sdk/channel-outbound": ${JSON.stringify(copiedChannelRuntimeShim)},',
   // Intentional packaged bundled-plugin SDK alias regression tests.
   'src/plugins/loader.test.ts:`import { normalizeLowercaseStringOrEmpty } from "operator/plugin-sdk/string-coerce-runtime";`,',

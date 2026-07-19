@@ -29,8 +29,8 @@ function hasConfiguredClickClackCredential(account: ResolvedClickClackAccount): 
 function isClickClackSetupConfigured(account: ResolvedClickClackAccount): boolean {
   return Boolean(
     account.baseUrl &&
-    account.workspace &&
-    (account.token || hasConfiguredClickClackCredential(account)),
+      account.workspace &&
+      (account.token || hasConfiguredClickClackCredential(account)),
   );
 }
 

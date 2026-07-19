@@ -1,8 +1,14 @@
 // Derives plugin SDK entrypoint sets, package exports, and dist artifact paths.
-import deprecatedBarrelPluginSdkSubpathList from "./plugin-sdk-deprecated-barrel-subpaths.json" with { type: "json" };
-import deprecatedPublicPluginSdkSubpathList from "./plugin-sdk-deprecated-public-subpaths.json" with { type: "json" };
+import deprecatedBarrelPluginSdkSubpathList from "./plugin-sdk-deprecated-barrel-subpaths.json" with {
+  type: "json",
+};
+import deprecatedPublicPluginSdkSubpathList from "./plugin-sdk-deprecated-public-subpaths.json" with {
+  type: "json",
+};
 import pluginSdkEntryList from "./plugin-sdk-entrypoints.json" with { type: "json" };
-import privateLocalOnlyPluginSdkSubpathList from "./plugin-sdk-private-local-only-subpaths.json" with { type: "json" };
+import privateLocalOnlyPluginSdkSubpathList from "./plugin-sdk-private-local-only-subpaths.json" with {
+  type: "json",
+};
 
 /**
  * All plugin SDK entrypoints, including the package root index.

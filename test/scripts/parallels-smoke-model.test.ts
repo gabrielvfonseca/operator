@@ -1408,6 +1408,7 @@ exit 0
     const script = readFileSync(TS_PATHS.npmUpdate, "utf8");
 
     expect(script).toContain("retrying once from restored snapshot");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('attempt === 1 ? "" : `-retry-${attempt}`');
     expect(script).toContain("failed after retry");
   });
@@ -1457,6 +1458,7 @@ exit 0
   it("passes aggregate model overrides into each OS fresh lane", () => {
     const script = readFileSync(TS_PATHS.npmUpdate, "utf8");
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain("scripts/e2e/parallels-${platform}-smoke.sh");
     expect(script).toContain('this.formatRerun("bash", args, env)');
     expect(script).toContain('"--model"');
@@ -1503,6 +1505,7 @@ exit 0
     expect(discord).toContain('"--silent"');
     expect(discord).toContain("doctor --fix --yes --non-interactive");
     expect(discord).toContain("channels status --probe --json");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(discord).toContain("Stop ${this.input.vmName} after successful Discord smoke");
   });
 
@@ -1542,7 +1545,9 @@ exit 0
     expect(transports).toContain("__OPENCLAW_BACKGROUND_EXIT__");
     expect(transports).toContain("poll.status !== 0 && poll.status !== 124");
     expect(transports).toContain('cmd.exe /d /s /c start "" /b powershell.exe');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(transports).toContain('if exist "${windowsDonePath}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(transports).toContain('type "%WINDIR%\\\\Temp\\\\${guestRunDir}\\\\run.log"');
     expect(transports).toContain("WINDOWS_BACKGROUND_LOG_MAX_BYTES");
     expect(transports).toContain("Write-OpenClawUtf8File $pidPath ([string]$PID)");
@@ -2146,8 +2151,10 @@ setInterval(() => {}, 1000);
     expect(readFileSync(TS_PATHS.macos, "utf8")).toContain(
       'this.agentTimeoutSeconds = readPositiveIntEnv("OPENCLAW_PARALLELS_MACOS_AGENT_TIMEOUT_S", 2700)',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(readFileSync(TS_PATHS.macos, "utf8")).toContain("--timeout ${this.modelTimeoutSeconds}");
     expect(readFileSync(TS_PATHS.linux, "utf8")).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '--timeout ${resolveParallelsModelTimeoutSeconds("linux")}',
     );
   });

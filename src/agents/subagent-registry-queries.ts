@@ -360,10 +360,10 @@ export function shouldIgnorePostCompletionAnnounceForSessionFromRuns(
   const latest = findLatestRunForChildSession(runs, childSessionKey);
   return Boolean(
     latest &&
-    latest.spawnMode !== "session" &&
-    typeof latest.endedAt === "number" &&
-    typeof latest.cleanupCompletedAt === "number" &&
-    latest.cleanupCompletedAt >= latest.endedAt,
+      latest.spawnMode !== "session" &&
+      typeof latest.endedAt === "number" &&
+      typeof latest.cleanupCompletedAt === "number" &&
+      latest.cleanupCompletedAt >= latest.endedAt,
   );
 }
 

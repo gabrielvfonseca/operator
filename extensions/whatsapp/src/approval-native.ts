@@ -15,7 +15,6 @@ import type {
   PluginApprovalRequest,
 } from "@gabrielvfonseca/operator/plugin-sdk/approval-runtime";
 import type { ChannelApprovalCapability } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
-import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,

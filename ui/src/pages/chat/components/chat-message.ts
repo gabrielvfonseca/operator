@@ -193,7 +193,7 @@ function previewMessageMeta(event: PointerEvent | FocusEvent) {
 
 function closeMessageMetaPreview(event: PointerEvent | FocusEvent) {
   const details = resolveMessageMetaDetails(event.currentTarget);
-  if (!details || details.dataset.preview !== "true" || details.matches(":hover, :focus-within")) {
+  if (details?.dataset.preview !== "true" || details.matches(":hover, :focus-within")) {
     return;
   }
   delete details.dataset.preview;
@@ -604,8 +604,9 @@ export function renderStreamGroup(parts: StreamGroupPart[], opts: StreamGroupOpt
                 onOpenSidebar,
               ),
         )}
-        ${footerStartedAt !== null
-          ? html`
+        ${
+          footerStartedAt !== null
+            ? html`
               <div class="chat-group-footer">
                 <div class="chat-group-footer__meta">
                   <span class="chat-sender-name">${name}</span>
@@ -613,7 +614,8 @@ export function renderStreamGroup(parts: StreamGroupPart[], opts: StreamGroupOpt
                 </div>
               </div>
             `
-          : nothing}
+            : nothing
+        }
       </div>
     </div>
   `;
@@ -636,16 +638,18 @@ export function renderWorkGroupSummary(
       <div class="chat-group-messages">
         <div class="chat-activity-group chat-work-group ${opts.expanded ? "is-open" : ""}">
           <button
-            class="chat-activity-group__summary ${item.hasError
-              ? "chat-activity-group__summary--error"
-              : ""}"
+            class="chat-activity-group__summary ${
+              item.hasError ? "chat-activity-group__summary--error" : ""
+            }"
             type="button"
             aria-expanded=${String(opts.expanded)}
-            aria-label=${item.hasError
-              ? duration
-                ? t("chat.workRun.workedForError", { duration })
-                : t("chat.workRun.workedError")
-              : nothing}
+            aria-label=${
+              item.hasError
+                ? duration
+                  ? t("chat.workRun.workedForError", { duration })
+                  : t("chat.workRun.workedError")
+                : nothing
+            }
             @click=${(event: MouseEvent) => {
               if (shouldToggleSelectableDisclosure(event)) {
                 opts.onToggle();
@@ -807,19 +811,21 @@ export function renderMessageGroup(group: MessageGroup, opts: RenderMessageGroup
         <div class="chat-group-messages">
           <div class="chat-activity-group ${activityExpanded ? "is-open" : ""}">
             <button
-              class="chat-activity-group__summary ${hasError
-                ? "chat-activity-group__summary--error"
-                : ""}"
+              class="chat-activity-group__summary ${
+                hasError ? "chat-activity-group__summary--error" : ""
+              }"
               type="button"
               aria-expanded=${String(activityExpanded)}
-              aria-label=${hasError
-                ? t(
-                    toolCount === 1
-                      ? "chat.toolCards.group.activityErrorOne"
-                      : "chat.toolCards.group.activityErrorMany",
-                    { count: String(toolCount) },
-                  )
-                : nothing}
+              aria-label=${
+                hasError
+                  ? t(
+                      toolCount === 1
+                        ? "chat.toolCards.group.activityErrorOne"
+                        : "chat.toolCards.group.activityErrorMany",
+                      { count: String(toolCount) },
+                    )
+                  : nothing
+              }
               @click=${(event: MouseEvent) => {
                 if (shouldToggleSelectableDisclosure(event)) {
                   opts.onToggleToolMessageExpanded?.(activityDisclosureId, activityExpanded);
@@ -836,8 +842,9 @@ export function renderMessageGroup(group: MessageGroup, opts: RenderMessageGroup
                 >${icons.chevronDown}</span
               >
             </button>
-            ${activityExpanded
-              ? html`
+            ${
+              activityExpanded
+                ? html`
                   <div class="chat-activity-group__body">
                     ${group.messages.map((item, index) =>
                       renderGroupedMessage(
@@ -849,7 +856,8 @@ export function renderMessageGroup(group: MessageGroup, opts: RenderMessageGroup
                     )}
                   </div>
                 `
-              : nothing}
+                : nothing
+            }
           </div>
           <div class="chat-group-footer">
             <span class="chat-sender-name">${t("chat.messages.activity")}</span>
@@ -892,35 +900,45 @@ export function renderMessageGroup(group: MessageGroup, opts: RenderMessageGroup
               buildGroupedMessageRenderOptions(group, item, index, opts),
               opts.onOpenSidebar,
             )}
-            ${actionDetails && index < lastMessageIndex
-              ? html`
+            ${
+              actionDetails && index < lastMessageIndex
+                ? html`
                   <div class="chat-message-actions-row">
                     ${renderMessageActionButtons(actionDetails, opts, opts.onOpenSidebar)}
                   </div>
                 `
-              : nothing}
+                : nothing
+            }
           `;
         })}
         <div class="chat-group-footer">
           <div class="chat-group-footer__meta">
-            ${opts.onDelete && normalizedRole === "user"
-              ? renderDeleteButton(opts.onDelete, "left")
-              : nothing}
+            ${
+              opts.onDelete && normalizedRole === "user"
+                ? renderDeleteButton(opts.onDelete, "left")
+                : nothing
+            }
             <span class="chat-sender-name">${who}</span>
             ${renderMessageMeta(group.timestamp, meta)}
           </div>
-          ${footerActionDetails || (opts.onDelete && normalizedRole !== "user")
-            ? html`
+          ${
+            footerActionDetails || (opts.onDelete && normalizedRole !== "user")
+              ? html`
                 <div class="chat-group-footer-actions">
-                  ${opts.onDelete && normalizedRole !== "user"
-                    ? renderDeleteButton(opts.onDelete, "right")
-                    : nothing}
-                  ${footerActionDetails
-                    ? renderMessageActionButtons(footerActionDetails, opts, opts.onOpenSidebar)
-                    : nothing}
+                  ${
+                    opts.onDelete && normalizedRole !== "user"
+                      ? renderDeleteButton(opts.onDelete, "right")
+                      : nothing
+                  }
+                  ${
+                    footerActionDetails
+                      ? renderMessageActionButtons(footerActionDetails, opts, opts.onOpenSidebar)
+                      : nothing
+                  }
                 </div>
               `
-            : nothing}
+              : nothing
+          }
         </div>
       </div>
     </div>
@@ -1309,9 +1327,11 @@ function renderReplyPill(replyTarget: NormalizedMessage["replyTarget"]) {
     <div class="chat-reply-pill">
       <span class="chat-reply-pill__icon">${icons.messageSquare}</span>
       <span class="chat-reply-pill__label">
-        ${replyTarget.kind === "current"
-          ? "Replying to current message"
-          : `Replying to ${replyTarget.id}`}
+        ${
+          replyTarget.kind === "current"
+            ? "Replying to current message"
+            : `Replying to ${replyTarget.id}`
+        }
       </span>
     </div>
   `;
@@ -1727,9 +1747,11 @@ function renderAssistantAttachmentStatusCard(params: {
           >${params.badge}</span
         >
       </div>
-      ${params.reason
-        ? html`<div class="chat-assistant-attachment-card__reason">${params.reason}</div>`
-        : nothing}
+      ${
+        params.reason
+          ? html`<div class="chat-assistant-attachment-card__reason">${params.reason}</div>`
+          : nothing
+      }
     </div>
   `;
 }
@@ -1782,29 +1804,33 @@ function renderAssistantAttachments(
             <div class="chat-assistant-attachment-card chat-assistant-attachment-card--audio">
               <div class="chat-assistant-attachment-card__header">
                 <span class="chat-assistant-attachment-card__title">${attachment.label}</span>
-                ${!attachmentUrl
-                  ? html`<span
+                ${
+                  !attachmentUrl
+                    ? html`<span
                       class="chat-assistant-attachment-badge chat-assistant-attachment-badge--muted"
                       >${availability.status === "checking" ? "Checking..." : "Unavailable"}</span
                     >`
-                  : attachment.isVoiceNote
-                    ? html`<span class="chat-assistant-attachment-badge"
+                    : attachment.isVoiceNote
+                      ? html`<span class="chat-assistant-attachment-badge"
                         >${t("chat.messages.voiceNote")}</span
                       >`
-                    : nothing}
+                      : nothing
+                }
               </div>
-              ${attachmentUrl
-                ? html`<audio
+              ${
+                attachmentUrl
+                  ? html`<audio
                     controls
                     preload="metadata"
                     src=${attachmentUrl}
                     @loadedmetadata=${() => onAssistantAttachmentLoaded?.()}
                   ></audio>`
-                : availability.status === "unavailable"
-                  ? html`<div class="chat-assistant-attachment-card__reason">
+                  : availability.status === "unavailable"
+                    ? html`<div class="chat-assistant-attachment-card__reason">
                       ${availability.reason}
                     </div>`
-                  : nothing}
+                    : nothing
+              }
             </div>
           `;
         }
@@ -2031,9 +2057,9 @@ function resolveMessageActionDetails(
     messageId,
     shouldFetchFullMessage: Boolean(
       onOpenSidebar &&
-      messageId &&
-      !record.operatorMessageToolMirror &&
-      (transcriptMeta?.truncated === true || markdown.includes("\n...(truncated)...")),
+        messageId &&
+        !record.operatorMessageToolMirror &&
+        (transcriptMeta?.truncated === true || markdown.includes("\n...(truncated)...")),
     ),
   };
 }
@@ -2047,13 +2073,15 @@ function renderMessageActionButtons(
   onOpenSidebar?: (content: SidebarContent) => void,
 ) {
   return html`
-    ${onOpenSidebar
-      ? renderExpandButton(details.markdown, onOpenSidebar, {
-          sessionKey: opts.sessionKey,
-          agentId: opts.agentId,
-          messageId: details.shouldFetchFullMessage ? details.messageId : undefined,
-        })
-      : nothing}
+    ${
+      onOpenSidebar
+        ? renderExpandButton(details.markdown, onOpenSidebar, {
+            sessionKey: opts.sessionKey,
+            agentId: opts.agentId,
+            messageId: details.shouldFetchFullMessage ? details.messageId : undefined,
+          })
+        : nothing
+    }
     ${renderCopyAsMarkdownButton(details.markdown)}
   `;
 }
@@ -2245,14 +2273,16 @@ function renderGroupedMessage(
           embedSandboxMode: opts.embedSandboxMode ?? "scripts",
           allowExternalEmbedUrls: opts.allowExternalEmbedUrls ?? false,
         })}
-        ${duplicateCount > 1
-          ? html`<div
+        ${
+          duplicateCount > 1
+            ? html`<div
               class="chat-duplicate-count"
               aria-label=${`${duplicateCount} consecutive identical messages collapsed`}
             >
               ×${duplicateCount}
             </div>`
-          : nothing}
+            : nothing
+        }
       </div>
     `;
   }
@@ -2264,17 +2294,18 @@ function renderGroupedMessage(
       data-message-text=${extractedText || nothing}
     >
       ${renderReplyPill(normalizedMessage.replyTarget)}
-      ${isStandaloneToolMessage
-        ? html`
+      ${
+        isStandaloneToolMessage
+          ? html`
             <div
-              class="chat-tool-msg-collapse chat-tool-msg-collapse--manual ${toolMessageExpanded
-                ? "is-open"
-                : ""}"
+              class="chat-tool-msg-collapse chat-tool-msg-collapse--manual ${
+                toolMessageExpanded ? "is-open" : ""
+              }"
             >
               <button
-                class="chat-tool-msg-summary ${toolMessageHasError
-                  ? "chat-tool-msg-summary--error"
-                  : ""}"
+                class="chat-tool-msg-summary ${
+                  toolMessageHasError ? "chat-tool-msg-summary--error" : ""
+                }"
                 type="button"
                 aria-expanded=${String(toolMessageExpanded)}
                 @click=${(event: MouseEvent) => {
@@ -2285,14 +2316,17 @@ function renderGroupedMessage(
               >
                 <span class="chat-tool-msg-summary__icon">${toolMessageIcon}</span>
                 <span class="chat-tool-msg-summary__label">${toolMessageLabel}</span>
-                ${toolSummaryLabel
-                  ? html`<span class="chat-tool-msg-summary__names">${toolSummaryLabel}</span>`
-                  : toolPreview
-                    ? html`<span class="chat-tool-msg-summary__preview">${toolPreview}</span>`
-                    : nothing}
+                ${
+                  toolSummaryLabel
+                    ? html`<span class="chat-tool-msg-summary__names">${toolSummaryLabel}</span>`
+                    : toolPreview
+                      ? html`<span class="chat-tool-msg-summary__preview">${toolPreview}</span>`
+                      : nothing
+                }
               </button>
-              ${toolMessageExpanded
-                ? html`
+              ${
+                toolMessageExpanded
+                  ? html`
                     <div class="chat-tool-msg-body">
                       ${renderPairingQrExpiryNotices(pairingQrExpiryNotices)}
                       ${renderMessageImages(images, imageRenderOptions)}
@@ -2305,13 +2339,16 @@ function renderGroupedMessage(
                         opts.onAssistantAttachmentLoaded,
                       )}
                       ${assistantViewContent}
-                      ${reasoningMarkdown
-                        ? html`<div class="chat-thinking">
+                      ${
+                        reasoningMarkdown
+                          ? html`<div class="chat-thinking">
                             ${unsafeHTML(toSanitizedMarkdownHtml(reasoningMarkdown))}
                           </div>`
-                        : nothing}
-                      ${jsonResult
-                        ? html`<details
+                          : nothing
+                      }
+                      ${
+                        jsonResult
+                          ? html`<details
                             class="chat-json-collapse"
                             ?open=${Boolean(opts.autoExpandToolCalls)}
                           >
@@ -2323,41 +2360,45 @@ function renderGroupedMessage(
                             </summary>
                             <pre class="chat-json-content"><code>${jsonResult.pretty}</code></pre>
                           </details>`
-                        : markdown
-                          ? renderMarkdownText(markdown, opts.isStreaming, markdownRenderOptions)
-                          : nothing}
-                      ${hasToolCards
-                        ? singleToolCard && !markdown && !hasImages
-                          ? renderExpandedToolCardContent(
-                              singleToolCard,
-                              opts.sessionKey,
-                              onOpenSidebar,
-                              opts.canvasPluginSurfaceUrl,
-                              opts.embedSandboxMode ?? "scripts",
-                              opts.allowExternalEmbedUrls ?? false,
-                              opts.runActive,
-                              opts.onOpenWorkspaceFile,
-                            )
-                          : renderInlineToolCards(toolCards, {
-                              messageKey,
-                              sessionKey: opts.sessionKey,
-                              agentId: opts.agentId,
-                              onOpenSidebar,
-                              onOpenWorkspaceFile: opts.onOpenWorkspaceFile,
-                              isToolExpanded: opts.isToolExpanded,
-                              onToggleToolExpanded: opts.onToggleToolExpanded,
-                              runActive: opts.runActive,
-                              canvasPluginSurfaceUrl: opts.canvasPluginSurfaceUrl,
-                              embedSandboxMode: opts.embedSandboxMode ?? "scripts",
-                              allowExternalEmbedUrls: opts.allowExternalEmbedUrls ?? false,
-                            })
-                        : nothing}
+                          : markdown
+                            ? renderMarkdownText(markdown, opts.isStreaming, markdownRenderOptions)
+                            : nothing
+                      }
+                      ${
+                        hasToolCards
+                          ? singleToolCard && !markdown && !hasImages
+                            ? renderExpandedToolCardContent(
+                                singleToolCard,
+                                opts.sessionKey,
+                                onOpenSidebar,
+                                opts.canvasPluginSurfaceUrl,
+                                opts.embedSandboxMode ?? "scripts",
+                                opts.allowExternalEmbedUrls ?? false,
+                                opts.runActive,
+                                opts.onOpenWorkspaceFile,
+                              )
+                            : renderInlineToolCards(toolCards, {
+                                messageKey,
+                                sessionKey: opts.sessionKey,
+                                agentId: opts.agentId,
+                                onOpenSidebar,
+                                onOpenWorkspaceFile: opts.onOpenWorkspaceFile,
+                                isToolExpanded: opts.isToolExpanded,
+                                onToggleToolExpanded: opts.onToggleToolExpanded,
+                                runActive: opts.runActive,
+                                canvasPluginSurfaceUrl: opts.canvasPluginSurfaceUrl,
+                                embedSandboxMode: opts.embedSandboxMode ?? "scripts",
+                                allowExternalEmbedUrls: opts.allowExternalEmbedUrls ?? false,
+                              })
+                          : nothing
+                      }
                     </div>
                   `
-                : nothing}
+                  : nothing
+              }
             </div>
           `
-        : html`
+          : html`
             ${renderPairingQrExpiryNotices(pairingQrExpiryNotices)}
             ${renderMessageImages(images, imageRenderOptions)}
             ${renderAssistantAttachments(
@@ -2368,47 +2409,56 @@ function renderGroupedMessage(
               opts.onRequestUpdate,
               opts.onAssistantAttachmentLoaded,
             )}
-            ${reasoningMarkdown
-              ? html`<div class="chat-thinking">
+            ${
+              reasoningMarkdown
+                ? html`<div class="chat-thinking">
                   ${unsafeHTML(toSanitizedMarkdownHtml(reasoningMarkdown))}
                 </div>`
-              : nothing}
+                : nothing
+            }
             ${assistantViewContent}
-            ${jsonResult
-              ? html`<details class="chat-json-collapse">
+            ${
+              jsonResult
+                ? html`<details class="chat-json-collapse">
                   <summary class="chat-json-summary">
                     <span class="chat-json-badge">JSON</span>
                     <span class="chat-json-label">${jsonSummaryLabel(jsonResult.parsed)}</span>
                   </summary>
                   <pre class="chat-json-content"><code>${jsonResult.pretty}</code></pre>
                 </details>`
-              : markdown
-                ? renderMarkdownText(markdown, opts.isStreaming, markdownRenderOptions)
-                : nothing}
-            ${hasToolCards
-              ? renderInlineToolCards(toolCards, {
-                  messageKey,
-                  sessionKey: opts.sessionKey,
-                  agentId: opts.agentId,
-                  onOpenSidebar,
-                  onOpenWorkspaceFile: opts.onOpenWorkspaceFile,
-                  isToolExpanded: opts.isToolExpanded,
-                  onToggleToolExpanded: opts.onToggleToolExpanded,
-                  runActive: opts.runActive,
-                  canvasPluginSurfaceUrl: opts.canvasPluginSurfaceUrl,
-                  embedSandboxMode: opts.embedSandboxMode ?? "scripts",
-                  allowExternalEmbedUrls: opts.allowExternalEmbedUrls ?? false,
-                })
-              : nothing}
-          `}
-      ${duplicateCount > 1
-        ? html`<div
+                : markdown
+                  ? renderMarkdownText(markdown, opts.isStreaming, markdownRenderOptions)
+                  : nothing
+            }
+            ${
+              hasToolCards
+                ? renderInlineToolCards(toolCards, {
+                    messageKey,
+                    sessionKey: opts.sessionKey,
+                    agentId: opts.agentId,
+                    onOpenSidebar,
+                    onOpenWorkspaceFile: opts.onOpenWorkspaceFile,
+                    isToolExpanded: opts.isToolExpanded,
+                    onToggleToolExpanded: opts.onToggleToolExpanded,
+                    runActive: opts.runActive,
+                    canvasPluginSurfaceUrl: opts.canvasPluginSurfaceUrl,
+                    embedSandboxMode: opts.embedSandboxMode ?? "scripts",
+                    allowExternalEmbedUrls: opts.allowExternalEmbedUrls ?? false,
+                  })
+                : nothing
+            }
+          `
+      }
+      ${
+        duplicateCount > 1
+          ? html`<div
             class="chat-duplicate-count"
             aria-label=${`${duplicateCount} consecutive identical messages collapsed`}
           >
             ×${duplicateCount}
           </div>`
-        : nothing}
+          : nothing
+      }
     </div>
   `;
 }

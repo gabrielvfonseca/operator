@@ -345,8 +345,9 @@ describeTelegramDispatch("dispatchTelegramMessage supersession", () => {
     await sideStartGate;
 
     expect(firstAbortSignal?.aborted).toBe(false);
-    const { buildTelegramReplyFenceLaneKey, supersedeTelegramReplyFenceLane } =
-      await import("./telegram-reply-fence.js");
+    const { buildTelegramReplyFenceLaneKey, supersedeTelegramReplyFenceLane } = await import(
+      "./telegram-reply-fence.js"
+    );
     supersedeTelegramReplyFenceLane(
       buildTelegramReplyFenceLaneKey({
         accountId: "default",

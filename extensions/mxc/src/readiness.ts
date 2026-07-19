@@ -95,10 +95,7 @@ export function warnMxcHostPrepIfNeeded(
 }
 
 export function assertMxcReadiness(
-  params: {
-    platform?: NodeJS.Platform;
-    deps?: Partial<ReadinessDeps>;
-  } = {},
+  params: { platform?: NodeJS.Platform; deps?: Partial<ReadinessDeps> } = {},
 ): void {
   const platform = params.platform ?? process.platform;
   if (platform !== "win32") {

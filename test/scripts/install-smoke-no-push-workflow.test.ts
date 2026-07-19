@@ -77,9 +77,12 @@ describe("install smoke no-push root image transport", () => {
     expect(delegated.uses).toBe("./.github/workflows/install-smoke-reusable.yml");
     expect(delegated.with).toMatchObject({
       allow_unreleased_changelog: true,
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ref: "${{ github.sha }}",
       run_bun_global_install_smoke:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ github.event_name == 'schedule' || inputs.run_bun_global_install_smoke }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       update_baseline_version: "${{ inputs.update_baseline_version || 'latest' }}",
     });
     expect(readFileSync(INSTALL_SMOKE, "utf8")).not.toContain("packages: write");
@@ -102,10 +105,13 @@ describe("install smoke no-push root image transport", () => {
 
     const preflight = job(workflow, "preflight");
     expect(preflight.outputs?.workflow_repository).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ steps.workflow.outputs.workflow_repository }}",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(preflight.outputs?.workflow_sha).toBe("${{ steps.workflow.outputs.workflow_sha }}");
     const workflowIdentity = step(preflight, "Resolve job workflow identity");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflowIdentity.env?.JOB_CONTEXT).toBe("${{ toJSON(job) }}");
     expect(workflowIdentity.run).toContain(
       "job.workflow_repository must be an owner/repository slug",
@@ -114,9 +120,11 @@ describe("install smoke no-push root image transport", () => {
     const manifest = step(preflight, "Build install-smoke CI manifest");
     expect(manifest.env).toEqual({
       OPENCLAW_CI_WORKFLOW_BUN_GLOBAL_INSTALL_SMOKE:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ inputs.run_bun_global_install_smoke || 'false' }}",
     });
     expect(manifest.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'dockerfile_image="openclaw-dockerfile-smoke-local:${target_sha}"',
     );
     expect(manifest.run).toContain(
@@ -140,16 +148,24 @@ describe("install smoke no-push root image transport", () => {
       packages: "read",
     });
     expect(producer.outputs).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       archive_sha256: "${{ steps.image_artifact.outputs.archive_sha256 }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       artifact_digest: "${{ steps.image_artifact_upload.outputs.artifact-digest }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       artifact_id: "${{ steps.image_artifact_upload.outputs.artifact-id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       artifact_name: "${{ steps.image_artifact.outputs.artifact_name }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       artifact_run_attempt: "${{ steps.image_artifact.outputs.run_attempt }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       artifact_run_id: "${{ steps.image_artifact.outputs.run_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       image_ref: "${{ steps.image.outputs.image_ref }}",
     });
     expect(producer.outputs?.image_exists).toBeUndefined();
     expect(step(producer, "Checkout CLI").with).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ref: "${{ needs.preflight.outputs.target_sha }}",
       "persist-credentials": false,
     });
@@ -164,11 +180,15 @@ describe("install smoke no-push root image transport", () => {
     const pack = step(producer, "Pack root Dockerfile image artifact");
     expect(pack.if).toBeUndefined();
     expect(pack.env).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       IMAGE_REF: "${{ needs.preflight.outputs.dockerfile_image }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       TARGET_SHA: "${{ needs.preflight.outputs.target_sha }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       WORKFLOW_SHA: "${{ needs.preflight.outputs.workflow_sha }}",
     });
     expect(pack.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'artifact_name="install-smoke-root-image-${TARGET_SHA:0:12}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"',
     );
     expect(pack.run).toContain(
@@ -181,7 +201,9 @@ describe("install smoke no-push root image transport", () => {
     expect(upload.with).toMatchObject({
       "compression-level": 0,
       "if-no-files-found": "error",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       name: "${{ steps.image_artifact.outputs.artifact_name }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       path: "${{ steps.image_artifact.outputs.artifact_path }}",
     });
 
@@ -189,6 +211,7 @@ describe("install smoke no-push root image transport", () => {
     expect(ready.needs).toEqual(["preflight", "root_dockerfile_image"]);
     const verify = step(ready, "Verify root Dockerfile image preparation");
     expect(verify.env).toEqual({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       PREPARE_RESULT: "${{ needs.root_dockerfile_image.result }}",
     });
     expect(verify.run).toContain('if [[ "$PREPARE_RESULT" != "success" ]]');
@@ -218,37 +241,53 @@ describe("install smoke no-push root image transport", () => {
       const binding = step(consumer, "Validate root Dockerfile image artifact binding");
       expect(binding.if, jobName).toBeUndefined();
       expect(binding.env, jobName).toMatchObject({
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         ARCHIVE_SHA256: "${{ needs.root_dockerfile_image.outputs.archive_sha256 }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         ARTIFACT_DIGEST: "${{ needs.root_dockerfile_image.outputs.artifact_digest }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         ARTIFACT_ID: "${{ needs.root_dockerfile_image.outputs.artifact_id }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         ARTIFACT_NAME: "${{ needs.root_dockerfile_image.outputs.artifact_name }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         ARTIFACT_RUN_ATTEMPT: "${{ needs.root_dockerfile_image.outputs.artifact_run_attempt }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         ARTIFACT_RUN_ID: "${{ needs.root_dockerfile_image.outputs.artifact_run_id }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         GH_TOKEN: "${{ github.token }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         TARGET_SHA: "${{ needs.preflight.outputs.target_sha }}",
       });
       expect(binding.run, jobName).toContain(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'expected_artifact_name="install-smoke-root-image-${TARGET_SHA:0:12}-${ARTIFACT_RUN_ID}-${ARTIFACT_RUN_ATTEMPT}"',
       );
       expect(binding.run, jobName).toContain(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}",
       );
       expect(binding.run, jobName).toContain(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "repos/${GITHUB_REPOSITORY}/actions/runs/${ARTIFACT_RUN_ID}/attempts/${ARTIFACT_RUN_ATTEMPT}",
       );
 
       const download = step(consumer, "Download root Dockerfile image artifact");
       expect(download.if, jobName).toBeUndefined();
       expect(download.with, jobName).toMatchObject({
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "artifact-ids": "${{ needs.root_dockerfile_image.outputs.artifact_id }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "github-token": "${{ github.token }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         path: "${{ runner.temp }}/install-smoke-root-image",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "run-id": "${{ needs.root_dockerfile_image.outputs.artifact_run_id }}",
       });
 
       const load = step(consumer, "Verify and load root Dockerfile image artifact");
       expect(load.if, jobName).toBeUndefined();
       expect(load.run, jobName).toContain(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'load "${RUNNER_TEMP}/install-smoke-root-image" install-smoke-root',
       );
       expect(load.run, jobName).toContain('"$TARGET_SHA" "$WORKFLOW_SHA" "$IMAGE_REF"');
@@ -270,7 +309,9 @@ describe("install smoke no-push root image transport", () => {
     });
     expect(caller.with).toMatchObject({
       allow_unreleased_changelog:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ needs.resolve_target.outputs.allow_unreleased_changelog == 'true' }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ref: "${{ needs.resolve_target.outputs.revision }}",
       run_bun_global_install_smoke: true,
     });
@@ -279,6 +320,7 @@ describe("install smoke no-push root image transport", () => {
   it("passes package changelog intent only to current-tree smoke scripts", () => {
     const workflow = readWorkflow(INSTALL_SMOKE_REUSABLE);
     expect(step(job(workflow, "installer_smoke"), "Run installer docker tests").env).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       OPENCLAW_INSTALL_SMOKE_ALLOW_UNRELEASED_CHANGELOG: "${{ inputs.allow_unreleased_changelog }}",
     });
     expect(
@@ -286,6 +328,7 @@ describe("install smoke no-push root image transport", () => {
         .env,
     ).toMatchObject({
       OPENCLAW_BUN_GLOBAL_SMOKE_ALLOW_UNRELEASED_CHANGELOG:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ inputs.allow_unreleased_changelog }}",
     });
   });

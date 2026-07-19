@@ -379,8 +379,9 @@ const hooksModelCheck: HealthCheck = {
     }
     const { DEFAULT_MODEL, DEFAULT_PROVIDER } = await import("../agents/defaults.js");
     const { loadModelCatalog } = await import("../agents/model-catalog.js");
-    const { getModelRefStatus, resolveConfiguredModelRef, resolveHooksGmailModel } =
-      await import("../agents/model-selection.js");
+    const { getModelRefStatus, resolveConfiguredModelRef, resolveHooksGmailModel } = await import(
+      "../agents/model-selection.js"
+    );
     const hooksModelRef = resolveHooksGmailModel({
       cfg: ctx.cfg,
       defaultProvider: DEFAULT_PROVIDER,
@@ -472,11 +473,13 @@ const bootstrapSizeCheck: HealthCheck = {
   description: "Workspace bootstrap files fit within configured injection limits.",
   source: "doctor",
   async detect(ctx) {
-    const { buildBootstrapInjectionStats, analyzeBootstrapBudget } =
-      await import("../agents/bootstrap-budget.js");
+    const { buildBootstrapInjectionStats, analyzeBootstrapBudget } = await import(
+      "../agents/bootstrap-budget.js"
+    );
     const { resolveBootstrapContextForRun } = await import("../agents/bootstrap-files.js");
-    const { resolveBootstrapMaxChars, resolveBootstrapTotalMaxChars } =
-      await import("../agents/embedded-agent-helpers.js");
+    const { resolveBootstrapMaxChars, resolveBootstrapTotalMaxChars } = await import(
+      "../agents/embedded-agent-helpers.js"
+    );
     const defaultAgentId = resolveDefaultAgentId(ctx.cfg);
     const workspaceDir = resolveAgentWorkspaceDir(ctx.cfg, defaultAgentId);
     const { bootstrapFiles, contextFiles } = await resolveBootstrapContextForRun({
@@ -711,8 +714,9 @@ const legacyWhatsAppCrontabCheck: HealthCheck & { readonly defaultEnabled: false
   source: "doctor",
   defaultEnabled: false,
   async detect() {
-    const { collectLegacyWhatsAppCrontabHealthWarning } =
-      await import("../commands/doctor/cron/index.js");
+    const { collectLegacyWhatsAppCrontabHealthWarning } = await import(
+      "../commands/doctor/cron/index.js"
+    );
     const warning = await collectLegacyWhatsAppCrontabHealthWarning();
     if (!warning) {
       return [];
@@ -734,8 +738,9 @@ const legacyCronStoreCheck: SplitHealthCheckInput = {
   source: "doctor",
   defaultEnabled: false,
   async detect(ctx) {
-    const { collectLegacyCronStoreHealthFindings } =
-      await import("../commands/doctor/cron/index.js");
+    const { collectLegacyCronStoreHealthFindings } = await import(
+      "../commands/doctor/cron/index.js"
+    );
     return collectLegacyCronStoreHealthFindings({ cfg: ctx.cfg });
   },
 };
@@ -778,16 +783,18 @@ const gatewayServicesExtraCheck: HealthCheck = {
   source: "doctor",
   async detect(ctx) {
     const coreCtx = ctx as CoreHealthCheckContext;
-    const { detectExtraGatewayServiceIssues, extraGatewayServiceToHealthFinding } =
-      await import("../commands/doctor-gateway-services.js");
+    const { detectExtraGatewayServiceIssues, extraGatewayServiceToHealthFinding } = await import(
+      "../commands/doctor-gateway-services.js"
+    );
     return (await detectExtraGatewayServiceIssues({ deep: coreCtx.deep === true })).map(
       extraGatewayServiceToHealthFinding,
     );
   },
   async repair(ctx) {
     const coreCtx = ctx as CoreHealthRepairContext;
-    const { detectExtraGatewayServiceIssues, extraGatewayServiceToRepairEffects } =
-      await import("../commands/doctor-gateway-services.js");
+    const { detectExtraGatewayServiceIssues, extraGatewayServiceToRepairEffects } = await import(
+      "../commands/doctor-gateway-services.js"
+    );
     const effects = (
       await detectExtraGatewayServiceIssues({ deep: coreCtx.deep === true })
     ).flatMap(extraGatewayServiceToRepairEffects);
@@ -809,8 +816,9 @@ const gatewayPlatformNotesCheck: HealthCheck = {
   description: "Gateway platform notes are captured as structured findings.",
   source: "doctor",
   async detect(ctx) {
-    const { collectMacGatewayPlatformWarnings } =
-      await import("../commands/doctor-platform-notes.js");
+    const { collectMacGatewayPlatformWarnings } = await import(
+      "../commands/doctor-platform-notes.js"
+    );
     const warnings = await collectMacGatewayPlatformWarnings(ctx.cfg);
     return warnings.map((warning) =>
       noteTextToFinding({

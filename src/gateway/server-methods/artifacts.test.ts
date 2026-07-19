@@ -217,6 +217,7 @@ describe("artifacts RPC handlers", () => {
 
   function mockedMessages(messages: unknown[]) {
     hoisted.visitSessionMessagesAsync.mockImplementation(async (_scope, visit) => {
+      // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
       messages.forEach((message, index) => visit(message, index + 1));
       return messages.length;
     });

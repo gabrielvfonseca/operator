@@ -120,7 +120,7 @@ async function main() {
   await fs.writeFile(configPath, `${JSON.stringify(seededConfig, null, 2)}\n`, "utf-8");
 
   process.stdout.write(
-    JSON.stringify({
+    `${JSON.stringify({
       ok: true,
       stateDir,
       configPath,
@@ -128,7 +128,7 @@ async function main() {
       pidPath,
       pidsPath,
       exitPath,
-    }) + "\n",
+    })}\n`,
   );
 }
 

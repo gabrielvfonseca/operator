@@ -532,8 +532,9 @@ export class OperatorTerminalPanel extends OperatorLitElement {
       connection,
       () => tabRef.current?.gatewaySessionId,
     );
-    const { createTerminalDefaultColorQueryResponder } =
-      await import("@operator/libterminal/browser");
+    const { createTerminalDefaultColorQueryResponder } = await import(
+      "@operator/libterminal/browser"
+    );
     const defaultColorQueries = createTerminalDefaultColorQueryResponder({
       getColors: () => terminalDynamicColors(this.themeMode),
       reply: (data) => startupInput.onData(TERMINAL_OUTPUT_ENCODER.encode(data)),
@@ -986,14 +987,16 @@ export class OperatorTerminalPanel extends OperatorLitElement {
       (this.booting && this.tabs.length === 0) || activeTab?.status === "connecting";
     return html`
       <section class="tp tp--${mode}" style=${style} aria-label=${t("terminal.title")}>
-        ${this.fullscreen
-          ? nothing
-          : html`<div
+        ${
+          this.fullscreen
+            ? nothing
+            : html`<div
               class="tp-resizer tp-resizer--${this.dock}"
               @pointerdown=${(e: PointerEvent) => this.startResize(e)}
               role="separator"
               aria-label=${t("terminal.resize")}
-            ></div>`}
+            ></div>`
+        }
         <header class="tp-header">
           ${renderTerminalPanelTabs({
             tabs: this.tabs,
@@ -1027,9 +1030,11 @@ export class OperatorTerminalPanel extends OperatorLitElement {
             onHide: () => this.closePanel(),
           })}
         </header>
-        ${this.errorText
-          ? html`<div class="tp-error" role="alert">${this.errorText}</div>`
-          : nothing}
+        ${
+          this.errorText
+            ? html`<div class="tp-error" role="alert">${this.errorText}</div>`
+            : nothing
+        }
         <wa-tab-panel
           id="terminal-tab-panel"
           class="tp-viewport"
@@ -1041,12 +1046,14 @@ export class OperatorTerminalPanel extends OperatorLitElement {
           @dragleave=${this.upload.handleDragLeave}
           @drop=${this.upload.handleDrop}
         >
-          ${connecting
-            ? html`<div class="tp-connecting" role="status">
+          ${
+            connecting
+              ? html`<div class="tp-connecting" role="status">
                 <span class="tp-connecting__spinner" aria-hidden="true"></span>
                 <span>${t("terminal.connecting")}</span>
               </div>`
-            : nothing}
+              : nothing
+          }
           ${renderTerminalUploadLayer(this.upload)}
         </wa-tab-panel>
       </section>

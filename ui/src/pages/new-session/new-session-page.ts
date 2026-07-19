@@ -311,10 +311,10 @@ class NewSessionPage extends OperatorLightDomElement {
     const agentState = this.context?.agents.state;
     const agentsReady = Boolean(
       this.gatewayConnected &&
-      this.gatewayClient &&
-      agentState?.connected &&
-      agentState.client === this.gatewayClient &&
-      this.agents().length > 0,
+        this.gatewayClient &&
+        agentState?.connected &&
+        agentState.client === this.gatewayClient &&
+        this.agents().length > 0,
     );
     const openKey = catalog.routeKey(this.data);
     if (this.openedFor !== openKey) {
@@ -610,12 +610,12 @@ class NewSessionPage extends OperatorLightDomElement {
     if (pendingCloud) {
       return Boolean(
         this.pendingCloud.retryAllowed &&
-        gateway.snapshot.client.recoveryScopeReady &&
-        cloudProfileId &&
-        this.pendingCloud.agentId &&
-        this.pendingCloud.gatewayUrl === gateway.connection.gatewayUrl &&
-        this.pendingCloud.recoveryScope === gateway.snapshot.client?.recoveryScope &&
-        this.isAdmin(),
+          gateway.snapshot.client.recoveryScopeReady &&
+          cloudProfileId &&
+          this.pendingCloud.agentId &&
+          this.pendingCloud.gatewayUrl === gateway.connection.gatewayUrl &&
+          this.pendingCloud.recoveryScope === gateway.snapshot.client?.recoveryScope &&
+          this.isAdmin(),
       );
     }
     // Pre-hydration the selection is a provisional fallback; submitting then
@@ -1285,9 +1285,11 @@ class NewSessionPage extends OperatorLightDomElement {
         ${this.renderTargetBar()}
         ${worktreeNameInvalid ? renderDraftError(t("newSession.worktreeNameInvalid")) : nothing}
         ${this.error ? renderDraftError(this.error) : nothing}
-        ${this.submissionOutcomeUnknown
-          ? renderDraftError(t("newSession.createOutcomeUnknown"))
-          : nothing}
+        ${
+          this.submissionOutcomeUnknown
+            ? renderDraftError(t("newSession.createOutcomeUnknown"))
+            : nothing
+        }
         ${renderNewSessionDraftComposer({
           agent: this.selectedAgent(),
           agentId: this.agentId,

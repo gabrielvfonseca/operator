@@ -1,5 +1,5 @@
 /** Named queue lanes for work that must not interleave with the main command stream. */
-export const enum CommandLane {
+export enum CommandLane {
   Main = "main",
   SystemAgent = "system-agent",
   Cron = "cron",

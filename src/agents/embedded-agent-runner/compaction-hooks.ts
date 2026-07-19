@@ -41,7 +41,7 @@ async function runPostCompactionSessionMemorySync(params: {
       agentId: params.agentId,
     });
     const resolvedMemory = resolveMemorySearchConfig(params.config, agentId);
-    if (!resolvedMemory || !resolvedMemory.sources.includes("sessions")) {
+    if (!resolvedMemory?.sources.includes("sessions")) {
       return;
     }
     if (!resolvedMemory.sync.sessions.postCompactionForce) {
@@ -221,7 +221,7 @@ export async function runBeforeCompactionHooks(params: {
     sessionKey: string;
   }) => void | Promise<void>;
 }) {
-  const missingSessionKey = !params.sessionKey || !params.sessionKey.trim();
+  const missingSessionKey = !params.sessionKey?.trim();
   const hookSessionKey = params.sessionKey?.trim() || params.sessionId;
   try {
     const hookEvent = createInternalHookEvent("session", "compact:before", hookSessionKey, {

@@ -978,6 +978,7 @@ function recordDiagnosticEvent(
         status: evt.status,
       });
       return;
+    // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
     case "payload.large":
       store.counter(
         "operator_payload_large_total",

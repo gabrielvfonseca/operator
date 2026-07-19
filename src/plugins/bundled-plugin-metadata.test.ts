@@ -364,27 +364,23 @@ describe("bundled plugin metadata", () => {
     });
   });
 
-  it(
-    "matches the runtime metadata snapshot",
-    { timeout: BUNDLED_PLUGIN_METADATA_TEST_TIMEOUT_MS },
-    () => {
-      expect(listRepoBundledPluginMetadata()).toEqual(
-        listBundledPluginMetadata({
-          includeSyntheticChannelConfigs: false,
-        }),
-      );
-    },
-  );
+  it("matches the runtime metadata snapshot", {
+    timeout: BUNDLED_PLUGIN_METADATA_TEST_TIMEOUT_MS,
+  }, () => {
+    expect(listRepoBundledPluginMetadata()).toEqual(
+      listBundledPluginMetadata({
+        includeSyntheticChannelConfigs: false,
+      }),
+    );
+  });
 
-  it(
-    "matches the checked-in runtime sidecar path baseline",
-    { timeout: BUNDLED_PLUGIN_METADATA_TEST_TIMEOUT_MS },
-    async () => {
-      await expect(
-        writeBundledRuntimeSidecarPathBaseline({ repoRoot, check: true }),
-      ).resolves.toMatchObject({ changed: false });
-    },
-  );
+  it("matches the checked-in runtime sidecar path baseline", {
+    timeout: BUNDLED_PLUGIN_METADATA_TEST_TIMEOUT_MS,
+  }, async () => {
+    await expect(
+      writeBundledRuntimeSidecarPathBaseline({ repoRoot, check: true }),
+    ).resolves.toMatchObject({ changed: false });
+  });
 
   it("excludes non-packaged QA sidecars from the packaged runtime sidecar baseline", () => {
     expect(BUNDLED_RUNTIME_SIDECAR_PATHS).not.toContain(
@@ -548,6 +544,7 @@ describe("bundled plugin metadata", () => {
   });
 
   it("excludes test-only public surface artifacts", () => {
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     listRepoBundledPluginMetadata().forEach((entry) =>
       expectTestOnlyArtifactsExcluded(entry.publicSurfaceArtifacts ?? []),
     );

@@ -155,7 +155,7 @@ async function buildSessionInfo(filePath: string): Promise<SessionInfo | null> {
       );
     }
     const header = entries[0];
-    if (!header || header.type !== "session") {
+    if (header?.type !== "session") {
       return null;
     }
 

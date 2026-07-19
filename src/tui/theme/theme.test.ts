@@ -8,8 +8,9 @@ import { afterAll, afterEach, describe, expect, it } from "vitest";
 const originalChalkLevel = chalk.level;
 chalk.level = 3;
 
-const { markdownTheme, searchableSelectListTheme, selectListTheme, theme } =
-  await import("./theme.js");
+const { markdownTheme, searchableSelectListTheme, selectListTheme, theme } = await import(
+  "./theme.js"
+);
 
 const stripAnsi = (str: string) =>
   str.replace(new RegExp(`${String.fromCharCode(27)}\\[[0-9;]*m`, "g"), "");
@@ -105,7 +106,7 @@ function relativeLuminance(hex: string): number {
     .match(/.{2}/g)
     ?.map((part) => Number.parseInt(part, 16) / 255)
     .map((channel) => (channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4));
-  if (!channels || channels.length !== 3) {
+  if (channels?.length !== 3) {
     throw new Error(`invalid color: ${hex}`);
   }
   return (

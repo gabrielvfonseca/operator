@@ -212,7 +212,7 @@ function replaceLastUserTextPrompt(params: {
     return params.messages;
   }
   const message = params.messages[userIndex];
-  if (!message || message.role !== "user") {
+  if (message?.role !== "user") {
     return params.messages;
   }
   if (params.shouldCapture && !params.shouldCapture(message)) {

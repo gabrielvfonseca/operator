@@ -37,6 +37,7 @@ const {
   assertOkOrThrowHttpErrorMock: vi.fn(async () => {}),
   resolveProviderHttpRequestConfigMock: vi.fn((params) => {
     const headers = new Headers(params.defaultHeaders);
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     new Headers(params.headers).forEach((value, key) => headers.set(key, value));
     return {
       baseUrl: params.baseUrl ?? params.defaultBaseUrl,
@@ -124,10 +125,7 @@ function mockCodexImageStream(params: { imageData?: string; revisedPrompt?: stri
 }
 
 function mockCodexCompletedImageStream(
-  params: {
-    imageData?: string;
-    revisedPrompt?: string;
-  } = {},
+  params: { imageData?: string; revisedPrompt?: string } = {},
 ) {
   const image = Buffer.from(params.imageData ?? "codex-completed-png-bytes").toString("base64");
   const events = [

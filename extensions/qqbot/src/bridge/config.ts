@@ -39,7 +39,7 @@ function resolveEnvSecretRefValue(params: {
   env?: NodeJS.ProcessEnv;
 }): string | undefined {
   const ref = coerceSecretRef(params.value, params.cfg.secrets?.defaults);
-  if (!ref || ref.source !== "env") {
+  if (ref?.source !== "env") {
     return undefined;
   }
 

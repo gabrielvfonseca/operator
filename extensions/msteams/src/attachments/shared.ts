@@ -603,8 +603,8 @@ async function safeFetch(params: {
   const resolveFn = params.resolveFn ?? lookup;
   const hasDispatcher = Boolean(
     params.requestInit &&
-    typeof params.requestInit === "object" &&
-    "dispatcher" in (params.requestInit as Record<string, unknown>),
+      typeof params.requestInit === "object" &&
+      "dispatcher" in (params.requestInit as Record<string, unknown>),
   );
   const currentHeaders = new Headers(params.requestInit?.headers);
   let currentUrl = params.url;

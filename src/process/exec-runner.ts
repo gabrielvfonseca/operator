@@ -54,7 +54,7 @@ export type CommandOptions = {
   maxCombinedOutputBytes?: number;
   outputCapture?: CommandOutputCaptureOption;
   /** Observe raw output without owning child lifecycle. Return false to stop the command. */
-  onOutputChunk?: (chunk: Buffer, stream: CommandOutputStream) => boolean | void;
+  onOutputChunk?: (chunk: Buffer, stream: CommandOutputStream) => boolean | undefined;
   /** Accept a successful exit when only the selected diagnostic output stream failed. */
   tolerateOutputError?: { stdout?: boolean; stderr?: boolean };
   terminateOnOutputLimit?: CommandOutputLimitOption;

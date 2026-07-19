@@ -195,8 +195,7 @@ function loadScopedCapabilityRuntimeRegistryEntries<T>(params: {
       registry,
     });
     const shouldRetry =
-      attempt === 0 &&
-      (!plugin || plugin.status !== "loaded" || params.loadDeclaredIds(plugin).length === 0);
+      attempt === 0 && (plugin?.status !== "loaded" || params.loadDeclaredIds(plugin).length === 0);
     if (!shouldRetry) {
       break;
     }

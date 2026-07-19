@@ -27,7 +27,7 @@ function hasClickClackReplyMedia(payload: {
 }): boolean {
   return Boolean(
     payload.mediaUrl?.trim() ||
-    payload.mediaUrls?.some((mediaUrl) => typeof mediaUrl === "string" && mediaUrl.trim()),
+      payload.mediaUrls?.some((mediaUrl) => typeof mediaUrl === "string" && mediaUrl.trim()),
   );
 }
 

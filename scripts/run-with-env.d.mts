@@ -45,4 +45,3 @@ export function signalRunWithEnvChild(
     useChildProcessGroup?: boolean | undefined;
   },
 ): void;
-import { spawnSync } from "node:child_process";

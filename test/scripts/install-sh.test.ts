@@ -47,6 +47,7 @@ describe("install.sh", () => {
     writeFileSync(bashEnvPath, "export OPENCLAW_BASH_ENV_LEAKED=1\n");
 
     try {
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       const result = runInstallShell('printf "leaked=%s\\n" "${OPENCLAW_BASH_ENV_LEAKED:-0}"', {
         BASH_ENV: bashEnvPath,
       });
@@ -105,7 +106,9 @@ describe("install.sh", () => {
 
   it("runs apt-get through noninteractive wrappers", () => {
     expect(script).toContain("apt_get()");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('DEBIAN_FRONTEND="${DEBIAN_FRONTEND:-noninteractive}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('NEEDRESTART_MODE="${NEEDRESTART_MODE:-a}"');
     expect(script).toContain("sudo env DEBIAN_FRONTEND=");
     expect(script).toContain("-o Dpkg::Options::=--force-confdef");
@@ -1107,6 +1110,7 @@ NODE
     writeNpmFreshnessConflictFixture(join(bin, "npm"), argsLog);
 
     let result: ReturnType<typeof runInstallShell> | undefined;
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let argsOutput;
     try {
       result = runInstallShell(
@@ -1144,13 +1148,14 @@ NODE
     writeNpmBeforePolicyFixture(join(bin, "npm"), argsLog);
 
     let result: ReturnType<typeof runInstallShell> | undefined;
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let argsOutput;
     try {
       result = runInstallShell(
         [
           "set -euo pipefail",
           `cd ${JSON.stringify(project)}`,
-          `source ${JSON.stringify(process.cwd() + "/" + SCRIPT_PATH)}`,
+          `source ${JSON.stringify(`${process.cwd()}/${SCRIPT_PATH}`)}`,
           `HOME=${JSON.stringify(home)}`,
           `PATH=${JSON.stringify(`${bin}:/usr/bin:/bin`)}`,
           "NPM_LOGLEVEL=error",
@@ -1297,6 +1302,7 @@ NODE
     writeFileSync(
       join(home, ".nvm/nvm.sh"),
       [
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'NVM_DIR="${NVM_DIR:-$HOME/.nvm}"',
         "export NVM_DIR",
         "nvm() {",
@@ -1423,6 +1429,7 @@ NODE
     const nodePath = join(bin, "node");
     writeFileSync(
       nodePath,
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ["#!/bin/sh", 'printf "%s\\n" "${FAKE_NODE_VERSION:-v0.0.0}"', ""].join("\n"),
     );
     chmodSync(nodePath, 0o755);
@@ -1438,8 +1445,10 @@ NODE
           "export PATH",
           "unset -f node 2>/dev/null || true",
           "unalias node 2>/dev/null || true",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           'node() { printf "%s\\n" "${FAKE_NODE_VERSION:-v0.0.0}"; }',
           "for version in 22.22.2 22.22.3 23.11.0 24.14.1 24.15.0 25.8.1 25.9.0 26.0.0; do",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           '  FAKE_NODE_VERSION="v${version}"',
           "  export FAKE_NODE_VERSION",
           "  node_is_supported",
@@ -1474,7 +1483,9 @@ NODE
         `source ${JSON.stringify(SCRIPT_PATH)}`,
         "set +e",
         "node() {",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         '  if [[ "${1:-}" == "-v" ]]; then printf "v24.17.0\\n"; return 0; fi',
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         '  if [[ "${1:-}" == "-e" ]]; then return 1; fi',
         "  return 1",
         "}",
@@ -1515,7 +1526,9 @@ NODE
       oldNode,
       [
         "#!/usr/bin/env bash",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "-p" ]]; then echo "20 20"; exit 0; fi',
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "-v" ]]; then echo "v20.20.0"; exit 0; fi',
         "",
       ].join("\n"),
@@ -1524,7 +1537,9 @@ NODE
       installedNode,
       [
         "#!/usr/bin/env bash",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "-p" ]]; then echo "24 15"; exit 0; fi',
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "-v" ]]; then echo "v24.15.0"; exit 0; fi',
         "",
       ].join("\n"),
@@ -1824,6 +1839,7 @@ NODE
   it("fetches moving git refs without tags for git installs", () => {
     expect(script).toContain('git -C "$repo_dir" fetch --no-tags origin main');
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'git -C "$repo_dir" fetch --no-tags origin "refs/heads/${ref}:refs/remotes/origin/${ref}"',
     );
     expect(script).toContain('git -C "$repo_dir" pull --rebase --no-tags || true');
@@ -1855,12 +1871,14 @@ NODE
     expect(result.stdout).toContain("branch=--no-frozen-lockfile");
     expect(result.stdout).toContain("tag=--frozen-lockfile");
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'CI="${CI:-true}" run_quiet_step "Installing dependencies" run_pnpm -C "$repo_dir" install "$install_lockfile_flag"',
     );
   });
 
   it("aligns pnpm to the checked-out repo packageManager before installing", () => {
     expect(script).toContain("activate_repo_pnpm_version()");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('corepack prepare "pnpm@${version}" --activate');
     expect(script).toContain('activate_repo_pnpm_version "$repo_dir"');
   });
@@ -1880,13 +1898,16 @@ NODE
     );
     writeFileSync(
       join(bin, "pnpm"),
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ["#!/bin/bash", '[[ "${1:-}" == "--version" ]] && echo "11.8.0"', ""].join("\n"),
     );
     writeFileSync(
       join(bin, "corepack"),
       [
         "#!/bin/bash",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "prepare" ]]; then exit 0; fi',
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "pnpm" && "${2:-}" == "--version" ]]; then',
         '  if grep -q "pnpm@11.2.2" package.json 2>/dev/null; then echo "11.2.2"; else exit 1; fi',
         "  exit 0",
@@ -1905,6 +1926,7 @@ NODE
           `source ${JSON.stringify(SCRIPT_PATH)}`,
           `cd ${JSON.stringify(outer)}`,
           `activate_repo_pnpm_version ${JSON.stringify(repo)}`,
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           'printf "cmd=%s\\n" "${PNPM_CMD[*]}"',
           `printf "run=%s\\n" "$(run_pnpm -C ${JSON.stringify(repo)} --version)"`,
         ].join("\n"),
@@ -1938,13 +1960,16 @@ describe("install.sh macOS Homebrew Node behavior", () => {
 
   it("stops when Homebrew node installation fails", () => {
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'if ! run_quiet_step "Installing node@${NODE_DEFAULT_MAJOR}" brew install "node@${NODE_DEFAULT_MAJOR}"; then',
     );
 
     const failedInstallIndex = script.indexOf(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'if ! run_quiet_step "Installing node@${NODE_DEFAULT_MAJOR}" brew install "node@${NODE_DEFAULT_MAJOR}"; then',
     );
     const brewLinkIndex = script.indexOf(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'brew link "node@${NODE_DEFAULT_MAJOR}" --overwrite --force',
     );
     expect(failedInstallIndex).toBeGreaterThanOrEqual(0);
@@ -1976,14 +2001,17 @@ describe("install.sh macOS Homebrew Node behavior", () => {
 
   it("separates missing Homebrew node from PATH shadowing", () => {
     const missingNodeGuardIndex = script.indexOf(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'if [[ -z "$brew_node_prefix" || ! -x "${brew_node_prefix}/bin/node" ]]; then',
     );
     const pathAdviceIndex = script.indexOf("Add this to your shell profile and restart shell:");
 
     expect(missingNodeGuardIndex).toBeGreaterThanOrEqual(0);
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'ui_error "Homebrew node@${NODE_DEFAULT_MAJOR} is not installed on disk"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('echo "  export PATH=\\"${brew_node_prefix}/bin:\\$PATH\\""');
     expect(pathAdviceIndex).toBeGreaterThan(missingNodeGuardIndex);
   });

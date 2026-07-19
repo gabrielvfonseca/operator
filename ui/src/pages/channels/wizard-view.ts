@@ -38,15 +38,18 @@ function renderNoteStep(step: ChannelWizardStep, props: ChannelWizardViewProps) 
   const looksLikeCode = message.includes("{") || message.includes("  ");
   return html`
     ${step.title ? html`<div class="channels-wizard__message">${step.title}</div>` : nothing}
-    ${message
-      ? html`<div
+    ${
+      message
+        ? html`<div
           class="channels-wizard__note ${looksLikeCode ? "channels-wizard__note--code" : ""}"
         >
           ${message}
         </div>`
-      : nothing}
-    ${message
-      ? html`
+        : nothing
+    }
+    ${
+      message
+        ? html`
           <div class="channels-wizard__links">
             <button
               type="button"
@@ -57,7 +60,8 @@ function renderNoteStep(step: ChannelWizardStep, props: ChannelWizardViewProps) 
             </button>
           </div>
         `
-      : nothing}
+        : nothing
+    }
     <div class="channels-wizard__footer">
       <button type="button" class="btn primary" @click=${() => props.onAnswer(null)}>
         ${t("channels.setup.continue")}
@@ -93,9 +97,11 @@ function renderSelectStep(step: ChannelWizardStep, props: ChannelWizardViewProps
             .checked=${index === selectedIndex}
           >
             <span class="channels-wizard__option-label">${option.label}</span>
-            ${option.hint
-              ? html`<span class="channels-wizard__option-hint">${option.hint}</span>`
-              : nothing}
+            ${
+              option.hint
+                ? html`<span class="channels-wizard__option-hint">${option.hint}</span>`
+                : nothing
+            }
           </wa-radio>
         `,
       )}
@@ -120,9 +126,11 @@ function renderMultiselectStep(step: ChannelWizardStep, props: ChannelWizardView
             <span class="channels-wizard__option-label">
               ${selected.has(option.value) ? "☑" : "☐"} ${option.label}
             </span>
-            ${option.hint
-              ? html`<span class="channels-wizard__option-hint">${option.hint}</span>`
-              : nothing}
+            ${
+              option.hint
+                ? html`<span class="channels-wizard__option-hint">${option.hint}</span>`
+                : nothing
+            }
           </button>
         `,
       )}
@@ -200,31 +208,40 @@ function renderWhatsAppLinking(props: ChannelWizardViewProps) {
     <div class="channels-wizard__message">
       ${connected ? t("channels.setup.whatsappLinked") : t("channels.setup.whatsappScanTitle")}
     </div>
-    ${props.whatsappMessage
-      ? html`<div class="channels-wizard__note">${props.whatsappMessage}</div>`
-      : nothing}
-    ${connected
-      ? nothing
-      : html`
+    ${
+      props.whatsappMessage
+        ? html`<div class="channels-wizard__note">${props.whatsappMessage}</div>`
+        : nothing
+    }
+    ${
+      connected
+        ? nothing
+        : html`
           <div class="channels-wizard__qr">
-            ${props.whatsappQrDataUrl
-              ? html`<img src=${props.whatsappQrDataUrl} alt="WhatsApp pairing QR code" />`
-              : html`<div class="channels-wizard__spinner">
-                  ${props.whatsappBusy
-                    ? t("channels.setup.whatsappQrLoading")
-                    : t("channels.setup.whatsappQrHint")}
-                </div>`}
+            ${
+              props.whatsappQrDataUrl
+                ? html`<img src=${props.whatsappQrDataUrl} alt="WhatsApp pairing QR code" />`
+                : html`<div class="channels-wizard__spinner">
+                  ${
+                    props.whatsappBusy
+                      ? t("channels.setup.whatsappQrLoading")
+                      : t("channels.setup.whatsappQrHint")
+                  }
+                </div>`
+            }
           </div>
           <div class="channels-wizard__note">${t("channels.setup.whatsappScanHelp")}</div>
-        `}
+        `
+    }
     <div class="channels-wizard__footer">
-      ${connected
-        ? html`
+      ${
+        connected
+          ? html`
             <button type="button" class="btn primary" @click=${() => props.onClose()}>
               ${t("channels.setup.finish")}
             </button>
           `
-        : html`
+          : html`
             <button
               type="button"
               class="btn"
@@ -233,8 +250,9 @@ function renderWhatsAppLinking(props: ChannelWizardViewProps) {
             >
               ${props.whatsappQrDataUrl ? t("channels.setup.regenerateQr") : t("common.showQr")}
             </button>
-            ${props.whatsappQrDataUrl
-              ? html`
+            ${
+              props.whatsappQrDataUrl
+                ? html`
                   <button
                     type="button"
                     class="btn primary"
@@ -244,11 +262,13 @@ function renderWhatsAppLinking(props: ChannelWizardViewProps) {
                     ${t("common.waitForScan")}
                   </button>
                 `
-              : nothing}
+                : nothing
+            }
             <button type="button" class="btn" @click=${() => props.onClose()}>
               ${t("channels.setup.linkLater")}
             </button>
-          `}
+          `
+      }
     </div>
   `;
 }
@@ -330,13 +350,17 @@ export function renderChannelWizard(
     body = renderDoneBody(wizard.channels, props);
   } else if (step) {
     body = html`
-      ${wizard.phase === "step" && wizard.validationError
-        ? html`<div class="channels-wizard__error">${wizard.validationError}</div>`
-        : nothing}
+      ${
+        wizard.phase === "step" && wizard.validationError
+          ? html`<div class="channels-wizard__error">${wizard.validationError}</div>`
+          : nothing
+      }
       ${renderStepBody(step, props)}
-      ${wizard.phase === "step" && wizard.busy
-        ? html`<div class="channels-wizard__spinner">${t("channels.setup.working")}</div>`
-        : nothing}
+      ${
+        wizard.phase === "step" && wizard.busy
+          ? html`<div class="channels-wizard__spinner">${t("channels.setup.working")}</div>`
+          : nothing
+      }
     `;
   }
 

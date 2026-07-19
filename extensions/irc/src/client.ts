@@ -347,7 +347,7 @@ export async function connectIrcClient(options: IrcClientOptions): Promise<IrcCl
       if (line.command === "001") {
         ready = true;
         const nickParam = line.params[0];
-        if (nickParam && nickParam.trim()) {
+        if (nickParam?.trim()) {
           currentNick = nickParam.trim();
         }
         try {
@@ -413,7 +413,7 @@ export async function connectIrcClient(options: IrcClientOptions): Promise<IrcCl
 
   socket.once("connect", () => {
     try {
-      if (options.password && options.password.trim()) {
+      if (options.password?.trim()) {
         sendRaw(`PASS ${options.password.trim()}`);
       }
       sendRaw(`NICK ${options.nick.trim()}`);

@@ -62,10 +62,7 @@ export function mapStreamingModeToSlackLegacyDraftStreamMode(mode: StreamingMode
 }
 
 export function resolveSlackStreamingMode(
-  params: {
-    streamMode?: unknown;
-    streaming?: unknown;
-  } = {},
+  params: { streamMode?: unknown; streaming?: unknown } = {},
 ): StreamingMode {
   const parsedStreaming = parseStreamingMode(
     getChannelStreamingConfigObject(params)?.mode ?? params.streaming,
@@ -84,10 +81,7 @@ export function resolveSlackStreamingMode(
 }
 
 export function resolveSlackNativeStreaming(
-  params: {
-    nativeStreaming?: unknown;
-    streaming?: unknown;
-  } = {},
+  params: { nativeStreaming?: unknown; streaming?: unknown } = {},
 ): boolean {
   const canonical = resolveChannelStreamingNativeTransport(params);
   if (typeof canonical === "boolean") {

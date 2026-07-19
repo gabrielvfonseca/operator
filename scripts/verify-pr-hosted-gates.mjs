@@ -240,6 +240,7 @@ function canCoverQueuedBuildArtifacts(workflowRuns, sha, nowMs) {
 }
 
 function stripAnsi(raw) {
+  // biome-ignore lint/suspicious/noShadowRestrictedNames: migrated from oxlint
   const escape = String.fromCharCode(27);
   return raw.replace(new RegExp(`${escape}\\[[0-?]*[ -/]*[@-~]`, "gu"), "");
 }

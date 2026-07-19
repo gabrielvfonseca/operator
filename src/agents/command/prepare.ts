@@ -120,12 +120,12 @@ export async function prepareAgentCommandExecution(opts: AgentCommandOpts, runti
   const recipientChannel = resolveMessageChannel(opts.channel);
   const shouldResolveExplicitRecipientSession = Boolean(
     !rawExplicitSessionKey &&
-    !requestedSessionId &&
-    !toSessionKey &&
-    opts.agentId?.trim() &&
-    recipientChannel &&
-    isDeliverableMessageChannel(recipientChannel) &&
-    rawTo,
+      !requestedSessionId &&
+      !toSessionKey &&
+      opts.agentId?.trim() &&
+      recipientChannel &&
+      isDeliverableMessageChannel(recipientChannel) &&
+      rawTo,
   );
   if (!opts.to && !requestedSessionId && !rawExplicitSessionKey && !opts.agentId) {
     throw new Error(
@@ -159,9 +159,9 @@ export async function prepareAgentCommandExecution(opts: AgentCommandOpts, runti
   }
   const shouldScopeDefaultAgentKey = Boolean(
     rawExplicitSessionKey &&
-    !agentIdOverride &&
-    classifySessionKeyShape(rawExplicitSessionKey) === "legacy_or_alias" &&
-    !isUnscopedSessionKeySentinel(rawExplicitSessionKey),
+      !agentIdOverride &&
+      classifySessionKeyShape(rawExplicitSessionKey) === "legacy_or_alias" &&
+      !isUnscopedSessionKeySentinel(rawExplicitSessionKey),
   );
   const explicitSessionKey =
     toSessionKey ??

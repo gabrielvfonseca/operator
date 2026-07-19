@@ -181,10 +181,10 @@ function proposalMatchesName(
     const normalizedCandidate = normalizeSkillIndexName(candidate);
     return Boolean(
       normalizedName &&
-      normalizedCandidate &&
-      (normalizedCandidate === normalizedName ||
-        normalizedCandidate.includes(normalizedName) ||
-        normalizedName.includes(normalizedCandidate)),
+        normalizedCandidate &&
+        (normalizedCandidate === normalizedName ||
+          normalizedCandidate.includes(normalizedName) ||
+          normalizedName.includes(normalizedCandidate)),
     );
   });
 }

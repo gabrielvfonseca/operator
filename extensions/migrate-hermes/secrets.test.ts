@@ -335,7 +335,7 @@ describe("Hermes migration secret items", () => {
     const store = readAuthProfileStore(path.join(stateDir, "agents", "main", "agent"));
     const profile = store.profiles["acme:hermes-import"];
     expect(profile).toEqual(expect.objectContaining({ provider: "acme", type: "api_key" }));
-    if (!profile || profile.type !== "api_key") {
+    if (profile?.type !== "api_key") {
       throw new Error("expected imported API key profile");
     }
     expect(profile.key).toBe(value);

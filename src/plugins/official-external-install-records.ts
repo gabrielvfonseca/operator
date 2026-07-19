@@ -90,9 +90,9 @@ function hasTrustedClawHubSourceAuthority(
   // Preserve that shipped shape, but do not let package-only records claim it.
   return Boolean(
     officialClawHubSpec &&
-    record.spec &&
-    resolveClawHubSpecPackageName(record.spec) ===
-      resolveClawHubSpecPackageName(officialClawHubSpec),
+      record.spec &&
+      resolveClawHubSpecPackageName(record.spec) ===
+        resolveClawHubSpecPackageName(officialClawHubSpec),
   );
 }
 

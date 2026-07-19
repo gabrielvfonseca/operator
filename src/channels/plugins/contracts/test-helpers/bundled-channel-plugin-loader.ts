@@ -107,9 +107,9 @@ function isBareMissingModuleSpecifier(text: string): boolean {
   const specifier = match?.[1];
   return Boolean(
     specifier &&
-    !specifier.startsWith(".") &&
-    !specifier.startsWith("/") &&
-    !path.win32.isAbsolute(specifier),
+      !specifier.startsWith(".") &&
+      !specifier.startsWith("/") &&
+      !path.win32.isAbsolute(specifier),
   );
 }
 

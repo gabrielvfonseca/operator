@@ -74,8 +74,9 @@ async function resolveAuthChoiceModelSelectionPolicy(params: {
     };
   }
 
-  const { resolvePluginProviders, resolveProviderPluginChoice } =
-    await import("../plugins/provider-auth-choice.runtime.js");
+  const { resolvePluginProviders, resolveProviderPluginChoice } = await import(
+    "../plugins/provider-auth-choice.runtime.js"
+  );
   const providers = resolvePluginProviders({
     config: params.config,
     workspaceDir: params.workspaceDir,
@@ -124,10 +125,10 @@ export async function runSetupModelAuthStep(params: {
   const authChoiceFromPrompt = opts.authChoice === undefined;
   let authChoice: AuthChoice | KeepCurrentAuthChoice | undefined = opts.authChoice;
   let authStore:
-    | ReturnType<(typeof import("../agents/auth-profiles.runtime.js"))["ensureAuthProfileStore"]>
+    | ReturnType<typeof import("../agents/auth-profiles.runtime.js")["ensureAuthProfileStore"]>
     | undefined;
   let promptAuthChoiceGrouped:
-    | (typeof import("../commands/auth-choice-prompt.js"))["promptAuthChoiceGrouped"]
+    | typeof import("../commands/auth-choice-prompt.js")["promptAuthChoiceGrouped"]
     | undefined;
   let keepCurrentAuthChoice: KeepCurrentAuthChoice | undefined;
   if (authChoiceFromPrompt) {

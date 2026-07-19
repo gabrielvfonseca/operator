@@ -77,8 +77,9 @@ export function createDefaultDeps(): CliDeps {
   const deps: CliDeps = {};
   const resolveSender = (channelId: string) =>
     createLazySender(channelId, async () => {
-      const { createChannelOutboundRuntimeSend } =
-        await import("./send-runtime/channel-outbound-send.js");
+      const { createChannelOutboundRuntimeSend } = await import(
+        "./send-runtime/channel-outbound-send.js"
+      );
       return {
         runtimeSend: createChannelOutboundRuntimeSend({
           channelId: channelId as import("../channels/plugins/types.public.js").ChannelId,

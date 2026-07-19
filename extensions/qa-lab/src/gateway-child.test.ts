@@ -122,6 +122,7 @@ describe("runQaGatewayCliCommand", () => {
       executablePath: process.execPath,
       argsPrefix: [
         "--eval",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'process.stdout.write(`${process.env.OPERATOR_CLI}:${process.env.QA_VALUE}:${process.argv.slice(1).join(",")}`)',
       ],
       args: ["voicecall", "start"],
@@ -1943,6 +1944,7 @@ describe("qa bundled plugin dir", () => {
       [
         'import { normalizeAccountId } from "@gabrielvfonseca/operator/plugin-sdk/account-id";',
         'import { marker } from "fake-dep";',
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'export const accountId = `${normalizeAccountId("QA")}:${marker}`;',
         "",
       ].join("\n"),

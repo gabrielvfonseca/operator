@@ -104,8 +104,9 @@ describe("noteDevicePairingHealth", () => {
     vi.resetModules();
     callGatewayMock.mockReset();
     noteMock.mockReset();
-    ({ collectDevicePairingHealthFindings, noteDevicePairingHealth } =
-      await import("./doctor-device-pairing.js"));
+    ({ collectDevicePairingHealthFindings, noteDevicePairingHealth } = await import(
+      "./doctor-device-pairing.js"
+    ));
   });
 
   afterEach(() => {
@@ -146,7 +147,7 @@ describe("noteDevicePairingHealth", () => {
           checkId: "core/doctor/device-pairing",
           severity: "warning",
           path: "devices.pending",
-          target: identity.deviceId + ":" + pending.request.requestId,
+          target: `${identity.deviceId}:${pending.request.requestId}`,
           requirement: "scope-upgrade",
           message: expect.stringContaining("Pending scope upgrade"),
           fixHint: expect.stringContaining("openclaw devices approve"),

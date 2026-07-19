@@ -324,7 +324,7 @@ describe("iMessage approval reactions", () => {
 
     const mismatchedAction = buildPayload();
     const buttons = mismatchedAction.presentation?.blocks.find((block) => block.type === "buttons");
-    if (!buttons || buttons.type !== "buttons" || !buttons.buttons[0]?.action) {
+    if (buttons?.type !== "buttons" || !buttons.buttons[0]?.action) {
       throw new Error("Expected typed approval buttons");
     }
     buttons.buttons[0].action = {

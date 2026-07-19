@@ -12,7 +12,7 @@ export type QaScenarioStepContext = {
 
 export type QaScenarioStep = {
   name: string;
-  run: (ctx: QaScenarioStepContext) => Promise<string | void>;
+  run: (ctx: QaScenarioStepContext) => Promise<string | undefined>;
 };
 
 export type QaScenarioDefinition = {

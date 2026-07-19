@@ -55,7 +55,8 @@ const mattermostAccountHelpers = createAccountListHelpers("mattermost", {
     const mattermost = cfg.channels?.mattermost;
     return Boolean(
       mattermost?.baseUrl?.trim() &&
-      (hasConfiguredAccountValue(mattermost.botToken) || process.env.MATTERMOST_BOT_TOKEN?.trim()),
+        (hasConfiguredAccountValue(mattermost.botToken) ||
+          process.env.MATTERMOST_BOT_TOKEN?.trim()),
     );
   },
 });

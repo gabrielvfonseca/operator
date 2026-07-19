@@ -74,6 +74,7 @@ export class GatewayRelayRealtimeTalkTransport implements RealtimeTalkTransport 
       throw error;
     }
     if (this.closed) {
+      // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
       media.getTracks().forEach((track) => track.stop());
       return;
     }
@@ -107,10 +108,12 @@ export class GatewayRelayRealtimeTalkTransport implements RealtimeTalkTransport 
     this.inputMeter?.stop();
     this.inputMeter = null;
     // Mark callbacks recurse until playback drains, so shutdown must cancel every owned timer.
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     this.markAckTimers.forEach((timer) => window.clearTimeout(timer));
     this.markAckTimers.clear();
     this.discardDelayedToolResults();
     this.abortConsults();
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     this.media?.getTracks().forEach((track) => track.stop());
     this.media = null;
     this.stopOutput();
@@ -202,6 +205,7 @@ export class GatewayRelayRealtimeTalkTransport implements RealtimeTalkTransport 
         this.lastRelayError = event.message ?? "Realtime relay failed";
         this.ctx.callbacks.onStatus?.("error", this.lastRelayError);
         return;
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
       case "close":
         this.abortConsults();
         if (!this.closed) {

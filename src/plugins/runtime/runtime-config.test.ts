@@ -21,8 +21,9 @@ vi.mock("../../logger.js", () => ({
 }));
 
 const { withPluginRuntimePluginScope } = await import("./gateway-request-scope.js");
-const { createRuntimeConfig, resetRuntimeConfigDeprecationWarningStateForTest } =
-  await import("./runtime-config.js");
+const { createRuntimeConfig, resetRuntimeConfigDeprecationWarningStateForTest } = await import(
+  "./runtime-config.js"
+);
 const deprecatedConfigCode = "runtime-config-load-write";
 
 describe("createRuntimeConfig", () => {

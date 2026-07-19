@@ -57,6 +57,7 @@ export async function withExtractedArchiveRoot<TResult extends { ok: boolean }>(
       return { ok: false, error: `failed to extract archive: ${String(err)}` };
     }
 
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let rootDir;
     try {
       rootDir = await resolvePackedRootDir(extractDir, {

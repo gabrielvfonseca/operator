@@ -105,8 +105,9 @@ async function startGenericEmbeddingServer(): Promise<{
 }
 
 beforeAll(async () => {
-  ({ clearMemoryEmbeddingProviders, registerMemoryEmbeddingProvider } =
-    await import("../plugins/memory-embedding-providers.js"));
+  ({ clearMemoryEmbeddingProviders, registerMemoryEmbeddingProvider } = await import(
+    "../plugins/memory-embedding-providers.js"
+  ));
   ({ clearEmbeddingProviders } = await import("../plugins/embedding-providers.js"));
   createEmbeddingProviderMock = vi.fn(
     async (options: { provider: string; model: string; agentDir?: string }) => ({

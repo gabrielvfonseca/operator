@@ -121,7 +121,7 @@ describe("createOllamaStreamFn thinking events", () => {
 
   function makeNdjsonBody(chunks: Array<Record<string, unknown>>): ReadableStream<Uint8Array> {
     const encoder = new TextEncoder();
-    const lines = chunks.map((c) => JSON.stringify(c) + "\n").join("");
+    const lines = chunks.map((c) => `${JSON.stringify(c)}\n`).join("");
     return new ReadableStream({
       start(controller) {
         controller.enqueue(encoder.encode(lines));

@@ -37,22 +37,19 @@ const PERMISSION_VALUE_MAX_LENGTH = 48;
 const COMMAND_PREVIEW_WITH_DETAILS_MAX_LENGTH = 80;
 const APPROVAL_PREVIEW_SCAN_MAX_LENGTH = 4096;
 const APPROVAL_PREVIEW_OMITTED = "[preview truncated or unsafe content omitted]";
-const ANSI_OSC_SEQUENCE_RE = new RegExp(
-  String.raw`(?:\u001b]|\u009d)[^\u001b\u009c\u0007]*(?:\u0007|\u001b\\|\u009c)`,
-  "g",
-);
-const ANSI_CONTROL_SEQUENCE_RE = new RegExp(
-  String.raw`(?:\u001b\[[0-?]*[ -/]*[@-~]|\u009b[0-?]*[ -/]*[@-~]|\u001b[@-Z\\-_])`,
-  "g",
-);
-const CONTROL_CHARACTER_RE = new RegExp(String.raw`[\u0000-\u001f\u007f-\u009f]+`, "g");
-const INVISIBLE_FORMATTING_CONTROL_RE = new RegExp(
-  String.raw`[\u00ad\u034f\u061c\u200b-\u200f\u202a-\u202e\u2060-\u206f\ufeff\ufe00-\ufe0f\u{e0100}-\u{e01ef}]`,
-  "gu",
-);
-const DANGLING_TERMINAL_SEQUENCE_SUFFIX_RE = new RegExp(
-  String.raw`(?:\u001b\][^\u001b\u009c\u0007]*|\u009d[^\u001b\u009c\u0007]*|\u001b\[[0-?]*[ -/]*|\u009b[0-?]*[ -/]*|\u001b)$`,
-);
+// biome-ignore lint/suspicious/noControlCharactersInRegex: migrated from oxlint
+const ANSI_OSC_SEQUENCE_RE = /(?:\u001b]|\u009d)[^\u001b\u009c\u0007]*(?:\u0007|\u001b\\|\u009c)/g;
+const ANSI_CONTROL_SEQUENCE_RE =
+  // biome-ignore lint/suspicious/noControlCharactersInRegex: migrated from oxlint
+  /(?:\u001b\[[0-?]*[ -/]*[@-~]|\u009b[0-?]*[ -/]*[@-~]|\u001b[@-Z\\-_])/g;
+// biome-ignore lint/suspicious/noControlCharactersInRegex: migrated from oxlint
+const CONTROL_CHARACTER_RE = /[\u0000-\u001f\u007f-\u009f]+/g;
+const INVISIBLE_FORMATTING_CONTROL_RE =
+  // biome-ignore lint/suspicious/noMisleadingCharacterClass: migrated from oxlint
+  /[\u00ad\u034f\u061c\u200b-\u200f\u202a-\u202e\u2060-\u206f\ufeff\ufe00-\ufe0f\u{e0100}-\u{e01ef}]/gu;
+const DANGLING_TERMINAL_SEQUENCE_SUFFIX_RE =
+  // biome-ignore lint/suspicious/noControlCharactersInRegex: migrated from oxlint
+  /(?:\u001b\][^\u001b\u009c\u0007]*|\u009d[^\u001b\u009c\u0007]*|\u001b\[[0-?]*[ -/]*|\u009b[0-?]*[ -/]*|\u001b)$/;
 
 type ApprovalPreviewSource = {
   value: string;
@@ -660,7 +657,7 @@ function readNativeRelayPreToolUseDecision(response: NativeHookRelayProcessRespo
       failureDisposition?: Exclude<BeforeToolCallFailureDisposition, "blocked">;
     }
   | { blocked: false } {
-  if (!response || response.exitCode !== 0) {
+  if (response?.exitCode !== 0) {
     return {
       blocked: true,
       reason:
@@ -1365,7 +1362,7 @@ function sanitizeApprovalPreview(
   source: ApprovalPreviewSource | undefined,
   maxLength: number,
 ): SanitizedApprovalPreview {
-  if (!source || !source.value) {
+  if (!source?.value) {
     return { omitted: false };
   }
   const rawPreview = source.value.replace(DANGLING_TERMINAL_SEQUENCE_SUFFIX_RE, "");

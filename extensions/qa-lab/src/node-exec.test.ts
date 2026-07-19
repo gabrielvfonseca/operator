@@ -84,7 +84,7 @@ describe("resolveQaNodeExecPath", () => {
             env: { SystemRoot: String.raw`D:\Windows` },
           });
           return {
-            stdout: String.raw`D:\nodejs\node.exe` + "\r\n",
+            stdout: `${String.raw`D:\nodejs\node.exe`}\r\n`,
             stderr: "",
           };
         },

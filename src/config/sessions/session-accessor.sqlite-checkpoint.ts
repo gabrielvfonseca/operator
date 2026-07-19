@@ -416,9 +416,9 @@ function readTranscriptHeaderCwd(events: readonly TranscriptEvent[]): string | u
 function isSessionTranscriptHeader(event: TranscriptEvent): boolean {
   return Boolean(
     event &&
-    typeof event === "object" &&
-    !Array.isArray(event) &&
-    (event as { type?: unknown }).type === "session",
+      typeof event === "object" &&
+      !Array.isArray(event) &&
+      (event as { type?: unknown }).type === "session",
   );
 }
 

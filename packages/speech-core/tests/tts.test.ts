@@ -1397,6 +1397,7 @@ describe("speech-core per-agent TTS config", () => {
           provider: "openai",
           providers: {
             openai: {
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               apiKey: "${OPENAI_API_KEY}",
               voice: "coral",
               speed: 1,
@@ -1428,6 +1429,7 @@ describe("speech-core per-agent TTS config", () => {
     expect(rawConfig.provider).toBe("openai");
     const providers = requireRecord(rawConfig.providers, "resolved raw TTS providers");
     const openai = requireRecord(providers.openai, "resolved OpenAI TTS provider config");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(openai.apiKey).toBe("${OPENAI_API_KEY}");
     expect(openai.voice).toBe("nova");
     expect(openai.speed).toBe(1);

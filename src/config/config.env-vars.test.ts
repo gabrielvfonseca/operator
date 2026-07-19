@@ -520,6 +520,7 @@ describe("config env vars", () => {
     const entries = collectConfigRuntimeEnvVars({
       env: {
         vars: {
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           OPENROUTER_API_KEY: "${OPENROUTER_API_KEY}",
           BRAVE_API_KEY: "config-key",
         },
@@ -533,6 +534,7 @@ describe("config env vars", () => {
   it("drops unresolved env references from top-level config env", async () => {
     const entries = collectConfigRuntimeEnvVars({
       env: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         OPENROUTER_API_KEY: "${OPENROUTER_API_KEY}",
         BRAVE_API_KEY: "config-key",
       },
@@ -547,6 +549,7 @@ describe("config env vars", () => {
       {
         env: {
           vars: {
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             OPENROUTER_API_KEY: "${OPENROUTER_API_KEY}",
             BRAVE_API_KEY: "config-key",
           },
@@ -561,6 +564,7 @@ describe("config env vars", () => {
     expect(entries.BRAVE_API_KEY).toBe("config-key");
   });
 
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   it("loads ${VAR} substitutions from ~/.operator/.env on repeated runtime loads", async () => {
     await withTempHome(async (_home) => {
       await withEnvOverride({ BRAVE_API_KEY: undefined }, async () => {
@@ -575,6 +579,7 @@ describe("config env vars", () => {
           tools: {
             web: {
               search: {
+                // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
                 apiKey: "${BRAVE_API_KEY}",
               },
             },

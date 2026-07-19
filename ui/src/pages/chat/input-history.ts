@@ -75,7 +75,7 @@ function collectUserInputHistory(
       continue;
     }
     const text = extractText(message);
-    if (!text || !text.trim()) {
+    if (!text?.trim()) {
       continue;
     }
     const timestamp =

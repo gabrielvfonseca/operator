@@ -491,7 +491,7 @@ function resolveClaudePlanLabel(ctx: ProviderFetchUsageSnapshotContext): string 
     allowKeychainPrompt: false,
     ttlMs: 5 * 60_000,
   });
-  if (!credential || credential.type !== "oauth") {
+  if (credential?.type !== "oauth") {
     return undefined;
   }
   return formatClaudePlanLabel(credential.subscriptionType, credential.rateLimitTier);

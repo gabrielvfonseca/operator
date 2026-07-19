@@ -16,12 +16,12 @@ function matchesExpectedRestartRecoveryClaim(
 ): entry is SessionEntry {
   return Boolean(
     entry &&
-    entry.sessionId === expected.sessionId &&
-    entry.status === "running" &&
-    entry.abortedLastRun === true &&
-    normalizeOptionalString(entry.restartRecoveryDeliveryRunId) === expected.recoveryRunId &&
-    normalizeOptionalString(entry.restartRecoveryDeliverySourceRunId) ===
-      expected.recoverySourceRunId,
+      entry.sessionId === expected.sessionId &&
+      entry.status === "running" &&
+      entry.abortedLastRun === true &&
+      normalizeOptionalString(entry.restartRecoveryDeliveryRunId) === expected.recoveryRunId &&
+      normalizeOptionalString(entry.restartRecoveryDeliverySourceRunId) ===
+        expected.recoverySourceRunId,
   );
 }
 

@@ -183,6 +183,7 @@ html.openclaw-native-web-chrome .sidebar-brand__collapse {
   display: none;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .shell--onboarding .shell-nav {
   display: none;
 }
@@ -220,6 +221,7 @@ html.openclaw-native-web-chrome .sidebar-brand__collapse {
   font-size: 26px;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .shell--settings .content-header,
 .shell--settings .settings-workspace,
 .shell--settings .config-view-toggle-row {
@@ -593,6 +595,7 @@ html.openclaw-native-web-chrome .sidebar-brand__collapse {
    renders. Narrow viewports show it as the drawer/search header
    (layout.mobile.css), and desktop chat split view brings it back as the
    backdrop for the fixed split toolbar (see below). */
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .topbar {
   grid-area: topbar;
   position: sticky;
@@ -746,6 +749,7 @@ html.openclaw-native-web-chrome .sidebar-brand__collapse {
   stroke-linejoin: round;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .topbar .topbar-nav-toggle {
   display: none;
 }
@@ -754,6 +758,7 @@ html.openclaw-native-web-chrome .sidebar-brand__collapse {
    Navigation Sidebar
    =========================================== */
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .shell-nav {
   grid-area: nav;
   position: relative;
@@ -856,6 +861,7 @@ html.openclaw-native-web-chrome .sidebar-brand__collapse {
   flex: 0 0 auto;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .sidebar-brand__logo {
   display: block;
   width: 24px;
@@ -1075,8 +1081,7 @@ html.openclaw-native-web-chrome .sidebar-brand__collapse {
 }
 
 /* Native dashboard actions must also clear AppKit's drag strip. */
-html.openclaw-native-macos
-  .shell:not(.shell--mobile-nav)
+html.openclaw-native-macos .shell:not(.shell--mobile-nav)
   .sidebar-update-card--floating
   .sidebar-update-card {
   margin-top: calc(var(--openclaw-native-titlebar-height, 50px) + 2px);
@@ -1524,6 +1529,7 @@ html.openclaw-native-macos
 /* Agent scope chip: a borderless select in the Sessions group header, sized
    as metadata rather than a form control. */
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .sidebar-recent-sessions__label-text {
   font-size: 11px;
   font-weight: 650;
@@ -1671,6 +1677,7 @@ html.openclaw-native-macos
   color: var(--text-strong);
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .sidebar-recent-session__link {
   display: flex;
   align-items: center;
@@ -1743,6 +1750,7 @@ html.openclaw-native-macos
   transform: translateY(-1px);
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .nav-collapse-toggle__icon {
   display: flex;
   align-items: center;
@@ -2091,6 +2099,7 @@ wa-dropdown.sidebar-session-sort-menu::part(menu) {
     transform var(--duration-fast) ease;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .nav-item__icon {
   width: 16px;
   height: 16px;
@@ -2494,6 +2503,7 @@ wa-dropdown.sidebar-session-sort-menu::part(menu) {
    Content Area
    =========================================== */
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .content {
   grid-area: content;
   padding: 16px 20px 32px;
@@ -2505,7 +2515,8 @@ wa-dropdown.sidebar-session-sort-menu::part(menu) {
      reshape the content area (shrink it) instead of overlaying the chat. The
      panels set these vars; they are 0 when closed. */
   margin-bottom: calc(
-    var(--oc-terminal-reserve-bottom, 0px) + var(--oc-browser-reserve-bottom, 0px)
+    var(--oc-terminal-reserve-bottom, 0px) +
+    var(--oc-browser-reserve-bottom, 0px)
   );
   margin-right: calc(var(--oc-terminal-reserve-right, 0px) + var(--oc-browser-reserve-right, 0px));
   transition:
@@ -2571,6 +2582,7 @@ wa-dropdown.sidebar-session-sort-menu::part(menu) {
 }
 
 /* Content header */
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .content-header {
   display: flex;
   align-items: flex-end;
@@ -2610,6 +2622,7 @@ wa-dropdown.sidebar-session-sort-menu::part(menu) {
   pointer-events: none;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .page-title {
   font-size: 22px;
   font-weight: 650;
@@ -2715,6 +2728,7 @@ wa-dropdown.sidebar-session-sort-menu::part(menu) {
 }
 
 /* Chat view header adjustments */
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .content--chat .content-header {
   display: grid;
   grid-template-columns: minmax(0, 1fr) max-content;

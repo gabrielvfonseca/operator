@@ -104,8 +104,8 @@ function isCompletedAssistantNotification(notification: CodexServerNotification)
   const item = isJsonObject(notification.params.item) ? notification.params.item : undefined;
   return Boolean(
     item &&
-    readString(item, "type") === "agentMessage" &&
-    readString(item, "phase") !== "commentary",
+      readString(item, "type") === "agentMessage" &&
+      readString(item, "phase") !== "commentary",
   );
 }
 
@@ -130,8 +130,8 @@ export function isAssistantCommentaryCompletionNotification(
   const item = isJsonObject(notification.params.item) ? notification.params.item : undefined;
   return Boolean(
     item &&
-    readString(item, "type") === "agentMessage" &&
-    readString(item, "phase") === "commentary",
+      readString(item, "type") === "agentMessage" &&
+      readString(item, "phase") === "commentary",
   );
 }
 
@@ -280,9 +280,9 @@ export function isRawAssistantProgressNotification(notification: CodexServerNoti
   const item = isJsonObject(notification.params.item) ? notification.params.item : undefined;
   return Boolean(
     item &&
-    readString(item, "type") === "message" &&
-    readString(item, "role") === "assistant" &&
-    readRawAssistantTextPreview(item),
+      readString(item, "type") === "message" &&
+      readString(item, "role") === "assistant" &&
+      readRawAssistantTextPreview(item),
   );
 }
 

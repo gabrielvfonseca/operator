@@ -1225,7 +1225,9 @@ class WorkboardSqliteBoardStore implements WorkboardKeyedStore<PersistedWorkboar
   }
 }
 
-class WorkboardSqliteSubscriptionStore implements WorkboardKeyedStore<PersistedWorkboardNotificationSubscription> {
+class WorkboardSqliteSubscriptionStore
+  implements WorkboardKeyedStore<PersistedWorkboardNotificationSubscription>
+{
   constructor(private readonly db: DatabaseSync) {}
 
   async register(key: string, value: PersistedWorkboardNotificationSubscription): Promise<void> {
@@ -1419,10 +1421,7 @@ class WorkboardSqliteAttachmentStore implements WorkboardKeyedStore<PersistedWor
 }
 
 export function createWorkboardSqliteStores(
-  options: {
-    dbPath?: string;
-    env?: NodeJS.ProcessEnv;
-  } = {},
+  options: { dbPath?: string; env?: NodeJS.ProcessEnv } = {},
 ): WorkboardSqliteStores {
   const { db, maintenance } = createDatabase(
     options.dbPath ?? resolveWorkboardSqlitePath(options.env),

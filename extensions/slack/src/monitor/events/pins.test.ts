@@ -75,8 +75,9 @@ async function runPinCase(input: PinCase = {}): Promise<void> {
 describe("registerSlackPinEvents", () => {
   beforeAll(async () => {
     ({ registerSlackPinEvents } = await import("./pins.js"));
-    ({ createSlackSystemEventTestHarness: buildPinHarness } =
-      await import("./system-event-test-harness.js"));
+    ({ createSlackSystemEventTestHarness: buildPinHarness } = await import(
+      "./system-event-test-harness.js"
+    ));
   });
 
   beforeEach(() => {

@@ -795,7 +795,6 @@ class GoogleRealtimeVoiceBridge implements RealtimeVoiceBridge {
           this.config.onAudio(audio);
           this.config.onMark?.(`audio-${randomUUID()}`);
         }
-        continue;
       }
     }
   }

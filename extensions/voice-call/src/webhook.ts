@@ -288,7 +288,7 @@ export class VoiceCallWebhookServer {
   }
 
   private shouldSuppressBargeInForInitialMessage(call: CallRecord | undefined): boolean {
-    if (!call || call.direction !== "outbound") {
+    if (call?.direction !== "outbound") {
       return false;
     }
 

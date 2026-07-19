@@ -5,6 +5,7 @@ import {
   collectSimpleChannelFieldAssignments,
   createChannelSecretTargetRegistryEntries,
   getChannelSurface,
+  // biome-ignore lint/suspicious/noShadowRestrictedNames: migrated from oxlint
   hasOwnProperty,
   type ResolverContext,
   type SecretDefaults,

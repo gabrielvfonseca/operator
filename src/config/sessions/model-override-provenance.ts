@@ -16,12 +16,12 @@ export function hasSessionAutoModelFallbackProvenance(
 ): boolean {
   const hasActiveOverride = Boolean(
     normalizeOptionalString(entry?.providerOverride) ||
-    normalizeOptionalString(entry?.modelOverride),
+      normalizeOptionalString(entry?.modelOverride),
   );
   return Boolean(
     hasActiveOverride &&
-    normalizeOptionalString(entry?.modelOverrideFallbackOriginProvider) &&
-    normalizeOptionalString(entry?.modelOverrideFallbackOriginModel),
+      normalizeOptionalString(entry?.modelOverrideFallbackOriginProvider) &&
+      normalizeOptionalString(entry?.modelOverrideFallbackOriginModel),
   );
 }
 

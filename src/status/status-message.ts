@@ -229,7 +229,7 @@ const formatEstimatedContextBudgetTokens = (
   status: SessionEntry["contextBudgetStatus"] | undefined,
   contextTokens: number | null | undefined,
 ) => {
-  if (!status || status.source !== "pre-prompt-estimate") {
+  if (status?.source !== "pre-prompt-estimate") {
     return null;
   }
   const estimatedPromptTokens =

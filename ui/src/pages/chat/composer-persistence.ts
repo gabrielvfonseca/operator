@@ -940,12 +940,12 @@ function queueItemVersionMatches(
   const canonicalExpected = serializeQueueItemForScope(expected, scope);
   return Boolean(
     canonicalExpected &&
-    stored.id === canonicalExpected.id &&
-    stored.sendRunId === canonicalExpected.sendRunId &&
-    stored.sendAttempts === canonicalExpected.sendAttempts &&
-    stored.sendState === canonicalExpected.sendState &&
-    stored.agentId === canonicalExpected.agentId &&
-    stored.sessionKey === canonicalExpected.sessionKey,
+      stored.id === canonicalExpected.id &&
+      stored.sendRunId === canonicalExpected.sendRunId &&
+      stored.sendAttempts === canonicalExpected.sendAttempts &&
+      stored.sendState === canonicalExpected.sendState &&
+      stored.agentId === canonicalExpected.agentId &&
+      stored.sessionKey === canonicalExpected.sessionKey,
   );
 }
 
@@ -958,8 +958,8 @@ function queueItemsEqual(
   const canonicalExpected = serializeQueueItemForScope(expected, scope);
   return Boolean(
     canonicalStored &&
-    canonicalExpected &&
-    JSON.stringify(canonicalStored) === JSON.stringify(canonicalExpected),
+      canonicalExpected &&
+      JSON.stringify(canonicalStored) === JSON.stringify(canonicalExpected),
   );
 }
 
@@ -1628,7 +1628,7 @@ export class ChatComposerPersistence {
         this.clearTimer();
         return { status: "persisted" };
       }
-      if (storedRevision !== baseline.draftRevision || Boolean(stored?.draft)) {
+      if (storedRevision !== baseline.draftRevision || stored?.draft) {
         return { status: "conflict" };
       }
       // A newer failed attempt still represents newer pane input. An

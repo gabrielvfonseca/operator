@@ -138,7 +138,7 @@ function selectReadyProfile(
   profiles: readonly ProviderModelAuthProfileSource[],
 ): ProviderModelAuthProfileSource | undefined {
   const first = profiles[0];
-  if (!first || first.readiness !== "unknown") {
+  if (first?.readiness !== "unknown") {
     return first;
   }
   return profiles.find((profile) => profile.readiness === "ready") ?? first;
@@ -368,7 +368,7 @@ export function selectProviderModelRouteAuth(params: {
     (!configuredRequirement || directSourceRoute.authRequirement === configuredRequirement)
       ? directSourceRoute
       : undefined;
-  if (directSource && directSource.mode && !directRoute && !winner) {
+  if (directSource?.mode && !directRoute && !winner) {
     return reject(
       "configured-auth",
       `Configured ${params.provider} authentication is not compatible with the selected model route.`,

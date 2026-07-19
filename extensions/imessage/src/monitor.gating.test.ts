@@ -11,8 +11,9 @@ let resolveIMessageInboundDecision: InboundProcessingModule["resolveIMessageInbo
 
 beforeEach(async () => {
   await loadFreshIMessageReplyCacheForTest();
-  ({ buildIMessageInboundContext, resolveIMessageInboundDecision } =
-    await import("./monitor/inbound-processing.js"));
+  ({ buildIMessageInboundContext, resolveIMessageInboundDecision } = await import(
+    "./monitor/inbound-processing.js"
+  ));
 });
 
 function baseCfg(): OperatorConfig {

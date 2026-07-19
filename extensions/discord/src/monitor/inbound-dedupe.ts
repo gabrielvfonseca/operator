@@ -67,6 +67,7 @@ export function releaseDiscordInboundReplay(params: {
   error?: unknown;
 }): void {
   const replayKeys = normalizeDiscordInboundReplayKeys(params.replayKeys);
+  // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
   replayKeys.forEach((replayKey) => params.replayGuard.release(replayKey, { error: params.error }));
 }
 

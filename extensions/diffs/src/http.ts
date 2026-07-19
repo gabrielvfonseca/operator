@@ -206,10 +206,10 @@ function hasProxyForwardingHints(req: IncomingMessage): boolean {
   const headers = req.headers ?? {};
   return Boolean(
     headers["x-forwarded-for"] ||
-    headers["x-real-ip"] ||
-    headers.forwarded ||
-    headers["x-forwarded-host"] ||
-    headers["x-forwarded-proto"],
+      headers["x-real-ip"] ||
+      headers.forwarded ||
+      headers["x-forwarded-host"] ||
+      headers["x-forwarded-proto"],
   );
 }
 

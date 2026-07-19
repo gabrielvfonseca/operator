@@ -43,7 +43,7 @@ function createCronEventHarness() {
     events.push(evt);
     for (let i = waiters.length - 1; i >= 0; i -= 1) {
       const waiter = waiters[i];
-      if (waiter && waiter.predicate(evt)) {
+      if (waiter?.predicate(evt)) {
         waiters.splice(i, 1);
         waiter.deferred.resolve(evt);
       }

@@ -444,7 +444,7 @@ export function buildAnthropicVerificationProbeRequest(params: {
   // without /v1 to avoid /v1/v1/messages at runtime. See docs/gateway/configuration-reference.md.
   const baseUrlForRequest = /\/v1\/?$/.test(params.baseUrl.trim())
     ? params.baseUrl.trim()
-    : params.baseUrl.trim().replace(/\/?$/, "") + "/v1";
+    : `${params.baseUrl.trim().replace(/\/?$/, "")}/v1`;
   const endpoint = resolveVerificationEndpoint({
     baseUrl: baseUrlForRequest,
     modelId: params.modelId,

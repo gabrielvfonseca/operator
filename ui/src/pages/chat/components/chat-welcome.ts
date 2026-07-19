@@ -168,13 +168,15 @@ function renderWelcomeHero(
   const avatar = resolveAssistantAvatarUrl(props);
   const avatarText = avatar ? null : resolveAssistantTextAvatar(props.assistantAvatar);
   return html`
-    ${avatar
-      ? html`<img class="agent-chat__welcome-avatar" src=${avatar} alt=${name} />`
-      : avatarText
-        ? html`<div class="agent-chat__avatar agent-chat__avatar--text" aria-label=${name}>
+    ${
+      avatar
+        ? html`<img class="agent-chat__welcome-avatar" src=${avatar} alt=${name} />`
+        : avatarText
+          ? html`<div class="agent-chat__avatar agent-chat__avatar--text" aria-label=${name}>
             ${avatarText}
           </div>`
-        : renderWelcomeClawd()}
+          : renderWelcomeClawd()
+    }
     <h2>${name}</h2>
     <p class="agent-chat__hint">${props.hint}</p>
   `;
@@ -193,13 +195,15 @@ export function renderWelcomeState(props: ChatWelcomeProps) {
         hint:
           props.hint ??
           html`${t("chat.welcome.hintBeforeShortcut")} <kbd>/</kbd> ${t(
-              "chat.welcome.hintAfterShortcut",
-            )}`,
+            "chat.welcome.hintAfterShortcut",
+          )}`,
       })}
       ${props.composer ?? nothing}
-      ${recentSessions.length > 0
-        ? renderWelcomeRecentSessions(recentSessions, props.onOpenSession)
-        : renderWelcomeSuggestions(props)}
+      ${
+        recentSessions.length > 0
+          ? renderWelcomeRecentSessions(recentSessions, props.onOpenSession)
+          : renderWelcomeSuggestions(props)
+      }
     </div>
   `;
 }

@@ -488,6 +488,7 @@ function inspectSessionTranscript(params: {
     return null;
   }
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let raw;
   try {
     raw = fs.readFileSync(params.transcriptPath, "utf-8");

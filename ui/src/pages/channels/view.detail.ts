@@ -123,40 +123,42 @@ function renderGenericChannelBody(
       ...(accountCount !== undefined ? { count: accountCount } : {}),
     },
     html`
-      ${accounts.length > 0
-        ? accounts.map((account) =>
-            renderChannelAccountRow({
-              title: account.name || account.accountId,
-              accountId: account.accountId,
-              status: {
-                kind: boolStatusKind(account.running ?? account.configured),
-                label: account.running
-                  ? t("common.running")
-                  : account.configured
-                    ? t("common.configured")
-                    : t("common.no"),
+      ${
+        accounts.length > 0
+          ? accounts.map((account) =>
+              renderChannelAccountRow({
+                title: account.name || account.accountId,
+                accountId: account.accountId,
+                status: {
+                  kind: boolStatusKind(account.running ?? account.configured),
+                  label: account.running
+                    ? t("common.running")
+                    : account.configured
+                      ? t("common.configured")
+                      : t("common.no"),
+                },
+                lastInboundAt: account.lastInboundAt,
+                lastError: account.lastError,
+              }),
+            )
+          : renderChannelFacts([
+              {
+                label: t("common.configured"),
+                value: formatNullableBoolean(displayState.configured),
+                kind: boolStatusKind(displayState.configured),
               },
-              lastInboundAt: account.lastInboundAt,
-              lastError: account.lastError,
-            }),
-          )
-        : renderChannelFacts([
-            {
-              label: t("common.configured"),
-              value: formatNullableBoolean(displayState.configured),
-              kind: boolStatusKind(displayState.configured),
-            },
-            {
-              label: t("common.running"),
-              value: formatNullableBoolean(displayState.running),
-              kind: boolStatusKind(displayState.running),
-            },
-            {
-              label: t("common.connected"),
-              value: formatNullableBoolean(displayState.connected),
-              kind: boolStatusKind(displayState.connected),
-            },
-          ])}
+              {
+                label: t("common.running"),
+                value: formatNullableBoolean(displayState.running),
+                kind: boolStatusKind(displayState.running),
+              },
+              {
+                label: t("common.connected"),
+                value: formatNullableBoolean(displayState.connected),
+                kind: boolStatusKind(displayState.connected),
+              },
+            ])
+      }
       ${lastError ? renderChannelErrorRow(lastError) : nothing}
       ${renderChannelConfigSection({ channelId: key, props })}
     `,
@@ -192,9 +194,11 @@ export function renderChannelDetail(params: {
           </div>
         </div>
         <div class="channels-detail__body">
-          ${params.props.setupBlockedByDirtyConfig && params.props.configFormDirty
-            ? html`<div class="callout warn">${t("channels.hub.saveBeforeSetup")}</div>`
-            : nothing}
+          ${
+            params.props.setupBlockedByDirtyConfig && params.props.configFormDirty
+              ? html`<div class="callout warn">${t("channels.hub.saveBeforeSetup")}</div>`
+              : nothing
+          }
           ${body}
         </div>
       </div>

@@ -752,7 +752,6 @@ async function resolveEndpointForThread(params: {
         throw error;
       }
       if (!isLoadedThreadReadMiss(error)) {
-        continue;
       }
     }
   }

@@ -158,7 +158,7 @@ describe("oc-path-parse-edges", () => {
   });
 
   it("file slot with dot extension does NOT get quoted", () => {
-    expect(formatOcPath({ file: "AGENTS.md" })).toBe("oc://AGENTS.md");
+    expect(formatOcPath({ file: "AGENTS.md" })).toBe("oc:/AGENTS.MD");
     expect(formatOcPath({ file: "gateway.jsonc", section: "version" })).toBe(
       "oc://gateway.jsonc/version",
     );

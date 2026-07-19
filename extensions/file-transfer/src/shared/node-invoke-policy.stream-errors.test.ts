@@ -30,7 +30,7 @@ function mockCommandResult(overrides: Record<string, unknown> = {}) {
   runCommandWithTimeoutMock.mockImplementationOnce(
     async (
       _argv: string[],
-      options: { onOutputChunk?: (chunk: Buffer, stream: string) => boolean | void },
+      options: { onOutputChunk?: (chunk: Buffer, stream: string) => boolean | undefined },
     ) => {
       const stdout = typeof overrides.stdout === "string" ? overrides.stdout : "";
       const stopped = stdout
@@ -119,7 +119,7 @@ describe("dir.fetch archive policy process wrapper", () => {
 
   it("surfaces a UTF-16-safe stderr tail on nonzero exit", async () => {
     const oldNoise = "n".repeat(250);
-    const recent = "🤖" + "f".repeat(199);
+    const recent = `🤖${"f".repeat(199)}`;
     mockCommandResult({ code: 2, stderr: oldNoise + recent });
 
     const result = await runPolicy();
@@ -133,7 +133,7 @@ describe("dir.fetch archive policy process wrapper", () => {
 
   it("stops archive listing as soon as the entry cap is crossed", async () => {
     mockCommandResult({
-      stdout: Array.from({ length: 5_001 }, (_, index) => `file-${index}`).join("\n") + "\n",
+      stdout: `${Array.from({ length: 5_001 }, (_, index) => `file-${index}`).join("\n")}\n`,
     });
 
     await expect(runPolicy()).resolves.toMatchObject({

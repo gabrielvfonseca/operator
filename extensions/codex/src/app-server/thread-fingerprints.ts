@@ -173,8 +173,8 @@ export function shouldStartTransientNoToolThread(params: {
 }): boolean {
   return Boolean(
     params.previous &&
-    !isEmptyDynamicToolsFingerprint(params.previous) &&
-    !params.nextHasDynamicTools,
+      !isEmptyDynamicToolsFingerprint(params.previous) &&
+      !params.nextHasDynamicTools,
   );
 }
 

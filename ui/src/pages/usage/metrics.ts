@@ -291,7 +291,7 @@ function buildUsageMosaicStats(
 
   for (const session of sessions) {
     const usage = session.usage;
-    if (!usage || !usage.totalTokens || usage.totalTokens <= 0) {
+    if (!usage?.totalTokens || usage.totalTokens <= 0) {
       continue;
     }
     totalTokens += usage.totalTokens;

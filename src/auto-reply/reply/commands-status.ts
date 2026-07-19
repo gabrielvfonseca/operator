@@ -50,8 +50,9 @@ export async function buildStatusPluginsReply(
   }
 
   try {
-    const { collectInstalledPluginHealthSnapshot } =
-      await import("../../status/status-plugin-health.runtime.js");
+    const { collectInstalledPluginHealthSnapshot } = await import(
+      "../../status/status-plugin-health.runtime.js"
+    );
     const snapshot = await collectInstalledPluginHealthSnapshot({
       config: params.cfg,
       workspaceDir: params.workspaceDir,

@@ -475,7 +475,7 @@ if (!entrySet.has("npm-shrinkwrap.json")) {
         `npm-shrinkwrap.json version ${shrinkwrap.version ?? "<missing>"} does not match package.json version ${packageVersion || "<missing>"}`,
       );
     }
-    if (!rootPackage || rootPackage.name !== "@gabrielvfonseca/operator") {
+    if (rootPackage?.name !== "@gabrielvfonseca/operator") {
       errors.push("npm-shrinkwrap.json packages root must name openclaw");
     }
     if (rootPackage?.version !== packageVersion) {

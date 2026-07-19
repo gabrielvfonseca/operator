@@ -191,8 +191,8 @@ function resolveProbeTimeoutMs(input: number | undefined, fallback: number): num
 function isManagedChromeBrowserSession(session: GoogleMeetSession): boolean {
   return Boolean(
     (session.transport === "chrome" || session.transport === "chrome-node") &&
-    session.chrome &&
-    session.chrome.launched,
+      session.chrome &&
+      session.chrome.launched,
   );
 }
 
@@ -695,7 +695,7 @@ export class GoogleMeetRuntime {
             : prefixDtmfWait(rawDtmfSequence, this.params.config.voiceCall.dtmfDelayMs);
         const hasExplicitDelegatedAgent = Boolean(
           normalizeOptionalString(request.agentId) ||
-          normalizeOptionalString(this.params.config.realtime.agentId),
+            normalizeOptionalString(this.params.config.realtime.agentId),
         );
         const delegatedAgentId = hasExplicitDelegatedAgent ? agentId : undefined;
         const voiceCallResult = this.params.config.voiceCall.enabled

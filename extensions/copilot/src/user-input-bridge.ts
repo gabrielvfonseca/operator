@@ -109,7 +109,7 @@ function emptyCopilotUserInputResponse(): CopilotUserInputResponse {
 function isChoiceAnswer(question: AgentHarnessUserInputQuestion, answer: string): boolean {
   return Boolean(
     answer &&
-    question.options?.some((option) => option.label.toLowerCase() === answer.toLowerCase()),
+      question.options?.some((option) => option.label.toLowerCase() === answer.toLowerCase()),
   );
 }
 

@@ -156,6 +156,7 @@ describe("usage-bar end-to-end with buildUsageContract", () => {
       { when: "model.reasoning", text: "{model.reasoning|alias:reasoning}" },
       { map: "state.fast_mode", cases: { true: "⚡", false: "🐌" } },
       { text: " | 📚 [{context.pct_used|meter:5:braille}]{context.max_tokens|num}" },
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       { text: " | ${cost.turn_usd|fixed:4}" },
     ];
     expect(renderUsageBar(tpl(pieces), contract)).toBe("opus46 | med🐌 | 📚 [⣿⣿⣿⣧⠐]272k | $0.0377");

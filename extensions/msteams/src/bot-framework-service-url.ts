@@ -36,7 +36,7 @@ export function isAllowedBotFrameworkServiceUrl(serviceUrl: unknown): serviceUrl
   const trimmed = serviceUrl.trim();
   return Boolean(
     trimmed &&
-    isHttpsUrlAllowedByHostnameSuffixAllowlist(trimmed, BOT_FRAMEWORK_SERVICE_URL_HOST_ALLOWLIST),
+      isHttpsUrlAllowedByHostnameSuffixAllowlist(trimmed, BOT_FRAMEWORK_SERVICE_URL_HOST_ALLOWLIST),
   );
 }
 

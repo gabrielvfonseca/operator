@@ -136,6 +136,7 @@ describe("control-ui-i18n process runner", () => {
 
   it("finds raw text and attributes split by template interpolation", () => {
     const source =
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'const jsx = <button aria-label="Archive" />; const view = html`<button title="Delete ${name}">Delete ${name}</button>`;';
     const sourceFile = ts.createSourceFile(
       "ui/src/pages/example.ts",

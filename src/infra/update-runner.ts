@@ -164,10 +164,13 @@ type UpdateRunnerOptions = {
   deferConfiguredPluginInstallRepair?: boolean;
   allowGatewayServiceRepair?: boolean;
   allowGatewayActivation?: boolean;
-  beforeGitMutation?: () => Promise<{
-    allowGatewayServiceRepair?: boolean;
-    allowGatewayActivation?: boolean;
-  } | void>;
+  beforeGitMutation?: () => Promise<
+    | {
+        allowGatewayServiceRepair?: boolean;
+        allowGatewayActivation?: boolean;
+      }
+    | undefined
+  >;
   timeoutMs?: number;
   runCommand?: CommandRunner;
   progress?: UpdateStepProgress;
@@ -231,7 +234,6 @@ const BUILD_MAX_OLD_SPACE_MB = 8192;
 const DEV_PREFLIGHT_LINT_ENV: NodeJS.ProcessEnv = {
   OPERATOR_LOCAL_CHECK: "1",
   OPERATOR_LOCAL_CHECK_MODE: "throttled",
-  OPERATOR_OXLINT_SHARDS_SERIAL: "1",
 };
 const DEV_PREFLIGHT_LINT_OPT_IN_ENV = "OPERATOR_UPDATE_PREFLIGHT_LINT";
 
@@ -352,7 +354,7 @@ async function readBranchName(
   const res = await runCommand(["git", "-C", root, "rev-parse", "--abbrev-ref", "HEAD"], {
     timeoutMs,
   }).catch(() => null);
-  if (!res || res.code !== 0) {
+  if (res?.code !== 0) {
     return null;
   }
   const branch = res.stdout.trim();
@@ -368,7 +370,7 @@ async function listGitTags(
   const res = await runCommand(["git", "-C", root, "tag", "--list", pattern, "--sort=-v:refname"], {
     timeoutMs,
   }).catch(() => null);
-  if (!res || res.code !== 0) {
+  if (res?.code !== 0) {
     return [];
   }
   return normalizeStringEntries(res.stdout.split("\n"));
@@ -1876,4 +1878,3 @@ export async function runGatewayUpdate(opts: UpdateRunnerOptions = {}): Promise<
     durationMs: Date.now() - startedAt,
   };
 }
-/* oxlint-disable max-lines -- TODO: split this grandfathered oversized file. */

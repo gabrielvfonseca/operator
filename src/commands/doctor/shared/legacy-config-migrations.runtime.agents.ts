@@ -860,28 +860,28 @@ function byProviderToolProfilesNeedConfiguredSectionMigration(
   const byProvider = getRecord(tools.byProvider);
   const ownProviderNeedsMigration = Boolean(
     byProvider &&
-    Object.entries(byProvider).some(([providerKey, policy]) => {
-      const inheritedProviderPolicy = resolveInheritedProviderPolicy(
-        inheritedByProvider,
-        providerKey,
-      );
-      const inheritedProviderProfile =
-        typeof inheritedProviderPolicy?.profile === "string"
-          ? inheritedProviderPolicy.profile
-          : undefined;
-      const hasProviderProfile =
-        typeof getRecord(policy)?.profile === "string" || Boolean(inheritedProviderProfile);
-      if (!hasProviderProfile) {
-        return false;
-      }
-      return scopeToolProfileConfiguredSectionsNeedMigration({
-        value: policy,
-        inheritedProfile: inheritedProviderProfile,
-        inheritedAlsoAllow:
-          readOwnToolPolicyGrantList(inheritedProviderPolicy, "alsoAllow") ?? inheritedAlsoAllow,
-        configuredGrants,
-      });
-    }),
+      Object.entries(byProvider).some(([providerKey, policy]) => {
+        const inheritedProviderPolicy = resolveInheritedProviderPolicy(
+          inheritedByProvider,
+          providerKey,
+        );
+        const inheritedProviderProfile =
+          typeof inheritedProviderPolicy?.profile === "string"
+            ? inheritedProviderPolicy.profile
+            : undefined;
+        const hasProviderProfile =
+          typeof getRecord(policy)?.profile === "string" || Boolean(inheritedProviderProfile);
+        if (!hasProviderProfile) {
+          return false;
+        }
+        return scopeToolProfileConfiguredSectionsNeedMigration({
+          value: policy,
+          inheritedProfile: inheritedProviderProfile,
+          inheritedAlsoAllow:
+            readOwnToolPolicyGrantList(inheritedProviderPolicy, "alsoAllow") ?? inheritedAlsoAllow,
+          configuredGrants,
+        });
+      }),
   );
   if (ownProviderNeedsMigration) {
     return true;

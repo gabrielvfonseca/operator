@@ -2091,6 +2091,7 @@ describe("loadPluginManifestRegistry", () => {
               {
                 type: "local-file-with-env",
                 fileEnvVar: "OPENAI_CREDENTIALS_FILE",
+                // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
                 fallbackPaths: ["${HOME}/.config/openai/credentials.json"],
                 requiresAnyEnv: ["OPENAI_PROJECT", "OPENAI_ORG"],
                 requiresAllEnv: ["OPENAI_REGION"],
@@ -2131,6 +2132,7 @@ describe("loadPluginManifestRegistry", () => {
             {
               type: "local-file-with-env",
               fileEnvVar: "OPENAI_CREDENTIALS_FILE",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               fallbackPaths: ["${HOME}/.config/openai/credentials.json"],
               requiresAnyEnv: ["OPENAI_PROJECT", "OPENAI_ORG"],
               requiresAllEnv: ["OPENAI_REGION"],

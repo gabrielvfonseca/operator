@@ -80,14 +80,13 @@ async function resolveMcpAuthProfileBearerToken(
     profileId: params.profileId,
     agentDir: params.agentDir,
   });
-  if (!resolved || resolved.profileType !== "oauth" || !resolved.apiKey) {
+  if (resolved?.profileType !== "oauth" || !resolved.apiKey) {
     throw new Error(
       `MCP server "${params.serverName}" could not resolve refreshable OAuth auth profile "${params.profileId}". Re-authenticate the profile and retry.`,
     );
   }
   if (
-    !resolved.credential ||
-    resolved.credential.type !== "oauth" ||
+    resolved.credential?.type !== "oauth" ||
     typeof resolved.credential.access !== "string" ||
     resolved.credential.access.trim().length === 0
   ) {
@@ -117,7 +116,7 @@ async function resolveMcpBearerToken(params: {
     return undefined;
   }
   const resolved = resolveMcpTransportConfig(params.serverName, params.server);
-  if (!resolved || resolved.kind !== "http") {
+  if (resolved?.kind !== "http") {
     return undefined;
   }
   const fetchFn = withSameOriginMcpHttpHeaders({

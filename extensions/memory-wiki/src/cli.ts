@@ -58,11 +58,11 @@ const GATEWAY_TERMINAL_STRING_MAX_CHARS = 2_000;
 const GATEWAY_RESPONSE_MAX_ARRAY_ITEMS = 10_000;
 const GATEWAY_RESPONSE_MAX_STRING_CHARS = 10_000;
 const GATEWAY_RESPONSE_MAX_CODE_CHARS = 256;
-const ANSI_ESCAPE_SEQUENCE_PATTERN = new RegExp(
-  String.raw`(?:\x1B\[[0-?]*[ -/]*[@-~]|\x1B[@-Z\\-_]|\x9B[0-?]*[ -/]*[@-~])`,
-  "g",
-);
-const TERMINAL_CONTROL_CHARACTER_PATTERN = new RegExp(String.raw`[\x00-\x1F\x7F-\x9F]+`, "g");
+const ANSI_ESCAPE_SEQUENCE_PATTERN =
+  // biome-ignore lint/suspicious/noControlCharactersInRegex: migrated from oxlint
+  /(?:\x1B\[[0-?]*[ -/]*[@-~]|\x1B[@-Z\\-_]|\x9B[0-?]*[ -/]*[@-~])/g;
+// biome-ignore lint/suspicious/noControlCharactersInRegex: migrated from oxlint
+const TERMINAL_CONTROL_CHARACTER_PATTERN = /[\x00-\x1F\x7F-\x9F]+/g;
 const UNICODE_FORMAT_CONTROL_PATTERN = /[\u061C\u200B-\u200F\u202A-\u202E\u2060-\u206F\uFEFF]/g;
 
 type WikiStatusCommandOptions = {

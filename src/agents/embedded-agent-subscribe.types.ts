@@ -97,7 +97,7 @@ export type SubscribeEmbeddedAgentSessionParams = {
     isError: boolean;
     incompleteTerminalAssistant: boolean;
     hadDeterministicSideEffect: boolean;
-  }) => void | Promise<void | { suppressTerminalDelivery?: boolean }>;
+  }) => undefined | Promise<undefined | { suppressTerminalDelivery?: boolean }>;
   /** Best-effort hook invoked immediately before the terminal lifecycle event is emitted. */
   onBeforeLifecycleTerminal?: () => void | Promise<void>;
   enforceFinalTag?: boolean;

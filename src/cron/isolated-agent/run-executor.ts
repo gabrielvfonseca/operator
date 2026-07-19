@@ -761,7 +761,6 @@ export async function executeCronRun(params: {
           `[cron:${params.job.id}] Failed to persist model switch session entry: ${String(persistErr)}`,
         );
       }
-      continue;
     }
   }
 

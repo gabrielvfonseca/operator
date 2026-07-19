@@ -39,7 +39,8 @@ vi.spyOn(cliCoreApiModule.defaultRuntime, "exit").mockImplementation(browserCliR
 const { registerBrowserStateCommands } = await import("./browser-cli-state.js");
 
 describe("browser state option collisions", () => {
-  const ansiPattern = new RegExp(String.raw`\u001b\[[0-9;]*m`, "g");
+  // biome-ignore lint/suspicious/noControlCharactersInRegex: migrated from oxlint
+  const ansiPattern = /\u001b\[[0-9;]*m/g;
   const stripAnsi = (value: string) => value.replace(ansiPattern, "");
 
   const createStateProgram = ({ withGatewayUrl = false } = {}) => {

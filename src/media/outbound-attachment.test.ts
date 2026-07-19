@@ -12,8 +12,9 @@ vi.mock("./store.js", () => ({
   saveMediaBuffer,
 }));
 
-const { resolveOutboundAttachmentFromBuffer, resolveOutboundAttachmentFromUrl } =
-  await import("./outbound-attachment.js");
+const { resolveOutboundAttachmentFromBuffer, resolveOutboundAttachmentFromUrl } = await import(
+  "./outbound-attachment.js"
+);
 
 describe("resolveOutboundAttachmentFromUrl", () => {
   it("preserves the loaded file name when staging outbound media", async () => {

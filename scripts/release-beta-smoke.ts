@@ -88,6 +88,7 @@ export function parseArgs(argv: string[]): Options {
         options.skipTelegram = true;
         break;
       case "-h":
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
       case "--help":
         process.stdout.write(usage());
         process.exit(0);
@@ -240,6 +241,7 @@ function ghJson(repo: string, pathSuffix: string): unknown {
       [
         "set -euo pipefail",
         'token="$(gh auth token)"',
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'curl -fsS -H "Authorization: Bearer ${token}" -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" "${OPERATOR_GITHUB_REST_URL}"',
       ].join("\n"),
     ],

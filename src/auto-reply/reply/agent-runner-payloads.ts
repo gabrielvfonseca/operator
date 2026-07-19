@@ -210,7 +210,7 @@ export async function buildReplyPayloads(params: {
         text = formatBunFetchSocketError(text);
       }
 
-      if (!text || !text.includes("HEARTBEAT_OK")) {
+      if (!text?.includes("HEARTBEAT_OK")) {
         sanitizedPayloads.push(copyPayloadWithSanitizedText(payload, text));
         continue;
       }

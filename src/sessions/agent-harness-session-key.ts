@@ -186,8 +186,7 @@ export function resolveAgentHarnessSessionIdMismatchError(
   requestedSessionId: unknown,
 ): string | undefined {
   if (
-    !entry ||
-    entry.modelSelectionLocked !== true ||
+    entry?.modelSelectionLocked !== true ||
     !normalizeOptionalAgentRuntimeId(entry.agentHarnessId)
   ) {
     return undefined;

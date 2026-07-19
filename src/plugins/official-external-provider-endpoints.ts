@@ -10,7 +10,9 @@
  * transports do not pull the ClawHub install/marketplace module graph.
  */
 import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
-import officialExternalProviderCatalog from "../../scripts/lib/official-external-provider-catalog.json" with { type: "json" };
+import officialExternalProviderCatalog from "../../scripts/lib/official-external-provider-catalog.json" with {
+  type: "json",
+};
 import { MANIFEST_KEY } from "../compat/legacy-names.js";
 
 /**

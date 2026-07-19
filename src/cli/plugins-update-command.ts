@@ -85,9 +85,9 @@ function shouldPreserveEmptyPlugins(params: {
       : undefined;
   return Boolean(
     plugins &&
-    (!Object.hasOwn(plugins, "installs") ||
-      Object.keys(plugins).some((key) => key !== "installs") ||
-      containsConfigIncludeDirective(parsedPlugins)),
+      (!Object.hasOwn(plugins, "installs") ||
+        Object.keys(plugins).some((key) => key !== "installs") ||
+        containsConfigIncludeDirective(parsedPlugins)),
   );
 }
 

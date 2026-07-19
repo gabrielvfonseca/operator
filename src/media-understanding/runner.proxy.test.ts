@@ -21,9 +21,9 @@ const proxyFetchMocks = vi.hoisted(() => {
   const resolveProxyFetchFromEnv = vi.fn((env: NodeJS.ProcessEnv = process.env) => {
     const hasProxy = Boolean(
       env.https_proxy?.trim() ||
-      env.HTTPS_PROXY?.trim() ||
-      env.http_proxy?.trim() ||
-      env.HTTP_PROXY?.trim(),
+        env.HTTPS_PROXY?.trim() ||
+        env.http_proxy?.trim() ||
+        env.HTTP_PROXY?.trim(),
     );
     return hasProxy ? proxyFetch : undefined;
   });

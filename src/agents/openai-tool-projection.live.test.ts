@@ -126,7 +126,7 @@ describeLive("OpenAI tool projection live", () => {
     } as unknown as ChatCompletionCreateParamsNonStreaming);
     const toolCall = response.choices[0]?.message.tool_calls?.[0];
 
-    if (!toolCall || toolCall.type !== "function") {
+    if (toolCall?.type !== "function") {
       throw new Error("OpenAI did not return the expected function tool call");
     }
     expect(toolCall).toMatchObject({

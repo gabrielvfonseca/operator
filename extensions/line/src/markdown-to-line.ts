@@ -235,7 +235,7 @@ export function convertCodeBlockToFlexBubble(block: CodeBlock): FlexBubble {
 
   // Truncate very long code to fit LINE's limits
   const displayCode =
-    block.code.length > 2000 ? truncateUtf16Safe(block.code, 2000) + "\n..." : block.code;
+    block.code.length > 2000 ? `${truncateUtf16Safe(block.code, 2000)}\n...` : block.code;
 
   return {
     type: "bubble",

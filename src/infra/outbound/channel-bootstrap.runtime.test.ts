@@ -17,8 +17,9 @@ vi.mock("../../plugins/loader.js", () => ({
   resolveRuntimePluginRegistry: loaderMocks.resolveRuntimePluginRegistry,
 }));
 
-const { bootstrapOutboundChannelPlugin, resetOutboundChannelBootstrapStateForTests } =
-  await import("./channel-bootstrap.runtime.js");
+const { bootstrapOutboundChannelPlugin, resetOutboundChannelBootstrapStateForTests } = await import(
+  "./channel-bootstrap.runtime.js"
+);
 
 const discordConfig = {
   channels: {

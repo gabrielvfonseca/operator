@@ -544,17 +544,17 @@ export const buildTelegramMessageContext = async ({
   const removeAckAfterReply = cfg.messages?.removeAckAfterReply ?? false;
   const shouldSendAckReaction = Boolean(
     ackReaction &&
-    shouldAckReactionGate({
-      scope: ackReactionScope,
-      inboundEventKind: ctxPayload.InboundEventKind,
-      isDirect: !isGroup,
-      isGroup,
-      isMentionableGroup: isGroup,
-      requireMention: Boolean(requireMention),
-      canDetectMention: bodyResult.canDetectMention,
-      effectiveWasMentioned: bodyResult.effectiveWasMentioned,
-      shouldBypassMention: bodyResult.shouldBypassMention,
-    }),
+      shouldAckReactionGate({
+        scope: ackReactionScope,
+        inboundEventKind: ctxPayload.InboundEventKind,
+        isDirect: !isGroup,
+        isGroup,
+        isMentionableGroup: isGroup,
+        requireMention: Boolean(requireMention),
+        canDetectMention: bodyResult.canDetectMention,
+        effectiveWasMentioned: bodyResult.effectiveWasMentioned,
+        shouldBypassMention: bodyResult.shouldBypassMention,
+      }),
   );
   const statusReactionsConfig = cfg.messages?.statusReactions;
   const statusReactionsEnabled =

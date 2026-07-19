@@ -43,8 +43,9 @@ describe("firecrawl tools", () => {
     ({ fetchFirecrawlContent } = await import("../api.js"));
     ({ createFirecrawlWebFetchProvider } = await import("./firecrawl-fetch-provider.js"));
     ({ createFirecrawlWebSearchProvider } = await import("./firecrawl-search-provider.js"));
-    ({ createFirecrawlFreeWebSearchProvider } =
-      await import("./firecrawl-free-search-provider.js"));
+    ({ createFirecrawlFreeWebSearchProvider } = await import(
+      "./firecrawl-free-search-provider.js"
+    ));
     ({ createFirecrawlSearchTool } = await import("./firecrawl-search-tool.js"));
     ({ createFirecrawlScrapeTool } = await import("./firecrawl-scrape-tool.js"));
     ({

@@ -56,7 +56,7 @@ function chatIdentifierCandidates(raw: string | undefined): string[] {
 
 function isKnownChatGuid(raw: string | undefined): raw is string {
   const parts = raw?.trim().split(";");
-  if (!parts || parts.length !== 3 || (parts[1] !== "+" && parts[1] !== "-") || !parts[2]) {
+  if (parts?.length !== 3 || (parts[1] !== "+" && parts[1] !== "-") || !parts[2]) {
     return false;
   }
   const service = parts[0]?.toLowerCase();

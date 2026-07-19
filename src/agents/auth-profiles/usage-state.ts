@@ -66,9 +66,9 @@ function isBlockScopedToDifferentModel(
   // Only explicit model scope narrows them; unmarked rows stay wide until expiry.
   return Boolean(
     forModel &&
-    stats.blockedScope === "model" &&
-    stats.blockedModel &&
-    stats.blockedModel !== forModel,
+      stats.blockedScope === "model" &&
+      stats.blockedModel &&
+      stats.blockedModel !== forModel,
   );
 }
 
@@ -87,11 +87,11 @@ function shouldBypassModelScopedCooldown(
 ): boolean {
   return Boolean(
     forModel &&
-    isModelScopedCooldownReason(stats.cooldownReason) &&
-    stats.cooldownModel &&
-    stats.cooldownModel !== forModel &&
-    !isBlockedWindowActiveForModel(stats, now, forModel) &&
-    !isActiveUnusableWindow(stats.disabledUntil, now),
+      isModelScopedCooldownReason(stats.cooldownReason) &&
+      stats.cooldownModel &&
+      stats.cooldownModel !== forModel &&
+      !isBlockedWindowActiveForModel(stats, now, forModel) &&
+      !isActiveUnusableWindow(stats.disabledUntil, now),
   );
 }
 

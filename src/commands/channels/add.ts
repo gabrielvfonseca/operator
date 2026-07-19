@@ -155,8 +155,9 @@ async function channelsAddCommandImpl(
 
   const useWizard = shouldUseWizard(params);
   if (useWizard) {
-    const { resolveInitialWizardChannel, runChannelsAddWizardFlow } =
-      await import("./add-wizard.js");
+    const { resolveInitialWizardChannel, runChannelsAddWizardFlow } = await import(
+      "./add-wizard.js"
+    );
     const initialChannel = await resolveInitialWizardChannel(opts.channel ?? "", cfg);
     await runChannelsAddWizardFlow({
       cfg,

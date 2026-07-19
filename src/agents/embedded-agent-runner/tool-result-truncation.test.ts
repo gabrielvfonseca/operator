@@ -1650,7 +1650,7 @@ describe("truncateOversizedToolResultsInSession", () => {
       (entry) => entry.type === "message" && entry.message.role === "toolResult",
     );
     expect(toolResult?.type).toBe("message");
-    if (!toolResult || toolResult.type !== "message") {
+    if (toolResult?.type !== "message") {
       throw new Error("expected truncated tool result");
     }
     const text = getFirstToolResultText(toolResult.message);

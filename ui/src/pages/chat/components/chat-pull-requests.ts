@@ -224,8 +224,9 @@ function renderBranchRow(branch: ControlUiSessionBranch, rateLimited: boolean) {
       </span>
       <span class="chat-pr__meta">
         ${renderDiffStats(branch)} ${rateLimited ? renderRateLimitWarning() : nothing}
-        ${branch.createUrl
-          ? html`
+        ${
+          branch.createUrl
+            ? html`
               <a
                 class="chat-pr__create"
                 href=${branch.createUrl}
@@ -236,7 +237,8 @@ function renderBranchRow(branch: ControlUiSessionBranch, rateLimited: boolean) {
                 ${t("chat.pullRequests.createPr")}
               </a>
             `
-          : nothing}
+            : nothing
+        }
       </span>
     </article>
   `;
@@ -280,9 +282,11 @@ export function renderChatPullRequests(props: {
             </a>
             <span class="chat-pr__meta">
               ${renderDiffStats(pullRequest)} ${renderChecks(pullRequest)}
-              ${pullRequest.state === "open"
-                ? nothing
-                : html`<span class="chat-pr__state">${stateLabel(pullRequest.state)}</span>`}
+              ${
+                pullRequest.state === "open"
+                  ? nothing
+                  : html`<span class="chat-pr__state">${stateLabel(pullRequest.state)}</span>`
+              }
               ${props.rateLimited && !merged ? renderRateLimitWarning() : nothing}
               <button
                 class="chat-pr__dismiss"
@@ -298,13 +302,15 @@ export function renderChatPullRequests(props: {
           </article>
         `;
       })}
-      ${hiddenCount > 0
-        ? html`
+      ${
+        hiddenCount > 0
+          ? html`
             <button class="chat-prs__more" type="button" @click=${props.onExpand}>
               ${t("chat.pullRequests.showMore", { count: String(hiddenCount) })}
             </button>
           `
-        : nothing}
+          : nothing
+      }
     </div>
   `;
 }

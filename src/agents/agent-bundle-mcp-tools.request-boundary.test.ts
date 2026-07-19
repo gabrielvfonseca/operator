@@ -23,10 +23,7 @@ import { splitSdkTools } from "./embedded-agent-runner/tool-split.js";
 // against current main without booting a real stdio child.
 
 function makeConfiguredRuntime(
-  params: {
-    serverName?: string;
-    toolNames?: string[];
-  } = {},
+  params: { serverName?: string; toolNames?: string[] } = {},
 ): SessionMcpRuntime {
   const serverName = params.serverName ?? "userMcp";
   const toolNames = params.toolNames ?? ["list_inbox", "send_reply"];

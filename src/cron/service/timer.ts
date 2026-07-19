@@ -466,7 +466,7 @@ type DisabledHeartbeatOneShotRetryDecision = {
 
 type QueuedSystemEventHandle = {
   accepted: boolean;
-  remove?: () => boolean | void;
+  remove?: () => boolean | undefined;
 };
 
 function resolveCronNextRunWithLowerBound(params: {
@@ -1263,6 +1263,7 @@ function armRunningRecheckTimer(state: CronServiceState) {
 
 /** Handles one cron timer tick under the process-wide root work admission. */
 async function onTimer(state: CronServiceState) {
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let admission;
   try {
     // A restart signal can be rejected after temporarily closing admission.

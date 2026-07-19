@@ -397,7 +397,7 @@ class ComposedGatewayHarness {
 
   reclaimWithCredential(credential: string): number {
     const attached = this.store.get(ENVIRONMENT_ID);
-    if (!attached || attached.state !== "attached") {
+    if (attached?.state !== "attached") {
       throw new Error("fault environment is not attached");
     }
     const idle = this.store.transition({

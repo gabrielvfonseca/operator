@@ -20,15 +20,15 @@ function sameActiveEnvironment(
 ): boolean {
   return Boolean(
     environment &&
-    environment.state === "attached" &&
-    placement.environmentId &&
-    environment.environmentId === placement.environmentId &&
-    placement.activeOwnerEpoch !== null &&
-    environment.ownerEpoch === placement.activeOwnerEpoch &&
-    placement.workerBundleHash &&
-    environment.bootstrapReceipt?.bundleHash === placement.workerBundleHash &&
-    environment.attachedSessionIds.length === 1 &&
-    environment.attachedSessionIds[0] === placement.sessionId,
+      environment.state === "attached" &&
+      placement.environmentId &&
+      environment.environmentId === placement.environmentId &&
+      placement.activeOwnerEpoch !== null &&
+      environment.ownerEpoch === placement.activeOwnerEpoch &&
+      placement.workerBundleHash &&
+      environment.bootstrapReceipt?.bundleHash === placement.workerBundleHash &&
+      environment.attachedSessionIds.length === 1 &&
+      environment.attachedSessionIds[0] === placement.sessionId,
   );
 }
 

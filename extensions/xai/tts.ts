@@ -395,6 +395,7 @@ export async function xaiTTSStream(params: {
             closeStream?.();
             void release();
             return;
+          // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
           case "error":
             failStream(new Error(readXaiTtsStreamErrorMessage(event)));
           default:
@@ -421,7 +422,7 @@ export async function xaiTTSStream(params: {
       });
 
       try {
-        for (let offset = 0; offset < text.length;) {
+        for (let offset = 0; offset < text.length; ) {
           let end = Math.min(offset + XAI_TTS_STREAM_TEXT_DELTA_MAX_CHARS, text.length);
           // Keep a surrogate pair in the same frame, even if that frame is one unit shorter.
           if (

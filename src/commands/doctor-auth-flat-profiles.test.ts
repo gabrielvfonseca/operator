@@ -737,6 +737,7 @@ describe("maybeMigrateAuthProfileJsonStoresToSqlite", () => {
         profile: {
           provider: "openai",
           mode: "api_key",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           apiKey: "${OPENAI_API_KEY}",
         },
       },

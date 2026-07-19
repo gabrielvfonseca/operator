@@ -787,7 +787,7 @@ describe("embedded attempt session lock lifecycle", () => {
     await controller.releaseForPrompt();
     await fs.appendFile(
       sessionFile,
-      [
+      `${[
         JSON.stringify({
           type: "custom",
           customType: "model-snapshot",
@@ -817,7 +817,7 @@ describe("embedded attempt session lock lifecycle", () => {
           parentId: "session-info",
           timestamp: new Date().toISOString(),
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf8",
     );
 
@@ -893,7 +893,7 @@ describe("embedded attempt session lock lifecycle", () => {
     await controller.releaseForPrompt();
     await fs.appendFile(
       sessionFile,
-      [
+      `${[
         JSON.stringify({
           type: "custom",
           id: "model-snapshot",
@@ -909,7 +909,7 @@ describe("embedded attempt session lock lifecycle", () => {
           timestamp: new Date().toISOString(),
           name: "first turn",
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf8",
     );
     await controller.withSessionWriteLock(() => undefined);
@@ -1488,7 +1488,7 @@ describe("embedded attempt session lock lifecycle", () => {
     }));
     await fs.appendFile(
       sessionFile,
-      [firstMirror, leaf, ...sideMirrors].map((entry) => JSON.stringify(entry)).join("\n") + "\n",
+      `${[firstMirror, leaf, ...sideMirrors].map((entry) => JSON.stringify(entry)).join("\n")}\n`,
       "utf8",
     );
 
@@ -1550,7 +1550,7 @@ describe("embedded attempt session lock lifecycle", () => {
     await controller.releaseForPrompt();
     await fs.appendFile(
       sessionFile,
-      [
+      `${[
         JSON.stringify({
           type: "message",
           id: "delivery-mirror",
@@ -1577,7 +1577,7 @@ describe("embedded attempt session lock lifecycle", () => {
           timestamp: new Date().toISOString(),
           name: "session title",
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf8",
     );
 
@@ -2237,7 +2237,7 @@ describe("embedded attempt session lock lifecycle", () => {
     await controller.releaseForPrompt();
     await fs.appendFile(
       sessionFile,
-      JSON.stringify({
+      `${JSON.stringify({
         type: "compaction",
         id: "external-compaction",
         parentId: "session",
@@ -2245,7 +2245,7 @@ describe("embedded attempt session lock lifecycle", () => {
         summary: "external summary",
         firstKeptEntryId: "session",
         tokensBefore: 160_001,
-      }) + "\n",
+      })}\n`,
       "utf8",
     );
 

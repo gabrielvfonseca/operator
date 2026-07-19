@@ -28,6 +28,7 @@ function runHelper(payload: string) {
         "set -euo pipefail",
         `source ${shellQuote(helperPath)}`,
         `openclaw_e2e_eval_test_state_from_b64 ${shellQuote(payload)}`,
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'printf "value=%s" "${OPENCLAW_E2E_INSTANCE_TEST:-unset}"',
       ].join("; "),
     ],
@@ -99,6 +100,7 @@ function writeBashExecutable(filePath: string, lines: string[]): void {
 
 function writeFakeTimeout(filePath: string, supportsKillAfter: boolean): void {
   writeBashExecutable(filePath, [
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'if [ "${1:-}" = "--kill-after=1s" ]; then',
     `  exit ${supportsKillAfter ? 0 : 1}`,
     "fi",
@@ -859,6 +861,7 @@ exit 1
             `for _ in $(seq 1 50); do [ -s ${shellQuote(portPath)} ] && break; sleep 0.02; done`,
             `port="$(cat ${shellQuote(portPath)})"`,
             `source ${shellQuote(helperPath)}`,
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             'openclaw_e2e_probe_http_status "http://127.0.0.1:${port}/health" 200 100',
           ].join("; "),
         ],
@@ -1005,6 +1008,7 @@ exit 1
         [
           "#!/usr/bin/env bash",
           "set -euo pipefail",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           'if [ "${1:-}" = "--kill-after=1s" ]; then exit 0; fi',
           'printf "%s\\n" "$*" >"$OPENCLAW_TEST_TIMEOUT_ARGS"',
           'while [ "$#" -gt 0 ] && [ "$1" != "fixture-command" ]; do shift; done',
@@ -1169,6 +1173,7 @@ exit 1
         [
           "#!/usr/bin/env bash",
           "set -euo pipefail",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           'if [ "${1:-}" = "--kill-after=1s" ]; then exit 0; fi',
           'printf "%s\\n" "$*" >"$OPENCLAW_TEST_TIMEOUT_ARGS"',
           `while [ "$#" -gt 0 ] && [ "$1" != ${shellQuote(path.join(tempDir, "openclaw"))} ]; do shift; done`,
@@ -1235,6 +1240,7 @@ exit 1
         [
           "#!/usr/bin/env bash",
           "set -euo pipefail",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           'if [ "${1:-}" = "--kill-after=1s" ]; then exit 0; fi',
           'printf "%s\\n" "$*" >"$OPENCLAW_TEST_TIMEOUT_ARGS"',
           'while [ "$#" -gt 0 ] && [ "$1" != "script" ]; do shift; done',
@@ -1249,6 +1255,7 @@ exit 1
         [
           "#!/usr/bin/env bash",
           "set -euo pipefail",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           'if [ "${1:-}" = "--version" ]; then exit 0; fi',
           'printf "%s\\n" "$*" >"$OPENCLAW_TEST_SCRIPT_ARGS"',
           "",

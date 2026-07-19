@@ -125,8 +125,9 @@ export async function runPluginsInspectCommand(
     buildPluginSnapshotReport,
     formatPluginCompatibilityNotice,
   } = await import("../plugins/status.js");
-  const { loadInstalledPluginIndexInstallRecords } =
-    await import("../plugins/installed-plugin-index-records.js");
+  const { loadInstalledPluginIndexInstallRecords } = await import(
+    "../plugins/installed-plugin-index-records.js"
+  );
   const cfg = tracePluginLifecyclePhase("config read", () => getRuntimeConfig(), {
     command: "inspect",
   });
@@ -237,8 +238,9 @@ export async function runPluginsInspectCommand(
   const targetPlugin = snapshotReport.plugins.find((entry) => entry.id === id || entry.name === id);
   if (!targetPlugin) {
     if (id === "skill-workshop") {
-      const { detectSkillWorkshopToolPolicyDiagnostic } =
-        await import("../skills/workshop/tool-policy-diagnostic.js");
+      const { detectSkillWorkshopToolPolicyDiagnostic } = await import(
+        "../skills/workshop/tool-policy-diagnostic.js"
+      );
       const diagnostic = detectSkillWorkshopToolPolicyDiagnostic({
         config: cfg,
         // Invoking the legacy inspect id is explicit Workshop intent even when

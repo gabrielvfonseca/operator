@@ -129,9 +129,11 @@ async function writeLaunchAgentProbeScript(params: {
     [
       'const fs = require("node:fs");',
       `const eventsPath = ${JSON.stringify(params.eventsPath)};`,
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "fs.appendFileSync(eventsPath, `start ${process.pid}\\n`);",
       'for (const signal of ["SIGHUP", "SIGINT", "SIGTERM"]) {',
       "  process.on(signal, () => {",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "    fs.appendFileSync(eventsPath, `${signal} ${process.pid}\\n`);",
       "    process.exit(0);",
       "  });",

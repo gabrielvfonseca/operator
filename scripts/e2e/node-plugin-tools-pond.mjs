@@ -1218,7 +1218,7 @@ async function runHotPlugLocal(args) {
         chaosDurationMs = now() - chaosStartedAt;
         break;
       }
-      if (!chaosTurn || chaosTurn.reply.trim() !== "DEGRADED") {
+      if (chaosTurn?.reply.trim() !== "DEGRADED") {
         throw new Error(`mid-turn node loss did not degrade cleanly: ${chaosTurn?.reply ?? ""}`);
       }
 

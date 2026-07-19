@@ -118,9 +118,9 @@ function hasExternalDeliveryTarget(context?: DeliveryContext): boolean {
   const channel = normalizeMessageChannel(context?.channel);
   return Boolean(
     channel &&
-    !isInternalNonDeliveryChannel(channel) &&
-    isDeliverableMessageChannel(channel) &&
-    context?.to,
+      !isInternalNonDeliveryChannel(channel) &&
+      isDeliverableMessageChannel(channel) &&
+      context?.to,
   );
 }
 

@@ -267,8 +267,9 @@ describe("subcommand help cold imports", () => {
   });
 
   it("keeps status and health help out of command action modules", async () => {
-    const { registerStatusHealthSessionsCommands } =
-      await import("./program/register.status-health-sessions.js");
+    const { registerStatusHealthSessionsCommands } = await import(
+      "./program/register.status-health-sessions.js"
+    );
     const program = makeProgram();
 
     registerStatusHealthSessionsCommands(program);

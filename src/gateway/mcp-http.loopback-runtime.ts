@@ -27,7 +27,7 @@ type McpLoopbackToolCallCapture = {
   onRequestStart?: () => void;
   onRequestClassified?: () => void;
   onRequestFinish?: () => void;
-  onToolCallStart?: (call: McpLoopbackToolCallStart) => string | void;
+  onToolCallStart?: (call: McpLoopbackToolCallStart) => string | undefined;
   onToolCallUpdate?: (calls: {
     previous: McpLoopbackToolCallStart;
     current: McpLoopbackToolCallStart;
@@ -84,7 +84,7 @@ export function beginMcpLoopbackToolCallCapture(params: {
   onRequestStart?: () => void;
   onRequestClassified?: () => void;
   onRequestFinish?: () => void;
-  onToolCallStart?: (call: McpLoopbackToolCallStart) => string | void;
+  onToolCallStart?: (call: McpLoopbackToolCallStart) => string | undefined;
   onToolCallUpdate?: (calls: {
     previous: McpLoopbackToolCallStart;
     current: McpLoopbackToolCallStart;
@@ -367,10 +367,12 @@ export function clearActiveMcpLoopbackRuntimeByOwnerToken(ownerToken: string): v
 }
 
 const MCP_AUTH_HEADERS = {
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   Authorization: "Bearer ${OPERATOR_MCP_TOKEN}",
 } as const;
 
 const MCP_CAPTURE_HEADERS = {
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   "x-operator-cli-capture-key": "${OPERATOR_MCP_CLI_CAPTURE_KEY}",
 } as const;
 

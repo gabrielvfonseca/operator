@@ -149,7 +149,7 @@ function compactHomePath(filePath: string, homes: readonly string[]): string {
   for (const home of homes) {
     for (const prefix of compactHomePrefixesForHome(home)) {
       if (filePath.startsWith(prefix)) {
-        return "~/" + normalizeCompactedSkillPath(filePath.slice(prefix.length), prefix);
+        return `~/${normalizeCompactedSkillPath(filePath.slice(prefix.length), prefix)}`;
       }
     }
   }
@@ -159,7 +159,7 @@ function compactHomePath(filePath: string, homes: readonly string[]): string {
 function compactHomePrefixesForHome(home: string): string[] {
   const prefixes = [home.endsWith(path.sep) ? home : home + path.sep];
   if (home.includes("\\") && !home.endsWith("\\")) {
-    prefixes.push(home + "\\");
+    prefixes.push(`${home}\\`);
   }
   return prefixes;
 }

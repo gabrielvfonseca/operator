@@ -59,9 +59,9 @@ function filterSkillHistoryScanReviewMessages(
   const roleMessages = messages.filter((message): message is { role: string; content?: unknown } =>
     Boolean(
       message &&
-      typeof message === "object" &&
-      !Array.isArray(message) &&
-      typeof (message as { role?: unknown }).role === "string",
+        typeof message === "object" &&
+        !Array.isArray(message) &&
+        typeof (message as { role?: unknown }).role === "string",
     ),
   );
   return filterHeartbeatTranscriptTurns(roleMessages, heartbeatPrompt);

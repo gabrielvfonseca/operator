@@ -19,15 +19,17 @@ class MacosTitlebarControls extends OperatorLightDomContentsElement {
     const toggleLabel = this.navCollapsed ? t("nav.expand") : t("nav.collapse");
     return html`
       <nav class="macos-titlebar-controls" @mousedown=${beginNativeWindowDrag}>
-        ${this.historyOnly
-          ? nothing
-          : this.renderButton({
-              label: toggleLabel,
-              icon: this.navCollapsed ? icons.panelLeftOpen : icons.panelLeftClose,
-              ariaExpanded: !this.navCollapsed,
-              onClick: this.onToggleSidebar,
-              className: "macos-titlebar-controls__sidebar-toggle",
-            })}
+        ${
+          this.historyOnly
+            ? nothing
+            : this.renderButton({
+                label: toggleLabel,
+                icon: this.navCollapsed ? icons.panelLeftOpen : icons.panelLeftClose,
+                ariaExpanded: !this.navCollapsed,
+                onClick: this.onToggleSidebar,
+                className: "macos-titlebar-controls__sidebar-toggle",
+              })
+        }
         ${this.renderButton({
           label: t("nav.back"),
           icon: icons.chevronLeft,
@@ -42,8 +44,9 @@ class MacosTitlebarControls extends OperatorLightDomContentsElement {
           onClick: () => globalThis.history.forward(),
           className: "macos-titlebar-controls__forward",
         })}
-        ${this.navCollapsed && !this.historyOnly
-          ? html`
+        ${
+          this.navCollapsed && !this.historyOnly
+            ? html`
               ${this.renderButton({
                 label: t("chat.openCommandPalette"),
                 tooltip: t("chat.commandPaletteTitle"),
@@ -58,7 +61,8 @@ class MacosTitlebarControls extends OperatorLightDomContentsElement {
                 className: "macos-titlebar-controls__new-session",
               })}
             `
-          : nothing}
+            : nothing
+        }
       </nav>
     `;
   }
@@ -78,9 +82,9 @@ class MacosTitlebarControls extends OperatorLightDomContentsElement {
           type="button"
           class="topbar-icon-btn macos-titlebar-controls__button ${options.className}"
           aria-label=${options.label}
-          aria-expanded=${options.ariaExpanded === undefined
-            ? nothing
-            : String(options.ariaExpanded)}
+          aria-expanded=${
+            options.ariaExpanded === undefined ? nothing : String(options.ariaExpanded)
+          }
           ?disabled=${options.disabled || !options.onClick}
           @click=${options.onClick}
         >

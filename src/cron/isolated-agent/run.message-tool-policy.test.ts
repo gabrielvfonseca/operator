@@ -46,11 +46,7 @@ function makeMessageToolPolicyJob(
 }
 
 function makeAnnounceMessageToolJob(
-  options: {
-    id?: string;
-    name?: string;
-    delivery?: Record<string, unknown>;
-  } = {},
+  options: { id?: string; name?: string; delivery?: Record<string, unknown> } = {},
 ) {
   return {
     id: options.id ?? "message-tool-policy",
@@ -974,8 +970,9 @@ describe("runCronIsolatedAgentTurn message tool policy", () => {
       initialSessionEntry,
     });
     resolveCronSessionMock.mockReturnValue(cronSession);
-    const { getAgentRunContext, registerAgentRunContext } =
-      await import("../../infra/agent-events.js");
+    const { getAgentRunContext, registerAgentRunContext } = await import(
+      "../../infra/agent-events.js"
+    );
     registerAgentRunContext("test-session-id", {
       sessionKey: "agent:default:cron:message-tool-policy",
       verboseLevel: "off",
@@ -1035,8 +1032,9 @@ describe("runCronIsolatedAgentTurn message tool policy", () => {
         return { status: "available" };
       });
     });
-    const { getAgentRunContext, rotateAgentEventLifecycleGeneration } =
-      await import("../../infra/agent-events.js");
+    const { getAgentRunContext, rotateAgentEventLifecycleGeneration } = await import(
+      "../../infra/agent-events.js"
+    );
 
     const runPromise = runCronIsolatedAgentTurn(makeParams());
     await preflightStarted;
@@ -1061,8 +1059,9 @@ describe("runCronIsolatedAgentTurn message tool policy", () => {
       initialSessionEntry,
     });
     resolveCronSessionMock.mockReturnValue(cronSession);
-    const { clearAgentRunContext, getAgentRunContext, registerAgentRunContext } =
-      await import("../../infra/agent-events.js");
+    const { clearAgentRunContext, getAgentRunContext, registerAgentRunContext } = await import(
+      "../../infra/agent-events.js"
+    );
     registerAgentRunContext("test-session-id", {
       sessionKey: "agent:default:cron:message-tool-policy",
       verboseLevel: "off",

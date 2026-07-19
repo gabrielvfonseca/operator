@@ -34,6 +34,7 @@ export function readLogTextWindow(
     typeof options.offsetBytes === "number" && Number.isFinite(options.offsetBytes)
       ? Math.max(0, Math.floor(options.offsetBytes))
       : 0;
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let stat;
   try {
     stat = statSync(logPath);

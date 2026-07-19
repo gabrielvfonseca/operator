@@ -134,6 +134,7 @@ export async function resolveAccessGroupAllowFromState(params: {
       continue;
     }
 
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let allowed;
     try {
       allowed = await params.resolveMembership({

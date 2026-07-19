@@ -108,8 +108,9 @@ function mockFailureResponse(statusCode = 500) {
 
 function installFakeTimerHarness() {
   beforeAll(async () => {
-    ({ sendMessage, sendFileUrl, resolveLegacyWebhookNameToChatUserId } =
-      await import("./client.js"));
+    ({ sendMessage, sendFileUrl, resolveLegacyWebhookNameToChatUserId } = await import(
+      "./client.js"
+    ));
   });
 
   beforeEach(() => {

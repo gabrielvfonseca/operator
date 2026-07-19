@@ -38,8 +38,9 @@ vi.mock("./pw-tools-core.interactions.js", () => interactionMocks);
 
 installPwToolsCoreTestHooks();
 const sessionMocks = getPwToolsCoreSessionMocks();
-const { armFileUploadViaPlaywright, uploadViaPlaywright } =
-  await import("./pw-tools-core.downloads.js");
+const { armFileUploadViaPlaywright, uploadViaPlaywright } = await import(
+  "./pw-tools-core.downloads.js"
+);
 
 function createFileChooserPageMocks() {
   const element = vi.fn(async () => {

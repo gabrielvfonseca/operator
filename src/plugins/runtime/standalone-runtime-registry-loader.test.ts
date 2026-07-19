@@ -24,8 +24,9 @@ vi.mock("../loader.js", async (importOriginal) => {
   };
 });
 
-const { ensureStandaloneRuntimePluginRegistryLoaded } =
-  await import("./standalone-runtime-registry-loader.js");
+const { ensureStandaloneRuntimePluginRegistryLoaded } = await import(
+  "./standalone-runtime-registry-loader.js"
+);
 
 function createRegistryWithPlugin(pluginId: string): PluginRegistry {
   const registry = createEmptyPluginRegistry();

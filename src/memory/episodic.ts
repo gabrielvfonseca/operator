@@ -42,7 +42,7 @@ export function createEpisodicClient(config: MemoryEpisodicConfig): EpisodicClie
   async function ensurePg() {
     if (pg) return pg;
     try {
-      // @ts-ignore external module
+      // @ts-expect-error external module
       const { Client } = await import("pg");
       const client = new Client({ connectionString: config.postgresUrl });
       await client.connect();

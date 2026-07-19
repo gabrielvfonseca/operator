@@ -302,7 +302,6 @@ async function runAgentTurnWithFallbackInternal(
           applyLiveModelSwitchToRun(effectiveRun, switchError);
         }
       }
-      continue;
     }
   }
 

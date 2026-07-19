@@ -57,7 +57,7 @@ export function isDiscordThreadChannelMessage(params: {
       "isThread" in channel &&
       typeof (channel as { isThread?: unknown }).isThread === "function" &&
       (channel as { isThread: () => boolean }).isThread()) ||
-    isDiscordThreadChannelType(params.channelInfo?.type),
+      isDiscordThreadChannelType(params.channelInfo?.type),
   );
 }
 

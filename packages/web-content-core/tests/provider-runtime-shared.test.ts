@@ -86,6 +86,7 @@ describe("hasWebProviderEntryCredential", () => {
         provider,
         config: {},
         toolConfig: undefined,
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         resolveRawValue: () => "${CUSTOM_API_KEY}",
         resolveEnvValue: () => undefined,
       }),

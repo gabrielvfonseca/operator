@@ -25,7 +25,7 @@ type CloudflareAiGatewayCredential =
   | undefined;
 
 function resolveCloudflareAiGatewayApiKey(cred: CloudflareAiGatewayCredential): string | undefined {
-  if (!cred || cred.type !== "api_key") {
+  if (cred?.type !== "api_key") {
     return undefined;
   }
 
@@ -41,7 +41,7 @@ function resolveCloudflareAiGatewayMetadata(cred: CloudflareAiGatewayCredential)
   accountId?: string;
   gatewayId?: string;
 } {
-  if (!cred || cred.type !== "api_key") {
+  if (cred?.type !== "api_key") {
     return {};
   }
   return {

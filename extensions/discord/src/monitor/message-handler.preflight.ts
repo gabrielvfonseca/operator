@@ -111,7 +111,7 @@ function isDiscordImageAttachmentCandidate(attachment: {
   }
   return Boolean(
     mimeTypeFromFilePath(attachment.filename)?.startsWith("image/") ||
-    mimeTypeFromFilePath(attachment.url)?.startsWith("image/"),
+      mimeTypeFromFilePath(attachment.url)?.startsWith("image/"),
   );
 }
 

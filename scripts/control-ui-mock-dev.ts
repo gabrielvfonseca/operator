@@ -235,7 +235,7 @@ function buildSessionDiffMock() {
         patch: appPatch,
       },
       {
-        path: "README.md",
+        path: "README.MD",
         status: "added",
         additions: 3,
         deletions: 0,
@@ -739,7 +739,7 @@ async function createChatPickerScenario(): Promise<ControlUiMockGatewayScenario>
   const workspaceFiles = [
     {
       missing: false,
-      name: "AGENTS.md",
+      name: "AGENTS.MD",
       path: "/mock/workspace/AGENTS.md",
       size: 2148,
       updatedAtMs: baseTime - 120_000,
@@ -769,8 +769,8 @@ async function createChatPickerScenario(): Promise<ControlUiMockGatewayScenario>
   }));
   const workspaceFileContentByName = new Map([
     [
-      "AGENTS.md",
-      "# AGENTS.md\n\nMock workspace instructions for the composer rail.\n\n- Keep tool output compact.\n- Prefer right-rail context over modal previews.\n",
+      "AGENTS.MD",
+      "# AGENTS.MD\n\nMock workspace instructions for the composer rail.\n\n- Keep tool output compact.\n- Prefer right-rail context over modal previews.\n",
     ],
     [
       "plan.md",

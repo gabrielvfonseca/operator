@@ -214,6 +214,7 @@ describe("noteSecurityWarnings gateway exposure", () => {
   it("does not warn when config token uses OPERATOR_GATEWAY_TOKEN SecretRef", async () => {
     process.env.OPERATOR_GATEWAY_TOKEN = "env-token-123";
     const cfg = {
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       gateway: { auth: { token: "${OPERATOR_GATEWAY_TOKEN}" } },
       secrets: { providers: { default: { source: "env" } } },
     } as OperatorConfig;
@@ -424,6 +425,7 @@ describe("noteSecurityWarnings gateway exposure", () => {
       models: {
         providers: {
           openai: {
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             apiKey: "${OPENAI_API_KEY}",
           },
         },

@@ -10,7 +10,7 @@ import {
 import { formatStaticAuthChoiceChoicesForCli } from "./auth-choice-options.static.js";
 
 type ProviderWizardOption = ReturnType<
-  (typeof import("../plugins/provider-wizard.js"))["resolveProviderWizardOptions"]
+  typeof import("../plugins/provider-wizard.js")["resolveProviderWizardOptions"]
 >[number];
 
 const resolveManifestProviderAuthChoices = vi.hoisted(() =>

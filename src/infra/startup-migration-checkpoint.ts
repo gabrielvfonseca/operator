@@ -128,11 +128,7 @@ export function hasActiveStartupMigrationLease(
 }
 
 export function needsStartupMigrationCheckpoint(
-  params: {
-    buildIdentity?: string | null;
-    env?: NodeJS.ProcessEnv;
-    version?: string;
-  } = {},
+  params: { buildIdentity?: string | null; env?: NodeJS.ProcessEnv; version?: string } = {},
 ): boolean {
   const env = params.env ?? process.env;
   const buildIdentity =
@@ -149,11 +145,7 @@ export function needsStartupMigrationCheckpoint(
 }
 
 export function acquireStartupMigrationLease(
-  params: {
-    env?: NodeJS.ProcessEnv;
-    nowMs?: number;
-    owner?: string;
-  } = {},
+  params: { env?: NodeJS.ProcessEnv; nowMs?: number; owner?: string } = {},
 ): StartupMigrationLease {
   const env = params.env ?? process.env;
   const nowMs = params.nowMs ?? Date.now();

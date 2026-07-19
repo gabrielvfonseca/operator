@@ -348,8 +348,9 @@ function expectStringSchema(
 }
 
 beforeAll(async () => {
-  ({ resetPluginRuntimeStateForTest, setActivePluginRegistry } =
-    await import("../../plugins/runtime.js"));
+  ({ resetPluginRuntimeStateForTest, setActivePluginRegistry } = await import(
+    "../../plugins/runtime.js"
+  ));
   ({ createTestRegistry } = await import("../../test-utils/channel-plugins.js"));
   ({ createMessageTool } = await import("./message-tool.js"));
   ({ createOperatorTools } = await import("../openclaw-tools.js"));
@@ -3248,8 +3249,9 @@ describe("message tool boot-echo guard", () => {
   let clearBootEchoContextForSession: typeof import("../../gateway/boot-echo-guard.js").clearBootEchoContextForSession;
 
   beforeAll(async () => {
-    ({ setBootEchoContextForSession, clearBootEchoContextForSession } =
-      await import("../../gateway/boot-echo-guard.js"));
+    ({ setBootEchoContextForSession, clearBootEchoContextForSession } = await import(
+      "../../gateway/boot-echo-guard.js"
+    ));
   });
 
   afterEach(() => {

@@ -27,7 +27,6 @@ import type {
   ChannelApprovalCapability,
   ChannelOutboundPayloadHint,
 } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
-import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import type { ReplyPayload } from "@gabrielvfonseca/operator/plugin-sdk/reply-runtime";
 import {
   normalizeAccountId,

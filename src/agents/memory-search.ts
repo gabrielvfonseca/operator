@@ -3,7 +3,7 @@
  */
 import type { OperatorConfig } from "../config/config.js";
 import type { SecretInput } from "../config/types.secrets.js";
-import { clampInt, clampNumber } from "../utils.js";
+import { clampInt } from "../utils.js";
 
 export type ResolvedMemorySearchConfig = {
   enabled: boolean;
@@ -70,7 +70,11 @@ export function resolveMemorySearchConfig(params: {
   const provider = memorySearch?.provider ?? "openai";
   const model = memorySearch?.model ?? "text-embedding-3-small";
   const chunking = memorySearch?.chunking ?? { tokens: 400, overlap: 80 };
-  const store = memorySearch?.store ?? { driver: "qdrant" as const, fts: { tokenizer: "unicode61" as const }, vector: { enabled: true } };
+  const store = memorySearch?.store ?? {
+    driver: "qdrant" as const,
+    fts: { tokenizer: "unicode61" as const },
+    vector: { enabled: true },
+  };
   return {
     enabled: true,
     sources: ["memory", "sessions"],

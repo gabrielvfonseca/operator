@@ -257,9 +257,7 @@ export const discordMessageActions: ChannelMessageActionAdapter = {
     inboundEventKind,
     conversationReadOrigin,
   }) => {
-    return await (
-      await loadDiscordChannelActionsRuntime()
-    ).handleDiscordMessageAction({
+    return await (await loadDiscordChannelActionsRuntime()).handleDiscordMessageAction({
       action,
       params,
       cfg,

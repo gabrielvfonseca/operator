@@ -48,10 +48,7 @@ function resolveCliRespawnCommand(params: {
 }
 
 function hasExperimentalWarningSuppressed(
-  params: {
-    env?: NodeJS.ProcessEnv;
-    execArgv?: string[];
-  } = {},
+  params: { env?: NodeJS.ProcessEnv; execArgv?: string[] } = {},
 ): boolean {
   const env = params.env ?? process.env;
   const execArgv = params.execArgv ?? process.execArgv;

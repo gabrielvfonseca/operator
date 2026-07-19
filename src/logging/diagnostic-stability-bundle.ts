@@ -1052,7 +1052,7 @@ function sanitizeSessionEvidenceFileName(fileName: string): string {
 function visitDirentsBounded(
   dir: string,
   maxEntries: number,
-  visitor: (entry: fs.Dirent) => boolean | void,
+  visitor: (entry: fs.Dirent) => boolean | undefined,
 ): void {
   if (maxEntries <= 0) {
     return;

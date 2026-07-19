@@ -260,7 +260,7 @@ async function assertExplicitProxyAllowed(
 ): Promise<void> {
   // Explicit proxies are operator-configured, but the proxy host still needs
   // basic URL and private-network validation before target validation proceeds.
-  if (!dispatcherPolicy || dispatcherPolicy.mode !== "explicit-proxy") {
+  if (dispatcherPolicy?.mode !== "explicit-proxy") {
     return;
   }
   let parsedProxyUrl: URL;
@@ -328,8 +328,9 @@ async function captureGuardedFetchExchange(params: {
   if (params.capture === false || !isTruthyEnvValue(process.env[OPERATOR_DEBUG_PROXY_ENABLED])) {
     return;
   }
-  const { captureHttpExchange, isDebugProxyGlobalFetchPatchInstalled } =
-    await import("../../proxy-capture/runtime.js");
+  const { captureHttpExchange, isDebugProxyGlobalFetchPatchInstalled } = await import(
+    "../../proxy-capture/runtime.js"
+  );
   if (params.capturedByGlobalFetchPatch && isDebugProxyGlobalFetchPatchInstalled()) {
     return;
   }

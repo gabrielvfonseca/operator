@@ -127,9 +127,7 @@ function executableExistsOnPath(command, env = process.env) {
       try {
         accessSync(path.join(searchPath, `${command}${ext}`), constants.X_OK);
         return true;
-      } catch {
-        continue;
-      }
+      } catch {}
     }
   }
   return false;

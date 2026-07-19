@@ -776,6 +776,7 @@
   flex-shrink: 0;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .sw-btn {
   padding: 7px 14px;
   border-radius: var(--radius-md);
@@ -1011,6 +1012,7 @@
 }
 
 /* ── View pane fade-on-switch ───────────────────────────────────────── */
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .sw-view {
   flex: 1 1 auto;
   display: flex;
@@ -1018,6 +1020,7 @@
   min-height: 0;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .sw-view__pane {
   flex: 1 1 auto;
   display: flex;
@@ -1038,6 +1041,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
   .sw-view__pane {
     animation: none;
   }

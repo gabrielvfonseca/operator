@@ -69,6 +69,7 @@ describe("cli program (nodes basics)", () => {
   function expectGatewayRequest(method: string, params?: unknown): void {
     const request = gatewayRequests().find((candidate) => candidate.method === method);
     expect(request?.method).toBe(method);
+    // biome-ignore lint/complexity/noArguments: migrated from oxlint
     if (arguments.length > 1) {
       expect(request?.params).toEqual(params);
     }

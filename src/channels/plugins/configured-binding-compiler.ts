@@ -41,12 +41,7 @@ function resolveConfiguredBindingAdapter(channel: string): {
   }
   const plugin = resolveLoadedChannelPlugin(normalized);
   const provider = resolveChannelConfiguredBindingProvider(plugin);
-  if (
-    !plugin ||
-    !provider ||
-    !provider.compileConfiguredBinding ||
-    !provider.matchInboundConversation
-  ) {
+  if (!plugin || !provider?.compileConfiguredBinding || !provider.matchInboundConversation) {
     return null;
   }
   return {

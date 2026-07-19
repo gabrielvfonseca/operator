@@ -85,9 +85,7 @@ type GoogleChatPluginBase = Pick<
 >;
 
 export function createGoogleChatPluginBase(
-  params: {
-    configSchema?: ChannelPlugin<ResolvedGoogleChatAccount>["configSchema"];
-  } = {},
+  params: { configSchema?: ChannelPlugin<ResolvedGoogleChatAccount>["configSchema"] } = {},
 ): GoogleChatPluginBase {
   return {
     id: GOOGLECHAT_CHANNEL_ID,

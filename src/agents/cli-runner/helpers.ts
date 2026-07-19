@@ -309,9 +309,9 @@ function resolveCliImageRoot(params: { backend: CliBackendConfig; workspaceDir: 
 function isFileNotFoundError(error: unknown): boolean {
   return Boolean(
     error &&
-    typeof error === "object" &&
-    "code" in error &&
-    (error as { code?: unknown }).code === "ENOENT",
+      typeof error === "object" &&
+      "code" in error &&
+      (error as { code?: unknown }).code === "ENOENT",
   );
 }
 

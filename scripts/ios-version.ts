@@ -38,11 +38,11 @@ function main(argv = process.argv.slice(2)): number {
 
   if (options.format === "shell") {
     process.stdout.write(
-      [
+      `${[
         `OPERATOR_IOS_VERSION=${version.canonicalVersion}`,
         `OPERATOR_MARKETING_VERSION=${version.marketingVersion}`,
         `OPERATOR_BUILD_VERSION=${version.buildVersion}`,
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
   } else {
     process.stdout.write(`${JSON.stringify(version, null, 2)}\n`);

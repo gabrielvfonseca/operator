@@ -892,7 +892,7 @@ describe("openai transport stream", () => {
   });
 
   it("normalizes overlong Copilot Responses replay tool ids before dispatch", () => {
-    const longToolItemId = "iVec" + "A".repeat(360);
+    const longToolItemId = `iVec${"A".repeat(360)}`;
     const longToolCallId = `call_ug6lFGKwZDjHfzW8H0PDQRwN|${longToolItemId}`;
     const params = buildOpenAIResponsesParams(
       makeResponsesModel({
@@ -1174,7 +1174,7 @@ describe("openai transport stream", () => {
   });
 
   it("omits distinct overlong Copilot Responses replay item ids when store is disabled", () => {
-    const sharedToolItemPrefix = "iVec" + "A".repeat(160);
+    const sharedToolItemPrefix = `iVec${"A".repeat(160)}`;
     const firstToolCallId = `call_first|${sharedToolItemPrefix}Aa`;
     const secondToolCallId = `call_second|${sharedToolItemPrefix}BB`;
     const params = buildOpenAIResponsesParams(
@@ -1960,8 +1960,9 @@ describe("openai transport stream", () => {
     }));
 
     try {
-      const { testing: isolatedTesting } =
-        await import("./openai-transport-stream.test-support.js");
+      const { testing: isolatedTesting } = await import(
+        "./openai-transport-stream.test-support.js"
+      );
       const isolatedBuildOpenAIResponsesParams = isolatedTesting.buildOpenAIResponsesParams;
       const model = makeResponsesModel({
         id: "gpt-5.4",

@@ -735,7 +735,6 @@ const TOOLING_SOURCE_TEST_TARGETS = new Map([
     ["test/scripts/package-acceptance-workflow.test.ts"],
   ],
   ["scripts/clawtributors-map.json", ["test/scripts/update-clawtributors.test.ts"]],
-  ["scripts/tsconfig.json", ["test/scripts/oxlint-config.test.ts"]],
   [
     "tsconfig.scripts.json",
     ["test/scripts/changed-lanes.test.ts", "test/scripts/test-projects.test.ts"],
@@ -753,9 +752,6 @@ const TOOLING_SOURCE_TEST_TARGETS = new Map([
   ["scripts/lib/ci-changed-node-test-plan.mjs", ["test/scripts/ci-changed-node-test-plan.test.ts"]],
   ["scripts/check.mjs", ["test/scripts/check.test.ts"]],
   ["scripts/check-changed.mjs", ["test/scripts/changed-lanes.test.ts"]],
-  ["scripts/check-max-lines-ratchet.mjs", ["test/scripts/check-max-lines-ratchet.test.ts"]],
-  ["config/max-lines-baseline.txt", ["test/scripts/check-max-lines-ratchet.test.ts"]],
-  [".oxlintrc.json", ["test/scripts/oxlint-config.test.ts"]],
   [
     "scripts/check-changelog-attributions.mjs",
     ["test/scripts/check-changelog-attributions.test.ts"],
@@ -1480,8 +1476,6 @@ const TOOLING_SOURCE_TEST_TARGETS = new Map([
       "test/scripts/vitest-local-scheduling.test.ts",
     ],
   ],
-  ["scripts/run-oxlint.mjs", ["test/scripts/run-oxlint.test.ts"]],
-  ["scripts/run-oxlint-shards.mjs", ["test/scripts/run-oxlint.test.ts"]],
   ["scripts/run-with-env.mjs", ["test/scripts/run-with-env.test.ts"]],
   ["scripts/run-node.mjs", ["src/infra/run-node.test.ts"]],
   [

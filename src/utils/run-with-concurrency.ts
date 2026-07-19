@@ -39,7 +39,7 @@ export async function runTasksWithConcurrency<T>(
     ? Math.max(1, Math.min(Math.floor(limit), tasks.length))
     : tasks.length;
   const results: T[] = Array.from({ length: tasks.length });
-  let firstError: unknown = undefined;
+  let firstError: unknown;
   let hasError = false;
   const limiter = pLimit(resolvedLimit);
 

@@ -158,7 +158,7 @@ function resolveExternalCatalogPaths(options: CatalogOptions): string[] {
   const env = options.env ?? process.env;
   for (const key of ENV_CATALOG_PATHS) {
     const raw = env[key];
-    if (raw && raw.trim()) {
+    if (raw?.trim()) {
       return splitEnvPaths(raw);
     }
   }

@@ -21,7 +21,7 @@ export function isCompleteReplyConfig(config: unknown): config is OperatorConfig
 export function usesFullReplyRuntime(config: unknown): boolean {
   return Boolean(
     config &&
-    typeof config === "object" &&
-    replyConfigRuntimeModes.get(config as OperatorConfig) === "full",
+      typeof config === "object" &&
+      replyConfigRuntimeModes.get(config as OperatorConfig) === "full",
   );
 }

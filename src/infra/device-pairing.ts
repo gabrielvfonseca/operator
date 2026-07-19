@@ -1084,7 +1084,7 @@ export async function pruneSupersededSilentPairedDevices(params: {
   return await withLock(async () => {
     const state = await loadState(params.baseDir);
     const anchor = state.pairedByDeviceId[normalizeDeviceId(params.deviceId)];
-    if (!anchor || anchor.approvedVia !== "silent") {
+    if (anchor?.approvedVia !== "silent") {
       return [];
     }
     const anchorKey = silentPairingClusterKey(anchor);
@@ -1511,7 +1511,7 @@ export async function revokeDeviceToken(params: {
       deviceId: params.deviceId,
       role: params.role,
     });
-    if (!context || !context.existing) {
+    if (!context?.existing) {
       return { ok: false, reason: "unknown-device-or-role" };
     }
     const { device, role, tokens, existing } = context;

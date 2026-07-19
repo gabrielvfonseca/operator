@@ -49,24 +49,28 @@ describe("resolveConfigEnvVars", () => {
       const scenarios: SubstitutionScenario[] = [
         {
           name: "single env var",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           config: { key: "${FOO}" },
           env: { FOO: "bar" },
           expected: { key: "bar" },
         },
         {
           name: "multiple env vars in same string",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           config: { key: "${A}/${B}" },
           env: { A: "x", B: "y" },
           expected: { key: "x/y" },
         },
         {
           name: "inline prefix/suffix",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           config: { key: "prefix-${FOO}-suffix" },
           env: { FOO: "bar" },
           expected: { key: "prefix-bar-suffix" },
         },
         {
           name: "same var repeated",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           config: { key: "${FOO}:${FOO}" },
           env: { FOO: "bar" },
           expected: { key: "bar:bar" },
@@ -82,12 +86,14 @@ describe("resolveConfigEnvVars", () => {
       const scenarios: SubstitutionScenario[] = [
         {
           name: "nested object",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           config: { outer: { inner: { key: "${API_KEY}" } } },
           env: { API_KEY: "secret123" },
           expected: { outer: { inner: { key: "secret123" } } },
         },
         {
           name: "flat array",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           config: { items: ["${A}", "${B}", "${C}"] },
           env: { A: "1", B: "2", C: "3" },
           expected: { items: ["1", "2", "3"] },
@@ -96,7 +102,9 @@ describe("resolveConfigEnvVars", () => {
           name: "array of objects",
           config: {
             providers: [
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               { name: "openai", apiKey: "${OPENAI_KEY}" },
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               { name: "anthropic", apiKey: "${ANTHROPIC_KEY}" },
             ],
           },
@@ -119,6 +127,7 @@ describe("resolveConfigEnvVars", () => {
       const scenarios: MissingEnvScenario[] = [
         {
           name: "missing top-level var",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           config: { key: "${MISSING}" },
           env: {},
           varName: "MISSING",
@@ -126,6 +135,7 @@ describe("resolveConfigEnvVars", () => {
         },
         {
           name: "missing nested var",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           config: { outer: { inner: { key: "${MISSING_VAR}" } } },
           env: {},
           varName: "MISSING_VAR",
@@ -133,6 +143,7 @@ describe("resolveConfigEnvVars", () => {
         },
         {
           name: "missing var in array element",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           config: { items: ["ok", "${MISSING}"] },
           env: { OK: "val" },
           varName: "MISSING",
@@ -140,6 +151,7 @@ describe("resolveConfigEnvVars", () => {
         },
         {
           name: "empty string env value treated as missing",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           config: { key: "${EMPTY}" },
           env: { EMPTY: "" },
           varName: "EMPTY",
@@ -158,34 +170,43 @@ describe("resolveConfigEnvVars", () => {
           name: "escaped placeholder stays literal",
           config: { key: "$${VAR}" },
           env: { VAR: "value" },
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           expected: { key: "${VAR}" },
         },
         {
           name: "mix of escaped and unescaped vars",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           config: { key: "${REAL}/$${LITERAL}" },
           env: { REAL: "resolved" },
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           expected: { key: "resolved/${LITERAL}" },
         },
         {
           name: "escaped first, unescaped second",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           config: { key: "$${FOO} ${FOO}" },
           env: { FOO: "bar" },
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           expected: { key: "${FOO} bar" },
         },
         {
           name: "unescaped first, escaped second",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           config: { key: "${FOO} $${FOO}" },
           env: { FOO: "bar" },
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           expected: { key: "bar ${FOO}" },
         },
         {
           name: "multiple escaped placeholders",
           config: { key: "$${A}:$${B}" },
           env: {},
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           expected: { key: "${A}:${B}" },
         },
         {
           name: "env values are not unescaped",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           config: { key: "${FOO}" },
           env: { FOO: "$${BAR}" },
           expected: { key: "$${BAR}" },
@@ -207,20 +228,26 @@ describe("resolveConfigEnvVars", () => {
         },
         {
           name: "lowercase placeholder",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           config: { key: "${lowercase}" },
           env: { lowercase: "value" },
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           expected: { key: "${lowercase}" },
         },
         {
           name: "mixed-case placeholder",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           config: { key: "${MixedCase}" },
           env: { MixedCase: "value" },
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           expected: { key: "${MixedCase}" },
         },
         {
           name: "invalid numeric prefix",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           config: { key: "${123INVALID}" },
           env: {},
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           expected: { key: "${123INVALID}" },
         },
       ];
@@ -232,12 +259,14 @@ describe("resolveConfigEnvVars", () => {
       const scenarios: SubstitutionScenario[] = [
         {
           name: "underscore-prefixed name",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           config: { key: "${_UNDERSCORE_START}" },
           env: { _UNDERSCORE_START: "valid" },
           expected: { key: "valid" },
         },
         {
           name: "name with numbers",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           config: { key: "${VAR_WITH_NUMBERS_123}" },
           env: { VAR_WITH_NUMBERS_123: "valid" },
           expected: { key: "valid" },
@@ -275,10 +304,12 @@ describe("resolveConfigEnvVars", () => {
     it("collects warnings and preserves placeholder when onMissing is set", () => {
       const warnings: EnvSubstitutionWarning[] = [];
       const result = resolveConfigEnvVars(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         { key: "${MISSING_VAR}", present: "${PRESENT}" },
         { PRESENT: "ok" } as NodeJS.ProcessEnv,
         { onMissing: (w) => warnings.push(w) },
       );
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(result).toEqual({ key: "${MISSING_VAR}", present: "ok" });
       expect(warnings).toEqual([{ varName: "MISSING_VAR", configPath: "key" }]);
     });
@@ -288,9 +319,12 @@ describe("resolveConfigEnvVars", () => {
       const result = resolveConfigEnvVars(
         {
           providers: {
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             tts: { apiKey: "${TTS_KEY}" },
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             stt: { apiKey: "${STT_KEY}" },
           },
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           gateway: { token: "${GW_TOKEN}" },
         },
         { GW_TOKEN: "secret" } as NodeJS.ProcessEnv,
@@ -298,7 +332,9 @@ describe("resolveConfigEnvVars", () => {
       );
       expect(result).toEqual({
         providers: {
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           tts: { apiKey: "${TTS_KEY}" },
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           stt: { apiKey: "${STT_KEY}" },
         },
         gateway: { token: "secret" },
@@ -309,6 +345,7 @@ describe("resolveConfigEnvVars", () => {
     });
 
     it("still throws when onMissing is not set", () => {
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(() => resolveConfigEnvVars({ key: "${MISSING}" }, {} as NodeJS.ProcessEnv)).toThrow(
         MissingEnvVarError,
       );
@@ -317,18 +354,26 @@ describe("resolveConfigEnvVars", () => {
 
   describe("containsEnvVarReference", () => {
     it("detects unresolved env var placeholders", () => {
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(containsEnvVarReference("${FOO}")).toBe(true);
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(containsEnvVarReference("prefix-${VAR}-suffix")).toBe(true);
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(containsEnvVarReference("${A}/${B}")).toBe(true);
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(containsEnvVarReference("${_UNDERSCORE}")).toBe(true);
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(containsEnvVarReference("${VAR_WITH_123}")).toBe(true);
     });
 
     it("returns false for non-matching patterns", () => {
       expect(containsEnvVarReference("no-refs-here")).toBe(false);
       expect(containsEnvVarReference("$VAR")).toBe(false);
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(containsEnvVarReference("${lowercase}")).toBe(false);
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(containsEnvVarReference("${MixedCase}")).toBe(false);
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(containsEnvVarReference("${123INVALID}")).toBe(false);
       expect(containsEnvVarReference("")).toBe(false);
     });
@@ -339,7 +384,9 @@ describe("resolveConfigEnvVars", () => {
     });
 
     it("detects references mixed with escaped placeholders", () => {
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(containsEnvVarReference("$${ESCAPED} ${REAL}")).toBe(true);
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(containsEnvVarReference("${REAL} $${ESCAPED}")).toBe(true);
     });
   });
@@ -352,7 +399,9 @@ describe("resolveConfigEnvVars", () => {
           config: {
             models: {
               providers: {
+                // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
                 "vercel-gateway": { apiKey: "${VERCEL_GATEWAY_API_KEY}" },
+                // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
                 openai: { apiKey: "${OPENAI_API_KEY}" },
               },
             },
@@ -372,6 +421,7 @@ describe("resolveConfigEnvVars", () => {
         },
         {
           name: "gateway auth token",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           config: { gateway: { auth: { token: "${OPERATOR_GATEWAY_TOKEN}" } } },
           env: { OPERATOR_GATEWAY_TOKEN: "secret-token" },
           expected: { gateway: { auth: { token: "secret-token" } } },
@@ -381,6 +431,7 @@ describe("resolveConfigEnvVars", () => {
           config: {
             models: {
               providers: {
+                // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
                 custom: { baseUrl: "${CUSTOM_API_BASE}/v1" },
               },
             },

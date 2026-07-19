@@ -149,6 +149,7 @@ describe("full-release-validation-at-sha", () => {
 
   it("polls the exact workflow run without GraphQL quota use", () => {
     const source = readFileSync("scripts/full-release-validation-at-sha.mjs", "utf8");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).toContain("actions/runs/${parentRunId}");
     expect(source).toContain("workflowRun.head_sha !== workflowSha");
     expect(source).not.toContain('"graphql"');

@@ -421,11 +421,7 @@ function applyLegacyCdpUrlToExistingSessionDefaultProfile(
     return profiles;
   }
   const profile = getOwnBrowserProfile(profiles, defaultProfile);
-  if (
-    !profile ||
-    profile.driver !== "existing-session" ||
-    normalizeOptionalString(profile.cdpUrl)
-  ) {
+  if (profile?.driver !== "existing-session" || normalizeOptionalString(profile.cdpUrl)) {
     return profiles;
   }
   return {
@@ -591,6 +587,7 @@ export function resolveProfile(
   const rawProfileUrl = profile.cdpUrl?.trim() ?? "";
   let cdpHost = resolved.cdpHost;
   let cdpPort = profile.cdpPort ?? 0;
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let cdpUrl;
   const driver =
     profile.driver === "existing-session" || profile.driver === "extension"

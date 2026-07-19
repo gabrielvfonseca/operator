@@ -99,7 +99,7 @@ function parseTelegramTopicConversationForTest(params: {
 const telegramBindings: ChannelConfiguredBindingProvider = {
   compileConfiguredBinding: ({ conversationId }) => {
     const parsed = parseTelegramTopicConversationForTest({ conversationId });
-    if (!parsed || !parsed.chatId.startsWith("-")) {
+    if (!parsed?.chatId.startsWith("-")) {
       return null;
     }
     return {
@@ -112,7 +112,7 @@ const telegramBindings: ChannelConfiguredBindingProvider = {
       conversationId,
       parentConversationId,
     });
-    if (!incoming || !incoming.chatId.startsWith("-")) {
+    if (!incoming?.chatId.startsWith("-")) {
       return null;
     }
     if (compiledBinding.conversationId !== incoming.canonicalConversationId) {

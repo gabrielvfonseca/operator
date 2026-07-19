@@ -167,6 +167,7 @@ export const handleToolsCommand: CommandHandler = async (params, allowTextComman
     return null;
   }
   const normalized = params.command.commandBodyNormalized;
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let verbose;
   if (normalized === "/tools" || normalized === "/tools compact") {
     verbose = false;

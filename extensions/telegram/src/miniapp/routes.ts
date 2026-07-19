@@ -113,6 +113,7 @@ async function handleAuth(
     return;
   }
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let urls;
   try {
     urls = await resolveTelegramMiniAppUrls({ cfg });

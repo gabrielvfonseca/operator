@@ -40,8 +40,9 @@ vi.mock("./install-security-scan.js", async () => {
 
 vi.resetModules();
 
-const { installPluginFromGitSpec, isImmutableGitCommitRef, parseGitPluginSpec } =
-  await import("./git-install.js");
+const { installPluginFromGitSpec, isImmutableGitCommitRef, parseGitPluginSpec } = await import(
+  "./git-install.js"
+);
 const { onInternalDiagnosticEvent } = await import("../infra/diagnostic-events.js");
 
 function expectedGitRepoDir(params: { gitDir: string; normalizedSpec: string }): string {

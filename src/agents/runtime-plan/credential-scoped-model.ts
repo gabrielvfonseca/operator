@@ -93,8 +93,8 @@ function shouldForceCredentialScopedModelResolve(
 ): boolean {
   return Boolean(
     plan.forwardedAuthProfileId ||
-    requestedProfileId ||
-    (providerUsesProfileScopedModelMetadata && plan.selectedAuthMode),
+      requestedProfileId ||
+      (providerUsesProfileScopedModelMetadata && plan.selectedAuthMode),
   );
 }
 
@@ -106,11 +106,11 @@ function shouldMaterializeAuthPlanModel(
 ): boolean {
   return Boolean(
     plan.modelRoute ||
-    shouldForceCredentialScopedModelResolve(
-      plan,
-      requestedProfileId,
-      providerUsesProfileScopedModelMetadata,
-    ),
+      shouldForceCredentialScopedModelResolve(
+        plan,
+        requestedProfileId,
+        providerUsesProfileScopedModelMetadata,
+      ),
   );
 }
 

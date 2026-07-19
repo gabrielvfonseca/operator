@@ -3022,7 +3022,9 @@ describe("createMcpLoopbackServerConfig", () => {
     expect(config.mcpServers?.operator?.url).toBe("http://127.0.0.1:23119/mcp");
     expect(config.mcpServers?.operator?.alwaysLoad).toBe(true);
     expect(config.mcpServers?.operator?.headers).toEqual({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       Authorization: "Bearer ${OPERATOR_MCP_TOKEN}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "x-operator-cli-capture-key": "${OPERATOR_MCP_CLI_CAPTURE_KEY}",
     });
   });
@@ -3032,6 +3034,7 @@ describe("createMcpLoopbackServerConfig", () => {
       mcpServers?: Record<string, { headers?: Record<string, string> }>;
     };
     expect(config.mcpServers?.operator?.headers).toEqual({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       Authorization: "Bearer ${OPERATOR_MCP_TOKEN}",
     });
   });

@@ -498,7 +498,7 @@ export async function monitorTlonProvider(opts: MonitorTlonOpts = {}): Promise<v
       const mediaLines = attachments
         .map((a) => `[media attached: ${a.path} (${a.contentType}) | ${a.path}]`)
         .join("\n");
-      bodyWithAttachments = mediaLines + "\n" + messageText;
+      bodyWithAttachments = `${mediaLines}\n${messageText}`;
     }
 
     const body = core.channel.reply.formatAgentEnvelope({
@@ -587,7 +587,7 @@ export async function monitorTlonProvider(opts: MonitorTlonOpts = {}): Promise<v
       };
     };
 
-    const rememberThreadParticipation = (result: { visibleReplySent?: boolean } | void) => {
+    const rememberThreadParticipation = (result: { visibleReplySent?: boolean } | undefined) => {
       if (!isGroup || !groupChannel || !parentId || result?.visibleReplySent === false) {
         return;
       }

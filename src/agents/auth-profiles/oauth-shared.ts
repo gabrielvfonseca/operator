@@ -27,7 +27,7 @@ export function areOAuthCredentialsEquivalent(
   a: OAuthCredential | undefined,
   b: OAuthCredential,
 ): boolean {
-  if (!a || a.type !== "oauth") {
+  if (a?.type !== "oauth") {
     return false;
   }
   return (
@@ -53,9 +53,9 @@ function hasNewerStoredOAuthCredential(
   const incomingExpires = asDateTimestampMs(incoming.expires);
   return Boolean(
     existing &&
-    existing.provider === incoming.provider &&
-    existingExpires !== undefined &&
-    (incomingExpires === undefined || existingExpires > incomingExpires),
+      existing.provider === incoming.provider &&
+      existingExpires !== undefined &&
+      (incomingExpires === undefined || existingExpires > incomingExpires),
   );
 }
 
@@ -64,7 +64,7 @@ export function shouldReplaceStoredOAuthCredential(
   existing: OAuthCredential | undefined,
   incoming: OAuthCredential,
 ): boolean {
-  if (!existing || existing.type !== "oauth") {
+  if (existing?.type !== "oauth") {
     return true;
   }
   if (areOAuthCredentialsEquivalent(existing, incoming)) {
@@ -111,7 +111,7 @@ function isSafeOAuthIdentityTransition(
   incoming: OAuthCredential,
   policy: OAuthIdentitySafetyPolicy,
 ): boolean {
-  if (!existing || existing.type !== "oauth") {
+  if (existing?.type !== "oauth") {
     return policy.whenExistingCredentialMissing;
   }
   if (existing.provider !== incoming.provider) {

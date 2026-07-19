@@ -46,7 +46,7 @@ export function rebindCliSessionReseedReceiptsForReset(
   let rebound: Record<string, CliSessionBinding> | undefined;
   for (const [provider, binding] of Object.entries(bindings)) {
     const receipt = normalizeCliSessionReseedReceipt(binding.reseedReceipt);
-    if (!receipt || receipt.userTurnDisposition !== "omitted") {
+    if (receipt?.userTurnDisposition !== "omitted") {
       continue;
     }
     rebound ??= { ...bindings };

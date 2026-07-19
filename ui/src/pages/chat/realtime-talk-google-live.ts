@@ -127,6 +127,7 @@ export class GoogleLiveRealtimeTalkTransport implements RealtimeTalkTransport {
       throw error;
     }
     if (this.closed) {
+      // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
       media.getTracks().forEach((track) => track.stop());
       return;
     }
@@ -174,6 +175,7 @@ export class GoogleLiveRealtimeTalkTransport implements RealtimeTalkTransport {
     this.inputPump.stop();
     this.inputMeter?.stop();
     this.inputMeter = null;
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     this.media?.getTracks().forEach((track) => track.stop());
     this.media = null;
     this.stopOutput();

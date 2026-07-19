@@ -1561,6 +1561,7 @@ describe("plugin-clawhub-publish.sh", () => {
 
   it("probes GNU timeout capabilities and leaves pack-only mode portable", () => {
     const source = readFileSync("scripts/plugin-clawhub-publish.sh", "utf8");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const packExitIndex = source.indexOf('if [[ "${mode}" == "--pack" ]]');
     const timeoutProbeIndex = source.indexOf("for timeout_candidate in timeout gtimeout");
 

@@ -208,8 +208,9 @@ async function runStructuredDoctorHealthContribution(params: {
     throw new Error(`doctor contribution ${params.contributionId} has no structured health`);
   }
   const { runDoctorHealthRepairs } = await import("./doctor-repair-flow.js");
-  const { resolveAgentWorkspaceDir, resolveDefaultAgentId } =
-    await import("../agents/agent-scope.js");
+  const { resolveAgentWorkspaceDir, resolveDefaultAgentId } = await import(
+    "../agents/agent-scope.js"
+  );
   const workspaceDir = resolveAgentWorkspaceDir(
     params.ctx.cfg,
     resolveDefaultAgentId(params.ctx.cfg),
@@ -289,12 +290,15 @@ async function runGatewayConfigHealth(ctx: DoctorHealthFlowContext): Promise<voi
 async function runAuthProfileHealth(ctx: DoctorHealthFlowContext): Promise<void> {
   const { maybeRepairLegacyFlatAuthProfileStores, maybeRepairCanonicalApiKeyFieldAlias } =
     await import("../commands/doctor-auth-flat-profiles.js");
-  const { maybeRepairLegacyOAuthProfileIds } =
-    await import("../commands/doctor-auth-legacy-oauth.js");
-  const { maybeRepairLegacyOAuthSidecarProfiles } =
-    await import("../commands/doctor-auth-oauth-sidecar.js");
-  const { noteAuthProfileHealth, noteLegacyCodexProviderOverride } =
-    await import("../commands/doctor-auth.js");
+  const { maybeRepairLegacyOAuthProfileIds } = await import(
+    "../commands/doctor-auth-legacy-oauth.js"
+  );
+  const { maybeRepairLegacyOAuthSidecarProfiles } = await import(
+    "../commands/doctor-auth-oauth-sidecar.js"
+  );
+  const { noteAuthProfileHealth, noteLegacyCodexProviderOverride } = await import(
+    "../commands/doctor-auth.js"
+  );
   const { buildGatewayConnectionDetails } = await import("../gateway/call.js");
   const { note } = await loadNoteModule();
   await maybeRepairLegacyFlatAuthProfileStores({
@@ -485,8 +489,9 @@ async function runCoreContributionHealthRepair(
   }
   const { CORE_HEALTH_CHECKS } = await import("./doctor-core-checks.js");
   const { runDoctorHealthRepairs } = await import("./doctor-repair-flow.js");
-  const { resolveAgentWorkspaceDir, resolveDefaultAgentId } =
-    await import("../agents/agent-scope.js");
+  const { resolveAgentWorkspaceDir, resolveDefaultAgentId } = await import(
+    "../agents/agent-scope.js"
+  );
   const { note } = await import("../../packages/terminal-core/src/note.js");
 
   const selectedIds = new Set(checkIds);
@@ -515,8 +520,9 @@ async function runCoreContributionHealthRepair(
 }
 
 async function runLegacyStateHealth(ctx: DoctorHealthFlowContext): Promise<void> {
-  const { detectLegacyStateMigrations, runLegacyStateMigrations } =
-    await import("../commands/doctor-state-migrations.js");
+  const { detectLegacyStateMigrations, runLegacyStateMigrations } = await import(
+    "../commands/doctor-state-migrations.js"
+  );
   const { note } = await loadNoteModule();
   // Only a direct operator-owned doctor may inspect the default state dir for
   // imports. Automated repair callers explicitly lack this capability so a
@@ -567,8 +573,9 @@ async function runLegacyStateHealth(ctx: DoctorHealthFlowContext): Promise<void>
 }
 
 async function runLegacyPluginManifestHealth(ctx: DoctorHealthFlowContext): Promise<void> {
-  const { maybeRepairLegacyPluginManifestContracts } =
-    await import("../commands/doctor-plugin-manifests.js");
+  const { maybeRepairLegacyPluginManifestContracts } = await import(
+    "../commands/doctor-plugin-manifests.js"
+  );
   await maybeRepairLegacyPluginManifestContracts({
     config: ctx.cfg,
     env: process.env,
@@ -595,8 +602,9 @@ async function runReleaseConfiguredPluginInstallsHealth(
   if (!ctx.prompter.shouldRepair) {
     return;
   }
-  const { maybeRunConfiguredPluginInstallReleaseStep } =
-    await import("../commands/doctor/shared/release-configured-plugin-installs.js");
+  const { maybeRunConfiguredPluginInstallReleaseStep } = await import(
+    "../commands/doctor/shared/release-configured-plugin-installs.js"
+  );
   const { note } = await loadNoteModule();
   const { VERSION } = await import("../version.js");
   const result = await maybeRunConfiguredPluginInstallReleaseStep({
@@ -647,8 +655,9 @@ async function runStateIntegrityHealth(ctx: DoctorHealthFlowContext): Promise<vo
 }
 
 async function runCodexSessionRouteHealth(ctx: DoctorHealthFlowContext): Promise<void> {
-  const { maybeRepairCodexSessionRoutes } =
-    await import("../commands/doctor/shared/codex-route-warnings.js");
+  const { maybeRepairCodexSessionRoutes } = await import(
+    "../commands/doctor/shared/codex-route-warnings.js"
+  );
   const { note } = await loadNoteModule();
   const result = await maybeRepairCodexSessionRoutes({
     cfg: ctx.cfg,
@@ -699,8 +708,9 @@ async function runConfigAuditScrubHealth(ctx: DoctorHealthFlowContext): Promise<
 }
 
 async function runLegacyCronHealth(ctx: DoctorHealthFlowContext): Promise<void> {
-  const { maybeRepairLegacyCronStore, noteLegacyWhatsAppCrontabHealthCheck } =
-    await import("../commands/doctor/cron/index.js");
+  const { maybeRepairLegacyCronStore, noteLegacyWhatsAppCrontabHealthCheck } = await import(
+    "../commands/doctor/cron/index.js"
+  );
   await noteLegacyWhatsAppCrontabHealthCheck();
   await maybeRepairLegacyCronStore({
     cfg: ctx.cfg,
@@ -718,8 +728,9 @@ async function runSandboxHealth(ctx: DoctorHealthFlowContext): Promise<void> {
 }
 
 async function runGatewayServicesHealth(ctx: DoctorHealthFlowContext): Promise<void> {
-  const { maybeRepairGatewayServiceConfig, maybeScanExtraGatewayServices } =
-    await import("../commands/doctor-gateway-services.js");
+  const { maybeRepairGatewayServiceConfig, maybeScanExtraGatewayServices } = await import(
+    "../commands/doctor-gateway-services.js"
+  );
   const {
     noteMacLaunchAgentOverrides,
     noteMacLaunchctlGatewayEnvOverrides,
@@ -747,8 +758,9 @@ async function runGatewayServicesHealth(ctx: DoctorHealthFlowContext): Promise<v
 }
 
 async function runStartupChannelMaintenanceHealth(ctx: DoctorHealthFlowContext): Promise<void> {
-  const { maybeRunDoctorStartupChannelMaintenance } =
-    await import("./doctor-startup-channel-maintenance.js");
+  const { maybeRunDoctorStartupChannelMaintenance } = await import(
+    "./doctor-startup-channel-maintenance.js"
+  );
   await maybeRunDoctorStartupChannelMaintenance({
     cfg: ctx.cfg,
     env: process.env,
@@ -771,8 +783,9 @@ async function runBrowserHealth(ctx: DoctorHealthFlowContext): Promise<void> {
 }
 
 async function runOpenAIOAuthTlsHealth(ctx: DoctorHealthFlowContext): Promise<void> {
-  const { noteOpenAIOAuthTlsPrerequisites } =
-    await import("../plugins/provider-openai-chatgpt-oauth-tls.js");
+  const { noteOpenAIOAuthTlsPrerequisites } = await import(
+    "../plugins/provider-openai-chatgpt-oauth-tls.js"
+  );
   await noteOpenAIOAuthTlsPrerequisites({
     cfg: ctx.cfg,
     deep: ctx.options.deep === true,
@@ -997,6 +1010,7 @@ async function runSystemdLingerHealth(ctx: DoctorHealthFlowContext): Promise<voi
   const { ensureSystemdUserLingerInteractive } = await import("../commands/systemd-linger.js");
   const { note } = await loadNoteModule();
   const service = resolveGatewayService();
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let loaded;
   try {
     loaded = await service.isLoaded({ env: process.env });
@@ -1026,6 +1040,7 @@ async function detectSystemdLingerFindings(
   }
   const { resolveGatewayService } = await import("../daemon/service.js");
   const service = resolveGatewayService();
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let loaded;
   try {
     loaded = await service.isLoaded({ env: process.env });
@@ -1035,8 +1050,9 @@ async function detectSystemdLingerFindings(
   if (!loaded) {
     return [];
   }
-  const { isSystemdUserServiceAvailable, readSystemdUserLingerStatus } =
-    await import("../daemon/systemd.js");
+  const { isSystemdUserServiceAvailable, readSystemdUserLingerStatus } = await import(
+    "../daemon/systemd.js"
+  );
   if (!(await isSystemdUserServiceAvailable(process.env))) {
     return [];
   }
@@ -1063,8 +1079,9 @@ async function hasActiveGatewayExecCredential(
 ): Promise<boolean> {
   const { resolveSecretInputRef } = await loadSecretTypesModule();
   const { gatewaySecretInputPathCanWin } = await import("../gateway/credentials-secret-inputs.js");
-  const { ALL_GATEWAY_SECRET_INPUT_PATHS, readGatewaySecretInputValue } =
-    await import("../gateway/secret-input-paths.js");
+  const { ALL_GATEWAY_SECRET_INPUT_PATHS, readGatewaySecretInputValue } = await import(
+    "../gateway/secret-input-paths.js"
+  );
   return ALL_GATEWAY_SECRET_INPUT_PATHS.some((path) => {
     if (
       !gatewaySecretInputPathCanWin({
@@ -1137,8 +1154,9 @@ async function runBootstrapSizeHealth(ctx: DoctorHealthFlowContext): Promise<voi
 }
 
 async function runHeartbeatTemplateRepairHealth(ctx: DoctorHealthFlowContext): Promise<void> {
-  const { maybeRepairHeartbeatTemplate } =
-    await import("../commands/doctor-heartbeat-template-repair.js");
+  const { maybeRepairHeartbeatTemplate } = await import(
+    "../commands/doctor-heartbeat-template-repair.js"
+  );
   await maybeRepairHeartbeatTemplate({
     cfg: ctx.cfg,
     shouldRepair: ctx.prompter.shouldRepair,
@@ -1163,8 +1181,9 @@ async function runGatewayHealthChecks(ctx: DoctorHealthFlowContext): Promise<voi
     ctx.gatewayMemoryProbe = { checked: false, ready: false, skipped: true };
     return;
   }
-  const { checkGatewayHealth, probeGatewayMemoryStatus } =
-    await import("../commands/doctor-gateway-health.js");
+  const { checkGatewayHealth, probeGatewayMemoryStatus } = await import(
+    "../commands/doctor-gateway-health.js"
+  );
   const { healthOk, authenticated, status } = await checkGatewayHealth({
     runtime: ctx.runtime,
     cfg: ctx.cfg,
@@ -1183,8 +1202,9 @@ async function runGatewayHealthChecks(ctx: DoctorHealthFlowContext): Promise<voi
 }
 
 async function runWhatsappResponsivenessHealth(ctx: DoctorHealthFlowContext): Promise<void> {
-  const { noteWhatsappResponsivenessHealth } =
-    await import("../commands/doctor-whatsapp-responsiveness.js");
+  const { noteWhatsappResponsivenessHealth } = await import(
+    "../commands/doctor-whatsapp-responsiveness.js"
+  );
   await noteWhatsappResponsivenessHealth({
     cfg: ctx.cfg,
     status: ctx.gatewayStatus,
@@ -1340,8 +1360,9 @@ async function runWriteConfigHealth(ctx: DoctorHealthFlowContext): Promise<void>
     // when no write was scheduled ctx.cfg still mirrors disk because the
     // required runtime policy was already persisted. Either way ctx.cfg is the
     // durable config, so the cron rewrite below validates against real state.
-    const { repairCronCodexModelRefsAfterConfigWrite } =
-      await import("../commands/doctor/cron/legacy-repair.js");
+    const { repairCronCodexModelRefsAfterConfigWrite } = await import(
+      "../commands/doctor/cron/legacy-repair.js"
+    );
     const result = await repairCronCodexModelRefsAfterConfigWrite({
       cfg: ctx.cfg,
       ...(ctx.configResult.blockedCodexModelIdentities?.length
@@ -1462,8 +1483,9 @@ async function runWorkspaceSuggestionsHealth(ctx: DoctorHealthFlowContext): Prom
   }
   const { resolveAgentWorkspaceDir, resolveDefaultAgentId } = await loadAgentScopeModule();
   const { noteWorkspaceBackupTip } = await loadDoctorStateIntegrityModule();
-  const { MEMORY_SYSTEM_PROMPT, shouldSuggestMemorySystem } =
-    await import("../commands/doctor-workspace.js");
+  const { MEMORY_SYSTEM_PROMPT, shouldSuggestMemorySystem } = await import(
+    "../commands/doctor-workspace.js"
+  );
   const { note } = await loadNoteModule();
   const workspaceDir = resolveAgentWorkspaceDir(ctx.cfg, resolveDefaultAgentId(ctx.cfg));
   noteWorkspaceBackupTip(workspaceDir);
@@ -1658,8 +1680,9 @@ function resolveDoctorHealthContributions(): DoctorHealthContribution[] {
         description: "Stale plugin-runtime symlinks are represented as findings.",
         defaultEnabled: false,
         async detect() {
-          const { collectStalePluginRuntimeSymlinkHealthFindings } =
-            await import("../commands/doctor/shared/plugin-runtime-symlinks.js");
+          const { collectStalePluginRuntimeSymlinkHealthFindings } = await import(
+            "../commands/doctor/shared/plugin-runtime-symlinks.js"
+          );
           return await collectStalePluginRuntimeSymlinkHealthFindings();
         },
       },
@@ -1763,8 +1786,9 @@ function resolveDoctorHealthContributions(): DoctorHealthContribution[] {
         description: "Low disk space around the Operator state directory is a finding.",
         defaultEnabled: false,
         async detect(ctx) {
-          const { collectDiskSpaceHealthFindings } =
-            await import("../commands/doctor-disk-space.js");
+          const { collectDiskSpaceHealthFindings } = await import(
+            "../commands/doctor-disk-space.js"
+          );
           return collectDiskSpaceHealthFindings(ctx.cfg);
         },
       },
@@ -1902,14 +1926,16 @@ function resolveDoctorHealthContributions(): DoctorHealthContribution[] {
           "Historical config-audit argv redaction gaps are represented as structured findings.",
         defaultEnabled: false,
         async detect() {
-          const { configAuditScrubToHealthFinding, detectConfigAuditScrubIssue } =
-            await import("../commands/doctor-config-audit-scrub.js");
+          const { configAuditScrubToHealthFinding, detectConfigAuditScrubIssue } = await import(
+            "../commands/doctor-config-audit-scrub.js"
+          );
           const result = await detectConfigAuditScrubIssue();
           return result.rewritten > 0 ? [configAuditScrubToHealthFinding(result)] : [];
         },
         async repair(ctx) {
-          const { configAuditScrubToRepairEffect, detectConfigAuditScrubIssue } =
-            await import("../commands/doctor-config-audit-scrub.js");
+          const { configAuditScrubToRepairEffect, detectConfigAuditScrubIssue } = await import(
+            "../commands/doctor-config-audit-scrub.js"
+          );
           const result = await detectConfigAuditScrubIssue();
           const effects = result.rewritten > 0 ? [configAuditScrubToRepairEffect(result)] : [];
           if (ctx.dryRun === true) {
@@ -2024,8 +2050,9 @@ function resolveDoctorHealthContributions(): DoctorHealthContribution[] {
           description: "Channel doctor preview warnings are captured as structured findings.",
           defaultEnabled: false,
           async detect(ctx) {
-            const { collectChannelPreviewWarningHealthFindings } =
-              await import("./doctor-startup-channel-maintenance.js");
+            const { collectChannelPreviewWarningHealthFindings } = await import(
+              "./doctor-startup-channel-maintenance.js"
+            );
             return collectChannelPreviewWarningHealthFindings({
               cfg: ctx.cfg,
               allowExec: ctx.allowExecSecretRefs === true,
@@ -2114,8 +2141,9 @@ function resolveDoctorHealthContributions(): DoctorHealthContribution[] {
         description: "Workspace plugin/status diagnostics are exposed as findings.",
         defaultEnabled: false,
         async detect(ctx) {
-          const { collectWorkspaceStatusHealthFindings } =
-            await import("../commands/doctor-workspace-status.js");
+          const { collectWorkspaceStatusHealthFindings } = await import(
+            "../commands/doctor-workspace-status.js"
+          );
           const pluginVersionDrift = await collectWorkspaceStatusPluginVersionDrift({
             cfg: ctx.cfg,
             options: {
@@ -2174,8 +2202,9 @@ function resolveDoctorHealthContributions(): DoctorHealthContribution[] {
         description: "Legacy HEARTBEAT.md documentation templates are findings.",
         defaultEnabled: false,
         async detect(ctx) {
-          const { collectHeartbeatTemplateHealthFindings } =
-            await import("../commands/doctor-heartbeat-template-repair.js");
+          const { collectHeartbeatTemplateHealthFindings } = await import(
+            "../commands/doctor-heartbeat-template-repair.js"
+          );
           return await collectHeartbeatTemplateHealthFindings(ctx.cfg);
         },
       },
@@ -2202,8 +2231,9 @@ function resolveDoctorHealthContributions(): DoctorHealthContribution[] {
           "WhatsApp responsiveness pressure from degraded Gateway and local TUI clients.",
         defaultEnabled: false,
         async detect(ctx) {
-          const { collectWhatsappResponsivenessHealthFindings } =
-            await import("../commands/doctor-whatsapp-responsiveness.js");
+          const { collectWhatsappResponsivenessHealthFindings } = await import(
+            "../commands/doctor-whatsapp-responsiveness.js"
+          );
           let status: import("../commands/status.types.js").StatusSummary | undefined;
           if (
             !(
@@ -2243,8 +2273,9 @@ function resolveDoctorHealthContributions(): DoctorHealthContribution[] {
         description: "Device pairing requests and stale device-auth records are findings.",
         defaultEnabled: false,
         async detect(ctx) {
-          const { collectDevicePairingHealthFindings } =
-            await import("../commands/doctor-device-pairing.js");
+          const { collectDevicePairingHealthFindings } = await import(
+            "../commands/doctor-device-pairing.js"
+          );
           return await collectDevicePairingHealthFindings({ cfg: ctx.cfg, healthOk: false });
         },
       },

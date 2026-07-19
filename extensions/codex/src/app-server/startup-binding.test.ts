@@ -442,7 +442,7 @@ describe("Codex app-server startup binding", () => {
     const rolloutFile = path.join(rolloutDir, "rollout-thread-existing.jsonl");
     await fs.writeFile(
       rolloutFile,
-      [
+      `${[
         JSON.stringify({
           payload: {
             type: "token_count",
@@ -461,7 +461,7 @@ describe("Codex app-server startup binding", () => {
             },
           },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
     const binding = await rotateOversizedCodexAppServerStartupBinding({
       binding: await readCodexAppServerBinding(sessionFile),

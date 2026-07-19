@@ -248,8 +248,8 @@ export function getGoogleMeetSetupStatus(
       const fromNumber = normalizeOptionalString(voiceCallConfig.fromNumber);
       const twilioReady = Boolean(
         (accountSid || env.TWILIO_ACCOUNT_SID) &&
-        (authToken || env.TWILIO_AUTH_TOKEN) &&
-        (fromNumber || env.TWILIO_FROM_NUMBER),
+          (authToken || env.TWILIO_AUTH_TOKEN) &&
+          (fromNumber || env.TWILIO_FROM_NUMBER),
       );
       checks.push({
         id: "twilio-voice-call-credentials",

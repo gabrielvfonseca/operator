@@ -870,9 +870,7 @@ export function listBundledChannelSetupPlugins(): readonly ChannelPlugin[] {
 }
 
 export function listBundledChannelLegacySessionSurfaces(
-  options: {
-    config?: OperatorConfig;
-  } = {},
+  options: { config?: OperatorConfig } = {},
 ): readonly BundledChannelLegacySessionSurface[] {
   const { rootScope, loadContext } = resolveActiveBundledChannelLoadScope();
   return listBundledChannelPluginIdsForSetupFeature(rootScope, "legacySessionSurfaces", {
@@ -892,9 +890,7 @@ export function listBundledChannelLegacySessionSurfaces(
 }
 
 export function listBundledChannelLegacyStateMigrationDetectors(
-  options: {
-    config?: OperatorConfig;
-  } = {},
+  options: { config?: OperatorConfig } = {},
 ): readonly BundledChannelLegacyStateMigrationDetector[] {
   const { rootScope, loadContext } = resolveActiveBundledChannelLoadScope();
   return listBundledChannelPluginIdsForSetupFeature(rootScope, "legacyStateMigrations", {

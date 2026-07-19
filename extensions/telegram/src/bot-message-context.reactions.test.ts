@@ -41,8 +41,9 @@ vi.mock("./bot-message-context.body.js", () => ({
   resolveTelegramInboundBody: (arg: unknown) => inboundBodyMock(arg),
 }));
 
-const { buildTelegramMessageContextForTest } =
-  await import("./bot-message-context.test-harness.js");
+const { buildTelegramMessageContextForTest } = await import(
+  "./bot-message-context.test-harness.js"
+);
 
 type CreateStatusReactionController = NonNullable<
   NonNullable<BuildTelegramMessageContextParams["runtime"]>["createStatusReactionController"]

@@ -238,10 +238,12 @@ describe("gateway auth compatibility baseline", () => {
         os.tmpdir(),
         `operator-backend-device-${process.pid}-${port}.json`,
       );
-      const { loadOrCreateDeviceIdentity, publicKeyRawBase64UrlFromPem } =
-        await import("../infra/device-identity.js");
-      const { approveDevicePairing, requestDevicePairing, rotateDeviceToken } =
-        await import("../infra/device-pairing.js");
+      const { loadOrCreateDeviceIdentity, publicKeyRawBase64UrlFromPem } = await import(
+        "../infra/device-identity.js"
+      );
+      const { approveDevicePairing, requestDevicePairing, rotateDeviceToken } = await import(
+        "../infra/device-pairing.js"
+      );
 
       const identity = loadOrCreateDeviceIdentity(identityPath);
       const pending = await requestDevicePairing({
@@ -436,10 +438,12 @@ describe("gateway auth compatibility baseline", () => {
     test("keeps auth-none control ui stale-key token handoff unchanged", async () => {
       const ws = await openWs(port, { origin: originForPort(port) });
       try {
-        const { loadOrCreateDeviceIdentity, publicKeyRawBase64UrlFromPem } =
-          await import("../infra/device-identity.js");
-        const { approveDevicePairing, requestDevicePairing } =
-          await import("../infra/device-pairing.js");
+        const { loadOrCreateDeviceIdentity, publicKeyRawBase64UrlFromPem } = await import(
+          "../infra/device-identity.js"
+        );
+        const { approveDevicePairing, requestDevicePairing } = await import(
+          "../infra/device-pairing.js"
+        );
         const nonce = await readConnectChallengeNonce(ws);
         const identityPath = path.join(
           os.tmpdir(),

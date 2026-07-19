@@ -483,8 +483,9 @@ describe("doctor preview warnings", () => {
       "doctor preview: gateway secrets.resolve unavailable (gateway closed); resolved command secrets locally.",
     ];
 
-    const { resolveCommandSecretRefsViaGateway } =
-      await import("../../../cli/command-secret-gateway.js");
+    const { resolveCommandSecretRefsViaGateway } = await import(
+      "../../../cli/command-secret-gateway.js"
+    );
     const notes = await collectDoctorPreviewNotes({
       cfg: rawConfig,
       doctorFixCommand: "openclaw doctor --fix",
@@ -510,8 +511,9 @@ describe("doctor preview warnings", () => {
 
   it("allows doctor preview to opt into local exec SecretRef resolution", async () => {
     commandSecretState.targetIds = new Set(["channels.telegram.botToken"]);
-    const { resolveCommandSecretRefsViaGateway } =
-      await import("../../../cli/command-secret-gateway.js");
+    const { resolveCommandSecretRefsViaGateway } = await import(
+      "../../../cli/command-secret-gateway.js"
+    );
 
     await collectDoctorPreviewNotes({
       cfg: {

@@ -2033,8 +2033,9 @@ describe("createModelSelectionState resolveDefaultReasoningLevel", () => {
   });
 
   it("returns on when catalog model has reasoning true", async () => {
-    const { loadModelCatalog: loadModelCatalogForCase } =
-      await import("../../agents/model-catalog.runtime.js");
+    const { loadModelCatalog: loadModelCatalogForCase } = await import(
+      "../../agents/model-catalog.runtime.js"
+    );
     vi.mocked(loadModelCatalogForCase).mockResolvedValueOnce([
       { provider: "openrouter", id: "x-ai/grok-4.1-fast", name: "Grok", reasoning: true },
     ]);

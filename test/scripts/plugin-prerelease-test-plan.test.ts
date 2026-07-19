@@ -135,6 +135,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
     expect(script).toContain("clawhub:@operator/kitchen-sink@beta");
     expect(script).toContain("OPENCLAW_KITCHEN_SINK_PLUGIN_MAX_MEMORY_MIB");
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "npm-to-clawhub|clawhub:@operator/kitchen-sink@latest|openclaw-kitchen-sink-fixture|clawhub|success|basic||${KITCHEN_SINK_NPM_SPEC}",
     );
     expect(script).toContain("scripts/e2e/lib/kitchen-sink-plugin/sweep.sh");
@@ -149,6 +150,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
       sweepScript.indexOf("run_success_scenario()"),
       sweepScript.indexOf("run_failure_scenario()"),
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(successScenario.indexOf('plugins install "${install_args[@]}" --force')).toBeLessThan(
       successScenario.indexOf("configure_kitchen_sink_runtime"),
     );
@@ -242,6 +244,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
     expect(assertionsScript).toContain('node_modules", "openclaw');
     expect(fixtureServer).toContain('"is-number": "7.0.0"');
     expect(fixtureServer).toContain('openclaw: ">=2026.4.11"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(fixtureServer).toContain("/versions/${fixture.version}/artifact");
   });
 
@@ -297,12 +300,14 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
     expect(buildDistStep.env).toEqual({ NODE_OPTIONS: "--max-old-space-size=8192" });
     expect(staticShard).toEqual({
       if: "needs.preflight.outputs.run_plugin_prerelease_static == 'true'",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       name: "${{ matrix.check_name }}",
       needs: ["preflight"],
       permissions: {
         contents: "read",
       },
       "runs-on":
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ github.event_name == 'workflow_dispatch' && 'ubuntu-24.04' || 'blacksmith-8vcpu-ubuntu-2404' }}",
       steps: [
         {
@@ -312,6 +317,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
             "fetch-depth": 1,
             "fetch-tags": false,
             "persist-credentials": false,
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             ref: "${{ needs.preflight.outputs.checkout_revision }}",
             submodules: false,
           },
@@ -325,12 +331,15 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
         },
         {
           env: {
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             PLUGIN_PRERELEASE_COMMAND: "${{ matrix.command }}",
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             PLUGIN_PRERELEASE_TASK: "${{ matrix.task }}",
           },
           name: "Run plugin prerelease static shard",
           run: [
             "set -euo pipefail",
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             'echo "Running ${PLUGIN_PRERELEASE_TASK}: ${PLUGIN_PRERELEASE_COMMAND}"',
             'bash -c "$PLUGIN_PRERELEASE_COMMAND"',
             "",
@@ -340,6 +349,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
       ],
       strategy: {
         "fail-fast": false,
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         matrix: "${{ fromJson(needs.preflight.outputs.plugin_prerelease_static_matrix) }}",
       },
       "timeout-minutes": 45,
@@ -366,41 +376,62 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
     });
     expect(manifestEnv).toEqual({
       OPENCLAW_CI_CHANGED_PATHS_JSON:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ steps.changed_scope.outputs.changed_paths_json || 'null' }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       OPENCLAW_CI_CHECKOUT_REVISION: "${{ steps.checkout_ref.outputs.sha }}",
       OPENCLAW_CI_DOCS_CHANGED:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ github.event_name == 'workflow_dispatch' && 'true' || steps.docs_scope.outputs.docs_changed }}",
       OPENCLAW_CI_DOCS_ONLY:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ github.event_name == 'workflow_dispatch' && 'false' || steps.docs_scope.outputs.docs_only }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       OPENCLAW_CI_EVENT_NAME: "${{ github.event_name }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       OPENCLAW_CI_HISTORICAL_TARGET: "${{ steps.historical_target.outputs.eligible || 'false' }}",
       OPENCLAW_CI_RELEASE_CANDIDATE_TARGET:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ steps.release_candidate_target.outputs.eligible || 'false' }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       OPENCLAW_CI_REPOSITORY: "${{ github.repository }}",
       OPENCLAW_CI_RUN_ANDROID:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ github.event_name == 'workflow_dispatch' && (inputs.release_gate || inputs.include_android) && 'true' || steps.changed_scope.outputs.run_android || 'false' }}",
       OPENCLAW_CI_RUN_CONTROL_UI_I18N:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_control_ui_i18n || 'false' }}",
       OPENCLAW_CI_RUN_IOS_BUILD:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_ios_build || 'false' }}",
       OPENCLAW_CI_RUN_MACOS:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_macos || 'false' }}",
       OPENCLAW_CI_RUN_NATIVE_I18N:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_native_i18n || 'false' }}",
       OPENCLAW_CI_RUN_NODE:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_node || 'false' }}",
       OPENCLAW_CI_RUN_NODE_FAST_CI_ROUTING:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ github.event_name == 'workflow_dispatch' && 'false' || steps.changed_scope.outputs.run_node_fast_ci_routing || 'false' }}",
       OPENCLAW_CI_RUN_NODE_FAST_ONLY:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ github.event_name == 'workflow_dispatch' && 'false' || steps.changed_scope.outputs.run_node_fast_only || 'false' }}",
       OPENCLAW_CI_RUN_NODE_FAST_PLUGIN_CONTRACTS:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ github.event_name == 'workflow_dispatch' && 'false' || steps.changed_scope.outputs.run_node_fast_plugin_contracts || 'false' }}",
       OPENCLAW_CI_RUN_SKILLS_PYTHON:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_skills_python || 'false' }}",
       OPENCLAW_CI_RUN_UI_TESTS:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_ui_tests || 'false' }}",
       OPENCLAW_CI_RUN_WINDOWS:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ github.event_name == 'workflow_dispatch' && 'true' || steps.changed_scope.outputs.run_windows || 'false' }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       OPENCLAW_CI_WORKFLOW_REVISION: "${{ github.sha }}",
     });
     expect(manifestEnv).not.toHaveProperty("OPENCLAW_CI_FULL_RELEASE_VALIDATION");
@@ -424,13 +455,16 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
     expect(normalCiScript).toContain('args+=(-f historical_target_tag="$TARGET_CONTEXT_REF")');
     expect(normalCiScript).toContain('args+=(-f release_candidate_ref="$TARGET_CONTEXT_REF")');
     expect(releaseChecksScript).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'release_checks_target_ref="${TARGET_CONTEXT_REF:-$TARGET_REF}"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseChecksStep.env?.TARGET_CONTEXT_REF).toBe("${{ inputs.target_context_ref }}");
     expect(releaseChecksScript).toContain('-f ref="$release_checks_target_ref"');
     expect(releaseChecksScript).toContain("args+=(-f allow_frozen_target_scenario_omissions=true)");
     expect(releaseWorkflowSource).toContain('--arg targetContextRef "$TARGET_CONTEXT_REF"');
     expect(releaseWorkflowSource).toContain("targetContextRef: $targetContextRef");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(normalCiScript).toContain('dispatch_and_wait ci.yml "$dispatch_run_name" "${args[@]}"');
     expect(normalCiScript).not.toContain("full_release_validation=true");
     expect(pluginPrereleaseScript).toContain(
@@ -463,7 +497,9 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
       type: "string",
     });
     expect(pluginManifestEnv).toEqual({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       EXPECTED_SHA: "${{ inputs.expected_sha }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       FULL_RELEASE_VALIDATION: "${{ inputs.full_release_validation && 'true' || 'false' }}",
     });
     expect(pluginManifestScript).toContain(
@@ -473,31 +509,44 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
       "const runDocker = fullReleaseValidation && dockerLanes.length > 0;",
     );
     expect(pluginPreflight.outputs).toEqual({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       checkout_revision: "${{ steps.manifest.outputs.checkout_revision }}",
       plugin_prerelease_docker_lanes:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ steps.manifest.outputs.plugin_prerelease_docker_lanes }}",
       plugin_prerelease_extension_matrix:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ steps.manifest.outputs.plugin_prerelease_extension_matrix }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       plugin_prerelease_node_matrix: "${{ steps.manifest.outputs.plugin_prerelease_node_matrix }}",
       plugin_prerelease_static_matrix:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ steps.manifest.outputs.plugin_prerelease_static_matrix }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       run_plugin_prerelease_docker: "${{ steps.manifest.outputs.run_plugin_prerelease_docker }}",
       run_plugin_prerelease_extensions:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ steps.manifest.outputs.run_plugin_prerelease_extensions }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       run_plugin_prerelease_node: "${{ steps.manifest.outputs.run_plugin_prerelease_node }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       run_plugin_prerelease_static: "${{ steps.manifest.outputs.run_plugin_prerelease_static }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       run_plugin_prerelease_suite: "${{ steps.manifest.outputs.run_plugin_prerelease_suite }}",
     });
     expect(staticShard.strategy.matrix).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ fromJson(needs.preflight.outputs.plugin_prerelease_static_matrix) }}",
     );
     expect(nodeShard.strategy.matrix).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ fromJson(needs.preflight.outputs.plugin_prerelease_node_matrix) }}",
     );
     expect(extensionShard.if).toBe(
       "needs.preflight.outputs.run_plugin_prerelease_extensions == 'true'",
     );
     expect(extensionShard.strategy.matrix).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ fromJson(needs.preflight.outputs.plugin_prerelease_extension_matrix) }}",
     );
     expect(
@@ -523,6 +572,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
     });
     expect(inspectorRun.run).toContain("extensions/");
     expect(inspectorRun.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'npm exec --yes "@operator/plugin-inspector@${OPENCLAW_PLUGIN_INSPECTOR_VERSION}" -- ci',
     );
     expect(inspectorRun.run).toContain("This job is informational");
@@ -546,6 +596,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
       ).run,
     ).toContain('bash -c "$PLUGIN_PRERELEASE_COMMAND"');
     expect(dockerSuite).toEqual({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       if: "${{ inputs.full_release_validation && needs.preflight.outputs.run_plugin_prerelease_docker == 'true' }}",
       name: "plugin-prerelease-docker-suite",
       needs: ["preflight"],
@@ -557,6 +608,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
       },
       uses: "./.github/workflows/openclaw-live-and-e2e-checks-reusable.yml",
       with: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         docker_lanes: "${{ needs.preflight.outputs.plugin_prerelease_docker_lanes }}",
         include_live_suites: false,
         include_openwebui: false,
@@ -564,6 +616,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
         include_repo_e2e: false,
         live_models_only: false,
         allow_unreleased_changelog: true,
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         ref: "${{ needs.preflight.outputs.checkout_revision }}",
         shared_image_artifact_namespace: "plugin-prerelease",
         shared_image_policy: "no-push-artifact",
@@ -592,12 +645,16 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
 
     expect(releaseChecksWorkflow.concurrency).toEqual({
       group:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "openclaw-release-checks-${{ inputs.expected_sha || inputs.ref }}-${{ inputs.rerun_group }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "cancel-in-progress": "${{ startsWith(github.ref, 'refs/heads/tideclaw/alpha/') }}",
     });
     expect(fullReleaseWorkflow.concurrency).toEqual({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       group: "full-release-validation-${{ inputs.ref }}-${{ inputs.rerun_group }}",
       "cancel-in-progress":
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ (inputs.ref == 'main' && inputs.rerun_group == 'all') || startsWith(inputs.ref, 'tideclaw/alpha/') || startsWith(inputs.ref, 'release/') }}",
     });
     expect(releaseChecksWorkflow.jobs.resolve_target["runs-on"]).toBe("ubuntu-24.04");
@@ -616,6 +673,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
     }
     expect(fullReleaseWorkflow.jobs.performance["runs-on"]).toBe("blacksmith-4vcpu-ubuntu-2404");
     expect(fullReleaseWorkflow.jobs.normal_ci["timeout-minutes"]).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ inputs.release_profile != 'beta' && 240 || 60 }}",
     );
     expect(fullReleaseWorkflow.jobs.normal_ci.needs).toEqual(["resolve_target", "evidence_reuse"]);
@@ -626,6 +684,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
       "needs.evidence_reuse.outputs.reuse != 'true'",
     );
     expect(fullReleaseWorkflow.jobs.docker_runtime_assets_preflight.if).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ always() && needs.resolve_target.result == 'success' && inputs.rerun_group == 'all' && needs.evidence_reuse.outputs.reuse != 'true' }}",
     );
     expect(fullReleaseWorkflow.jobs.docker_runtime_assets_preflight["timeout-minutes"]).toBe(20);
@@ -645,9 +704,11 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
       ),
     ).toBe(false);
     expect(fullReleaseWorkflow.jobs.plugin_prerelease["timeout-minutes"]).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ inputs.release_profile == 'full' && 300 || inputs.release_profile == 'stable' && 240 || 60 }}",
     );
     expect(fullReleaseWorkflow.jobs.release_checks["timeout-minutes"]).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ inputs.release_profile != 'beta' && 240 || 60 }}",
     );
     const fullReleaseSource = readFileSync(".github/workflows/full-release-validation.yml", "utf8");
@@ -667,6 +728,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
       (step: WorkflowStep) => step.name === "Capture selected inputs",
     );
     const currentTreeAllowance =
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ needs.resolve_target.outputs.allow_unreleased_changelog == 'true' }}";
 
     expect(workflow.on.workflow_dispatch.inputs.allow_unreleased_changelog).toEqual({
@@ -677,6 +739,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
       type: "boolean",
     });
     expect(resolveTarget.outputs.allow_unreleased_changelog).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ steps.inputs.outputs.allow_unreleased_changelog }}",
     );
     expect(captureInputs?.run).toContain('RELEASE_REF_INPUT" == "main"');
@@ -697,6 +760,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
       currentTreeAllowance,
     );
     const fullReleaseAllowance =
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ inputs.target_context_ref == '' && (inputs.allow_unreleased_changelog || inputs.ref == 'main' || inputs.ref == 'refs/heads/main') }}";
     const releaseChecksDispatch = fullReleaseWorkflow.jobs.release_checks.steps.find(
       (step: WorkflowStep) => step.name === "Dispatch and monitor release checks",
@@ -742,9 +806,11 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
       (step: { name?: string }) => step.name === "Verify release check results",
     );
     expect(verifyStep.env.RUNTIME_TOOL_COVERAGE_RELEASE_CHECKS_RESULT).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ needs.runtime_tool_coverage_release_checks.result }}",
     );
     expect(verifyStep.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '"runtime_tool_coverage_release_checks=${RUNTIME_TOOL_COVERAGE_RELEASE_CHECKS_RESULT}"',
     );
   });

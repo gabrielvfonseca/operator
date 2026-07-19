@@ -200,7 +200,7 @@ type InstalledPluginIndexSqliteRow = {
 };
 
 function isExplicitLegacyJsonStorePath(options: InstalledPluginIndexStoreOptions): boolean {
-  return Boolean(options.filePath && options.filePath.endsWith(".json"));
+  return Boolean(options.filePath?.endsWith(".json"));
 }
 
 function readLegacyRecordContainer(value: unknown): unknown {

@@ -283,8 +283,8 @@ export async function startCodexAttemptThread(params: {
                 !expected ||
                 Boolean(
                   runtimeArtifact &&
-                  runtimeArtifact.id === expected.id &&
-                  runtimeArtifact.fingerprint === expected.fingerprint,
+                    runtimeArtifact.id === expected.id &&
+                    runtimeArtifact.fingerprint === expected.fingerprint,
                 );
               if (
                 !runtimeArtifact ||

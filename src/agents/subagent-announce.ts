@@ -189,6 +189,7 @@ async function wakeSubagentRunAfterDescendants(params: {
     taskLabel: params.taskLabel,
   });
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let wakeRunId;
   try {
     const wakeResponse = await runAnnounceDeliveryWithRetry<{ runId?: string }>({

@@ -9,21 +9,21 @@ import type { CliMockOutputRuntime } from "./test-runtime-capture.js";
 
 type UnknownMock = Mock<(...args: unknown[]) => unknown>;
 type AsyncUnknownMock = Mock<(...args: unknown[]) => Promise<unknown>>;
-type LoadConfigFn = (typeof import("../config/config.js"))["loadConfig"];
-type ParseClawHubPluginSpecFn = (typeof import("../infra/clawhub.js"))["parseClawHubPluginSpec"];
+type LoadConfigFn = typeof import("../config/config.js")["loadConfig"];
+type ParseClawHubPluginSpecFn = typeof import("../infra/clawhub.js")["parseClawHubPluginSpec"];
 type InstallPluginFromMarketplaceFn =
-  (typeof import("../plugins/marketplace.js"))["installPluginFromMarketplace"];
+  typeof import("../plugins/marketplace.js")["installPluginFromMarketplace"];
 type InstallPluginFromGitSpecFn =
-  (typeof import("../plugins/git-install.js"))["installPluginFromGitSpec"];
-type ParseGitPluginSpecFn = (typeof import("../plugins/git-install.js"))["parseGitPluginSpec"];
+  typeof import("../plugins/git-install.js")["installPluginFromGitSpec"];
+type ParseGitPluginSpecFn = typeof import("../plugins/git-install.js")["parseGitPluginSpec"];
 type ListMarketplacePluginsFn =
-  (typeof import("../plugins/marketplace.js"))["listMarketplacePlugins"];
+  typeof import("../plugins/marketplace.js")["listMarketplacePlugins"];
 type ResolveMarketplaceInstallShortcutFn =
-  (typeof import("../plugins/marketplace.js"))["resolveMarketplaceInstallShortcut"];
+  typeof import("../plugins/marketplace.js")["resolveMarketplaceInstallShortcut"];
 type UpdateNpmInstalledPluginsFn =
-  (typeof import("../plugins/update.js"))["updateNpmInstalledPlugins"];
+  typeof import("../plugins/update.js")["updateNpmInstalledPlugins"];
 type UpdateNpmInstalledHookPacksFn =
-  (typeof import("../hooks/update.js"))["updateNpmInstalledHookPacks"];
+  typeof import("../hooks/update.js")["updateNpmInstalledHookPacks"];
 type PluginInstallRecordMap = Record<string, PluginInstallRecord>;
 
 function createEmptyUninstallActions() {
@@ -200,37 +200,37 @@ vi.mock("../config/config.js", () => ({
   getRuntimeConfig: () => loadConfig(),
   loadConfig: () => loadConfig(),
   readConfigFileSnapshot: ((
-    ...args: Parameters<(typeof import("../config/config.js"))["readConfigFileSnapshot"]>
+    ...args: Parameters<typeof import("../config/config.js")["readConfigFileSnapshot"]>
   ) =>
     invokeMock<
-      Parameters<(typeof import("../config/config.js"))["readConfigFileSnapshot"]>,
-      ReturnType<(typeof import("../config/config.js"))["readConfigFileSnapshot"]>
+      Parameters<typeof import("../config/config.js")["readConfigFileSnapshot"]>,
+      ReturnType<typeof import("../config/config.js")["readConfigFileSnapshot"]>
     >(
       readConfigFileSnapshot,
       ...args,
-    )) as (typeof import("../config/config.js"))["readConfigFileSnapshot"],
+    )) as typeof import("../config/config.js")["readConfigFileSnapshot"],
   readConfigFileSnapshotForWrite: ((
-    ...args: Parameters<(typeof import("../config/config.js"))["readConfigFileSnapshotForWrite"]>
+    ...args: Parameters<typeof import("../config/config.js")["readConfigFileSnapshotForWrite"]>
   ) =>
     invokeMock<
-      Parameters<(typeof import("../config/config.js"))["readConfigFileSnapshotForWrite"]>,
-      ReturnType<(typeof import("../config/config.js"))["readConfigFileSnapshotForWrite"]>
+      Parameters<typeof import("../config/config.js")["readConfigFileSnapshotForWrite"]>,
+      ReturnType<typeof import("../config/config.js")["readConfigFileSnapshotForWrite"]>
     >(
       readConfigFileSnapshotForWrite,
       ...args,
-    )) as (typeof import("../config/config.js"))["readConfigFileSnapshotForWrite"],
+    )) as typeof import("../config/config.js")["readConfigFileSnapshotForWrite"],
   writeConfigFile: ((config: OperatorConfig) =>
     invokeMock<
       [OperatorConfig],
-      ReturnType<(typeof import("../config/config.js"))["writeConfigFile"]>
-    >(writeConfigFile, config)) as (typeof import("../config/config.js"))["writeConfigFile"],
+      ReturnType<typeof import("../config/config.js")["writeConfigFile"]>
+    >(writeConfigFile, config)) as typeof import("../config/config.js")["writeConfigFile"],
   replaceConfigFile: ((
-    params: Parameters<(typeof import("../config/config.js"))["replaceConfigFile"]>[0],
+    params: Parameters<typeof import("../config/config.js")["replaceConfigFile"]>[0],
   ) =>
     invokeMock<
-      [Parameters<(typeof import("../config/config.js"))["replaceConfigFile"]>[0]],
-      ReturnType<(typeof import("../config/config.js"))["replaceConfigFile"]>
-    >(replaceConfigFile, params)) as (typeof import("../config/config.js"))["replaceConfigFile"],
+      [Parameters<typeof import("../config/config.js")["replaceConfigFile"]>[0]],
+      ReturnType<typeof import("../config/config.js")["replaceConfigFile"]>
+    >(replaceConfigFile, params)) as typeof import("../config/config.js")["replaceConfigFile"],
 }));
 
 vi.mock("../config/paths.js", () => ({
@@ -250,39 +250,36 @@ vi.mock("../plugins/marketplace.js", () => ({
 vi.mock("../plugins/enable.js", () => ({
   enableExplicitlySelectedPluginInConfig: ((
     ...args: Parameters<
-      (typeof import("../plugins/enable.js"))["enableExplicitlySelectedPluginInConfig"]
+      typeof import("../plugins/enable.js")["enableExplicitlySelectedPluginInConfig"]
     >
   ) =>
     invokeMock<
-      Parameters<(typeof import("../plugins/enable.js"))["enableExplicitlySelectedPluginInConfig"]>,
+      Parameters<typeof import("../plugins/enable.js")["enableExplicitlySelectedPluginInConfig"]>,
       unknown
     >(
       enablePluginInConfig,
       ...args,
-    )) as (typeof import("../plugins/enable.js"))["enableExplicitlySelectedPluginInConfig"],
+    )) as typeof import("../plugins/enable.js")["enableExplicitlySelectedPluginInConfig"],
   enablePluginInConfig: ((
-    ...args: Parameters<(typeof import("../plugins/enable.js"))["enablePluginInConfig"]>
+    ...args: Parameters<typeof import("../plugins/enable.js")["enablePluginInConfig"]>
   ) =>
-    invokeMock<
-      Parameters<(typeof import("../plugins/enable.js"))["enablePluginInConfig"]>,
-      unknown
-    >(
+    invokeMock<Parameters<typeof import("../plugins/enable.js")["enablePluginInConfig"]>, unknown>(
       enablePluginInConfig,
       ...args,
-    )) as (typeof import("../plugins/enable.js"))["enablePluginInConfig"],
+    )) as typeof import("../plugins/enable.js")["enablePluginInConfig"],
 }));
 
 vi.mock("../plugins/installs.js", () => ({
   recordPluginInstall: ((
-    ...args: Parameters<(typeof import("../plugins/installs.js"))["recordPluginInstall"]>
+    ...args: Parameters<typeof import("../plugins/installs.js")["recordPluginInstall"]>
   ) =>
     invokeMock<
-      Parameters<(typeof import("../plugins/installs.js"))["recordPluginInstall"]>,
-      ReturnType<(typeof import("../plugins/installs.js"))["recordPluginInstall"]>
+      Parameters<typeof import("../plugins/installs.js")["recordPluginInstall"]>,
+      ReturnType<typeof import("../plugins/installs.js")["recordPluginInstall"]>
     >(
       recordPluginInstall,
       ...args,
-    )) as (typeof import("../plugins/installs.js"))["recordPluginInstall"],
+    )) as typeof import("../plugins/installs.js")["recordPluginInstall"],
 }));
 
 vi.mock("../plugins/installed-plugin-index-records.js", async (importOriginal) => {
@@ -325,87 +322,85 @@ vi.mock("../plugins/manifest-registry.js", () => ({
 
 vi.mock("../plugins/status.js", () => ({
   buildPluginSnapshotReport: ((
-    ...args: Parameters<(typeof import("../plugins/status.js"))["buildPluginSnapshotReport"]>
+    ...args: Parameters<typeof import("../plugins/status.js")["buildPluginSnapshotReport"]>
   ) =>
     invokeMock<
-      Parameters<(typeof import("../plugins/status.js"))["buildPluginSnapshotReport"]>,
-      ReturnType<(typeof import("../plugins/status.js"))["buildPluginSnapshotReport"]>
+      Parameters<typeof import("../plugins/status.js")["buildPluginSnapshotReport"]>,
+      ReturnType<typeof import("../plugins/status.js")["buildPluginSnapshotReport"]>
     >(
       buildPluginSnapshotReport,
       ...args,
-    )) as (typeof import("../plugins/status.js"))["buildPluginSnapshotReport"],
+    )) as typeof import("../plugins/status.js")["buildPluginSnapshotReport"],
   buildPluginRegistrySnapshotReport: ((
-    ...args: Parameters<
-      (typeof import("../plugins/status.js"))["buildPluginRegistrySnapshotReport"]
-    >
+    ...args: Parameters<typeof import("../plugins/status.js")["buildPluginRegistrySnapshotReport"]>
   ) =>
     invokeMock<
-      Parameters<(typeof import("../plugins/status.js"))["buildPluginRegistrySnapshotReport"]>,
-      ReturnType<(typeof import("../plugins/status.js"))["buildPluginRegistrySnapshotReport"]>
+      Parameters<typeof import("../plugins/status.js")["buildPluginRegistrySnapshotReport"]>,
+      ReturnType<typeof import("../plugins/status.js")["buildPluginRegistrySnapshotReport"]>
     >(
       buildPluginRegistrySnapshotReport,
       ...args,
-    )) as (typeof import("../plugins/status.js"))["buildPluginRegistrySnapshotReport"],
+    )) as typeof import("../plugins/status.js")["buildPluginRegistrySnapshotReport"],
   buildPluginInspectReport: ((
-    ...args: Parameters<(typeof import("../plugins/status.js"))["buildPluginInspectReport"]>
+    ...args: Parameters<typeof import("../plugins/status.js")["buildPluginInspectReport"]>
   ) =>
     invokeMock<
-      Parameters<(typeof import("../plugins/status.js"))["buildPluginInspectReport"]>,
-      ReturnType<(typeof import("../plugins/status.js"))["buildPluginInspectReport"]>
+      Parameters<typeof import("../plugins/status.js")["buildPluginInspectReport"]>,
+      ReturnType<typeof import("../plugins/status.js")["buildPluginInspectReport"]>
     >(
       buildPluginInspectReport,
       ...args,
-    )) as (typeof import("../plugins/status.js"))["buildPluginInspectReport"],
+    )) as typeof import("../plugins/status.js")["buildPluginInspectReport"],
   buildAllPluginInspectReports: ((
-    ...args: Parameters<(typeof import("../plugins/status.js"))["buildAllPluginInspectReports"]>
+    ...args: Parameters<typeof import("../plugins/status.js")["buildAllPluginInspectReports"]>
   ) =>
     invokeMock<
-      Parameters<(typeof import("../plugins/status.js"))["buildAllPluginInspectReports"]>,
-      ReturnType<(typeof import("../plugins/status.js"))["buildAllPluginInspectReports"]>
+      Parameters<typeof import("../plugins/status.js")["buildAllPluginInspectReports"]>,
+      ReturnType<typeof import("../plugins/status.js")["buildAllPluginInspectReports"]>
     >(
       buildAllPluginInspectReports,
       ...args,
-    )) as (typeof import("../plugins/status.js"))["buildAllPluginInspectReports"],
+    )) as typeof import("../plugins/status.js")["buildAllPluginInspectReports"],
   buildPluginDiagnosticsReport: ((
-    ...args: Parameters<(typeof import("../plugins/status.js"))["buildPluginDiagnosticsReport"]>
+    ...args: Parameters<typeof import("../plugins/status.js")["buildPluginDiagnosticsReport"]>
   ) =>
     invokeMock<
-      Parameters<(typeof import("../plugins/status.js"))["buildPluginDiagnosticsReport"]>,
-      ReturnType<(typeof import("../plugins/status.js"))["buildPluginDiagnosticsReport"]>
+      Parameters<typeof import("../plugins/status.js")["buildPluginDiagnosticsReport"]>,
+      ReturnType<typeof import("../plugins/status.js")["buildPluginDiagnosticsReport"]>
     >(
       buildPluginDiagnosticsReport,
       ...args,
-    )) as (typeof import("../plugins/status.js"))["buildPluginDiagnosticsReport"],
+    )) as typeof import("../plugins/status.js")["buildPluginDiagnosticsReport"],
   buildPluginCompatibilityNotices: ((
-    ...args: Parameters<(typeof import("../plugins/status.js"))["buildPluginCompatibilityNotices"]>
+    ...args: Parameters<typeof import("../plugins/status.js")["buildPluginCompatibilityNotices"]>
   ) =>
     invokeMock<
-      Parameters<(typeof import("../plugins/status.js"))["buildPluginCompatibilityNotices"]>,
-      ReturnType<(typeof import("../plugins/status.js"))["buildPluginCompatibilityNotices"]>
+      Parameters<typeof import("../plugins/status.js")["buildPluginCompatibilityNotices"]>,
+      ReturnType<typeof import("../plugins/status.js")["buildPluginCompatibilityNotices"]>
     >(
       buildPluginCompatibilityNotices,
       ...args,
-    )) as (typeof import("../plugins/status.js"))["buildPluginCompatibilityNotices"],
+    )) as typeof import("../plugins/status.js")["buildPluginCompatibilityNotices"],
   formatPluginCompatibilityNotice: (entry: { message: string }) => entry.message,
 }));
 
 vi.mock("../plugins/status-snapshot.js", () => ({
   buildPluginRegistrySnapshotReport: ((
     ...args: Parameters<
-      (typeof import("../plugins/status-snapshot.js"))["buildPluginRegistrySnapshotReport"]
+      typeof import("../plugins/status-snapshot.js")["buildPluginRegistrySnapshotReport"]
     >
   ) =>
     invokeMock<
       Parameters<
-        (typeof import("../plugins/status-snapshot.js"))["buildPluginRegistrySnapshotReport"]
+        typeof import("../plugins/status-snapshot.js")["buildPluginRegistrySnapshotReport"]
       >,
       ReturnType<
-        (typeof import("../plugins/status-snapshot.js"))["buildPluginRegistrySnapshotReport"]
+        typeof import("../plugins/status-snapshot.js")["buildPluginRegistrySnapshotReport"]
       >
     >(
       buildPluginRegistrySnapshotReport,
       ...args,
-    )) as (typeof import("../plugins/status-snapshot.js"))["buildPluginRegistrySnapshotReport"],
+    )) as typeof import("../plugins/status-snapshot.js")["buildPluginRegistrySnapshotReport"],
 }));
 
 vi.mock("../plugins/plugin-registry.js", () => ({
@@ -419,25 +414,25 @@ vi.mock("../plugins/plugin-registry.js", () => ({
     diagnostics: [],
   }),
   inspectPluginRegistry: ((
-    ...args: Parameters<(typeof import("../plugins/plugin-registry.js"))["inspectPluginRegistry"]>
+    ...args: Parameters<typeof import("../plugins/plugin-registry.js")["inspectPluginRegistry"]>
   ) =>
     invokeMock<
-      Parameters<(typeof import("../plugins/plugin-registry.js"))["inspectPluginRegistry"]>,
-      ReturnType<(typeof import("../plugins/plugin-registry.js"))["inspectPluginRegistry"]>
+      Parameters<typeof import("../plugins/plugin-registry.js")["inspectPluginRegistry"]>,
+      ReturnType<typeof import("../plugins/plugin-registry.js")["inspectPluginRegistry"]>
     >(
       inspectPluginRegistry,
       ...args,
-    )) as (typeof import("../plugins/plugin-registry.js"))["inspectPluginRegistry"],
+    )) as typeof import("../plugins/plugin-registry.js")["inspectPluginRegistry"],
   refreshPluginRegistry: ((
-    ...args: Parameters<(typeof import("../plugins/plugin-registry.js"))["refreshPluginRegistry"]>
+    ...args: Parameters<typeof import("../plugins/plugin-registry.js")["refreshPluginRegistry"]>
   ) =>
     invokeMock<
-      Parameters<(typeof import("../plugins/plugin-registry.js"))["refreshPluginRegistry"]>,
-      ReturnType<(typeof import("../plugins/plugin-registry.js"))["refreshPluginRegistry"]>
+      Parameters<typeof import("../plugins/plugin-registry.js")["refreshPluginRegistry"]>,
+      ReturnType<typeof import("../plugins/plugin-registry.js")["refreshPluginRegistry"]>
     >(
       refreshPluginRegistry,
       ...args,
-    )) as (typeof import("../plugins/plugin-registry.js"))["refreshPluginRegistry"],
+    )) as typeof import("../plugins/plugin-registry.js")["refreshPluginRegistry"],
 }));
 
 vi.mock("../plugins/loader.js", () => ({
@@ -452,15 +447,15 @@ vi.mock("../plugins/slots.js", async (importOriginal) => {
   return {
     ...actual,
     applyExclusiveSlotSelection: ((
-      params: Parameters<(typeof import("../plugins/slots.js"))["applyExclusiveSlotSelection"]>[0],
+      params: Parameters<typeof import("../plugins/slots.js")["applyExclusiveSlotSelection"]>[0],
     ) =>
       invokeMock<
-        [Parameters<(typeof import("../plugins/slots.js"))["applyExclusiveSlotSelection"]>[0]],
-        ReturnType<(typeof import("../plugins/slots.js"))["applyExclusiveSlotSelection"]>
+        [Parameters<typeof import("../plugins/slots.js")["applyExclusiveSlotSelection"]>[0]],
+        ReturnType<typeof import("../plugins/slots.js")["applyExclusiveSlotSelection"]>
       >(
         applyExclusiveSlotSelection,
         params,
-      )) as (typeof import("../plugins/slots.js"))["applyExclusiveSlotSelection"],
+      )) as typeof import("../plugins/slots.js")["applyExclusiveSlotSelection"],
   };
 });
 
@@ -469,31 +464,29 @@ vi.mock("../plugins/uninstall.js", async (importOriginal) => {
   return {
     ...actual,
     planPluginUninstall: ((
-      ...args: Parameters<(typeof import("../plugins/uninstall.js"))["planPluginUninstall"]>
+      ...args: Parameters<typeof import("../plugins/uninstall.js")["planPluginUninstall"]>
     ) =>
       invokeMock<
-        Parameters<(typeof import("../plugins/uninstall.js"))["planPluginUninstall"]>,
-        ReturnType<(typeof import("../plugins/uninstall.js"))["planPluginUninstall"]>
+        Parameters<typeof import("../plugins/uninstall.js")["planPluginUninstall"]>,
+        ReturnType<typeof import("../plugins/uninstall.js")["planPluginUninstall"]>
       >(
         planPluginUninstall,
         ...args,
-      )) as (typeof import("../plugins/uninstall.js"))["planPluginUninstall"],
+      )) as typeof import("../plugins/uninstall.js")["planPluginUninstall"],
     applyPluginUninstallDirectoryRemoval: ((
       ...args: Parameters<
-        (typeof import("../plugins/uninstall.js"))["applyPluginUninstallDirectoryRemoval"]
+        typeof import("../plugins/uninstall.js")["applyPluginUninstallDirectoryRemoval"]
       >
     ) =>
       invokeMock<
         Parameters<
-          (typeof import("../plugins/uninstall.js"))["applyPluginUninstallDirectoryRemoval"]
+          typeof import("../plugins/uninstall.js")["applyPluginUninstallDirectoryRemoval"]
         >,
-        ReturnType<
-          (typeof import("../plugins/uninstall.js"))["applyPluginUninstallDirectoryRemoval"]
-        >
+        ReturnType<typeof import("../plugins/uninstall.js")["applyPluginUninstallDirectoryRemoval"]>
       >(
         applyPluginUninstallDirectoryRemoval,
         ...args,
-      )) as (typeof import("../plugins/uninstall.js"))["applyPluginUninstallDirectoryRemoval"],
+      )) as typeof import("../plugins/uninstall.js")["applyPluginUninstallDirectoryRemoval"],
   };
 });
 
@@ -502,43 +495,43 @@ vi.mock("../plugins/update.js", async (importOriginal) => {
   return {
     ...actual,
     updateNpmInstalledPlugins: ((
-      ...args: Parameters<(typeof import("../plugins/update.js"))["updateNpmInstalledPlugins"]>
+      ...args: Parameters<typeof import("../plugins/update.js")["updateNpmInstalledPlugins"]>
     ) =>
       invokeMock<
-        Parameters<(typeof import("../plugins/update.js"))["updateNpmInstalledPlugins"]>,
-        ReturnType<(typeof import("../plugins/update.js"))["updateNpmInstalledPlugins"]>
+        Parameters<typeof import("../plugins/update.js")["updateNpmInstalledPlugins"]>,
+        ReturnType<typeof import("../plugins/update.js")["updateNpmInstalledPlugins"]>
       >(
         updateNpmInstalledPlugins,
         ...args,
-      )) as (typeof import("../plugins/update.js"))["updateNpmInstalledPlugins"],
+      )) as typeof import("../plugins/update.js")["updateNpmInstalledPlugins"],
   };
 });
 
 vi.mock("../hooks/update.js", () => ({
   updateNpmInstalledHookPacks: ((
-    ...args: Parameters<(typeof import("../hooks/update.js"))["updateNpmInstalledHookPacks"]>
+    ...args: Parameters<typeof import("../hooks/update.js")["updateNpmInstalledHookPacks"]>
   ) =>
     invokeMock<
-      Parameters<(typeof import("../hooks/update.js"))["updateNpmInstalledHookPacks"]>,
-      ReturnType<(typeof import("../hooks/update.js"))["updateNpmInstalledHookPacks"]>
+      Parameters<typeof import("../hooks/update.js")["updateNpmInstalledHookPacks"]>,
+      ReturnType<typeof import("../hooks/update.js")["updateNpmInstalledHookPacks"]>
     >(
       updateNpmInstalledHookPacks,
       ...args,
-    )) as (typeof import("../hooks/update.js"))["updateNpmInstalledHookPacks"],
+    )) as typeof import("../hooks/update.js")["updateNpmInstalledHookPacks"],
 }));
 
 vi.mock("./prompt.js", () => ({
   PromptInputClosedError,
-  promptText: ((...args: Parameters<(typeof import("./prompt.js"))["promptText"]>) =>
+  promptText: ((...args: Parameters<typeof import("./prompt.js")["promptText"]>) =>
     invokeMock<
-      Parameters<(typeof import("./prompt.js"))["promptText"]>,
-      ReturnType<(typeof import("./prompt.js"))["promptText"]>
-    >(promptText, ...args)) as (typeof import("./prompt.js"))["promptText"],
-  promptYesNo: ((...args: Parameters<(typeof import("./prompt.js"))["promptYesNo"]>) =>
+      Parameters<typeof import("./prompt.js")["promptText"]>,
+      ReturnType<typeof import("./prompt.js")["promptText"]>
+    >(promptText, ...args)) as typeof import("./prompt.js")["promptText"],
+  promptYesNo: ((...args: Parameters<typeof import("./prompt.js")["promptYesNo"]>) =>
     invokeMock<
-      Parameters<(typeof import("./prompt.js"))["promptYesNo"]>,
-      ReturnType<(typeof import("./prompt.js"))["promptYesNo"]>
-    >(promptYesNo, ...args)) as (typeof import("./prompt.js"))["promptYesNo"],
+      Parameters<typeof import("./prompt.js")["promptYesNo"]>,
+      ReturnType<typeof import("./prompt.js")["promptYesNo"]>
+    >(promptYesNo, ...args)) as typeof import("./prompt.js")["promptYesNo"],
 }));
 
 vi.mock("../plugins/install.js", () => ({
@@ -549,35 +542,35 @@ vi.mock("../plugins/install.js", () => ({
     UNSUPPORTED_PLAIN_FILE_PLUGIN: "unsupported_plain_file_plugin",
   },
   installPluginFromNpmSpec: ((
-    ...args: Parameters<(typeof import("../plugins/install.js"))["installPluginFromNpmSpec"]>
+    ...args: Parameters<typeof import("../plugins/install.js")["installPluginFromNpmSpec"]>
   ) =>
     invokeMock<
-      Parameters<(typeof import("../plugins/install.js"))["installPluginFromNpmSpec"]>,
-      ReturnType<(typeof import("../plugins/install.js"))["installPluginFromNpmSpec"]>
+      Parameters<typeof import("../plugins/install.js")["installPluginFromNpmSpec"]>,
+      ReturnType<typeof import("../plugins/install.js")["installPluginFromNpmSpec"]>
     >(
       installPluginFromNpmSpec,
       ...args,
-    )) as (typeof import("../plugins/install.js"))["installPluginFromNpmSpec"],
+    )) as typeof import("../plugins/install.js")["installPluginFromNpmSpec"],
   installPluginFromNpmPackArchive: ((
-    ...args: Parameters<(typeof import("../plugins/install.js"))["installPluginFromNpmPackArchive"]>
+    ...args: Parameters<typeof import("../plugins/install.js")["installPluginFromNpmPackArchive"]>
   ) =>
     invokeMock<
-      Parameters<(typeof import("../plugins/install.js"))["installPluginFromNpmPackArchive"]>,
-      ReturnType<(typeof import("../plugins/install.js"))["installPluginFromNpmPackArchive"]>
+      Parameters<typeof import("../plugins/install.js")["installPluginFromNpmPackArchive"]>,
+      ReturnType<typeof import("../plugins/install.js")["installPluginFromNpmPackArchive"]>
     >(
       installPluginFromNpmPackArchive,
       ...args,
-    )) as (typeof import("../plugins/install.js"))["installPluginFromNpmPackArchive"],
+    )) as typeof import("../plugins/install.js")["installPluginFromNpmPackArchive"],
   installPluginFromPath: ((
-    ...args: Parameters<(typeof import("../plugins/install.js"))["installPluginFromPath"]>
+    ...args: Parameters<typeof import("../plugins/install.js")["installPluginFromPath"]>
   ) =>
     invokeMock<
-      Parameters<(typeof import("../plugins/install.js"))["installPluginFromPath"]>,
-      ReturnType<(typeof import("../plugins/install.js"))["installPluginFromPath"]>
+      Parameters<typeof import("../plugins/install.js")["installPluginFromPath"]>,
+      ReturnType<typeof import("../plugins/install.js")["installPluginFromPath"]>
     >(
       installPluginFromPath,
       ...args,
-    )) as (typeof import("../plugins/install.js"))["installPluginFromPath"],
+    )) as typeof import("../plugins/install.js")["installPluginFromPath"],
 }));
 
 vi.mock("../plugins/bundled-sources.js", async (importOriginal) => {
@@ -585,42 +578,40 @@ vi.mock("../plugins/bundled-sources.js", async (importOriginal) => {
   return {
     ...actual,
     findBundledPluginSource: ((
-      ...args: Parameters<
-        (typeof import("../plugins/bundled-sources.js"))["findBundledPluginSource"]
-      >
+      ...args: Parameters<typeof import("../plugins/bundled-sources.js")["findBundledPluginSource"]>
     ) => {
       if (findBundledPluginSourceMock.getMockImplementation()) {
         return invokeMock<
-          Parameters<(typeof import("../plugins/bundled-sources.js"))["findBundledPluginSource"]>,
-          ReturnType<(typeof import("../plugins/bundled-sources.js"))["findBundledPluginSource"]>
+          Parameters<typeof import("../plugins/bundled-sources.js")["findBundledPluginSource"]>,
+          ReturnType<typeof import("../plugins/bundled-sources.js")["findBundledPluginSource"]>
         >(findBundledPluginSourceMock, ...args);
       }
       return actual.findBundledPluginSource(...args);
-    }) as (typeof import("../plugins/bundled-sources.js"))["findBundledPluginSource"],
+    }) as typeof import("../plugins/bundled-sources.js")["findBundledPluginSource"],
   };
 });
 
 vi.mock("../plugins/git-install.js", () => ({
   installPluginFromGitSpec: ((
-    ...args: Parameters<(typeof import("../plugins/git-install.js"))["installPluginFromGitSpec"]>
+    ...args: Parameters<typeof import("../plugins/git-install.js")["installPluginFromGitSpec"]>
   ) =>
     invokeMock<
-      Parameters<(typeof import("../plugins/git-install.js"))["installPluginFromGitSpec"]>,
-      ReturnType<(typeof import("../plugins/git-install.js"))["installPluginFromGitSpec"]>
+      Parameters<typeof import("../plugins/git-install.js")["installPluginFromGitSpec"]>,
+      ReturnType<typeof import("../plugins/git-install.js")["installPluginFromGitSpec"]>
     >(
       installPluginFromGitSpec,
       ...args,
-    )) as (typeof import("../plugins/git-install.js"))["installPluginFromGitSpec"],
+    )) as typeof import("../plugins/git-install.js")["installPluginFromGitSpec"],
   parseGitPluginSpec: ((
-    ...args: Parameters<(typeof import("../plugins/git-install.js"))["parseGitPluginSpec"]>
+    ...args: Parameters<typeof import("../plugins/git-install.js")["parseGitPluginSpec"]>
   ) =>
     invokeMock<
-      Parameters<(typeof import("../plugins/git-install.js"))["parseGitPluginSpec"]>,
-      ReturnType<(typeof import("../plugins/git-install.js"))["parseGitPluginSpec"]>
+      Parameters<typeof import("../plugins/git-install.js")["parseGitPluginSpec"]>,
+      ReturnType<typeof import("../plugins/git-install.js")["parseGitPluginSpec"]>
     >(
       parseGitPluginSpec,
       ...args,
-    )) as (typeof import("../plugins/git-install.js"))["parseGitPluginSpec"],
+    )) as typeof import("../plugins/git-install.js")["parseGitPluginSpec"],
 }));
 
 vi.mock("../hooks/install.js", () => ({
@@ -629,36 +620,36 @@ vi.mock("../hooks/install.js", () => ({
     EMPTY_OPERATOR_HOOKS: "empty_operator_hooks",
   },
   installHooksFromNpmSpec: ((
-    ...args: Parameters<(typeof import("../hooks/install.js"))["installHooksFromNpmSpec"]>
+    ...args: Parameters<typeof import("../hooks/install.js")["installHooksFromNpmSpec"]>
   ) =>
     invokeMock<
-      Parameters<(typeof import("../hooks/install.js"))["installHooksFromNpmSpec"]>,
-      ReturnType<(typeof import("../hooks/install.js"))["installHooksFromNpmSpec"]>
+      Parameters<typeof import("../hooks/install.js")["installHooksFromNpmSpec"]>,
+      ReturnType<typeof import("../hooks/install.js")["installHooksFromNpmSpec"]>
     >(
       installHooksFromNpmSpec,
       ...args,
-    )) as (typeof import("../hooks/install.js"))["installHooksFromNpmSpec"],
+    )) as typeof import("../hooks/install.js")["installHooksFromNpmSpec"],
   installHooksFromPath: ((
-    ...args: Parameters<(typeof import("../hooks/install.js"))["installHooksFromPath"]>
+    ...args: Parameters<typeof import("../hooks/install.js")["installHooksFromPath"]>
   ) =>
     invokeMock<
-      Parameters<(typeof import("../hooks/install.js"))["installHooksFromPath"]>,
-      ReturnType<(typeof import("../hooks/install.js"))["installHooksFromPath"]>
+      Parameters<typeof import("../hooks/install.js")["installHooksFromPath"]>,
+      ReturnType<typeof import("../hooks/install.js")["installHooksFromPath"]>
     >(
       installHooksFromPath,
       ...args,
-    )) as (typeof import("../hooks/install.js"))["installHooksFromPath"],
+    )) as typeof import("../hooks/install.js")["installHooksFromPath"],
   resolveHookInstallDir: (hookId: string) => `/tmp/hooks/${hookId}`,
 }));
 
 vi.mock("../hooks/installs.js", () => ({
   recordHookInstall: ((
-    ...args: Parameters<(typeof import("../hooks/installs.js"))["recordHookInstall"]>
+    ...args: Parameters<typeof import("../hooks/installs.js")["recordHookInstall"]>
   ) =>
     invokeMock<
-      Parameters<(typeof import("../hooks/installs.js"))["recordHookInstall"]>,
-      ReturnType<(typeof import("../hooks/installs.js"))["recordHookInstall"]>
-    >(recordHookInstall, ...args)) as (typeof import("../hooks/installs.js"))["recordHookInstall"],
+      Parameters<typeof import("../hooks/installs.js")["recordHookInstall"]>,
+      ReturnType<typeof import("../hooks/installs.js")["recordHookInstall"]>
+    >(recordHookInstall, ...args)) as typeof import("../hooks/installs.js")["recordHookInstall"],
 }));
 
 vi.mock("../plugins/clawhub.js", () => ({
@@ -668,28 +659,28 @@ vi.mock("../plugins/clawhub.js", () => ({
     ARTIFACT_UNAVAILABLE: "artifact_unavailable",
   },
   installPluginFromClawHub: ((
-    ...args: Parameters<(typeof import("../plugins/clawhub.js"))["installPluginFromClawHub"]>
+    ...args: Parameters<typeof import("../plugins/clawhub.js")["installPluginFromClawHub"]>
   ) =>
     invokeMock<
-      Parameters<(typeof import("../plugins/clawhub.js"))["installPluginFromClawHub"]>,
-      ReturnType<(typeof import("../plugins/clawhub.js"))["installPluginFromClawHub"]>
+      Parameters<typeof import("../plugins/clawhub.js")["installPluginFromClawHub"]>,
+      ReturnType<typeof import("../plugins/clawhub.js")["installPluginFromClawHub"]>
     >(
       installPluginFromClawHub,
       ...args,
-    )) as (typeof import("../plugins/clawhub.js"))["installPluginFromClawHub"],
+    )) as typeof import("../plugins/clawhub.js")["installPluginFromClawHub"],
 }));
 
 vi.mock("../infra/clawhub.js", () => ({
   parseClawHubPluginSpec: ((
-    ...args: Parameters<(typeof import("../infra/clawhub.js"))["parseClawHubPluginSpec"]>
+    ...args: Parameters<typeof import("../infra/clawhub.js")["parseClawHubPluginSpec"]>
   ) =>
     invokeMock<
-      Parameters<(typeof import("../infra/clawhub.js"))["parseClawHubPluginSpec"]>,
-      ReturnType<(typeof import("../infra/clawhub.js"))["parseClawHubPluginSpec"]>
+      Parameters<typeof import("../infra/clawhub.js")["parseClawHubPluginSpec"]>,
+      ReturnType<typeof import("../infra/clawhub.js")["parseClawHubPluginSpec"]>
     >(
       parseClawHubPluginSpec,
       ...args,
-    )) as (typeof import("../infra/clawhub.js"))["parseClawHubPluginSpec"],
+    )) as typeof import("../infra/clawhub.js")["parseClawHubPluginSpec"],
 }));
 
 const { registerPluginsCli } = await import("./plugins-cli.js");

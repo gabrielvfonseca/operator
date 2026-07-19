@@ -83,6 +83,7 @@ test("exec supports pty output, OPERATOR_SHELL, send-keys, and submit", async ()
   const { processTool, sessionId } = await startPtySession(
     currentNodeEvalCommand(
       [
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "process.stdout.write(`ok:${process.env.OPERATOR_SHELL || ''}`);",
         "const dataEvent=String.fromCharCode(100,97,116,97);",
         "const submitted=String.fromCharCode(115,117,98,109,105,116,116,101,100);",

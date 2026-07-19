@@ -127,7 +127,7 @@ function setActiveMemorySessionDisabled(
 
 type QaSuiteStep = {
   name: string;
-  run: () => Promise<string | void>;
+  run: () => Promise<string | undefined>;
 };
 
 type QaSuiteScenarioResult = {

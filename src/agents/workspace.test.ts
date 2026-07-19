@@ -130,12 +130,12 @@ async function expectCompletedWithoutBootstrap(dir: string) {
 
 function expectSubagentAllowedBootstrapNames(files: WorkspaceBootstrapFile[]) {
   const names = files.map((file) => file.name);
-  expect(names).toStrictEqual(["AGENTS.md", "TOOLS.md"]);
+  expect(names).toStrictEqual(["AGENTS.MD", "TOOLS.md"]);
 }
 
 function expectCronAllowedBootstrapNames(files: WorkspaceBootstrapFile[]) {
   const names = files.map((file) => file.name);
-  expect(names).toStrictEqual(["AGENTS.md", "SOUL.md", "TOOLS.md", "IDENTITY.md", "USER.md"]);
+  expect(names).toStrictEqual(["AGENTS.MD", "SOUL.md", "TOOLS.md", "IDENTITY.md", "USER.md"]);
 }
 
 describe("ensureAgentWorkspace", () => {
@@ -274,7 +274,7 @@ describe("ensureAgentWorkspace", () => {
     await expectPathMissing(path.join(tempDir, DEFAULT_BOOTSTRAP_FILENAME));
   });
 
-  it("accepts a recently attested workspace when customized AGENTS.md survives", async () => {
+  it("accepts a recently attested workspace when customized AGENTS.MD survives", async () => {
     // Custom instructions prove the directory is user-managed, so reseeding is
     // skipped and the workspace is accepted.
     const tempDir = await makeTempWorkspace("operator-workspace-");
@@ -796,7 +796,7 @@ describe("ensureAgentWorkspace", () => {
     const state = await readWorkspaceState(tempDir);
     expect(state.setupCompletedAt).toMatch(/\d{4}-\d{2}-\d{2}T/);
 
-    // Delete optional bootstrap files and customize AGENTS.md to simulate
+    // Delete optional bootstrap files and customize AGENTS.MD to simulate
     // a repository workspace where optional files only exist under agent
     // subdirectories but the root still has customized required files.
     await fs.unlink(path.join(tempDir, DEFAULT_SOUL_FILENAME));
@@ -818,7 +818,7 @@ describe("ensureAgentWorkspace", () => {
     await expectPathMissing(path.join(tempDir, DEFAULT_USER_FILENAME));
     await expectPathMissing(path.join(tempDir, DEFAULT_HEARTBEAT_FILENAME));
 
-    // Verify required files (AGENTS.md, TOOLS.md) still exist.
+    // Verify required files (AGENTS.MD, TOOLS.md) still exist.
     await expect(fs.access(path.join(tempDir, DEFAULT_AGENTS_FILENAME))).resolves.toBeUndefined();
     await expect(fs.access(path.join(tempDir, DEFAULT_TOOLS_FILENAME))).resolves.toBeUndefined();
   });
@@ -897,7 +897,7 @@ describe("loadWorkspaceBootstrapFiles", () => {
     await writeWorkspaceFile({
       dir: tempDir,
       name: DEFAULT_AGENTS_FILENAME,
-      content: "# AGENTS.md\n\nkeep me\n",
+      content: "# AGENTS.MD\n\nkeep me\n",
     });
 
     const originalReadFileSync = syncFs.readFileSync.bind(syncFs);
@@ -937,7 +937,7 @@ describe("loadWorkspaceBootstrapFiles", () => {
     await writeWorkspaceFile({
       dir: tempDir,
       name: DEFAULT_AGENTS_FILENAME,
-      content: "# AGENTS.md\n",
+      content: "# AGENTS.MD\n",
     });
 
     const readSpy = vi.spyOn(syncFs, "readFileSync").mockImplementation((() => {
@@ -964,7 +964,7 @@ describe("loadWorkspaceBootstrapFiles", () => {
     await writeWorkspaceFile({
       dir: tempDir,
       name: DEFAULT_AGENTS_FILENAME,
-      content: "# AGENTS.md\n\nboundary retry\n",
+      content: "# AGENTS.MD\n\nboundary retry\n",
     });
 
     const agentsPath = path.join(tempDir, DEFAULT_AGENTS_FILENAME);
@@ -999,7 +999,7 @@ describe("loadWorkspaceBootstrapFiles", () => {
     await writeWorkspaceFile({
       dir: tempDir,
       name: DEFAULT_AGENTS_FILENAME,
-      content: "# AGENTS.md\n\nopen retry\n",
+      content: "# AGENTS.MD\n\nopen retry\n",
     });
 
     // openRootFile reports a transient open failure as reason "io"; the reader
@@ -1033,7 +1033,7 @@ describe("loadWorkspaceBootstrapFiles", () => {
 
 describe("filterBootstrapFilesForSession", () => {
   const mockFiles: WorkspaceBootstrapFile[] = [
-    { name: "AGENTS.md", path: "/w/AGENTS.md", content: "", missing: false },
+    { name: "AGENTS.MD", path: "/w/AGENTS.md", content: "", missing: false },
     { name: "SOUL.md", path: "/w/SOUL.md", content: "", missing: false },
     { name: "TOOLS.md", path: "/w/TOOLS.md", content: "", missing: false },
     { name: "IDENTITY.md", path: "/w/IDENTITY.md", content: "", missing: false },

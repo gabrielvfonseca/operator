@@ -864,6 +864,7 @@ describe("gatherDaemonStatus", () => {
         tls: { enabled: true },
         auth: {
           mode: "token",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           token: "${DAEMON_GATEWAY_TOKEN}",
         },
       },

@@ -261,8 +261,9 @@ export function registerOnboardCommand(program: Command): void {
           defaultRuntime.exit(1);
           return;
         }
-        const { runSystemAgentWithInference } =
-          await import("../../commands/system-agent-with-inference.js");
+        const { runSystemAgentWithInference } = await import(
+          "../../commands/system-agent-with-inference.js"
+        );
         await runSystemAgentWithInference(
           {
             yes: false,

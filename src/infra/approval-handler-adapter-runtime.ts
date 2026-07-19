@@ -103,30 +103,26 @@ export function createLazyChannelApprovalNativeRuntimeAdapter<
       deliverPending: async (runtimeParams) =>
         (await loadRequired((runtime) => runtime.transport.deliverPending))(runtimeParams),
       updateEntry: async (runtimeParams) =>
-        await (
-          await loadOptional((runtime) => runtime.transport.updateEntry)
-        )?.(runtimeParams),
+        await (await loadOptional((runtime) => runtime.transport.updateEntry))?.(runtimeParams),
       deleteEntry: async (runtimeParams) =>
-        await (
-          await loadOptional((runtime) => runtime.transport.deleteEntry)
-        )?.(runtimeParams),
+        await (await loadOptional((runtime) => runtime.transport.deleteEntry))?.(runtimeParams),
     },
     interactions: {
       bindPending: async (runtimeParams) =>
         (await loadOptional((runtime) => runtime.interactions?.bindPending))?.(runtimeParams) ??
         null,
       unbindPending: async (runtimeParams) =>
-        await (
-          await loadOptional((runtime) => runtime.interactions?.unbindPending)
-        )?.(runtimeParams),
+        await (await loadOptional((runtime) => runtime.interactions?.unbindPending))?.(
+          runtimeParams,
+        ),
       clearPendingActions: async (runtimeParams) =>
-        await (
-          await loadOptional((runtime) => runtime.interactions?.clearPendingActions)
-        )?.(runtimeParams),
+        await (await loadOptional((runtime) => runtime.interactions?.clearPendingActions))?.(
+          runtimeParams,
+        ),
       cancelDelivered: async (runtimeParams) =>
-        await (
-          await loadOptional((runtime) => runtime.interactions?.cancelDelivered)
-        )?.(runtimeParams),
+        await (await loadOptional((runtime) => runtime.interactions?.cancelDelivered))?.(
+          runtimeParams,
+        ),
     },
     observe: {
       // Observe hooks are fire-and-forget at call sites. Reuse the already

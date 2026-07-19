@@ -43,7 +43,7 @@ export type TaskSuggestionDeliveryMode = "gateway";
 
 /** Correlates queued reply ownership transfer with later delivery drains. */
 export type QueuedReplyDeliveryCorrelation = {
-  begin: () => (() => void) | void;
+  begin: () => (() => void) | undefined;
 };
 
 /** Lifecycle hooks for queued follow-up replies. */
@@ -51,7 +51,7 @@ export type QueuedReplyLifecycle = {
   /** Stable cancellation owner used to keep collect-mode batches authorization-safe. */
   ownerKey?: string;
   /** Return false when the external owner rejects this queue identity. */
-  onEnqueued?: () => boolean | void;
+  onEnqueued?: () => boolean | undefined;
   /** Retires this source's cancellation ownership while retaining its live identity. */
   onCancellationRetired?: () => void;
   /** Called after the queued turn owns the reply lane, before model/tool execution. */
@@ -77,7 +77,7 @@ type ReasoningProgressPayload = {
 };
 
 /** Return false when a channel intentionally keeps a progress event out of user-visible UI. */
-type ProgressCallbackResult = false | void;
+type ProgressCallbackResult = false | undefined;
 
 /** Reply generation options shared by auto-reply, webchat, channels, and tests. */
 export type GetReplyOptions = {

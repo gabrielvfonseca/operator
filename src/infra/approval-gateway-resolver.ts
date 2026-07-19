@@ -63,7 +63,7 @@ export function resolveApprovalOverGateway(
 ): Promise<ApprovalResolveResult>;
 export async function resolveApprovalOverGateway(
   params: ResolveApprovalOverGatewayParams,
-): Promise<ApprovalResolveResult | void> {
+): Promise<ApprovalResolveResult | undefined> {
   const approvalKind = (params as { approvalKind?: unknown }).approvalKind;
   const resolveMethod = (params as { resolveMethod?: unknown }).resolveMethod;
   const canonicalKind = approvalKind === "exec" || approvalKind === "plugin" ? approvalKind : null;

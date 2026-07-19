@@ -57,7 +57,7 @@ function shouldSuppressAssistantVisibleOutput(message: AgentMessage | undefined)
 }
 
 function isTranscriptOnlyOperatorAssistantMessage(message: AgentMessage | undefined): boolean {
-  if (!message || message.role !== "assistant") {
+  if (message?.role !== "assistant") {
     return false;
   }
   const provider = normalizeOptionalString(message.provider) ?? "";
@@ -77,7 +77,7 @@ const RESPONSES_API_IDS = new Set([
 ]);
 
 function isResponsesApiAssistantMessage(message: AgentMessage | undefined): boolean {
-  if (!message || message.role !== "assistant") {
+  if (message?.role !== "assistant") {
     return false;
   }
   const api = normalizeOptionalString((message as { api?: unknown }).api) ?? "";
@@ -85,7 +85,7 @@ function isResponsesApiAssistantMessage(message: AgentMessage | undefined): bool
 }
 
 function isAnthropicAssistantMessage(message: AgentMessage | undefined): boolean {
-  if (!message || message.role !== "assistant") {
+  if (message?.role !== "assistant") {
     return false;
   }
   const api = normalizeOptionalString((message as { api?: unknown }).api) ?? "";
@@ -93,7 +93,7 @@ function isAnthropicAssistantMessage(message: AgentMessage | undefined): boolean
 }
 
 function isOpenAiCompletionsAssistantMessage(message: AgentMessage | undefined): boolean {
-  if (!message || message.role !== "assistant") {
+  if (message?.role !== "assistant") {
     return false;
   }
   const api = normalizeOptionalString((message as { api?: unknown }).api) ?? "";
@@ -177,10 +177,10 @@ function extractStandaloneMessageToolText(
     const args = asRecord(record?.arguments);
     const hasRoute = Boolean(
       normalizeOptionalString(args?.target) ||
-      normalizeOptionalString(args?.to) ||
-      normalizeOptionalString(args?.channel) ||
-      normalizeOptionalString(args?.accountId) ||
-      Array.isArray(args?.targets),
+        normalizeOptionalString(args?.to) ||
+        normalizeOptionalString(args?.channel) ||
+        normalizeOptionalString(args?.accountId) ||
+        Array.isArray(args?.targets),
     );
     if (
       normalizeOptionalString(record?.name) !== "message" ||
@@ -521,11 +521,11 @@ export function readPendingToolMediaReply(
 function hasReplyDirectiveMetadata(parsed: ReplyDirectiveParseResult | null | undefined): boolean {
   return Boolean(
     parsed &&
-    ((parsed.mediaUrls?.length ?? 0) > 0 ||
-      parsed.audioAsVoice ||
-      parsed.replyToId ||
-      parsed.replyToTag ||
-      parsed.replyToCurrent),
+      ((parsed.mediaUrls?.length ?? 0) > 0 ||
+        parsed.audioAsVoice ||
+        parsed.replyToId ||
+        parsed.replyToTag ||
+        parsed.replyToCurrent),
   );
 }
 
@@ -1051,6 +1051,7 @@ export function handleMessageUpdate(
     const { mediaUrls, hasMedia } = resolveSendableOutboundReplyParts(parsedStreamDirectives ?? {});
     const hasAudio = Boolean(parsedStreamDirectives?.audioAsVoice);
 
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let shouldEmit;
     let deltaText = "";
     let replace = false;
@@ -1329,12 +1330,12 @@ export function handleMessageEnd(
   const onBlockReply = ctx.params.onBlockReply;
   const shouldEmitReasoning = Boolean(
     !ctx.params.silentExpected &&
-    !suppressDeterministicApprovalOutput &&
-    !suppressMessageToolOnlySourceReplyOutput &&
-    ctx.state.includeReasoning &&
-    trimmedReasoning &&
-    onBlockReply &&
-    trimmedReasoning !== ctx.state.lastReasoningSent,
+      !suppressDeterministicApprovalOutput &&
+      !suppressMessageToolOnlySourceReplyOutput &&
+      ctx.state.includeReasoning &&
+      trimmedReasoning &&
+      onBlockReply &&
+      trimmedReasoning !== ctx.state.lastReasoningSent,
   );
   const shouldEmitReasoningBeforeAnswer =
     shouldEmitReasoning && ctx.state.blockReplyBreak === "message_end" && !addedDuringMessage;

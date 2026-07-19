@@ -23,8 +23,9 @@ describe("mattermost monitor resources", () => {
   let formatMattermostInboundMediaText: typeof import("./monitor-resources.js").formatMattermostInboundMediaText;
 
   beforeAll(async () => {
-    ({ createMattermostMonitorResources, formatMattermostInboundMediaText } =
-      await import("./monitor-resources.js"));
+    ({ createMattermostMonitorResources, formatMattermostInboundMediaText } = await import(
+      "./monitor-resources.js"
+    ));
   });
 
   it("keeps media-only download failures visible to the agent", () => {

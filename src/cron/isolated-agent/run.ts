@@ -623,9 +623,7 @@ async function prepareCronRunContext(params: {
   let catalog: Awaited<ReturnType<CronModelCatalogRuntime["loadModelCatalog"]>> | undefined;
   const loadCatalog = async () => {
     if (!catalog) {
-      catalog = await (
-        await loadCronModelCatalogRuntime()
-      ).loadModelCatalog({
+      catalog = await (await loadCronModelCatalogRuntime()).loadModelCatalog({
         config: cfgWithAgentDefaults,
       });
     }
@@ -1050,9 +1048,7 @@ async function prepareCronRunContext(params: {
       !hasConfiguredAuthProfiles(cfgWithAgentDefaults) &&
       !hasAnyAuthProfileStoreSource(agentDir)
         ? undefined
-        : await (
-            await loadCronAuthProfileRuntime()
-          ).resolveSessionAuthProfileOverride({
+        : await (await loadCronAuthProfileRuntime()).resolveSessionAuthProfileOverride({
             // Auth profile resolution can mutate session state; pass the same
             // store and key that persistence will later write.
             cfg: cfgWithAgentDefaults,

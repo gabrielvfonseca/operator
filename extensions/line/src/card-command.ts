@@ -143,6 +143,7 @@ function parseCardArgs(argsStrInput: string): {
 
   // Extract quoted arguments
   const quotedRegex = /"([^"]*?)"/g;
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let match;
   while ((match = quotedRegex.exec(argsStr)) !== null) {
     result.args.push(expectDefined(match[1], "quoted card argument capture"));

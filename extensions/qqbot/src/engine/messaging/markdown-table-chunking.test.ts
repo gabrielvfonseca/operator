@@ -63,7 +63,7 @@ describe("chunkQQBotMarkdownText", () => {
   it("does not prefix after a table is closed by a blank line", () => {
     const chunker = createQQBotMarkdownChunker((text) => [text]);
 
-    chunker.chunkText(["| Id | Value |", "|---:|---|", "| 1 | alpha |"].join("\n") + "\n\n", 120);
+    chunker.chunkText(`${["| Id | Value |", "|---:|---|", "| 1 | alpha |"].join("\n")}\n\n`, 120);
 
     expect(chunker.chunkText("| not | a continuation |", 120)).toEqual([]);
     expect(chunker.flushPendingText(120)).toEqual(["| not | a continuation |"]);

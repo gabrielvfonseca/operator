@@ -41,8 +41,9 @@ let resetGatewaySuspendCoordinatorForLifecycleRestart: typeof import("../infra/g
 let resumeGatewaySuspend: typeof import("../infra/gateway-suspend-coordinator.js").resumeGatewaySuspend;
 
 beforeAll(async () => {
-  ({ getActiveBackgroundExecSessionCount, markBackgrounded } =
-    await import("./bash-process-registry.js"));
+  ({ getActiveBackgroundExecSessionCount, markBackgrounded } = await import(
+    "./bash-process-registry.js"
+  ));
   ({ resetProcessRegistryForTests } = await import("./bash-process-registry.test-support.js"));
   ({ resolveExecTarget, runExecProcess } = await import("./bash-tools.exec-runtime.js"));
   ({
@@ -845,6 +846,7 @@ describe("runExecProcess POSIX command wrapper", () => {
 
     const commandStr = spawnCall.argv.join(" ");
     expect(commandStr).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'export PATH="${OPERATOR_PREPEND_PATH}${PATH:+:$PATH}"; unset OPERATOR_PREPEND_PATH; echo test',
     );
   });

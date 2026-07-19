@@ -32,26 +32,31 @@ export function renderSessionRowBadges(params: {
     ? t("sessionsView.cloudWorkerPlacement", { state: cloudPlacementState })
     : "";
   return html`<span class="session-row-badges">
-    ${params.worktreeId
-      ? html`<span
+    ${
+      params.worktreeId
+        ? html`<span
           class="session-row-badge"
           role="img"
           aria-label=${t("sessionsView.worktreeSession")}
           title=${t("sessionsView.worktreeSession")}
           >${icons.gitBranch}</span
         >`
-      : nothing}
-    ${params.hasAutomation
-      ? html`<span
+        : nothing
+    }
+    ${
+      params.hasAutomation
+        ? html`<span
           class="session-row-badge"
           role="img"
           aria-label=${t("sessionsView.automationAttached")}
           title=${t("sessionsView.automationAttached")}
           >${icons.clock}</span
         >`
-      : nothing}
-    ${cloudPlacementState
-      ? html`<span
+        : nothing
+    }
+    ${
+      cloudPlacementState
+        ? html`<span
           class="session-row-badge session-row-badge--cloud"
           data-placement-state=${cloudPlacementState}
           role="img"
@@ -59,6 +64,7 @@ export function renderSessionRowBadges(params: {
           title=${cloudLabel}
           >${icons.globe}</span
         >`
-      : nothing}
+        : nothing
+    }
   </span>`;
 }

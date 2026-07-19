@@ -339,6 +339,7 @@ describe("stageBundledPluginRuntime", () => {
       [
         "const registry = globalThis.__openclawTestPluginCommands ??= new Map();",
         "export function registerPluginCommand(pluginId, command) {",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "  registry.set(`/${command.name.toLowerCase()}`, { ...command, pluginId });",
         "}",
         "export function clearPluginCommands() {",
@@ -376,6 +377,7 @@ describe("stageBundledPluginRuntime", () => {
         "    description: 'Pair a device',",
         "    acceptsArgs: true,",
         "    nativeNames: { telegram: 'pair', discord: 'pair' },",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "    handler: async ({ args }) => ({ text: `paired:${args ?? ''}` }),",
         "  });",
         "}",

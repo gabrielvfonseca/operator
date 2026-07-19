@@ -112,7 +112,7 @@ describe("whatsappChannelOutbound", () => {
               target,
               nowMs: 1_000,
             });
-      if (!renderPresentation || !afterDeliverPayload || !payload || !payload.presentation) {
+      if (!renderPresentation || !afterDeliverPayload || !payload?.presentation) {
         throw new Error("WhatsApp approval delivery hooks unavailable");
       }
 
@@ -218,7 +218,7 @@ describe("whatsappChannelOutbound", () => {
       target: { channel: "whatsapp", to: "configured-target", source: "target" },
       nowMs: 1_000,
     });
-    if (!renderPresentation || !afterDeliverPayload || !payload || !payload.presentation) {
+    if (!renderPresentation || !afterDeliverPayload || !payload?.presentation) {
       throw new Error("WhatsApp approval delivery hooks unavailable");
     }
     let mutated = false;
@@ -318,7 +318,7 @@ describe("whatsappChannelOutbound", () => {
       target: { channel: "whatsapp", to: "configured-target", source: "target" },
       nowMs: 1_000,
     });
-    if (!renderPresentation || !afterDeliverPayload || !payload || !payload.presentation) {
+    if (!renderPresentation || !afterDeliverPayload || !payload?.presentation) {
       throw new Error("WhatsApp approval delivery hooks unavailable");
     }
     const rewrittenPayload = { ...payload, text: rewrite(payload.text ?? "") };

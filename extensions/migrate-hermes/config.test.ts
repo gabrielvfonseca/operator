@@ -314,6 +314,7 @@ describe("Hermes migration config mapping", () => {
           default: "vendor/current-model",
           base_url: "https://models.example/v1",
           api_mode: "anthropic_messages",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           api_key: "${SCOPED_MODEL_KEY}",
           context_length: 65_536,
           supports_vision: true,
@@ -508,6 +509,7 @@ describe("Hermes migration config mapping", () => {
     const source = path.join(root, "hermes");
     await writeFile(
       path.join(source, "config.yaml"),
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "providers:\n  acme:\n    api: ${MISSING_ACME_URL}\n    models: [acme-one]\n",
     );
 
@@ -821,8 +823,10 @@ describe("Hermes migration config mapping", () => {
         "  unresolved:",
         "    command: unresolved",
         "    env:",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "      VALUE: '${env:MISSING_VALUE}'",
         "  missing-launch:",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "    command: '${env:MISSING_COMMAND}'",
         "    enabled: true",
         "    args: ['--serve']",

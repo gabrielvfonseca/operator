@@ -951,12 +951,12 @@ export function hasReplyContent(params: {
   const mediaUrl = normalizeOptionalString(params.mediaUrl);
   return Boolean(
     text ||
-    mediaUrl ||
-    params.mediaUrls?.some((entry) => Boolean(normalizeOptionalString(entry))) ||
-    hasMessagePresentationBlocks(params.presentation) ||
-    hasInteractiveReplyBlocks(params.interactive) ||
-    params.hasChannelData ||
-    params.extraContent,
+      mediaUrl ||
+      params.mediaUrls?.some((entry) => Boolean(normalizeOptionalString(entry))) ||
+      hasMessagePresentationBlocks(params.presentation) ||
+      hasInteractiveReplyBlocks(params.interactive) ||
+      params.hasChannelData ||
+      params.extraContent,
   );
 }
 

@@ -228,6 +228,7 @@ describe("npm project install env", () => {
           {
             ...baseEnv,
             HOME: dir,
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             NPM_CONFIG_USERCONFIG: "${HOME}/.npmrc",
           },
           FROZEN_NOW,

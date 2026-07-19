@@ -328,7 +328,6 @@ async function runConfigMutation(params: {
       lastConflict = new Error(
         `${params.action} restart race settled before the config mutation was visible`,
       );
-      continue;
     }
   }
   throw toQaErrorObject(

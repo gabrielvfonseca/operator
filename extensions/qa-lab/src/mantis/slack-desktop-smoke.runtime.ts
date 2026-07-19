@@ -225,6 +225,7 @@ function resolveScenarioIds(params: {
 }
 
 async function assertNonEmptyFile(filePath: string, label: string) {
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let stats;
   try {
     stats = await fs.stat(filePath);

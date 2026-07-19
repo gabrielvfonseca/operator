@@ -208,8 +208,7 @@ export function resolveHeartbeatAckMaxChars(agentCfg?: { heartbeat?: { ackMaxCha
 function isCronMessagePresentationWarning(text: string | undefined): boolean {
   const normalized = normalizeOptionalString(text)?.toLowerCase();
   return (
-    normalized === "⚠️ ✉️ message failed" ||
-    normalized?.startsWith("⚠️ ✉️ message failed:") === true
+    normalized === "⚠️ ✉️ message failed" || normalized?.startsWith("⚠️ ✉️ message failed:") === true
   );
 }
 

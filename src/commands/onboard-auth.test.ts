@@ -337,6 +337,7 @@ describe("upsertApiKeyProfile secret refs", () => {
     });
     upsertApiKeyProfile({
       provider: "moonshot",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       input: "${MOONSHOT_API_KEY}",
       agentDir: env.agentDir,
       profileId: "moonshot:inline",

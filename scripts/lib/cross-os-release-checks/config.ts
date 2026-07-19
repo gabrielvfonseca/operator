@@ -633,7 +633,10 @@ export function isRecoverableWindowsPackagedUpgradeTimeoutError(
 export function shouldRunPackagedUpgradeStatusProbe({
   platform = process.platform,
   usedWindowsPackagedUpgradeFallback,
-}: { platform?: NodeJS.Platform; usedWindowsPackagedUpgradeFallback?: boolean } = {}) {
+}: {
+  platform?: NodeJS.Platform;
+  usedWindowsPackagedUpgradeFallback?: boolean;
+} = {}) {
   return !(platform === "win32" && usedWindowsPackagedUpgradeFallback);
 }
 

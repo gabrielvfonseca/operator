@@ -973,7 +973,7 @@ function createSandboxReadOperations(params: SandboxToolParams) {
     detectImageMimeType: async (absolutePath: string) => {
       const buffer = await params.bridge.readFile({ filePath: absolutePath, cwd: params.root });
       const mime = await detectMime({ buffer, filePath: absolutePath });
-      return mime && mime.startsWith("image/") ? mime : undefined;
+      return mime?.startsWith("image/") ? mime : undefined;
     },
   } as const;
 }

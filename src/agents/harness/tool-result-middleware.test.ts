@@ -641,7 +641,7 @@ describe("createAgentToolResultMiddlewareRunner", () => {
 
   it("accepts well-formed middleware results", async () => {
     const runner = createAgentToolResultMiddlewareRunner({ runtime: "codex" }, [
-      (eventValue, ctx) => ({
+      (_eventValue, ctx) => ({
         result: {
           content: [{ type: "text", text: "compacted" }],
           details: { compacted: true, runtime: ctx.runtime, harness: ctx.harness },

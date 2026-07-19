@@ -23,7 +23,7 @@ function canPluginCliRuntimeRequestScopes(): boolean {
   const scope = getPluginRuntimeGatewayRequestScope();
   return Boolean(
     scope?.pluginId &&
-    (scope.pluginOrigin === "bundled" || scope.pluginTrustedOfficialInstall === true),
+      (scope.pluginOrigin === "bundled" || scope.pluginTrustedOfficialInstall === true),
   );
 }
 

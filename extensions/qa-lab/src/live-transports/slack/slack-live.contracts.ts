@@ -129,7 +129,7 @@ export function assertSlackCodexApprovalModelSupported(modelRef: string) {
 }
 
 export type SlackQaMessageScenarioRun = {
-  afterNoReply?: (context: SlackQaScenarioContext) => Promise<string | void>;
+  afterNoReply?: (context: SlackQaScenarioContext) => Promise<string | undefined>;
   kind?: "message";
   expectReply: boolean;
   input: string;
@@ -140,9 +140,12 @@ export type SlackQaMessageScenarioRun = {
   verifyObserved?: (params: {
     finalMessage: SlackMessage;
     messages: readonly SlackObservedMessage[];
-  }) => string | void;
+  }) => string | undefined;
   beforeRun?: (context: Omit<SlackQaScenarioContext, "sentTs">) => Promise<SlackQaBeforeRunResult>;
-  afterReply?: (message: SlackMessage, context: SlackQaScenarioContext) => Promise<string | void>;
+  afterReply?: (
+    message: SlackMessage,
+    context: SlackQaScenarioContext,
+  ) => Promise<string | undefined>;
 };
 
 type SlackQaDirectTransportScenarioRun = {
@@ -190,7 +193,7 @@ type SlackQaScenarioRun =
 
 type SlackQaBeforeRunResult =
   | string
-  | void
+  | undefined
   | {
       details?: string;
       inputThreadTs?: string;

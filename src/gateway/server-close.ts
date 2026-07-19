@@ -635,9 +635,9 @@ export async function runGatewayClosePrelude(params: {
 function isServerNotRunningError(err: unknown): boolean {
   return Boolean(
     err &&
-    typeof err === "object" &&
-    "code" in err &&
-    (err as { code?: unknown }).code === "ERR_SERVER_NOT_RUNNING",
+      typeof err === "object" &&
+      "code" in err &&
+      (err as { code?: unknown }).code === "ERR_SERVER_NOT_RUNNING",
   );
 }
 

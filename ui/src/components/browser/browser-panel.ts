@@ -1192,16 +1192,20 @@ class OperatorBrowserPanel extends OperatorLitElement {
             >${Math.round(node.rect.width)} × ${Math.round(node.rect.height)}</span
           >
         </div>
-        ${node.name
-          ? html`<div class="bp-tooltip__row">
+        ${
+          node.name
+            ? html`<div class="bp-tooltip__row">
               <span>${t("browser.inspectName")}</span><span>${node.name}</span>
             </div>`
-          : nothing}
-        ${node.role
-          ? html`<div class="bp-tooltip__row">
+            : nothing
+        }
+        ${
+          node.role
+            ? html`<div class="bp-tooltip__row">
               <span>${t("browser.inspectRole")}</span><span>${node.role}</span>
             </div>`
-          : nothing}
+            : nothing
+        }
         <div class="bp-tooltip__row">
           <span>${t("browser.inspectFocusable")}</span><span>${node.focusable ? "✓" : "–"}</span>
         </div>
@@ -1268,11 +1272,13 @@ class OperatorBrowserPanel extends OperatorLitElement {
         ></div>
         <header class="bp-header">${this.renderTabStrip()} ${this.renderHeaderActions()}</header>
         ${this.renderToolbar()} ${this.renderAnnotateBar()}
-        ${this.errorText
-          ? html`<div class="bp-note bp-note--error" role="alert">${this.errorText}</div>`
-          : this.noticeText
-            ? html`<div class="bp-note" role="status">${this.noticeText}</div>`
-            : nothing}
+        ${
+          this.errorText
+            ? html`<div class="bp-note bp-note--error" role="alert">${this.errorText}</div>`
+            : this.noticeText
+              ? html`<div class="bp-note" role="status">${this.noticeText}</div>`
+              : nothing
+        }
         <wa-tab-panel
           id="browser-tab-panel"
           class="bp-viewport"
@@ -1283,9 +1289,11 @@ class OperatorBrowserPanel extends OperatorLitElement {
           @wheel=${(event: WheelEvent) => this.handleWheel(event)}
           @keydown=${(event: KeyboardEvent) => this.handleViewportKeydown(event)}
         >
-          ${this.loading && this.view
-            ? html`<span class="bp-loading">${t("browser.loading")}</span>`
-            : nothing}
+          ${
+            this.loading && this.view
+              ? html`<span class="bp-loading">${t("browser.loading")}</span>`
+              : nothing
+          }
           ${this.renderViewport()}
         </wa-tab-panel>
       </section>

@@ -18,9 +18,9 @@ const dashboardTitleRequests = new Set<string>();
 function hasExplicitSessionName(entry: SessionEntry | undefined): boolean {
   return Boolean(
     entry?.label?.trim() ||
-    entry?.displayName?.trim() ||
-    entry?.subject?.trim() ||
-    entry?.origin?.label?.trim(),
+      entry?.displayName?.trim() ||
+      entry?.subject?.trim() ||
+      entry?.origin?.label?.trim(),
   );
 }
 

@@ -13,11 +13,7 @@ export type SmsWebhookReplayGuard = {
 };
 
 export function createSmsWebhookReplayGuard(
-  options: {
-    ttlMs?: number;
-    maxKeys?: number;
-    now?: () => number;
-  } = {},
+  options: { ttlMs?: number; maxKeys?: number; now?: () => number } = {},
 ): SmsWebhookReplayGuard {
   const ttlMs = options.ttlMs ?? REPLAY_CACHE_TTL_MS;
   const maxKeys = options.maxKeys ?? REPLAY_CACHE_MAX_KEYS;

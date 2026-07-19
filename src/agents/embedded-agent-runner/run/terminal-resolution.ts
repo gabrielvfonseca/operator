@@ -213,11 +213,11 @@ export async function resolveEmbeddedRunTerminal(input: {
       });
   const incompleteTurnFallbackSafe = Boolean(
     incompleteTurnText &&
-    !input.terminalInterrupted &&
-    !input.promptError &&
-    !attempt.lastToolError &&
-    !hasAttemptTerminalState(attempt) &&
-    !input.replayState.hadPotentialSideEffects,
+      !input.terminalInterrupted &&
+      !input.promptError &&
+      !attempt.lastToolError &&
+      !hasAttemptTerminalState(attempt) &&
+      !input.replayState.hadPotentialSideEffects,
   );
   const terminalToolPresentation = incompleteTurnFallbackSafe
     ? input.readTerminalToolPresentation()

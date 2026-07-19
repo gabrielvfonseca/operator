@@ -11,6 +11,7 @@ const SCRIPT_ATTRIBUTE_NAME_RE = /\s([^\s=/>]+)(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s
  */
 export function computeInlineScriptHashes(html: string): string[] {
   const hashes: string[] = [];
+  // biome-ignore lint/correctness/noEmptyCharacterClassInRegex: migrated from oxlint
   const re = /<script(?:\s[^>]*)?>([^]*?)<\/script>/gi;
   let match: RegExpExecArray | null;
   while ((match = re.exec(html)) !== null) {

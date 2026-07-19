@@ -48,12 +48,12 @@ import { filterToolsForVisionInputs } from "./vision-tools.js";
 import { resolveCodexWebSearchPlan, type CodexNativeWebSearchSupport } from "./web-search.js";
 
 type OperatorCodingToolsOptions = NonNullable<
-  Parameters<(typeof import("openclaw/plugin-sdk/agent-harness"))["createOperatorCodingTools"]>[0]
+  Parameters<typeof import("openclaw/plugin-sdk/agent-harness")["createOperatorCodingTools"]>[0]
 >;
 
 /** Factory seam for constructing Operator runtime tools without eagerly loading agent-harness. */
 type OperatorCodingToolsFactory =
-  (typeof import("openclaw/plugin-sdk/agent-harness"))["createOperatorCodingTools"];
+  typeof import("openclaw/plugin-sdk/agent-harness")["createOperatorCodingTools"];
 type OperatorDynamicTool = ReturnType<OperatorCodingToolsFactory>[number];
 type OperatorSandboxContext = Awaited<ReturnType<typeof resolveSandboxContext>>;
 type CodexDynamicToolBuildEvent = Parameters<

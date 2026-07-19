@@ -248,8 +248,7 @@ describe("isBillingErrorMessage", () => {
     expect(classifyFailoverReason(raw)).toBe("billing");
   });
   it("still matches explicit 402 markers in long payloads", () => {
-    const longStructuredError =
-      '{"error":{"code":402,"message":"payment required","details":"' + "x".repeat(700) + '"}}';
+    const longStructuredError = `{"error":{"code":402,"message":"payment required","details":"${"x".repeat(700)}"}}`;
     expect(longStructuredError.length).toBeGreaterThan(512);
     expect(isBillingErrorMessage(longStructuredError)).toBe(true);
   });

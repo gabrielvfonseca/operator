@@ -41,6 +41,6 @@ export function parseFlagArgs<T extends FlagArgs>(
   options?: {
     allowUnknownOptions?: boolean;
     ignoreDoubleDash?: boolean;
-    onUnhandledArg?: (arg: string, args: T) => "handled" | void;
+    onUnhandledArg?: (arg: string, args: T) => "handled" | undefined;
   },
 ): T;

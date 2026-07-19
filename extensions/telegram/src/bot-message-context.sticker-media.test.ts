@@ -33,8 +33,9 @@ vi.mock("./bot-message-context.body.js", () => ({
   resolveTelegramInboundBody: (arg: unknown) => inboundBodyMock(arg),
 }));
 
-const { buildTelegramMessageContextForTest } =
-  await import("./bot-message-context.test-harness.js");
+const { buildTelegramMessageContextForTest } = await import(
+  "./bot-message-context.test-harness.js"
+);
 
 describe("buildTelegramMessageContext sticker media", () => {
   it("keeps cached static sticker media attached to the inbound context", async () => {

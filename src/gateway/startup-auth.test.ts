@@ -218,11 +218,13 @@ describe("ensureGatewayStartupAuth", () => {
 
   it("resolves env-template gateway.auth.token before env-token short-circuiting", async () => {
     await expectResolvedToken({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       cfg: gatewayAuthConfig({ mode: "token", token: "${OPERATOR_GATEWAY_TOKEN}" }),
       env: {
         OPERATOR_GATEWAY_TOKEN: "resolved-token",
       } as NodeJS.ProcessEnv,
       expectedToken: "resolved-token",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expectedConfiguredToken: "${OPERATOR_GATEWAY_TOKEN}",
     });
   });

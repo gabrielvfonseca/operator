@@ -4,12 +4,13 @@ import type { OperatorConfig } from "../../config/config.js";
 import type { SessionEntry } from "../../config/sessions/types.js";
 
 const hoisted = vi.hoisted(() => ({
-  listSessionEntriesMock: vi.fn<
-    (scope?: { storePath?: string; clone?: boolean }) => Array<{
-      entry: SessionEntry;
-      sessionKey: string;
-    }>
-  >(),
+  listSessionEntriesMock:
+    vi.fn<
+      (scope?: { storePath?: string; clone?: boolean }) => Array<{
+        entry: SessionEntry;
+        sessionKey: string;
+      }>
+    >(),
   listAgentIdsMock: vi.fn<() => string[]>(),
 }));
 
@@ -33,8 +34,9 @@ vi.mock("../agent-scope.js", () => ({
   resolveDefaultAgentId: () => "main",
 }));
 
-const { resolveSessionKeyForRequest, resolveStoredSessionKeyForSessionId } =
-  await import("./session.js");
+const { resolveSessionKeyForRequest, resolveStoredSessionKeyForSessionId } = await import(
+  "./session.js"
+);
 
 function mockSessionStores(storesByPath: Record<string, Record<string, SessionEntry>>): void {
   hoisted.listSessionEntriesMock.mockImplementation((scope) =>

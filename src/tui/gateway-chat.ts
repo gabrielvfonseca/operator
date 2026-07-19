@@ -351,11 +351,11 @@ export class GatewayChatClient implements TuiBackend {
       methods.includes(method) &&
       Boolean(
         auth &&
-        roleScopesAllow({
-          role: auth.role,
-          requestedScopes: [scope],
-          allowedScopes: auth.scopes,
-        }),
+          roleScopesAllow({
+            role: auth.role,
+            requestedScopes: [scope],
+            allowedScopes: auth.scopes,
+          }),
       );
     return {
       canAccept: allows("taskSuggestions.accept", "operator.admin"),
@@ -433,9 +433,9 @@ async function resolveGatewayConnection(
   });
   const hasExplicitGatewayTarget = Boolean(
     urlOverride ||
-    env.OPERATOR_GATEWAY_URL?.trim() ||
-    env.OPERATOR_GATEWAY_PORT?.trim() ||
-    isRemoteMode,
+      env.OPERATOR_GATEWAY_URL?.trim() ||
+      env.OPERATOR_GATEWAY_PORT?.trim() ||
+      isRemoteMode,
   );
   const activeLocalGatewayPort = hasExplicitGatewayTarget
     ? undefined

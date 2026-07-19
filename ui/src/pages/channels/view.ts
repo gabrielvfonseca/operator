@@ -43,32 +43,40 @@ export function renderChannels(props: ChannelsProps) {
 
   return html`
     ${renderSettingsPage(html`
-      ${showingStaleSnapshot
-        ? html`<div class="callout info">${t("channels.refreshingStaleSnapshot")}</div>`
-        : nothing}
-      ${props.snapshot?.partial
-        ? html`
+      ${
+        showingStaleSnapshot
+          ? html`<div class="callout info">${t("channels.refreshingStaleSnapshot")}</div>`
+          : nothing
+      }
+      ${
+        props.snapshot?.partial
+          ? html`
             <div class="callout warn">
               ${t("channels.hub.partialSnapshot")}
               ${partialWarnings.length > 0 ? partialWarnings.slice(0, 3).join("; ") : ""}
             </div>
           `
-        : nothing}
+          : nothing
+      }
       ${props.lastError ? html`<div class="callout danger">${props.lastError}</div>` : nothing}
-      ${props.setupBlockedByDirtyConfig && props.configFormDirty
-        ? html`<div class="callout warn">${t("channels.hub.saveBeforeSetup")}</div>`
-        : nothing}
+      ${
+        props.setupBlockedByDirtyConfig && props.configFormDirty
+          ? html`<div class="callout warn">${t("channels.hub.saveBeforeSetup")}</div>`
+          : nothing
+      }
       ${renderSettingsSection(
         {
           title: t("channels.hub.connectedTitle"),
           ...(connected.length > 0 ? { count: connected.length } : {}),
           actions: html`
             <span class="settings-row__value">
-              ${props.lastSuccessAt
-                ? t("channels.hub.updatedAgo", {
-                    ago: formatRelativeTimestamp(props.lastSuccessAt),
-                  })
-                : t("common.na")}
+              ${
+                props.lastSuccessAt
+                  ? t("channels.hub.updatedAgo", {
+                      ago: formatRelativeTimestamp(props.lastSuccessAt),
+                    })
+                  : t("common.na")
+              }
             </span>
             <button
               type="button"
@@ -107,16 +115,18 @@ ${props.snapshot ? JSON.stringify(props.snapshot, null, 2) : t("channels.health.
         `,
       )}
     `)}
-    ${selected
-      ? renderChannelDetail({
-          channelId: selected,
-          label: resolveChannelLabel(props.snapshot, selected),
-          props,
-          data,
-          onClose: () => props.onCloseDetail(),
-          onSetup: () => props.onStartSetup(selected),
-        })
-      : nothing}
+    ${
+      selected
+        ? renderChannelDetail({
+            channelId: selected,
+            label: resolveChannelLabel(props.snapshot, selected),
+            props,
+            data,
+            onClose: () => props.onCloseDetail(),
+            onSetup: () => props.onStartSetup(selected),
+          })
+        : nothing
+    }
     ${renderChannelWizard({
       wizard: props.wizard,
       channelLabel: (channelId) => resolveChannelLabel(props.snapshot, channelId),

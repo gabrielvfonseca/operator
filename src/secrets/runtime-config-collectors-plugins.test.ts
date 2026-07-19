@@ -432,7 +432,9 @@ describe("collectPluginConfigAssignments", () => {
                 s1: {
                   command: "node",
                   env: {
+                    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
                     INLINE: "${INLINE_KEY}",
+                    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
                     SECOND: "${SECOND_KEY}",
                     LITERAL: "hello",
                   },
@@ -548,6 +550,7 @@ describe("collectPluginConfigAssignments", () => {
               service: {
                 tokens: {
                   primary: envRef("PRIMARY_TOKEN"),
+                  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
                   secondary: "${SECONDARY_TOKEN}",
                 },
               },

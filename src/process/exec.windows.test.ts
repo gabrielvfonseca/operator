@@ -68,6 +68,7 @@ function createMockSubprocess(params?: {
     resolve = resolvePromise;
   });
   // oxlint-disable-next-line unicorn/no-thenable -- Stub matches Execa's event-emitting promise shape.
+  // biome-ignore lint/suspicious/noThenProperty: migrated from oxlint
   child.then = completion.then.bind(completion);
   child.catch = completion.catch.bind(completion);
   child.finally = completion.finally.bind(completion);
@@ -158,8 +159,9 @@ describe("Windows command execution", () => {
         await vi.importActual<typeof import("node:child_process")>("node:child_process");
       return { ...actual, spawnSync: spawnSyncMock };
     });
-    ({ getWindowsInstallRoots, getWindowsSystem32ExePath } =
-      await import("../infra/windows-install-roots.js"));
+    ({ getWindowsInstallRoots, getWindowsSystem32ExePath } = await import(
+      "../infra/windows-install-roots.js"
+    ));
     ({ runCommandWithTimeout, runExec, spawnCommand } = await import("./exec.js"));
   });
 

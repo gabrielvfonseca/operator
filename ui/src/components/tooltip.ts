@@ -335,7 +335,7 @@ class Tooltip extends OperatorLitElement {
     const clipsContent = [trigger, ...trigger.querySelectorAll("*")].some(
       (element) => element instanceof HTMLElement && element.scrollWidth > element.clientWidth,
     );
-    return Boolean(content && triggerText && triggerText.includes(content) && !clipsContent);
+    return Boolean(content && triggerText?.includes(content) && !clipsContent);
   }
 
   private syncDescription() {

@@ -420,7 +420,7 @@ async function processOpenAICompletionsStream(
     previous.text += next.text;
   };
   const appendThinkingDeltaInternal = (reasoningDelta: { signature: string; text: string }) => {
-    if (!currentBlock || currentBlock.type !== "thinking") {
+    if (currentBlock?.type !== "thinking") {
       currentBlock = {
         type: "thinking",
         thinking: "",
@@ -438,7 +438,7 @@ async function processOpenAICompletionsStream(
     });
   };
   const appendTextDeltaInternal = (text: string) => {
-    if (!currentBlock || currentBlock.type !== "text") {
+    if (currentBlock?.type !== "text") {
       currentBlock = { type: "text", text: "" };
       output.content.push(currentBlock);
       pushStreamEvent({ type: "text_start", contentIndex: blockIndex(), partial: output });

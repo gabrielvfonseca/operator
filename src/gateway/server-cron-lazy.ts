@@ -211,8 +211,7 @@ export function createLazyGatewayCronState(params: LazyGatewayCronParams): Gatew
       schedulingPaused = false;
       releaseSchedulingResumeWaiters();
       if (
-        loaded &&
-        loaded.schedulingPaused &&
+        loaded?.schedulingPaused &&
         (loaded.underlyingStarted || loaded.underlyingStartInFlight)
       ) {
         loaded.state.cron.resumeScheduling();

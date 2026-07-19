@@ -114,12 +114,12 @@ export function isRetryableUnadoptedChatClaim(
 ): entry is RetryableUnadoptedChatClaim {
   return Boolean(
     entry &&
-    entry.abortedLastRun !== true &&
-    (entry.status === "failed" || entry.status === "killed") &&
-    entry.restartRecoveryDeliveryContext === undefined &&
-    entry.restartRecoveryDeliveryRunId === clientRunId &&
-    entry.restartRecoveryDeliverySourceRunId === clientRunId &&
-    entry.restartRecoveryDeliveryRequestFingerprint,
+      entry.abortedLastRun !== true &&
+      (entry.status === "failed" || entry.status === "killed") &&
+      entry.restartRecoveryDeliveryContext === undefined &&
+      entry.restartRecoveryDeliveryRunId === clientRunId &&
+      entry.restartRecoveryDeliverySourceRunId === clientRunId &&
+      entry.restartRecoveryDeliveryRequestFingerprint,
   );
 }
 
@@ -132,8 +132,8 @@ function isAdoptedRestartRecoveryClaim(
 } {
   return Boolean(
     entry?.restartRecoveryDeliveryRunId &&
-    entry.restartRecoveryDeliverySourceRunId === clientRunId &&
-    !isRetryableUnadoptedChatClaim(entry, clientRunId),
+      entry.restartRecoveryDeliverySourceRunId === clientRunId &&
+      !isRetryableUnadoptedChatClaim(entry, clientRunId),
   );
 }
 
@@ -165,8 +165,9 @@ export async function resolveDurableChatClaim(params: {
       };
     }
     try {
-      const { retryRestartAbortedMainSessionRecovery } =
-        await import("../../agents/main-session-restart-recovery.js");
+      const { retryRestartAbortedMainSessionRecovery } = await import(
+        "../../agents/main-session-restart-recovery.js"
+      );
       await retryRestartAbortedMainSessionRecovery({
         canonicalSessionKey: params.canonicalSessionKey,
         cfg: params.cfg,
@@ -217,26 +218,26 @@ function isRestartSafeChatSession(params: {
   const entry = params.entry;
   return Boolean(
     entry?.sessionId &&
-    params.sessionKey !== "global" &&
-    entry.status !== "running" &&
-    entry.abortedLastRun !== true &&
-    entry.archivedAt === undefined &&
-    entry.initializationPending !== true &&
-    entry.pendingFinalDelivery !== true &&
-    entry.pendingFinalDeliveryText == null &&
-    entry.pendingFinalDeliveryContext === undefined &&
-    entry.agentHarnessId === undefined &&
-    entry.pluginOwnerId === undefined &&
-    entry.spawnedBy === undefined &&
-    entry.subagentRole === undefined &&
-    (entry.spawnDepth ?? 0) === 0 &&
-    entry.acp === undefined &&
-    entry.cronRunContinuation === undefined &&
-    !isSubagentSessionKey(params.sessionKey) &&
-    !isCronSessionKey(params.sessionKey) &&
-    !isAcpSessionKey(params.sessionKey) &&
-    !isAgentHarnessSessionKey(params.sessionKey) &&
-    (params.requestedSessionId === undefined || params.requestedSessionId === entry.sessionId),
+      params.sessionKey !== "global" &&
+      entry.status !== "running" &&
+      entry.abortedLastRun !== true &&
+      entry.archivedAt === undefined &&
+      entry.initializationPending !== true &&
+      entry.pendingFinalDelivery !== true &&
+      entry.pendingFinalDeliveryText == null &&
+      entry.pendingFinalDeliveryContext === undefined &&
+      entry.agentHarnessId === undefined &&
+      entry.pluginOwnerId === undefined &&
+      entry.spawnedBy === undefined &&
+      entry.subagentRole === undefined &&
+      (entry.spawnDepth ?? 0) === 0 &&
+      entry.acp === undefined &&
+      entry.cronRunContinuation === undefined &&
+      !isSubagentSessionKey(params.sessionKey) &&
+      !isCronSessionKey(params.sessionKey) &&
+      !isAcpSessionKey(params.sessionKey) &&
+      !isAgentHarnessSessionKey(params.sessionKey) &&
+      (params.requestedSessionId === undefined || params.requestedSessionId === entry.sessionId),
   );
 }
 

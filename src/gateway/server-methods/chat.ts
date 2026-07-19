@@ -232,7 +232,7 @@ async function buildChatStartupMetadataResult(params: {
   agentId: string;
   modelCatalog: ModelCatalogSnapshot | undefined;
   catalogProjector?: ReturnType<
-    (typeof import("./models-list-result.js"))["createGatewayAgentModelCatalogProjector"]
+    typeof import("./models-list-result.js")["createGatewayAgentModelCatalogProjector"]
   >;
 }): Promise<ChatMetadataResult | undefined> {
   if (!params.modelCatalog) {

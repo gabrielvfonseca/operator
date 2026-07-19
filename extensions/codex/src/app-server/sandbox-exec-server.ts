@@ -119,7 +119,7 @@ function isEnvironmentAddUnsupported(error: unknown): boolean {
 function canExposeLocalExecServerToAppServer(
   startOptions: CodexAppServerStartOptions | undefined,
 ): boolean {
-  if (!startOptions || startOptions.transport !== "websocket") {
+  if (startOptions?.transport !== "websocket") {
     return true;
   }
   if (typeof startOptions.url !== "string") {

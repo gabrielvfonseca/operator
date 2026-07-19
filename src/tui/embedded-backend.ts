@@ -343,8 +343,9 @@ export class EmbeddedTuiBackend implements TuiBackend {
     });
     // Local mode never runs gateway startup; canonicalize orphaned keys once here.
     this.ready = (async () => {
-      const { runSessionStartupMigration } =
-        await import("../config/sessions/startup-migration.js");
+      const { runSessionStartupMigration } = await import(
+        "../config/sessions/startup-migration.js"
+      );
       await runSessionStartupMigration({
         cfg: getRuntimeConfig(),
         env: process.env,

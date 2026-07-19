@@ -31,10 +31,7 @@ function formatNixModeConfigMutationMessage(params: { configPath?: string } = {}
 
 /** Throw when the current environment marks Operator config as Nix-managed and immutable. */
 export function assertConfigWriteAllowedInCurrentMode(
-  params: {
-    configPath?: string;
-    env?: NodeJS.ProcessEnv;
-  } = {},
+  params: { configPath?: string; env?: NodeJS.ProcessEnv } = {},
 ): void {
   if (!resolveIsNixMode(params.env)) {
     return;

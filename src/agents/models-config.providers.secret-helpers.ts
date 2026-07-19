@@ -124,7 +124,7 @@ export function normalizeHeaderValues(params: {
       value: headerValue,
       defaults: params.secretDefaults,
     }).ref;
-    if (!resolvedRef || !resolvedRef.id.trim()) {
+    if (!resolvedRef?.id.trim()) {
       nextHeaders[headerName] = headerValue;
       continue;
     }
@@ -151,7 +151,7 @@ export function resolveApiKeyFromCredential(
   }
   if (cred.type === "api_key") {
     const keyRef = coerceSecretRef(cred.keyRef);
-    if (keyRef && keyRef.id.trim()) {
+    if (keyRef?.id.trim()) {
       if (keyRef.source === "env") {
         const envVar = keyRef.id.trim();
         return {
@@ -176,7 +176,7 @@ export function resolveApiKeyFromCredential(
   }
   if (cred.type === "token") {
     const tokenRef = coerceSecretRef(cred.tokenRef);
-    if (tokenRef && tokenRef.id.trim()) {
+    if (tokenRef?.id.trim()) {
       if (tokenRef.source === "env") {
         const envVar = tokenRef.id.trim();
         return {
@@ -239,7 +239,7 @@ export function normalizeConfiguredProviderApiKey(params: {
     defaults: params.secretDefaults,
   }).ref;
 
-  if (configuredApiKeyRef && configuredApiKeyRef.id.trim()) {
+  if (configuredApiKeyRef?.id.trim()) {
     // Non-env secret refs intentionally become markers; loaders can route without exposing values.
     const marker =
       configuredApiKeyRef.source === "env"

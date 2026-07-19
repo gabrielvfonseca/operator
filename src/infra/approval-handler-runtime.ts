@@ -172,6 +172,7 @@ async function applyApprovalFinalAction(params: {
         phase: params.phase,
       });
       return;
+    // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
     case "clear-actions":
       await params.nativeRuntime.interactions?.clearPendingActions?.({
         ...params.baseContext,

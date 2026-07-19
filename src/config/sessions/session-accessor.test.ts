@@ -2123,7 +2123,7 @@ describe("session accessor seam", () => {
     };
     fs.writeFileSync(
       previousTranscript,
-      [
+      `${[
         JSON.stringify({ type: "session", id: "previous-session" }),
         JSON.stringify({
           id: "msg-user",
@@ -2139,7 +2139,7 @@ describe("session accessor seam", () => {
           timestamp: "2026-06-16T00:00:01.000Z",
           type: "message",
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf-8",
     );
     await upsertSessionEntry({ sessionKey, storePath }, previousEntry);

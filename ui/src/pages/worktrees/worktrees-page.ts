@@ -643,9 +643,11 @@ class WorktreesPage extends OperatorLightDomElement {
         ${this.renderOwner(record)} · ${formatRelativeTimestamp(record.lastActiveAt)}
       `,
       control: html`
-        ${record.removedAt
-          ? renderSettingsStatus({ kind: "muted", label: t("worktrees.restorable") })
-          : renderSettingsStatus({ kind: "ok", label: t("common.active") })}
+        ${
+          record.removedAt
+            ? renderSettingsStatus({ kind: "muted", label: t("worktrees.restorable") })
+            : renderSettingsStatus({ kind: "ok", label: t("common.active") })
+        }
         <button
           class=${record.removedAt ? "btn btn--sm" : "btn btn--sm danger"}
           ?disabled=${this.operationPending}
@@ -669,9 +671,11 @@ class WorktreesPage extends OperatorLightDomElement {
     `;
     const rows = html`
       ${this.renderCreateRows()}
-      ${this.records.length === 0
-        ? renderSettingsEmpty(t("worktrees.empty"))
-        : this.records.map((record) => this.renderRecordRow(record))}
+      ${
+        this.records.length === 0
+          ? renderSettingsEmpty(t("worktrees.empty"))
+          : this.records.map((record) => this.renderRecordRow(record))
+      }
     `;
     const body = renderSettingsPage(
       html`

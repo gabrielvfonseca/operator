@@ -97,7 +97,7 @@ export function intersectFindings(iosFindings, macosFindings) {
 
 export function parseRepoLocation(location) {
   const match = /^(.*):(\d+):(\d+)$/.exec(location);
-  if (!match || !match[1].startsWith("../shared/")) {
+  if (!match?.[1].startsWith("../shared/")) {
     throw new Error(`invalid shared Periphery location: ${location}`);
   }
   return {

@@ -230,7 +230,7 @@ function isEligibleInteractiveSession(ctx: {
   if (provider === "webchat") {
     return true;
   }
-  return Boolean(ctx.channelId && ctx.channelId.trim());
+  return Boolean(ctx.channelId?.trim());
 }
 
 function resolveChatType(ctx: {

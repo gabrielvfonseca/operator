@@ -912,9 +912,8 @@ export async function startGatewayServer(
     hasConfiguredWorkerProfiles ||
     Boolean(workerEnvironmentStartup?.records.length) ||
     Boolean(workerEnvironmentStartup?.hasNonlocalPlacementRecords);
-  let resolveWorkerGatewayEndpoint: () =>
-    | { host: "127.0.0.1" | "::1"; port: number }
-    | undefined = () => undefined;
+  let resolveWorkerGatewayEndpoint: () => { host: "127.0.0.1" | "::1"; port: number } | undefined =
+    () => undefined;
   const workerEnvironmentRuntime =
     workerEnvironmentStartup && shouldStartWorkerEnvironmentService
       ? await startupTrace.measure("worker-environments.runtime-imports", async () => {
@@ -1063,8 +1062,9 @@ export async function startGatewayServer(
   const { createTerminalLaunchPolicy } = await import("./terminal/launch.js");
   const terminalLaunchPolicy = createTerminalLaunchPolicy(cfgAtStart);
 
-  const { runDefaultChannelSetupWizard, runDefaultSetupWizard } =
-    await import("./server-methods/wizard.js");
+  const { runDefaultChannelSetupWizard, runDefaultSetupWizard } = await import(
+    "./server-methods/wizard.js"
+  );
   const wizardRunner = opts.wizardRunner ?? runDefaultSetupWizard;
   const channelWizardRunner = opts.channelWizardRunner ?? runDefaultChannelSetupWizard;
   const { wizardSessions, findRunningWizard, purgeWizardSession } = createWizardSessionTracker();
@@ -1250,8 +1250,9 @@ export async function startGatewayServer(
     onError: (message, error) => log.warn(`${message}: ${String(error)}`),
   });
   watchNodeRequestHandler.current = watchNodeHttpRuntime.handleRequest;
-  const { TerminalSessionManager, DEFAULT_TERMINAL_DETACH_SECONDS } =
-    await import("./terminal/session-manager.js");
+  const { TerminalSessionManager, DEFAULT_TERMINAL_DETACH_SECONDS } = await import(
+    "./terminal/session-manager.js"
+  );
   const { createTerminalSessionTransport } = await import("./terminal/gateway-transport.js");
   const terminalSessions = new TerminalSessionManager({
     ...createTerminalSessionTransport(broadcastToConnIds, getBufferedAmount),
@@ -1428,8 +1429,9 @@ export async function startGatewayServer(
         if (sessionKeys.size === 0 && sessionIds.size === 0) {
           return;
         }
-        const { markRestartAbortedMainSessions } =
-          await import("../agents/main-session-restart-recovery.js");
+        const { markRestartAbortedMainSessions } = await import(
+          "../agents/main-session-restart-recovery.js"
+        );
         await markRestartAbortedMainSessions({
           cfg: getRuntimeConfig(),
           sessionKeys,
@@ -1546,8 +1548,9 @@ export async function startGatewayServer(
     );
     Object.assign(runtimeState, runtimeServices);
 
-    const { createOperatorApprovalSessionEventRuntime } =
-      await import("./operator-approval-session-events.js");
+    const { createOperatorApprovalSessionEventRuntime } = await import(
+      "./operator-approval-session-events.js"
+    );
     // Managers publish through this runtime, while replay routes durable
     // expiry back through the owning manager to release its parked waiter once.
     const approvalManagersForReplay = new Map<
@@ -2321,8 +2324,9 @@ export async function startGatewayServer(
         isClosing: () => closePreludeStarted,
         isBusy: () => getActiveGatewayRootWorkCount({ excludeCurrent: true }) > 0,
         run: async () => {
-          const { cleanupRetainedPluginInstallGenerations } =
-            await import("./server-retained-plugin-cleanup.js");
+          const { cleanupRetainedPluginInstallGenerations } = await import(
+            "./server-retained-plugin-cleanup.js"
+          );
           await cleanupRetainedPluginInstallGenerations({ log });
         },
         log,

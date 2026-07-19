@@ -5,6 +5,7 @@ import {
   createChannelSecretTargetRegistryEntries,
   getChannelSurface,
   hasConfiguredSecretInputValue,
+  // biome-ignore lint/suspicious/noShadowRestrictedNames: migrated from oxlint
   hasOwnProperty,
   isBaseFieldActiveForChannelSurface,
   normalizeSecretStringValue,

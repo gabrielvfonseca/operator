@@ -209,8 +209,9 @@ let resolveTranscriptPolicy: typeof import("./transcript-policy.js").resolveTran
 let shouldAllowProviderOwnedThinkingReplay: typeof import("./transcript-policy.js").shouldAllowProviderOwnedThinkingReplay;
 describe("resolveTranscriptPolicy", () => {
   beforeAll(async () => {
-    ({ resolveTranscriptPolicy, shouldAllowProviderOwnedThinkingReplay } =
-      await import("./transcript-policy.js"));
+    ({ resolveTranscriptPolicy, shouldAllowProviderOwnedThinkingReplay } = await import(
+      "./transcript-policy.js"
+    ));
   });
 
   beforeEach(() => {

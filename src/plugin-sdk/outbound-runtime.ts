@@ -21,4 +21,4 @@ export type {
 export { deliverOutboundPayloads } from "../infra/outbound/deliver.js";
 /** @deprecated Direct outbound delivery params are compatibility/runtime substrate. */
 export type { DeliverOutboundPayloadsParams } from "../infra/outbound/deliver.js";
-export { type OutboundDeliveryResult } from "../infra/outbound/deliver.js";
+export type { OutboundDeliveryResult } from "../infra/outbound/deliver.js";

@@ -84,6 +84,7 @@ async function readLogSlice(params: {
       : undefined;
   let reset = false;
   let truncated = false;
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let start;
 
   if (cursor != null) {

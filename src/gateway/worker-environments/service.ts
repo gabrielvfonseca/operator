@@ -1519,8 +1519,7 @@ export function createWorkerEnvironmentService(options: WorkerEnvironmentService
         }
         const environment = store.get(binding.environmentId);
         if (
-          !environment ||
-          environment.state !== "attached" ||
+          environment?.state !== "attached" ||
           environment.ownerEpoch !== binding.ownerEpoch ||
           environment.attachedSessionIds.length !== 1 ||
           environment.attachedSessionIds[0] !== binding.sessionId

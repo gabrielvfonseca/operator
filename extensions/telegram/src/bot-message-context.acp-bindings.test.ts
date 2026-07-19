@@ -145,8 +145,9 @@ function createConfiguredTelegramRoute() {
 
 describe("buildTelegramMessageContext ACP configured bindings", () => {
   beforeAll(async () => {
-    ({ buildTelegramMessageContextForTest } =
-      await import("./bot-message-context.test-harness.js"));
+    ({ buildTelegramMessageContextForTest } = await import(
+      "./bot-message-context.test-harness.js"
+    ));
   });
 
   beforeEach(() => {

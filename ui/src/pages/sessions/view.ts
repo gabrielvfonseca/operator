@@ -465,33 +465,42 @@ function renderTranscriptSearch(props: SessionsProps, rows: GatewaySessionRow[])
           type="submit"
           ?disabled=${!props.transcriptSearchAvailable || !hasQuery || loading}
         >
-          ${loading
-            ? t("sessionsView.transcriptSearchSearching")
-            : t("sessionsView.transcriptSearchAction")}
+          ${
+            loading
+              ? t("sessionsView.transcriptSearchSearching")
+              : t("sessionsView.transcriptSearchAction")
+          }
         </button>
-        ${hasQuery
-          ? html`
+        ${
+          hasQuery
+            ? html`
               <button class="btn" type="button" @click=${props.onClearTranscriptSearch}>
                 ${t("sessionsView.transcriptSearchClear")}
               </button>
             `
-          : nothing}
+            : nothing
+        }
       </form>
-      ${!props.transcriptSearchAvailable
-        ? html`
+      ${
+        !props.transcriptSearchAvailable
+          ? html`
             <div class="muted" role="status">${t("sessionsView.transcriptSearchUnavailable")}</div>
           `
-        : nothing}
+          : nothing
+      }
       <div
         class="sessions-transcript-search__status"
         aria-live="polite"
         aria-busy=${loading ? "true" : "false"}
       >
-        ${loading
-          ? html`<span class="muted">${t("sessionsView.transcriptSearchSearching")}</span>`
-          : nothing}
-        ${state.status === "error"
-          ? html`
+        ${
+          loading
+            ? html`<span class="muted">${t("sessionsView.transcriptSearchSearching")}</span>`
+            : nothing
+        }
+        ${
+          state.status === "error"
+            ? html`
               <div
                 class="sessions-transcript-search__notice sessions-transcript-search__notice--danger"
               >
@@ -501,9 +510,11 @@ function renderTranscriptSearch(props: SessionsProps, rows: GatewaySessionRow[])
                 </button>
               </div>
             `
-          : nothing}
-        ${state.status === "results" && state.indexing
-          ? html`
+            : nothing
+        }
+        ${
+          state.status === "results" && state.indexing
+            ? html`
               <div class="sessions-transcript-search__notice">
                 <span>${t("sessionsView.transcriptSearchIndexing")}</span>
                 <button
@@ -516,16 +527,20 @@ function renderTranscriptSearch(props: SessionsProps, rows: GatewaySessionRow[])
                 </button>
               </div>
             `
-          : nothing}
-        ${state.status === "results" && results.length === 0 && !state.indexing
-          ? html`
+            : nothing
+        }
+        ${
+          state.status === "results" && results.length === 0 && !state.indexing
+            ? html`
               <div class="sessions-transcript-search__empty" role="status">
                 ${t("sessionsView.transcriptSearchEmpty")}
               </div>
             `
-          : nothing}
-        ${results.length > 0
-          ? html`
+            : nothing
+        }
+        ${
+          results.length > 0
+            ? html`
               <div class="sessions-transcript-search__results">
                 <div class="sessions-transcript-search__summary">
                   <strong
@@ -533,11 +548,13 @@ function renderTranscriptSearch(props: SessionsProps, rows: GatewaySessionRow[])
                       count: String(results.length),
                     })}</strong
                   >
-                  ${state.status === "results" && state.truncated
-                    ? html`<span class="muted"
+                  ${
+                    state.status === "results" && state.truncated
+                      ? html`<span class="muted"
                         >${t("sessionsView.transcriptSearchTruncated")}</span
                       >`
-                    : nothing}
+                      : nothing
+                  }
                 </div>
                 <div class="sessions-transcript-search__list">
                   ${results.map((hit) => {
@@ -564,7 +581,8 @@ function renderTranscriptSearch(props: SessionsProps, rows: GatewaySessionRow[])
                 </div>
               </div>
             `
-          : nothing}
+            : nothing
+        }
       </div>
     </section>
   `;
@@ -1097,13 +1115,15 @@ export function renderSessions(props: SessionsProps) {
 
   const sessionsTitle = html`
     ${t("sessionsView.title")}
-    ${props.result
-      ? html`
+    ${
+      props.result
+        ? html`
           <operator-tooltip .content=${t("sessionsView.store", { path: props.result.path })}>
             <span class="settings-count">${rawRows.length}</span>
           </operator-tooltip>
         `
-      : nothing}
+        : nothing
+    }
   `;
   const refreshAction = html`
     <button class="btn" ?disabled=${props.loading} @click=${props.onRefresh}>
@@ -1284,17 +1304,20 @@ function renderSessionsTable(props: SessionsProps, ctx: SessionsTableContext) {
           )}
         </select>
       </label>
-      ${props.groupBy === "category"
-        ? html`
+      ${
+        props.groupBy === "category"
+          ? html`
             <button class="btn btn--sm" @click=${() => props.onRequestNewCategory()}>
               ${icons.plus} ${t("sessionsView.newGroup")}
             </button>
           `
-        : nothing}
+          : nothing
+      }
     </div>
 
-    ${props.selectedKeys.size > 0
-      ? html`
+    ${
+      props.selectedKeys.size > 0
+        ? html`
           <div class="data-table-bulk-bar">
             <span>${t("sessionsView.selected", { count: String(props.selectedKeys.size) })}</span>
             <button class="btn btn--sm" @click=${props.onDeselectAll}>
@@ -1309,20 +1332,25 @@ function renderSessionsTable(props: SessionsProps, ctx: SessionsTableContext) {
             </button>
           </div>
         `
-      : nothing}
+        : nothing
+    }
 
     <div class="data-table-container">
       <table class="data-table sessions-table">
         <thead>
           <tr>
             <th class="data-table-checkbox-col">
-              ${paginated.length > 0
-                ? html`<input
+              ${
+                paginated.length > 0
+                  ? html`<input
                     type="checkbox"
-                    .checked=${paginated.length > 0 &&
-                    paginated.every((r) => props.selectedKeys.has(r.key))}
-                    .indeterminate=${paginated.some((r) => props.selectedKeys.has(r.key)) &&
-                    !paginated.every((r) => props.selectedKeys.has(r.key))}
+                    .checked=${
+                      paginated.length > 0 && paginated.every((r) => props.selectedKeys.has(r.key))
+                    }
+                    .indeterminate=${
+                      paginated.some((r) => props.selectedKeys.has(r.key)) &&
+                      !paginated.every((r) => props.selectedKeys.has(r.key))
+                    }
                     @change=${() => {
                       const allSelected = paginated.every((r) => props.selectedKeys.has(r.key));
                       if (allSelected) {
@@ -1333,7 +1361,8 @@ function renderSessionsTable(props: SessionsProps, ctx: SessionsTableContext) {
                     }}
                     aria-label=${t("sessionsView.selectAllOnPage")}
                   />`
-                : nothing}
+                  : nothing
+              }
             </th>
             ${sortHeader("key", t("sessionsView.key"), "data-table-key-col")}
             ${props.groupBy === "category" ? html`<th>${t("sessionsView.group")}</th>` : nothing}
@@ -1347,14 +1376,16 @@ function renderSessionsTable(props: SessionsProps, ctx: SessionsTableContext) {
           </tr>
         </thead>
         <tbody>
-          ${props.loading && !props.result
-            ? renderSkeletonRows(sessionsTableColumnCount(props))
-            : paginated.length === 0
-              ? html`
+          ${
+            props.loading && !props.result
+              ? renderSkeletonRows(sessionsTableColumnCount(props))
+              : paginated.length === 0
+                ? html`
                   <tr>
                     <td colspan=${sessionsTableColumnCount(props)} class="data-table-empty-cell">
-                      ${emptyBecauseFiltered
-                        ? html`
+                      ${
+                        emptyBecauseFiltered
+                          ? html`
                             <div class="data-table-empty-state" role="status" aria-live="polite">
                               <div class="data-table-empty-state__message">
                                 ${icons.search}
@@ -1365,30 +1396,33 @@ function renderSessionsTable(props: SessionsProps, ctx: SessionsTableContext) {
                               </button>
                             </div>
                           `
-                        : html`
+                          : html`
                             <div class="data-table-empty-state" role="status" aria-live="polite">
                               <div class="data-table-empty-state__message">
                                 ${icons.messageSquare}
                                 <span>${t("sessionsView.noSessions")}</span>
                               </div>
                             </div>
-                          `}
+                          `
+                      }
                     </td>
                   </tr>
                 `
-              : groups
-                ? groups.flatMap((group) => {
-                    const section = group.rows.flatMap((row) => renderRows(row, props));
-                    section.unshift(renderGroupHeaderRow(group, props));
-                    return section;
-                  })
-                : paginated.flatMap((row) => renderRows(row, props))}
+                : groups
+                  ? groups.flatMap((group) => {
+                      const section = group.rows.flatMap((row) => renderRows(row, props));
+                      section.unshift(renderGroupHeaderRow(group, props));
+                      return section;
+                    })
+                  : paginated.flatMap((row) => renderRows(row, props))
+          }
         </tbody>
       </table>
     </div>
 
-    ${totalRows > 0 && !groupingActive
-      ? html`
+    ${
+      totalRows > 0 && !groupingActive
+        ? html`
           <div class="data-table-pagination">
             <div class="data-table-pagination__info">
               ${t("sessionsView.pagination", {
@@ -1423,7 +1457,8 @@ function renderSessionsTable(props: SessionsProps, ctx: SessionsTableContext) {
             </div>
           </div>
         `
-      : nothing}
+        : nothing
+    }
   `;
 }
 
@@ -1480,14 +1515,16 @@ function renderRows(row: GatewaySessionRow, props: SessionsProps) {
       aria-controls=${detailsId}
       draggable=${categoryMode ? "true" : nothing}
       aria-description=${categoryMode ? t("sessionsView.dragSessionHint") : nothing}
-      @dragstart=${categoryMode
-        ? (e: DragEvent) => {
-            e.dataTransfer?.setData(SESSION_DRAG_MIME, row.key);
-            if (e.dataTransfer) {
-              e.dataTransfer.effectAllowed = "move";
+      @dragstart=${
+        categoryMode
+          ? (e: DragEvent) => {
+              e.dataTransfer?.setData(SESSION_DRAG_MIME, row.key);
+              if (e.dataTransfer) {
+                e.dataTransfer.effectAllowed = "move";
+              }
             }
-          }
-        : nothing}
+          : nothing
+      }
       @dragover=${rowDrop.dragover}
       @dragleave=${rowDrop.dragleave}
       @drop=${rowDrop.drop}
@@ -1525,15 +1562,18 @@ function renderRows(row: GatewaySessionRow, props: SessionsProps) {
             ${renderSessionAvatar(row)}
             <div class="session-key-cell__text">
               <span class="session-key-cell__primary">
-                ${row.unread === true
-                  ? html`<span
+                ${
+                  row.unread === true
+                    ? html`<span
                       class="session-unread-dot"
                       role="img"
                       aria-label=${t("sessionsView.unread")}
                     ></span>`
-                  : nothing}
-                ${canLink
-                  ? html`<a
+                    : nothing
+                }
+                ${
+                  canLink
+                    ? html`<a
                       href=${chatUrl}
                       class="session-link"
                       @click=${(e: MouseEvent) => {
@@ -1554,16 +1594,21 @@ function renderRows(row: GatewaySessionRow, props: SessionsProps) {
                       }}
                       >${friendlyKeyLabel ?? row.key}</a
                     >`
-                  : html`<span>${friendlyKeyLabel ?? row.key}</span>`}
-                ${trimmedLabel
-                  ? html`<span class="session-label-chip" title=${trimmedLabel}
+                    : html`<span>${friendlyKeyLabel ?? row.key}</span>`
+                }
+                ${
+                  trimmedLabel
+                    ? html`<span class="session-label-chip" title=${trimmedLabel}
                       >${trimmedLabel}</span
                     >`
-                  : nothing}
+                    : nothing
+                }
               </span>
-              ${showDisplayName
-                ? html`<span class="muted session-key-display-name">${displayName}</span>`
-                : nothing}
+              ${
+                showDisplayName
+                  ? html`<span class="muted session-key-display-name">${displayName}</span>`
+                  : nothing
+              }
             </div>
           </div>
         </operator-tooltip>
@@ -1592,11 +1637,13 @@ function renderRows(row: GatewaySessionRow, props: SessionsProps) {
               props.onToggleDetails(row.key);
             }}
           >
-            ${visibleCheckpointCount > 0
-              ? html`<span class="settings-count session-compaction-count"
+            ${
+              visibleCheckpointCount > 0
+                ? html`<span class="settings-count session-compaction-count"
                   >${visibleCheckpointCount}</span
                 >`
-              : nothing}
+                : nothing
+            }
             ${icons.chevronDown}
           </button>
           <button
@@ -1698,9 +1745,11 @@ function renderSessionDetailsRow(params: {
           <div>
             <div class="session-details-panel__eyebrow">${t("sessionsView.sessionDetails")}</div>
             <div class="session-details-panel__title">${friendlyKeyLabel ?? row.key}</div>
-            ${showDisplayName
-              ? html`<div class="muted session-details-panel__subtitle">${displayName}</div>`
-              : nothing}
+            ${
+              showDisplayName
+                ? html`<div class="muted session-details-panel__subtitle">${displayName}</div>`
+                : nothing
+            }
           </div>
           <div class="session-details-panel__badges">
             ${renderSessionStatusBadge(row)} ${renderSessionGoalStatus(row.goal)}
@@ -1785,17 +1834,18 @@ function renderSessionDetailsRow(params: {
               <div class="session-details-section__title">${checkpointLabel}</div>
             </div>
           </div>
-          ${props.checkpointLoadingKey === row.key
-            ? html`<div class="muted session-details-empty">
+          ${
+            props.checkpointLoadingKey === row.key
+              ? html`<div class="muted session-details-empty">
                 ${t("sessionsView.loadingCheckpoints")}
               </div>`
-            : checkpointError
-              ? html`<div class="callout danger">${checkpointError}</div>`
-              : !hasCheckpoints || checkpointItems.length === 0
-                ? html`<div class="muted session-details-empty">
+              : checkpointError
+                ? html`<div class="callout danger">${checkpointError}</div>`
+                : !hasCheckpoints || checkpointItems.length === 0
+                  ? html`<div class="muted session-details-empty">
                     ${t("sessionsView.noCheckpoints")}
                   </div>`
-                : html`
+                  : html`
                     <div class="session-checkpoint-list">
                       ${checkpointItems.map(
                         (checkpoint) => html`
@@ -1809,11 +1859,13 @@ function renderSessionDetailsRow(params: {
                                 ${formatCheckpointDelta(checkpoint)}
                               </span>
                             </div>
-                            ${checkpoint.summary
-                              ? html`<div class="session-checkpoint-card__summary">
+                            ${
+                              checkpoint.summary
+                                ? html`<div class="session-checkpoint-card__summary">
                                   ${checkpoint.summary}
                                 </div>`
-                              : html`<div class="muted">${t("sessionsView.noSummary")}</div>`}
+                                : html`<div class="muted">${t("sessionsView.noSummary")}</div>`
+                            }
                             <div class="session-checkpoint-card__actions">
                               <button
                                 class="btn btn--sm"
@@ -1836,7 +1888,8 @@ function renderSessionDetailsRow(params: {
                         `,
                       )}
                     </div>
-                  `}
+                  `
+          }
         </div>
       </div>
     </td>

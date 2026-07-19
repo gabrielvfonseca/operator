@@ -257,6 +257,7 @@ describe("secrets runtime snapshot core lanes", () => {
           "openai:inline": {
             type: "api_key",
             provider: "openai",
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             key: "${OPENAI_API_KEY}",
           },
         }),

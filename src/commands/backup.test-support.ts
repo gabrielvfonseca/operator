@@ -59,11 +59,7 @@ const backupTestMocks = vi.hoisted(() => ({
 export const { backupVerifyCommandMock, tarCreateMock } = backupTestMocks;
 
 export function createMockTarStream(
-  params: {
-    beforeRead?: () => Promise<void> | void;
-    contents?: string;
-    error?: Error;
-  } = {},
+  params: { beforeRead?: () => Promise<void> | void; contents?: string; error?: Error } = {},
 ): Readable {
   return Readable.from(
     (async function* () {

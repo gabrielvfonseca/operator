@@ -224,7 +224,7 @@ export function renderChat(props: ChatProps) {
   const workspaceCollapsed = props.sessionWorkspace?.collapsed !== false;
   const workspaceDockBottom = Boolean(
     props.sessionWorkspace &&
-    (props.sessionWorkspace.dock === "bottom" || props.sessionWorkspace.narrowLayout),
+      (props.sessionWorkspace.dock === "bottom" || props.sessionWorkspace.narrowLayout),
   );
   const tasksOpen = props.backgroundTasks?.collapsed === false;
   const tasksDockBottom = tasksOpen && props.backgroundTasks?.narrowLayout === true;
@@ -430,12 +430,14 @@ export function renderChat(props: ChatProps) {
       }}
     >
       ${props.disabledReason ? html`<div class="callout">${props.disabledReason}</div>` : nothing}
-      ${props.error
-        ? html`
+      ${
+        props.error
+          ? html`
             <div class="callout danger callout--dismissible" role="alert">
               <span class="callout__content">${props.error}</span>
-              ${props.onDismissError
-                ? html`
+              ${
+                props.onDismissError
+                  ? html`
                     <operator-tooltip .content=${t("chat.actions.dismissError")}>
                       <button
                         class="callout__dismiss"
@@ -447,12 +449,15 @@ export function renderChat(props: ChatProps) {
                       </button>
                     </operator-tooltip>
                   `
-                : nothing}
+                  : nothing
+              }
             </div>
           `
-        : nothing}
-      ${props.focusMode && props.onToggleFocusMode
-        ? html`
+          : nothing
+      }
+      ${
+        props.focusMode && props.onToggleFocusMode
+          ? html`
             <operator-tooltip .content=${t("chat.actions.exitFocusMode")}>
               <button
                 class="chat-focus-exit"
@@ -464,7 +469,8 @@ export function renderChat(props: ChatProps) {
               </button>
             </operator-tooltip>
           `
-        : nothing}
+          : nothing
+      }
       ${renderChatSearchBar(props.paneId, requestUpdate)}
       ${renderChatPinnedMessages(
         {
@@ -477,49 +483,56 @@ export function renderChat(props: ChatProps) {
         requestUpdate,
       )}
       <div
-        class="chat-workbench ${workspaceCollapsed
-          ? "chat-workbench--workspace-collapsed"
-          : ""} ${workspaceDockBottom ? "chat-workbench--dock-bottom" : ""} ${tasksOpen &&
-        !tasksDockBottom
-          ? "chat-workbench--tasks-open"
-          : ""} ${tasksDockBottom ? "chat-workbench--tasks-dock-bottom" : ""}"
+        class="chat-workbench ${
+          workspaceCollapsed ? "chat-workbench--workspace-collapsed" : ""
+        } ${workspaceDockBottom ? "chat-workbench--dock-bottom" : ""} ${
+          tasksOpen && !tasksDockBottom ? "chat-workbench--tasks-open" : ""
+        } ${tasksDockBottom ? "chat-workbench--tasks-dock-bottom" : ""}"
       >
         ${renderSessionWorkspaceRail(props.sessionWorkspace)}
         ${renderBackgroundTasksRail(props.backgroundTasks)}
-        ${props.sessionWorkspace?.dockDragging
-          ? html`
+        ${
+          props.sessionWorkspace?.dockDragging
+            ? html`
               <div class="chat-workbench__dock-zones" aria-hidden="true">
                 <div
-                  class="chat-workbench__dock-zone chat-workbench__dock-zone--right ${props
-                    .sessionWorkspace.dockDragZone === "right"
-                    ? "chat-workbench__dock-zone--active"
-                    : ""}"
+                  class="chat-workbench__dock-zone chat-workbench__dock-zone--right ${
+                    props.sessionWorkspace.dockDragZone === "right"
+                      ? "chat-workbench__dock-zone--active"
+                      : ""
+                  }"
                 >
                   <span>${t("chat.workspaceFiles.dockRight")}</span>
                 </div>
                 <div
-                  class="chat-workbench__dock-zone chat-workbench__dock-zone--bottom ${props
-                    .sessionWorkspace.dockDragZone === "bottom"
-                    ? "chat-workbench__dock-zone--active"
-                    : ""}"
+                  class="chat-workbench__dock-zone chat-workbench__dock-zone--bottom ${
+                    props.sessionWorkspace.dockDragZone === "bottom"
+                      ? "chat-workbench__dock-zone--active"
+                      : ""
+                  }"
                 >
                   <span>${t("chat.workspaceFiles.dockBottom")}</span>
                 </div>
               </div>
             `
-          : nothing}
+            : nothing
+        }
         <div class="chat-workbench__main">
           <!-- Floating openers share the top-right corner with the detail
                panel's header controls; hide them while the sidebar is open. -->
-          ${!props.paneHeaderActive &&
-          !sidebarOpen &&
-          (props.onOpenSplitView ||
-            props.sessionWorkspace?.collapsed ||
-            props.backgroundTasks?.collapsed)
-            ? html`
+          ${
+            !props.paneHeaderActive &&
+            !sidebarOpen &&
+            (
+              props.onOpenSplitView ||
+                props.sessionWorkspace?.collapsed ||
+                props.backgroundTasks?.collapsed
+            )
+              ? html`
                 <div class="chat-floating-toggles">
-                  ${props.onOpenSplitView
-                    ? html`
+                  ${
+                    props.onOpenSplitView
+                      ? html`
                         <operator-tooltip .content=${t("chat.splitView.open")}>
                           <button
                             class="btn btn--ghost btn--icon chat-icon-btn chat-open-split-view"
@@ -531,23 +544,31 @@ export function renderChat(props: ChatProps) {
                           </button>
                         </operator-tooltip>
                       `
-                    : nothing}
-                  ${props.sessionWorkspace?.collapsed
-                    ? renderSessionDiffToggle(props.sessionWorkspace)
-                    : nothing}
-                  ${props.backgroundTasks?.collapsed
-                    ? renderBackgroundTasksToggle(props.backgroundTasks)
-                    : nothing}
-                  ${props.sessionWorkspace?.collapsed
-                    ? renderSessionWorkspaceToggle(props.sessionWorkspace)
-                    : nothing}
+                      : nothing
+                  }
+                  ${
+                    props.sessionWorkspace?.collapsed
+                      ? renderSessionDiffToggle(props.sessionWorkspace)
+                      : nothing
+                  }
+                  ${
+                    props.backgroundTasks?.collapsed
+                      ? renderBackgroundTasksToggle(props.backgroundTasks)
+                      : nothing
+                  }
+                  ${
+                    props.sessionWorkspace?.collapsed
+                      ? renderSessionWorkspaceToggle(props.sessionWorkspace)
+                      : nothing
+                  }
                 </div>
               `
-            : nothing}
+              : nothing
+          }
           <div
-            class="chat-split-container ${sidebarOpen
-              ? "chat-split-container--open"
-              : ""} ${sidebarOpen && sidebarStacked ? "chat-split-container--stacked" : ""}"
+            class="chat-split-container ${
+              sidebarOpen ? "chat-split-container--open" : ""
+            } ${sidebarOpen && sidebarStacked ? "chat-split-container--stacked" : ""}"
           >
             <div
               class="chat-main"
@@ -583,8 +604,9 @@ export function renderChat(props: ChatProps) {
               })}
             </div>
 
-            ${sidebarOpen
-              ? html`
+            ${
+              sidebarOpen
+                ? html`
                   <resizable-divider
                     .splitRatio=${splitRatio}
                     .label=${t("nav.resize")}
@@ -604,7 +626,8 @@ export function renderChat(props: ChatProps) {
                     @chat-detail-panel-close=${() => props.onCloseSidebar?.()}
                   ></operator-chat-detail-panel>
                 `
-              : nothing}
+                : nothing
+            }
           </div>
         </div>
       </div>

@@ -9,7 +9,7 @@ import { requireActivePluginHttpRouteRegistry } from "./runtime.js";
 type PluginHttpRouteHandler = (
   req: IncomingMessage,
   res: ServerResponse,
-) => Promise<boolean | void> | boolean | void;
+) => Promise<boolean | undefined> | boolean | undefined;
 
 const pluginHttpRouteRegistryScope = new AsyncLocalStorage<PluginRegistry>();
 

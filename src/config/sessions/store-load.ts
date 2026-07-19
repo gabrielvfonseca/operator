@@ -437,7 +437,6 @@ export function loadSessionStore(
       }
       if (attempt < maxReadAttempts - 1) {
         Atomics.wait(retryBuf!, 0, 0, 50);
-        continue;
       }
     }
   }

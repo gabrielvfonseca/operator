@@ -295,9 +295,9 @@ function resolveServerToolCallTimeoutMs(config: McpServerConfig): number {
 function isMcpTimeoutError(error: unknown): boolean {
   return Boolean(
     error &&
-    typeof error === "object" &&
-    "code" in error &&
-    (error as { code?: unknown }).code === ErrorCode.RequestTimeout,
+      typeof error === "object" &&
+      "code" in error &&
+      (error as { code?: unknown }).code === ErrorCode.RequestTimeout,
   );
 }
 

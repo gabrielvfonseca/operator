@@ -414,9 +414,8 @@ const FENCE_CONTAINER_PREFIX_RE = /^[ \t]{0,3}(?:(?:>\s?)|(?:(?:[-+*]|\d{1,9}[.)
 // CJK character ranges for URL boundary detection (RFC 3986: CJK is not valid in raw URLs).
 // CJK Unified Ideographs, CJK Symbols/Punctuation, Fullwidth Forms, Hiragana, Katakana,
 // Hangul Syllables, and CJK Compatibility Ideographs.
-const CJK_RE = new RegExp(
-  "[\\u2E80-\\u2FFF\\u3000-\\u303F\\u3040-\\u309F\\u30A0-\\u30FF\\u3400-\\u4DBF\\u4E00-\\u9FFF\\uAC00-\\uD7AF\\uF900-\\uFAFF\\uFF01-\\uFF60]",
-);
+const CJK_RE =
+  /[\u2E80-\u2FFF\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\u3400-\u4DBF\u4E00-\u9FFF\uAC00-\uD7AF\uF900-\uFAFF\uFF01-\uFF60]/;
 
 function getCachedMarkdown(key: string): string | null {
   const cached = markdownCache.get(key);
@@ -915,7 +914,7 @@ md.enable("strikethrough");
 installAssistantTranscriptRoleMarkdown(md, escapeHtml);
 
 // Disable fuzzy link detection to prevent bare filenames like "README.md"
-// from being auto-linked as "http://README.md". URLs with explicit protocol
+// from being auto-linked as "http:/README.MD". URLs with explicit protocol
 // (https://...) and emails are still linkified.
 //
 // Alternative considered: extensions/matrix/src/matrix/format.ts uses fuzzyLink
@@ -1026,7 +1025,7 @@ md.linkify.add("www", {
     return len;
   },
   normalize(match) {
-    match.url = "http://" + match.url;
+    match.url = `http://${match.url}`;
   },
 });
 
@@ -1068,7 +1067,7 @@ md.core.ruler.after("linkify", "linkify-cjk-trim", (state) => {
       }
       // Use the display text to find CJK boundary (href may be percent-encoded)
       const textToken = children[i + 1];
-      if (!textToken || textToken.type !== "text") {
+      if (textToken?.type !== "text") {
         continue;
       }
       const displayText = textToken.content;
@@ -1244,7 +1243,7 @@ md.core.ruler.after("github-task-lists", "task-list-allowlist", (state) => {
 // throwing mid-render; markdown input is untrusted and the chat view must not crash.
 md.renderer.rules.html_block = (tokens, idx) => {
   const token = tokens[idx];
-  return token ? escapeHtml(token.content) + "\n" : "";
+  return token ? `${escapeHtml(token.content)}\n` : "";
 };
 md.renderer.rules.html_inline = (tokens, idx) => {
   const token = tokens[idx];

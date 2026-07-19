@@ -772,16 +772,13 @@ export async function monitorSlackProvider(opts: MonitorSlackOpts = {}) {
           } catch {
             break;
           }
-          continue;
         }
       }
     } else if (slackMode === "relay" && relayConfig) {
       runtime.log?.(
         `slack relay mode connecting to ${relayConfig.url} gateway_id:${relayConfig.gatewayId}`,
       );
-      await (
-        await loadSlackRelaySource()
-      ).monitorSlackRelaySource({
+      await (await loadSlackRelaySource()).monitorSlackRelaySource({
         config: relayConfig,
         handleSlackMessage,
         runtime,

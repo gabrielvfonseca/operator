@@ -231,6 +231,7 @@ export function createTelegramInboundMediaGroupRuntime(
       let skippedCount = 0;
       for (const { ctx, msg } of entry.messages) {
         const sourceMessageId = String(msg.message_id);
+        // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
         let media;
         try {
           media = await resolveMedia({ ctx, maxBytes: mediaMaxBytes, ...mediaRuntimeWithAbort });

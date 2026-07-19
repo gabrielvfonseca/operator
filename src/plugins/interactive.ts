@@ -56,7 +56,7 @@ function resolveLivePluginInteractiveNamespaceMatch(channel: string, data: strin
 /** Dispatches one interactive callback payload to a matching plugin handler. */
 export async function dispatchPluginInteractiveHandler<
   TRegistration extends PluginInteractiveDispatchRegistration,
-  TResult extends { handled?: boolean } | void = { handled?: boolean } | void,
+  TResult extends { handled?: boolean } | undefined = { handled?: boolean } | undefined,
 >(params: {
   channel: TRegistration["channel"];
   data: string;

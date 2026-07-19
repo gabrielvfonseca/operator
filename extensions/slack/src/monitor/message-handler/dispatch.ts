@@ -1057,7 +1057,7 @@ export async function dispatchPreparedSlackMessage(prepared: PreparedSlackMessag
       streamFailed ||
       reply.hasMedia ||
       renderPlan.mode === "split" ||
-      Boolean(plannedBlocks?.length) ||
+      plannedBlocks?.length ||
       readSlackReplyBlocks(params.payload)?.length ||
       !reply.hasText
     ) {
@@ -1214,7 +1214,7 @@ export async function dispatchPreparedSlackMessage(prepared: PreparedSlackMessag
       }
       await appendSlackStream({
         session: streamSession,
-        text: "\n" + text,
+        text: `\n${text}`,
         chunks: completionChunks,
       });
       refreshStreamedAcknowledgements(streamSession);
@@ -1268,7 +1268,7 @@ export async function dispatchPreparedSlackMessage(prepared: PreparedSlackMessag
       // included too). Route the full buffer through the chunked fallback so
       // earlier chunks aren't lost, then skip deliverNormally - pendingText
       // already contains this payload's text.
-      if (streamSession && streamSession.pendingText) {
+      if (streamSession?.pendingText) {
         const bufferedFallbackErr = new SlackStreamNotDeliveredError(
           streamSession.pendingText,
           "unknown",
@@ -1297,7 +1297,7 @@ export async function dispatchPreparedSlackMessage(prepared: PreparedSlackMessag
   const deliverSlackPayload = async (
     payload: ReplyPayload,
     info: { kind: ReplyDispatchKind },
-  ): Promise<{ visibleReplySent: false } | void> => {
+  ): Promise<{ visibleReplySent: false } | undefined> => {
     if (payload.isReasoning === true) {
       return { visibleReplySent: false };
     }

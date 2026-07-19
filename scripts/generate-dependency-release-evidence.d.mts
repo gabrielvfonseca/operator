@@ -130,4 +130,3 @@ export const DEPENDENCY_EVIDENCE_REPORTS: {
   json: string;
   markdown: string;
 }[];
-import { execFileSync } from "node:child_process";

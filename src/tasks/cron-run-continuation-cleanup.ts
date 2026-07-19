@@ -13,7 +13,7 @@ import { parseCronRunScopeSuffix } from "../sessions/session-key-utils.js";
 import { hasPendingGeneratedMediaTaskForSessionKey } from "./task-status-access.js";
 
 function canRemoveCronRunContinuation(marker: SessionEntry["cronRunContinuation"]): boolean {
-  if (!marker || marker.basePersisted !== true) {
+  if (marker?.basePersisted !== true) {
     return false;
   }
   if (marker.phase === "ready") {

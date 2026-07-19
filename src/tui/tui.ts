@@ -452,7 +452,7 @@ export function scheduleProcessExitAfterTuiReturn(
   params: {
     delayMs?: number;
     setTimeoutFn?: TuiProcessExitTimeout;
-    exit?: (code?: number) => never | void;
+    exit?: (code?: number) => never | undefined;
     writeStderr?: (text: string) => void;
   } = {},
 ): TuiProcessExitTimer {

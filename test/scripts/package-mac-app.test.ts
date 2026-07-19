@@ -309,6 +309,7 @@ describe("package-mac-app plist stamping", () => {
     );
     const releaseBranchEnd = script.indexOf("\nfi", sourceCheck);
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('BUILD_CONFIG="${BUILD_CONFIG:-debug}"');
     expect(sourceCheck).toBeGreaterThan(releaseBranch);
     expect(sourceCheck).toBeLessThan(releaseBranchEnd);
@@ -322,7 +323,9 @@ describe("package-mac-app plist stamping", () => {
   it("keeps dependency installation lockfile-safe", () => {
     const script = readFileSync(scriptPath, "utf8");
     const installBlock = script.slice(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       script.indexOf('if [[ "${SKIP_PNPM_INSTALL:-0}" != "1" ]]'),
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       script.indexOf('if [[ -z "${APP_BUILD:-}" ]]'),
     );
 
@@ -334,6 +337,7 @@ describe("package-mac-app plist stamping", () => {
   it("builds and bundles the MLX TTS helper for every requested architecture", () => {
     const script = readFileSync(scriptPath, "utf8");
     const buildLoop = script.slice(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       script.indexOf('for arch in "${BUILD_ARCHS[@]}"; do'),
       script.indexOf('BIN_PRIMARY="$(bin_for_arch "$PRIMARY_ARCH")"'),
     );
@@ -348,6 +352,7 @@ describe("package-mac-app plist stamping", () => {
     expect(helperCopy).toContain(
       'cp "$(helper_bin_for_arch "$PRIMARY_ARCH")" "$APP_ROOT/Contents/MacOS/$MLX_TTS_HELPER_PRODUCT"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(helperCopy).toContain('/usr/bin/lipo -create "${HELPER_BIN_INPUTS[@]}"');
     expect(helperCopy).toContain('chmod +x "$APP_ROOT/Contents/MacOS/$MLX_TTS_HELPER_PRODUCT"');
   });
@@ -366,6 +371,7 @@ describe("package-mac-app plist stamping", () => {
         "#!/usr/bin/env bash",
         "set -euo pipefail",
         'printf \'%s|%s\\n\' "$PWD" "$*" >> "$OPENCLAW_TEST_LOG"',
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "pnpm" && "${2:-}" == "--version" ]]; then',
         "  echo '11.2.2'",
         "fi",
@@ -416,6 +422,7 @@ describe("package-mac-app plist stamping", () => {
         "#!/usr/bin/env bash",
         "set -euo pipefail",
         'printf "global|%s|%s\\n" "$PWD" "$*" >> "$OPENCLAW_TEST_LOG"',
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "--version" ]]; then echo "11.8.0"; fi',
         "",
       ].join("\n"),
@@ -427,6 +434,7 @@ describe("package-mac-app plist stamping", () => {
         "#!/usr/bin/env bash",
         "set -euo pipefail",
         'printf "corepack|%s|%s\\n" "$PWD" "$*" >> "$OPENCLAW_TEST_LOG"',
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "pnpm" && "${2:-}" == "--version" ]]; then',
         '  if grep -q "pnpm@11.2.2" package.json 2>/dev/null; then echo "11.2.2"; else echo "11.8.0"; fi',
         "fi",
@@ -476,6 +484,7 @@ describe("package-mac-app plist stamping", () => {
 
   it("checks the selected Swift toolchain before dependency install work", () => {
     const script = readFileSync(scriptPath, "utf8");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const installIndex = script.indexOf('if [[ "${SKIP_PNPM_INSTALL:-0}" != "1" ]]');
     const preInstallBlock = script.slice(0, installIndex);
 

@@ -9,12 +9,6 @@ import {
   executeSqliteQueryTakeFirstSync,
   getNodeSqliteKysely,
 } from "../infra/kysely-sync.js";
-import type { DB as OperatorStateKyselyDatabase } from "../state/openclaw-state-db.generated.js";
-import {
-  openOperatorStateDatabase,
-  runOperatorStateWriteTransaction,
-  type OperatorStateDatabaseOptions,
-} from "../state/openclaw-state-db.js";
 /** Gateway endpoint metadata persisted with node-host config. */
 export type NodeHostGatewayConfig = {
   host?: string;

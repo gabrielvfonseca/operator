@@ -125,8 +125,9 @@ export function renderSideChatPanel(props: SideChatPanelProps): TemplateResult |
       <div class="chat-side-chat__scroll" aria-live="polite" ${ref(syncScroll)}>
         ${turns.map(renderSideChatTurn)} ${pending ? renderSideChatPendingTurn(pending) : nothing}
       </div>
-      ${props.canFollowUp
-        ? html`
+      ${
+        props.canFollowUp
+          ? html`
             <footer class="chat-side-chat__composer">
               <!-- Disabled while a question is pending: a new /btw would retire
                    the in-flight run and silently drop its answer. -->
@@ -165,7 +166,8 @@ export function renderSideChatPanel(props: SideChatPanelProps): TemplateResult |
               </div>
             </footer>
           `
-        : nothing}
+          : nothing
+      }
     </section>
   `;
 }

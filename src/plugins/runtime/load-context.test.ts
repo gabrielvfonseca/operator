@@ -65,10 +65,12 @@ vi.mock("../current-plugin-metadata-snapshot.js", () => ({
 describe("resolvePluginRuntimeLoadContext", () => {
   beforeEach(async () => {
     vi.resetModules();
-    ({ clearRuntimeConfigSnapshot, setRuntimeConfigSnapshot } =
-      await import("../../config/runtime-snapshot.js"));
-    ({ resolvePluginRuntimeLoadContext, buildPluginRuntimeLoadOptions } =
-      await import("./load-context.js"));
+    ({ clearRuntimeConfigSnapshot, setRuntimeConfigSnapshot } = await import(
+      "../../config/runtime-snapshot.js"
+    ));
+    ({ resolvePluginRuntimeLoadContext, buildPluginRuntimeLoadOptions } = await import(
+      "./load-context.js"
+    ));
     loadConfigMock.mockReset();
     applyPluginAutoEnableMock.mockReset();
     getCurrentPluginMetadataSnapshotMock.mockReset();

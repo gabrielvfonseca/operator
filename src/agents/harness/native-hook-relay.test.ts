@@ -2342,7 +2342,7 @@ describe("native hook relay registry", () => {
         policy: {
           id: "session-extension-policy",
           description: "session extension policy",
-          evaluate(eventValue, ctx) {
+          evaluate(_eventValue, ctx) {
             const policyState = ctx.getSessionExtension?.("policy");
             seen.push(policyState);
             if ((policyState as { block?: boolean } | undefined)?.block) {

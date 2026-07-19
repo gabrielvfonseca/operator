@@ -190,8 +190,9 @@ export async function ensureSelectedAgentHarnessPlugin(params: {
     return;
   }
 
-  const { ensurePluginRegistryLoaded } =
-    await import("../../plugins/runtime/runtime-registry-loader.js");
+  const { ensurePluginRegistryLoaded } = await import(
+    "../../plugins/runtime/runtime-registry-loader.js"
+  );
   const pluginIds = resolveAgentHarnessOwnerPluginIds({
     runtime,
     provider: params.provider,

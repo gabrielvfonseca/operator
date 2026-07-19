@@ -875,7 +875,7 @@ PY
 
   describe("ReDoS protection", () => {
     it("renders deeply nested emphasis markers without dropping text (#36213)", () => {
-      const nested = "*".repeat(500) + "text" + "*".repeat(500);
+      const nested = `${"*".repeat(500)}text${"*".repeat(500)}`;
       const html = toSanitizedMarkdownHtml(nested);
       const container = htmlFragment(html);
       expect(container.children).toHaveLength(1);
@@ -884,7 +884,7 @@ PY
     });
 
     it("renders deeply nested brackets without dropping text (#36213)", () => {
-      const nested = "[".repeat(200) + "link" + "]".repeat(200) + "(" + "x".repeat(200) + ")";
+      const nested = `${"[".repeat(200)}link${"]".repeat(200)}(${"x".repeat(200)})`;
       const html = toSanitizedMarkdownHtml(nested);
       const container = htmlFragment(html);
       expect(container.children).toHaveLength(1);

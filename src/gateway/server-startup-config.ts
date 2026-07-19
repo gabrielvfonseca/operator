@@ -490,11 +490,11 @@ export async function prepareGatewayStartupConfig(params: {
   const canReusePreflightPreparedSnapshot = (config: OperatorConfig): boolean =>
     Boolean(
       preflightPrepared &&
-      params.activateRuntimeSecrets.activatePreparedSnapshot &&
-      isDeepStrictEqual(
-        resolveGatewayStartupSourceConfig(config, process.env),
-        preflightPrepared.sourceConfig,
-      ),
+        params.activateRuntimeSecrets.activatePreparedSnapshot &&
+        isDeepStrictEqual(
+          resolveGatewayStartupSourceConfig(config, process.env),
+          preflightPrepared.sourceConfig,
+        ),
     );
   const activateStartupSecrets = async (config: OperatorConfig) => {
     // Reuse the preflight snapshot only if generated startup auth did not

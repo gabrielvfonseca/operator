@@ -29,6 +29,7 @@ export const formatTokensCompact = (
   const used = sess.totalTokens;
   const ctx = sess.contextTokens;
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let result;
   if (used == null) {
     result = ctx ? `unknown/${formatKTokens(ctx)} (?%)` : "unknown used";

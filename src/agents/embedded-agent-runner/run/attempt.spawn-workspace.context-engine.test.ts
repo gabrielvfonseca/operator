@@ -1734,7 +1734,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
     hoisted.resolveBootstrapContextForRunMock.mockResolvedValueOnce({
       bootstrapFiles: [
         {
-          name: "AGENTS.md",
+          name: "AGENTS.MD",
           path: "/tmp/operator-warning-workspace/AGENTS.md",
           content: "A".repeat(200),
           missing: false,

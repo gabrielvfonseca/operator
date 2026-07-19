@@ -543,6 +543,7 @@ export async function handleAcpSpawnAction(
     );
   }
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let initializedBackend;
   let initializedMeta: SessionAcpMeta | undefined;
   let initializedRuntime: AcpSpawnRuntimeCloseHandle | undefined;
@@ -862,6 +863,7 @@ export async function handleAcpCloseAction(
     commandParams: params,
     restTokens,
     run: async ({ acpManager, sessionKey }) => {
+      // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
       let runtimeNotice;
       try {
         const closed = await acpManager.closeSession({

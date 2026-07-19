@@ -86,10 +86,12 @@ let runPreparedReplyMock: typeof import("./get-reply-run.js").runPreparedReply;
 
 async function loadGetReplyRuntimeForTest() {
   ({ getReplyFromConfig } = await loadGetReplyModuleForTest({ cacheKey: import.meta.url }));
-  ({ resolveDefaultModel: resolveDefaultModelMock } =
-    await import("./directive-handling.defaults.js"));
-  ({ resolveModelRefFromString: resolveModelRefFromStringMock } =
-    await import("../../agents/model-selection.js"));
+  ({ resolveDefaultModel: resolveDefaultModelMock } = await import(
+    "./directive-handling.defaults.js"
+  ));
+  ({ resolveModelRefFromString: resolveModelRefFromStringMock } = await import(
+    "../../agents/model-selection.js"
+  ));
   ({ getRuntimeConfig: loadConfigMock } = await import("../../config/config.js"));
   ({ runPreparedReply: runPreparedReplyMock } = await import("./get-reply-run.js"));
 }

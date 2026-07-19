@@ -91,7 +91,7 @@ const discordNativeApprovalAdapterForTests = createApproverRestrictedNativeAppro
         : normalizeDiscordDirectApproverId(senderId);
     return Boolean(
       normalizedSenderId &&
-      getDiscordExecApprovalApproversForTests({ cfg }).includes(normalizedSenderId),
+        getDiscordExecApprovalApproversForTests({ cfg }).includes(normalizedSenderId),
     );
   },
   isNativeDeliveryEnabled: ({ cfg }) =>
@@ -329,7 +329,7 @@ const telegramNativeApprovalAdapter = createApproverRestrictedNativeApprovalAdap
     const normalizedSenderId = senderId?.trim();
     return Boolean(
       normalizedSenderId &&
-      getTelegramExecApprovalApprovers({ cfg, accountId }).includes(normalizedSenderId),
+        getTelegramExecApprovalApprovers({ cfg, accountId }).includes(normalizedSenderId),
     );
   },
   isNativeDeliveryEnabled: isTelegramExecApprovalClientEnabled,

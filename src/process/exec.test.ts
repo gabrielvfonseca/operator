@@ -518,6 +518,7 @@ describe("runCommandBuffered", () => {
         "const { spawn } = require('node:child_process')",
         `const child = spawn(${JSON.stringify(process.execPath)}, ['-e', ${JSON.stringify(descendantSource)}], { stdio: ['ignore', 'inherit', 'inherit'] })`,
         "child.unref()",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "process.stdout.write(`PID:${child.pid}\\n`)",
       ].join(";");
       const result = await runCommandBuffered([process.execPath, "-e", parentSource], {

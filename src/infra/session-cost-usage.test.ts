@@ -2018,7 +2018,7 @@ example
   it("does not split surrogate pairs when truncating session log content", async () => {
     const root = await makeSessionCostRoot("logs-utf16");
     const sessionFile = path.join(root, "session.jsonl");
-    const content = "x".repeat(1999) + "🚀tail";
+    const content = `${"x".repeat(1999)}🚀tail`;
     await fs.writeFile(
       sessionFile,
       JSON.stringify({

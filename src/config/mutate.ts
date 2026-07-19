@@ -99,7 +99,7 @@ export type ConfigMutationIO = {
   writeConfigFile: (
     cfg: OperatorConfig,
     options?: ConfigWriteOptions,
-  ) => Promise<ConfigWriteResult | void>;
+  ) => Promise<ConfigWriteResult | undefined>;
 };
 
 export type ConfigMutationContext = {
@@ -926,7 +926,7 @@ async function tryWriteSingleTopLevelIncludeMutation(params: {
 }
 
 function resolveConfigWriteResult(
-  result: ConfigWriteResult | void,
+  result: ConfigWriteResult | undefined,
   fallbackConfig: OperatorConfig,
 ): { persistedHash: string | null; persistedConfig: OperatorConfig } {
   if (result) {
@@ -1206,7 +1206,10 @@ export async function mutateConfigFile<T = void>(params: {
   afterWrite?: ConfigWriteOptions["afterWrite"];
   writeOptions?: ConfigWriteOptions;
   io?: ConfigMutationIO;
-  mutate: (draft: OperatorConfig, context: ConfigMutationContext) => Promise<T | void> | T | void;
+  mutate: (
+    draft: OperatorConfig,
+    context: ConfigMutationContext,
+  ) => Promise<T | undefined> | T | undefined;
 }): Promise<ConfigMutationResult<T>> {
   return await transformConfigFile<T>({
     base: params.base,
@@ -1229,7 +1232,10 @@ export async function mutateConfigFileWithRetry<T = void>(params: {
   afterWrite?: ConfigWriteOptions["afterWrite"];
   writeOptions?: ConfigWriteOptions;
   io?: ConfigMutationIO;
-  mutate: (draft: OperatorConfig, context: ConfigMutationContext) => Promise<T | void> | T | void;
+  mutate: (
+    draft: OperatorConfig,
+    context: ConfigMutationContext,
+  ) => Promise<T | undefined> | T | undefined;
 }): Promise<ConfigMutationResult<T>> {
   return await transformConfigFileWithRetry<T>({
     base: params.base,

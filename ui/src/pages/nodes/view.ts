@@ -82,19 +82,22 @@ function renderBindings(state: BindingState) {
     </button>
   `;
   const rows = html`
-    ${state.formMode === "raw"
-      ? renderSettingsRow({ title: t("nodes.binding.formModeHint") })
-      : nothing}
-    ${!state.ready
-      ? renderSettingsRow({
-          title: t("nodes.binding.loadConfigHint"),
-          control: html`
+    ${
+      state.formMode === "raw"
+        ? renderSettingsRow({ title: t("nodes.binding.formModeHint") })
+        : nothing
+    }
+    ${
+      !state.ready
+        ? renderSettingsRow({
+            title: t("nodes.binding.loadConfigHint"),
+            control: html`
             <button class="btn" ?disabled=${state.configLoading} @click=${state.onLoadConfig}>
               ${state.configLoading ? t("common.loading") : t("common.loadConfig")}
             </button>
           `,
-        })
-      : html`
+          })
+        : html`
           ${renderSettingsRow({
             title: t("nodes.binding.defaultBinding"),
             description: supportsBinding
@@ -123,10 +126,13 @@ function renderBindings(state: BindingState) {
               </select>
             `,
           })}
-          ${state.agents.length === 0
-            ? renderSettingsRow({ title: t("nodes.binding.noAgents") })
-            : state.agents.map((agent) => renderAgentBinding(agent, state))}
-        `}
+          ${
+            state.agents.length === 0
+              ? renderSettingsRow({ title: t("nodes.binding.noAgents") })
+              : state.agents.map((agent) => renderAgentBinding(agent, state))
+          }
+        `
+    }
   `;
   return renderSettingsSection(
     {
@@ -146,11 +152,13 @@ function renderAgentBinding(agent: BindingAgent, state: BindingState) {
     title: label,
     description: html`
       ${agent.isDefault ? t("nodes.binding.defaultAgent") : t("nodes.binding.agent")} ·
-      ${bindingValue === "__default__"
-        ? t("nodes.binding.usesDefault", {
-            node: state.defaultBinding ?? t("nodes.binding.any"),
-          })
-        : t("nodes.binding.override", { node: agent.binding ?? "" })}
+      ${
+        bindingValue === "__default__"
+          ? t("nodes.binding.usesDefault", {
+              node: state.defaultBinding ?? t("nodes.binding.any"),
+            })
+          : t("nodes.binding.override", { node: agent.binding ?? "" })
+      }
     `,
     control: html`
       <select

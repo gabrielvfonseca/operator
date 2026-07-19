@@ -134,7 +134,7 @@ describe("provider-catalog-live-runtime", () => {
   it("accepts UTF-8 BOM-prefixed catalog responses", async () => {
     const release = vi.fn(async () => undefined);
     const fetchGuardMock: MockedFunction<LiveModelCatalogFetchGuard> = vi.fn(async () => ({
-      response: new Response("\uFEFF" + JSON.stringify({ data: [{ id: "model-a" }] })),
+      response: new Response(`\uFEFF${JSON.stringify({ data: [{ id: "model-a" }] })}`),
       finalUrl: "https://provider.example.test/v1/models",
       release,
     }));

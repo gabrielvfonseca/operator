@@ -37,8 +37,9 @@ export const telegramRouteTestSessionRuntime: NonNullable<
 };
 
 export async function loadTelegramMessageContextRouteHarness() {
-  const { buildTelegramMessageContextForTest } =
-    await import("./bot-message-context.test-harness.js");
+  const { buildTelegramMessageContextForTest } = await import(
+    "./bot-message-context.test-harness.js"
+  );
   const buildTelegramMessageContextForRouteTest = async (
     params: BuildTelegramMessageContextForTestParams,
   ) => {

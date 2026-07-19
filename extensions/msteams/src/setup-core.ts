@@ -101,9 +101,9 @@ export function createMSTeamsSetupWizardBase(): Pick<
       const hasConfigCreds = hasConfiguredMSTeamsCredentials(cfg.channels?.msteams);
       const canUseEnv = Boolean(
         !hasConfigCreds &&
-        normalizeSecretInputString(process.env.MSTEAMS_APP_ID) &&
-        normalizeSecretInputString(process.env.MSTEAMS_APP_PASSWORD) &&
-        normalizeSecretInputString(process.env.MSTEAMS_TENANT_ID),
+          normalizeSecretInputString(process.env.MSTEAMS_APP_ID) &&
+          normalizeSecretInputString(process.env.MSTEAMS_APP_PASSWORD) &&
+          normalizeSecretInputString(process.env.MSTEAMS_TENANT_ID),
       );
 
       let next: OperatorConfig = cfg;

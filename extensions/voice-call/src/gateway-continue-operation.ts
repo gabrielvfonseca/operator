@@ -119,7 +119,7 @@ export function createVoiceCallContinueOperationStore(params: {
       .continueCall(request.callId, request.message)
       .then((result) => {
         const current = operations.get(operationId);
-        if (!current || current.status !== "pending") {
+        if (current?.status !== "pending") {
           return;
         }
         if (!result.success) {
@@ -146,7 +146,7 @@ export function createVoiceCallContinueOperationStore(params: {
       })
       .catch((err: unknown) => {
         const current = operations.get(operationId);
-        if (!current || current.status !== "pending") {
+        if (current?.status !== "pending") {
           return;
         }
         operations.set(operationId, {

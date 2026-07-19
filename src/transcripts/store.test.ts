@@ -42,10 +42,10 @@ describe("TranscriptsStore.readUtterancesFromSessionDir", () => {
     fs.mkdirSync(sessionDir, { recursive: true });
     fs.writeFileSync(
       path.join(sessionDir, "transcript.jsonl"),
-      [
+      `${[
         JSON.stringify({ text: "hello", sessionId: "session-1" }),
         JSON.stringify({ text: "world", sessionId: "session-1" }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
 
     const result = store.readUtterancesFromSessionDir(sessionDir, { maxUtterances: 10 });
@@ -64,7 +64,7 @@ describe("TranscriptsStore.readUtterancesFromSessionDir", () => {
     const lines = Array.from({ length: 5 }, (_, i) =>
       JSON.stringify({ text: `line-${i}`, sessionId: "session-1" }),
     );
-    fs.writeFileSync(path.join(sessionDir, "transcript.jsonl"), lines.join("\n") + "\n");
+    fs.writeFileSync(path.join(sessionDir, "transcript.jsonl"), `${lines.join("\n")}\n`);
 
     const result = store.readUtterancesFromSessionDir(sessionDir, { maxUtterances: 2 });
 
@@ -105,7 +105,7 @@ describe("TranscriptsStore.readUtterancesFromSessionDir", () => {
       const transcriptPath = path.join(sessionDir, "transcript.jsonl");
       fs.writeFileSync(
         transcriptPath,
-        JSON.stringify({ text: "hello", sessionId: "session-1" }) + "\n",
+        `${JSON.stringify({ text: "hello", sessionId: "session-1" })}\n`,
       );
 
       const fdsBefore = listOpenFileDescriptorsForPath(sessionDir);
@@ -127,7 +127,7 @@ describe("TranscriptsStore.readUtterancesFromSessionDir", () => {
     createReadStreamMock.mockImplementation(() => {
       const stream = new PassThrough();
       setTimeout(() => {
-        stream.write(JSON.stringify({ text: "hello", sessionId: "session-1" }) + "\n");
+        stream.write(`${JSON.stringify({ text: "hello", sessionId: "session-1" })}\n`);
         stream.destroy(new Error("read failed"));
       }, 10);
       return stream;

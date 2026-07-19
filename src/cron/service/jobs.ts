@@ -239,6 +239,7 @@ function shouldRepairFutureCronNextRunAtMs(params: {
   if (!isFiniteTimestamp(naturalNext)) {
     return false;
   }
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let isScheduledSlot;
   try {
     isScheduledSlot = isStaggeredCronRunAtMs(job, nextRun);
@@ -407,10 +408,10 @@ function hasConcreteFailureDestination(
 ): boolean {
   return Boolean(
     destination &&
-    (destination.channel !== undefined ||
-      destination.to !== undefined ||
-      destination.accountId !== undefined ||
-      destination.mode !== undefined),
+      (destination.channel !== undefined ||
+        destination.to !== undefined ||
+        destination.accountId !== undefined ||
+        destination.mode !== undefined),
   );
 }
 

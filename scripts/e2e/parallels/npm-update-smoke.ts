@@ -478,6 +478,7 @@ export function parseArgs(argv: string[]): NpmUpdateOptions {
         options.json = true;
         break;
       case "-h":
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
       case "--help":
         process.stdout.write(usage());
         process.exit(0);

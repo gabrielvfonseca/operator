@@ -280,7 +280,7 @@ export class OnePasswordBroker {
   async beforeToolCall(
     event: PluginHookBeforeToolCallEvent,
     ctx: PluginHookToolContext,
-  ): Promise<PluginHookBeforeToolCallResult | void> {
+  ): Promise<PluginHookBeforeToolCallResult | undefined> {
     if (event.toolName !== "onepassword") {
       return;
     }
@@ -424,10 +424,10 @@ export class OnePasswordBroker {
           policy: item.policy,
           standingGrantActive: Boolean(
             grant &&
-            grant.agentId === agentId &&
-            grant.slug === slug &&
-            grant.expiresAtMs > now &&
-            grant.targetFingerprint === fingerprintOnePasswordTarget(item),
+              grant.agentId === agentId &&
+              grant.slug === slug &&
+              grant.expiresAtMs > now &&
+              grant.targetFingerprint === fingerprintOnePasswordTarget(item),
           ),
         };
       });

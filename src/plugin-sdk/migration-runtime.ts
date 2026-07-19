@@ -214,10 +214,10 @@ async function openMemoryMigrationRoot(workspaceDir: string) {
 function isFileAlreadyExistsError(err: unknown): boolean {
   return Boolean(
     err &&
-    typeof err === "object" &&
-    "code" in err &&
-    ((err as { code?: unknown }).code === "ERR_FS_CP_EEXIST" ||
-      (err as { code?: unknown }).code === "EEXIST"),
+      typeof err === "object" &&
+      "code" in err &&
+      ((err as { code?: unknown }).code === "ERR_FS_CP_EEXIST" ||
+        (err as { code?: unknown }).code === "EEXIST"),
   );
 }
 

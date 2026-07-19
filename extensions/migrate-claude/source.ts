@@ -283,25 +283,25 @@ export async function discoverClaudeSource(input?: string): Promise<ClaudeSource
   const hasDesktopMcp = Boolean(desktopConfig.mcpServers);
   const high = Boolean(
     source.userSettingsPath ||
-    source.userMemoryPath ||
-    source.projectSettingsPath ||
-    source.projectMcpPath ||
-    source.projectMemoryPath ||
-    source.projectDotClaudeMemoryPath ||
-    hasClaudeJsonState ||
-    hasDesktopMcp,
+      source.userMemoryPath ||
+      source.projectSettingsPath ||
+      source.projectMcpPath ||
+      source.projectMemoryPath ||
+      source.projectDotClaudeMemoryPath ||
+      hasClaudeJsonState ||
+      hasDesktopMcp,
   );
   const medium = Boolean(
     source.userSkillsDir ||
-    source.projectSkillsDir ||
-    source.userCommandsDir ||
-    source.projectCommandsDir ||
-    source.userAgentsDir ||
-    source.projectAgentsDir ||
-    source.projectRulesDir ||
-    source.projectLocalMemoryPath ||
-    source.homeProjectsDir ||
-    source.autoMemorySources.length > 0,
+      source.projectSkillsDir ||
+      source.userCommandsDir ||
+      source.projectCommandsDir ||
+      source.userAgentsDir ||
+      source.projectAgentsDir ||
+      source.projectRulesDir ||
+      source.projectLocalMemoryPath ||
+      source.homeProjectsDir ||
+      source.autoMemorySources.length > 0,
   );
   source.confidence = high ? "high" : medium ? "medium" : "low";
   return source;

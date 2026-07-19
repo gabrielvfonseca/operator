@@ -103,9 +103,11 @@ export function renderSelfLearningPitch(
         ?disabled=${selfLearning.busy}
         @click=${() => onToggle(true)}
       >
-        ${selfLearning.busy
-          ? t("skillWorkshop.selfLearning.enabling")
-          : t("skillWorkshop.selfLearning.enable")}
+        ${
+          selfLearning.busy
+            ? t("skillWorkshop.selfLearning.enabling")
+            : t("skillWorkshop.selfLearning.enable")
+        }
       </button>
     </div>
   `;

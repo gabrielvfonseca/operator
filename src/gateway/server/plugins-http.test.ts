@@ -33,12 +33,15 @@ function createRoute(params: {
   pluginId?: string;
   auth?: "gateway" | "plugin";
   match?: "exact" | "prefix";
-  handler?: (req: IncomingMessage, res: ServerResponse) => boolean | void | Promise<boolean | void>;
+  handler?: (
+    req: IncomingMessage,
+    res: ServerResponse,
+  ) => boolean | undefined | Promise<boolean | undefined>;
   handleUpgrade?: (
     req: IncomingMessage,
     socket: Duplex,
     head: Buffer,
-  ) => boolean | void | Promise<boolean | void>;
+  ) => boolean | undefined | Promise<boolean | undefined>;
 }) {
   return {
     pluginId: params.pluginId ?? "route",

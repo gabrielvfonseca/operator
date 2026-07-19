@@ -95,14 +95,14 @@ async function before(
   broker: OnePasswordBroker,
   toolCallId: string,
   params: Record<string, unknown>,
-): Promise<PluginHookBeforeToolCallResult | void> {
+): Promise<PluginHookBeforeToolCallResult | undefined> {
   return broker.beforeToolCall(
     { toolName: "onepassword", params, toolCallId },
     { toolName: "onepassword", toolCallId, ...invocation },
   );
 }
 
-function nonceOf(result: PluginHookBeforeToolCallResult | void): string | undefined {
+function nonceOf(result: PluginHookBeforeToolCallResult | undefined): string | undefined {
   const nonce = result?.params?.[AUTHORIZATION_NONCE_PARAM];
   return typeof nonce === "string" ? nonce : undefined;
 }

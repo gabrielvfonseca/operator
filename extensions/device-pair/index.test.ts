@@ -21,7 +21,7 @@ const pluginApiMocks = vi.hoisted(() => ({
   resolveGatewayPort: vi.fn(() => 18789),
   resolveTailscaleServeGatewayUrlsWithRunner: vi.fn(async () => []),
   resolvePreferredOperatorTmpDir: vi.fn(() => path.join(os.tmpdir(), "operator-device-pair-tests")),
-  writeQrPngTempFile: vi.fn(async (dataValue: string, opts: { tmpRoot: string }) => {
+  writeQrPngTempFile: vi.fn(async (_dataValue: string, opts: { tmpRoot: string }) => {
     const dirPath = await fs.mkdtemp(path.join(opts.tmpRoot, "device-pair-qr-"));
     const filePath = path.join(dirPath, "pair-qr.png");
     await fs.writeFile(filePath, "fakepng");
@@ -160,7 +160,7 @@ function requireMediaUrl(opts: { mediaUrl?: string }): string {
 
 function createChannelRuntime(
   runtimeKey: string,
-  sendKey: string,
+  _sendKey: string,
   sendMessage: (...args: unknown[]) => Promise<unknown>,
 ): OperatorPluginApi["runtime"] {
   return {

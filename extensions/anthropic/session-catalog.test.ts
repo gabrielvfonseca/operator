@@ -1028,7 +1028,7 @@ describe("Claude session catalog", () => {
     ).toBe(true);
 
     const terminalCommand = commands[2];
-    if (!terminalCommand || terminalCommand.duplex !== true) {
+    if (terminalCommand?.duplex !== true) {
       throw new Error("expected duplex Claude terminal command");
     }
     await expect(
@@ -1097,7 +1097,7 @@ describe("Claude session catalog", () => {
     const command = createClaudeSessionNodeHostCommands().find(
       (candidate) => candidate.command === CLAUDE_TERMINAL_RESUME_COMMAND,
     );
-    if (!command || command.duplex !== true) {
+    if (command?.duplex !== true) {
       throw new Error("expected duplex Claude terminal command");
     }
 

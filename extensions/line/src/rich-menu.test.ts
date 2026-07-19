@@ -20,12 +20,10 @@ const {
 } = vi.hoisted(() => {
   const createRichMenuMockLocal = vi.fn();
   const setRichMenuImageMockLocal = vi.fn();
-  const MessagingApiClientMockLocal = vi.fn(function () {
-    return { createRichMenu: createRichMenuMockLocal };
-  });
-  const MessagingApiBlobClientMockLocal = vi.fn(function () {
-    return { setRichMenuImage: setRichMenuImageMockLocal };
-  });
+  const MessagingApiClientMockLocal = vi.fn(() => ({ createRichMenu: createRichMenuMockLocal }));
+  const MessagingApiBlobClientMockLocal = vi.fn(() => ({
+    setRichMenuImage: setRichMenuImageMockLocal,
+  }));
   return {
     createRichMenuMock: createRichMenuMockLocal,
     setRichMenuImageMock: setRichMenuImageMockLocal,

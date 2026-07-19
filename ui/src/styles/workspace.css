@@ -148,7 +148,7 @@ button.workspace-tab:hover {
 /* #16: a collapsed cell shrinks to its header height instead of reserving its
    full grid slot — the body/resize handle are unmounted, so span a single row. */
 .workspace-widget--collapsed {
-  grid-row: auto !important;
+  grid-row: auto;
 }
 
 .workspace-widget--pending {
@@ -682,8 +682,8 @@ button.workspace-tab:hover {
   }
 
   .workspace-grid > .workspace-widget {
-    grid-column: 1 / -1 !important;
-    grid-row: auto !important;
+    grid-column: 1 / -1;
+    grid-row: auto;
     min-height: 160px;
   }
 }

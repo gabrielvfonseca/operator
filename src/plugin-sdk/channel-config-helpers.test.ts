@@ -74,9 +74,7 @@ type DemoDmPolicy = ReturnType<ReturnType<typeof createDemoDmSecurityResolver>>;
 type ExpectedDemoDmPolicy = Omit<DemoDmPolicy, "normalizeEntry">;
 
 function createDemoDmSecurityResolver(
-  params: {
-    inheritSharedDefaultsFromDefaultAccount?: boolean;
-  } = {},
+  params: { inheritSharedDefaultsFromDefaultAccount?: boolean } = {},
 ) {
   return createScopedDmSecurityResolver<DemoDmAccount>({
     channelKey: "demo",

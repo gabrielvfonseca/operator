@@ -107,6 +107,8 @@ describe("buildAnnotationPrompt", () => {
         if (!fn) {
           throw new Error("missing browser evaluation function");
         }
+        // biome-ignore lint/security/noGlobalEval: migrated from oxlint
+        // biome-ignore lint/complexity/noCommaOperator: migrated from oxlint
         return { result: (0, eval)(`(${fn})`)() };
       }),
     };

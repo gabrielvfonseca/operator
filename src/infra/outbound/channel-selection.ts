@@ -178,6 +178,7 @@ async function isPluginConfigured(plugin: ChannelPlugin, cfg: OperatorConfig): P
     if (!plugin.config.isConfigured) {
       return true;
     }
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let configured;
     try {
       configured = await plugin.config.isConfigured(account, cfg);

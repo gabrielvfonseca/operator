@@ -128,7 +128,7 @@ function parseAssistantTranscriptText(
   const message = parsed.message as
     | { role?: unknown; timestamp?: unknown; provider?: unknown; model?: unknown }
     | undefined;
-  if (!message || message.role !== "assistant") {
+  if (message?.role !== "assistant") {
     return undefined;
   }
   if (
@@ -309,9 +309,7 @@ async function readRecentUserAssistantTextFromSessionTranscript(
       if (recent.length >= limit) {
         break;
       }
-    } catch {
-      continue;
-    }
+    } catch {}
   }
   return recent.toReversed();
 }
@@ -353,9 +351,7 @@ export async function readLatestAssistantTextFromSessionTranscript(
       if (assistantText) {
         return assistantText;
       }
-    } catch {
-      continue;
-    }
+    } catch {}
   }
   return undefined;
 }
@@ -422,9 +418,7 @@ export async function readTailAssistantTextFromSessionTranscript(
         continue;
       }
       return undefined;
-    } catch {
-      continue;
-    }
+    } catch {}
   }
   return undefined;
 }
@@ -844,9 +838,7 @@ async function findLatestEquivalentAssistantMessageId(
         return parsed.id;
       }
       return undefined;
-    } catch {
-      continue;
-    }
+    } catch {}
   }
 
   return undefined;

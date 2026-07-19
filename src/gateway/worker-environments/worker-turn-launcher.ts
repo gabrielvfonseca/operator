@@ -220,8 +220,7 @@ async function executeWorkerTurn(params: {
   const modelRef = assertSupportedTurn(turn);
   const environment = params.environments.get(placement.environmentId);
   if (
-    !environment ||
-    environment.state !== "attached" ||
+    environment?.state !== "attached" ||
     environment.ownerEpoch !== placement.activeOwnerEpoch ||
     environment.bootstrapReceipt?.bundleHash !== placement.workerBundleHash ||
     environment.attachedSessionIds.length !== 1 ||
@@ -425,7 +424,7 @@ async function executeWorkerTurn(params: {
   const terminal = runtimeResult.transcriptLeafId
     ? completed.getEntry(runtimeResult.transcriptLeafId)
     : undefined;
-  if (!terminal || terminal.type !== "message" || terminal.message.role !== "assistant") {
+  if (terminal?.type !== "message" || terminal.message.role !== "assistant") {
     throw new Error("Cloud worker completed without a terminal assistant transcript message");
   }
   const pendingWorkspaceResult = params.placements

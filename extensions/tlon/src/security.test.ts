@@ -354,7 +354,7 @@ describe("Security: Authorization Edge Cases", () => {
   });
 
   it("handles very long ship-like strings", async () => {
-    const longName = "~" + "a".repeat(1000);
+    const longName = `~${"a".repeat(1000)}`;
     await expectDmAllowed(longName, ["~zod"], false);
   });
 
@@ -398,7 +398,7 @@ describe("Security: Cite Resolution Authorization Ordering", () => {
       }
     }
 
-    return resolved.length > 0 ? resolved.join("\n") + "\n\n" : "";
+    return resolved.length > 0 ? `${resolved.join("\n")}\n\n` : "";
   }
 
   function buildCitedMessage(

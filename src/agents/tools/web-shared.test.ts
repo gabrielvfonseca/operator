@@ -146,7 +146,7 @@ describe("readResponseText", () => {
     const cancel = vi.fn(async () => undefined);
     const releaseLock = vi.fn();
     const response = responseFromReader({
-      chunks: ["ab" + String.fromCodePoint(0x1f600) + "cd"],
+      chunks: [`ab${String.fromCodePoint(0x1f600)}cd`],
       cancel,
       releaseLock,
     });

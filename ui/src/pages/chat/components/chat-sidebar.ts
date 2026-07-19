@@ -292,11 +292,13 @@ function renderFileSidebarContent(
             </button>
           </operator-tooltip>
         </div>
-        ${controls
-          ? html`
+        ${
+          controls
+            ? html`
               <div class="sidebar-file-view__actions">
-                ${controls.editing
-                  ? html`
+                ${
+                  controls.editing
+                    ? html`
                       <button
                         class="btn btn--sm"
                         type="button"
@@ -314,9 +316,10 @@ function renderFileSidebarContent(
                         ${t("chat.detailPanel.discard")}
                       </button>
                     `
-                  : html`
-                      ${content.edit
-                        ? html`
+                    : html`
+                      ${
+                        content.edit
+                          ? html`
                             <operator-tooltip .content=${t("chat.detailPanel.editFile")}>
                               <button
                                 class="btn btn--sm sidebar-file-view__action"
@@ -329,7 +332,8 @@ function renderFileSidebarContent(
                               </button>
                             </operator-tooltip>
                           `
-                        : nothing}
+                          : nothing
+                      }
                       <operator-tooltip .content=${t("chat.detailPanel.searchInFile")}>
                         <button
                           class="btn btn--sm sidebar-file-view__action"
@@ -341,8 +345,9 @@ function renderFileSidebarContent(
                           ${icons.search}
                         </button>
                       </operator-tooltip>
-                      ${controls.onReveal
-                        ? html`
+                      ${
+                        controls.onReveal
+                          ? html`
                             <operator-tooltip .content=${t("chat.detailPanel.showInFiles")}>
                               <button
                                 class="btn btn--sm sidebar-file-view__action"
@@ -354,7 +359,8 @@ function renderFileSidebarContent(
                               </button>
                             </operator-tooltip>
                           `
-                        : nothing}
+                          : nothing
+                      }
                       ${renderChatSidebarEditorMenu({
                         absolutePath,
                         open: controls.editorMenuOpen,
@@ -363,9 +369,9 @@ function renderFileSidebarContent(
                       })}
                       <operator-tooltip content="Copy file contents">
                         <button
-                          class="btn btn--sm sidebar-file-view__action ${controls.copied
-                            ? "copied"
-                            : ""}"
+                          class="btn btn--sm sidebar-file-view__action ${
+                            controls.copied ? "copied" : ""
+                          }"
                           type="button"
                           aria-label=${controls.copied ? "Copied" : "Copy file contents"}
                           @click=${controls.onCopyContents}
@@ -373,13 +379,16 @@ function renderFileSidebarContent(
                           ${controls.copied ? icons.check : icons.copy}
                         </button>
                       </operator-tooltip>
-                    `}
+                    `
+                }
               </div>
             `
-          : nothing}
+            : nothing
+        }
       </div>
-      ${controls?.searchOpen
-        ? html`
+      ${
+        controls?.searchOpen
+          ? html`
             <div class="file-view__search">
               <input
                 type="search"
@@ -413,17 +422,22 @@ function renderFileSidebarContent(
               </button>
             </div>
           `
-        : nothing}
-      ${controls?.saveNotice
-        ? html`
+          : nothing
+      }
+      ${
+        controls?.saveNotice
+          ? html`
             <div class="file-view__save-notice" role="alert">
               <span>
-                ${controls.saveNotice.kind === "conflict"
-                  ? "File changed on disk since it was loaded."
-                  : controls.saveNotice.message}
+                ${
+                  controls.saveNotice.kind === "conflict"
+                    ? "File changed on disk since it was loaded."
+                    : controls.saveNotice.message
+                }
               </span>
-              ${controls.saveNotice.kind === "conflict"
-                ? html`
+              ${
+                controls.saveNotice.kind === "conflict"
+                  ? html`
                     <div class="file-view__save-notice-actions">
                       <button
                         class="btn btn--sm"
@@ -443,25 +457,31 @@ function renderFileSidebarContent(
                       </button>
                     </div>
                   `
-                : nothing}
+                  : nothing
+              }
             </div>
           `
-        : nothing}
+          : nothing
+      }
       <div class="file-view">
         ${keyed(controls?.mountKey ?? content, html`<div class="file-view__mount"></div>`)}
-        ${controls?.loadingEditor
-          ? html`<div class="file-view__loading muted">${t("common.loading")}</div>`
-          : nothing}
+        ${
+          controls?.loadingEditor
+            ? html`<div class="file-view__loading muted">${t("common.loading")}</div>`
+            : nothing
+        }
       </div>
-      ${controls?.editing
-        ? nothing
-        : html`
+      ${
+        controls?.editing
+          ? nothing
+          : html`
             <div class="sidebar-file-view__footer">
               <button @click=${onViewRawText} class="btn btn--sm" type="button">
                 ${t("chat.detailPanel.viewRawText")}
               </button>
             </div>
-          `}
+          `
+      }
     </section>
   `;
 }
@@ -532,11 +552,13 @@ function renderMarkdownSidebar(props: MarkdownSidebarProps) {
         </operator-tooltip>
       </div>
       <div class="sidebar-content">
-        ${props.error
-          ? html`
+        ${
+          props.error
+            ? html`
               <div class="callout danger">${props.error}</div>
-              ${content?.rawText?.trim()
-                ? html`
+              ${
+                content?.rawText?.trim()
+                  ? html`
                     <button
                       @click=${props.onViewRawText}
                       class="btn"
@@ -546,15 +568,16 @@ function renderMarkdownSidebar(props: MarkdownSidebarProps) {
                       ${t("chat.detailPanel.viewRawText")}
                     </button>
                   `
-                : nothing}
+                  : nothing
+              }
             `
-          : content
-            ? content.kind === "file"
-              ? renderFileSidebarContent(content, props.onViewRawText, props.fileView)
-              : content.kind === "session-diff"
-                ? html`<operator-session-diff .loader=${content.load}></operator-session-diff>`
-                : content.kind === "canvas"
-                  ? html`
+            : content
+              ? content.kind === "file"
+                ? renderFileSidebarContent(content, props.onViewRawText, props.fileView)
+                : content.kind === "session-diff"
+                  ? html`<operator-session-diff .loader=${content.load}></operator-session-diff>`
+                  : content.kind === "canvas"
+                    ? html`
                       <div class="chat-tool-card__preview" data-kind="canvas">
                         <div class="chat-tool-card__preview-panel" data-side="front">
                           ${keyed(
@@ -565,26 +588,30 @@ function renderMarkdownSidebar(props: MarkdownSidebarProps) {
                                 title=${content.title?.trim() || "Render preview"}
                                 sandbox=${canvasSandbox}
                                 src=${canvasSrc ?? nothing}
-                                style=${content.preferredHeight
-                                  ? `height:${content.preferredHeight}px`
-                                  : ""}
+                                style=${
+                                  content.preferredHeight
+                                    ? `height:${content.preferredHeight}px`
+                                    : ""
+                                }
                               ></iframe>
                             `,
                           )}
                         </div>
-                        ${content.rawText?.trim()
-                          ? html`
+                        ${
+                          content.rawText?.trim()
+                            ? html`
                               <div style="margin-top: 12px;">
                                 <button @click=${props.onViewRawText} class="btn" type="button">
                                   ${t("chat.detailPanel.viewRawText")}
                                 </button>
                               </div>
                             `
-                          : nothing}
+                            : nothing
+                        }
                       </div>
                     `
-                  : content.kind === "image"
-                    ? html`
+                    : content.kind === "image"
+                      ? html`
                         <div class="chat-tool-card__preview" data-kind="image">
                           <div class="chat-tool-card__preview-panel" data-side="front">
                             <img
@@ -594,18 +621,20 @@ function renderMarkdownSidebar(props: MarkdownSidebarProps) {
                               style="display:block;max-width:100%;height:auto;border-radius:8px;"
                             />
                           </div>
-                          ${content.rawText?.trim()
-                            ? html`
+                          ${
+                            content.rawText?.trim()
+                              ? html`
                                 <div style="margin-top: 12px;">
                                   <button @click=${props.onViewRawText} class="btn" type="button">
                                     ${t("chat.detailPanel.viewRawText")}
                                   </button>
                                 </div>
                               `
-                            : nothing}
+                              : nothing
+                          }
                         </div>
                       `
-                    : html`
+                      : html`
                         <section class="sidebar-markdown-shell">
                           <div class="sidebar-markdown-shell__toolbar">
                             <div class="sidebar-markdown-shell__intro">
@@ -621,20 +650,23 @@ function renderMarkdownSidebar(props: MarkdownSidebarProps) {
                               ${t("chat.detailPanel.viewRawText")}
                             </button>
                           </div>
-                          ${markdownHtml
-                            ? html`
+                          ${
+                            markdownHtml
+                              ? html`
                                 <article class="sidebar-markdown-reader sidebar-markdown">
                                   ${unsafeHTML(markdownHtml)}
                                 </article>
                               `
-                            : html`
+                              : html`
                                 <div class="sidebar-markdown-empty">
                                   ${t("chat.detailPanel.noPreviewableMarkdown")}
                                 </div>
-                              `}
+                              `
+                          }
                         </section>
                       `
-            : html` <div class="muted">${t("chat.detailPanel.noContent")}</div> `}
+              : html` <div class="muted">${t("chat.detailPanel.noContent")}</div> `
+        }
       </div>
     </div>
   `;

@@ -827,17 +827,16 @@ export function createMSTeamsMessageHandler(deps: MSTeamsMessageHandlerDeps) {
           })
         : undefined;
     const commandBody = text.trim();
-    const quoteSenderAllowed =
-      quoteInfo && quoteInfo.sender
-        ? !isChannel || groupPolicy !== "allowlist"
-          ? true
-          : resolveMSTeamsAllowlistMatch({
-              allowFrom: effectiveGroupAllowFrom,
-              senderId: quoteSenderId ?? "",
-              senderName: quoteSenderName,
-              allowNameMatching,
-            }).allowed
-        : true;
+    const quoteSenderAllowed = quoteInfo?.sender
+      ? !isChannel || groupPolicy !== "allowlist"
+        ? true
+        : resolveMSTeamsAllowlistMatch({
+            allowFrom: effectiveGroupAllowFrom,
+            senderId: quoteSenderId ?? "",
+            senderName: quoteSenderName,
+            allowNameMatching,
+          }).allowed
+      : true;
     // Prepend thread history to the agent body so the agent has full thread context.
     const bodyForAgent = threadContext
       ? `[Thread history]\n${threadContext}\n[/Thread history]\n\n${agentBody}`

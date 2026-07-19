@@ -30,7 +30,7 @@ export function isCurrentProcessLaunchdServiceLabel(
   }
   if (
     normalizeOptionalString(env.OPERATOR_SERVICE_MARKER) === "@gabrielvfonseca/operator" &&
-    Boolean(normalizeOptionalString(env.OPERATOR_SERVICE_KIND))
+    normalizeOptionalString(env.OPERATOR_SERVICE_KIND)
   ) {
     // Managed wrappers inject service metadata; trust it when launchd's own
     // label variables are absent or renamed by the host environment.

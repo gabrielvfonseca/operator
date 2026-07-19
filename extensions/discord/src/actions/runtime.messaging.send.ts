@@ -20,9 +20,9 @@ import { readDiscordAutoArchiveDurationParam } from "./runtime.shared.js";
 function hasDiscordComponentObjectKeys(value: unknown): value is Record<string, unknown> {
   return Boolean(
     value &&
-    typeof value === "object" &&
-    !Array.isArray(value) &&
-    Object.keys(value as Record<string, unknown>).length > 0,
+      typeof value === "object" &&
+      !Array.isArray(value) &&
+      Object.keys(value as Record<string, unknown>).length > 0,
   );
 }
 
@@ -278,7 +278,7 @@ export async function handleDiscordMessageSendAction(ctx: DiscordMessagingAction
             "Voice messages require a media file reference (mediaUrl, path, or filePath).",
           );
         }
-        if (content && content.trim()) {
+        if (content?.trim()) {
           throw new Error(
             "Voice messages cannot include text content (Discord limitation). Remove the content parameter.",
           );

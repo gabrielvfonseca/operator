@@ -1090,9 +1090,7 @@ async function findExistingTranscriptHistoryPathAsync(
       // header probes — keeps working without knowing about zstd.
       try {
         return materializeSessionArchiveForRead(archivePath);
-      } catch {
-        continue;
-      }
+      } catch {}
     }
   }
   return null;

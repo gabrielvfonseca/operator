@@ -638,6 +638,7 @@ describe("config mutate helpers", () => {
           entries: {
             old: {
               enabled: true,
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               config: { token: "${OPERATOR_TEST_PLUGIN_TOKEN}" },
             },
           },
@@ -773,6 +774,7 @@ describe("config mutate helpers", () => {
       entries?: Record<string, { config?: { token?: string } }>;
       installs?: Record<string, unknown>;
     };
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(persistedPlugins.entries?.old?.config?.token).toBe("${OPERATOR_TEST_PLUGIN_TOKEN}");
     expect(persistedPlugins.entries?.demo).toEqual({ enabled: true });
     expect(persistedPlugins.installs).toBeUndefined();
@@ -1460,6 +1462,7 @@ describe("config mutate helpers", () => {
       `${JSON.stringify(
         {
           env: { $include: "./config/env.json5" },
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           gateway: { auth: { mode: "token", token: "${OC}" } },
         },
         null,
@@ -1489,6 +1492,7 @@ describe("config mutate helpers", () => {
       path: configPath,
       parsed: {
         env: { $include: "./config/env.json5" },
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         gateway: { auth: { mode: "token", token: "${OC}" } },
       },
       sourceConfig: acceptedRestartConfig,
@@ -2087,6 +2091,7 @@ describe("config mutate helpers", () => {
     const initialPluginsRaw = `${JSON.stringify(
       {
         entries: {
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           old: { enabled: true, config: { token: "${OPERATOR_TEST_INCLUDE_TOKEN}" } },
         },
       },
@@ -2171,6 +2176,7 @@ describe("config mutate helpers", () => {
         plugins: { $include: "./config/plugins.json5" },
       },
       sourceConfig: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         gateway: { auth: { mode: "token", token: "${ROOT_LITERAL_TOKEN}" } },
         plugins: { entries: {} },
       },
@@ -2196,6 +2202,7 @@ describe("config mutate helpers", () => {
             includeFileTargetsForWrite: { [pluginsPath]: await resolveIncludeTarget(pluginsPath) },
           },
           nextConfig: {
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             gateway: { auth: { mode: "token", token: "${ROOT_LITERAL_TOKEN}" } },
             plugins: { entries: { demo: { enabled: true } } },
           },
@@ -2207,6 +2214,7 @@ describe("config mutate helpers", () => {
         }),
       ).rejects.toThrow(/active SecretRef resolution failed: stop before write/);
 
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(observedSources[0]?.gateway?.auth?.token).toBe("${ROOT_LITERAL_TOKEN}");
     } finally {
       setRuntimeConfigSnapshotRefreshHandler(null);
@@ -2228,6 +2236,7 @@ describe("config mutate helpers", () => {
       `${JSON.stringify(
         {
           entries: {
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             old: { enabled: true, config: { token: "${OPTIONAL_TOKEN}" } },
           },
         },
@@ -2236,6 +2245,7 @@ describe("config mutate helpers", () => {
       )}\n`,
       "utf-8",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const oldEntry = { enabled: true, config: { token: "${OPTIONAL_TOKEN}" } };
     const snapshot = createSnapshot({
       hash: "hash-include-unresolved-env",
@@ -2272,6 +2282,7 @@ describe("config mutate helpers", () => {
     const persisted = JSON.parse(await fs.readFile(pluginsPath, "utf-8")) as {
       entries?: Record<string, { config?: { token?: string } }>;
     };
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(persisted.entries?.old?.config?.token).toBe("${OPTIONAL_TOKEN}");
     expect(persisted.entries?.demo).toEqual({ enabled: true });
   });

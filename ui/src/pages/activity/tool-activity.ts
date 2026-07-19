@@ -81,7 +81,7 @@ export function parseToolActivityEvent(
   const record = readRecord(payload);
   const runId = toTrimmedString(record?.runId);
   const data = readRecord(record?.data);
-  if (!record || record.stream !== "tool" || !runId || !data) {
+  if (record?.stream !== "tool" || !runId || !data) {
     return null;
   }
   const sessionKey = toTrimmedString(record.sessionKey);

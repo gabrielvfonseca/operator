@@ -105,7 +105,8 @@ export function buildDockerExecArgs(params: {
   // Prepend custom PATH after profile sourcing to ensure custom tools are accessible
   // while preserving system paths that /etc/profile may have added.
   const pathExport = hasCustomPath
-    ? 'export PATH="${OPERATOR_PREPEND_PATH}:$PATH"; unset OPERATOR_PREPEND_PATH; '
+    ? // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
+      'export PATH="${OPERATOR_PREPEND_PATH}:$PATH"; unset OPERATOR_PREPEND_PATH; '
     : "";
   // Use absolute path for sh to avoid dependency on PATH resolution during exec.
   args.push(params.containerName, "/bin/sh", "-lc", `${pathExport}${params.command}`);

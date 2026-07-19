@@ -251,7 +251,7 @@ function getOutsideAllowedRootsReason(
 
 function getReservedTargetReason(bind: string): BlockedBindReason | null {
   const targetRaw = parseBindTargetPath(bind);
-  if (!targetRaw || !targetRaw.startsWith("/")) {
+  if (!targetRaw?.startsWith("/")) {
     return null;
   }
   const target = normalizeHostPath(targetRaw);

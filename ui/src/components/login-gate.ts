@@ -387,9 +387,9 @@ function renderLoginGate(props: LoginGateProps) {
                 }}
               />
               <operator-tooltip
-                .content=${props.showGatewayPassword
-                  ? t("login.hidePassword")
-                  : t("login.showPassword")}
+                .content=${
+                  props.showGatewayPassword ? t("login.hidePassword") : t("login.showPassword")
+                }
               >
                 <button
                   type="button"

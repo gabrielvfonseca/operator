@@ -564,7 +564,7 @@ class SkillWorkshopPage extends OperatorLightDomElement {
   private loadProposals(force: boolean) {
     const state = this.state;
     const context = this.context;
-    if (!state || !context || !context.gateway.snapshot.connected) {
+    if (!state || !context?.gateway.snapshot.connected) {
       return;
     }
     void loadSkillWorkshopPageData({ state, context, force }).finally(this.requestPageUpdate);

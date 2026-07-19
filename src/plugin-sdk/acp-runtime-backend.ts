@@ -45,7 +45,7 @@ const loadDispatchAcpRuntime = createLazyRuntimeModule(
 export async function tryDispatchAcpReplyHook(
   event: PluginHookReplyDispatchEvent,
   ctx: PluginHookReplyDispatchContext,
-): Promise<PluginHookReplyDispatchResult | void> {
+): Promise<PluginHookReplyDispatchResult | undefined> {
   // Under sendPolicy: "deny", ACP-bound sessions still need their turns to flow
   // through acpManager.runTurn so session state, tool calls, and memory stay
   // consistent. Delivery suppression is handled by the ACP delivery path.

@@ -177,6 +177,7 @@ describe("release candidate checklist", () => {
       '["install", "--frozen-lockfile", "--ignore-scripts", "--prefer-offline"]',
     );
     expect(source).toContain("cwd: TOOLING_ROOT");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).toContain("`+refs/heads/${workflowRef}:${remoteRef}`");
     expect(source).toContain('"worktree", "add", "--detach", toolingRoot, trustedToolingSha');
     expect(source).toContain(
@@ -220,6 +221,7 @@ describe("release candidate checklist", () => {
     expect(check).toMatchObject({ status: "passed", mode: "compact" });
     expect(validationIndex).toBeGreaterThanOrEqual(0);
     expect(fullMatrixDispatchIndex).toBeGreaterThan(validationIndex);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).toContain('run("git", ["show", `${targetSha}:CHANGELOG.md`]');
   });
 

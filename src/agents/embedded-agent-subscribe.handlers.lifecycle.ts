@@ -67,7 +67,7 @@ export function handleAgentEnd(
   ctx: EmbeddedAgentSubscribeContext,
   evt?: Extract<AgentSessionEvent, { type: "agent_end" }>,
 ): void | Promise<void> {
-  type BeforeTerminalDeliveryDecision = void | { suppressTerminalDelivery?: boolean };
+  type BeforeTerminalDeliveryDecision = undefined | { suppressTerminalDelivery?: boolean };
   const lastAssistant = ctx.state.lastAssistant;
   const isError = isAssistantMessage(lastAssistant) && lastAssistant.stopReason === "error";
   let lifecycleErrorText: string | undefined;
@@ -294,7 +294,7 @@ export function handleAgentEnd(
       incompleteTerminalAssistant,
       hadDeterministicSideEffect: hadBeforeFinalizeSideEffect,
     });
-    if (isPromiseLike<void | { suppressTerminalDelivery?: boolean }>(result)) {
+    if (isPromiseLike<undefined | { suppressTerminalDelivery?: boolean }>(result)) {
       return result;
     }
     return result;
@@ -353,7 +353,7 @@ export function handleAgentEnd(
       return;
     }
     lifecycleTerminalEmitted = true;
-    let beforeLifecycleTerminal: void | Promise<void> = undefined;
+    let beforeLifecycleTerminal: void | Promise<void>;
     try {
       beforeLifecycleTerminal = ctx.params.onBeforeLifecycleTerminal?.();
     } catch (err) {
@@ -381,7 +381,7 @@ export function handleAgentEnd(
     return deliverTerminalWithLifecycleErrorFallback();
   }
 
-  if (isPromiseLike<void | { suppressTerminalDelivery?: boolean }>(beforeTerminalDelivery)) {
+  if (isPromiseLike<undefined | { suppressTerminalDelivery?: boolean }>(beforeTerminalDelivery)) {
     return Promise.resolve(beforeTerminalDelivery)
       .catch((error: unknown) => {
         ctx.log.warn(`before terminal delivery failed: ${String(error)}`);

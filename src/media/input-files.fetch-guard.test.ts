@@ -32,8 +32,9 @@ let extractImageContentFromSource: typeof import("./input-files.js").extractImag
 let extractFileContentFromSource: typeof import("./input-files.js").extractFileContentFromSource;
 
 beforeAll(async () => {
-  ({ extractImageContentFromSource, extractFileContentFromSource } =
-    await import("./input-files.js"));
+  ({ extractImageContentFromSource, extractFileContentFromSource } = await import(
+    "./input-files.js"
+  ));
 });
 
 beforeEach(() => {

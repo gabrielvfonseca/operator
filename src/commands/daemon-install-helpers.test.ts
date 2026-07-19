@@ -170,6 +170,7 @@ async function buildPluginConfigExecSecretRefPlan(home: string) {
         secretProviderIntegrations: {
           "secret-store": {
             source: "exec",
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             command: "${node}",
             args: ["./secret-ref-resolver.js"],
             passEnv: ["ACME_SECRETS_TOKEN"],
@@ -642,6 +643,7 @@ describe("buildGatewayInstallPlan", () => {
           secretProviderIntegrations: {
             "secret-store": {
               source: "exec",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               command: "${node}",
               args: ["./secret-ref-resolver.js"],
               passEnv: ["ACME_SECRETS_ADDR", "ACME_SECRETS_TOKEN"],
@@ -755,6 +757,7 @@ describe("buildGatewayInstallPlan", () => {
           secretProviderIntegrations: {
             "secret-store": {
               source: "exec",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               command: "${node}",
               args: ["./secret-ref-resolver.js"],
               passEnv: ["ACME_SECRETS_ADDR", "ACME_SECRETS_TOKEN"],
@@ -1389,6 +1392,7 @@ describe("buildGatewayInstallPlan — dotenv merge", () => {
       config: {
         env: {
           vars: {
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             MINIMAX_API_KEY: "${MINIMAX_API_KEY}",
           },
         },

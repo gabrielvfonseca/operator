@@ -184,9 +184,11 @@ function renderCustomWidget(
       >
         <div class="workspace-widget__approval-title">${t("workspaces.widget.approval.title")}</div>
         <div class="workspace-widget__approval-sub">
-          ${author
-            ? t("workspaces.widget.approval.byAgent", { agent: author })
-            : t("workspaces.widget.approval.byUnknown")}
+          ${
+            author
+              ? t("workspaces.widget.approval.byAgent", { agent: author })
+              : t("workspaces.widget.approval.byUnknown")
+          }
         </div>
         <div class="workspace-widget__approval-actions">
           <button
@@ -277,9 +279,9 @@ export function renderWidgetCell(props: WorkspaceWidgetCellProps): TemplateResul
           class="workspace-widget__collapse"
           type="button"
           aria-expanded=${widget.collapsed ? "false" : "true"}
-          aria-label=${widget.collapsed
-            ? t("workspaces.widget.expand")
-            : t("workspaces.widget.collapse")}
+          aria-label=${
+            widget.collapsed ? t("workspaces.widget.expand") : t("workspaces.widget.collapse")
+          }
           @pointerdown=${(event: PointerEvent) => event.stopPropagation()}
           @click=${() => callbacks.onToggleCollapse(widget)}
         >
@@ -342,9 +344,10 @@ export function renderWidgetCell(props: WorkspaceWidgetCellProps): TemplateResul
           ${renderMenu()}
         </wa-dropdown>
       </header>
-      ${widget.collapsed
-        ? nothing
-        : html`
+      ${
+        widget.collapsed
+          ? nothing
+          : html`
             <div class="workspace-widget__body">
               ${renderWidgetBody(
                 widget,
@@ -363,7 +366,8 @@ export function renderWidgetCell(props: WorkspaceWidgetCellProps): TemplateResul
               @keydown=${(event: KeyboardEvent) =>
                 handleNudgeKey(event, widget, "resize", callbacks)}
             ></span>
-          `}
+          `
+      }
     </section>
   `;
 }

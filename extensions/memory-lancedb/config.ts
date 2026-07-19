@@ -318,6 +318,7 @@ export const memoryConfigSchema = {
       label: "Storage Options",
       sensitive: true,
       advanced: true,
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       help: "Storage configuration options (access_key, secret_key, endpoint, etc.); supports ${ENV_VAR} values",
     },
   },

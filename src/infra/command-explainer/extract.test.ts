@@ -416,12 +416,16 @@ describe("command explainer tree-sitter runtime", () => {
   });
 
   it("does not normalize dynamic executable names into trusted commands", async () => {
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const dynamicPrefix = await explainShellCommand("e${CMD}ho hi");
     expect(dynamicPrefix.topLevelCommands).toStrictEqual([]);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expectRisk(dynamicPrefix.risks, { kind: "dynamic-executable", text: "e${CMD}ho" });
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const dynamicQuoted = await explainShellCommand('"${CMD}" hi');
     expect(dynamicQuoted.topLevelCommands).toStrictEqual([]);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expectRisk(dynamicQuoted.risks, { kind: "dynamic-executable", text: '"${CMD}"' });
 
     const dynamicGlob = await explainShellCommand("./ec* hi");

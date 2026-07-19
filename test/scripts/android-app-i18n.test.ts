@@ -114,7 +114,9 @@ describe("Android app i18n resources", () => {
   it("formats nested Kotlin interpolations as single Android arguments", () => {
     expect(
       renderAndroidResourceValue(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${device.tokens.count { !it.revoked }}/${device.tokens.size} active tokens",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${device.tokens.size} Token, ${device.tokens.count { !it.revoked }} aktiv",
       ),
     ).toBe("%2$s Token, %1$s aktiv");
@@ -123,7 +125,9 @@ describe("Android app i18n resources", () => {
   it("balances braces inside nested interpolation strings", () => {
     expect(
       renderAndroidResourceValue(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         '${if (connected) "{" else "}"} $count',
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         '$count · ${if (connected) "{" else "}"}',
       ),
     ).toBe("%2$s · %1$s");

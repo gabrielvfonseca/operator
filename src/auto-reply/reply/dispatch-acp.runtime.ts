@@ -2,8 +2,8 @@
 import { createLazyImportLoader } from "../../shared/lazy-promise.js";
 
 type ShouldBypassAcpDispatchForCommand =
-  (typeof import("./dispatch-acp-command-bypass.js"))["shouldBypassAcpDispatchForCommand"];
-type TryDispatchAcpReply = (typeof import("./dispatch-acp.js"))["tryDispatchAcpReply"];
+  typeof import("./dispatch-acp-command-bypass.js")["shouldBypassAcpDispatchForCommand"];
+type TryDispatchAcpReply = typeof import("./dispatch-acp.js")["tryDispatchAcpReply"];
 
 const dispatchAcpLoader = createLazyImportLoader(() => import("./dispatch-acp.js"));
 const dispatchAcpCommandBypassLoader = createLazyImportLoader(

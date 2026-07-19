@@ -337,13 +337,13 @@ async function runCommandForCell(params: {
 async function writePreflight(artifactBase: string) {
   await writeText(
     path.join(artifactBase, "preflight", "runtime.txt"),
-    [
+    `${[
       `platform=${process.platform}`,
       `arch=${process.arch}`,
       `node=${process.version}`,
       `freeMemoryBytes=${os.freemem()}`,
       `totalMemoryBytes=${os.totalmem()}`,
-    ].join("\n") + "\n",
+    ].join("\n")}\n`,
   );
 }
 
@@ -584,10 +584,10 @@ async function captureProducerArtifactFixtureProof(params: {
     await fs.copyFile(recordedVideo, params.videoPath);
     await writeText(
       params.logPath,
-      [
+      `${[
         `Captured screenshot ${path.basename(params.screenshotPath)}`,
         `Captured recording ${path.basename(params.videoPath)}`,
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
     return {
       status: "pass" as const,
@@ -644,19 +644,23 @@ async function writeProducerMetadata(params: {
   });
   await writeText(
     path.join(params.artifactBase, "commands.txt"),
-    [
+    `${[
       `${SUITE_COMMAND} --output-dir ${toRepoRelativePath(params.repoRoot, params.artifactBase)}`,
       `node --import tsx ${SOURCE_PATH} --artifact-base ${toRepoRelativePath(
         params.repoRoot,
         params.artifactBase,
       )}`,
-    ].join("\n") + "\n",
+    ].join("\n")}\n`,
   );
   await writeText(
     path.join(params.artifactBase, "scorecard.md"),
-    ["# UX Matrix", "", ...Object.entries(counts).map(([status, count]) => `- ${status}: ${count}`)]
+    `${[
+      "# UX Matrix",
+      "",
+      ...Object.entries(counts).map(([status, count]) => `- ${status}: ${count}`),
+    ]
       .join("\n")
-      .trimEnd() + "\n",
+      .trimEnd()}\n`,
   );
 }
 

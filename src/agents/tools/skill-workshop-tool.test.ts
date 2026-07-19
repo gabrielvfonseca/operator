@@ -551,7 +551,7 @@ describe("skill_workshop tool", () => {
     });
 
     expect((inspected.content[0] as { text: string }).text).toContain(
-      "Proposal: " + (result.details as { id: string }).id,
+      `Proposal: ${(result.details as { id: string }).id}`,
     );
     expect((inspected.details as { proposalContent: string }).proposalContent).toContain(
       "Check weather, alerts, and timing.",

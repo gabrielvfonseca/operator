@@ -1360,9 +1360,7 @@ export async function createContextEngineAttemptRunner(params: {
     process.env.OPERATOR_TRAJECTORY_DIR = workspaceDir;
   }
   try {
-    return await (
-      await loadRunEmbeddedAttempt()
-    )({
+    return await (await loadRunEmbeddedAttempt())({
       sessionId: "embedded-session",
       sessionKey: params.sessionKey,
       sessionFile,

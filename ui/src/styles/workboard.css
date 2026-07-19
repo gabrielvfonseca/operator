@@ -504,6 +504,7 @@
   grid-auto-columns: minmax(312px, min(50%, 760px));
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .workboard-column {
   min-height: 0;
   background: color-mix(in srgb, var(--panel-strong) 34%, var(--panel) 66%);
@@ -906,6 +907,7 @@
   height: 15px;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .workboard-card__move {
   position: relative;
   display: inline-flex;
@@ -1008,6 +1010,7 @@
   white-space: nowrap;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .workboard-card__start--icon {
   color: var(--text);
 }
@@ -1078,8 +1081,8 @@
 }
 
 .workboard-card__badge--warning {
-  background: color-mix(in srgb, var(--warn) 17%, transparent) !important;
-  color: color-mix(in srgb, var(--warn) 86%, var(--text)) !important;
+  background: color-mix(in srgb, var(--warn) 17%, transparent);
+  color: color-mix(in srgb, var(--warn) 86%, var(--text));
 }
 
 .workboard-agent-chip {
@@ -1410,6 +1413,7 @@
   white-space: normal;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .workboard-detail__actions > .workboard-card__move,
 .workboard-detail__actions > .workboard-card__execution-controls {
   grid-column: 1 / -1;
@@ -1482,6 +1486,7 @@
     grid-auto-columns: unset;
   }
 
+  /* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
   .workboard-column,
   .workboard-board--compact .workboard-column,
   .workboard-board--comfortable .workboard-column {

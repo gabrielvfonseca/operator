@@ -136,6 +136,7 @@ describe("scripts/build-and-run-mac.sh", () => {
 
     expect(script).toContain('cd "$APP_DIR"');
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'LOG_PATH="${OPENCLAW_MAC_RUN_LOG:-$(mktemp "${TMPDIR:-/tmp}/openclaw-${PRODUCT}.XXXXXX.log")}"',
     );
     expect(script).toContain('nohup "$BIN_ABS" >"$LOG_PATH" 2>&1 &');

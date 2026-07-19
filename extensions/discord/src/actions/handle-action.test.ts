@@ -8,8 +8,9 @@ const handleDiscordActionMock = vi
   .spyOn(runtimeModule, "handleDiscordAction")
   .mockResolvedValue({ content: [], details: { ok: true } });
 const { handleDiscordMessageAction } = await import("./handle-action.js");
-const { beginDiscordInboundEventDeliveryCorrelation } =
-  await import("../inbound-event-delivery.js");
+const { beginDiscordInboundEventDeliveryCorrelation } = await import(
+  "../inbound-event-delivery.js"
+);
 
 function discordConfig(actions?: Record<string, boolean>): OperatorConfig {
   return {

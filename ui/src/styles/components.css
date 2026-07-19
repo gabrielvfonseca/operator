@@ -7,6 +7,7 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
+  /* biome-ignore lint/suspicious/noDuplicateProperties: migrated from oxlint */
   height: 100dvh;
   max-height: 100%;
   background: var(--bg);
@@ -62,6 +63,7 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
+  /* biome-ignore lint/suspicious/noDuplicateProperties: migrated from oxlint */
   height: 100dvh;
   max-height: 100%;
   overflow-y: auto;
@@ -208,6 +210,7 @@
   color: var(--muted);
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .login-gate__steps li {
   margin-bottom: 6px;
 }
@@ -296,7 +299,9 @@
 /* The standalone body already owns safe-area insets. Reusing them inside the
    gate would double notch/home-bar spacing and shrink its scroll viewport. */
 @media (display-mode: standalone) and (max-width: 768px),
-  (display-mode: standalone) and (max-width: 932px) and (max-height: 500px) and (orientation: landscape) {
+  (display-mode: standalone) and (max-width: 932px) and (max-height: 500px) and (
+    orientation: landscape
+  ) {
   .login-gate {
     padding: 16px 12px;
   }
@@ -795,6 +800,7 @@
   line-height: 1;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .btn--icon {
   padding: 8px;
   min-width: 36px;
@@ -1790,6 +1796,7 @@
   color: #ffa657;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 :is(.code-block, .code-block-wrapper pre code.hljs) .hljs-attr,
 :is(.code-block, .code-block-wrapper pre code.hljs) .hljs-attribute,
 :is(.code-block, .code-block-wrapper pre code.hljs) .hljs-name,
@@ -2026,6 +2033,7 @@
   container-type: inline-size;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .list-item {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(200px, 260px);
@@ -2119,6 +2127,7 @@
   gap: 8px;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .chip {
   font-size: 12px;
   font-weight: 500;
@@ -2269,7 +2278,7 @@
 }
 
 .data-table-empty-cell {
-  padding: 46px 16px !important;
+  padding: 46px 16px;
   color: var(--muted);
   text-align: center;
 }
@@ -2300,8 +2309,8 @@
   min-width: var(--data-table-checkbox-col-width);
   max-width: var(--data-table-checkbox-col-width);
   box-sizing: border-box;
-  padding-left: 12px !important;
-  padding-right: 4px !important;
+  padding-left: 12px;
+  padding-right: 4px;
   text-align: center;
   vertical-align: middle;
   position: sticky;
@@ -2322,6 +2331,7 @@ td.data-table-checkbox-col {
   background: var(--bg-hover);
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .data-table-checkbox-col input[type="checkbox"] {
   width: 16px;
   height: 16px;
@@ -2447,6 +2457,7 @@ td.data-table-key-col {
   gap: 4px;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .field-inline.checkbox input[type="checkbox"] {
   accent-color: var(--accent);
 }
@@ -3408,6 +3419,7 @@ td.data-table-key-col {
   padding: 0;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .agent-chip-input .chip {
   display: inline-flex;
   align-items: center;
@@ -4210,6 +4222,7 @@ td.data-table-key-col {
   z-index: 1;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .agent-tool-badges {
   display: flex;
   gap: 6px;
@@ -4608,6 +4621,7 @@ td.data-table-key-col {
     display: none;
   }
 
+  /* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
   .table-row {
     grid-template-columns: 1fr;
     gap: 6px;
@@ -4656,6 +4670,7 @@ td.data-table-key-col {
   text-align: center;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .device-pair-setup__header h2 {
   margin: 0;
   color: var(--text-strong);

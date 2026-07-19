@@ -104,11 +104,11 @@ export function parseIdentityMarkdown(content: string): AgentIdentityFile {
 export function identityHasValues(identity: AgentIdentityFile): boolean {
   return Boolean(
     identity.name ||
-    identity.emoji ||
-    identity.theme ||
-    identity.creature ||
-    identity.vibe ||
-    identity.avatar,
+      identity.emoji ||
+      identity.theme ||
+      identity.creature ||
+      identity.vibe ||
+      identity.avatar,
   );
 }
 

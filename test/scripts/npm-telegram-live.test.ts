@@ -40,6 +40,7 @@ describe("package Telegram live Docker E2E", () => {
     const script = readFileSync(DOCKER_SCRIPT_PATH, "utf8");
 
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'if [ -n "${CI:-}" ] && [ -n "${OPENCLAW_QA_CONVEX_SITE_URL:-}" ]; then',
     );
     expect(script).toContain("OPENCLAW_QA_CONVEX_SECRET_CI");
@@ -56,6 +57,7 @@ describe("package Telegram live Docker E2E", () => {
     expect(installRunStart).toBeGreaterThanOrEqual(0);
     expect(installRunEnd).toBeGreaterThan(installRunStart);
     expect(installRun).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '-e OPENCLAW_E2E_NPM_INSTALL_TIMEOUT="${OPENCLAW_E2E_NPM_INSTALL_TIMEOUT:-600s}"',
     );
     expect(installRun).toContain(
@@ -74,13 +76,16 @@ describe("package Telegram live Docker E2E", () => {
     expect(installRun).not.toContain(
       "running package install without OPENCLAW_E2E_NPM_INSTALL_TIMEOUT",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(installRun).toContain('"${package_mount_args[@]}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(installRun).not.toContain('"${docker_env[@]}"');
     expect(installRun).toContain("run_logged docker_e2e_docker_run_cmd run --rm");
     expect(installRun).not.toContain("run_logged docker run --rm");
     expect(script).toContain("run_logged docker_e2e_run_with_harness");
     expect(script).toContain('docker_e2e_print_log "$run_log"');
     expect(script).not.toContain('cat "$run_log"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('"${docker_env[@]}"');
     expect(script).toContain(
       'if [ -z "$credential_role" ] && [ "$credential_source" = "convex" ]; then',
@@ -96,6 +101,7 @@ describe("package Telegram live Docker E2E", () => {
 
     expect(runtimeRunStart).toBeGreaterThanOrEqual(0);
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '-e OPENCLAW_E2E_COMMAND_TIMEOUT="${OPENCLAW_E2E_COMMAND_TIMEOUT:-300s}"',
     );
     expect(runtimeRun).toContain("source scripts/lib/openclaw-e2e-instance.sh");
@@ -150,9 +156,11 @@ describe("package Telegram live Docker E2E", () => {
     const script = readFileSync(DOCKER_SCRIPT_PATH, "utf8");
 
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'RUN_ID="${OPENCLAW_NPM_TELEGRAM_RUN_ID:-$(date -u +%Y%m%dT%H%M%SZ)-$$}"',
     );
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'OUTPUT_DIR="${OPENCLAW_NPM_TELEGRAM_OUTPUT_DIR:-.artifacts/qa-e2e/npm-telegram-live/$RUN_ID}"',
     );
     expect(script).toContain(
@@ -163,6 +171,7 @@ describe("package Telegram live Docker E2E", () => {
       '-e OPENCLAW_NPM_TELEGRAM_OUTPUT_DIR="$OUTPUT_DIR_CONTAINER_RELATIVE"',
     );
     expect(script).not.toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'OUTPUT_DIR="${OPENCLAW_NPM_TELEGRAM_OUTPUT_DIR:-.artifacts/qa-e2e/npm-telegram-live}"',
     );
   });

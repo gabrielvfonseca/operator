@@ -395,6 +395,7 @@ describe("check-extension-package-tsc-boundary", () => {
         "--eval",
         [
           "console.log('src/plugins/contracts/rootdir-boundary-canary.ts');",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           "for (let index = 1; index <= 45; index += 1) console.log(`stdout ${index}`);",
           "console.error('TS6059');",
           "process.exit(2);",

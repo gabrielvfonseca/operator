@@ -963,8 +963,7 @@ async function buildTestPlan(params: {
       includeWorkspacePlugins: false,
     });
     if (
-      !choice ||
-      choice.appGuidedDiscovery !== true ||
+      choice?.appGuidedDiscovery !== true ||
       !supportsSetupTextInference(choice.onboardingScopes)
     ) {
       return { error: "That detected provider is no longer available on this Gateway." };
@@ -1578,8 +1577,9 @@ async function activateSetupInferenceUnredacted(
 
     let codexPluginPatch: unknown;
     if (params.kind === "codex-cli") {
-      const { stripPendingPluginInstallRecords } =
-        await import("../plugins/install-record-commit.js");
+      const { stripPendingPluginInstallRecords } = await import(
+        "../plugins/install-record-commit.js"
+      );
       // This explicit Codex CLI choice owns its runtime independently of the
       // user's existing OpenAI provider route (which may use a custom base URL).
       const codexInstallBase = stripPendingPluginInstallRecords(testPlan.config);
@@ -1914,8 +1914,9 @@ async function activateSetupInferenceUnredacted(
       }
     }
     if (needsPersistence) {
-      const { stripPendingPluginInstallRecords } =
-        await import("../plugins/install-record-commit.js");
+      const { stripPendingPluginInstallRecords } = await import(
+        "../plugins/install-record-commit.js"
+      );
       const agentRuntimeId = resolveSetupAgentRuntimeId(params.kind);
       const selectModel = plan.persistModelRef
         ? await createSystemAgentModelSelectionUpdater({
@@ -2242,6 +2243,7 @@ async function activateSetupInferenceUnredacted(
     await cleanupSetupInferenceTempDir({ tempDir, deps, runtime: params.runtime });
     if (codexCleanupError) {
       // oxlint-disable-next-line no-unsafe-finally -- an indeterminate plugin cleanup must supersede a stale success result
+      // biome-ignore lint/correctness/noUnsafeFinally: migrated from oxlint
       throw codexCleanupError;
     }
   }

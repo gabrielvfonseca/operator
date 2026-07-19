@@ -93,8 +93,9 @@ vi.mock("openclaw/plugin-sdk/agent-harness", () => ({
   createOperatorCodingTools: (...args: unknown[]) => createOperatorCodingToolsMock(...args),
 }));
 
-const { runCodexAppServerSideQuestion: runCodexAppServerSideQuestionImpl } =
-  await import("./side-question.js");
+const { runCodexAppServerSideQuestion: runCodexAppServerSideQuestionImpl } = await import(
+  "./side-question.js"
+);
 const baseBindingStore = createCodexTestBindingStore();
 const bindingStore: CodexAppServerBindingStore = {
   ...baseBindingStore,

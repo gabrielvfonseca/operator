@@ -389,9 +389,9 @@ function isUsageCostCacheEntryFresh(params: {
 }): boolean {
   return Boolean(
     params.entry &&
-    params.entry.size === params.file.size &&
-    params.entry.mtimeMs === params.file.mtimeMs &&
-    (!params.requireSessionSummary || params.entry.sessionSummary),
+      params.entry.size === params.file.size &&
+      params.entry.mtimeMs === params.file.mtimeMs &&
+      (!params.requireSessionSummary || params.entry.sessionSummary),
   );
 }
 
@@ -404,8 +404,8 @@ function canUseUsageCostCacheEntryForPartial(params: {
 } {
   return Boolean(
     params.entry &&
-    params.entry.size <= params.file.size &&
-    params.entry.mtimeMs <= params.file.mtimeMs,
+      params.entry.size <= params.file.size &&
+      params.entry.mtimeMs <= params.file.mtimeMs,
   );
 }
 
@@ -1674,8 +1674,8 @@ async function scanUsageFileForCache(params: {
     scannedUntimestampedTranscriptEntry ||
     Boolean(
       appendOnlyPrevious &&
-      startOffset !== undefined &&
-      appendOnlyPrevious.hasUntimestampedTranscriptEntry,
+        startOffset !== undefined &&
+        appendOnlyPrevious.hasUntimestampedTranscriptEntry,
     );
   const sessionSummary =
     combinedTranscriptEntries &&
@@ -2749,7 +2749,7 @@ export async function loadSessionLogs(params: {
       // Truncate very long content.
       const maxLen = 2000;
       if (content.length > maxLen) {
-        content = truncateUtf16Safe(content, maxLen) + "…";
+        content = `${truncateUtf16Safe(content, maxLen)}…`;
       }
 
       // Get timestamp

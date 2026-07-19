@@ -33,21 +33,21 @@ export {
   type JidToE164Options,
   type WebChannel,
 } from "./src/text-runtime.js";
-export {
-  type WebChannelHealthState,
-  type WebChannelStatus,
-  type WebInboundMsg,
-  type WebMonitorTuning,
+export type {
+  WebChannelHealthState,
+  WebChannelStatus,
+  WebInboundMsg,
+  WebMonitorTuning,
 } from "./src/auto-reply/types.js";
-export {
-  type ActiveWebListener,
-  type ActiveWebSendOptions,
-  type LegacyFlatWebInboundMessage,
-  type WebInboundCallbackMessage,
-  type WebInboundMessage,
-  type WebInboundMessageInput,
-  type WebListenerCloseReason,
-  type WhatsAppStructuredContactContext,
+export type {
+  ActiveWebListener,
+  ActiveWebSendOptions,
+  LegacyFlatWebInboundMessage,
+  WebInboundCallbackMessage,
+  WebInboundMessage,
+  WebInboundMessageInput,
+  WebListenerCloseReason,
+  WhatsAppStructuredContactContext,
 } from "./src/inbound/types.js";
 export type { WhatsAppInboundAdmission } from "./src/inbound/admission.js";
 export {

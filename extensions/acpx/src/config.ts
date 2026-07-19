@@ -17,7 +17,7 @@ import type {
   AcpxMcpServer,
   ResolvedAcpxPluginConfig,
 } from "./config-schema.js";
-export { type ResolvedAcpxPluginConfig } from "./config-schema.js";
+export type { ResolvedAcpxPluginConfig } from "./config-schema.js";
 
 const ACPX_PLUGIN_TOOLS_MCP_SERVER_NAME = "openclaw-plugin-tools";
 const ACPX_OPERATOR_TOOLS_MCP_SERVER_NAME = "openclaw-tools";

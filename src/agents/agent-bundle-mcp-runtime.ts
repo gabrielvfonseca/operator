@@ -436,7 +436,7 @@ export function createSessionMcpRuntime(params: {
   };
   const requireConnectedSession = (serverName: string): BundleMcpSession => {
     const session = sessions.get(serverName);
-    if (!session || !session.connected) {
+    if (!session?.connected) {
       throw new Error(
         session?.disconnectReason
           ? `bundle-mcp server "${serverName}" is disconnected: ${session.disconnectReason}`

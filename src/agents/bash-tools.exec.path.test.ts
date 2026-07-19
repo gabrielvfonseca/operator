@@ -271,6 +271,7 @@ describe("exec PATH login shell merge", () => {
 
     const tool = createExecTool({ host: "gateway", security: "full", ask: "off" });
     const result = await tool.execute("call-operator-shell", {
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       command: 'printf "%s" "${OPERATOR_SHELL:-}"',
       yieldMs: FOREGROUND_TEST_YIELD_MS,
     });
@@ -402,6 +403,7 @@ describe("exec host env validation", () => {
     try {
       const tool = createExecTool({ host: "gateway", security: "full", ask: "off" });
       const result = await tool.execute("call1", {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         command: "printf '%s' \"${SSLKEYLOGFILE:-}\"",
         yieldMs: FOREGROUND_TEST_YIELD_MS,
       });

@@ -5,16 +5,17 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 const originalPrepare = Reflect.get(DatabaseSync.prototype, "prepare") as DatabaseSync["prepare"];
 
 async function loadNodeSqliteWithVersion(version: string) {
-  vi.spyOn(DatabaseSync.prototype, "prepare").mockImplementation(
-    function (this: DatabaseSync, sql) {
-      if (sql === "SELECT sqlite_version() AS version") {
-        return {
-          get: () => ({ version }),
-        } as unknown as StatementSync;
-      }
-      return originalPrepare.call(this, sql);
-    },
-  );
+  vi.spyOn(DatabaseSync.prototype, "prepare").mockImplementation(function (
+    this: DatabaseSync,
+    sql,
+  ) {
+    if (sql === "SELECT sqlite_version() AS version") {
+      return {
+        get: () => ({ version }),
+      } as unknown as StatementSync;
+    }
+    return originalPrepare.call(this, sql);
+  });
   return await import("./node-sqlite.js");
 }
 

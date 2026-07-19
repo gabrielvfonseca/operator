@@ -408,19 +408,18 @@ export async function steerRealtimeTalkActiveConsult(params: {
   if (!text) {
     return;
   }
-  const request =
-    params.sessionId && params.sessionId.trim()
-      ? params.ctx.client.request("talk.session.steer", {
-          sessionId: params.sessionId,
-          sessionKey: params.ctx.sessionKey,
-          text,
-          ...(params.mode ? { mode: params.mode } : {}),
-        })
-      : params.ctx.client.request("talk.client.steer", {
-          sessionKey: params.ctx.sessionKey,
-          text,
-          ...(params.mode ? { mode: params.mode } : {}),
-        });
+  const request = params.sessionId?.trim()
+    ? params.ctx.client.request("talk.session.steer", {
+        sessionId: params.sessionId,
+        sessionKey: params.ctx.sessionKey,
+        text,
+        ...(params.mode ? { mode: params.mode } : {}),
+      })
+    : params.ctx.client.request("talk.client.steer", {
+        sessionKey: params.ctx.sessionKey,
+        text,
+        ...(params.mode ? { mode: params.mode } : {}),
+      });
   try {
     const result = await request;
     params.onControlResult?.(result);
@@ -461,19 +460,18 @@ export async function submitRealtimeTalkAgentControl(params: {
   let talkEvent: RealtimeTalkEventInput;
   try {
     const parsed = parseRealtimeVoiceAgentControlToolArgs(params.args);
-    result =
-      params.sessionId && params.sessionId.trim()
-        ? await params.ctx.client.request("talk.session.steer", {
-            sessionId: params.sessionId,
-            sessionKey: params.ctx.sessionKey,
-            text: parsed.text,
-            mode: parsed.mode,
-          })
-        : await params.ctx.client.request("talk.client.steer", {
-            sessionKey: params.ctx.sessionKey,
-            text: parsed.text,
-            mode: parsed.mode,
-          });
+    result = params.sessionId?.trim()
+      ? await params.ctx.client.request("talk.session.steer", {
+          sessionId: params.sessionId,
+          sessionKey: params.ctx.sessionKey,
+          text: parsed.text,
+          mode: parsed.mode,
+        })
+      : await params.ctx.client.request("talk.client.steer", {
+          sessionKey: params.ctx.sessionKey,
+          text: parsed.text,
+          mode: parsed.mode,
+        });
     talkEvent = {
       type: "tool.progress",
       callId: params.callId,

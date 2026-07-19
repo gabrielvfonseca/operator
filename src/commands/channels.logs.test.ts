@@ -204,7 +204,7 @@ describe("channelsLogsCommand", () => {
       if (Buffer.byteLength(padded) !== payloadLen) {
         throw new Error(`padded line wrong size: ${Buffer.byteLength(padded)} vs ${payloadLen}`);
       }
-      return padded + "\n";
+      return `${padded}\n`;
     };
 
     const handle = await fs.open(logPath, "w");

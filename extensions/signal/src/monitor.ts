@@ -178,7 +178,7 @@ function isSignalReactionMessage(
   const timestamp = reaction.targetSentTimestamp;
   const hasTarget = Boolean(
     normalizeOptionalString(reaction.targetAuthor) ||
-    normalizeOptionalString(reaction.targetAuthorUuid),
+      normalizeOptionalString(reaction.targetAuthorUuid),
   );
   return Boolean(emoji && typeof timestamp === "number" && timestamp > 0 && hasTarget);
 }

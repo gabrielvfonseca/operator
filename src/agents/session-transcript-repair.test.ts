@@ -636,7 +636,7 @@ describe("repairToolUseResultPairing prefers real result over synthetic error", 
         content: [
           {
             type: "text",
-            text: DEFAULT_MISSING_TOOL_RESULT_TEXT + " (extra context from real error)",
+            text: `${DEFAULT_MISSING_TOOL_RESULT_TEXT} (extra context from real error)`,
           },
         ],
         isError: true,
@@ -1292,7 +1292,7 @@ describe("sanitizeToolCallInputs allowed-name filtering", () => {
     expect(toolCalls).toHaveLength(1);
     expect(Object.hasOwn(toolCalls[0] ?? {}, "input")).toBe(true);
     expect(Object.hasOwn(toolCalls[0] ?? {}, "arguments")).toBe(false);
-    expect((toolCalls[0] ?? {}).input).toEqual({ task: "hello" });
+    expect(toolCalls[0]?.input).toEqual({ task: "hello" });
   });
 
   it("preserves sessions_spawn attachments for mixed-case and padded tool names", () => {
@@ -1317,7 +1317,7 @@ describe("sanitizeToolCallInputs allowed-name filtering", () => {
     const toolCalls = getAssistantToolCallBlocks(out) as Array<Record<string, unknown>>;
 
     expect(toolCalls).toHaveLength(1);
-    expect((toolCalls[0] ?? {}).name).toBe("SESSIONS_SPAWN");
+    expect(toolCalls[0]?.name).toBe("SESSIONS_SPAWN");
     const inputObj = (toolCalls[0]?.input ?? {}) as Record<string, unknown>;
     const attachments = (inputObj.attachments ?? []) as Array<Record<string, unknown>>;
     expect(attachments[0]?.content).toBe("SECRET");
@@ -1351,12 +1351,12 @@ describe("stripToolResultDetails", () => {
     const out = stripToolResultDetails(input) as unknown as Array<Record<string, unknown>>;
 
     expect(Object.hasOwn(out[0] ?? {}, "details")).toBe(false);
-    expect((out[0] ?? {}).role).toBe("toolResult");
+    expect(out[0]?.role).toBe("toolResult");
 
     // Non-toolResult messages are preserved as-is.
     expect(Object.hasOwn(out[1] ?? {}, "details")).toBe(true);
-    expect((out[1] ?? {}).role).toBe("assistant");
-    expect((out[2] ?? {}).role).toBe("user");
+    expect(out[1]?.role).toBe("assistant");
+    expect(out[2]?.role).toBe("user");
   });
 
   it("returns the same array reference when there are no toolResult details", () => {

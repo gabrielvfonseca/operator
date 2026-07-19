@@ -448,6 +448,7 @@ export const matrixApprovalNativeRuntime = createChannelApprovalNativeRuntimeAda
       const sendSingleTextMessage =
         resolved.context.deps?.sendSingleTextMessage ?? sendSingleTextMessageMatrix;
       const reactMessage = resolved.context.deps?.reactMessage ?? reactMatrixMessage;
+      // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
       let result;
       try {
         result = await retryMatrixApprovalDelivery(

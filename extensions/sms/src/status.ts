@@ -101,6 +101,7 @@ type ProbeOptions = {
 };
 
 function addTailscaleHint(account: ResolvedSmsAccount, hints: string[]): void {
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let host;
   try {
     host = new URL(account.publicWebhookUrl).hostname;

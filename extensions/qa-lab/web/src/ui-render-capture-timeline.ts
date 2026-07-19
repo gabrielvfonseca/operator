@@ -436,8 +436,10 @@ export function renderCaptureTimeline(model: CaptureViewModel): string {
                               </div>
                               ${
                                 laneSelected &&
-                                (state.captureTimelineLaneSort === "severity" ||
-                                  laneMovement != null)
+                                (
+                                  state.captureTimelineLaneSort === "severity" ||
+                                    laneMovement != null
+                                )
                                   ? `<div class="capture-timeline-lane-severity">${
                                       laneMovement == null || laneMovement === 0
                                         ? ""

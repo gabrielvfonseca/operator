@@ -78,7 +78,6 @@ export async function fetchWithBearerAuthScopeFallback(params: {
         return authAttempt;
       }
       if (!shouldRetry(authAttempt)) {
-        continue;
       }
     } catch {
       // Ignore token/fetch errors and continue trying remaining scopes.

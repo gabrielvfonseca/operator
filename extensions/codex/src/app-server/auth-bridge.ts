@@ -600,7 +600,7 @@ export async function refreshCodexAppServerAuthTokens(params: {
     ...params,
     forceOAuthRefresh: true,
   });
-  if (!loginParams || loginParams.type !== "chatgptAuthTokens") {
+  if (loginParams?.type !== "chatgptAuthTokens") {
     throw new Error("Codex app-server ChatGPT token refresh requires an OAuth auth profile.");
   }
   return {

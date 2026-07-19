@@ -59,7 +59,7 @@ function parseSinglePositional(
   },
 ): string | null {
   const positionals = getCommandPositionalsWithRootOptions(argv, params);
-  if (!positionals || positionals.length !== 1) {
+  if (positionals?.length !== 1) {
     return null;
   }
   return positionals[0] ?? null;
@@ -304,7 +304,7 @@ export function parsePluginsListRouteArgs(argv: string[]) {
     commandPath: ["plugins", "list"],
     booleanFlags: ["--json", "--enabled", "--verbose"],
   });
-  if (!positionals || positionals.length !== 0) {
+  if (positionals?.length !== 0) {
     return null;
   }
   return {
@@ -323,7 +323,7 @@ function parseTasksListRouteArgsForCommandPath(argv: string[], commandPath: stri
     booleanFlags: ["--json"],
     valueFlags: ["--runtime", "--status"],
   });
-  if (!positionals || positionals.length !== 0) {
+  if (positionals?.length !== 0) {
     return null;
   }
   const runtime = parseOptionalFlagValue(argv, "--runtime");
@@ -359,7 +359,7 @@ export function parseTasksAuditRouteArgs(argv: string[]) {
     booleanFlags: ["--json"],
     valueFlags: ["--severity", "--code", "--limit"],
   });
-  if (!positionals || positionals.length !== 0) {
+  if (positionals?.length !== 0) {
     return null;
   }
   const severity = parseOptionalFlagValue(argv, "--severity");

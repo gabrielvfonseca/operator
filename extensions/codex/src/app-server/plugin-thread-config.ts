@@ -598,8 +598,8 @@ function shouldRefreshMissingAppInventory(
 ): boolean {
   return Boolean(
     params.appCacheKey &&
-    policy.pluginPolicies.some((plugin) => plugin.enabled) &&
-    inventory.appInventory?.state === "missing",
+      policy.pluginPolicies.some((plugin) => plugin.enabled) &&
+      inventory.appInventory?.state === "missing",
   );
 }
 

@@ -886,7 +886,7 @@ export async function buildSessionEntry(
       absPath,
       mtimeMs,
       size,
-      hash: hashText(content + "\n" + lineMap.join(",") + "\n" + messageTimestampsMs.join(",")),
+      hash: hashText(`${content}\n${lineMap.join(",")}\n${messageTimestampsMs.join(",")}`),
       content,
       lineMap,
       messageTimestampsMs,

@@ -31,7 +31,7 @@ type OperatorPluginNodeHostCommandBase = {
   watchAvailability?: (
     context: OperatorPluginNodeHostCommandAvailabilityContext,
     onChange: () => void,
-  ) => (() => void) | void;
+  ) => (() => void) | undefined;
   agentTool?: {
     name: string;
     description: string;

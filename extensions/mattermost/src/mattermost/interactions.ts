@@ -497,6 +497,7 @@ export function createMattermostInteractionHandler(params: {
     }
 
     const userName = payload.user_name ?? payload.user_id;
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let originalMessage;
     let originalPost: MattermostPost | null;
     let clickedButtonName: string | null = null;

@@ -57,11 +57,7 @@ export function resolveOperatorToolsForMcp(
   });
 }
 
-function createOperatorToolsMcpServer(
-  params: {
-    tools?: AnyAgentTool[];
-  } = {},
-): Server {
+function createOperatorToolsMcpServer(params: { tools?: AnyAgentTool[] } = {}): Server {
   const tools = params.tools ?? resolveOperatorToolsForMcp();
   return createToolsMcpServer({ name: "operator-tools", tools });
 }

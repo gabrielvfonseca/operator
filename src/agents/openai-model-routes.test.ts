@@ -46,7 +46,7 @@ describe("OpenAI model route adapter", () => {
       config,
       env: {},
     });
-    if (!resolution || resolution.kind !== "routes") {
+    if (resolution?.kind !== "routes") {
       throw new Error("expected OpenAI routes");
     }
     expect(resolveConfiguredOpenAIAuthMode(config)).toBe("oauth");

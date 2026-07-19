@@ -280,9 +280,9 @@ export function buildMinimaxSpeechProvider(): SpeechProviderPlugin {
     isConfigured: ({ cfg, providerConfig }) =>
       Boolean(
         readMinimaxProviderConfig(providerConfig, cfg).apiKey ||
-        isProviderAuthProfileConfigured({ cfg, provider: MINIMAX_PORTAL_PROVIDER_ID }) ||
-        resolveMinimaxTokenPlanEnvKey() ||
-        process.env.MINIMAX_API_KEY,
+          isProviderAuthProfileConfigured({ cfg, provider: MINIMAX_PORTAL_PROVIDER_ID }) ||
+          resolveMinimaxTokenPlanEnvKey() ||
+          process.env.MINIMAX_API_KEY,
       ),
     synthesize: async (req) => {
       const config = readMinimaxProviderConfig(req.providerConfig, req.cfg);

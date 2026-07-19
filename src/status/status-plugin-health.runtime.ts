@@ -184,8 +184,9 @@ export async function collectInstalledPluginHealthSnapshot(params: {
   config?: OperatorConfig;
   workspaceDir?: string;
 }): Promise<StatusPluginHealthSnapshot> {
-  const { buildPluginCompatibilityNotices, buildPluginSnapshotReport } =
-    await import("../plugins/status.js");
+  const { buildPluginCompatibilityNotices, buildPluginSnapshotReport } = await import(
+    "../plugins/status.js"
+  );
   const runtime = collectRuntimePluginHealthSnapshot();
   const report = buildPluginSnapshotReport({
     config: params.config,
@@ -276,12 +277,15 @@ async function resolveEagerShouldRunPluginIds(params: {
     return undefined;
   }
   try {
-    const { loadGatewayStartupPluginPlan } =
-      await import("../plugins/gateway-startup-plugin-ids.js");
-    const { resolvePluginActivationSourceConfig } =
-      await import("../plugins/activation-source-config.js");
-    const { resolveGatewayStartupPluginActivationConfig } =
-      await import("../gateway/plugin-activation-runtime-config.js");
+    const { loadGatewayStartupPluginPlan } = await import(
+      "../plugins/gateway-startup-plugin-ids.js"
+    );
+    const { resolvePluginActivationSourceConfig } = await import(
+      "../plugins/activation-source-config.js"
+    );
+    const { resolveGatewayStartupPluginActivationConfig } = await import(
+      "../gateway/plugin-activation-runtime-config.js"
+    );
     // Build the should-run plan with the exact assembly gateway boot uses, via the shared
     // resolveGatewayStartupPluginActivationConfig helper. params.config is the live runtime
     // snapshot; resolvePluginActivationSourceConfig maps it back to the operator source config

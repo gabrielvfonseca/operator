@@ -123,8 +123,9 @@ async function loadFreshAfterToolCallModulesForTest() {
     runBeforeToolCallHook: beforeToolCallMocks.runBeforeToolCallHook,
   }));
   ({ toToolDefinitions } = await import("./agent-tool-definition-adapter.js"));
-  ({ handleToolExecutionStart, handleToolExecutionEnd } =
-    await import("./embedded-agent-subscribe.handlers.tools.js"));
+  ({ handleToolExecutionStart, handleToolExecutionEnd } = await import(
+    "./embedded-agent-subscribe.handlers.tools.js"
+  ));
 }
 
 describe("after_tool_call fires exactly once in embedded runs", () => {

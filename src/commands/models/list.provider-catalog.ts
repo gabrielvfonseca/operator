@@ -149,8 +149,9 @@ export async function resolveProviderCatalogPluginIdsForFilter(params: {
   if (manifestPluginIds) {
     return manifestPluginIds;
   }
-  const { resolveProviderContractPluginIdsForProviderAlias } =
-    await import("../../plugins/contracts/registry.js");
+  const { resolveProviderContractPluginIdsForProviderAlias } = await import(
+    "../../plugins/contracts/registry.js"
+  );
   const bundledAliasPluginIds = resolveProviderContractPluginIdsForProviderAlias(providerFilter);
   if (bundledAliasPluginIds) {
     return bundledAliasPluginIds;

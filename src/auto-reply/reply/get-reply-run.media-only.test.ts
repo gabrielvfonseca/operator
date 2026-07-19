@@ -303,10 +303,12 @@ describe("runPreparedReply media-only handling", () => {
     ({ drainFormattedSystemEvents } = await import("./session-system-events.js"));
     ({ applySessionHints } = await import("./body.js"));
     ({ resolveTypingMode } = await import("./typing-mode.js"));
-    ({ buildDirectChatContext, buildGroupIntro, buildGroupChatContext } =
-      await import("./groups.js"));
-    ({ buildInboundUserContextPrefix, resolveInboundUserContextPromptJoiner } =
-      await import("./inbound-meta.js"));
+    ({ buildDirectChatContext, buildGroupIntro, buildGroupChatContext } = await import(
+      "./groups.js"
+    ));
+    ({ buildInboundUserContextPrefix, resolveInboundUserContextPromptJoiner } = await import(
+      "./inbound-meta.js"
+    ));
     ({ getActiveReplyRunCount } = await import("./reply-run-registry.js"));
     ({ testing: replyRunTesting } = await import("./reply-run-registry.test-support.js"));
 
@@ -1519,8 +1521,9 @@ describe("runPreparedReply media-only handling", () => {
   });
 
   it("does not register a reply operation before auth setup succeeds", async () => {
-    const { resolveSessionAuthProfileOverride } =
-      await import("../../agents/auth-profiles/session-override.js");
+    const { resolveSessionAuthProfileOverride } = await import(
+      "../../agents/auth-profiles/session-override.js"
+    );
     const sessionId = "reply-operation-auth-failure";
     const activeBefore = getActiveReplyRunCount();
     vi.mocked(resolveSessionAuthProfileOverride).mockRejectedValueOnce(new Error("auth failed"));
@@ -1907,8 +1910,9 @@ describe("runPreparedReply media-only handling", () => {
   });
 
   it("rechecks same-session ownership after async prep before registering a new reply operation", async () => {
-    const { resolveSessionAuthProfileOverride } =
-      await import("../../agents/auth-profiles/session-override.js");
+    const { resolveSessionAuthProfileOverride } = await import(
+      "../../agents/auth-profiles/session-override.js"
+    );
     const queueSettings = await import("./queue/settings-runtime.js");
 
     let resolveAuth: (() => void) | undefined;
@@ -2053,8 +2057,9 @@ describe("runPreparedReply media-only handling", () => {
   });
 
   it("re-resolves auth profile after waiting for a prior run", async () => {
-    const { resolveSessionAuthProfileOverride } =
-      await import("../../agents/auth-profiles/session-override.js");
+    const { resolveSessionAuthProfileOverride } = await import(
+      "../../agents/auth-profiles/session-override.js"
+    );
     const queueSettings = await import("./queue/settings-runtime.js");
     const sessionStore: Record<string, SessionEntry> = {
       "session-key": {
@@ -2101,8 +2106,9 @@ describe("runPreparedReply media-only handling", () => {
   });
 
   it("re-resolves same-session ownership after session-id rotation during async prep", async () => {
-    const { resolveSessionAuthProfileOverride } =
-      await import("../../agents/auth-profiles/session-override.js");
+    const { resolveSessionAuthProfileOverride } = await import(
+      "../../agents/auth-profiles/session-override.js"
+    );
     const queueSettings = await import("./queue/settings-runtime.js");
 
     let resolveAuth: (() => void) | undefined;

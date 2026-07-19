@@ -521,7 +521,7 @@ export class StreamingController {
       );
 
       // 记住拼接前缀：之前的全部内容 + "\n\n"，后续回调的 text 都会自动加上此前缀
-      this.boundaryPrefix = this.lastRawFull + "\n\n";
+      this.boundaryPrefix = `${this.lastRawFull}\n\n`;
       const merged = this.boundaryPrefix + text;
       this.lastRawFull = merged;
       this.lastNormalizedFull = normalizeMediaTags(merged);
@@ -909,7 +909,7 @@ export class StreamingController {
       } catch (err) {
         this.logError(`${caller}: failed to end stream: ${formatStreamErr(err)}`);
       }
-    } else if (safeText && safeText.trim()) {
+    } else if (safeText?.trim()) {
       // 没有活跃流式会话，但有非空白文本未发送 → 启动流式 → 立即终结
       // 先临时存储到 pendingSessionText 以便 doStartStreaming 使用
       this.pendingSessionText = safeText;

@@ -2,7 +2,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import officialExternalChannelCatalog from "./lib/official-external-channel-catalog.json" with { type: "json" };
+import officialExternalChannelCatalog from "./lib/official-external-channel-catalog.json" with {
+  type: "json",
+};
 import { isRecord, trimString } from "./lib/record-shared.mjs";
 import { writeTextFileIfChanged } from "./runtime-postbuild-shared.mjs";
 

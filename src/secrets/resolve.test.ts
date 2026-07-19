@@ -426,6 +426,7 @@ describe("secret ref resolver", () => {
         targetCommand,
         [
           "#!/bin/sh",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           'suffix="${1:-missing}"',
           'printf \'{"protocolVersion":1,"values":{"openai/api-key":"%s:openai/api-key"}}\' "$suffix"',
         ].join("\n"),

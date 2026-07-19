@@ -50,6 +50,7 @@ function installFallbackShell(window: TestWindow, html: string): void {
 function requireElementById<T extends HTMLElement>(
   window: TestWindow,
   id: string,
+  // biome-ignore lint/suspicious/noShadowRestrictedNames: migrated from oxlint
   constructor: new () => T,
 ): T {
   const element = window.document.getElementById(id);

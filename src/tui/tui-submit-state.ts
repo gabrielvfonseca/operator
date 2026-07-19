@@ -19,7 +19,7 @@ export function acceptPendingSubmit(params: {
   preserveDraft: boolean;
 }): boolean {
   const pending = params.state.pendingSubmit;
-  if (!pending || pending.phase !== "sending" || pending.runId !== params.provisionalRunId) {
+  if (pending?.phase !== "sending" || pending.runId !== params.provisionalRunId) {
     return false;
   }
   params.state.pendingSubmit = {

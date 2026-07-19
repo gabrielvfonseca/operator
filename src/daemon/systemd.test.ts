@@ -1568,9 +1568,10 @@ describe("stageSystemdService", () => {
       // operator previously wrote there but staging now supplies inline.
       await fs.writeFile(
         envFilePath,
-        ["OPERATOR_GATEWAY_TOKEN=stale-gateway-token", "OPENROUTER_API_KEY=or-operator-key"].join(
-          "\n",
-        ) + "\n",
+        `${[
+          "OPERATOR_GATEWAY_TOKEN=stale-gateway-token",
+          "OPENROUTER_API_KEY=or-operator-key",
+        ].join("\n")}\n`,
         { encoding: "utf8", mode: 0o600 },
       );
 
@@ -1644,11 +1645,11 @@ describe("stageSystemdService", () => {
       // Simulate operator pre-populating gateway.systemd.env with provider API keys.
       await fs.writeFile(
         envFilePath,
-        [
+        `${[
           "ANTHROPIC_API_KEY=sk-ant-operator-secret",
           "OPENROUTER_API_KEY=or-operator-key",
           "LLM_API_KEY=old-value",
-        ].join("\n") + "\n",
+        ].join("\n")}\n`,
         { encoding: "utf8", mode: 0o600 },
       );
 
@@ -1677,12 +1678,12 @@ describe("stageSystemdService", () => {
     await withStageFixture(async ({ env, envFilePath }) => {
       await fs.writeFile(
         envFilePath,
-        [
+        `${[
           "OPENROUTER_API_KEY=\\$SECRET_FROM_SHELL",
           "SINGLE_QUOTED_LITERAL_API_KEY='$SECRET_FROM_SHELL'",
           'DOUBLE_QUOTED_LITERAL_API_KEY="$SECRET_FROM_SHELL"',
           'MIXED_API_KEY="foo"bar',
-        ].join("\n") + "\n",
+        ].join("\n")}\n`,
         { encoding: "utf8", mode: 0o600 },
       );
 
@@ -1710,7 +1711,7 @@ describe("stageSystemdService", () => {
       // $VAR that dotenv stored verbatim) and an operator-managed provider secret.
       await fs.writeFile(
         envFilePath,
-        ["LLM_API_KEY=$SECRET_FROM_SHELL", "OPENROUTER_API_KEY=or-operator-key"].join("\n") + "\n",
+        `${["LLM_API_KEY=$SECRET_FROM_SHELL", "OPENROUTER_API_KEY=or-operator-key"].join("\n")}\n`,
         { encoding: "utf8", mode: 0o600 },
       );
 
@@ -1741,7 +1742,7 @@ describe("stageSystemdService", () => {
     await withStageFixture(async ({ env, envFilePath }) => {
       await fs.writeFile(
         envFilePath,
-        ["LLM_API_KEY=$SECRET_FROM_SHELL", "OPENROUTER_API_KEY=or-operator-key"].join("\n") + "\n",
+        `${["LLM_API_KEY=$SECRET_FROM_SHELL", "OPENROUTER_API_KEY=or-operator-key"].join("\n")}\n`,
         { encoding: "utf8", mode: 0o600 },
       );
 
@@ -1767,16 +1768,17 @@ describe("stageSystemdService", () => {
       // Operator-managed env file holds two secrets; neither is in state-dir .env.
       await fs.writeFile(
         envFilePath,
-        [
+        `${[
           "ANTHROPIC_API_KEY=sk-ant-operator-secret",
           "OPENROUTER_API_KEY=or-operator-key",
           "LOWERCASE_LITERAL_API_KEY=$ecret123",
-        ].join("\n") + "\n",
+        ].join("\n")}\n`,
         { encoding: "utf8", mode: 0o600 },
       );
 
       // State-dir .env only skips an unrelated key (LLM_API_KEY). Operator keys must
       // not be treated as stale just because they are absent from the staged env.
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       await fs.writeFile(path.join(stateDir, ".env"), "LLM_API_KEY=${UNRESOLVED}\n", "utf8");
 
       mockSystemctlStatusOk();
@@ -2052,7 +2054,7 @@ describe("systemd service install and uninstall", () => {
       await fs.writeFile(unitPath, "[Unit]\nDescription=Operator Node\n", "utf8");
       await fs.writeFile(
         nodeEnvFilePath,
-        [
+        `${[
           "OPERATOR_GATEWAY_TOKEN=stale-node-token",
           "OPERATOR_GATEWAY_PASSWORD=stale-password",
           "OPENROUTER_API_KEY=operator-key",
@@ -2060,7 +2062,7 @@ describe("systemd service install and uninstall", () => {
           "LITERAL_API_KEY=\\$SECRET_FROM_SHELL",
           "SINGLE_QUOTED_LITERAL_API_KEY='$SECRET_FROM_SHELL'",
           'DOUBLE_QUOTED_LITERAL_API_KEY="$SECRET_FROM_SHELL"',
-        ].join("\n") + "\n",
+        ].join("\n")}\n`,
         { encoding: "utf8", mode: 0o600 },
       );
 
@@ -2085,12 +2087,12 @@ describe("systemd service install and uninstall", () => {
       }
       expect(accessError?.code).toBe("ENOENT");
       await expect(fs.readFile(nodeEnvFilePath, "utf8")).resolves.toBe(
-        [
+        `${[
           "OPENROUTER_API_KEY=operator-key",
           'LITERAL_API_KEY="\\$SECRET_FROM_SHELL"',
           'SINGLE_QUOTED_LITERAL_API_KEY="\\$SECRET_FROM_SHELL"',
           'DOUBLE_QUOTED_LITERAL_API_KEY="\\$SECRET_FROM_SHELL"',
-        ].join("\n") + "\n",
+        ].join("\n")}\n`,
       );
       expect(requireFirstWrite(write)).toContain("Removed systemd service");
       expect(execFileMock).toHaveBeenCalledTimes(2);

@@ -241,45 +241,43 @@ export function describeAnthropicProviderRuntimeContract(
 export function describeGithubCopilotProviderRuntimeContract(
   load: ProviderRuntimeContractPluginLoader,
 ) {
-  describe(
-    "github-copilot provider runtime contract",
-    { timeout: CONTRACT_SETUP_TIMEOUT_MS },
-    () => {
-      const requireProviderContractProvider = installRuntimeHooks([
-        {
-          providerIds: ["github-copilot"],
-          pluginId: "github-copilot",
-          name: "GitHub Copilot",
-          load,
-        },
-      ]);
+  describe("github-copilot provider runtime contract", {
+    timeout: CONTRACT_SETUP_TIMEOUT_MS,
+  }, () => {
+    const requireProviderContractProvider = installRuntimeHooks([
+      {
+        providerIds: ["github-copilot"],
+        pluginId: "github-copilot",
+        name: "GitHub Copilot",
+        load,
+      },
+    ]);
 
-      it("owns Copilot-specific forward-compat fallbacks", () => {
-        const provider = requireProviderContractProvider("github-copilot");
-        const model = provider.resolveDynamicModel?.({
-          provider: "github-copilot",
-          modelId: "gpt-5.4",
-          modelRegistry: {
-            find: (_provider: string, id: string) =>
-              id === "gpt-5.2-codex"
-                ? createModel({
-                    id,
-                    api: "openai-chatgpt-responses",
-                    provider: "github-copilot",
-                    baseUrl: "https://api.copilot.example",
-                  })
-                : null,
-          } as never,
-        });
-
-        expectFields(model, {
-          id: "gpt-5.4",
-          provider: "github-copilot",
-          api: "openai-responses",
-        });
+    it("owns Copilot-specific forward-compat fallbacks", () => {
+      const provider = requireProviderContractProvider("github-copilot");
+      const model = provider.resolveDynamicModel?.({
+        provider: "github-copilot",
+        modelId: "gpt-5.4",
+        modelRegistry: {
+          find: (_provider: string, id: string) =>
+            id === "gpt-5.2-codex"
+              ? createModel({
+                  id,
+                  api: "openai-chatgpt-responses",
+                  provider: "github-copilot",
+                  baseUrl: "https://api.copilot.example",
+                })
+              : null,
+        } as never,
       });
-    },
-  );
+
+      expectFields(model, {
+        id: "gpt-5.4",
+        provider: "github-copilot",
+        api: "openai-responses",
+      });
+    });
+  });
 }
 
 export function describeGoogleProviderRuntimeContract(load: ProviderRuntimeContractPluginLoader) {

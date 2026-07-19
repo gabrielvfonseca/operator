@@ -148,9 +148,7 @@ export function collectPromptCacheToolNames(tools: readonly { name?: string }[])
       if (name) {
         names.push(name);
       }
-    } catch {
-      continue;
-    }
+    } catch {}
   }
   return names;
 }

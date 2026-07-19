@@ -75,7 +75,7 @@ export async function loadGatewayTlsRuntime(
   cfg: GatewayTlsConfig | undefined,
   log?: { info?: (msg: string) => void; warn?: (msg: string) => void },
 ): Promise<GatewayTlsRuntime> {
-  if (!cfg || cfg.enabled !== true) {
+  if (cfg?.enabled !== true) {
     return { enabled: false, required: false };
   }
 

@@ -107,7 +107,7 @@ async function waitForProbeExit(params: {
   const startedAt = Date.now();
   while (Date.now() - startedAt < timeoutMs) {
     const args = await describeProbePid(pid);
-    if (!args || !args.includes("operator-cron-mcp-cleanup-probe")) {
+    if (!args?.includes("operator-cron-mcp-cleanup-probe")) {
       return;
     }
     await delay(100);
@@ -315,11 +315,11 @@ async function main() {
     const cron = await runCronCleanupScenario({ gateway, pidPath });
     const subagent = await runSubagentCleanupScenario({ gateway, pidPath, pidsPath, exitPath });
     process.stdout.write(
-      JSON.stringify({
+      `${JSON.stringify({
         ok: true,
         cron,
         subagent,
-      }) + "\n",
+      })}\n`,
     );
   } finally {
     await gateway.close();

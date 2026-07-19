@@ -665,12 +665,12 @@ describeLive("xai plugin live", () => {
           )?.responseId;
           return Boolean(
             postBargeResponseId &&
-            responseEvents.some(
-              (event) =>
-                event.type === "response.done" &&
-                event.responseId === postBargeResponseId &&
-                event.detail?.includes("status=completed"),
-            ),
+              responseEvents.some(
+                (event) =>
+                  event.type === "response.done" &&
+                  event.responseId === postBargeResponseId &&
+                  event.detail?.includes("status=completed"),
+              ),
           );
         },
         45_000,

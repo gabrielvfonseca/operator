@@ -40,7 +40,7 @@ function assertSessionKey(sessionKey: string | undefined, errorMessage: string):
 function asManagedTaskFlowRecord(
   flow: TaskFlowRecord | undefined,
 ): ManagedTaskFlowRecord | undefined {
-  if (!flow || flow.syncMode !== "managed" || !flow.controllerId) {
+  if (flow?.syncMode !== "managed" || !flow.controllerId) {
     return undefined;
   }
   return flow as ManagedTaskFlowRecord;

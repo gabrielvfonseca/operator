@@ -271,8 +271,9 @@ export async function applyNonInteractivePluginProviderChoice(params: {
     // the operator knows Codex CLI state is available to import deliberately.
     // Gated on installed (not freshlyInstalled) so repair runs against an
     // already-present harness still surface the hint.
-    const { offerPostInstallMigrations } =
-      await import("../../../wizard/setup.post-install-migration.js");
+    const { offerPostInstallMigrations } = await import(
+      "../../../wizard/setup.post-install-migration.js"
+    );
     await offerPostInstallMigrations({
       config: codexInstall.cfg,
       runtime: params.runtime,

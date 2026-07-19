@@ -1851,6 +1851,7 @@ describePosix("scripts/pr per-PR operation lock", () => {
     const script = readFileSync(join(repoRoot, "scripts/pr"), "utf8");
     const runner = readFileSync(processGroupRunner, "utf8");
     expect(script.match(/acquire_pr_operation_lock/g)).toHaveLength(1);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('if [ "${1-}" = "gc" ] || is_locked_pr_command "${1-}"; then');
     expect(script).not.toMatch(/review-\*|prepare-\*|merge-\*/u);
     expect(script).toContain(

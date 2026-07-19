@@ -221,7 +221,7 @@ function isPosixShellInlineCommandTransport(argv: string[]): boolean {
   const transportArgv = resolveShellWrapperTransportArgv(argv);
   return Boolean(
     transportArgv &&
-    POSIX_SHELL_WRAPPER_NAMES.has(normalizeExecutableToken(transportArgv[0] ?? "")),
+      POSIX_SHELL_WRAPPER_NAMES.has(normalizeExecutableToken(transportArgv[0] ?? "")),
   );
 }
 

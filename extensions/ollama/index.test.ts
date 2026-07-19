@@ -1007,6 +1007,7 @@ describe("ollama plugin", () => {
     ]);
   });
 
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   it.each(["$OLLAMA_API_KEY", "${OLLAMA_API_KEY}"])(
     "resolves configured Ollama Cloud SecretInput auth string %s",
     async (apiKeyRef) => {

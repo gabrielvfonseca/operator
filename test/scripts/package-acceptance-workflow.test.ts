@@ -535,6 +535,7 @@ describe("package acceptance workflow", () => {
     const waitForRun = shellFunctionSource(orchestration, "wait_for_run");
     const stateAssignment = waitForRun.indexOf('last_state="$state"');
     const approvalRetry = waitForRun.indexOf(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'approve_pending_deployments "${workflow}" "${run_id}" "${expected_sha}" ||',
     );
 
@@ -568,19 +569,30 @@ describe("package acceptance workflow", () => {
       expect(workflowStep(publishJob, stepName).if).toContain("inputs.publish_openclaw_npm");
     }
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(publishOrchestration.env?.PARENT_WORKFLOW_SHA).toBe("${{ github.sha }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(publishOrchestration.env?.CHILD_WORKFLOW_REF).toBe("${{ github.ref_name }}");
     expectTextToIncludeAll(publishOrchestration.run, [
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'gh api "repos/${GITHUB_REPOSITORY}/commits/${encoded_workflow_ref}"',
       'if [[ "$resolved_workflow_sha" != "$expected_sha" ]]',
       'verify_child_run_sha "$workflow" "$run_id" "$expected_sha" || return 1',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'approve_pending_deployments "${workflow}" "${run_id}" "${expected_sha}"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'wait_for_run windows-node-release.yml "${windows_node_run_id}" "${PARENT_WORKFLOW_SHA}"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'dispatch_workflow_at_ref "${RELEASE_TAG}" "${TARGET_SHA}" android-release.yml',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'wait_for_run android-release.yml "${android_release_run_id}" "${TARGET_SHA}"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'wait_for_run plugin-npm-release.yml "${plugin_npm_run_id}" "${PARENT_WORKFLOW_SHA}"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'wait_for_run_background openclaw-npm-release.yml "${openclaw_npm_run_id}" "${PARENT_WORKFLOW_SHA}"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'approve_child_publish_environment plugin-clawhub-release.yml "${plugin_clawhub_run_id}" "${TARGET_SHA}"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'approve_clawhub_bootstrap_environments "${plugin_clawhub_bootstrap_run_id}" "${bootstrap_workflow_sha}"',
     ]);
   });
@@ -635,9 +647,11 @@ describe("package acceptance workflow", () => {
     expect(corruptResult.stderr).toContain("dependency evidence ZIP comparison failed");
     expect(orchestration).toContain("find dependency-evidence -type f -exec touch -t 198001010000");
     expect(orchestration).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'attach_or_verify_release_asset "${asset_path}" "${asset_name}" zip-tree',
     );
     expect(orchestration).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '"${GITHUB_WORKSPACE}/.release-harness/scripts/compare-release-evidence-zip.py"',
     );
   });
@@ -683,8 +697,10 @@ describe("package acceptance workflow", () => {
 
     expect(evidenceScriptSyntax.status, evidenceScriptSyntax.stderr).toBe(0);
     expect(attachScriptSyntax.status, attachScriptSyntax.stderr).toBe(0);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain('evidence_checksum_asset="${evidence_asset}.sha256"');
     expect(workflow).toContain('--pattern "$evidence_checksum_asset"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain('fallback_package_version="${BASH_REMATCH[1]}"');
     expect(workflow).toContain('tag_package_content="$RUNNER_TEMP/tag-package-content.b64"');
     expect(workflow).toContain(
@@ -704,16 +720,21 @@ describe("package acceptance workflow", () => {
     expect(workflow).toContain("Checkout fallback evidence tag");
     expect(workflow).toContain("Bind fallback correction to the published package source");
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "Fallback correction ${{ needs.resolve.outputs.tag }} must point to the same source commit",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("main_ref: ${{ steps.inputs.outputs.main_ref }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("TRIGGER_SHA: ${{ github.sha }}");
     expect(workflow).toContain('main_ref="$TRIGGER_SHA"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("ref: ${{ needs.resolve.outputs.main_ref }}");
     expect(workflow).toContain(
       "Stable closeout skipped: $evidence_source_tag predates immutable postpublish evidence.",
     );
     expect(workflow).toContain("Stable closeout is required for $tag");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain('closeout_checksum_asset="${closeout_asset}.sha256"');
     expect(workflow).toContain('expected_closeout_digest="$(awk');
     expect(workflow).toContain('actual_closeout_digest="$(sha256sum "$closeout_json_path"');
@@ -751,8 +772,10 @@ describe("package acceptance workflow", () => {
     );
     expect(workflow).toContain('"Verify Authenticode signatures"');
     expect(workflow).toContain("EXPECTED_INSTALLER_DIGESTS:");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain('--windows-node-release-run-id "${WINDOWS_NODE_RELEASE_RUN_ID:-}"');
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '--windows-node-installer-digests "${WINDOWS_NODE_INSTALLER_DIGESTS:-}"',
     );
     expect(workflow).toContain(
@@ -762,10 +785,12 @@ describe("package acceptance workflow", () => {
       "Stable closeout requires repository variables RELEASE_ROLLBACK_DRILL_ID and RELEASE_ROLLBACK_DRILL_DATE, or explicit manual overrides.",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "REPAIR_PARTIAL_CLOSEOUT: ${{ needs.resolve.outputs.repair_partial_closeout }}",
     );
     expect(workflow).toContain('--allow-stale-rollback-drill "$REPAIR_PARTIAL_CLOSEOUT"');
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'awk -v asset="openclaw-${release_version}-stable-main-closeout.json"',
     );
     expect(workflow).toContain("attach_or_verify \\");
@@ -775,10 +800,12 @@ describe("package acceptance workflow", () => {
     );
     expect(attachStep.run).not.toContain('"$source_path#$asset_name"');
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "full_release_validation_run_attempt: ${{ steps.inputs.outputs.full_release_validation_run_attempt }}",
     );
     expect(workflow).toContain("(.[0].runAttempt == null) or");
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'release_manifest_asset="openclaw-${evidence_version}-release-manifest.json"',
     );
     expect(workflow).toContain('sha256sum --strict --status -c "$release_manifest_checksum_asset"');
@@ -786,15 +813,18 @@ describe("package acceptance workflow", () => {
       '"$existing_closeout_full_release_validation_run_attempt" != "$full_release_validation_run_attempt"',
     );
     expect(evidenceStep.env?.FULL_RELEASE_VALIDATION_RUN_ATTEMPT).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ needs.resolve.outputs.full_release_validation_run_attempt }}",
     );
     expect(evidenceStep.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "actions/runs/${FULL_RELEASE_VALIDATION_RUN_ID}/attempts/${FULL_RELEASE_VALIDATION_RUN_ATTEMPT}",
     );
     expect(evidenceStep.run).toContain(
       'String(run.run_attempt ?? "") !== process.env.FULL_RELEASE_VALIDATION_RUN_ATTEMPT',
     );
     expect(evidenceStep.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'manifest_asset="openclaw-${evidence_version}-release-manifest.json"',
     );
     expect(evidenceStep.run).toContain('gh_with_retry release download "$EVIDENCE_TAG"');
@@ -825,18 +855,22 @@ describe("package acceptance workflow", () => {
 
     expect(packageJson.packageManager).toMatch(/^pnpm@\d+\.\d+\.\d+\+sha512\.[a-f0-9]+$/u);
     expect(setupPnpmAction).toContain("Setup pnpm from packageManager");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(setupPnpmAction).toContain("PACKAGE_MANAGER_FILE: ${{ inputs.package-manager-file }}");
     expect(setupPnpmAction).toContain('case "$package_manager" in');
     expect(setupPnpmAction).toContain('corepack prepare "$package_manager" --activate');
     expect(setupPnpmAction).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "if: ${{ inputs.use-actions-cache == 'true' && runner.os != 'Windows' }}",
     );
     expect(setupPnpmAction).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "key: pnpm-store-${{ runner.os }}-${{ runner.arch }}-${{ inputs.node-version }}-${{ hashFiles(inputs.package-manager-file) }}-${{ hashFiles(inputs.lockfile-path) }}",
     );
     expect(setupPnpmAction).not.toContain("pnpm/action-setup");
     expect(setupPnpmAction).not.toContain("shasum");
     expect(setupPnpmAction).not.toContain("PNPM_VERSION_INPUT");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(setupPnpmAction).not.toContain("version: ${{ inputs.pnpm-version }}");
     expect(setupPnpmAction).toContain('corepack enable --install-directory "$PNPM_HOME"');
     expect(setupPnpmAction).toContain('echo "PNPM_HOME=$PNPM_HOME" >> "$GITHUB_ENV"');
@@ -844,6 +878,7 @@ describe("package acceptance workflow", () => {
     const setupNodeAction = readFileSync(".github/actions/setup-node-env/action.yml", "utf8");
     expect(setupNodeAction).toContain("Normalize container toolcache");
     expect(setupNodeAction).toContain("ln -s /__t /opt/hostedtoolcache");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(setupNodeAction).toContain("use-actions-cache: ${{ inputs.use-actions-cache }}");
 
     for (const workflowPath of workflowPaths()) {
@@ -867,6 +902,7 @@ describe("package acceptance workflow", () => {
 
     expect(crabboxConfig.actions?.job).toBe("hydrate");
     expect(hydrate.if).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ inputs.crabbox_job != 'hydrate-github' && inputs.crabbox_job != 'hydrate-windows-daemon' }}",
     );
     expect(workflowStep(hydrate, "Setup Node.js").uses).toBe(SETUP_NODE_V6);
@@ -877,8 +913,10 @@ describe("package acceptance workflow", () => {
     expect(hydratePnpm.run).toContain("COREPACK_HOME");
     expect(workflowText).toContain('PNPM_CONFIG_STORE_DIR: "/var/cache/crabbox/pnpm/store"');
     expect(hydratePnpm.run).toContain("prepare_crabbox_pnpm_dirs");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(hydratePnpm.run).toContain('case "${PNPM_CONFIG_MODULES_DIR:?}" in "$volatile_root"/*)');
     expect(hydratePnpm.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'case "${PNPM_CONFIG_VIRTUAL_STORE_DIR:?}" in "$volatile_root"/*)',
     );
     expect(hydratePnpm.run).toContain('rm -rf -- "$volatile_root"');
@@ -887,12 +925,15 @@ describe("package acceptance workflow", () => {
       'mkdir -p "$PNPM_CONFIG_MODULES_DIR" "$PNPM_CONFIG_VIRTUAL_STORE_DIR"',
     );
     expect(hydratePnpm.run).toContain("Refusing unsafe pnpm directory");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(hydratePnpm.run).not.toContain('rm -rf -- "${PNPM_CONFIG_MODULES_DIR:?}"');
     expect(hydratePnpm.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '[ "$(readlink node_modules)" = "${PNPM_CONFIG_MODULES_DIR:-}" ]',
     );
     expect(hydratePnpm.run).toContain("pnpm_install_artifacts_ready");
     expect(hydratePnpm.run).toContain("run_pnpm_install || run_pnpm_install");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(hydratePnpm.run).toContain('setsid pnpm "${install_args[@]}"');
     expect(hydratePnpm.run).toContain("grep -qE '^Done in .+ using pnpm v'");
     expect(hydratePnpm.run).toContain("https://github.com/pnpm/pnpm/issues/12297");
@@ -922,6 +963,7 @@ describe("package acceptance workflow", () => {
     expect(workflowStep(hydrate, "Mark Crabbox ready").run).toContain("COREPACK_HOME");
     expect(workflowStep(hydrate, "Hydrate provider env helper").env).toBeUndefined();
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(hydrateWindowsDaemon.if).toBe("${{ inputs.crabbox_job == 'hydrate-windows-daemon' }}");
     expect(workflowStep(hydrateWindowsDaemon, "Setup Node.js").uses).toBe(SETUP_NODE_V6);
     const hydrateWindowsPnpm = workflowStep(hydrateWindowsDaemon, "Setup pnpm and dependencies");
@@ -985,11 +1027,13 @@ describe("package acceptance workflow", () => {
     expect(workflowText).toContain("--retry-all-errors");
     expect(workflowText).not.toContain("curl -fsSL https://get.docker.com | sudo sh");
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(hydrateGithub.if).toBe("${{ inputs.crabbox_job == 'hydrate-github' }}");
     expect(workflowStep(hydrateGithub, "Setup Node environment").uses).toBe(
       "./.github/actions/setup-node-env",
     );
     expect(workflowStep(hydrateGithub, "Setup Node environment").env?.PNPM_HOME).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ runner.temp }}/pnpm-home",
     );
     const hydrateGithubCrabboxShell = workflowStep(hydrateGithub, "Prepare Crabbox shell").run;
@@ -998,6 +1042,7 @@ describe("package acceptance workflow", () => {
     expect(hydrateGithubCrabboxShell).toContain('readlink -f "$target"');
     expect(hydrateGithubCrabboxShell).toContain("link_node_tool corepack");
     expect(workflowStep(hydrateGithub, "Hydrate provider env helper").env?.FACTORY_API_KEY).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ secrets.FACTORY_API_KEY }}",
     );
   });
@@ -1062,21 +1107,27 @@ describe("package acceptance workflow", () => {
     expect(workflow).toContain("- trusted-url");
     expect(workflow).toContain("- artifact");
     expect(workflow).toContain("trusted_source_id:");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("TRUSTED_SOURCE_ID: ${{ inputs.trusted_source_id }}");
     expect(workflow).toContain('--trusted-source-id "$TRUSTED_SOURCE_ID"');
     expect(workflow).toContain("scripts/resolve-openclaw-package-candidate.mjs");
     expect(workflow).toContain('--package-ref "$PACKAGE_REF"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("artifact-ids: ${{ inputs.artifact_id }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("actions/artifacts/${ARTIFACT_ID}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("name: ${{ env.PACKAGE_ARTIFACT_NAME }}");
     expect(workflow).toContain("pull-requests: read");
     expect(workflow).toContain(
       "uses: ./.github/workflows/openclaw-live-and-e2e-checks-reusable.yml",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "ref: ${{ needs.resolve_package.outputs.package_source_sha || inputs.workflow_ref }}",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "package_artifact_name: ${{ needs.resolve_package.outputs.package_artifact_name }}",
     );
     expect(workflow).toContain("package_integrity:");
@@ -1084,6 +1135,7 @@ describe("package acceptance workflow", () => {
     expect(workflow).toContain('node scripts/check-openclaw-package-tarball.mjs "$package"');
     expect(workflow).toContain('[[ "$actual_sha256" == "$EXPECTED_PACKAGE_SHA256" ]]');
     expect(workflow).toContain("needs: [resolve_package, package_integrity]");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("package_integrity=${PACKAGE_INTEGRITY_RESULT}");
   });
 
@@ -1127,54 +1179,72 @@ describe("package acceptance workflow", () => {
     expect(workflow).not.toContain("telegram_mode requires source=npm");
     expect(workflow).toContain("uses: ./.github/workflows/npm-telegram-beta-e2e.yml");
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "package_artifact_name: ${{ needs.resolve_package.outputs.package_artifact_name }}",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "package_artifact_digest: ${{ needs.resolve_package.outputs.package_artifact_digest }}",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "package_artifact_id: ${{ needs.resolve_package.outputs.package_artifact_id }}",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "package_artifact_run_attempt: ${{ needs.resolve_package.outputs.package_artifact_run_attempt }}",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "package_artifact_run_id: ${{ needs.resolve_package.outputs.package_artifact_run_id }}",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "package_file_name: ${{ needs.resolve_package.outputs.package_file_name }}",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "package_sha256: ${{ needs.resolve_package.outputs.package_sha256 }}",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "package_source_sha: ${{ needs.resolve_package.outputs.package_source_sha }}",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "package_version: ${{ needs.resolve_package.outputs.package_version }}",
     );
     expect(workflow).toContain("telegram_scenarios:");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("scenario: ${{ inputs.telegram_scenarios }}");
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "package_label: openclaw@${{ needs.resolve_package.outputs.package_version }}",
     );
     expect(npmTelegramWorkflow).toContain("package_artifact_run_id:");
     expect(npmTelegramWorkflow).toContain("Download package-under-test artifact from release run");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(npmTelegramWorkflow).toContain("run-id: ${{ inputs.package_artifact_run_id }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(npmTelegramWorkflow).toContain("github-token: ${{ github.token }}");
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "package_source_sha: ${{ steps.resolve.outputs.package_source_sha }}",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "harness_ref: ${{ needs.resolve_package.outputs.package_source_sha || inputs.workflow_ref }}",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "published_upgrade_survivor_baseline: ${{ inputs.published_upgrade_survivor_baseline }}",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "published_upgrade_survivor_baselines: ${{ needs.resolve_package.outputs.published_upgrade_survivor_baselines }}",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "published_upgrade_survivor_scenarios: ${{ needs.resolve_package.outputs.published_upgrade_survivor_scenarios }}",
     );
     expect(workflow).toContain("Published upgrade survivor baseline:");
@@ -1190,8 +1260,11 @@ describe("package acceptance workflow", () => {
       workflow.indexOf("\n  summary:"),
     );
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("TARGET_SHA: ${{ needs.resolve_target.outputs.sha }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("CHILD_WORKFLOW_REF: ${{ github.ref_name }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("PARENT_WORKFLOW_SHA: ${{ github.sha }}");
     expect(workflow).toContain("release_package_spec:");
     expect(workflow).toContain('args+=(-f release_package_spec="$RELEASE_PACKAGE_SPEC")');
@@ -1202,21 +1275,26 @@ describe("package acceptance workflow", () => {
     expect(workflow).toContain("codex_plugin_spec:");
     expect(workflow).toContain('args+=(-f codex_plugin_spec="$CODEX_PLUGIN_SPEC")');
     expect(releaseChecksWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'codex_plugin_spec="npm:@operator/codex@${BASH_REMATCH[1]}"',
     );
     expect(releaseChecksWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "codex_plugin_spec: ${{ needs.resolve_target.outputs.codex_plugin_spec }}",
     );
     expect(workflow).toContain("--json status,conclusion,url,attempt,headSha,jobs");
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'gh_with_retry api "repos/${GITHUB_REPOSITORY}/commits/${encoded_workflow_ref}" --jq .sha',
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "Child workflow ref ${CHILD_WORKFLOW_REF} moved to ${current_workflow_sha}, expected ${PARENT_WORKFLOW_SHA}; refusing dispatch.",
     );
     expect(workflow).toContain('if [[ "$head_sha" != "$PARENT_WORKFLOW_SHA" ]]; then');
     expect(workflow).toContain('gh workflow run "$workflow" --ref "$CHILD_WORKFLOW_REF" "$@" 2>&1');
     expect(performanceJob).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'dispatch_id="full-release-validation-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"',
     );
     expect(performanceJob).toContain('-f dispatch_id="$dispatch_id"');
@@ -1224,12 +1302,14 @@ describe("package acceptance workflow", () => {
       'DISPATCH_RUN_NAME="$dispatch_run_name" CHILD_WORKFLOW_REF="$CHILD_WORKFLOW_REF"',
     );
     expect(performanceJob).toContain(".display_title == env.DISPATCH_RUN_NAME");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(performanceJob).toContain("Could not find exact dispatched run ${dispatch_run_name}");
     expect(performanceJob).not.toContain("BEFORE_IDS=");
     expect(performanceJob).not.toContain(
       "did not return an Actions run URL; refusing to guess from recent workflow_dispatch runs",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "child run used workflow SHA ${head_sha}, expected parent workflow SHA ${PARENT_WORKFLOW_SHA}",
     );
     expect(workflow).toContain(
@@ -1238,9 +1318,11 @@ describe("package acceptance workflow", () => {
     expect(workflow).toContain("| Child | Result | Minutes | Head SHA | Run |");
     expect(releaseChecksWorkflow).toContain("refs/heads/release-ci/[0-9a-f]{12}-[0-9]+");
     expect(releaseChecksWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "source: ${{ (needs.resolve_target.outputs.package_acceptance_package_spec != '' || needs.resolve_target.outputs.release_package_spec != '') && 'npm' || 'artifact' }}",
     );
     expect(releaseChecksWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "package_spec: ${{ needs.resolve_target.outputs.package_acceptance_package_spec || needs.resolve_target.outputs.release_package_spec || 'openclaw@beta' }}",
     );
   });
@@ -1264,17 +1346,21 @@ describe("package acceptance workflow", () => {
       expectTextToIncludeAll(script, [
         "A failed dispatch POST can still create a run. Never retry it",
         'encoded_workflow_ref="$(jq -rn --arg value "$CHILD_WORKFLOW_REF"',
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'gh_with_retry api "repos/${GITHUB_REPOSITORY}/commits/${encoded_workflow_ref}" --jq .sha',
         '"$current_workflow_sha" != "$PARENT_WORKFLOW_SHA"',
         "refusing dispatch.",
         "set +e",
         "dispatch_status=$?",
         'if [[ "$dispatch_status" -ne 0 && ! "$dispatch_output" =~ $GH_TRANSIENT_SERVER_OR_NETWORK_PATTERN ]]',
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "dispatch failed with non-ambiguous status ${dispatch_status}; refusing adoption polling.",
         'DISPATCH_RUN_NAME="$dispatch_run_name" CHILD_WORKFLOW_REF="$CHILD_WORKFLOW_REF"',
         ".display_title == env.DISPATCH_RUN_NAME and .head_branch == env.CHILD_WORKFLOW_REF",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "Multiple runs matched ${dispatch_run_name}; refusing to guess.",
         "The dispatch was not retried to avoid creating a duplicate child.",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "adopted exact run ${run_id}",
       ]);
       expect(script.indexOf("dispatch failed with non-ambiguous status")).toBeLessThan(
@@ -1342,9 +1428,13 @@ describe("package acceptance workflow", () => {
     }
     expect(workflow).not.toMatch(/gh_with_retry (workflow run|run cancel)/u);
     expectTextToIncludeAll(workflow, [
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'dispatch_id="full-release-validation-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-ci"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'dispatch_id="full-release-validation-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-plugin-prerelease"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'dispatch_id="full-release-validation-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-release-checks"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'dispatch_id="full-release-validation-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-npm-telegram"',
       'args+=(-f dispatch_id="$dispatch_id")',
     ]);
@@ -1387,35 +1477,55 @@ describe("package artifact reuse", () => {
     ).toBe(false);
     const identity = workflowStep(resolvePackage, "Validate package artifact input identity");
     expect(identity.env).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ARTIFACT_DIGEST: "${{ inputs.artifact_digest }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ARTIFACT_ID: "${{ inputs.artifact_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ARTIFACT_NAME: "${{ inputs.artifact_name }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ARTIFACT_RUN_ATTEMPT: "${{ inputs.artifact_run_attempt }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ARTIFACT_RUN_ID: "${{ inputs.artifact_run_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       EXPECTED_PACKAGE_FILE_NAME: "${{ inputs.package_file_name }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       EXPECTED_PACKAGE_SHA256: "${{ inputs.package_sha256 }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       EXPECTED_PACKAGE_SOURCE_SHA: "${{ inputs.package_source_sha }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       EXPECTED_PACKAGE_VERSION: "${{ inputs.package_version }}",
     });
     expectTextToIncludeAll(identity.run, [
       "source=artifact requires the complete immutable artifact and package identity tuple.",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '[[ "$ARTIFACT_NAME" == *"-${ARTIFACT_RUN_ID}-${ARTIFACT_RUN_ATTEMPT}" ]]',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '--arg digest "sha256:${ARTIFACT_DIGEST}"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "actions/runs/${ARTIFACT_RUN_ID}/attempts/${ARTIFACT_RUN_ATTEMPT}",
     ]);
     expect(workflowStep(resolvePackage, "Download package artifact input").with).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "artifact-ids": "${{ inputs.artifact_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "github-token": "${{ github.token }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "run-id": "${{ inputs.artifact_run_id }}",
     });
     const resolve = workflowStep(resolvePackage, "Resolve package candidate");
     expect(resolve.env).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       PACKAGE_FILE_NAME: "${{ inputs.package_file_name }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       PACKAGE_SHA256: "${{ inputs.package_sha256 }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       PACKAGE_SOURCE_SHA: "${{ inputs.package_source_sha }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       PACKAGE_VERSION: "${{ inputs.package_version }}",
     });
     expectTextToIncludeAll(resolve.run, [
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'artifact_tarball="${artifact_dir}/${PACKAGE_FILE_NAME}"',
       "Selected artifact package SHA-256 differs from package_sha256.",
       "Resolved package identity differs from the declared immutable tuple.",
@@ -1425,8 +1535,11 @@ describe("package artifact reuse", () => {
     expect(
       workflowStep(packageIntegrity, "Download package-under-test artifact").with,
     ).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "artifact-ids": "${{ needs.resolve_package.outputs.package_artifact_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "github-token": "${{ github.token }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "run-id": "${{ needs.resolve_package.outputs.package_artifact_run_id }}",
     });
   });
@@ -1459,32 +1572,43 @@ describe("package artifact reuse", () => {
     expect(workflow).toContain("docker_e2e_functional_image:");
     expect(workflow).toContain("OPENCLAW_DOCKER_E2E_SELECTED_SHA:");
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "OPENCLAW_UPGRADE_SURVIVOR_BASELINE_SPEC: ${{ inputs.published_upgrade_survivor_baseline }}",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "OPENCLAW_UPGRADE_SURVIVOR_BASELINE_SPECS: ${{ matrix.group.published_upgrade_survivor_baselines || inputs.published_upgrade_survivor_baselines }}",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "OPENCLAW_UPGRADE_SURVIVOR_SCENARIOS: ${{ inputs.published_upgrade_survivor_scenarios }}",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("OPENCLAW_UPGRADE_SURVIVOR_TARGET_ROOT: ${{ github.workspace }}");
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "OPENCLAW_ALLOW_FROZEN_TARGET_SCENARIO_OMISSIONS: ${{ inputs.allow_frozen_target_scenario_omissions && '1' || '0' }}",
     );
     expect(workflow).toContain("Download current-run OpenClaw Docker E2E package");
     expect(workflow).toContain("Download previous-run OpenClaw Docker E2E package");
     expect(workflow).toContain("inputs.package_artifact_id != ''");
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'bare_image="${PROVIDED_BARE_IMAGE:-ghcr.io/${repository}-docker-e2e-bare:${image_tag}}"',
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'functional_image="${PROVIDED_FUNCTIONAL_IMAGE:-ghcr.io/${repository}-docker-e2e-functional:${image_tag}}"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("artifact-ids: ${{ inputs.package_artifact_id }}");
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '[[ "$ARTIFACT_NAME" == *"-${ARTIFACT_RUN_ID}-${ARTIFACT_RUN_ATTEMPT}" ]]',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain('--arg digest "sha256:${ARTIFACT_DIGEST}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("actions/runs/${ARTIFACT_RUN_ID}/attempts/${ARTIFACT_RUN_ATTEMPT}");
     expect(workflow).not.toContain("uses: ./.github/actions/docker-e2e-plan");
     expect(workflow).toContain("Checkout trusted release harness");
@@ -1494,30 +1618,45 @@ describe("package artifact reuse", () => {
     expect(workflow).toContain("bash .release-harness/scripts/ci-docker-pull-retry.sh");
     const prepareDockerImage = workflowJob(LIVE_E2E_WORKFLOW, "prepare_docker_e2e_image");
     expect(workflowStep(prepareDockerImage, "Plan Docker E2E images").env).toEqual({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       INCLUDE_OPENWEBUI: "${{ inputs.include_openwebui }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       INCLUDE_RELEASE_PATH_SUITES: "${{ inputs.include_release_path_suites }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       LANES: "${{ inputs.docker_lanes }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       OPENCLAW_UPGRADE_SURVIVOR_BASELINE_SPEC: "${{ inputs.published_upgrade_survivor_baseline }}",
       OPENCLAW_UPGRADE_SURVIVOR_BASELINE_SPECS:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ inputs.published_upgrade_survivor_baselines }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       OPENCLAW_UPGRADE_SURVIVOR_SCENARIOS: "${{ inputs.published_upgrade_survivor_scenarios }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       RELEASE_TEST_PROFILE: "${{ inputs.release_test_profile }}",
     });
     expect(workflow).toContain("plan_docker_lane_groups:");
     expect(workflow).toContain("targeted_docker_lane_group_size:");
     expect(workflow).toContain("scripts/plan-targeted-docker-lane-groups.mjs");
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "OPENCLAW_UPGRADE_SURVIVOR_BASELINE_SPECS: ${{ inputs.published_upgrade_survivor_baselines }}",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("Docker E2E targeted lanes (${{ matrix.group.label }})");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("LANES: ${{ matrix.group.docker_lanes }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("GROUP_LABEL: ${{ matrix.group.label }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("DOCKER_E2E_LANES: ${{ matrix.group.docker_lanes }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("name: docker-e2e-${{ steps.plan.outputs.artifact_suffix }}");
     expect(scheduler).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "published_upgrade_survivor_baseline=${shellQuote(env.OPENCLAW_UPGRADE_SURVIVOR_BASELINE_SPEC)}",
     );
     expect(scheduler).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "published_upgrade_survivor_baselines=${shellQuote(env.OPENCLAW_UPGRADE_SURVIVOR_BASELINE_SPECS)}",
     );
     expect(scheduler).toContain(
@@ -1567,18 +1706,23 @@ describe("package artifact reuse", () => {
 
     expect(pullHelper).toContain("OPENCLAW_DOCKER_PULL_ATTEMPTS");
     expect(pullHelper).toContain("OPENCLAW_DOCKER_PULL_TIMEOUT_SECONDS");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(pullHelper).toContain('timeout_seconds="${OPENCLAW_DOCKER_PULL_TIMEOUT_SECONDS:-180}"');
     expect(pullHelper).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'retry_delay_seconds="${OPENCLAW_DOCKER_PULL_RETRY_DELAY_SECONDS:-5}"',
     );
     expect(pullHelper).toContain('source "$SCRIPT_DIR/lib/host-timeout.sh"');
     expect(pullHelper).toContain("openclaw_host_timeout_bin");
     expect(pullHelper).toContain('"$timeout_bin" --kill-after=1s 1s true');
     expect(pullHelper).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '"$timeout_bin" --kill-after=30s "${timeout_seconds}s" docker pull "$image"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(pullHelper).toContain('"$timeout_bin" "${timeout_seconds}s" docker pull "$image"');
     expect(pullHelper).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "timeout or gtimeout command not found; cannot bound Docker pull after ${timeout_seconds}s",
     );
     expect(dockerE2ePlanAction.match(/bash scripts\/ci-docker-pull-retry\.sh/g)?.length).toBe(2);
@@ -1610,12 +1754,16 @@ describe("package artifact reuse", () => {
     expect(workflow).toContain(
       "command: ZAI_CODING_LIVE_TEST=1 node .release-harness/scripts/test-live-shard.mjs native-live-src-agents-zai-coding",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("OPENCLAW_LIVE_COMMAND: ${{ matrix.command }}");
     expect(workflow).toContain("live_suite_filter:");
     expect(workflow).toContain("validate_live_suite_filter:");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("LIVE_SUITE_FILTER: ${{ inputs.live_suite_filter }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("live-cache attempt ${attempt}/2");
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "live_suite_filter '${LIVE_SUITE_FILTER}' does not match any runnable suite",
     );
     expect(workflow).toContain('add_profile_suite docker-live-models "beta minimum stable full"');
@@ -1729,6 +1877,7 @@ describe("package artifact reuse", () => {
     expect(workflow).toContain("suite_id: native-live-extensions-l-n");
     expect(workflow).toContain("suite_id: native-live-extensions-moonshot");
     expect(workflow).toMatch(/suite_id: native-live-extensions-moonshot[\s\S]*?advisory: true/u);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("OPENCLAW_LIVE_SUITE_ADVISORY: ${{ matrix.advisory }}");
     expect(workflow).toContain("Advisory live suite failed with exit code");
     expect(workflow).toMatch(
@@ -1891,9 +2040,13 @@ describe("package artifact reuse", () => {
     expect(codexCompatibility).toMatchObject({
       id: "codex_compat",
       env: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         OPENCLAW_FROZEN_CODEX_SUITE_ID: "${{ matrix.suite_id }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         OPENCLAW_FROZEN_TARGET_ROOT: "${{ github.workspace }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         OPENCLAW_SELECTED_SHA: "${{ needs.validate_selected_ref.outputs.selected_sha }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         OPENCLAW_WORKFLOW_SHA: "${{ needs.validate_selected_ref.outputs.workflow_sha }}",
       },
       run: "node .release-harness/scripts/resolve-frozen-codex-live-suite.mjs",
@@ -1912,6 +2065,7 @@ describe("package artifact reuse", () => {
       );
     }
     const runCodexSuite = providerSuites.steps?.find((candidate) =>
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       candidate.name?.startsWith("Run ${{ matrix.label }}"),
     );
     expect(runCodexSuite?.if).toContain("steps.codex_compat.outputs.run_lane != 'false'");
@@ -1935,6 +2089,7 @@ describe("package artifact reuse", () => {
     ]) {
       expect(workflow).toContain(`add_profile_suite ${suiteId} "stable full"`);
     }
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(codexLiveTest).toContain("command: `/model ${modelKey} --runtime codex`");
     expect(codexLiveTest).toContain("thinkingLevel: CODEX_HARNESS_THINKING");
     expect(workflow).toContain(
@@ -1946,6 +2101,7 @@ describe("package artifact reuse", () => {
     expect(scenarios).toContain('? ".release-harness"');
     expect(scenarios).toContain("process.env.OPENCLAW_DOCKER_E2E_REPO_ROOT");
     expect(scenarios).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'harness="\\${OPENCLAW_DOCKER_E2E_TRUSTED_HARNESS_DIR:-${LIVE_DOCKER_DEFAULT_HARNESS_DIR}}"',
     );
     expect(scenarios).not.toContain("harness=.release-harness");
@@ -1965,6 +2121,7 @@ describe("package artifact reuse", () => {
     expect(scheduler).toContain('path.basename(SCRIPT_ROOT_DIR) === ".release-harness"');
     expect(scheduler).toContain("ROOT_DIR !== SCRIPT_ROOT_DIR");
     expect(scheduler).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'harness="\\${OPENCLAW_DOCKER_E2E_TRUSTED_HARNESS_DIR:-${LIVE_DOCKER_DEFAULT_HARNESS_DIR}}"',
     );
     expect(scheduler).not.toContain("harness=.release-harness");
@@ -1974,9 +2131,12 @@ describe("package artifact reuse", () => {
     expect(liveDockerAuth).toContain("openclaw_live_stage_profile_into_home()");
     expect(liveDockerAuth).toContain("openclaw_live_chown_bind_dirs_for_container_user()");
     expect(liveDockerAuth).toContain("openclaw_live_uses_managed_bind_dirs()");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(liveDockerAuth).toContain('openclaw_live_truthy "${OPENCLAW_TESTBOX:-}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(liveDockerAuth).toContain('[[ -n "${OPENCLAW_DOCKER_CACHE_HOME_DIR:-}" ]]');
     expect(liveDockerAuth).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'timeout_value="${2:-${OPENCLAW_LIVE_DOCKER_RUN_TIMEOUT:-2700s}}"',
     );
     expect(harness).toContain('source "$TRUSTED_HARNESS_DIR/scripts/lib/live-docker-auth.sh"');
@@ -1985,6 +2145,7 @@ describe("package artifact reuse", () => {
       'OPENCLAW_LIVE_DOCKER_REPO_ROOT="$ROOT_DIR" "$TRUSTED_HARNESS_DIR/scripts/test-live-build-docker.sh"',
     );
     expect(harness).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '-e OPENCLAW_LIVE_DOCKER_SCRIPTS_DIR="${DOCKER_TRUSTED_HARNESS_CONTAINER_DIR}/scripts"',
     );
     expect(harness).toContain('node --import tsx "$trusted_scripts_dir/prepare-codex-ci-auth.ts"');
@@ -2004,6 +2165,7 @@ describe("package artifact reuse", () => {
       );
       expect(script).toContain('source "$trusted_scripts_dir/lib/live-docker-stage.sh"');
       expect(script).toContain(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         '-e OPENCLAW_LIVE_DOCKER_SCRIPTS_DIR="${DOCKER_TRUSTED_HARNESS_CONTAINER_DIR}/scripts"',
       );
       expect(script).toContain(
@@ -2033,9 +2195,11 @@ describe("package artifact reuse", () => {
       'CLI_SETUP_TIMEOUT_SECONDS="$(openclaw_live_read_positive_int_env OPENCLAW_LIVE_CLI_BACKEND_SETUP_TIMEOUT_SECONDS 180)"',
     );
     expect(readFileSync("scripts/test-live-cli-backend-docker.sh", "utf8")).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'timeout_value="${OPENCLAW_LIVE_CLI_BACKEND_SETUP_TIMEOUT_SECONDS:?missing live CLI backend setup timeout seconds}s"',
     );
     expect(readFileSync("scripts/test-live-cli-backend-docker.sh", "utf8")).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'echo "timeout command not found; cannot bound live CLI backend setup after ${timeout_value}"',
     );
     expect(readFileSync("scripts/test-live-acp-bind-docker.sh", "utf8")).toContain(
@@ -2045,15 +2209,18 @@ describe("package artifact reuse", () => {
       'ACP_SETUP_TIMEOUT_SECONDS="$(openclaw_live_read_positive_int_env OPENCLAW_LIVE_ACP_BIND_SETUP_TIMEOUT_SECONDS 180)"',
     );
     expect(readFileSync("scripts/test-live-acp-bind-docker.sh", "utf8")).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'timeout_value="${OPENCLAW_LIVE_ACP_BIND_SETUP_TIMEOUT_SECONDS:?missing live ACP bind setup timeout seconds}s"',
     );
     expect(readFileSync("scripts/test-live-acp-bind-docker.sh", "utf8")).toContain(
       '-e OPENCLAW_LIVE_ACP_BIND_SETUP_TIMEOUT_SECONDS="$ACP_SETUP_TIMEOUT_SECONDS"',
     );
     expect(readFileSync("scripts/test-live-acp-bind-docker.sh", "utf8")).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '-e OPENCLAW_LIVE_ACP_BIND_REQUIRE_CRON="${OPENCLAW_LIVE_ACP_BIND_REQUIRE_CRON:-}"',
     );
     expect(readFileSync("scripts/test-live-acp-bind-docker.sh", "utf8")).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'echo "timeout command not found; cannot bound live ACP bind setup after ${timeout_value}"',
     );
     expect(readFileSync("scripts/test-live-acp-bind-docker.sh", "utf8")).toContain(
@@ -2069,6 +2236,7 @@ describe("package artifact reuse", () => {
     expect(acpBindScript).toContain(
       "unset ANTHROPIC_API_KEY ANTHROPIC_API_KEY_OLD ANTHROPIC_API_TOKEN",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(acpBindScript).toContain('-e CLAUDE_CODE_OAUTH_TOKEN="${CLAUDE_CODE_OAUTH_TOKEN:-}"');
     expect(acpBindScript).not.toContain("    -e ANTHROPIC_API_KEY \\\n");
     expect(workflow.match(/OPENCLAW_LIVE_ACP_BIND_CLAUDE_AUTH=subscription/g)).toHaveLength(2);
@@ -2083,12 +2251,14 @@ describe("package artifact reuse", () => {
       'CODEX_HARNESS_SETUP_TIMEOUT_SECONDS="$(openclaw_live_read_positive_int_env OPENCLAW_LIVE_CODEX_HARNESS_SETUP_TIMEOUT_SECONDS 180)"',
     );
     expect(readFileSync("scripts/test-live-codex-harness-docker.sh", "utf8")).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'timeout_value="${OPENCLAW_LIVE_CODEX_HARNESS_SETUP_TIMEOUT_SECONDS:?missing live Codex harness setup timeout seconds}s"',
     );
     expect(readFileSync("scripts/test-live-codex-harness-docker.sh", "utf8")).toContain(
       '-e OPENCLAW_LIVE_CODEX_HARNESS_SETUP_TIMEOUT_SECONDS="$CODEX_HARNESS_SETUP_TIMEOUT_SECONDS"',
     );
     expect(readFileSync("scripts/test-live-codex-harness-docker.sh", "utf8")).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'echo "timeout command not found; cannot bound live Codex harness setup after ${timeout_value}"',
     );
     expect(readFileSync("scripts/test-live-codex-harness-docker.sh", "utf8")).toContain(
@@ -2097,16 +2267,20 @@ describe("package artifact reuse", () => {
     expect(readFileSync("scripts/test-live-subagent-announce-docker.sh", "utf8")).toContain(
       "OPENCLAW_LIVE_SUBAGENT_DOCKER_RUN_TIMEOUT:-1200s",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(build).toContain('ROOT_DIR="${OPENCLAW_LIVE_DOCKER_REPO_ROOT:-$SCRIPT_ROOT_DIR}"');
     expect(build).toContain('source "$SCRIPT_ROOT_DIR/scripts/lib/docker-build.sh"');
     expect(build).toContain('source "$SCRIPT_ROOT_DIR/scripts/lib/docker-e2e-container.sh"');
     expect(build).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'DOCKER_COMMAND_TIMEOUT="${DOCKER_COMMAND_TIMEOUT:-${OPENCLAW_LIVE_DOCKER_PULL_TIMEOUT:-600s}}"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(build).toContain('LIVE_IMAGE_PULL_ATTEMPTS="${OPENCLAW_LIVE_DOCKER_PULL_ATTEMPTS:-3}"');
     expect(build).toContain('docker_e2e_docker_cmd pull "$LIVE_IMAGE_NAME"');
     expect(build).not.toContain('docker pull "$LIVE_IMAGE_NAME"');
     expect(stage).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'local scripts_dir="${OPENCLAW_LIVE_DOCKER_SCRIPTS_DIR:-/src/scripts}"',
     );
     expect(stage).toContain('node --import tsx "$scripts_dir/live-docker-normalize-config.ts"');
@@ -2118,6 +2292,7 @@ describe("package artifact reuse", () => {
     expect(script).toContain("openclaw_live_acp_bind_load_factory_api_key_from_profile");
     expect(script).not.toContain('source "$PROFILE_FILE"');
     expect(script.indexOf("openclaw_live_acp_bind_load_factory_api_key_from_profile")).toBeLessThan(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       script.indexOf('if [[ "$ACP_AGENT" == "droid" && -z "${FACTORY_API_KEY:-}" ]]; then'),
     );
     expect(script).toContain(
@@ -2234,11 +2409,12 @@ describe("package artifact reuse", () => {
       packageAcceptanceWorkflow,
       testboxWorkflow,
     ]) {
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(workflow).toContain("FACTORY_API_KEY: ${{ secrets.FACTORY_API_KEY }}");
     }
     for (const step of githubBackedTestboxProviderSteps) {
       for (const key of testboxProviderSecretKeys) {
-        expect(step.env?.[key]).toBe("${{ secrets." + key + " }}");
+        expect(step.env?.[key]).toBe(`\${{ secrets.${key} }}`);
       }
     }
     expect(reusableWorkflow).toContain("FACTORY_API_KEY:\n        required: false");
@@ -2282,6 +2458,7 @@ describe("package artifact reuse", () => {
     expect(workflow).not.toContain("PNPM_CONFIG_MODULES_DIR");
     expect(workflow).not.toContain("PNPM_CONFIG_VIRTUAL_STORE_DIR");
     expect(checkTestboxJob["timeout-minutes"]).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ fromJSON(inputs.timeout_minutes || '120') }}",
     );
     expect(runTestboxStep.uses).toContain("useblacksmith/run-testbox@");
@@ -2299,6 +2476,7 @@ describe("package artifact reuse", () => {
     expect(workflow).toContain("package_artifact_name:");
     expect(workflow).toContain("Download package-under-test artifact");
     expect(workflow).toContain("harness_ref:");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("ref: ${{ inputs.harness_ref || github.sha }}");
     expect(workflow).toContain("OPENCLAW_NPM_TELEGRAM_PACKAGE_TGZ");
     expect(workflow).toContain("provider_mode:");
@@ -2325,10 +2503,12 @@ describe("package artifact reuse", () => {
     );
     expect(packageAcceptanceJob.with).toMatchObject({
       allow_frozen_target_scenario_omissions:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ inputs.allow_frozen_target_scenario_omissions }}",
     });
     expect(dockerAcceptanceJob.with).toMatchObject({
       allow_frozen_target_scenario_omissions:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ inputs.allow_frozen_target_scenario_omissions }}",
     });
     expect(workflow).toContain(
@@ -2340,20 +2520,25 @@ describe("package artifact reuse", () => {
     expect(workflow).toContain("include_release_path_suites: false");
     expect(workflow).toContain("include_release_path_suites: true");
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "allow_frozen_target_scenario_omissions: ${{ inputs.allow_frozen_target_scenario_omissions }}",
     );
     expect(workflow).toContain("uses: ./.github/workflows/package-acceptance.yml");
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "source: ${{ (needs.resolve_target.outputs.package_acceptance_package_spec != '' || needs.resolve_target.outputs.release_package_spec != '') && 'npm' || 'artifact' }}",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "package_spec: ${{ needs.resolve_target.outputs.package_acceptance_package_spec || needs.resolve_target.outputs.release_package_spec || 'openclaw@beta' }}",
     );
     expect(workflow).toContain(".artifacts/docker-e2e-package/package-candidate.json");
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "artifact_name: ${{ needs.prepare_release_package.outputs.artifact_name }}",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "package_sha256: ${{ (needs.resolve_target.outputs.package_acceptance_package_spec == '' && needs.resolve_target.outputs.release_package_spec == '') && needs.prepare_release_package.outputs.package_sha256 || '' }}",
     );
     expect(workflow).toContain("suite_profile: custom");
@@ -2361,19 +2546,25 @@ describe("package artifact reuse", () => {
       "docker_lanes: doctor-switch update-channel-switch skill-install update-corrupt-plugin upgrade-survivor published-upgrade-survivor root-managed-vps-upgrade update-restart-auth plugins-offline plugin-update plugin-binding-command-escape",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "published_upgrade_survivor_baselines: ${{ needs.resolve_target.outputs.run_release_soak == 'true' && 'last-stable-4 2026.4.23 2026.5.2 2026.4.15' || '' }}",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "published_upgrade_survivor_scenarios: ${{ needs.resolve_target.outputs.run_release_soak == 'true' && 'reported-issues' || '' }}",
     );
     expect(workflow).toContain("telegram_mode: mock-openai");
     expect(workflow).not.toContain("telegram_scenarios:");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("ANTHROPIC_API_TOKEN: ${{ secrets.ANTHROPIC_API_TOKEN }}");
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "OPENCLAW_QA_CONVEX_SITE_URL: ${{ secrets.OPENCLAW_QA_CONVEX_SITE_URL }}",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "OPENCLAW_QA_CONVEX_SECRET_CI: ${{ secrets.OPENCLAW_QA_CONVEX_SECRET_CI }}",
     );
     expect(workflow).toContain("rerun_group:");
@@ -2381,9 +2572,11 @@ describe("package artifact reuse", () => {
     expect(workflow).toContain("cross_os_suite_filter:");
     expect(workflow).toContain("advisory: false");
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "suite_filter: ${{ needs.resolve_target.outputs.cross_os_suite_filter }}",
     );
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "live_suite_filter: ${{ needs.resolve_target.outputs.live_suite_filter }}",
     );
     expect(workflow).toContain(
@@ -2422,6 +2615,7 @@ describe("package artifact reuse", () => {
       "validate_live_provider_suites",
     ]) {
       expect(workflowJob(LIVE_E2E_WORKFLOW, jobName).env?.ANTHROPIC_OAUTH_TOKEN).toBe(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}",
       );
     }
@@ -2438,6 +2632,7 @@ describe("package artifact reuse", () => {
     expect(releaseJob.permissions).toEqual({ contents: "read", "pull-requests": "read" });
     expect(releaseJob.if).toContain('contains(fromJSON(\'["all","qa","qa-live"]\')');
     expect(releaseJob.with).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expected_sha: "${{ needs.resolve_target.outputs.revision }}",
       matrix_profile: "release",
       matrix_provider_mode: "mock-openai",
@@ -2465,23 +2660,31 @@ describe("package artifact reuse", () => {
     expect(releaseWorkflow).not.toContain("Run QA Lab live Matrix lane");
     expect(releaseWorkflow).not.toContain("pnpm openclaw qa matrix");
     expect(qaWorkflow).toContain("pnpm openclaw qa matrix");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(qaWorkflow).toContain('for attempt in $(seq 1 "${MATRIX_ATTEMPTS}")');
     expect(qaWorkflow).toContain("matrix_status:");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(qaWorkflow).toContain("value: ${{ jobs.run_live_matrix.outputs.status }}");
     expect(qaWorkflow).toContain('trusted_reason="repository-branch"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(qaWorkflow).toContain('"${selected_revision}" != "${EXPECTED_SHA}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(qaWorkflow).toContain("EXPECTED_SHA: ${{ inputs.expected_sha }}");
     expect(
       workflowStep(
         workflowJob(QA_LIVE_TRANSPORTS_WORKFLOW, "authorize_actor"),
         "Require maintainer-level repository access",
       ).env?.EXPECTED_SHA,
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     ).toBe("${{ inputs.expected_sha }}");
     expect(qaWorkflow).toContain('(process.env.EXPECTED_SHA ?? "") !== ""');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(qaWorkflow).not.toContain('"${{ inputs.expected_sha }}" !== ""');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(qaWorkflow).toContain('if [[ -n "${EXPECTED_SHA}" ]]; then');
     const matrixJob = workflowJob(QA_LIVE_TRANSPORTS_WORKFLOW, "run_live_matrix");
     const conditionalOpenAiSecret =
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ (inputs.expected_sha != '' && inputs.matrix_provider_mode == 'live-frontier' || inputs.expected_sha == '' && github.event_name != 'workflow_dispatch') && secrets.OPENAI_API_KEY || '' }}";
     expect(workflowStep(matrixJob, "Validate required QA credential env").env?.OPENAI_API_KEY).toBe(
       conditionalOpenAiSecret,
@@ -2491,22 +2694,29 @@ describe("package artifact reuse", () => {
     );
     expect(workflowStep(matrixJob, "Run Matrix live lane").env).toMatchObject({
       MATRIX_PROVIDER_MODE:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ inputs.expected_sha != '' && inputs.matrix_provider_mode || github.event_name == 'workflow_dispatch' && 'mock-openai' || 'live-frontier' }}",
       MATRIX_PRIMARY_MODEL:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ inputs.expected_sha != '' && inputs.matrix_primary_model || github.event_name == 'workflow_dispatch' && 'mock-openai/gpt-5.6-luna' || env.OPENCLAW_CI_OPENAI_MODEL }}",
       MATRIX_ALTERNATE_MODEL:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ inputs.expected_sha != '' && inputs.matrix_alternate_model || github.event_name == 'workflow_dispatch' && 'mock-openai/gpt-5.6-luna-alt' || env.OPENCLAW_CI_OPENAI_FALLBACK_MODEL }}",
     });
     expect(workflowStep(matrixJob, "Upload Matrix QA artifacts").with?.name).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ inputs.expected_sha != '' && format('release-qa-live-matrix-{0}', inputs.expected_sha) || format('qa-live-matrix-{0}-{1}', github.run_id, github.run_attempt) }}",
     );
     expect(matrixJob["continue-on-error"]).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ github.event_name == 'workflow_call' && inputs.matrix_advisory }}",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(qaWorkflow).toContain("status: ${{ steps.record_status.outputs.status }}");
     expect(qaWorkflow).not.toContain('matrix_runner="legacy"');
     const shardedMatrixJob = workflowJob(QA_LIVE_TRANSPORTS_WORKFLOW, "run_live_matrix_sharded");
     expect(shardedMatrixJob.if).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ github.event_name == 'workflow_dispatch' && inputs.matrix_profile == 'all' }}",
     );
     expect(shardedMatrixJob.strategy?.matrix?.profile).toEqual([
@@ -2517,15 +2727,19 @@ describe("package artifact reuse", () => {
       "e2ee-cli",
     ]);
     expect(workflowStep(shardedMatrixJob, "Run Matrix live lane shard").run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '--profile "${{ matrix.profile }}"',
     );
     expect(releaseTelegramWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'echo "Telegram live lane failed on attempt ${attempt}; retrying once..." >&2',
     );
     expect(qaWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'echo "Matrix live lane failed on attempt ${attempt}; retrying..." >&2',
     );
     expect(qaWorkflow).not.toContain("OPENCLAW_QA_MATRIX_CANARY_TIMEOUT_MS");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(qaWorkflow).toContain('--profile "${matrix_profile}"');
     expect(qaWorkflow).not.toContain("--fail-fast");
 
@@ -2597,8 +2811,10 @@ describe("package artifact reuse", () => {
     const runStep = workflowStep(job, "Run live runtime parity lane");
     const reportStep = workflowStep(job, "Generate live runtime token-efficiency report");
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(runStep.run).toContain('mkdir -p "${output_dir}"');
     expect(runStep.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "printf 'Runtime token-efficiency lane started.\\n' > \"${output_dir}/runtime-lane-started.txt\"",
     );
     expect(reportStep.if).toBe("steps.run_lane.outcome == 'success'");
@@ -2655,8 +2871,10 @@ describe("package artifact reuse", () => {
     expect(tierJob.strategy?.["fail-fast"]).toBe(false);
     expect(tierJob.strategy?.matrix?.tier).toContain('["agentic","standard","soak"]');
     expect(tierJob.strategy?.matrix?.tier).toContain('["agentic","standard"]');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflowStep(tierJob, "Run runtime parity tier").run).toContain('"${tier_args[@]}"');
     expect(workflowStep(tierJob, "Upload runtime parity tier artifacts").with?.name).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ matrix.tier }}",
     );
     expect(collectorJob.needs).toEqual([
@@ -2666,6 +2884,7 @@ describe("package artifact reuse", () => {
     expect(collectorJob.name).toBe("Run QA Lab runtime parity lane");
     expect(workflowStep(collectorJob, "Download runtime parity tier artifacts").with).toMatchObject(
       {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         pattern: "release-qa-runtime-parity-tier-*-${{ needs.resolve_target.outputs.revision }}",
         "merge-multiple": true,
       },
@@ -2674,6 +2893,7 @@ describe("package artifact reuse", () => {
       "tiers=(agentic standard)",
     );
     expect(workflowStep(collectorJob, "Upload runtime parity artifacts").with?.name).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "release-qa-runtime-parity-${{ needs.resolve_target.outputs.revision }}",
     );
   });
@@ -2781,6 +3001,7 @@ describe("package artifact reuse", () => {
       "inputs.include_openwebui && inputs.docker_lanes == '' && (inputs.release_test_profile == 'stable' || inputs.release_test_profile == 'full')",
     );
     expect(job["runs-on"]).toBe("blacksmith-32vcpu-ubuntu-2404");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(job.env?.OPENCLAW_DOCKER_ALL_RELEASE_PROFILE).toBe("${{ inputs.release_test_profile }}");
     expect(setupNode.with).toMatchObject({
       "install-bun": "false",
@@ -2795,6 +3016,7 @@ describe("package artifact reuse", () => {
     expect(workflow).toContain("package_telegram:");
     expect(workflow).toContain("docker_acceptance_registry,");
     expect(workflow).toContain("PACKAGE_TELEGRAM_RESULT:");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("package_telegram=${PACKAGE_TELEGRAM_RESULT}");
     expect(workflow).not.toContain("npm_telegram:");
   });
@@ -2868,29 +3090,41 @@ describe("package artifact reuse", () => {
     const performanceJob = workflowJob(FULL_RELEASE_VALIDATION_WORKFLOW, "performance");
     const dispatchStep = workflowStep(npmTelegramJob, "Dispatch and monitor npm Telegram E2E");
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("CHILD_WORKFLOW_REF: ${{ github.ref_name }}");
     expect(workflow).toContain('gh workflow run "$workflow" --ref "$CHILD_WORKFLOW_REF" "$@" 2>&1');
     expect(npmTelegramJob.name).toBe("Run package Telegram E2E");
     expect(npmTelegramJob.needs).toEqual(["resolve_target"]);
     expect(npmTelegramJob["timeout-minutes"]).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ inputs.release_profile == 'full' && 360 || 60 }}",
     );
     expect(performanceJob["timeout-minutes"]).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ inputs.release_profile == 'full' && 360 || 120 }}",
     );
     expect(npmTelegramJob.if).toContain("inputs.rerun_group == 'npm-telegram'");
     expect(npmTelegramJob.if).not.toContain("inputs.rerun_group == 'all'");
     expect(dispatchStep.env).toEqual({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       CHILD_WORKFLOW_REF: "${{ github.ref_name }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       GH_TOKEN: "${{ github.token }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       PACKAGE_SPEC: "${{ inputs.npm_telegram_package_spec || inputs.release_package_spec }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       PARENT_WORKFLOW_SHA: "${{ github.sha }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       PROVIDER_MODE: "${{ inputs.npm_telegram_provider_mode }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       SCENARIO: "${{ inputs.npm_telegram_scenario }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       TARGET_SHA: "${{ needs.resolve_target.outputs.sha }}",
     });
     expectTextToIncludeAll(dispatchStep.run, [
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'dispatch_id="full-release-validation-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-npm-telegram"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'dispatch_output="$(gh workflow run npm-telegram-beta-e2e.yml --ref "$CHILD_WORKFLOW_REF" "${args[@]}" 2>&1)"',
       ".display_title == env.DISPATCH_RUN_NAME and .head_branch == env.CHILD_WORKFLOW_REF",
       "The dispatch was not retried to avoid creating a duplicate child.",
@@ -2907,6 +3141,7 @@ describe("package artifact reuse", () => {
       'args+=(-f cross_os_suite_filter="$CROSS_OS_SUITE_FILTER")',
       'case "$RERUN_GROUP" in',
       "release-checks|install-smoke|cross-os|live-e2e|package|qa|qa-parity|qa-live)",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "cancel-in-progress: ${{ (inputs.ref == 'main' && inputs.rerun_group == 'all') || startsWith(inputs.ref, 'tideclaw/alpha/') || startsWith(inputs.ref, 'release/') }}",
       "Verify release checks accepted Tideclaw alpha advisory lanes",
       "release_checks_advisory_only",
@@ -2916,6 +3151,7 @@ describe("package artifact reuse", () => {
       '"Run package acceptance / "*)',
       'check_child "release_checks" "$RELEASE_CHECKS_RUN_ID" 1 1',
       "gh run cancel",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "NORMAL_CI_RESULT: ${{ needs.normal_ci.result }}",
       "Sorry. Your account was suspended",
       'gh_with_retry run view "$run_id" --json status,conclusion,url,attempt,headSha,jobs',
@@ -2965,9 +3201,12 @@ describe("package artifact reuse", () => {
       name: "Download package-under-test artifact",
       uses: DOWNLOAD_ARTIFACT_V8,
       with: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "artifact-ids": "${{ inputs.package_artifact_id }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "github-token": "${{ github.token }}",
         path: ".artifacts/telegram-package-under-test",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "run-id": "${{ inputs.package_artifact_run_id }}",
       },
     });
@@ -2976,28 +3215,40 @@ describe("package artifact reuse", () => {
       name: "Download package-under-test artifact from release run",
       uses: DOWNLOAD_ARTIFACT_V8,
       with: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "artifact-ids": "${{ inputs.package_artifact_id }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "github-token": "${{ github.token }}",
         path: ".artifacts/telegram-package-under-test",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "run-id": "${{ inputs.package_artifact_run_id }}",
       },
     });
     expectTextToIncludeAll(validateStep.run, [
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'if [[ -z "${PACKAGE_ARTIFACT_NAME// }" ]]; then',
       "Artifact-backed Telegram E2E requires all artifact identity fields or none.",
       "package_spec must be openclaw@alpha",
       "Artifact-backed Telegram E2E requires the complete immutable artifact and package identity tuple.",
     ]);
     expect(identityStep.env).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ARTIFACT_DIGEST: "${{ inputs.package_artifact_digest }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ARTIFACT_ID: "${{ inputs.package_artifact_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ARTIFACT_NAME: "${{ inputs.package_artifact_name }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ARTIFACT_RUN_ATTEMPT: "${{ inputs.package_artifact_run_attempt }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ARTIFACT_RUN_ID: "${{ inputs.package_artifact_run_id }}",
     });
     expectTextToIncludeAll(identityStep.run, [
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "actions/artifacts/${ARTIFACT_ID}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '--arg digest "sha256:${ARTIFACT_DIGEST}"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "actions/runs/${ARTIFACT_RUN_ID}/attempts/${ARTIFACT_RUN_ATTEMPT}",
       'if [[ "$ARTIFACT_RUN_ID" == "$GITHUB_RUN_ID" ]]',
       '.status == "in_progress"',
@@ -3011,15 +3262,23 @@ describe("package artifact reuse", () => {
       "Package Telegram artifact producer run attempt does not match the requested tuple.",
     ]);
     expect(runStep.env).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       PACKAGE_FILE_NAME: "${{ inputs.package_file_name || '' }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       PACKAGE_SHA256: "${{ inputs.package_sha256 || '' }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       PACKAGE_SOURCE_SHA: "${{ inputs.package_source_sha || '' }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       PACKAGE_VERSION: "${{ inputs.package_version || '' }}",
     });
     expectTextToIncludeAll(runStep.run, [
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'declared_package_tgz="${package_dir}/${PACKAGE_FILE_NAME}"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'manifest="${package_dir}/preflight-manifest.json"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'candidate_manifest="${package_dir}/package-candidate.json"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'find "${package_dir}" -type f -name "*.tgz"',
       "package artifact manifest contains duplicate package metadata",
       "package artifact tarball set does not match preflight manifest",
@@ -3028,7 +3287,9 @@ describe("package artifact reuse", () => {
       "package candidate digest mismatch",
       "Package Telegram artifact tarball differs from package_file_name.",
       "Package Telegram artifact source SHA/version differs from the declared identity.",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'export OPENCLAW_NPM_TELEGRAM_PACKAGE_DIR="${package_dir}"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'export OPENCLAW_NPM_TELEGRAM_PACKAGE_TGZ="${package_tgz}"',
     ]);
   });
@@ -3152,6 +3413,7 @@ describe("package artifact reuse", () => {
       expect(recordStep.run, jobName).toContain("target_sha=");
       expect(recordStep.run, jobName).toContain("variant=");
       expect(recordStep.env?.RELEASE_CHECK_TARGET_SHA, jobName).toBe(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ needs.resolve_target.outputs.revision }}",
       );
       expect(recordStep.env?.RELEASE_CHECK_STEP_OUTCOMES, jobName).toContain("upload_");
@@ -3161,6 +3423,7 @@ describe("package artifact reuse", () => {
       expect(uploadStep.uses, jobName).toBe(UPLOAD_ARTIFACT_V7);
       expect(uploadStep.with?.name, jobName).toContain("release-check-status-");
       expect(uploadStep.with?.name, jobName).toContain(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ github.run_id }}-${{ github.run_attempt }}",
       );
       expect(uploadStep.with?.path, jobName).toMatch(
@@ -3201,9 +3464,11 @@ describe("package artifact reuse", () => {
     expect(telegramStatusUpload.if).toBe("always()");
     expect(telegramStatusUpload.uses).toBe(UPLOAD_ARTIFACT_V7);
     expect(telegramStatusUpload.with?.name).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "release-check-status-qa-live-telegram-${{ inputs.target_sha }}-${{ github.run_id }}-${{ github.run_attempt }}",
     );
     expect(telegramStatusUpload.with?.path).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ steps.record_status.outputs.status_file }}",
     );
     expect(telegramStatusUpload.with?.["if-no-files-found"]).toBe("error");
@@ -3221,6 +3486,7 @@ describe("package artifact reuse", () => {
     expect(downloadStep["continue-on-error"]).toBe(true);
     expect(downloadStep.uses).toBe(DOWNLOAD_ARTIFACT_V8);
     expect(downloadStep.with?.pattern).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "release-check-status-*-${{ needs.resolve_target.outputs.revision }}-${{ github.run_id }}-${{ github.run_attempt }}",
     );
     expect(downloadStep.with?.["merge-multiple"]).toBe(true);
@@ -3228,9 +3494,13 @@ describe("package artifact reuse", () => {
     const verifyStep = workflowStep(summary, "Verify release check results");
     expect(verifyStep.env).toMatchObject({
       QA_LIVE_RELEASE_CHECKS_RESULT:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ needs.qa_live_release_checks.result == 'skipped' && 'skipped' || needs.qa_live_release_checks.outputs.matrix_status || 'failure' }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       RELEASE_CHECK_RUN_ATTEMPT: "${{ github.run_attempt }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       RELEASE_CHECK_RUN_ID: "${{ github.run_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       RELEASE_CHECK_TARGET_SHA: "${{ needs.resolve_target.outputs.revision }}",
     });
     expectTextToIncludeAll(verifyStep.run, [
@@ -3242,14 +3512,19 @@ describe("package artifact reuse", () => {
       'actual_target_sha="$(status_field "$file" target_sha)"',
       'actual_job="$(status_field "$file" job)"',
       'actual_variant="$(status_field "$file" variant)"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "Expected ${expected_status_count} advisory status artifacts",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "::warning::${status_count_message} Tideclaw alpha treats non-package-safety release-check lanes as advisory.",
       'elif [[ "$fallback" != "success" && "$fallback" != "skipped" ]]; then',
       'elif [[ "$fallback" == "success" ]]; then',
       "advisory_status_override_allowed()",
       'if advisory_status_override_allowed "$name"; then',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "::warning::${name} ended with ${result}; Tideclaw alpha treats non-package-safety release-check lanes as advisory.",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "::error::${name} ended with ${result}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '"qa_live_release_checks=${QA_LIVE_RELEASE_CHECKS_RESULT}"',
     ]);
     expect(verifyStep.run).not.toContain("qa_live_matrix_release_checks");
@@ -3262,6 +3537,7 @@ describe("package artifact reuse", () => {
       "runtime_tool_coverage_release_checks",
     );
     expect(workflowStep(runtimeCoverage, "Download runtime parity status").with?.name).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "release-check-status-qa-runtime-parity-${{ needs.resolve_target.outputs.revision }}-${{ github.run_id }}-${{ github.run_attempt }}",
     );
     expectTextToIncludeAll(
@@ -3337,20 +3613,28 @@ describe("package artifact reuse", () => {
     const summaryJob = parsedWorkflow.jobs?.summary;
     const manifestStep = workflowStep(summaryJob ?? {}, "Write release validation manifest");
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("### Slowest jobs: ${label}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("### Longest queues: ${label}");
     expect(workflow).toContain("Write release validation manifest");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("PERFORMANCE_RUN_ID: ${{ needs.performance.outputs.run_id }}");
     expect(workflow).toContain("Upload release validation manifest");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("Failed child detail: ${label}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("actions/runs/${run_id}/artifacts?per_page=100");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("full-release-validation-${{ github.run_id }}");
     expect(workflow).toContain("| Job | Result | Queue minutes | Run minutes |");
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'gh_with_retry api --paginate "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/jobs?per_page=100"',
     );
     expect(workflow).toContain("(.started_at | ts) - (.created_at | ts)");
     expect(workflow).not.toContain('gh run view "$run_id" --json createdAt,jobs');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(manifestStep.env?.PERFORMANCE_RUN_ID).toBe("${{ needs.performance.outputs.run_id }}");
     expect(manifestStep.run).toContain('--arg performanceRunId "$PERFORMANCE_RUN_ID"');
   });
@@ -3391,62 +3675,80 @@ describe("package artifact reuse", () => {
     expect(workflow).toContain("full_release_validation_run_id");
     expect(resolveFullRun.id).toBe("full_run");
     expect(resolveFullRun.env?.FULL_RELEASE_VALIDATION_RUN_ATTEMPT).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ inputs.full_release_validation_run_attempt }}",
     );
     expect(resolveFullRun.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'run_endpoint+="/attempts/${FULL_RELEASE_VALIDATION_RUN_ATTEMPT}"',
     );
     expect(resolveFullRun.run).toContain('gh api "$run_endpoint"');
     expect(resolveJob.outputs?.full_release_validation_run_attempt).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ steps.full_run.outputs.attempt }}",
     );
     expect(resolveDownload.with?.name).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "full-release-validation-${{ inputs.full_release_validation_run_id }}-${{ steps.full_run.outputs.attempt }}",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(trustedTooling.env?.WORKFLOW_SHA).toBe("${{ github.sha }}");
     expect(trustedTooling.run).toContain("validate-full-release-validation-evidence.mjs");
     expect(trustedTooling.run).toContain("release-ci-summary.mjs");
     expect(trustedTooling.run).toContain("scripts/lib/plain-gh.mjs");
     expect(validateManifest.env).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       RUN_JSON_FILE: "${{ runner.temp }}/full-release-validation-run.json",
       TRUSTED_MAIN_REF: "refs/remotes/origin/main",
       VALIDATOR_FILE:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ runner.temp }}/release-validation-tooling/validate-full-release-validation-evidence.mjs",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       STRICT_VALIDATOR_FILE: "${{ runner.temp }}/release-validation-tooling/release-ci-summary.mjs",
     });
     expect(validateManifest.run).toContain(
       'MANIFEST_FILE="$manifest" node "$VALIDATOR_FILE" < "$RUN_JSON_FILE"',
     );
     expect(publishDownload.with?.name).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "full-release-validation-${{ inputs.full_release_validation_run_id }}-${{ needs.resolve_release_target.outputs.full_release_validation_run_attempt }}",
     );
     expect(publishOrchestration.run).not.toContain("--full-release-validation-workflow-ref");
     expect(publishOrchestration.run).not.toContain("--full-release-validation-run");
     expect(publishOrchestration.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '"${GITHUB_WORKSPACE}/.release-harness/scripts/release-verify-beta.ts"',
     );
     expect(publishOrchestration.run).toContain(".workflowRuns += [");
     expect(publishOrchestration.run).toContain('label: "Full Release Validation"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(publishOrchestration.run).toContain('"${validation_target_sha}" != "${TARGET_SHA}"');
     expect(publishOrchestration.env?.FULL_RELEASE_VALIDATION_RUN_ATTEMPT).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ needs.resolve_release_target.outputs.full_release_validation_run_attempt }}",
     );
     expect(publishOrchestration.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '-f full_release_validation_run_attempt="${FULL_RELEASE_VALIDATION_RUN_ATTEMPT}"',
     );
     expect(npmFullRun.id).toBe("full_run");
     expect(npmFullRun.env?.FULL_RELEASE_VALIDATION_RUN_ATTEMPT).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ inputs.full_release_validation_run_attempt }}",
     );
     expect(npmFullRun.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "actions/runs/${FULL_RELEASE_VALIDATION_RUN_ID}/attempts/${FULL_RELEASE_VALIDATION_RUN_ATTEMPT}",
     );
     expect(npmFullRun.run).toContain('"$run_attempt" != "$FULL_RELEASE_VALIDATION_RUN_ATTEMPT"');
     expect(npmDownload.with?.name).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "full-release-validation-${{ inputs.full_release_validation_run_id }}-${{ steps.full_run.outputs.attempt }}",
     );
     expect(npmTarget.env).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       FULL_RELEASE_VALIDATION_RUN_ID: "${{ inputs.full_release_validation_run_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       FULL_RELEASE_VALIDATION_RUN_ATTEMPT: "${{ steps.full_run.outputs.attempt }}",
     });
     expect(workflow).toContain(
@@ -3507,14 +3809,18 @@ describe("package artifact reuse", () => {
     expect(notesIndex).toBeGreaterThan(setupIndex);
     expect(androidApprovalIndex).toBeGreaterThan(notesIndex);
     expect(dispatchIndex).toBeGreaterThan(notesIndex);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(publishSteps[notesIndex]?.if).toBe("${{ inputs.publish_openclaw_npm }}");
     expect(publishSteps[notesIndex]?.run).toContain("scripts/render-github-release-notes.mjs");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain('git show "${TARGET_SHA}:CHANGELOG.md" > "${changelog_file}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).not.toContain('awk -v version="${notes_version}"');
     expect(workflow).not.toContain("scripts/prepare-github-release-notes.mjs");
     expect(workflow).toContain("render_github_release_notes()");
     expect(workflow).toContain("verify_release_tag_target()");
     expect(workflow).toContain("canonical_release_body_matches()");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain('--notes-file "${prepared_release_notes_file}"');
     expect(workflow).not.toContain("gh api --repo");
     expect(workflow).not.toContain("timeout-minutes: 360");
@@ -3562,16 +3868,20 @@ describe("package artifact reuse", () => {
     expect(releaseWorkflow).toContain("Validate stable Windows source release");
     expect(releaseWorkflow).toContain("id: windows_source");
     expect(releaseWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "windows_node_installer_digests: ${{ steps.windows_source.outputs.installer_digests }}",
     );
     expect(releaseWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "APPROVED_INSTALLER_DIGESTS: ${{ inputs.windows_node_installer_digests }}",
     );
     expect(releaseWorkflow).toContain("no longer matches its candidate-approved digest");
     expect(releaseWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "WINDOWS_NODE_INSTALLER_DIGESTS: ${{ needs.resolve_release_target.outputs.windows_node_installer_digests }}",
     );
     expect(releaseWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '-f expected_installer_digests="${WINDOWS_NODE_INSTALLER_DIGESTS}"',
     );
     expect(releaseWorkflow).toContain("missing prevalidated Windows installer digests");
@@ -3587,6 +3897,7 @@ describe("package artifact reuse", () => {
     expect(releaseWorkflow).toContain("([.[].name] | unique | length) == length");
     expect(releaseWorkflow).toContain("Windows checksum manifest does not match pinned digest");
     expect(releaseWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "Windows source release ${WINDOWS_NODE_TAG} must contain exactly one required asset",
     );
     expect(releaseWorkflow.indexOf("Validate stable Windows source release")).toBeLessThan(
@@ -3670,17 +3981,21 @@ describe("package artifact reuse", () => {
     expect(releaseWorkflow).toContain("Write Android release approval");
     expect(releaseWorkflow).toContain("Attest Android release approval");
     expect(releaseWorkflow).toContain("Upload Android release approval");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain("android-release-approval-${{ github.run_id }}");
     expect(releaseWorkflow).toContain("parentRunId: process.env.RELEASE_PUBLISH_RUN_ID");
     expect(releaseWorkflow).toContain("releaseTag: process.env.RELEASE_TAG");
     expect(releaseWorkflow).toContain("targetSha: process.env.TARGET_SHA");
     expect(androidWorkflow).toContain("Download parent release approval");
     expect(androidWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "android-release-approval-${{ inputs.release_publish_run_id }}",
     );
     expect(androidWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '--signer-workflow "${GITHUB_REPOSITORY}/.github/workflows/openclaw-release-publish.yml"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(androidWorkflow).toContain('--source-ref "refs/heads/${EXPECTED_WORKFLOW_BRANCH}"');
     expect(approvalScript).toContain(
       "Attested Android release approval does not match this run request.",
@@ -3690,28 +4005,37 @@ describe("package artifact reuse", () => {
     expect(androidWorkflow).toContain("OpenClaw-Android-SHA256SUMS.txt");
     expect(androidWorkflow).toContain("actions/attest@a1948c3f048ba23858d222213b7c278aabede763");
     expect(androidWorkflow).toContain("--signer-workflow");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(androidWorkflow).toContain('--source-ref "refs/tags/${RELEASE_TAG}"');
     expect(androidWorkflow).toContain("--deny-self-hosted-runners");
     expect(androidWorkflow).toContain("--verify-apk");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(androidWorkflow).toContain('expected_source_ref="refs/tags/${RELEASE_TAG}"');
     expect(androidWorkflow).toContain("release_target_sha must be a full lowercase commit SHA");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(androidWorkflow).toContain("does not match ${RELEASE_TAG} (${tag_sha})");
     expect(androidWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "must resolve to the same source commit as ${fallback_base_tag}",
     );
     expect(androidWorkflow).toContain("FALLBACK_ANDROID_BASE_TAG");
     expect(androidWorkflow).toContain("FALLBACK_ANDROID_BASE_SHA");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(androidWorkflow).toContain('--source-digest "${FALLBACK_ANDROID_BASE_SHA}"');
     expect(androidWorkflow).toContain("steps.release_source.outputs.fallback_base_tag == ''");
     expect(androidWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "OPENCLAW_BUILD_TIMESTAMP: ${{ steps.release_approval.outputs.build_timestamp }}",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(androidWorkflow).toContain("GIT_COMMIT: ${{ inputs.release_target_sha }}");
     expect(androidWorkflow).toContain("--json tagName,isDraft,isPrerelease,createdAt,assets,url");
     expect(androidWorkflow).toContain("release_created_at=");
     expect(androidWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "Reusing verified Android APK from ${FALLBACK_ANDROID_BASE_TAG}",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(androidWorkflow).toContain("Existing Android release asset ${asset_name} differs");
     expect(androidWorkflow).not.toContain("--clobber");
 
@@ -3719,11 +4043,14 @@ describe("package artifact reuse", () => {
     expect(releaseWorkflow).toContain("is_android_release()");
     expect(androidWorkflow).toContain("requires a final or correction OpenClaw release tag");
     expect(androidWorkflow).toContain("previous_version_code");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(androidWorkflow).toContain("must exceed ${previous_tag} versionCode");
     expect(androidWorkflow).toContain("standalone channel bootstrap");
     expect(releaseWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'dispatch_workflow_at_ref "${RELEASE_TAG}" "${TARGET_SHA}" android-release.yml',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain('-f release_target_sha="${TARGET_SHA}"');
     expect(releaseWorkflow).toContain("verify_android_release_asset_contract");
     expect(releaseWorkflow).toContain("Android release APK digest does not match");
@@ -3745,6 +4072,7 @@ describe("package artifact reuse", () => {
     expect(androidDocs).toContain("github.com/openclaw/openclaw/releases");
     expect(androidDocs).not.toContain("releases/latest/download/OpenClaw-Android.apk");
     expect(androidDocs).toContain("gh attestation verify OpenClaw-Android.apk");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(androidDocs).toContain('--source-ref "refs/tags/${release_tag}"');
     expect(releaseDocs).toContain("signed standalone Android APK");
   });
@@ -3863,6 +4191,7 @@ describe("package artifact reuse", () => {
       "uses: openclaw/clawhub/.github/workflows/package-publish.yml@d8096dfc039e86ab942ddf9ef117d04849fd84c1",
     );
     expect(clawHubWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'family: ${{ contains(fromJson(\'["@operator/acpx","@operator/diffs","@operator/feishu","@operator/qqbot"]\'), matrix.plugin.packageName) && \'bundle-plugin\' || \'\' }}',
     );
     expect(clawHubWorkflow).toContain("dry_run:");
@@ -3873,28 +4202,39 @@ describe("package artifact reuse", () => {
     expect(clawHubWorkflow).toContain("inputs.dry_run != true");
     expect(clawHubWorkflow).toContain("release_publish_branch:");
     expect(clawHubWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "TRUSTED_PUBLISH_BRANCH: ${{ inputs.release_publish_branch || github.ref_name }}",
     );
     expect(clawHubWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "EXPECTED_WORKFLOW_BRANCH: ${{ inputs.release_publish_branch || github.ref_name }}",
     );
     expect(clawHubWorkflow).toContain(
       "always() && github.event_name == 'workflow_dispatch' && needs.preview_plugins_clawhub.outputs.has_candidates == 'true' && needs.pack_plugins_clawhub_artifacts.result == 'success' && (inputs.dry_run == true || needs.approve_plugins_clawhub_release.result == 'success')",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(clawHubWorkflow).toContain("package_artifact_name: ${{ matrix.plugin.artifactName }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(clawHubWorkflow).toContain("source_repo: ${{ github.repository }}");
     expect(clawHubWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "source_commit: ${{ needs.preview_plugins_clawhub.outputs.ref_revision }}",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(clawHubWorkflow).toContain("source_ref: ${{ github.ref }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(clawHubWorkflow).toContain("source_path: ${{ matrix.plugin.packageDir }}");
     expect(clawHubWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "inspector_artifact_name: ${{ matrix.plugin.artifactName }}-inspector",
     );
     expect(clawHubWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "publish_json_artifact_name: ${{ matrix.plugin.artifactName }}-publish-json",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(clawHubWorkflow).toContain("tags: ${{ matrix.plugin.publishTag }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(clawHubWorkflow).toContain("dry_run: ${{ inputs.dry_run }}");
     expect(clawHubWorkflow).not.toContain("secrets.CLAWHUB_TOKEN");
     expect(clawHubWorkflow).not.toContain("clawhub_token:");
@@ -3916,17 +4256,24 @@ describe("package artifact reuse", () => {
     expect(workflowStep(clawHubVerifier, "Download published package input")).toMatchObject({
       uses: DOWNLOAD_ARTIFACT_V8,
       with: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         name: "${{ matrix.plugin.artifactName }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         path: "${{ runner.temp }}/clawhub-package-artifact",
       },
     });
     const clawHubVerifyRun = workflowStep(clawHubVerifier, "Verify published ClawHub package").run;
     expectTextToIncludeAll(clawHubVerifyRun, [
       "scripts/verify-clawhub-published-artifact.mjs",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '--expected-artifact-dir "${RUNNER_TEMP}/clawhub-package-artifact"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '--package-name "${PACKAGE_NAME}"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '--package-version "${PACKAGE_VERSION}"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '--publish-tag "${PACKAGE_TAG}"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '--registry "${CLAWHUB_REGISTRY}"',
     ]);
     expect(clawHubVerifyRun).not.toContain("fetchWithRetry");
@@ -3965,31 +4312,41 @@ describe("package artifact reuse", () => {
     expect(isExecutable("scripts/openclaw-release-clawhub-runtime-state.ts")).toBe(true);
     expect(releaseWorkflow).toContain("openclaw-release-clawhub-plan.json");
     expect(trustedReleaseToolingCheckout.with).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ref: "${{ github.sha }}",
       path: ".release-harness",
       "fetch-depth": 1,
       "persist-credentials": false,
     });
     expect(releaseWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '"${GITHUB_WORKSPACE}/.release-harness/scripts/openclaw-release-clawhub-plan.ts"',
     );
     expect(trustedClawHubPlan.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '"${GITHUB_WORKSPACE}/.release-harness/scripts/openclaw-release-clawhub-plan.ts"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(trustedClawHubPlan.run).toContain('--release-sha "${TARGET_SHA}"');
     expect(trustedClawHubPlan.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '--release-publish-run-attempt "${GITHUB_RUN_ATTEMPT}"',
     );
     expect(trustedClawHubPlan.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '--bootstrap-workflow-ref "${BOOTSTRAP_WORKFLOW_REF}"',
     );
     expect(trustedClawHubPlan.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '--bootstrap-workflow-sha "${bootstrap_workflow_sha}"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(trustedClawHubPlan.run).toContain('if [[ "${BOOTSTRAP_WORKFLOW_REF}" == "main" ]]');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(trustedClawHubPlan.run).toContain('bootstrap_workflow_sha="${GITHUB_SHA}"');
     expect(trustedClawHubPlan.run).toContain(".bootstrap.ref == $bootstrap_ref");
     expect(trustedClawHubPlan.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/main"',
     );
     expect(trustedClawHubPlan.run).toContain(
@@ -3999,14 +4356,17 @@ describe("package artifact reuse", () => {
     expect(releaseWorkflow).toContain("Attest ClawHub bootstrap approval");
     expect(releaseWorkflow).toContain("Upload ClawHub bootstrap approval");
     expect(releaseWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "clawhub-bootstrap-approval-${{ github.run_id }}-${{ github.run_attempt }}",
     );
     expect(releaseWorkflow).toContain("parentWorkflowSha: process.env.GITHUB_SHA");
     expect(releaseWorkflow).toContain("bootstrapWorkflowSha: plan.bootstrapWorkflowSha");
     expect(releaseWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '"${GITHUB_WORKSPACE}/.release-harness/scripts/openclaw-release-clawhub-runtime-state.ts"',
     );
     expect(releaseWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '"${GITHUB_WORKSPACE}/.release-harness/scripts/release-verify-beta.ts"',
     );
     expect(releaseWorkflow).toContain("openclaw-release-clawhub-runtime-state");
@@ -4023,6 +4383,7 @@ describe("package artifact reuse", () => {
     expect(releaseWorkflow).toContain("Bootstrap/repair candidates:");
     expect(releaseWorkflow).toContain("Trusted-publisher repair plugins:");
     expect(releaseWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'echo "- ClawHub bootstrap workflow ref: \\`${bootstrap_summary_ref}\\` at \\`${bootstrap_summary_sha}\\`"',
     );
     expect(releaseWorkflow).toContain(
@@ -4034,8 +4395,11 @@ describe("package artifact reuse", () => {
     const verifyBootstrapWorkflowIndex = releaseWorkflow.indexOf(
       'bootstrap_workflow_sha="$(verify_bootstrap_workflow_sha)"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain('if [[ "${approved_ref}" == "main" ]]');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain('[[ "${approved_ref}" == "${CHILD_WORKFLOW_REF}" ]]');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain('[[ "${approved_sha}" == "${PARENT_WORKFLOW_SHA}" ]]');
     expect(releaseWorkflow).toContain(
       "Trusted main moved from approved ClawHub bootstrap workflow SHA",
@@ -4047,9 +4411,11 @@ describe("package artifact reuse", () => {
     expect(dispatchPluginNpmIndex).toBeGreaterThan(verifyBootstrapWorkflowIndex);
     expect(releaseWorkflow).toContain("OpenClaw npm run ID");
     expect(releaseWorkflow).toContain("npm_telegram_run_id");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain('release_publish_run_id="${GITHUB_RUN_ID}"');
     expect(releaseWorkflow).toContain("append_release_proof_to_github_release");
     expect(releaseWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'render_github_release_notes "${notes_file}" "${proof_file}" "${metadata_file}"',
     );
     expect(releaseWorkflow).toContain(".verificationIncluded == true");
@@ -4079,15 +4445,19 @@ describe("package artifact reuse", () => {
     expect(releaseWorkflow).toContain("Validate release publish approval");
     expect(releaseWorkflow).toContain("approve_clawhub_bootstrap_environments");
     expect(releaseWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '"Validate release publish approval" \\\n              "${expected_sha}" || return 1',
     );
     expect(releaseWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'approve_child_publish_environment plugin-clawhub-new.yml "${run_id}" "${expected_sha}" || return 1',
     );
     expect(releaseWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '"Validate immutable bootstrap handoff" \\\n              "${expected_sha}" || return 1',
     );
     const firstBootstrapApproval = releaseWorkflow.indexOf(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'approve_child_publish_environment plugin-clawhub-new.yml "${run_id}" "${expected_sha}"',
     );
     const protectedBootstrapValidation = releaseWorkflow.indexOf(
@@ -4095,6 +4465,7 @@ describe("package artifact reuse", () => {
       firstBootstrapApproval,
     );
     const secondBootstrapApproval = releaseWorkflow.indexOf(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'approve_child_publish_environment plugin-clawhub-new.yml "${run_id}" "${expected_sha}"',
       firstBootstrapApproval + 1,
     );
@@ -4106,41 +4477,54 @@ describe("package artifact reuse", () => {
     expect(releaseWorkflow).toContain("Approve child release gate after parent release approval");
     expect(releaseWorkflow).toContain("openclaw_npm_resume_run_id");
     expect(releaseWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '"${GITHUB_WORKSPACE}/.release-harness/scripts/openclaw-npm-resume-run.mjs"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain('--run-id "${OPENCLAW_NPM_RESUME_RUN_ID}"');
     expect(releaseWorkflow).toContain("openclaw_npm_expected_workflow_ref=\"$(printf '%s'");
     expect(releaseWorkflow).toContain("openclaw_npm_expected_workflow_sha=\"$(printf '%s'");
     expect(releaseWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '"${GITHUB_WORKSPACE}/.release-harness/scripts/openclaw-npm-postpublish-verify.ts"',
     );
     expect(releaseWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '"${GITHUB_WORKSPACE}/.release-harness/scripts/openclaw-npm-postpublish-verify.ts"',
     );
     expect(releaseWorkflow).toContain("--postpublish-verifier");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain('"${verify_args[@]}"');
     expect(releaseWorkflow).toContain(
       "OpenClaw Release Publish must use trusted main workflow tooling",
     );
     expect(releaseInputGuard).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '[[ "${WORKFLOW_REF}" != "refs/heads/main" && "${tideclaw_alpha_publish}" != "true" && "${sha_pinned_release_publish}" != "true" ]]',
     );
     expect(releaseInputGuard).toContain("refs/tags/release-publish/");
     expect(releaseInputGuard).not.toContain("refs/heads/release/");
     expect(releaseInputGuard).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '"${RELEASE_TAG}" == *"-alpha."* && "${RELEASE_NPM_DIST_TAG}" == "alpha"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain('--workflow-ref "${CHILD_WORKFLOW_REF}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain('openclaw_npm_expected_workflow_ref="${GITHUB_REF}"');
     expect(releaseWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'openclaw_npm_expected_workflow_sha="${PARENT_WORKFLOW_SHA}"',
     );
     expect(releaseWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'OPENCLAW_NPM_EXPECTED_WORKFLOW_REF="${openclaw_npm_expected_workflow_ref}"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain('if [[ "${PUBLISH_OPENCLAW_NPM}" == "true" ]]');
     expect(releaseWorkflow).toContain("--skip-github-release");
     expect(clawHubReleasePlanScript).toContain("--plugin-clawhub-bootstrap-run");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain('verify_args+=(--plugins "${PLUGINS}")');
     expect(releaseWorkflow).toContain("openclaw-release-postpublish-evidence");
     const postpublishEvidenceUpload = workflowStep(
@@ -4153,8 +4537,10 @@ describe("package artifact reuse", () => {
     expect(releaseWorkflow).toContain("Failed child job summary");
     expect(releaseWorkflow).toContain("Workflow completion waits for ClawHub");
     expect(releaseWorkflow).toContain("Workflow completion does not wait for ClawHub");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain('[[ "${WAIT_FOR_CLAWHUB}" == "true" ]]');
     expect(releaseWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '[[ -n "${plugin_clawhub_bootstrap_run_id}" && "${WAIT_FOR_CLAWHUB}" == "true" ]]',
     );
     expect(clawHubReleasePlanScript).toContain("--skip-clawhub");
@@ -4213,6 +4599,7 @@ describe("package artifact reuse", () => {
     );
     expect(clawHubNewWorkflow).toContain("Usage: clawhub package trusted-publisher set");
     expect(clawHubNewWorkflow).toContain("Write ClawHub token config");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(clawHubNewWorkflow).toContain("CLAWHUB_CONFIG_PATH=${config_path}");
     expect(clawHubNewWorkflow).toContain(
       "CLAWHUB_REGISTRY is required for token-gated ClawHub bootstrap.",
@@ -4228,18 +4615,25 @@ describe("package artifact reuse", () => {
     expect(clawHubNewWorkflow).toContain(
       "Download and verify immutable ClawHub bootstrap artifact",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(clawHubNewWorkflow).toContain("WORKFLOW_HEAD_BRANCH: ${{ github.ref_name }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(clawHubNewWorkflow).toContain("WORKFLOW_REF: ${{ github.ref }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(clawHubNewWorkflow).toContain('--workflow-head-branch "${WORKFLOW_HEAD_BRANCH}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(clawHubNewWorkflow).toContain('--workflow-ref "${WORKFLOW_REF}"');
     expect(clawHubNewWorkflow).toContain("Rehash immutable ClawHub bootstrap artifacts");
     expect(clawHubNewWorkflow).toContain("Download parent ClawHub bootstrap approval");
     expect(clawHubNewWorkflow).toContain("RELEASE_APPROVAL_KIND: clawhub-bootstrap");
     expect(clawHubNewWorkflow).toContain("gh attestation verify");
     expect(clawHubNewWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "actions/runs/${RELEASE_PUBLISH_RUN_ID}/attempts/${EXPECTED_RUN_ATTEMPT}",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(clawHubNewWorkflow).toContain('--source-digest "${EXPECTED_WORKFLOW_SHA}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(clawHubNewWorkflow).toContain('git rev-parse "${RELEASE_TAG}^{commit}"');
     expect(clawHubNewWorkflow).toContain("refs/remotes/origin/release");
     expect(clawHubNewWorkflow).toContain("Require configure-only registry bytes to match target");
@@ -4255,9 +4649,11 @@ describe("package artifact reuse", () => {
     expect(clawHubNewWorkflow).toContain("GitHub Actions immutable bootstrap retry");
     expect(clawHubNewWorkflow).toContain("configure-only");
     expect(clawHubNewWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "EXPECTED_WORKFLOW_BRANCH: ${{ inputs.release_publish_branch }}",
     );
     expect(clawHubNewWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "TRUSTED_PUBLISH_BRANCH: ${{ inputs.release_publish_branch }}",
     );
     expect(clawHubNewWorkflow).toContain("trusted-publisher set");
@@ -4269,9 +4665,13 @@ describe("package artifact reuse", () => {
     expect(clawHubNewWorkflow).toContain("verify-clawhub-published-artifact.mjs");
     expect(openclawNpmWorkflow).toContain("environment: npm-release");
     expect(releaseWorkflow).toContain("default: from-validation");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain('--release-publish-branch "${PARENT_WORKFLOW_BRANCH}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain('--release-publish-run-attempt "${GITHUB_RUN_ATTEMPT}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain('--release-publish-run-id "${GITHUB_RUN_ID}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain('--release-sha "${TARGET_SHA}"');
     expect(releaseWorkflow).toContain(
       '.verifierArgs | index("--plugin-clawhub-bootstrap-run") != null',
@@ -4280,13 +4680,20 @@ describe("package artifact reuse", () => {
       "jq -er \\\n                '.verifierArgs | index(\"--plugin-clawhub-bootstrap-run\") != null'",
     );
     expect(releaseWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '[[ -n "${bootstrap_plugins// }" && "${bootstrap_run_arg_present}" == "true" ]]',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain('--clawhub-bootstrap-plugins "${bootstrap_plugins}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain("jq -r '.normal.ref' \"${clawhub_plan_path}\"");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain("jq -r '.normal.workflow' \"${clawhub_plan_path}\"");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain("jq -r '.bootstrap.ref' \"${clawhub_plan_path}\"");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain("jq -r '.bootstrap.workflow' \"${clawhub_plan_path}\"");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain('--clawhub-workflow-ref "${clawhub_workflow_ref}"');
     expect(releaseWorkflow).toContain(
       'if [[ "$EXPECTED_RELEASE_PROFILE" != "from-validation" && "$release_profile" != "$EXPECTED_RELEASE_PROFILE" ]]; then',
@@ -4295,6 +4702,7 @@ describe("package artifact reuse", () => {
       'echo "release_profile=$release_profile" >> "$GITHUB_OUTPUT"',
     );
     expect(releaseWorkflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "has failed jobs before the workflow completed: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${run_id}",
     );
     expect(releaseWorkflow.lastIndexOf("create_or_update_github_release")).toBeLessThan(
@@ -4306,6 +4714,7 @@ describe("package artifact reuse", () => {
     expect(releaseWorkflow.lastIndexOf("append_release_proof_to_github_release")).toBeLessThan(
       releaseWorkflow.lastIndexOf("publish_github_release"),
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(releaseWorkflow).toContain("finished with ${conclusion} in ${duration_label}");
   });
 
@@ -4325,6 +4734,7 @@ describe("package artifact reuse", () => {
     expect(registryDownload).toContain("--max-time 120");
     expect(registryDownload).toContain("--retry 3");
     expect(registryDownload).toContain("--retry-max-time 180");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(registryDownload).toContain('-o "${published_tarball_path}"');
   });
 
@@ -4458,6 +4868,7 @@ wait_for_run plugin-clawhub-new.yml 123 "${expectedSha}" || status=$?
     }
 
     expect(fullRelease.jobs?.release_checks?.["timeout-minutes"]).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ inputs.release_profile != 'beta' && 240 || 60 }}",
     );
     expect(fullRelease.jobs?.prepare_release_package).toBeUndefined();
@@ -4473,6 +4884,7 @@ wait_for_run plugin-clawhub-new.yml 123 "${expectedSha}" || status=$?
     expect(readFileSync(LIVE_E2E_WORKFLOW, "utf8")).toContain(
       "timeout --foreground --kill-after=30s 8m pnpm test:live:cache",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(readFileSync(LIVE_E2E_WORKFLOW, "utf8")).toContain("live-cache attempt ${attempt}/2");
   });
 

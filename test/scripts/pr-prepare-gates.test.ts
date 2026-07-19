@@ -866,9 +866,11 @@ describe("gates.sh gate lock plumbing", () => {
     const result = runGatesBash(
       [
         "acquire_pr_gates_lock",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'echo "held=${OPENCLAW_TEST_HEAVY_CHECK_LOCK_HELD:-unset},${OPENCLAW_TSGO_HEAVY_CHECK_LOCK_HELD:-unset},${OPENCLAW_OXLINT_SKIP_LOCK:-unset}"',
         "jq -r .tool .git/openclaw-local-checks/heavy-check.lock/owner.json",
         "release_pr_gates_lock",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'echo "released=${OPENCLAW_TEST_HEAVY_CHECK_LOCK_HELD:-unset}"',
         '[ -d .git/openclaw-local-checks/heavy-check.lock ] && echo "lock=held" || echo "lock=free"',
       ].join("\n"),
@@ -888,6 +890,7 @@ describe("gates.sh gate lock plumbing", () => {
       [
         "acquire_pr_gates_lock",
         '[ -d .git/openclaw-local-checks/heavy-check.lock ] && echo "lock=held" || echo "lock=free"',
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'echo "helper_pid=${PR_GATES_LOCK_PID:-none}"',
       ].join("\n"),
       { cwd: repoDir, env: { OPENCLAW_TEST_HEAVY_CHECK_LOCK_HELD: "1" } },

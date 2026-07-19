@@ -133,6 +133,7 @@ describe("secrets runtime snapshot", () => {
                   authToken: CODEX_APP_SERVER_TOKEN_REF,
                   headers: {
                     Authorization: "Bearer literal-token",
+                    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
                     "x-codex-client-session-token": "${CODEX_CLIENT_SESSION_TOKEN}",
                   },
                 },
@@ -174,6 +175,7 @@ describe("secrets runtime snapshot", () => {
                     url: "wss://codex-app-server.example.internal/ws",
                     authToken: CODEX_APP_SERVER_TOKEN_REF,
                     headers: {
+                      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
                       "x-codex-client-session-token": "${CODEX_CLIENT_SESSION_TOKEN}",
                     },
                   },

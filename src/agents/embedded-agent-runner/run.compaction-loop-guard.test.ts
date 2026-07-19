@@ -103,8 +103,9 @@ describe("post-compaction loop guard wired into runEmbeddedAgent", () => {
     await warmRunOverflowCompactionHarness(runEmbeddedAgent);
     // Re-import after the harness reset so we share module instances with
     // the runner. The runner imports both modules through its own graph.
-    ({ diagnosticSessionStates, getDiagnosticSessionState } =
-      await import("../../logging/diagnostic-session-state.js"));
+    ({ diagnosticSessionStates, getDiagnosticSessionState } = await import(
+      "../../logging/diagnostic-session-state.js"
+    ));
     ({ recordToolCall, recordToolCallOutcome } = await import("../tool-loop-detection.js"));
     ({ wrapToolWithBeforeToolCallHook } = await import("../agent-tools.before-tool-call.js"));
     ({ PostCompactionLoopPersistedError } = await import("./post-compaction-loop-guard.js"));

@@ -315,9 +315,9 @@ describe("stuck session recovery", () => {
       });
       fs.writeFileSync(
         path.join(tempDir, "agents", "clawblocker", "sessions", "run-456.jsonl"),
-        JSON.stringify({
+        `${JSON.stringify({
           message: { role: "assistant", content: "There are 40 cached mentions." },
-        }) + "\n",
+        })}\n`,
       );
       mocks.resolveActiveEmbeddedRunHandleSessionId.mockReturnValue("run-456");
       mocks.abortEmbeddedAgentRun.mockReturnValue(true);

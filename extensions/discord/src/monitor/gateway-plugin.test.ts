@@ -80,8 +80,9 @@ describe("createDiscordGatewayPlugin", () => {
   let resolveDiscordGatewayIntents: typeof import("./gateway-plugin.js").resolveDiscordGatewayIntents;
 
   beforeAll(async () => {
-    ({ createDiscordGatewayPlugin, resolveDiscordGatewayIntents } =
-      await import("./gateway-plugin.js"));
+    ({ createDiscordGatewayPlugin, resolveDiscordGatewayIntents } = await import(
+      "./gateway-plugin.js"
+    ));
   });
 
   function createPlugin(

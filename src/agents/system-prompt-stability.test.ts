@@ -19,7 +19,7 @@ describe("system prompt stability for cache hits", () => {
   });
 
   it("returns identical results for same inputs across multiple calls", async () => {
-    const agentsContent = "# AGENTS.md - Your Workspace\n\nTest agents file.";
+    const agentsContent = "# AGENTS.MD - Your Workspace\n\nTest agents file.";
     const toolsContent = "# TOOLS.md - Local Notes\n\nTest tools file.";
     const soulContent = "# SOUL.md - Who You Are\n\nTest soul file.";
 

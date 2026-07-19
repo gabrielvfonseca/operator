@@ -32,6 +32,7 @@ const MAX_SECRET_PROVIDER_EXEC_ARG_BYTES = 1024;
 const MAX_SECRET_PROVIDER_EXEC_TIMEOUT_MS = 120_000;
 const MAX_SECRET_PROVIDER_EXEC_OUTPUT_BYTES = 20 * 1024 * 1024;
 const MAX_SECRET_PROVIDER_EXEC_PASS_ENV = 128;
+// biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
 const SECRET_PROVIDER_NODE_COMMAND_PLACEHOLDER = "${node}";
 const CORE_RESERVED_PLUGIN_IDS = new Set(["node-mcp"]);
 

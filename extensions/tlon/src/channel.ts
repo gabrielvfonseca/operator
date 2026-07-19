@@ -33,9 +33,7 @@ const loadTlonChannelRuntime = createLazyRuntimeModule(() => import("./channel.r
 
 const tlonSetupWizardProxy = createTlonSetupWizardBase({
   resolveConfigured: async ({ cfg, accountId }) =>
-    await (
-      await loadTlonChannelRuntime()
-    ).tlonSetupWizard.status.resolveConfigured({
+    await (await loadTlonChannelRuntime()).tlonSetupWizard.status.resolveConfigured({
       cfg,
       accountId,
     }),
@@ -48,9 +46,7 @@ const tlonSetupWizardProxy = createTlonSetupWizardBase({
       configured,
     })) ?? [],
   finalize: async (params) =>
-    await (
-      await loadTlonChannelRuntime()
-    ).tlonSetupWizard.finalize!(params),
+    await (await loadTlonChannelRuntime()).tlonSetupWizard.finalize!(params),
 }) satisfies NonNullable<ChannelPlugin["setupWizard"]>;
 
 const tlonConfigAdapter = createHybridChannelConfigAdapter({

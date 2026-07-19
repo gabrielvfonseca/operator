@@ -359,8 +359,9 @@ export const globalBeforeAll0 = async () => {
   ({ tryDispatchAcpReplyHook } = await import("../../plugin-sdk/acp-runtime.js"));
   ({ createReplyOperation, replyRunRegistry } = await import("./reply-run-registry.js"));
   ({ testing: replyRunTesting } = await import("./reply-run-registry.test-support.js"));
-  ({ admitReplyTurn, runWithReplyOperationLifecycleAdmission } =
-    await import("./reply-turn-admission.js"));
+  ({ admitReplyTurn, runWithReplyOperationLifecycleAdmission } = await import(
+    "./reply-turn-admission.js"
+  ));
 };
 
 export const describe0BeforeEach0 = () => {
@@ -388,9 +389,9 @@ export const describe0BeforeEach0 = () => {
         hint?.nativeRouteActive === true &&
         Boolean(
           payload.channelData &&
-          typeof payload.channelData === "object" &&
-          !Array.isArray(payload.channelData) &&
-          payload.channelData.execApproval,
+            typeof payload.channelData === "object" &&
+            !Array.isArray(payload.channelData) &&
+            payload.channelData.execApproval,
         ),
     },
   };
@@ -419,9 +420,9 @@ export const describe0BeforeEach0 = () => {
         cfg.approvals?.exec?.enabled === true &&
         Boolean(
           payload.channelData &&
-          typeof payload.channelData === "object" &&
-          !Array.isArray(payload.channelData) &&
-          payload.channelData.execApproval,
+            typeof payload.channelData === "object" &&
+            !Array.isArray(payload.channelData) &&
+            payload.channelData.execApproval,
         ),
     },
   };
@@ -463,16 +464,16 @@ export const describe0BeforeEach0 = () => {
   mocks.isRoutableChannel.mockImplementation((channel) =>
     Boolean(
       channel &&
-      [
-        "telegram",
-        "slack",
-        "discord",
-        "signal",
-        "imessage",
-        "whatsapp",
-        "feishu",
-        "mattermost",
-      ].includes(channel),
+        [
+          "telegram",
+          "slack",
+          "discord",
+          "signal",
+          "imessage",
+          "whatsapp",
+          "feishu",
+          "mattermost",
+        ].includes(channel),
     ),
   );
   mocks.routeReply.mockReset();

@@ -1076,47 +1076,45 @@ describe("subagent registry steer restarts", () => {
   });
 
   it("retries completion-mode announce delivery with backoff and suspends after retry limit", async () => {
-    {
-      vi.useFakeTimers();
-      try {
-        announceSpy.mockResolvedValue(false);
+    vi.useFakeTimers();
+    try {
+      announceSpy.mockResolvedValue(false);
 
-        registerCompletionModeRun(
-          "run-completion-retry",
-          "agent:main:subagent:completion",
-          "completion retry",
-        );
+      registerCompletionModeRun(
+        "run-completion-retry",
+        "agent:main:subagent:completion",
+        "completion retry",
+      );
 
-        emitLifecycleEnd("run-completion-retry");
+      emitLifecycleEnd("run-completion-retry");
 
-        await vi.advanceTimersByTimeAsync(0);
-        expect(announceSpy).toHaveBeenCalledTimes(1);
-        expect(listMainRuns()[0]?.delivery?.attemptCount).toBe(1);
+      await vi.advanceTimersByTimeAsync(0);
+      expect(announceSpy).toHaveBeenCalledTimes(1);
+      expect(listMainRuns()[0]?.delivery?.attemptCount).toBe(1);
 
-        await vi.advanceTimersByTimeAsync(999);
-        expect(announceSpy).toHaveBeenCalledTimes(1);
-        await vi.advanceTimersByTimeAsync(1);
-        expect(announceSpy).toHaveBeenCalledTimes(2);
-        expect(listMainRuns()[0]?.delivery?.attemptCount).toBe(2);
+      await vi.advanceTimersByTimeAsync(999);
+      expect(announceSpy).toHaveBeenCalledTimes(1);
+      await vi.advanceTimersByTimeAsync(1);
+      expect(announceSpy).toHaveBeenCalledTimes(2);
+      expect(listMainRuns()[0]?.delivery?.attemptCount).toBe(2);
 
-        await vi.advanceTimersByTimeAsync(1_999);
-        expect(announceSpy).toHaveBeenCalledTimes(2);
-        await vi.advanceTimersByTimeAsync(1);
-        expect(announceSpy).toHaveBeenCalledTimes(3);
-        expect(listMainRuns()[0]?.delivery?.attemptCount).toBe(3);
+      await vi.advanceTimersByTimeAsync(1_999);
+      expect(announceSpy).toHaveBeenCalledTimes(2);
+      await vi.advanceTimersByTimeAsync(1);
+      expect(announceSpy).toHaveBeenCalledTimes(3);
+      expect(listMainRuns()[0]?.delivery?.attemptCount).toBe(3);
 
-        await vi.advanceTimersByTimeAsync(4_001);
-        expect(announceSpy).toHaveBeenCalledTimes(3);
-        await waitForRegistrySideEffect(() => {
-          const run = listMainRuns()[0];
-          expect(run?.delivery?.status).toBe("suspended");
-          expect(run?.delivery?.suspendedAt).toBeTypeOf("number");
-          expect(run?.delivery?.suspendedReason).toBe("retry-limit");
-          expect(run?.cleanupCompletedAt).toBeUndefined();
-        });
-      } finally {
-        vi.useRealTimers();
-      }
+      await vi.advanceTimersByTimeAsync(4_001);
+      expect(announceSpy).toHaveBeenCalledTimes(3);
+      await waitForRegistrySideEffect(() => {
+        const run = listMainRuns()[0];
+        expect(run?.delivery?.status).toBe("suspended");
+        expect(run?.delivery?.suspendedAt).toBeTypeOf("number");
+        expect(run?.delivery?.suspendedReason).toBe("retry-limit");
+        expect(run?.cleanupCompletedAt).toBeUndefined();
+      });
+    } finally {
+      vi.useRealTimers();
     }
   });
 

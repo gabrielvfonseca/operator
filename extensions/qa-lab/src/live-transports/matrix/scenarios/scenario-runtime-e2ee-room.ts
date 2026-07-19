@@ -377,6 +377,7 @@ export async function withMatrixQaIsolatedE2eeDriverRoom<T>(
     );
   };
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let patchedGateway;
   let client: MatrixQaE2eeScenarioClient | undefined;
   try {

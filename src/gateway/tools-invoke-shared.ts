@@ -110,9 +110,9 @@ function mergeActionIntoArgsIfSupported(params: {
   const schemaObj = toolSchema as { properties?: Record<string, unknown> } | null;
   const hasAction = Boolean(
     schemaObj &&
-    typeof schemaObj === "object" &&
-    schemaObj.properties &&
-    "action" in schemaObj.properties,
+      typeof schemaObj === "object" &&
+      schemaObj.properties &&
+      "action" in schemaObj.properties,
   );
   return hasAction ? { ...args, action } : args;
 }

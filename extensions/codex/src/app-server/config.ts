@@ -1034,11 +1034,11 @@ export function resolveCodexComputerUseConfig(
     readBooleanEnv(env.OPERATOR_CODEX_COMPUTER_USE) ??
     Boolean(
       autoInstall ||
-      marketplaceSource ||
-      marketplacePath ||
-      marketplaceName ||
-      configuredPluginName ||
-      configuredMcpServerName,
+        marketplaceSource ||
+        marketplacePath ||
+        marketplaceName ||
+        configuredPluginName ||
+        configuredMcpServerName,
     );
 
   return {

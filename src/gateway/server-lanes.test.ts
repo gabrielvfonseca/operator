@@ -26,8 +26,9 @@ describe("applyGatewayLaneConcurrency", () => {
     vi.useRealTimers();
     // Gateway startup drains the process-global suspension cleanup state.
     // Reset between tests so lane assertions only see this test's setup.
-    const { resetSessionSuspensionStateForTest } =
-      await import("../agents/session-suspension.test-support.js");
+    const { resetSessionSuspensionStateForTest } = await import(
+      "../agents/session-suspension.test-support.js"
+    );
     resetSessionSuspensionStateForTest();
     resetCommandQueueStateForTest();
   });
@@ -169,8 +170,9 @@ describe("applyGatewayLaneConcurrency", () => {
   });
 
   it("does not resume cleanup-held built-in lanes during live config publication", async () => {
-    const { seedClearedLaneResumeForTest } =
-      await import("../agents/session-suspension.test-support.js");
+    const { seedClearedLaneResumeForTest } = await import(
+      "../agents/session-suspension.test-support.js"
+    );
     seedClearedLaneResumeForTest(CommandLane.Main, {
       resumeConcurrency: 3,
       resumeAtMs: Date.now() + 100,
@@ -199,8 +201,9 @@ describe("applyGatewayLaneConcurrency", () => {
   it("does not resume an unexpired shared nested lane during gateway startup", async () => {
     vi.useFakeTimers();
     vi.setSystemTime(1_000);
-    const { seedClearedLaneResumeForTest } =
-      await import("../agents/session-suspension.test-support.js");
+    const { seedClearedLaneResumeForTest } = await import(
+      "../agents/session-suspension.test-support.js"
+    );
     seedClearedLaneResumeForTest(CommandLane.Nested, {
       resumeConcurrency: 1,
       resumeAtMs: 1_100,

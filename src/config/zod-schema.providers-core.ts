@@ -1146,7 +1146,6 @@ export const SlackConfigSchema = SlackAccountSchema.safeExtend({
       if (accountMode === "relay") {
         requireRelayConfig(effectiveRelay, ["accounts", accountId, "relay"]);
       }
-      continue;
     }
   }
   validateSlackSigningSecretRequirements(value, ctx);

@@ -72,15 +72,19 @@ const PINNED_REMOTE_PATH_MUTATION_SCRIPT = [
   '  relative="$2"',
   '  create="$3"',
   '  case "$root" in /*) ;; *) die "remote root must be absolute: $root" ;; esac',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '  root="${root%/}"',
   '  [ -n "$root" ] || root="/"',
   '  if [ -L "$root" ]; then die "unsafe remote root symlink: $root"; fi',
   '  mkdir -p -- "$root"',
   '  canonical_root="$(cd "$root" && pwd -P)"',
   '  current="$canonical_root"',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '  relative="${relative#/}"',
   '  while [ -n "$relative" ]; do',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '    part="${relative%%/*}"',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '    if [ "$part" = "$relative" ]; then relative=""; else relative="${relative#*/}"; fi',
   '    [ -n "$part" ] || continue',
   '    case "$part" in "."|"..") die "unsafe remote directory component: $part" ;; esac',
@@ -101,6 +105,7 @@ const PINNED_REMOTE_PATH_MUTATION_SCRIPT = [
   '  relative="$2"',
   '  missing_ok="$3"',
   '  case "$root" in /*) ;; *) die "remote root must be absolute: $root" ;; esac',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '  root="${root%/}"',
   '  [ -n "$root" ] || root="/"',
   '  if [ -L "$root" ]; then die "unsafe remote root symlink: $root"; fi',
@@ -111,9 +116,12 @@ const PINNED_REMOTE_PATH_MUTATION_SCRIPT = [
   "  fi",
   '  canonical_root="$(cd "$root" && pwd -P)"',
   '  current="$canonical_root"',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '  relative="${relative#/}"',
   '  while [ -n "$relative" ]; do',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '    part="${relative%%/*}"',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '    if [ "$part" = "$relative" ]; then relative=""; else relative="${relative#*/}"; fi',
   '    [ -n "$part" ] || continue',
   '    case "$part" in "."|"..") die "unsafe remote directory component: $part" ;; esac',
@@ -136,6 +144,7 @@ const PINNED_REMOTE_PATH_MUTATION_SCRIPT = [
   "    ;;",
   "  remove)",
   '    validate_basename "$4"',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '    parent="$(pin_dir_or_missing "$2" "$3" "${5:-0}")"',
   '    [ -n "$parent" ] || exit 0',
   '    target="$parent/$4"',
@@ -143,6 +152,7 @@ const PINNED_REMOTE_PATH_MUTATION_SCRIPT = [
   "    ;;",
   "  removefile)",
   '    validate_basename "$4"',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '    parent="$(pin_dir_or_missing "$2" "$3" "${5:-0}")"',
   '    [ -n "$parent" ] || exit 0',
   '    target="$parent/$4"',
@@ -165,18 +175,24 @@ const PINNED_REMOTE_PATH_MUTATION_SCRIPT = [
 const ENSURE_OPEN_SHELL_REMOTE_REAL_DIRECTORY_SCRIPT = [
   "set -e",
   'target="$1"',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   'root="${2:-$1}"',
   'case "$target" in /*) ;; *) echo "remote directory must be absolute: $target" >&2; exit 1 ;; esac',
   'case "$root" in /*) ;; *) echo "remote root must be absolute: $root" >&2; exit 1 ;; esac',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   'target="${target%/}"',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   'root="${root%/}"',
   '[ -n "$target" ] || target="/"',
   '[ -n "$root" ] || root="/"',
   'case "$target/" in "$root"/*|"$root/") ;; *) echo "remote directory must stay under root: $target" >&2; exit 1 ;; esac',
   'for path_to_check in "$target" "$root"; do',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '  relative="${path_to_check#/}"',
   '  while [ -n "$relative" ]; do',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '    part="${relative%%/*}"',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '    if [ "$part" = "$relative" ]; then relative=""; else relative="${relative#*/}"; fi',
   '    [ -n "$part" ] || continue',
   '    case "$part" in "."|"..") echo "unsafe remote directory component: $part" >&2; exit 1 ;; esac',
@@ -185,11 +201,15 @@ const ENSURE_OPEN_SHELL_REMOTE_REAL_DIRECTORY_SCRIPT = [
   'if [ -L "$root" ]; then echo "unsafe remote root symlink: $root" >&2; exit 1; fi',
   'mkdir -p -- "$root"',
   'canonical_root="$(cd "$root" && pwd -P)"',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   'relative="${target#"$root"}"',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   'relative="${relative#/}"',
   'current="$canonical_root"',
   'while [ -n "$relative" ]; do',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '  part="${relative%%/*}"',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '  if [ "$part" = "$relative" ]; then relative=""; else relative="${relative#*/}"; fi',
   '  [ -n "$part" ] || continue',
   '  if [ "$current" = "/" ]; then next="/$part"; else next="$current/$part"; fi',

@@ -13,9 +13,11 @@ import type { PluginLogger } from "./logger-types.js";
 
 type ChannelPlugin = import("../channels/plugins/types.plugin.js").ChannelPlugin;
 
-type PluginInteractiveHandlerResult = {
-  handled?: boolean;
-} | void;
+type PluginInteractiveHandlerResult =
+  | {
+      handled?: boolean;
+    }
+  | undefined;
 
 export type PluginInteractiveRegistration<
   TContext = unknown,
@@ -36,13 +38,13 @@ export type OperatorPluginGatewayRuntimeScopeSurface = "write-default" | "truste
 export type OperatorPluginHttpRouteHandler = (
   req: IncomingMessage,
   res: ServerResponse,
-) => Promise<boolean | void> | boolean | void;
+) => Promise<boolean | undefined> | boolean | undefined;
 
 export type OperatorPluginHttpRouteUpgradeHandler = (
   req: IncomingMessage,
   socket: Duplex,
   head: Buffer,
-) => Promise<boolean | void> | boolean | void;
+) => Promise<boolean | undefined> | boolean | undefined;
 
 export type OperatorPluginHttpRouteParams = {
   path: string;

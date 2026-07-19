@@ -12,7 +12,7 @@ function providerConfigDeclaresModel(
   const trimmedModel = model.trim();
   return Boolean(
     trimmedModel &&
-    providerConfig?.models?.some((candidate) => candidate.id?.trim() === trimmedModel),
+      providerConfig?.models?.some((candidate) => candidate.id?.trim() === trimmedModel),
   );
 }
 

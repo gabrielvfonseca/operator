@@ -1044,11 +1044,7 @@ function convertResponsesMessages(
         msg.model !== model.id && msg.provider === model.provider && msg.api === model.api;
       for (const block of msg.content) {
         if (block.type === "thinking") {
-          if (
-            shouldReplayReasoningItems &&
-            block.thinkingSignature &&
-            block.thinkingSignature.startsWith("{")
-          ) {
+          if (shouldReplayReasoningItems && block.thinkingSignature?.startsWith("{")) {
             // openai-completions plain-text reasoning paths persist a
             // provenance tag (e.g. "reasoning", "reasoning_details", "content")
             // as thinkingSignature rather than a JSON-encoded reasoning item.

@@ -58,8 +58,9 @@ describe("Codex runtime plugin install repair", () => {
       notices: [reviewNotice],
     });
 
-    const { repairCodexRuntimePluginInstallForModelSelection } =
-      await import("./codex-runtime-plugin-install.js");
+    const { repairCodexRuntimePluginInstallForModelSelection } = await import(
+      "./codex-runtime-plugin-install.js"
+    );
     const result = await repairCodexRuntimePluginInstallForModelSelection({
       cfg: {},
       model: "openai/gpt-5.5",
@@ -84,8 +85,9 @@ describe("Codex runtime plugin install repair", () => {
     mocks.loadInstalledPluginIndexInstallRecords.mockResolvedValue({
       codex: { source: "npm", installPath: process.cwd() },
     });
-    const { ensureCodexRuntimePluginForModelSelection } =
-      await import("./codex-runtime-plugin-install.js");
+    const { ensureCodexRuntimePluginForModelSelection } = await import(
+      "./codex-runtime-plugin-install.js"
+    );
 
     const result = await ensureCodexRuntimePluginForModelSelection({
       cfg,
@@ -113,8 +115,9 @@ describe("Codex runtime plugin install repair", () => {
         entries: { codex: { enabled: false } },
       },
     };
-    const { ensureCodexRuntimePluginForModelSelection } =
-      await import("./codex-runtime-plugin-install.js");
+    const { ensureCodexRuntimePluginForModelSelection } = await import(
+      "./codex-runtime-plugin-install.js"
+    );
 
     const result = await ensureCodexRuntimePluginForModelSelection({
       cfg,
@@ -139,8 +142,9 @@ describe("Codex runtime plugin install repair", () => {
       status: "failed",
       error: "npm registry returned EAI_AGAIN while fetching @gabrielvfonseca/codex",
     });
-    const { ensureCodexRuntimePluginForModelSelection } =
-      await import("./codex-runtime-plugin-install.js");
+    const { ensureCodexRuntimePluginForModelSelection } = await import(
+      "./codex-runtime-plugin-install.js"
+    );
 
     const result = await ensureCodexRuntimePluginForModelSelection({
       cfg: {},
@@ -158,8 +162,9 @@ describe("Codex runtime plugin install repair", () => {
   });
 
   it("allows source checkouts to use the matching bundled Codex plugin", async () => {
-    const { ensureCodexRuntimePluginForModelSelection } =
-      await import("./codex-runtime-plugin-install.js");
+    const { ensureCodexRuntimePluginForModelSelection } = await import(
+      "./codex-runtime-plugin-install.js"
+    );
 
     await ensureCodexRuntimePluginForModelSelection({
       cfg: {},
@@ -201,8 +206,9 @@ describe("Codex runtime plugin install repair", () => {
         },
       },
     };
-    const { ensureCodexRuntimePluginForModelSelection } =
-      await import("./codex-runtime-plugin-install.js");
+    const { ensureCodexRuntimePluginForModelSelection } = await import(
+      "./codex-runtime-plugin-install.js"
+    );
 
     const result = await ensureCodexRuntimePluginForModelSelection({
       cfg,

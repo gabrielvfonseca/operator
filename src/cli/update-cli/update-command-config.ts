@@ -294,8 +294,9 @@ export async function maybeRepairLegacyConfigForUpdateChannel(params: {
     return params.configSnapshot;
   }
 
-  const { repairLegacyConfigForUpdateChannel } =
-    await import("../../commands/doctor/legacy-config-repair.js");
+  const { repairLegacyConfigForUpdateChannel } = await import(
+    "../../commands/doctor/legacy-config-repair.js"
+  );
   const { snapshot, repaired } = await repairLegacyConfigForUpdateChannel(params);
   if (!params.jsonMode && repaired) {
     defaultRuntime.log(theme.muted("Migrated legacy config before changing update channel."));

@@ -398,9 +398,7 @@ const mattermostMessageActions: ChannelMessageActionAdapter = {
       // directory-resolved provider destination in `to` before dispatch.
       const authorizedTarget = normalizeOptionalString(params.to);
       if (remove) {
-        const result = await (
-          await loadMattermostChannelRuntime()
-        ).removeMattermostReaction({
+        const result = await (await loadMattermostChannelRuntime()).removeMattermostReaction({
           cfg,
           postId,
           emojiName,
@@ -419,9 +417,7 @@ const mattermostMessageActions: ChannelMessageActionAdapter = {
         };
       }
 
-      const result = await (
-        await loadMattermostChannelRuntime()
-      ).addMattermostReaction({
+      const result = await (await loadMattermostChannelRuntime()).addMattermostReaction({
         cfg,
         postId,
         emojiName,
@@ -485,9 +481,7 @@ const mattermostMessageActions: ChannelMessageActionAdapter = {
     }
     const buttons = presentation ? buildMattermostPresentationButtons(presentation) : [];
 
-    const result = await (
-      await loadMattermostChannelRuntime()
-    ).sendMessageMattermost(to, message, {
+    const result = await (await loadMattermostChannelRuntime()).sendMessageMattermost(to, message, {
       cfg,
       accountId: resolvedAccountId,
       replyToId,
@@ -696,19 +690,21 @@ const mattermostOutbound: ChannelOutboundAdapter = {
       })
         .map((url) => url.trim())
         .find(Boolean);
-      const result = await (
-        await loadMattermostChannelRuntime()
-      ).sendMessageMattermost(ctx.to, ctx.payload.text ?? ctx.text, {
-        cfg: ctx.cfg,
-        accountId: ctx.accountId ?? undefined,
-        mediaUrl,
-        mediaLocalRoots: ctx.mediaLocalRoots ?? ctx.mediaAccess?.localRoots,
-        mediaReadFile: ctx.mediaReadFile ?? ctx.mediaAccess?.readFile,
-        ...(ctx.mediaAccess?.workspaceDir ? { workspaceDir: ctx.mediaAccess.workspaceDir } : {}),
-        requireMediaUpload: requiresMattermostMediaUpload(mediaUrl) ? true : undefined,
-        replyToId: ctx.replyToId ?? (ctx.threadId != null ? String(ctx.threadId) : undefined),
-        buttons,
-      });
+      const result = await (await loadMattermostChannelRuntime()).sendMessageMattermost(
+        ctx.to,
+        ctx.payload.text ?? ctx.text,
+        {
+          cfg: ctx.cfg,
+          accountId: ctx.accountId ?? undefined,
+          mediaUrl,
+          mediaLocalRoots: ctx.mediaLocalRoots ?? ctx.mediaAccess?.localRoots,
+          mediaReadFile: ctx.mediaReadFile ?? ctx.mediaAccess?.readFile,
+          ...(ctx.mediaAccess?.workspaceDir ? { workspaceDir: ctx.mediaAccess.workspaceDir } : {}),
+          requireMediaUpload: requiresMattermostMediaUpload(mediaUrl) ? true : undefined,
+          replyToId: ctx.replyToId ?? (ctx.threadId != null ? String(ctx.threadId) : undefined),
+          buttons,
+        },
+      );
       return attachChannelToResult("mattermost", result);
     }
     return await sendTextMediaPayload({ channel: "mattermost", ctx, adapter: mattermostOutbound });
@@ -728,9 +724,7 @@ const mattermostOutbound: ChannelOutboundAdapter = {
   ...createAttachedChannelResultAdapter({
     channel: "mattermost",
     sendText: async ({ cfg, to, text, accountId, replyToId, threadId }) =>
-      await (
-        await loadMattermostChannelRuntime()
-      ).sendMessageMattermost(to, text, {
+      await (await loadMattermostChannelRuntime()).sendMessageMattermost(to, text, {
         cfg,
         accountId: accountId ?? undefined,
         replyToId: replyToId ?? (threadId != null ? String(threadId) : undefined),
@@ -747,9 +741,7 @@ const mattermostOutbound: ChannelOutboundAdapter = {
       replyToId,
       threadId,
     }) =>
-      await (
-        await loadMattermostChannelRuntime()
-      ).sendMessageMattermost(to, text, {
+      await (await loadMattermostChannelRuntime()).sendMessageMattermost(to, text, {
         cfg,
         accountId: accountId ?? undefined,
         mediaUrl,
@@ -877,9 +869,12 @@ export const mattermostPlugin: ChannelPlugin<ResolvedMattermostAccount> = create
         if (!token || !baseUrl) {
           return { ok: false, error: "bot token or baseUrl missing" };
         }
-        return await (
-          await loadMattermostChannelRuntime()
-        ).probeMattermost(baseUrl, token, timeoutMs, isPrivateNetworkOptInEnabled(account.config));
+        return await (await loadMattermostChannelRuntime()).probeMattermost(
+          baseUrl,
+          token,
+          timeoutMs,
+          isPrivateNetworkOptInEnabled(account.config),
+        );
       },
       resolveAccountSnapshot: ({ account, runtime }) => ({
         accountId: account.accountId,

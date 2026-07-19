@@ -90,7 +90,7 @@ const loadMemoryHostCoreModule = createLazyRuntimeModule(
 
 function extractUserTextContent(message: unknown): string[] {
   const msgObj = asRecord(message);
-  if (!msgObj || msgObj.role !== "user") {
+  if (msgObj?.role !== "user") {
     return [];
   }
 
@@ -378,9 +378,7 @@ class OpenAiCompatibleEmbeddings implements Embeddings {
     // omitted, then decodes the response. Several compatible providers either
     // reject encoding_format or always return float arrays, so use the generic
     // transport and normalize the response ourselves.
-    const response = await (
-      await this.clientPromise
-    ).post<EmbeddingCreateResponse>("/embeddings", {
+    const response = await (await this.clientPromise).post<EmbeddingCreateResponse>("/embeddings", {
       body: params,
       ...(options?.timeoutMs ? { timeout: options.timeoutMs, maxRetries: 0 } : {}),
     });

@@ -32,8 +32,9 @@ async function normalizeTokenProviderChoice(params: {
   ) {
     return params.authChoice;
   }
-  const { normalizeApiKeyTokenProviderAuthChoice } =
-    await import("./auth-choice.apply.api-providers.js");
+  const { normalizeApiKeyTokenProviderAuthChoice } = await import(
+    "./auth-choice.apply.api-providers.js"
+  );
   return normalizeApiKeyTokenProviderAuthChoice({
     authChoice: params.authChoice,
     tokenProvider: params.source.opts.tokenProvider,
@@ -49,8 +50,9 @@ async function formatDeprecatedProviderChoiceError(
   if (typeof authChoice !== "string") {
     return undefined;
   }
-  const { resolveManifestDeprecatedProviderAuthChoice } =
-    await import("../plugins/provider-auth-choices.js");
+  const { resolveManifestDeprecatedProviderAuthChoice } = await import(
+    "../plugins/provider-auth-choices.js"
+  );
   const deprecatedChoice = resolveManifestDeprecatedProviderAuthChoice(authChoice, {
     config: params.config,
     env: params.env,
@@ -58,8 +60,9 @@ async function formatDeprecatedProviderChoiceError(
   if (deprecatedChoice) {
     return `Auth choice ${JSON.stringify(authChoice)} is no longer supported. Use ${JSON.stringify(deprecatedChoice.choiceId)} instead, or run ${formatCliCommand("operator onboard")} to choose interactively.`;
   }
-  const { resolveDeprecatedProviderInstallCatalogEntry } =
-    await import("../plugins/provider-install-catalog.js");
+  const { resolveDeprecatedProviderInstallCatalogEntry } = await import(
+    "../plugins/provider-install-catalog.js"
+  );
   const externalDeprecatedChoice = resolveDeprecatedProviderInstallCatalogEntry(authChoice, {
     config: params.config,
     env: params.env,

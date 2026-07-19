@@ -390,8 +390,9 @@ describe("monitorTelegramProvider (grammY)", () => {
 
   beforeAll(async () => {
     ({ monitorTelegramProvider } = await import("./monitor.js"));
-    ({ resetTelegramPollingLeasesForTest: resetTelegramPollingLeasesForTests } =
-      await import("./runtime.test-support.js"));
+    ({ resetTelegramPollingLeasesForTest: resetTelegramPollingLeasesForTests } = await import(
+      "./runtime.test-support.js"
+    ));
     resetTelegramPollingLeasesForTests();
     await monitorWithAutoAbort();
   });

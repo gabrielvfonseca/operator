@@ -3480,8 +3480,9 @@ describe("capability cli", () => {
       argv: ["infer", "web", "search", "--query", "ping", "--json"],
     });
 
-    const { getCapabilityWebSearchCommandSecretTargets } =
-      await import("./command-secret-targets.js");
+    const { getCapabilityWebSearchCommandSecretTargets } = await import(
+      "./command-secret-targets.js"
+    );
     const scopedTargets = getCapabilityWebSearchCommandSecretTargets(unresolvedConfig as never);
     expect(mocks.resolveCommandConfigWithSecrets).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -3563,8 +3564,9 @@ describe("capability cli", () => {
       argv: ["infer", "web", "search", "--query", "ping", "--provider", "firecrawl", "--json"],
     });
 
-    const { getCapabilityWebSearchCommandSecretTargets } =
-      await import("./command-secret-targets.js");
+    const { getCapabilityWebSearchCommandSecretTargets } = await import(
+      "./command-secret-targets.js"
+    );
     const scopedTargets = getCapabilityWebSearchCommandSecretTargets(unresolvedConfig as never, {
       providerId: "firecrawl",
     });
@@ -3639,8 +3641,9 @@ describe("capability cli", () => {
       argv: ["infer", "web", "fetch", "--url", "https://example.com", "--json"],
     });
 
-    const { getCapabilityWebFetchCommandSecretTargets } =
-      await import("./command-secret-targets.js");
+    const { getCapabilityWebFetchCommandSecretTargets } = await import(
+      "./command-secret-targets.js"
+    );
     expect(mocks.resolveCommandConfigWithSecrets).toHaveBeenCalledWith(
       expect.objectContaining({
         commandName: "infer web fetch",
@@ -3710,8 +3713,9 @@ describe("capability cli", () => {
       ],
     });
 
-    const { getCapabilityWebFetchCommandSecretTargets } =
-      await import("./command-secret-targets.js");
+    const { getCapabilityWebFetchCommandSecretTargets } = await import(
+      "./command-secret-targets.js"
+    );
     const scopedTargets = getCapabilityWebFetchCommandSecretTargets(unresolvedConfig as never, {
       providerId: "firecrawl",
     });

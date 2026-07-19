@@ -56,9 +56,9 @@ function isFileDisappearedDuringReadError(err: unknown): boolean {
     isFileMissingError(err) ||
     Boolean(
       err &&
-      typeof err === "object" &&
-      "code" in err &&
-      (err as { code?: unknown }).code === "path-mismatch",
+        typeof err === "object" &&
+        "code" in err &&
+        (err as { code?: unknown }).code === "path-mismatch",
     )
   );
 }

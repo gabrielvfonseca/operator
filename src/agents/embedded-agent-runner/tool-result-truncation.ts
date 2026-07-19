@@ -185,8 +185,7 @@ function appendBoundedTruncationSuffix(params: {
 /**
  * Marker inserted between head and tail when using head+tail truncation.
  */
-const MIDDLE_OMISSION_MARKER =
-  "\n\n⚠️ [... middle content omitted — showing head and tail ...]\n\n";
+const MIDDLE_OMISSION_MARKER = "\n\n⚠️ [... middle content omitted — showing head and tail ...]\n\n";
 
 /**
  * Detect whether text likely contains error/diagnostic content near the end,
@@ -743,7 +742,7 @@ function getToolResultProjectionKeys(
       return baseKey;
     }
     const message = messages[index];
-    if (!message || message.role !== "toolResult") {
+    if (message?.role !== "toolResult") {
       return undefined;
     }
     // Ambiguous/missing tool ids still need a stable frozen identity; otherwise

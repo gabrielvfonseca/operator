@@ -176,8 +176,8 @@ function hasPluginOwnedSessionState(
   }
   return Boolean(
     entry.pluginExtensions?.[pluginId] ||
-    entry.pluginExtensionSlotKeys?.[pluginId] ||
-    entry.pluginNextTurnInjections?.[pluginId],
+      entry.pluginExtensionSlotKeys?.[pluginId] ||
+      entry.pluginNextTurnInjections?.[pluginId],
   );
 }
 

@@ -338,10 +338,9 @@ export function createNodesTool(options?: {
       } catch (err) {
         const nodeLabel =
           typeof params.node === "string" && params.node.trim() ? params.node.trim() : "auto";
-        const gatewayLabel =
-          gatewayOpts.gatewayUrl && gatewayOpts.gatewayUrl.trim()
-            ? gatewayOpts.gatewayUrl.trim()
-            : "default";
+        const gatewayLabel = gatewayOpts.gatewayUrl?.trim()
+          ? gatewayOpts.gatewayUrl.trim()
+          : "default";
         const agentLabel = agentId ?? "unknown";
         let message = formatErrorMessage(err);
         const pairing =

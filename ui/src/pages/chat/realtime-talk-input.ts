@@ -76,6 +76,7 @@ export async function discoverRealtimeTalkInputs(
 
   try {
     const probe = await devices.getUserMedia({ audio: true });
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     probe.getTracks().forEach((track) => track.stop());
     entries = await devices.enumerateDevices();
     return { devices: normalizeInputDevices(entries), warning: null };

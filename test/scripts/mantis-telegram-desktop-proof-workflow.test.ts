@@ -109,6 +109,7 @@ describe("Mantis Telegram Desktop proof workflow", () => {
       expect(step.run).toContain(".createdAt >= $stale_before");
       expect(step.run).toContain("run_has_active_jobs()");
       expect(step.run).toContain('gh run view "$run_id"');
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(step.run).toContain("${run_id#\\#}");
       expect(step.run).not.toContain('.[] | select(.status == "queued"');
       expect(step.run).toContain("sleep 60");
@@ -127,6 +128,7 @@ describe("Mantis Telegram Desktop proof workflow", () => {
     );
 
     expect(codexStep.env?.OPENCLAW_QA_CREDENTIAL_OWNER_ID).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "mantis-telegram-desktop-${{ github.run_id }}-${{ github.run_attempt }}",
     );
     expect(workflowStep("Prepare Codex user").run).toContain("OPENCLAW_QA_CREDENTIAL_OWNER_ID");
@@ -135,6 +137,7 @@ describe("Mantis Telegram Desktop proof workflow", () => {
     expect(inspectIndex).toBeGreaterThan(cleanupIndex);
 
     const cleanupStep = workflowStep("Release leaked Telegram proof leases");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(cleanupStep.if).toBe("${{ always() }}");
     expect(cleanupStep.env?.OPENCLAW_QA_CONVEX_SECRET_CI).toContain(
       "secrets.OPENCLAW_QA_CONVEX_SECRET_CI",
@@ -220,9 +223,11 @@ describe("Mantis Telegram Desktop proof workflow", () => {
     expect(workflowText).toContain("publish_run_id is required when publish_artifact_name is set.");
     expect(workflowText).toContain('gh run download "$run_id"');
     expect(workflowText).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '--artifact-root "mantis/telegram-desktop/pr-${TARGET_PR}/published-',
     );
     expect(workflowText).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "PUBLISH_ARTIFACT_URL=https://github.com/${GITHUB_REPOSITORY}/actions/runs/",
     );
   });
@@ -288,6 +293,7 @@ describe("Mantis Telegram Desktop proof workflow", () => {
     expect(install.run).toContain("test -f scripts/e2e/telegram-user-driver.py");
     expect(install.run).toContain("/usr/local/bin/openclaw-telegram-user-crabbox-proof");
     expect(install.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'exec node --import tsx "${GITHUB_WORKSPACE}/scripts/e2e/telegram-user-crabbox-proof.ts" "$@"',
     );
     expect(install.run).toContain("BtbN/FFmpeg-Builds");
@@ -298,6 +304,7 @@ describe("Mantis Telegram Desktop proof workflow", () => {
 
     const agent = workflowStep("Run Codex Mantis Telegram agent");
     expect(agent.env?.OPENCLAW_TELEGRAM_USER_DRIVER_SCRIPT).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ github.workspace }}/scripts/e2e/telegram-user-driver.py",
     );
     expect(agent.env?.OPENCLAW_TELEGRAM_USER_PROOF_CMD).toBe(
@@ -336,7 +343,9 @@ describe("Mantis Telegram Desktop proof workflow", () => {
     expect(liveWorkflow.env?.CRABBOX_CAPACITY_REGIONS).toBe("us-east-1");
 
     const agent = workflowStep("Run Codex Mantis Telegram agent");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(agent.env?.CRABBOX_AWS_REGION).toBe("${{ env.CRABBOX_AWS_REGION }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(agent.env?.CRABBOX_CAPACITY_REGIONS).toBe("${{ env.CRABBOX_CAPACITY_REGIONS }}");
 
     const liveRun = jobStep(
@@ -344,7 +353,9 @@ describe("Mantis Telegram Desktop proof workflow", () => {
       "run_telegram_live",
       "Run Telegram live scenario and capture desktop evidence",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(liveRun.env?.CRABBOX_AWS_REGION).toBe("${{ env.CRABBOX_AWS_REGION }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(liveRun.env?.CRABBOX_CAPACITY_REGIONS).toBe("${{ env.CRABBOX_CAPACITY_REGIONS }}");
 
     const prepare = workflowStep("Prepare Codex user");
@@ -373,12 +384,14 @@ describe("Mantis Telegram Desktop proof workflow", () => {
 
   it("trusts the open PR head and marks fork heads for sandboxed handling", () => {
     const workflowText = readFileSync(WORKFLOW, "utf8");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflowText).toContain("repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}");
     expect(workflowText).toContain('candidate_trust="fork-pr-head"');
     expect(workflowText).toContain('pr_head_repo" != "$GITHUB_REPOSITORY"');
 
     const agent = workflowStep("Run Codex Mantis Telegram agent");
     expect(agent.env?.MANTIS_CANDIDATE_TRUST).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ needs.validate_refs.outputs.candidate_trust }}",
     );
 
@@ -442,18 +455,22 @@ describe("Mantis Telegram Desktop proof workflow", () => {
     expect(proofScript).toContain('timeout --kill-after="$setup_step_timeout_kill_after"');
     expect(proofScript).not.toContain("timeout --foreground");
     expect(proofScript).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'apt_timeout="\\${OPENCLAW_TELEGRAM_USER_APT_TIMEOUT_SECONDS:-900}s"',
     );
     expect(proofScript).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'download_connect_timeout="\\${OPENCLAW_TELEGRAM_USER_DOWNLOAD_CONNECT_TIMEOUT_SECONDS:-15}"',
     );
     expect(proofScript).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'download_timeout="\\${OPENCLAW_TELEGRAM_USER_DOWNLOAD_TIMEOUT_SECONDS:-600}"',
     );
     expect(proofScript).toContain('run_setup_step "apt-get update" "$apt_timeout"');
     expect(proofScript).toContain("download_file https://telegram.org/dl/desktop/linux");
     expect(proofScript).toContain('download_file "$tdlib_url" "$root/tdlib-linux.tgz"');
     expect(proofScript).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'tdlib_clone_timeout="\\${OPENCLAW_TELEGRAM_USER_TDLIB_CLONE_TIMEOUT_SECONDS:-600}s"',
     );
     expect(proofScript).toContain('run_setup_step "tdlib clone" "$tdlib_clone_timeout"');

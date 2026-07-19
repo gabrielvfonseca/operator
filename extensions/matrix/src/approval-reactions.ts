@@ -280,7 +280,7 @@ export async function unregisterMatrixApprovalReactionTargetsForApproval(params:
     }
   }
 
-  let persistentStore: ReturnType<typeof openPersistentMatrixApprovalReactionStore> = undefined;
+  let persistentStore: ReturnType<typeof openPersistentMatrixApprovalReactionStore>;
   try {
     persistentStore = openPersistentMatrixApprovalReactionStore();
     for (const entry of (await persistentStore?.entries()) ?? []) {

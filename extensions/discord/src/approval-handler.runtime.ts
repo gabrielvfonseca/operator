@@ -10,10 +10,7 @@ import type {
 } from "@gabrielvfonseca/operator/plugin-sdk/approval-handler-runtime";
 import { createChannelApprovalNativeRuntimeAdapter } from "@gabrielvfonseca/operator/plugin-sdk/approval-handler-runtime";
 import type { ExecApprovalActionDescriptor } from "@gabrielvfonseca/operator/plugin-sdk/approval-reply-runtime";
-import type {
-  DiscordExecApprovalConfig,
-  OperatorConfig,
-} from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
+import type { DiscordExecApprovalConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { logDebug, logError } from "@gabrielvfonseca/operator/plugin-sdk/logging-core";
 import { normalizeOptionalString } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
 // Discord plugin module implements approval handler behavior.

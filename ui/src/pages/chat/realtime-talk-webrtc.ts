@@ -88,6 +88,7 @@ export class WebRtcSdpRealtimeTalkTransport implements RealtimeTalkTransport {
       return;
     }
     if (!this.isCurrentPeer(peer)) {
+      // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
       media.getTracks().forEach((track) => track.stop());
       return;
     }
@@ -254,6 +255,7 @@ export class WebRtcSdpRealtimeTalkTransport implements RealtimeTalkTransport {
     this.channel = null;
     this.peer?.close();
     this.peer = null;
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     this.media?.getTracks().forEach((track) => track.stop());
     this.media = null;
     this.inputMeter?.stop();
@@ -359,6 +361,7 @@ export class WebRtcSdpRealtimeTalkTransport implements RealtimeTalkTransport {
         });
         this.flushPendingResponseCreate();
         return;
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
       case "error":
         this.responseCreateInFlight = false;
         this.ctx.callbacks.onStatus?.("error", this.extractErrorDetail(event.error));

@@ -771,9 +771,9 @@ vi.mock("../plugins/doctor-contract-registry.js", () => {
     const talk = asRecord(value);
     return Boolean(
       talk &&
-      ["voiceId", "voiceAliases", "modelId", "outputFormat", "apiKey"].some((key) =>
-        Object.hasOwn(talk, key),
-      ),
+        ["voiceId", "voiceAliases", "modelId", "outputFormat", "apiKey"].some((key) =>
+          Object.hasOwn(talk, key),
+        ),
     );
   }
 
@@ -929,10 +929,12 @@ vi.mock("./doctor/shared/legacy-config-issues.js", async () => {
   const {
     collectRelevantDoctorPluginIds,
     listPluginDoctorLegacyConfigRules,
-  }: typeof import("../plugins/doctor-contract-registry.js") =
-    await import("../plugins/doctor-contract-registry.js");
-  const { findLegacyConfigIssues }: typeof import("../config/legacy.js") =
-    await import("../config/legacy.js");
+  }: typeof import("../plugins/doctor-contract-registry.js") = await import(
+    "../plugins/doctor-contract-registry.js"
+  );
+  const { findLegacyConfigIssues }: typeof import("../config/legacy.js") = await import(
+    "../config/legacy.js"
+  );
   return {
     findDoctorLegacyConfigIssues: (raw: unknown, sourceRaw?: unknown) =>
       findLegacyConfigIssues(
@@ -1039,8 +1041,7 @@ vi.mock("./doctor/shared/channel-doctor.js", () => {
     return Object.entries(accounts).flatMap(([accountId, accountRaw]) => {
       const account = asRecord(accountRaw);
       if (
-        !account ||
-        account.enabled !== false ||
+        account?.enabled !== false ||
         !asRecord(account.botToken) ||
         !hasOwnStringArray(account.allowFrom)
       ) {
@@ -1255,10 +1256,12 @@ vi.mock("./doctor-config-preflight.js", async () => {
   const {
     collectRelevantDoctorPluginIds,
     listPluginDoctorLegacyConfigRules,
-  }: typeof import("../plugins/doctor-contract-registry.js") =
-    await import("../plugins/doctor-contract-registry.js");
-  const { findLegacyConfigIssues }: typeof import("../config/legacy.js") =
-    await import("../config/legacy.js");
+  }: typeof import("../plugins/doctor-contract-registry.js") = await import(
+    "../plugins/doctor-contract-registry.js"
+  );
+  const { findLegacyConfigIssues }: typeof import("../config/legacy.js") = await import(
+    "../config/legacy.js"
+  );
 
   function resolveConfigPath() {
     const stateDir =
@@ -2072,9 +2075,9 @@ describe("doctor config flow", () => {
     const browser = (result.cfg as { browser?: Record<string, unknown> }).browser ?? {};
     expect(browser.relayBindHost).toBeUndefined();
     // driver "extension" is the live Chrome extension relay driver; repair keeps it.
-    expect(
-      ((browser.profiles as Record<string, { driver?: string }>)?.chromeLive ?? {}).driver,
-    ).toBe("extension");
+    expect((browser.profiles as Record<string, { driver?: string }>)?.chromeLive?.driver).toBe(
+      "extension",
+    );
     expect(result.cfg.plugins?.allow).toEqual(["telegram", "browser", "codex"]);
     expect(result.cfg.plugins?.entries?.browser?.enabled).toBe(true);
     expect(result.cfg.plugins?.entries?.codex?.enabled).toBe(true);

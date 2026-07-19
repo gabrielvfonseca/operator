@@ -536,17 +536,13 @@ export const signalPlugin: ChannelPlugin<ResolvedSignalAccount, SignalProbe> =
       },
       heartbeat: {
         sendTyping: async ({ cfg, to, accountId }) => {
-          await (
-            await loadSignalSendRuntime()
-          ).sendTypingSignal(to, {
+          await (await loadSignalSendRuntime()).sendTypingSignal(to, {
             cfg,
             ...(accountId ? { accountId } : {}),
           });
         },
         clearTyping: async ({ cfg, to, accountId }) => {
-          await (
-            await loadSignalSendRuntime()
-          ).sendTypingSignal(to, {
+          await (await loadSignalSendRuntime()).sendTypingSignal(to, {
             cfg,
             ...(accountId ? { accountId } : {}),
             stop: true,
@@ -608,9 +604,7 @@ export const signalPlugin: ChannelPlugin<ResolvedSignalAccount, SignalProbe> =
         message: PAIRING_APPROVED_MESSAGE,
         normalizeAllowEntry: createPairingPrefixStripper(/^signal:/i),
         notify: async ({ cfg, id, message }) => {
-          await (
-            await loadSignalSendRuntime()
-          ).sendMessageSignal(id, message, {
+          await (await loadSignalSendRuntime()).sendMessageSignal(id, message, {
             cfg,
           });
         },

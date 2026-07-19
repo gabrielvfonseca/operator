@@ -130,8 +130,9 @@ beforeAll(async () => {
     };
   });
   ({ ensureOperatorModelsJson } = await import("./models-config.js"));
-  ({ clearCurrentPluginMetadataSnapshot, setCurrentPluginMetadataSnapshot } =
-    await import("../plugins/current-plugin-metadata-snapshot.js"));
+  ({ clearCurrentPluginMetadataSnapshot, setCurrentPluginMetadataSnapshot } = await import(
+    "../plugins/current-plugin-metadata-snapshot.js"
+  ));
 });
 
 beforeEach(() => {

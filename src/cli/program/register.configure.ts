@@ -24,8 +24,9 @@ export function registerConfigureCommand(program: Command): void {
     .action(async (opts) => {
       const { defaultRuntime } = await import("../../runtime.js");
       await runCommandWithRuntime(defaultRuntime, async () => {
-        const { configureCommandFromSectionsArg } =
-          await import("../../commands/configure.commands.js");
+        const { configureCommandFromSectionsArg } = await import(
+          "../../commands/configure.commands.js"
+        );
         await configureCommandFromSectionsArg(opts.section, defaultRuntime);
       });
     });

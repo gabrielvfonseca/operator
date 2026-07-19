@@ -53,14 +53,14 @@ function requireRecord(value: unknown, label: string): Record<string, unknown> {
 }
 
 function requireAssistantMessage(message: AgentMessage | undefined): AssistantMessage {
-  if (!message || message.role !== "assistant") {
+  if (message?.role !== "assistant") {
     throw new Error(`expected assistant message, got ${message?.role ?? "missing"}`);
   }
   return message;
 }
 
 function requireToolResultMessage(message: AgentMessage | undefined): ToolResultMessage {
-  if (!message || message.role !== "toolResult") {
+  if (message?.role !== "toolResult") {
     throw new Error(`expected toolResult message, got ${message?.role ?? "missing"}`);
   }
   return message;

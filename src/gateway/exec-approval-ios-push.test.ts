@@ -175,8 +175,9 @@ vi.mock("../infra/push-apns.js", () => ({
 
 describe("createExecApprovalIosPushDelivery", () => {
   beforeAll(async () => {
-    ({ createExecApprovalIosPushDelivery, createPluginApprovalIosPushDelivery } =
-      await import("./exec-approval-ios-push.js"));
+    ({ createExecApprovalIosPushDelivery, createPluginApprovalIosPushDelivery } = await import(
+      "./exec-approval-ios-push.js"
+    ));
   });
 
   beforeEach(() => {

@@ -55,8 +55,9 @@ vi.spyOn(parentCoreApiModule, "runCommandWithRuntime").mockImplementation(
     }
   },
 );
-const { createBrowserProgram, getBrowserCliRuntime } =
-  await import("./browser-cli.test-support.js");
+const { createBrowserProgram, getBrowserCliRuntime } = await import(
+  "./browser-cli.test-support.js"
+);
 const browserCliRuntime = getBrowserCliRuntime();
 vi.spyOn(cliCoreApiModule.defaultRuntime, "log").mockImplementation(browserCliRuntime.log);
 vi.spyOn(cliCoreApiModule.defaultRuntime, "writeJson").mockImplementation(
@@ -84,7 +85,7 @@ export function getBrowserManageCallBrowserRequestMock() {
 
 /** Finds the first mocked Browser manage request for a route path. */
 export function findBrowserManageCall(path: string): BrowserManageCall | undefined {
-  return browserManageMocks.callBrowserRequest.mock.calls.find(
-    (call) => (call[1] ?? {}).path === path,
-  ) as BrowserManageCall | undefined;
+  return browserManageMocks.callBrowserRequest.mock.calls.find((call) => call[1]?.path === path) as
+    | BrowserManageCall
+    | undefined;
 }

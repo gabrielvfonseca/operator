@@ -1547,7 +1547,7 @@ async function recoverStore(params: {
   for (const { sessionKey, entry } of entries.toSorted((a, b) =>
     a.sessionKey.localeCompare(b.sessionKey),
   )) {
-    if (!entry || entry.status !== "running" || entry.abortedLastRun !== true) {
+    if (entry?.status !== "running" || entry.abortedLastRun !== true) {
       continue;
     }
     if (shouldSkipMainRecovery(entry, sessionKey)) {

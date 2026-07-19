@@ -71,19 +71,24 @@ function renderTask(task: TaskSummary, props: TasksProps) {
             >${taskStatusLabel(task.status)}</span
           >
           <span class="chip">${taskRuntimeLabel(task)}</span>
-          ${task.agentId
-            ? html`<span class="chip">${t("tasksPage.agent", { agent: task.agentId })}</span>`
-            : nothing}
+          ${
+            task.agentId
+              ? html`<span class="chip">${t("tasksPage.agent", { agent: task.agentId })}</span>`
+              : nothing
+          }
         </div>
         ${detail ? html`<div class="list-sub">${detail}</div>` : nothing}
       </div>
       <div class="list-meta">
-        ${timestamp > 0
-          ? html`<span title=${formatMs(timestamp)}>${formatRelativeTimestamp(timestamp)}</span>`
-          : html`<span>${t("common.na")}</span>`}
+        ${
+          timestamp > 0
+            ? html`<span title=${formatMs(timestamp)}>${formatRelativeTimestamp(timestamp)}</span>`
+            : html`<span>${t("common.na")}</span>`
+        }
         ${renderSessionLink(task, props)}
-        ${active && props.canCancel
-          ? html`<button
+        ${
+          active && props.canCancel
+            ? html`<button
               class="btn"
               type="button"
               aria-label=${t("tasksPage.cancelTask", { title })}
@@ -92,7 +97,8 @@ function renderTask(task: TaskSummary, props: TasksProps) {
             >
               ${cancelling ? t("tasksPage.cancelling") : t("common.cancel")}
             </button>`
-          : nothing}
+            : nothing
+        }
       </div>
     </div>
   `;
@@ -177,20 +183,24 @@ function renderSection(
           <div class="card-sub">${subtitle}</div>
         </div>
         <div class="muted">
-          ${tasks.length === 1
-            ? t("tasksPage.taskCountOne")
-            : t("tasksPage.taskCount", { count: String(tasks.length) })}
+          ${
+            tasks.length === 1
+              ? t("tasksPage.taskCountOne")
+              : t("tasksPage.taskCount", { count: String(tasks.length) })
+          }
         </div>
       </div>
-      ${tasks.length === 0
-        ? html`<div class="muted">${emptyText}</div>`
-        : html`<div class="list">
+      ${
+        tasks.length === 0
+          ? html`<div class="muted">${emptyText}</div>`
+          : html`<div class="list">
             ${repeat(
               tasks,
               (task) => task.id,
               (task) => renderTask(task, props),
             )}
-          </div>`}
+          </div>`
+      }
     </section>
   `;
 }
@@ -199,17 +209,23 @@ export function renderTasks(props: TasksProps) {
   const { active, recent } = partitionTasks(props.tasks);
   return html`
     <div class="stack">
-      ${!props.connected
-        ? html`<div class="callout warn">${t("tasksPage.disconnected")}</div>`
-        : nothing}
+      ${
+        !props.connected
+          ? html`<div class="callout warn">${t("tasksPage.disconnected")}</div>`
+          : nothing
+      }
       ${props.error ? html`<div class="callout danger">${props.error}</div>` : nothing}
       ${renderSummaryStrip(props.tasks)}
-      ${props.loading && props.tasks.length === 0
-        ? html`<div class="card muted">${t("tasksPage.loading")}</div>`
-        : nothing}
-      ${!props.loading && props.tasks.length === 0
-        ? html`<div class="card muted">${t("tasksPage.empty")}</div>`
-        : nothing}
+      ${
+        props.loading && props.tasks.length === 0
+          ? html`<div class="card muted">${t("tasksPage.loading")}</div>`
+          : nothing
+      }
+      ${
+        !props.loading && props.tasks.length === 0
+          ? html`<div class="card muted">${t("tasksPage.empty")}</div>`
+          : nothing
+      }
       ${renderSection(
         "active",
         t("tasksPage.active"),

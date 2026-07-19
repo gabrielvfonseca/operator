@@ -219,6 +219,7 @@ export async function runServiceUninstall(params: {
     }
   }
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let loaded;
   try {
     loaded = await params.service.isLoaded({ env: process.env });
@@ -474,6 +475,7 @@ export async function runServiceStop(params: {
     return;
   }
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let stopped;
   try {
     stopped = await params.service.isLoaded({ env: process.env });
@@ -495,7 +497,9 @@ export async function runServiceRestart(params: {
   checkTokenDrift?: boolean;
   expectedPort?: number;
   repairLoadedService?: (ctx: ServiceStartRepairContext) => Promise<ServiceRecoveryResult | null>;
-  postRestartCheck?: (ctx: RestartPostCheckContext) => Promise<GatewayServiceRestartResult | void>;
+  postRestartCheck?: (
+    ctx: RestartPostCheckContext,
+  ) => Promise<GatewayServiceRestartResult | undefined>;
   onNotLoaded?: (ctx: ServiceRecoveryContext) => Promise<ServiceRecoveryResult | null>;
 }): Promise<boolean> {
   const json = Boolean(params.opts?.json);

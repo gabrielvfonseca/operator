@@ -101,6 +101,7 @@ describe("dependency guard workflow", () => {
       const steps = job?.steps ?? [];
       const checkoutStep = workflowStep(steps, 0, `dependency guard checkout step ${index}`);
       expect(checkoutStep.uses).toBe("actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd");
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(checkoutStep.with?.ref).toBe("${{ github.event.pull_request.base.sha }}");
       expect(checkoutStep.with?.["persist-credentials"]).toBe(false);
       expect(steps.at(-1)?.run).toBe("node scripts/github/dependency-guard.mjs");
@@ -113,11 +114,14 @@ describe("dependency guard workflow", () => {
     const autoscrubJob = jobs["dependency-guard-autoscrub"];
     const finalJob = jobs["dependency-guard"];
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(detectJob?.outputs?.autoscrub).toBe("${{ steps.guard.outputs.autoscrub }}");
     expect(detectJob?.outputs?.["autoscrub-owner"]).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ steps.guard.outputs.autoscrub-owner }}",
     );
     expect(detectJob?.outputs?.["autoscrub-repository"]).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ steps.guard.outputs.autoscrub-repository }}",
     );
     expect(autoscrubJob?.needs).toBe("dependency-guard-detect");
@@ -143,7 +147,9 @@ describe("dependency guard workflow", () => {
     );
     expect(primaryTokenStep.with).toMatchObject({
       "app-id": "2729701",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       owner: "${{ needs.dependency-guard-detect.outputs.autoscrub-owner }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       repositories: "${{ needs.dependency-guard-detect.outputs.autoscrub-repository }}",
       "permission-contents": "write",
     });
@@ -153,13 +159,17 @@ describe("dependency guard workflow", () => {
     );
     expect(fallbackTokenStep.with).toMatchObject({
       "app-id": "2971289",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       owner: "${{ needs.dependency-guard-detect.outputs.autoscrub-owner }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       repositories: "${{ needs.dependency-guard-detect.outputs.autoscrub-repository }}",
       "permission-contents": "write",
     });
     expect(fallbackTokenStep["continue-on-error"]).toBe(true);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(autoscrubRunStep.env?.GITHUB_TOKEN).toBe("${{ github.token }}");
     expect(autoscrubRunStep.env?.OPENCLAW_DEPENDENCY_GUARD_AUTOSCRUB_TOKEN).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ steps.app-token.outputs.token || steps.app-token-fallback.outputs.token }}",
     );
     expect(autoscrubRunStep.env?.OPENCLAW_DEPENDENCY_GUARD_MODE).toBe("autoscrub");
@@ -172,6 +182,7 @@ describe("dependency guard workflow", () => {
     const checkoutStep = workflowStep(steps, 0, "final dependency guard checkout step");
     const runStep = workflowStep(steps, 1, "final dependency guard run step");
     expect(checkoutStep.uses).toBe("actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(checkoutStep.with?.ref).toBe("${{ github.event.pull_request.base.sha }}");
     expect(checkoutStep.with?.["persist-credentials"]).toBe(false);
     expect(runStep.run).toBe("node scripts/github/dependency-guard.mjs");

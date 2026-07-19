@@ -48,6 +48,7 @@ const MANIFEST_PATH_BY_FORMAT: Record<PluginBundleFormat, string> = {
   codex: CODEX_BUNDLE_MANIFEST_RELATIVE_PATH,
   cursor: CURSOR_BUNDLE_MANIFEST_RELATIVE_PATH,
 };
+// biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
 const CLAUDE_PLUGIN_ROOT_PLACEHOLDER = "${CLAUDE_PLUGIN_ROOT}";
 
 function resolveBundleMcpConfigPaths(params: {

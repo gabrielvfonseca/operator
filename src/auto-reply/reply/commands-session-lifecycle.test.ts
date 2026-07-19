@@ -281,7 +281,7 @@ vi.mock("../../infra/outbound/session-binding-service.js", () => {
   };
 });
 
-let handleSessionCommand: (typeof import("./commands-session.js"))["handleSessionCommand"];
+let handleSessionCommand: typeof import("./commands-session.js")["handleSessionCommand"];
 const baseCfg = {
   session: { mainKey: "main", scope: "per-sender" },
 } satisfies OperatorConfig;

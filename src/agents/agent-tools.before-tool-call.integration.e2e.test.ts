@@ -1408,7 +1408,7 @@ describe("before_tool_call hook integration for client tools", () => {
         policy: {
           id: "client-tool-session-extension-policy",
           description: "client tool session extension policy",
-          evaluate(eventValue, ctx) {
+          evaluate(_eventValue, ctx) {
             seen.push(ctx.getSessionExtension?.("policy"));
             return undefined;
           },

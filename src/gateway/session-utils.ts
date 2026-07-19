@@ -155,9 +155,9 @@ function truncateTitle(text: string, maxLen: number): string {
   const cut = truncateUtf16Safe(text, maxLen - 1);
   const lastSpace = cut.lastIndexOf(" ");
   if (lastSpace > maxLen * 0.6) {
-    return cut.slice(0, lastSpace) + "…";
+    return `${cut.slice(0, lastSpace)}…`;
   }
-  return cut + "…";
+  return `${cut}…`;
 }
 
 export function deriveSessionTitle(
@@ -2704,9 +2704,7 @@ export function listSessionsFromStore(params: {
     opts,
     now,
     getRowContext:
-      hasSpawnedByFilter || Boolean(normalizeOptionalString(opts.search))
-        ? getRowContext
-        : undefined,
+      hasSpawnedByFilter || normalizeOptionalString(opts.search) ? getRowContext : undefined,
     defaultLimit: SESSIONS_LIST_DEFAULT_LIMIT,
   });
   const { entries, totalCount, limitApplied, offset, nextOffset, hasMore } = selection;
@@ -2800,9 +2798,7 @@ export async function listSessionsFromStoreAsync(params: {
       opts,
       now,
       getRowContext:
-        hasSpawnedByFilter || Boolean(normalizeOptionalString(opts.search))
-          ? getRowContext
-          : undefined,
+        hasSpawnedByFilter || normalizeOptionalString(opts.search) ? getRowContext : undefined,
       defaultLimit: SESSIONS_LIST_DEFAULT_LIMIT,
     });
     const { entries, totalCount, limitApplied, offset, nextOffset, hasMore } = selection;

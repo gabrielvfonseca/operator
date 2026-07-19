@@ -59,7 +59,7 @@ const { listAccountIds: listIrcAccountIds, resolveDefaultAccountId: resolveDefau
     hasImplicitDefaultAccount: (cfg) =>
       Boolean(
         (cfg.channels?.irc?.host?.trim() || process.env.IRC_HOST?.trim()) &&
-        (cfg.channels?.irc?.nick?.trim() || process.env.IRC_NICK?.trim()),
+          (cfg.channels?.irc?.nick?.trim() || process.env.IRC_NICK?.trim()),
       ),
   });
 export { listIrcAccountIds, resolveDefaultIrcAccountId };

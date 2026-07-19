@@ -46,7 +46,7 @@ describe("template cache bound — direct watcher measurement", () => {
     const dir = tracker.make("usage-template-proof-");
     const paths: string[] = [];
     function emit(line: string) {
-      process.stdout.write(line + "\n");
+      process.stdout.write(`${line}\n`);
     }
 
     emit("=".repeat(72));

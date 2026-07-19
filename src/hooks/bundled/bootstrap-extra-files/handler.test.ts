@@ -58,7 +58,7 @@ describe("bootstrap-extra-files hook", () => {
     await fs.mkdir(extraDir, { recursive: true });
     await fs.writeFile(path.join(extraDir, "AGENTS.md"), "extra agents", "utf-8");
 
-    const cfg = createBootstrapExtraConfig(["packages/*/AGENTS.md"]);
+    const cfg = createBootstrapExtraConfig(["packages/*/AGENTS.MD"]);
     const context = await createBootstrapContext({
       workspaceDir: tempDir,
       cfg,

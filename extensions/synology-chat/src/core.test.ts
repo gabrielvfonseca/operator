@@ -436,7 +436,7 @@ describe("synology-chat security helpers", () => {
   it("truncates long inputs without splitting a surrogate pair", () => {
     const loneSurrogatePattern =
       /[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:^|[^\uD800-\uDBFF])[\uDC00-\uDFFF]/u;
-    const input = "a".repeat(3999) + "\u{1F600}" + "b".repeat(2000);
+    const input = `${"a".repeat(3999)}\u{1F600}${"b".repeat(2000)}`;
 
     const result = sanitizeInput(input);
 

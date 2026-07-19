@@ -1095,6 +1095,7 @@ describe("AcpSessionManager turn results", () => {
   it("recovers when the resume-required error is wrapped as a thrown cause", async () => {
     const scenario = setupStaleResumeScenario(
       // eslint-disable-next-line require-yield -- an async generator that only throws is a valid empty stream.
+      // biome-ignore lint/correctness/useYield: migrated from oxlint
       async function* () {
         const error = new Error(
           "Persistent ACP session acpx-sid-stale could not be resumed: Internal error",

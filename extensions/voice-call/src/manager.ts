@@ -387,7 +387,7 @@ export class CallManager {
   }
 
   private shouldDeferConversationInitialMessageUntilStreamConnect(): boolean {
-    if (!this.provider || this.provider.name !== "twilio" || !this.config.streaming.enabled) {
+    if (this.provider?.name !== "twilio" || !this.config.streaming.enabled) {
       return false;
     }
 

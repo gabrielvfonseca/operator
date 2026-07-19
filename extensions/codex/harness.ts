@@ -70,15 +70,17 @@ export function createCodexAppServerAgentHarness(options: {
     authBootstrap: "harness",
     authBinding: {
       fingerprint: async (params) => {
-        const { fingerprintCodexAppServerAuthBinding } =
-          await import("./src/app-server/auth-binding.js");
+        const { fingerprintCodexAppServerAuthBinding } = await import(
+          "./src/app-server/auth-binding.js"
+        );
         return fingerprintCodexAppServerAuthBinding(params);
       },
     },
     runtimeArtifact: {
       validate: async (binding) => {
-        const { validateCodexAppServerRuntimeArtifact } =
-          await import("./src/app-server/runtime-artifact.js");
+        const { validateCodexAppServerRuntimeArtifact } = await import(
+          "./src/app-server/runtime-artifact.js"
+        );
         return validateCodexAppServerRuntimeArtifact(binding);
       },
     },
@@ -179,8 +181,9 @@ export function createCodexAppServerAgentHarness(options: {
     },
     reset: async (params) => {
       if (params.sessionId) {
-        const { reclaimCurrentCodexSessionGeneration, sessionBindingIdentity } =
-          await import("./src/app-server/session-binding.js");
+        const { reclaimCurrentCodexSessionGeneration, sessionBindingIdentity } = await import(
+          "./src/app-server/session-binding.js"
+        );
         const identity = sessionBindingIdentity({
           agentId: params.agentId,
           sessionId: params.sessionId,

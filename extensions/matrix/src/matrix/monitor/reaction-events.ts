@@ -232,7 +232,7 @@ export async function handleInboundMatrixReaction(params: {
   }
 
   const targetContent =
-    targetEvent && targetEvent.content && typeof targetEvent.content === "object"
+    targetEvent?.content && typeof targetEvent.content === "object"
       ? (targetEvent.content as RoomMessageEventContent)
       : undefined;
   const threadRootId = targetContent

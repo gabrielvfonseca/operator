@@ -712,12 +712,12 @@ async function agentViaGatewayCommand(
   const channel = normalizeMessageChannel(opts.channel);
   const deferExplicitRecipientSession = Boolean(
     !explicitSessionKey &&
-    !opts.sessionId?.trim() &&
-    agentId &&
-    channel &&
-    channel !== "last" &&
-    opts.to?.trim() &&
-    classifySessionKeyShape(opts.to) !== "agent",
+      !opts.sessionId?.trim() &&
+      agentId &&
+      channel &&
+      channel !== "last" &&
+      opts.to?.trim() &&
+      classifySessionKeyShape(opts.to) !== "agent",
   );
 
   const sessionKey = deferExplicitRecipientSession

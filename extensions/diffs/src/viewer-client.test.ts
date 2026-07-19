@@ -85,7 +85,7 @@ describe("createToolbarButton icon safety", () => {
     ] as const;
     for (const name of requiredNames) {
       expect(
-        VIEWER_CLIENT_SRC.includes(name + ":") || VIEWER_CLIENT_SRC.includes(`"${name}"`),
+        VIEWER_CLIENT_SRC.includes(`${name}:`) || VIEWER_CLIENT_SRC.includes(`"${name}"`),
         `icon "${name}" should exist in toolbarIconSvg`,
       ).toBe(true);
     }

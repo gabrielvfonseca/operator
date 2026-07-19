@@ -29,9 +29,9 @@ function resolveReceiptMessageId(result: MessageReceiptInputResult): string | un
 function hasNestedReceiptData(receipt: MessageReceipt | undefined): receipt is MessageReceipt {
   return Boolean(
     receipt &&
-    (receipt.parts.length > 0 ||
-      receipt.platformMessageIds.length > 0 ||
-      receipt.primaryPlatformMessageId),
+      (receipt.parts.length > 0 ||
+        receipt.platformMessageIds.length > 0 ||
+        receipt.primaryPlatformMessageId),
   );
 }
 

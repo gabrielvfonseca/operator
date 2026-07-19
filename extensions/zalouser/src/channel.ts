@@ -208,9 +208,9 @@ export const zalouserPlugin: ChannelPlugin<ResolvedZalouserAccount, ZalouserProb
           });
         },
         logoutAccount: async (ctx) =>
-          await (
-            await loadZalouserChannelRuntime()
-          ).logoutZaloProfile(ctx.account.profile || resolveZalouserQrProfile(ctx.accountId)),
+          await (await loadZalouserChannelRuntime()).logoutZaloProfile(
+            ctx.account.profile || resolveZalouserQrProfile(ctx.accountId),
+          ),
       },
     },
     security: zalouserSecurityAdapter,

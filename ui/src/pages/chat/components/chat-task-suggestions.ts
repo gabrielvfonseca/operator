@@ -48,8 +48,9 @@ export function renderChatTaskSuggestions(props: {
                 ${icons.play}
                 ${busy ? t("chat.taskSuggestions.starting") : t("chat.taskSuggestions.start")}
               </button>
-              ${props.canDismiss
-                ? html`
+              ${
+                props.canDismiss
+                  ? html`
                     <button
                       class="btn btn--ghost btn--icon task-suggestion__dismiss"
                       type="button"
@@ -62,7 +63,8 @@ export function renderChatTaskSuggestions(props: {
                       ${icons.x}
                     </button>
                   `
-                : nothing}
+                  : nothing
+              }
             </div>
           </article>
         `;

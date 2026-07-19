@@ -85,6 +85,7 @@ describe("plugin npm extended-stable workflow", () => {
     const raw = readFileSync(workflowPath, "utf8");
     expect(raw.match(/--npm-dist-tag "\$\{NPM_DIST_TAG\}"/gu)).toHaveLength(2);
     const expectedOverride =
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ inputs.npm_dist_tag == 'extended-stable' && inputs.npm_dist_tag || '' }}";
     for (const name of [
       "Preview publish command",
@@ -109,12 +110,15 @@ describe("plugin npm extended-stable workflow", () => {
       workflow().jobs?.preview_plugins_npm,
       "Validate ref is on a trusted publish branch",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(trusted.run).toContain("extended-stable/${release_year}.${release_month}.33");
     expect(trusted.run).toContain("exact 40-character source SHA");
     expect(trusted.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '[[ "${WORKFLOW_REF}" == "refs/heads/${extended_stable_branch}" ]]',
     );
     expect(trusted.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '[[ "$(git rev-parse HEAD)" == "$(git rev-parse "refs/remotes/origin/${extended_stable_branch}")" ]]',
     );
   });
@@ -138,17 +142,26 @@ describe("plugin npm extended-stable workflow", () => {
     expect(step(preview, "Setup Node environment").uses).toBe("./.github/actions/setup-node-env");
     expect(trusted.env).toMatchObject({
       PREFLIGHT_ONLY:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ github.event_name == 'workflow_dispatch' && inputs.preflight_only || false }}",
       RELEASE_PUBLISH_RUN_ID:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ github.event_name == 'workflow_dispatch' && inputs.release_publish_run_id || '' }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       SOURCE_REF: "${{ github.event_name == 'workflow_dispatch' && inputs.ref || github.sha }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       WORKFLOW_REF: "${{ github.ref }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       WORKFLOW_SHA: "${{ github.workflow_sha }}",
     });
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(trusted.run).toContain('[[ "${WORKFLOW_REF}" != "refs/heads/main" ]]');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(trusted.run).toContain('git merge-base --is-ancestor "${WORKFLOW_SHA}" origin/main');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(trusted.run).toContain('[[ ! "${SOURCE_REF}" =~ ^[0-9a-fA-F]{40}$ ]]');
     expect(trusted.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '[[ "$(git rev-parse HEAD)" != "$(git rev-parse "${SOURCE_REF}^{commit}")" ]]',
     );
     expect(trusted.run).toContain("preflight must not include release_publish_run_id");
@@ -156,6 +169,7 @@ describe("plugin npm extended-stable workflow", () => {
       "Plugin npm preflight target must be reachable from main or release/*.",
     );
     const tideclawBranch = trusted.run?.indexOf(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'if [[ "${WORKFLOW_REF}" =~ ^refs/heads/tideclaw/alpha/',
     );
     expect(preflightBranchRejection).toBeGreaterThan(-1);
@@ -170,14 +184,17 @@ describe("plugin npm extended-stable workflow", () => {
 
     const prepare = step(preview, "Prepare immutable npm preflight artifact");
     expect(prepare.env?.ARTIFACT_NAME).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "plugin-npm-package-source-${{ needs.preview_plugins_npm.outputs.ref_revision }}-${{ matrix.plugin.extensionId }}",
     );
     expect(prepare.if).toBeUndefined();
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(prepare.run).toContain('bash scripts/plugin-npm-publish.sh --pack "${PACKAGE_DIR}"');
     expect(prepare.run).toContain('raw.lastIndexOf("[")');
     expect(prepare.run).toContain("npm can print bundled-dependency summaries");
     expect(prepare.run).toContain("if (index === 0)");
     expect(prepare.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "fs.writeFileSync(process.argv[3], `${JSON.stringify(pack, null, 2)}\\n`)",
     );
     expect(prepare.run).toContain('path.join(process.env.ARTIFACT_DIR, "preflight-manifest.json")');
@@ -213,23 +230,29 @@ describe("plugin npm extended-stable workflow", () => {
     expect(verify?.needs).toEqual(["preview_plugins_npm", "preview_plugin_pack"]);
     expect(verify?.strategy?.matrix?.plugin).toContain("all_matrix");
     expect(verify?.strategy?.matrix?.plugin).toContain("matrix");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(verify?.name).toBe("Preflight plugin npm package (${{ matrix.plugin.packageName }})");
     const trustedCheckout = step(verify, "Checkout trusted npm preflight tooling");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(trustedCheckout.with?.ref).toBe("${{ github.workflow_sha }}");
     const download = step(verify, "Download immutable npm preflight artifact");
     expect(download.uses).toBe(
       "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
     );
     expect(download.with?.name).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "plugin-npm-package-source-${{ needs.preview_plugins_npm.outputs.ref_revision }}-${{ matrix.plugin.extensionId }}",
     );
     const readback = step(verify, "Validate npm preflight artifact readback");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(readback.run).toContain('git show "${SOURCE_SHA}:${PACKAGE_DIR}/package.json"');
     expect(readback.run).toContain("Expected exactly one live package artifact named");
     expect(readback.run).toContain('crypto.createHash("sha256")');
     expect(readback.run).toContain('crypto.createHash("sha512")');
     expect(readback.run).toContain('crypto.createHash("sha1")');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(readback.run).toContain('echo "npm_integrity=${npm_integrity}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(readback.run).toContain('echo "npm_shasum=${npm_shasum}"');
     expect(readback.run).toContain(
       "Packed plugin identity, package hashes, or install route changed",
@@ -243,7 +266,9 @@ describe("plugin npm extended-stable workflow", () => {
 
     const route = step(verify, "Verify npm publication route readiness");
     expect(route.env).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       EXPECTED_NPM_INTEGRITY: "${{ steps.publication_artifact.outputs.npm_integrity }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       EXPECTED_NPM_SHASUM: "${{ steps.publication_artifact.outputs.npm_shasum }}",
     });
     expect(route.run).toContain("encodeURIComponent(packageName)");
@@ -263,14 +288,18 @@ describe("plugin npm extended-stable workflow", () => {
     expect(route.run).toContain('observations.push("npm-oidc")');
 
     const evidence = step(verify, "Create immutable plugin npm publication evidence");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(evidence.env?.PUBLISH_ROUTE).toBe("${{ steps.publication_route.outputs.route }}");
     expect(evidence.run).toContain("node scripts/plugin-publication-artifact.mjs create");
     expect(evidence.run).toContain("--publisher-policy-id plugin-npm-release-workflow");
     expect(evidence.run).toContain('--route "$PUBLISH_ROUTE"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(evidence.run).toContain('artifact_name="${ARTIFACT_NAME_PREFIX}-${PUBLISH_ROUTE}-');
     const evidenceUpload = step(verify, "Upload immutable plugin npm preflight evidence");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(evidenceUpload.with?.name).toBe("${{ steps.preflight_evidence.outputs.artifact_name }}");
     expect(evidenceUpload.with?.path).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ steps.preflight_evidence.outputs.artifact_path }}/*",
     );
   });
@@ -331,6 +360,7 @@ describe("plugin npm extended-stable workflow", () => {
     expect(publish.env?.NPM_TOKEN).toBeUndefined();
     const bootstrap = step(parsed.jobs?.publish_plugins_npm, "Publish approved bootstrap tarball");
     expect(bootstrap.if).toContain("npm-token-bootstrap");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(bootstrap.env?.NPM_TOKEN).toBe("${{ secrets.NPM_TOKEN }}");
     expect(bootstrap.env?.PACKAGE_NAME).toContain("publication_evidence.outputs.package_name");
     expect(bootstrap.run).not.toContain("@operator/meta-provider");
@@ -349,6 +379,7 @@ describe("plugin npm extended-stable workflow", () => {
     expect(consume.run).toContain("producer_attempt");
     expect(consume.run).toContain("last.producer_attempt");
     expect(consume.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '--producer-job-name "Preflight plugin npm package (${PACKAGE_NAME})"',
     );
     expect(consume.run).toContain("--workflow-jobs-metadata");
@@ -358,6 +389,7 @@ describe("plugin npm extended-stable workflow", () => {
       '[[ "$WORKFLOW_REF" =~ ^refs/tags/release-publish/([a-f0-9]{12})-[1-9][0-9]*$ ]]',
     );
     expect(consume.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '[[ "$WORKFLOW_SHA" =~ ^[a-f0-9]{40}$ && "${WORKFLOW_SHA:0:12}" == "$workflow_sha_prefix" ]]',
     );
     expect(consume.run).toContain("sha_pinned_release_publish=true");
@@ -367,6 +399,7 @@ describe("plugin npm extended-stable workflow", () => {
     expect(consume.run).toContain('git merge-base --is-ancestor "$WORKFLOW_SHA" origin/main');
     expect(
       step(parsed.jobs?.publish_plugins_npm, "Checkout trusted publication tooling").with?.ref,
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     ).toBe("${{ github.workflow_sha }}");
     expect(
       step(parsed.jobs?.publish_plugins_npm, "Setup trusted publication dependencies").if,
@@ -379,6 +412,7 @@ describe("plugin npm extended-stable workflow", () => {
     );
     expect(parsed.jobs?.reconcile_plugins_npm).toBeUndefined();
     expect(readFileSync(workflowPath, "utf8")).not.toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'npm dist-tag add "${PACKAGE_NAME}@${PACKAGE_VERSION}" extended-stable',
     );
 
@@ -388,7 +422,9 @@ describe("plugin npm extended-stable workflow", () => {
     expect(verify?.if).toContain("has_candidates == 'false'");
     expect(verify?.strategy?.matrix?.plugin).toContain("all_matrix");
     const readback = step(verify, "Verify complete plugin registry readback");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(readback.run).toContain('npm view "${PACKAGE_NAME}@${PACKAGE_VERSION}" version');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(readback.run).toContain('npm view "${PACKAGE_NAME}@extended-stable" version');
     expect(readback.run).toContain("OIDC-only source workflow does not mutate tags");
   });

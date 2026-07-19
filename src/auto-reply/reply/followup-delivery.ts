@@ -111,8 +111,8 @@ export function resolveFollowupDeliveryPayloads(params: {
       replyToId: payload.replyToId,
       replyToIsExplicit: Boolean(
         getReplyPayloadMetadata(payload)?.replyToIdExplicit ||
-        payload.replyToTag ||
-        payload.replyToCurrent,
+          payload.replyToTag ||
+          payload.replyToCurrent,
       ),
       replyDelivery: getReplyPayloadMetadata(payload)?.replyDelivery,
       accountId,

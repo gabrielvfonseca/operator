@@ -51,7 +51,7 @@ type RuntimeMutateConfigFileParams<T = void> = {
   mutate: (
     draft: import("../../config/types.operator.js").OperatorConfig,
     context: RuntimeConfigMutationContext,
-  ) => Promise<T | void> | T | void;
+  ) => Promise<T | undefined> | T | undefined;
 };
 type RuntimeReplaceConfigFileParams = {
   nextConfig: import("../../config/types.operator.js").OperatorConfig;
@@ -124,7 +124,7 @@ type RuntimeCreateSessionEntryParams = RuntimeCreateSessionEntryBaseParams &
         recoverMatchingInitialEntry?: never;
         afterCreate?: (
           created: RuntimeCreateSessionEntryResult,
-        ) => Promise<RuntimeCreateSessionEntryFinalPatch | void>;
+        ) => Promise<RuntimeCreateSessionEntryFinalPatch | undefined>;
       }
   );
 type RuntimeSessionStoreEntryPatchParams = RuntimeSessionStoreReadParams & {

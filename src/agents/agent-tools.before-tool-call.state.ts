@@ -10,7 +10,7 @@ const startedToolCallIds = new Set<string>();
 const trackedToolCallIds = new Set<string>();
 
 export function buildAdjustedParamsKey(params: { runId?: string; toolCallId: string }): string {
-  if (params.runId && params.runId.trim()) {
+  if (params.runId?.trim()) {
     return `${params.runId}:${params.toolCallId}`;
   }
   return params.toolCallId;

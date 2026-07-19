@@ -51,14 +51,13 @@ const logCommand: HookHandler = async (event) => {
 
     // Append to command log file
     const logFile = path.join(logDir, "commands.log");
-    const logLine =
-      JSON.stringify({
-        timestamp: event.timestamp.toISOString(),
-        action: event.action,
-        sessionKey: event.sessionKey,
-        senderId: event.context.senderId ?? "unknown",
-        source: event.context.commandSource ?? "unknown",
-      }) + "\n";
+    const logLine = `${JSON.stringify({
+      timestamp: event.timestamp.toISOString(),
+      action: event.action,
+      sessionKey: event.sessionKey,
+      senderId: event.context.senderId ?? "unknown",
+      source: event.context.commandSource ?? "unknown",
+    })}\n`;
 
     await appendRegularFile({
       filePath: logFile,

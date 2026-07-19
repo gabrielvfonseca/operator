@@ -55,6 +55,7 @@ describe("scripts/ci-docker-pull-retry.sh", () => {
       [
         "#!/bin/bash",
         "set -euo pipefail",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [ "${1:-}" = "--kill-after=1s" ]; then exit 0; fi',
         `printf "%s\\n" "$*" >${JSON.stringify(timeoutArgsPath)}`,
         'while [ "$#" -gt 0 ] && [ "$1" != "docker" ]; do shift; done',
@@ -90,6 +91,7 @@ describe("scripts/ci-docker-pull-retry.sh", () => {
       [
         "#!/bin/bash",
         "set -euo pipefail",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [ "${1:-}" = "--kill-after=1s" ]; then exit 1; fi',
         `printf "%s\\n" "$*" >${JSON.stringify(timeoutArgsPath)}`,
         'while [ "$#" -gt 0 ] && [ "$1" != "docker" ]; do shift; done',
@@ -125,6 +127,7 @@ describe("scripts/ci-docker-pull-retry.sh", () => {
       [
         "#!/bin/bash",
         "set -euo pipefail",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [ "${1:-}" = "--kill-after=1s" ]; then exit 0; fi',
         `printf "%s\\n" "gtimeout:$*" >${JSON.stringify(timeoutArgsPath)}`,
         'while [ "$#" -gt 0 ] && [ "$1" != "docker" ]; do shift; done',
@@ -179,6 +182,7 @@ describe("scripts/ci-docker-pull-retry.sh", () => {
       [
         "#!/bin/bash",
         "set -euo pipefail",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [ "${1:-}" = "--kill-after=1s" ]; then exit 0; fi',
         'while [ "$#" -gt 0 ] && [ "$1" != "docker" ]; do shift; done',
         'exec "$@"',

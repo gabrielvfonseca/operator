@@ -564,6 +564,7 @@ describe("scripts/operator-cross-os-release-checks", () => {
     const releaseChecks = readFileSync(".github/workflows/operator-release-checks.yml", "utf8");
 
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "OPERATOR_CROSS_OS_OPENAI_MODEL: ${{ inputs.openai_model || vars.OPERATOR_CROSS_OS_OPENAI_MODEL || 'openai/gpt-5.6-luna' }}",
     );
     expect(releaseChecks).toContain("openai_model: openai/gpt-5.6-luna");
@@ -721,6 +722,7 @@ describe("scripts/operator-cross-os-release-checks", () => {
     ]
       .map((filePath) => readFileSync(filePath, "utf8"))
       .join("\n");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const providerOverride = "models.providers.${params.providerConfig.extensionId}";
 
     expect(CROSS_OS_RELEASE_SMOKE_TOOLS_PROFILE).toBe("minimal");
@@ -733,6 +735,7 @@ describe("scripts/operator-cross-os-release-checks", () => {
     expect(source).toContain('"--merge"');
     expect(source).toContain(providerOverride);
     expect(source.match(/args: buildCrossOsReleaseSmokeMemorySlotConfigArgs\(\)/g)).toHaveLength(2);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).not.toContain("models.providers.${params.providerConfig.extensionId}.baseUrl");
     expect(source).toContain('"--timeout",\n    String(CROSS_OS_AGENT_TURN_TIMEOUT_SECONDS)');
     const agentTurnArgCalls = source.match(/buildReleaseAgentTurnArgs\(sessionId\)/g) ?? [];
@@ -756,7 +759,9 @@ describe("scripts/operator-cross-os-release-checks", () => {
       .map((filePath) => readFileSync(filePath, "utf8"))
       .join("\n");
     expect(source).not.toContain("Math.random()");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).not.toContain("cross-os-release-check-${params.label}-${Date.now()}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).not.toContain("native-cross-os-outbound-${Date.now()}");
   });
 
@@ -1362,6 +1367,7 @@ describe("scripts/operator-cross-os-release-checks", () => {
         [
           "-e",
           [
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             "const marker = `flush-start-${'x'.repeat(128 * 1024)}-flush-end`;",
             "process.stdout.write(marker);",
           ].join(""),

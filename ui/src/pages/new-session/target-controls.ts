@@ -36,9 +36,9 @@ export function renderAgentSelect(params: {
       <button
         id="new-session-agent-trigger"
         type="button"
-        class="new-session-page__trigger ${params.popoverHiding
-          ? "new-session-page__trigger--hiding"
-          : ""}"
+        class="new-session-page__trigger ${
+          params.popoverHiding ? "new-session-page__trigger--hiding" : ""
+        }"
         title=${t("newSession.agent")}
         aria-label="${t("newSession.agent")}: ${activeLabel}"
         aria-haspopup="dialog"
@@ -126,9 +126,9 @@ export function renderWhereSelect(params: {
       <button
         id="new-session-where-trigger"
         type="button"
-        class="new-session-page__trigger ${params.popoverHiding
-          ? "new-session-page__trigger--hiding"
-          : ""}"
+        class="new-session-page__trigger ${
+          params.popoverHiding ? "new-session-page__trigger--hiding" : ""
+        }"
         title=${t("newSession.where")}
         aria-label="${t("newSession.where")}: ${whereLabel}"
         data-worktree=${String(params.worktree)}
@@ -142,11 +142,13 @@ export function renderWhereSelect(params: {
           >${params.cloudProfileId ? icons.server : icons.monitor}</span
         >
         <span class="new-session-page__trigger-label">${whereLabel}</span>
-        ${params.worktree
-          ? html`<span class="new-session-page__target-icon" aria-hidden="true"
+        ${
+          params.worktree
+            ? html`<span class="new-session-page__target-icon" aria-hidden="true"
               >${icons.gitBranch}</span
             >`
-          : nothing}
+            : nothing
+        }
         <span class="new-session-page__trigger-chevron" aria-hidden="true"
           >${icons.chevronDown}</span
         >
@@ -167,8 +169,9 @@ export function renderWhereSelect(params: {
         params.onRestoreTrigger();
       }}
     >
-      ${params.showTargets
-        ? html`
+      ${
+        params.showTargets
+          ? html`
             <div class="new-session-page__menu-title">${t("newSession.where")}</div>
             ${renderSessionMenuItem(
               {
@@ -197,33 +200,41 @@ export function renderWhereSelect(params: {
               disabled: !params.worktreeAvailable,
               onSelect: params.onSelectCloudProfile,
             })}
-            ${params.cloudProfileId && !activeProfile
-              ? renderSessionMenuItem(
-                  {
-                    value: `cloud:${params.cloudProfileId}`,
-                    label: t("newSession.cloudWorker", { profile: params.cloudProfileId }),
-                    checked: true,
-                    disabled: true,
-                    title: t("newSession.catalogUnavailable"),
-                    onSelect: () => undefined,
-                  },
-                  params.submitting,
-                )
-              : nothing}
-            ${params.cloudProfileId && params.syncFolder
-              ? html`<div class="new-session-page__menu-note">
+            ${
+              params.cloudProfileId && !activeProfile
+                ? renderSessionMenuItem(
+                    {
+                      value: `cloud:${params.cloudProfileId}`,
+                      label: t("newSession.cloudWorker", { profile: params.cloudProfileId }),
+                      checked: true,
+                      disabled: true,
+                      title: t("newSession.catalogUnavailable"),
+                      onSelect: () => undefined,
+                    },
+                    params.submitting,
+                  )
+                : nothing
+            }
+            ${
+              params.cloudProfileId && params.syncFolder
+                ? html`<div class="new-session-page__menu-note">
                   ${t("newSession.cloudSyncsFolder", {
                     folder: folderDisplayName(params.syncFolder),
                   })}
                 </div>`
-              : nothing}
+                : nothing
+            }
           `
-        : nothing}
-      ${!params.execNode
-        ? html`
-            ${params.showTargets
-              ? html`<div class="session-menu__separator" role="separator"></div>`
-              : nothing}
+          : nothing
+      }
+      ${
+        !params.execNode
+          ? html`
+            ${
+              params.showTargets
+                ? html`<div class="session-menu__separator" role="separator"></div>`
+                : nothing
+            }
             ${renderSessionMenuItem(
               {
                 value: "worktree",
@@ -243,17 +254,20 @@ export function renderWhereSelect(params: {
               },
               params.submitting,
             )}
-            ${params.worktree
-              ? html`
+            ${
+              params.worktree
+                ? html`
                   <label class="new-session-page__menu-field">
                     <span>${t("newSession.baseBranch")}</span>
                     <input
                       type="text"
                       list="new-session-branches"
                       ?disabled=${params.submitting || params.pendingCloud}
-                      placeholder=${params.branchesLoading
-                        ? t("common.loading")
-                        : (params.branches?.defaultBranch ?? t("newSession.baseBranch"))}
+                      placeholder=${
+                        params.branchesLoading
+                          ? t("common.loading")
+                          : (params.branches?.defaultBranch ?? t("newSession.baseBranch"))
+                      }
                       .value=${params.baseRef}
                       @input=${(event: Event) =>
                         params.onBaseRefInput((event.target as HTMLInputElement).value.trim())}
@@ -276,9 +290,11 @@ export function renderWhereSelect(params: {
                     />
                   </label>
                 `
-              : nothing}
+                : nothing
+            }
           `
-        : nothing}
+          : nothing
+      }
     </wa-popover>
   `;
 }
@@ -310,14 +326,12 @@ export function renderFolderSelect(params: {
       <button
         id="new-session-folder-trigger"
         type="button"
-        class="new-session-page__trigger ${params.browseAvailable
-          ? ""
-          : "new-session-page__trigger--disabled"} ${params.popoverHiding
-          ? "new-session-page__trigger--hiding"
-          : ""}"
-        title=${params.browseAvailable
-          ? t("newSession.browse")
-          : t("newSession.browseRequiresAdmin")}
+        class="new-session-page__trigger ${
+          params.browseAvailable ? "" : "new-session-page__trigger--disabled"
+        } ${params.popoverHiding ? "new-session-page__trigger--hiding" : ""}"
+        title=${
+          params.browseAvailable ? t("newSession.browse") : t("newSession.browseRequiresAdmin")
+        }
         aria-label="${t("newSession.folder")}: ${label}"
         aria-haspopup="dialog"
         aria-expanded=${String(params.browserOpen)}

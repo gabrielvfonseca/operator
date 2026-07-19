@@ -89,7 +89,7 @@ describe("chunkDiscordText", () => {
     // A line that both closes the fence and carries a long tail must still reserve closing-fence
     // space; otherwise a mid-line flush appended "```" and overflowed maxChars (e.g. 2004 > 2000).
     for (let pad = 1990; pad <= 2000; pad++) {
-      const text = "hi\n```lang\n```" + "z".repeat(pad);
+      const text = `hi\n\`\`\`lang\n\`\`\`${"z".repeat(pad)}`;
       for (const chunk of chunkDiscordText(text, { maxChars: 2000, maxLines: 100 })) {
         expect(chunk.length).toBeLessThanOrEqual(2000);
       }

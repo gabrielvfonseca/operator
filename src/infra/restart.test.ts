@@ -34,8 +34,9 @@ vi.mock("../config/paths.js", () => ({
     env.OPERATOR_STATE_DIR ?? "/tmp/operator-state",
 }));
 
-const { cleanStaleGatewayProcessesSync, findGatewayPidsOnPortSync } =
-  await import("./restart-stale-pids.js");
+const { cleanStaleGatewayProcessesSync, findGatewayPidsOnPortSync } = await import(
+  "./restart-stale-pids.js"
+);
 const { triggerOperatorRestart } = await import("./restart.js");
 
 const envSnapshot = captureFullEnv();

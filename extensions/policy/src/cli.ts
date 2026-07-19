@@ -297,14 +297,14 @@ function writePolicyCheckReport(
 ): void {
   if (options.json === true || !process.stdout.isTTY) {
     runtime.writeStdout(
-      JSON.stringify({
+      `${JSON.stringify({
         ok: report.ok,
         attestation: report.attestation,
         evidence: report.evidence,
         checksRun: report.checksRun,
         checksSkipped: report.checksSkipped,
         findings: report.findings,
-      }) + "\n",
+      })}\n`,
     );
   } else if (report.findings.length === 0) {
     const policyHash = report.attestation?.policy?.hash ?? "missing";
@@ -331,7 +331,7 @@ function writePolicyConformanceReport(
   runtime: PolicyCommandRuntime,
 ): void {
   if (options.json === true || !process.stdout.isTTY) {
-    runtime.writeStdout(JSON.stringify(report) + "\n");
+    runtime.writeStdout(`${JSON.stringify(report)}\n`);
     return;
   }
   if (report.findings.length === 0) {
@@ -356,13 +356,13 @@ function writePolicyWatchReport(
 ): void {
   if (options.json === true || !process.stdout.isTTY) {
     runtime.writeStdout(
-      JSON.stringify({
+      `${JSON.stringify({
         status,
         ok: report.ok,
         expectedAttestationHash: report.expectedAttestationHash,
         attestation: report.attestation,
         findings: report.findings,
-      }) + "\n",
+      })}\n`,
     );
     return;
   }

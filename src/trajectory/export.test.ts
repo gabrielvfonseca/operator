@@ -525,7 +525,7 @@ describe("exportTrajectoryBundle", () => {
     );
     fs.writeFileSync(
       runtimeFile,
-      [
+      `${[
         {
           traceSchema: "operator-trajectory",
           schemaVersion: 1,
@@ -594,7 +594,7 @@ describe("exportTrajectoryBundle", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf8",
     );
 
@@ -664,7 +664,7 @@ describe("exportTrajectoryBundle", () => {
     writeSimpleSessionFile(sessionFile);
     fs.writeFileSync(
       runtimeFile,
-      [
+      `${[
         "",
         JSON.stringify({}),
         "",
@@ -692,7 +692,7 @@ describe("exportTrajectoryBundle", () => {
           sourceSeq: 1,
           sessionId: "session-1",
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf8",
     );
 
@@ -750,7 +750,7 @@ describe("exportTrajectoryBundle", () => {
     };
     fs.writeFileSync(
       sessionFile,
-      [
+      `${[
         JSON.stringify(header),
         "null",
         '{"type":',
@@ -762,7 +762,7 @@ describe("exportTrajectoryBundle", () => {
         }),
         JSON.stringify(userEntry),
         JSON.stringify(assistantEntry),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf8",
     );
 
@@ -802,7 +802,7 @@ describe("exportTrajectoryBundle", () => {
     const outputDir = path.join(tmpDir, "bundle");
     fs.writeFileSync(
       sessionFile,
-      [
+      `${[
         JSON.stringify({
           type: "session",
           version: 3,
@@ -817,7 +817,7 @@ describe("exportTrajectoryBundle", () => {
           timestamp: "2026-04-01T05:46:40.000Z",
           message: assistantMessage([{ type: "text", text: "reachable tail" }]),
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf8",
     );
 
@@ -846,7 +846,7 @@ describe("exportTrajectoryBundle", () => {
     const outputDir = path.join(tmpDir, "bundle");
     fs.writeFileSync(
       sessionFile,
-      [
+      `${[
         {
           type: "session",
           version: 3,
@@ -888,7 +888,7 @@ describe("exportTrajectoryBundle", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf8",
     );
 
@@ -910,7 +910,7 @@ describe("exportTrajectoryBundle", () => {
     const outputDir = path.join(tmpDir, "bundle");
     fs.writeFileSync(
       sessionFile,
-      [
+      `${[
         {
           type: "session",
           version: 3,
@@ -942,7 +942,7 @@ describe("exportTrajectoryBundle", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf8",
     );
 
@@ -964,7 +964,7 @@ describe("exportTrajectoryBundle", () => {
     const outputDir = path.join(tmpDir, "bundle");
     fs.writeFileSync(
       sessionFile,
-      [
+      `${[
         {
           type: "session",
           version: 3,
@@ -1002,7 +1002,7 @@ describe("exportTrajectoryBundle", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf8",
     );
 
@@ -1027,7 +1027,7 @@ describe("exportTrajectoryBundle", () => {
     const outputDir = path.join(tmpDir, "bundle");
     fs.writeFileSync(
       sessionFile,
-      [
+      `${[
         {
           type: "session",
           version: 3,
@@ -1057,7 +1057,7 @@ describe("exportTrajectoryBundle", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf8",
     );
 
@@ -1078,7 +1078,7 @@ describe("exportTrajectoryBundle", () => {
     const outputDir = path.join(tmpDir, "bundle");
     fs.writeFileSync(
       sessionFile,
-      [
+      `${[
         {
           type: "session",
           version: 3,
@@ -1122,7 +1122,7 @@ describe("exportTrajectoryBundle", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf8",
     );
 
@@ -1148,7 +1148,7 @@ describe("exportTrajectoryBundle", () => {
     const outputDir = path.join(tmpDir, "bundle");
     fs.writeFileSync(
       sessionFile,
-      [
+      `${[
         JSON.stringify({
           type: "session",
           version: 3,
@@ -1170,7 +1170,7 @@ describe("exportTrajectoryBundle", () => {
           timestamp: "2026-04-01T05:46:41.000Z",
           message: assistantMessage([{ type: "text", text: "cycle b" }]),
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf8",
     );
 

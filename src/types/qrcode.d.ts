@@ -39,6 +39,7 @@ declare module "qrcode" {
   /** Create an in-memory QR symbol. */
   export function create(text: string, options?: QrCodeRenderOptions): QrCodeSymbol;
   /** Render a QR code to a string format. */
+  // biome-ignore lint/suspicious/noShadowRestrictedNames: migrated from oxlint
   export function toString(text: string, options?: QrCodeRenderOptions): Promise<string>;
   /** Render a QR code to a data URL. */
   export function toDataURL(text: string, options?: QrCodeRenderOptions): Promise<string>;

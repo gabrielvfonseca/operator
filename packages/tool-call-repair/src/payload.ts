@@ -433,7 +433,7 @@ export function scanPlainTextToolCall(
   const overCap = (payload?: PlainTextJsonToolCallSpan) =>
     Boolean(
       payload &&
-      utf8ByteLengthWithinLimit(text, payload.start, payload.end, maxPayloadBytes) === null,
+        utf8ByteLengthWithinLimit(text, payload.start, payload.end, maxPayloadBytes) === null,
     );
   const xmlOverCap = overCap(xml.payload);
   const jsonOverCap = overCap(jsonValue.payload);

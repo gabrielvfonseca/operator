@@ -19,39 +19,39 @@ export function sessionMatchesExpectedTranscriptTurn<T extends { entry: SessionE
   const expectedState = expected.expectedSessionState;
   return Boolean(
     selected &&
-    selected.entry.sessionId === expected.expectedSessionId &&
-    (expected.expectedLifecycleRevision === undefined ||
-      selected.entry.lifecycleRevision === expected.expectedLifecycleRevision) &&
-    (expectedState === undefined ||
-      (selected.entry.abortedLastRun === expectedState.abortedLastRun &&
-        selected.entry.restartRecoveryBeforeAgentReplyState ===
-          expectedState.restartRecoveryBeforeAgentReplyState &&
-        selected.entry.restartRecoveryDeliveryReceiptState ===
-          expectedState.restartRecoveryDeliveryReceiptState &&
-        selected.entry.restartRecoveryDeliveryToolCallId ===
-          expectedState.restartRecoveryDeliveryToolCallId &&
-        selected.entry.restartRecoveryDeliveryRequestFingerprint ===
-          expectedState.restartRecoveryDeliveryRequestFingerprint &&
-        selected.entry.restartRecoveryDeliveryRunId ===
-          expectedState.restartRecoveryDeliveryRunId &&
-        selected.entry.restartRecoveryDeliverySourceRunId ===
-          expectedState.restartRecoveryDeliverySourceRunId &&
-        selected.entry.restartRecoveryRequesterAccountId ===
-          expectedState.restartRecoveryRequesterAccountId &&
-        selected.entry.restartRecoveryRequesterSenderId ===
-          expectedState.restartRecoveryRequesterSenderId &&
-        selected.entry.restartRecoverySameChannelThreadRequired ===
-          expectedState.restartRecoverySameChannelThreadRequired &&
-        selected.entry.restartRecoverySourceIngress ===
-          expectedState.restartRecoverySourceIngress &&
-        selected.entry.restartRecoverySourceReplyDeliveryMode ===
-          expectedState.restartRecoverySourceReplyDeliveryMode &&
-        sameRestartRecoveryTerminalRunIds(
-          selected.entry.restartRecoveryTerminalRunIds,
-          expectedState.restartRecoveryTerminalRunIds,
-        ) &&
-        selected.entry.status === expectedState.status &&
-        selected.entry.updatedAt === expectedState.updatedAt)),
+      selected.entry.sessionId === expected.expectedSessionId &&
+      (expected.expectedLifecycleRevision === undefined ||
+        selected.entry.lifecycleRevision === expected.expectedLifecycleRevision) &&
+      (expectedState === undefined ||
+        (selected.entry.abortedLastRun === expectedState.abortedLastRun &&
+          selected.entry.restartRecoveryBeforeAgentReplyState ===
+            expectedState.restartRecoveryBeforeAgentReplyState &&
+          selected.entry.restartRecoveryDeliveryReceiptState ===
+            expectedState.restartRecoveryDeliveryReceiptState &&
+          selected.entry.restartRecoveryDeliveryToolCallId ===
+            expectedState.restartRecoveryDeliveryToolCallId &&
+          selected.entry.restartRecoveryDeliveryRequestFingerprint ===
+            expectedState.restartRecoveryDeliveryRequestFingerprint &&
+          selected.entry.restartRecoveryDeliveryRunId ===
+            expectedState.restartRecoveryDeliveryRunId &&
+          selected.entry.restartRecoveryDeliverySourceRunId ===
+            expectedState.restartRecoveryDeliverySourceRunId &&
+          selected.entry.restartRecoveryRequesterAccountId ===
+            expectedState.restartRecoveryRequesterAccountId &&
+          selected.entry.restartRecoveryRequesterSenderId ===
+            expectedState.restartRecoveryRequesterSenderId &&
+          selected.entry.restartRecoverySameChannelThreadRequired ===
+            expectedState.restartRecoverySameChannelThreadRequired &&
+          selected.entry.restartRecoverySourceIngress ===
+            expectedState.restartRecoverySourceIngress &&
+          selected.entry.restartRecoverySourceReplyDeliveryMode ===
+            expectedState.restartRecoverySourceReplyDeliveryMode &&
+          sameRestartRecoveryTerminalRunIds(
+            selected.entry.restartRecoveryTerminalRunIds,
+            expectedState.restartRecoveryTerminalRunIds,
+          ) &&
+          selected.entry.status === expectedState.status &&
+          selected.entry.updatedAt === expectedState.updatedAt)),
   );
 }
 

@@ -2093,9 +2093,7 @@ describe("handleToolExecutionEnd timeout metadata", () => {
       inlineToolResultsAllowed: false,
     });
 
-    expect(payloads[0]?.text).toBe(
-      "⚠️ 🛠️ Exec failed: `python3 audit.py (in /tmp/build)` (exit 1)",
-    );
+    expect(payloads[0]?.text).toBe("⚠️ 🛠️ Exec failed: `python3 audit.py (in /tmp/build)` (exit 1)");
   });
 
   it("preserves compact cwd labels in semantic raw exec metadata payload warnings", async () => {

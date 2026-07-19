@@ -1235,8 +1235,8 @@ export function collectDatabaseFirstLegacyStoreViolations(
           (parent.thenStatement === node || parent.elseStatement === node)) ||
           (ts.isIterationStatement(parent, false) && parent.statement === node) ||
           (ts.isTryStatement(parent) && parent.tryBlock === node))) ||
-      ts.isCaseBlock(node) ||
-      ts.isCatchClause(node),
+        ts.isCaseBlock(node) ||
+        ts.isCatchClause(node),
     );
   }
 
@@ -1481,9 +1481,7 @@ export function collectDatabaseFirstLegacyStoreViolations(
     if (!ts.isIdentifier(callee)) {
       return null;
     }
-    return aliases && aliases.has(callee.text)
-      ? aliases.get(callee.text)
-      : resolveFsWriteAlias(callee.text);
+    return aliases?.has(callee.text) ? aliases.get(callee.text) : resolveFsWriteAlias(callee.text);
   }
 
   function fsSafeStoreFactoryAliasName(expression) {
@@ -1686,9 +1684,9 @@ export function collectDatabaseFirstLegacyStoreViolations(
   function isFsModuleTypeNode(type) {
     return Boolean(
       type &&
-      /\btypeof\s+import\s*\(\s*["'](?:node:fs|node:fs\/promises|fs|fs\/promises)["']\s*\)/u.test(
-        type.getText(sourceFile),
-      ),
+        /\btypeof\s+import\s*\(\s*["'](?:node:fs|node:fs\/promises|fs|fs\/promises)["']\s*\)/u.test(
+          type.getText(sourceFile),
+        ),
     );
   }
 
@@ -3688,7 +3686,7 @@ export function collectDatabaseFirstLegacyStoreViolations(
 
     function resolveParameterPropertyUse(objectName, propertyName) {
       const key = `${objectName}.${propertyName}`;
-      let baseUse = undefined;
+      let baseUse;
       for (let index = parameterPropertyUseScopes.length - 1; index >= 0; index--) {
         if (parameterObjectShadowScopes[index].has(objectName)) {
           return null;
@@ -8090,9 +8088,7 @@ export function collectDatabaseFirstLegacyStoreViolations(
     if (!wrapperNode || !parameter) {
       return initializer;
     }
-    const parameterPosition = wrapperNode.parameters.findIndex(
-      (candidate) => candidate === parameter,
-    );
+    const parameterPosition = wrapperNode.parameters.indexOf(parameter);
     if (parameterPosition <= 0) {
       return options.allowLexicalIdentifierDefault === false &&
         expressionContainsIdentifier(unwrapExpression(initializer))

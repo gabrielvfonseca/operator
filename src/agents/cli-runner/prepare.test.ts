@@ -49,7 +49,7 @@ import { setCliRunnerPrepareTestDeps } from "./prepare.test-support.js";
 import type { RunCliAgentParams } from "./types.js";
 
 type McpLoopbackClientGrant = ReturnType<
-  (typeof import("../../gateway/mcp-grant-store.js"))["mintMcpLoopbackClientGrant"]
+  typeof import("../../gateway/mcp-grant-store.js")["mintMcpLoopbackClientGrant"]
 >;
 
 const getRuntimeConfigMock = vi.hoisted(() => vi.fn(() => ({})));
@@ -128,7 +128,9 @@ function createTestMcpLoopbackServerConfig(port: number) {
         url: `http://127.0.0.1:${port}/mcp`,
         alwaysLoad: true,
         headers: {
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           Authorization: "Bearer ${OPERATOR_MCP_TOKEN}",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           "x-operator-cli-capture-key": "${OPERATOR_MCP_CLI_CAPTURE_KEY}",
         },
       },
@@ -1540,7 +1542,7 @@ describe("prepareCliRunContext", () => {
         expect(context.systemPrompt).toContain("## Bootstrap Pending");
         expect(context.systemPrompt).toContain(expectedText);
         if (nativeToolMode === "always-on") {
-          expect(context.systemPrompt).toContain("## " + bootstrapPath);
+          expect(context.systemPrompt).toContain(`## ${bootstrapPath}`);
           expect(context.systemPrompt).toContain("Complete the first-run ritual");
           expect(context.systemPromptReport.injectedWorkspaceFiles).toEqual([
             expect.objectContaining({
@@ -1550,7 +1552,7 @@ describe("prepareCliRunContext", () => {
             }),
           ]);
         } else {
-          expect(context.systemPrompt).not.toContain("## " + bootstrapPath);
+          expect(context.systemPrompt).not.toContain(`## ${bootstrapPath}`);
           expect(context.systemPrompt).not.toContain("Complete the first-run ritual");
           expect(context.systemPromptReport.injectedWorkspaceFiles).toEqual([]);
         }

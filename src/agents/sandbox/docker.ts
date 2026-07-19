@@ -35,6 +35,7 @@ export async function execDockerRaw(
   args: string[],
   opts?: ExecDockerRawOptions,
 ): Promise<ExecDockerRawResult> {
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let result;
   try {
     result = await spawnCommand(["docker", ...args], {

@@ -12,8 +12,9 @@ export async function cleanupRetainedPluginInstallGenerations(params: {
     const records = (
       await import("../plugins/installed-plugin-index-records.js")
     ).loadInstalledPluginIndexInstallRecordsSync();
-    const { cleanupRetainedManagedNpmInstallGenerations } =
-      await import("../plugins/managed-npm-retention.js");
+    const { cleanupRetainedManagedNpmInstallGenerations } = await import(
+      "../plugins/managed-npm-retention.js"
+    );
     const removedGenerations = await cleanupRetainedManagedNpmInstallGenerations({
       activeInstallPaths: Object.values(records).flatMap((record) =>
         record.installPath ? [record.installPath] : [],

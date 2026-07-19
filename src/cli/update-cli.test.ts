@@ -421,8 +421,9 @@ const {
   resolveExtendedStablePackage,
   resolveNpmChannelTag,
 } = await import("../infra/update-check.js");
-const { CONTROL_PLANE_UPDATE_SENTINEL_META_ENV } =
-  await import("../infra/update-control-plane-sentinel.js");
+const { CONTROL_PLANE_UPDATE_SENTINEL_META_ENV } = await import(
+  "../infra/update-control-plane-sentinel.js"
+);
 const { runCommandWithTimeout, runExec } = await import("../process/exec.js");
 const { runDaemonRestart, runDaemonInstall } = await import("./daemon-cli.js");
 const { doctorCommand } = await import("../commands/doctor.js");
@@ -554,6 +555,7 @@ describe("update-cli", () => {
       expectDefined(repo, "repo test invariant")
         .split("/")
         .every((part) => /^[^\s/:@]+$/u.test(part));
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let isHttpGitUrl;
     try {
       const url = new URL(target);
@@ -752,10 +754,13 @@ describe("update-cli", () => {
     }) as UpdateRunResult;
 
   const mockGitUpdateAfterMutation = (result = makeOkUpdateResult({ mode: "git" })) => {
-    const preparations: Array<{
-      allowGatewayServiceRepair?: boolean;
-      allowGatewayActivation?: boolean;
-    } | void> = [];
+    const preparations: Array<
+      | {
+          allowGatewayServiceRepair?: boolean;
+          allowGatewayActivation?: boolean;
+        }
+      | undefined
+    > = [];
     vi.mocked(runGatewayUpdate).mockImplementationOnce(async (opts) => {
       preparations.push(await opts?.beforeGitMutation?.());
       return result;
@@ -4385,6 +4390,7 @@ describe("update-cli", () => {
       };
     });
 
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let writes;
     try {
       await updateCommand({ yes: true, json: true });
@@ -6068,6 +6074,7 @@ describe("update-cli", () => {
       channels: {
         whatsapp: {
           enabled: true,
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           token: "${WHATSAPP_TOKEN}",
         },
       },
@@ -6131,6 +6138,7 @@ describe("update-cli", () => {
         }
       | undefined;
     expect(syncConfig?.channels?.whatsapp?.token).toBe("resolved-secret");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(lastWrite?.nextConfig?.channels?.whatsapp?.token).toBe("${WHATSAPP_TOKEN}");
   });
 
@@ -6141,6 +6149,7 @@ describe("update-cli", () => {
     const includedChannels = {
       whatsapp: {
         enabled: true,
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         token: "${WHATSAPP_TOKEN}",
       },
     };

@@ -12,8 +12,9 @@ vi.mock("../infra/device-bootstrap.js", () => ({
 }));
 
 const { encodePairingSetupCode, resolvePairingSetupFromConfig } = await import("./setup-code.js");
-const { issueDeviceBootstrapToken: issueDeviceBootstrapTokenMock } =
-  await import("../infra/device-bootstrap.js");
+const { issueDeviceBootstrapToken: issueDeviceBootstrapTokenMock } = await import(
+  "../infra/device-bootstrap.js"
+);
 
 describe("pairing setup code", () => {
   type ResolvedSetup = Awaited<ReturnType<typeof resolvePairingSetupFromConfig>>;
@@ -456,6 +457,7 @@ describe("pairing setup code", () => {
     },
     {
       name: "does not treat env-template token as plaintext in inferred mode",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       token: "${MISSING_GW_TOKEN}",
     },
   ] as const)("$name", async ({ token }) => {

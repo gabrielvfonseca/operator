@@ -546,7 +546,7 @@ describe("resolveMatrixAccount", () => {
 
   it("falls back to stored credentials when an access-token-only account omits userId", () => {
     loadMatrixCredentialsMock.mockImplementation(
-      (env?: NodeJS.ProcessEnv, accountId?: string | null) =>
+      (_env?: NodeJS.ProcessEnv, accountId?: string | null) =>
         accountId === "ops"
           ? {
               homeserver: "https://matrix.example.org",

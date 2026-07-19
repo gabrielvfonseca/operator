@@ -159,10 +159,10 @@ export function hasForwardedRequestHeaders(req?: IncomingMessage): boolean {
 
   return Boolean(
     headers.forwarded ||
-    headers["x-real-ip"] ||
-    Object.keys(headers).some((header) =>
-      normalizeLowercaseStringOrEmpty(header).startsWith("x-forwarded-"),
-    ),
+      headers["x-real-ip"] ||
+      Object.keys(headers).some((header) =>
+        normalizeLowercaseStringOrEmpty(header).startsWith("x-forwarded-"),
+      ),
   );
 }
 
@@ -205,8 +205,8 @@ function hasTailscaleProxyHeaders(req?: IncomingMessage): boolean {
   }
   return Boolean(
     req.headers["x-forwarded-for"] &&
-    req.headers["x-forwarded-proto"] &&
-    req.headers["x-forwarded-host"],
+      req.headers["x-forwarded-proto"] &&
+      req.headers["x-forwarded-host"],
   );
 }
 

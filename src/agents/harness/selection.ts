@@ -682,9 +682,9 @@ function resolveSenderScopedGroupToolPolicy(
 function hasSenderIdentity(params: PluginHarnessToolPolicyContext): boolean {
   return Boolean(
     params.senderId?.trim() ||
-    params.senderName?.trim() ||
-    params.senderUsername?.trim() ||
-    params.senderE164?.trim(),
+      params.senderName?.trim() ||
+      params.senderUsername?.trim() ||
+      params.senderE164?.trim(),
   );
 }
 

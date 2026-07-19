@@ -28,6 +28,7 @@ describe("OpenClaw Docker E2E scripts", () => {
     expect(source).toContain("function resolveDefaultModel(config: OpenClawConfig)");
     expect(source).toContain("resolveDefaultModel(config) === spec.model");
     expect(source).toContain("Fake Claude planner selected an inference-backed typed setup.");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).toContain("[openclaw] interpreted: ${plannerCommand}");
     expect(source).toContain("expected one fuzzy setup planner prompt");
     expect(source).toContain("OpenClaw did not enable Discord");

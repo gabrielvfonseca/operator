@@ -28,10 +28,10 @@ function main(argv = process.argv.slice(2)): number {
 
   if (options.format === "shell") {
     process.stdout.write(
-      [
+      `${[
         `OPERATOR_ANDROID_VERSION_NAME=${version.canonicalVersion}`,
         `OPERATOR_ANDROID_VERSION_CODE=${version.versionCode}`,
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
   } else {
     process.stdout.write(`${JSON.stringify(version, null, 2)}\n`);

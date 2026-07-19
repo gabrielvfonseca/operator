@@ -235,7 +235,10 @@ export type API = {
   sendSeenEvent(messages: DeliveryEventMessages, type?: number): Promise<unknown>;
 };
 
-type ZaloCtor = new (options?: { logging?: boolean; selfListen?: boolean }) => {
+type ZaloCtor = new (options?: {
+  logging?: boolean;
+  selfListen?: boolean;
+}) => {
   login(credentials: Credentials): Promise<API>;
   loginQR(
     options?: { userAgent?: string; language?: string; qrPath?: string },

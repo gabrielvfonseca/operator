@@ -348,7 +348,7 @@ async function handleCodexConversationBindingResolved(
     return;
   }
   const data = readCodexConversationBindingDataRecord(event.request.data ?? {});
-  if (!data || data.kind !== "codex-app-server-session") {
+  if (data?.kind !== "codex-app-server-session") {
     return;
   }
   const identity = conversationBindingIdentity(data);

@@ -246,10 +246,9 @@ describe("undici env proxy semantics", () => {
       unknown
     >;
 
-    const proxyTlsSettings = getOwnSymbolValue(
-      httpsProxyAgentWithProxyTls,
-      "proxy tls settings",
-    ) as { autoSelectFamily?: boolean; family?: number } | undefined;
+    const proxyTlsSettings = getOwnSymbolValue(httpsProxyAgentWithProxyTls, "proxy tls settings") as
+      | { autoSelectFamily?: boolean; family?: number }
+      | undefined;
     expect(proxyTlsSettings?.family).toBe(connect.family);
     expect(proxyTlsSettings?.autoSelectFamily).toBe(connect.autoSelectFamily);
   });

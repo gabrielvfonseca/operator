@@ -105,7 +105,7 @@ let cleanStaleGatewayProcessesSync: typeof import("./restart-stale-pids.js").cle
 let findGatewayPidsOnPortSync: typeof import("./restart-stale-pids.js").findGatewayPidsOnPortSync;
 
 function lsofOutput(entries: Array<{ pid: number; cmd: string }>): string {
-  return entries.map(({ pid, cmd }) => `p${pid}\nc${cmd}`).join("\n") + "\n";
+  return `${entries.map(({ pid, cmd }) => `p${pid}\nc${cmd}`).join("\n")}\n`;
 }
 
 type MockLsofResult = {
@@ -195,8 +195,9 @@ function expectWarningContaining(text: string): void {
 
 describe.skipIf(isWindows)("restart-stale-pids", () => {
   beforeAll(async () => {
-    ({ cleanStaleGatewayProcessesSync, findGatewayPidsOnPortSync } =
-      await import("./restart-stale-pids.js"));
+    ({ cleanStaleGatewayProcessesSync, findGatewayPidsOnPortSync } = await import(
+      "./restart-stale-pids.js"
+    ));
   });
 
   beforeEach(() => {

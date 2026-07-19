@@ -37,7 +37,7 @@ function writeV1File(dir: string): string {
     timestamp: "2026-01-01T00:00:02.000Z",
     message: { role: "assistant", content: "second" },
   };
-  writeFileSync(file, [header, first, second].map((e) => JSON.stringify(e)).join("\n") + "\n");
+  writeFileSync(file, `${[header, first, second].map((e) => JSON.stringify(e)).join("\n")}\n`);
   return file;
 }
 
@@ -84,7 +84,7 @@ describe("v1 session migration id assignment", () => {
     };
     writeFileSync(
       file,
-      [
+      `${[
         {
           type: "session",
           version: 1,
@@ -108,7 +108,7 @@ describe("v1 session migration id assignment", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
     );
 
     const sm = SessionManager.open(file, dir);

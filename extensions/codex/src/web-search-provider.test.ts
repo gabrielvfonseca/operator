@@ -8,12 +8,7 @@ import type { CodexServerNotification, JsonValue } from "./app-server/protocol.j
 import { createCodexWebSearchProvider } from "./web-search-provider.js";
 
 function codexModel(
-  options: {
-    id?: string;
-    model?: string;
-    inputModalities?: string[];
-    isDefault?: boolean;
-  } = {},
+  options: { id?: string; model?: string; inputModalities?: string[]; isDefault?: boolean } = {},
 ) {
   const id = options.id ?? "gpt-5.5";
   return {

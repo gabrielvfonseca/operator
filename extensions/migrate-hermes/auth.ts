@@ -227,7 +227,7 @@ async function readCodexAuthProfilesFromSource(
       candidates.length === 1 ? "hermes-import" : `hermes-import-${index + 1}`;
     const result = buildAuthResult(candidate, fallbackProfileName);
     const profile = result.profiles[0];
-    if (!profile || profile.credential.type !== "oauth") {
+    if (profile?.credential.type !== "oauth") {
       continue;
     }
     const entry = {

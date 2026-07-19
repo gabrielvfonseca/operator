@@ -239,8 +239,7 @@ export async function runSessionsSendA2AFlow(params: {
     });
     if (
       announceTarget &&
-      announceReply &&
-      announceReply.trim() &&
+      announceReply?.trim() &&
       !isAnnounceSkip(announceReply) &&
       !isNonDeliverableSessionsReply(announceReply)
     ) {

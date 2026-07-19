@@ -261,8 +261,7 @@ describeControlUiE2e("Control UI device-token reconnect E2E", () => {
     ]);
     const revoke = await wilfredNodes.gateway.waitForRequest("device.token.revoke");
     expect(revoke.params).toEqual({ deviceId, role: "operator" });
-    const wilfredStoreKey =
-      `openclaw.device.auth.v1:` + normalizeGatewayCredentialScope(WILFRED_GATEWAY_URL);
+    const wilfredStoreKey = `openclaw.device.auth.v1:${normalizeGatewayCredentialScope(WILFRED_GATEWAY_URL)}`;
     await expect
       .poll(() =>
         wilfredNodes.page.evaluate((key) => {

@@ -504,6 +504,7 @@ export function createDirFetchTool(): AnyAgentTool {
         throw new Error(`dir.fetch UNCOMPRESSED_TOO_LARGE: ${reason}`);
       };
       for (const { relPath, absPath } of walked) {
+        // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
         let size;
         try {
           const st = await fs.stat(absPath);

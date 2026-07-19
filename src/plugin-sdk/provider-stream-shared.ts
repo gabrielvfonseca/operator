@@ -603,7 +603,7 @@ function wrapThinkingOnlyFinalTextStream(
 
   const originalAsyncIterator = stream[Symbol.asyncIterator].bind(stream);
   (stream as { [Symbol.asyncIterator]: typeof originalAsyncIterator })[Symbol.asyncIterator] =
-    function () {
+    () => {
       const iterator = originalAsyncIterator();
       return {
         async next() {

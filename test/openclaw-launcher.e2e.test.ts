@@ -52,6 +52,7 @@ async function addCompileCacheProbe(fixtureRoot: string): Promise<void> {
     [
       'import module from "node:module";',
       "process.stdout.write(",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '  `${module.getCompileCacheDir?.() ? "cache:enabled" : "cache:disabled"};respawn:${process.env.OPENCLAW_COMPILE_CACHE_DISABLED_RESPAWNED ?? "0"}`',
       ");",
     ].join("\n"),
@@ -372,10 +373,12 @@ describe("openclaw launcher", () => {
       [
         "const result = {",
         "  direct: isDirectModuleNotFoundError(",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "    { message: `Cannot find module './dist/warning-filter.js' from '${fileURLToPath(import.meta.url)}'` },",
         "    './dist/warning-filter.js',",
         "  ),",
         "  directWithCode: isDirectModuleNotFoundError(",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "    { code: 'ERR_MODULE_NOT_FOUND', message: `Cannot find module './dist/warning-filter.js' from '${fileURLToPath(import.meta.url)}'` },",
         "    './dist/warning-filter.js',",
         "  ),",
@@ -392,10 +395,12 @@ describe("openclaw launcher", () => {
         "    './dist/warning-filter.js',",
         "  ),",
         "  nonModulePath: isDirectModuleNotFoundError(",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "    { message: `Cannot find module '${fileURLToPath(new URL('./dist/warning-filter.js', import.meta.url))}'` },",
         "    './dist/warning-filter.js',",
         "  ),",
         "};",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "process.stdout.write(`${JSON.stringify(result)}\\n`);",
       ].join("\n"),
     );

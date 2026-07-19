@@ -19,8 +19,9 @@ let loadOutboundMediaFromUrl: OutboundMediaModule["loadOutboundMediaFromUrl"];
 beforeAll(async () => {
   const webMedia = await import("./web-media.js");
   vi.spyOn(webMedia, "loadWebMedia").mockImplementation(loadWebMediaMock);
-  ({ createHostedOutboundMediaStore, loadOutboundMediaFromUrl } =
-    await import("./outbound-media.js"));
+  ({ createHostedOutboundMediaStore, loadOutboundMediaFromUrl } = await import(
+    "./outbound-media.js"
+  ));
 });
 
 afterAll(() => {

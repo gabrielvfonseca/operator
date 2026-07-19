@@ -49,11 +49,7 @@ async function settleLifecycleWork(): Promise<void> {
 }
 
 async function startLifecycleMonitor(
-  options: {
-    useWebhook?: boolean;
-    webhookSecret?: string;
-    webhookUrl?: string;
-  } = {},
+  options: { useWebhook?: boolean; webhookSecret?: string; webhookUrl?: string } = {},
 ) {
   const { monitorZaloProvider } = await import("./monitor.js");
   const abort = new AbortController();

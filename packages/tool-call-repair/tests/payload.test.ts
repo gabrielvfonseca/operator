@@ -172,7 +172,7 @@ describe("stripPlainTextToolCallBlocks", () => {
 
   it("advances once through a far-invalid XML parameter", () => {
     const repeats = 256;
-    const raw = "<function=read><parameter=x>x\n".repeat(repeats) + "</parameter>X";
+    const raw = `${"<function=read><parameter=x>x\n".repeat(repeats)}</parameter>X`;
     const tracked = trackStringOperations(raw);
 
     expect(stripPlainTextToolCallBlocks(tracked.text)).toBe(raw);
@@ -181,7 +181,7 @@ describe("stripPlainTextToolCallBlocks", () => {
 
   it("advances once through a far-invalid named JSON payload", () => {
     const repeats = 256;
-    const raw = "[read]\n{\n".repeat(repeats) + "}".repeat(repeats) + "[/wrong]";
+    const raw = `${"[read]\n{\n".repeat(repeats) + "}".repeat(repeats)}[/wrong]`;
     const tracked = trackStringOperations(raw);
 
     expect(stripPlainTextToolCallBlocks(tracked.text)).toBe(raw);

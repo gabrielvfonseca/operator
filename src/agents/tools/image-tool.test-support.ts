@@ -23,7 +23,7 @@ import type {
 } from "./image-tool.helpers.js";
 import "./image-tool.js";
 
-type ResolveModelAsync = (typeof import("../embedded-agent-runner/model.js"))["resolveModelAsync"];
+type ResolveModelAsync = typeof import("../embedded-agent-runner/model.js")["resolveModelAsync"];
 
 type ImageToolLoadWebMediaOptions = {
   maxBytes?: number;
@@ -32,15 +32,13 @@ type ImageToolLoadWebMediaOptions = {
   imageCompression?: ImageCompressionPolicy;
   localRoots?: readonly string[] | "any";
   inboundRoots?: readonly string[];
-  ssrfPolicy?: ReturnType<
-    (typeof import("./media-tool-shared.js"))["resolveRemoteMediaSsrfPolicy"]
-  >;
+  ssrfPolicy?: ReturnType<typeof import("./media-tool-shared.js")["resolveRemoteMediaSsrfPolicy"]>;
   readIdleTimeoutMs?: number;
 };
 
 type ImageWebMediaRuntime = {
   loadWebMedia(mediaUrl: string, options?: ImageToolLoadWebMediaOptions): Promise<WebMediaResult>;
-  optimizeImageBufferForWebMedia: (typeof import("../../media/web-media.js"))["optimizeImageBufferForWebMedia"];
+  optimizeImageBufferForWebMedia: typeof import("../../media/web-media.js")["optimizeImageBufferForWebMedia"];
 };
 
 type ResolveImageCompressionPolicy = (params: {

@@ -193,7 +193,7 @@ function commandPayloadFromInvokePayload(payload: unknown): unknown {
 }
 
 function pickIosNode(list: NodeListPayload, hint?: string): NodeListNode | null {
-  const nodes = (list.nodes ?? []).filter((n) => n && n.connected);
+  const nodes = (list.nodes ?? []).filter((n) => n?.connected);
   const ios = nodes.filter((n) => (n.platform ?? "").toLowerCase().includes("ios"));
   if (ios.length === 0) {
     return null;

@@ -66,10 +66,13 @@ function dispatchWithDeliveries(
   dispatcherOptions: {
     beforeDeliver?: ReplyDispatchBeforeDeliver;
     beforeDeliverOptions?: ReplyDispatchBeforeDeliverOptions;
-    deliver?: (payload: ReplyPayload, info: { kind: Delivery["kind"] }) => Promise<object | void>;
+    deliver?: (
+      payload: ReplyPayload,
+      info: { kind: Delivery["kind"] },
+    ) => Promise<object | undefined>;
     onBeforeDeliverCancelled?: (payload: ReplyPayload, info: { kind: Delivery["kind"] }) => void;
-    onSettled?: () => object | void | Promise<object | void>;
-    onFreshSettledDelivery?: () => object | void | Promise<object | void>;
+    onSettled?: () => object | undefined | Promise<object | undefined>;
+    onFreshSettledDelivery?: () => object | undefined | Promise<object | undefined>;
   } = {},
 ) {
   return dispatchInboundMessageWithBufferedDispatcher({

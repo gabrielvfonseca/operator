@@ -799,9 +799,7 @@ describe("buildStatusReply subagent summary", () => {
       workspaceDir: commandParams.workspaceDir,
     });
 
-    expect(reply?.text).toBe(
-      "⚠️ /status plugins is disabled. Set commands.plugins=true to enable.",
-    );
+    expect(reply?.text).toBe("⚠️ /status plugins is disabled. Set commands.plugins=true to enable.");
     expect(pluginHealthRuntimeMock.collectInstalledPluginHealthSnapshot).not.toHaveBeenCalled();
   });
 

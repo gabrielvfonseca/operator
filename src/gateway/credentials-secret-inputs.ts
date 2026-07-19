@@ -251,11 +251,7 @@ async function resolvePreferredGatewaySecretInputs(params: {
         path,
         value: resolvedValue,
       });
-    } catch {
-      // Keep scanning candidate paths so unresolved higher-priority refs do not
-      // prevent valid fallback refs from being considered.
-      continue;
-    }
+    } catch {}
   }
   return nextConfig;
 }

@@ -27,7 +27,7 @@ import {
 import type { DiscordGuildEntryResolved } from "./allow-list.js";
 
 type CreateDiscordComponentButton =
-  (typeof import("./agent-components.js").createDiscordComponentControls)[number];
+  typeof import("./agent-components.js").createDiscordComponentControls[number];
 type CreateDiscordComponentModal =
   typeof import("./agent-components.js").createDiscordComponentModal;
 type CreateDiscordComponentStringSelect = CreateDiscordComponentButton;

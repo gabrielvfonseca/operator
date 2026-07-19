@@ -331,7 +331,7 @@ describe("remote workspace manifest script", () => {
           home,
           ".operator-worker",
           "manifests",
-          current.stdout.trim().slice("sha256:".length) + ".json",
+          `${current.stdout.trim().slice("sha256:".length)}.json`,
         ),
         "utf8",
       ),

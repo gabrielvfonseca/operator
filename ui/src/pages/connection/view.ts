@@ -103,9 +103,10 @@ export function renderConnection(props: ConnectionProps) {
         />
       `,
     })}
-    ${isTrustedProxy
-      ? ""
-      : html`
+    ${
+      isTrustedProxy
+        ? ""
+        : html`
           ${renderSecretRow({
             label: t("connection.access.token"),
             value: props.settings.token,
@@ -128,7 +129,8 @@ export function renderConnection(props: ConnectionProps) {
             onInput: props.onPasswordChange,
             onToggle: props.onToggleGatewayPasswordVisibility,
           })}
-        `}
+        `
+    }
     ${renderSettingsRow({
       title: t("connection.access.sessionKey"),
       control: html`
@@ -142,9 +144,11 @@ export function renderConnection(props: ConnectionProps) {
     <div class="settings-row">
       <div class="settings-row__text">
         <span class="settings-row__desc"
-          >${isTrustedProxy
-            ? t("connection.access.trustedProxy")
-            : t("connection.access.connectHint")}</span
+          >${
+            isTrustedProxy
+              ? t("connection.access.trustedProxy")
+              : t("connection.access.connectHint")
+          }</span
         >
       </div>
       <div class="settings-row__control">
@@ -178,15 +182,17 @@ export function renderConnection(props: ConnectionProps) {
           : t("common.na"),
       ),
     })}
-    ${props.lastError
-      ? renderSettingsRow({
-          title: renderSettingsStatus({
-            kind: "danger",
-            label: t("connection.snapshot.lastError"),
-          }),
-          description: props.lastError,
-        })
-      : ""}
+    ${
+      props.lastError
+        ? renderSettingsRow({
+            title: renderSettingsStatus({
+              kind: "danger",
+              label: t("connection.snapshot.lastError"),
+            }),
+            description: props.lastError,
+          })
+        : ""
+    }
   `;
 
   return renderSettingsPage([

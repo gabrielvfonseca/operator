@@ -28,10 +28,12 @@ vi.mock("./method-scopes.js", () => {
   };
 });
 
-const { readJsonBodyOrError, sendMethodNotAllowed, sendMissingScopeForbidden } =
-  await import("./http-common.js");
-const { authorizeGatewayHttpRequestOrReply, resolveTrustedHttpOperatorScopes } =
-  await import("./http-utils.js");
+const { readJsonBodyOrError, sendMethodNotAllowed, sendMissingScopeForbidden } = await import(
+  "./http-common.js"
+);
+const { authorizeGatewayHttpRequestOrReply, resolveTrustedHttpOperatorScopes } = await import(
+  "./http-utils.js"
+);
 const { authorizeOperatorScopesForMethod } = await import("./method-scopes.js");
 
 type EndpointOptions = Parameters<typeof handleGatewayPostJsonEndpoint>[2];

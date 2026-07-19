@@ -50,15 +50,16 @@ let withStartedActionClient: typeof import("./client.js").withStartedActionClien
 
 describe("action client helpers", () => {
   beforeAll(async () => {
-    ({ withResolvedActionClient, withResolvedRoomAction, withStartedActionClient } =
-      await import("./client.js"));
+    ({ withResolvedActionClient, withResolvedRoomAction, withStartedActionClient } = await import(
+      "./client.js"
+    ));
   });
 
   beforeEach(() => {
     primeMatrixClientResolverMocks();
     resolveMatrixRoomIdMock
       .mockReset()
-      .mockImplementation(async (clientForTest, roomId: string) => roomId);
+      .mockImplementation(async (_clientForTest, roomId: string) => roomId);
   });
 
   afterEach(() => {

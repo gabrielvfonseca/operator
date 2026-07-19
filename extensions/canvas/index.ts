@@ -197,8 +197,9 @@ export default definePluginEntry({
     );
     api.registerNodeCliFeature(
       async ({ program }) => {
-        const { createDefaultCanvasCliDependencies, registerNodesCanvasCommands } =
-          await import("./src/cli.js");
+        const { createDefaultCanvasCliDependencies, registerNodesCanvasCommands } = await import(
+          "./src/cli.js"
+        );
         registerNodesCanvasCommands(program, createDefaultCanvasCliDependencies());
       },
       {

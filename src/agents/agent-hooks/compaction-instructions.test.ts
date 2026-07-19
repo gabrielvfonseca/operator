@@ -151,7 +151,7 @@ describe("resolveCompactionInstructions", () => {
     });
 
     it("does not split surrogate pair when cut lands inside a pair", () => {
-      const input = "X" + "\u{1F600}".repeat(800);
+      const input = `X${"\u{1F600}".repeat(800)}`;
       const result = resolveCompactionInstructions(input, undefined);
       const codePoints = Array.from(result);
       expect(codePoints).toHaveLength(800);

@@ -456,14 +456,14 @@ function requestLinksPlannedToolOutput(
   if (plannedRequest.plannedToolCallId || outputRequest.toolOutputCallId) {
     return Boolean(
       plannedRequest.plannedToolCallId &&
-      outputRequest.toolOutputCallId &&
-      plannedRequest.plannedToolCallId === outputRequest.toolOutputCallId,
+        outputRequest.toolOutputCallId &&
+        plannedRequest.plannedToolCallId === outputRequest.toolOutputCallId,
     );
   }
   return Boolean(
     plannedRequest === outputRequest &&
-    plannedRequest.plannedToolName &&
-    requestHasToolOutput(outputRequest),
+      plannedRequest.plannedToolName &&
+      requestHasToolOutput(outputRequest),
   );
 }
 

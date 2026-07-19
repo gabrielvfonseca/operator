@@ -516,9 +516,7 @@ async function readInstalledSkillFileLock(
         path: marker,
         sha256: sha256Hex(content),
       };
-    } catch {
-      continue;
-    }
+    } catch {}
   }
   return undefined;
 }

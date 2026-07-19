@@ -1,8 +1,9 @@
 // Telegram tests cover bot message context.topic agentid plugin behavior.
 import { describe, expect, it, vi } from "vitest";
 
-const { buildTelegramMessageContextForTest } =
-  await import("./bot-message-context.test-harness.js");
+const { buildTelegramMessageContextForTest } = await import(
+  "./bot-message-context.test-harness.js"
+);
 
 describe("buildTelegramMessageContext per-topic agentId routing", () => {
   function buildForumMessage(threadId = 3) {

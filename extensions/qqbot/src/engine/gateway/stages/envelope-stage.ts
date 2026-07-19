@@ -69,7 +69,7 @@ export function buildDynamicCtx(input: BuildDynamicCtxInput): string {
   if (input.uniqueVoiceAsrReferTexts.length > 0) {
     lines.push(`- ASR: ${input.uniqueVoiceAsrReferTexts.join(" | ")}`);
   }
-  return lines.length > 0 ? lines.join("\n") + "\n\n" : "";
+  return lines.length > 0 ? `${lines.join("\n")}\n\n` : "";
 }
 
 // ─────────────────────────── System prompt ───────────────────────────

@@ -193,6 +193,7 @@ function createXaiRealtimeTranscriptionSession(
         transport.closeNow();
         return;
       }
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
       case "error":
         config.onError?.(new Error(readErrorDetail(event.error ?? event.message)));
 

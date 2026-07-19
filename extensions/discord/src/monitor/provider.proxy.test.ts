@@ -192,8 +192,9 @@ describe("createDiscordGatewayPlugin", () => {
   let waitForDiscordGatewayPluginRegistration: typeof import("./gateway-plugin.js").waitForDiscordGatewayPluginRegistration;
 
   beforeAll(async () => {
-    ({ createDiscordGatewayPlugin, waitForDiscordGatewayPluginRegistration } =
-      await import("./gateway-plugin.js"));
+    ({ createDiscordGatewayPlugin, waitForDiscordGatewayPluginRegistration } = await import(
+      "./gateway-plugin.js"
+    ));
   });
 
   function createRuntime() {

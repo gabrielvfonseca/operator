@@ -221,7 +221,7 @@ function isFullWidthCodePoint(codePoint: number): boolean {
   );
 }
 
-const rgiEmojiPattern = new RegExp("^\\p{RGI_Emoji}$", "v");
+const rgiEmojiPattern = /^\p{RGI_Emoji}$/v;
 const emojiPresentationPattern = /\p{Emoji_Presentation}/u;
 const regionalIndicatorPattern = /\p{Regional_Indicator}/u;
 const unqualifiedKeycapPattern = /^[#*0-9]\u20E3$/u;

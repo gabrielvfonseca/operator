@@ -2348,6 +2348,7 @@ describe("config cli", () => {
                 secretProviderIntegrations: {
                   vault: {
                     source: "exec",
+                    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
                     command: "${node}",
                     args: ["./resolve.mjs"],
                   },
@@ -3472,6 +3473,7 @@ describe("config cli", () => {
           web: {
             search: {
               enabled: true,
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               apiKey: "${WEB_SEARCH_API_KEY}",
             },
           },

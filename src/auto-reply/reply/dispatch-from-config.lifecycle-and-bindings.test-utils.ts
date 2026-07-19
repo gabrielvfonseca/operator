@@ -555,10 +555,9 @@ describe("dispatchReplyFromConfig", () => {
       state: "processing",
       reason: "message_start",
     });
-    const processedEvent = firstMockArg(
-      diagnosticMocks.logMessageProcessed,
-      "message processed",
-    ) as { channel?: unknown; outcome?: unknown; sessionKey?: unknown } | undefined;
+    const processedEvent = firstMockArg(diagnosticMocks.logMessageProcessed, "message processed") as
+      | { channel?: unknown; outcome?: unknown; sessionKey?: unknown }
+      | undefined;
     expect(processedEvent?.channel).toBe("slack");
     expect(processedEvent?.outcome).toBe("completed");
     expect(processedEvent?.sessionKey).toBe("agent:main:main");

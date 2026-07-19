@@ -117,9 +117,9 @@ function buildLogicalParentsById(entries: readonly SessionTreeEntry[]): Map<stri
   return logicalParentsById;
 }
 
-export abstract class BaseSessionStorage<
-  TMetadata extends SessionMetadata = SessionMetadata,
-> implements SessionStorage<TMetadata> {
+export abstract class BaseSessionStorage<TMetadata extends SessionMetadata = SessionMetadata>
+  implements SessionStorage<TMetadata>
+{
   private readonly metadata: TMetadata;
   private readonly entries: SessionTreeEntry[];
   private readonly byId: Map<string, SessionTreeEntry>;

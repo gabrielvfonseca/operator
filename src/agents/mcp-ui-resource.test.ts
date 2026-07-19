@@ -154,6 +154,7 @@ describe("MCP App UI resources", () => {
     releases[0]?.();
     const release = acquireMcpAppViewRequest(view, "read", 1);
     release();
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     releases.slice(1).forEach((entry) => entry());
   });
 

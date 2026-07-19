@@ -1021,7 +1021,6 @@ export async function recoverPendingDeliveries(opts: {
         },
       });
       if (result === "moved-to-failed") {
-        continue;
       }
     } finally {
       releaseSharedRecoveryEntry(entriesInProgress, entry.id);

@@ -11,11 +11,11 @@ function isChannelSetupWizardAdapter(
 ): setupWizard is ChannelSetupWizardAdapter {
   return Boolean(
     setupWizard &&
-    typeof setupWizard === "object" &&
-    "getStatus" in setupWizard &&
-    typeof setupWizard.getStatus === "function" &&
-    "configure" in setupWizard &&
-    typeof setupWizard.configure === "function",
+      typeof setupWizard === "object" &&
+      "getStatus" in setupWizard &&
+      typeof setupWizard.getStatus === "function" &&
+      "configure" in setupWizard &&
+      typeof setupWizard.configure === "function",
   );
 }
 
@@ -24,9 +24,9 @@ function isDeclarativeChannelSetupWizard(
 ): setupWizard is ChannelSetupWizard {
   return Boolean(
     setupWizard &&
-    typeof setupWizard === "object" &&
-    "status" in setupWizard &&
-    "credentials" in setupWizard,
+      typeof setupWizard === "object" &&
+      "status" in setupWizard &&
+      "credentials" in setupWizard,
   );
 }
 

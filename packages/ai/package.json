@@ -25,7 +25,7 @@
     "dist",
     "npm-shrinkwrap.json",
     "LICENSE",
-    "README.md"
+    "README.MD"
   ],
   "type": "module",
   "main": "./dist/index.mjs",

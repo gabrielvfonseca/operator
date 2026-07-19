@@ -372,7 +372,7 @@ describe("installToolResultContextGuard", () => {
     // text budget becomes 512. The legacy cut point falls inside the emoji
     // at index 439, which used to emit a lone high surrogate.
     const agent = makeGuardableAgent();
-    const text = "a".repeat(439) + "😀" + "b".repeat(1_000);
+    const text = `${"a".repeat(439)}😀${"b".repeat(1_000)}`;
     const contextForNextCall = [makeToolResult("call_utf16", text)];
 
     const transformed = (await applyGuardToContext(

@@ -120,8 +120,9 @@ export function registerSecretsCli(program: Command): void {
     .option("--json", "Output JSON", false)
     .action(async (opts: SecretsAuditOptions) => {
       try {
-        const { resolveSecretsAuditExitCode, runSecretsAudit } =
-          await import("../secrets/audit.js");
+        const { resolveSecretsAuditExitCode, runSecretsAudit } = await import(
+          "../secrets/audit.js"
+        );
         const report = await runSecretsAudit({
           allowExec: Boolean(opts.allowExec),
         });

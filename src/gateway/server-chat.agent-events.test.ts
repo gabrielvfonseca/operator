@@ -1215,7 +1215,7 @@ describe("agent event handler", () => {
       chatCalls.every(([, payload]) => {
         const text = (payload as { message?: { content?: Array<{ text?: string }> } }).message
           ?.content?.[0]?.text;
-        return !text || !text.includes("NO_REPLY");
+        return !text?.includes("NO_REPLY");
       }),
     ).toBe(true);
     expect(sessionChatCalls(nodeSendToSession)).toHaveLength(chatCalls.length);

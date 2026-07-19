@@ -2638,7 +2638,7 @@ function tail(value: string, maxChars = 8_000): string {
 
 function printCheckpoint(checkpoint: ProofCheckpoint): void {
   process.stderr.write(
-    [
+    `${[
       `[sqlite-sessions-transcripts-flip-proof] ${checkpoint.label}`,
       `  sqlite sessions=${checkpoint.sqlite.sessions} entries=${checkpoint.sqlite.sessionEntries} transcriptEvents=${checkpoint.sqlite.transcriptEvents}`,
       `  activeJsonl=${checkpoint.activeJsonl.length} legacyStateJsonl=${checkpoint.legacyStateJsonl.length} archiveArtifacts=${checkpoint.archiveArtifacts.length}`,
@@ -2649,7 +2649,7 @@ function printCheckpoint(checkpoint: ProofCheckpoint): void {
         : undefined,
     ]
       .filter((line): line is string => typeof line === "string")
-      .join("\n") + "\n",
+      .join("\n")}\n`,
   );
 }
 

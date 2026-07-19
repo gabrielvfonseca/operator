@@ -62,11 +62,11 @@ export function isImplicitSameChatApprovalAuthorization(
 ): boolean {
   return Boolean(
     result &&
-    (
-      result as ApprovalAuthorizationResult & {
-        [IMPLICIT_SAME_CHAT_APPROVAL_AUTHORIZATION]?: true;
-      }
-    )[IMPLICIT_SAME_CHAT_APPROVAL_AUTHORIZATION],
+      (
+        result as ApprovalAuthorizationResult & {
+          [IMPLICIT_SAME_CHAT_APPROVAL_AUTHORIZATION]?: true;
+        }
+      )[IMPLICIT_SAME_CHAT_APPROVAL_AUTHORIZATION],
   );
 }
 

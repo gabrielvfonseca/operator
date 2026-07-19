@@ -104,7 +104,7 @@ async function readBrowserProxyFiles(filePaths: string[]): Promise<BrowserProxyF
   for (const filePath of filePaths) {
     try {
       const stat = await fsPromises.stat(filePath).catch(() => null);
-      if (!stat || !stat.isFile()) {
+      if (!stat?.isFile()) {
         throw new Error("file not found");
       }
       assertBrowserProxyFileBytesWithinLimits(stat.size, totalBytes + stat.size);
@@ -277,6 +277,7 @@ export async function runBrowserProxyCommand(paramsJSON?: string | null): Promis
   }
 
   const dispatcher = createBrowserRouteDispatcher(createBrowserControlContext());
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let response;
   try {
     response = await withTimeout(

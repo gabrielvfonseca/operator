@@ -340,7 +340,7 @@ function resolveQaEvidencePackageSource(env: NodeJS.ProcessEnv | undefined) {
   const explicitKind = env?.OPERATOR_QA_PACKAGE_SOURCE_KIND?.trim();
   const kind =
     explicitKind ||
-    (spec && spec.endsWith(".tgz") ? "packed-tarball" : spec ? "npm-package" : "source-checkout");
+    (spec?.endsWith(".tgz") ? "packed-tarball" : spec ? "npm-package" : "source-checkout");
   return {
     kind,
     spec,

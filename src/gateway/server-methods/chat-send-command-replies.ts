@@ -109,31 +109,31 @@ function hasMergeableReplySemantics(payload: ReplyPayload): boolean {
   const inlineDirectives = parseReplyInlineDirectives(payload);
   return Boolean(
     payload.trustedLocalMedia !== undefined ||
-    payload.sensitiveMedia !== undefined ||
-    payload.presentation ||
-    payload.delivery ||
-    payload.interactive ||
-    payload.replyToId ||
-    payload.replyToTag !== undefined ||
-    payload.replyToCurrent !== undefined ||
-    payload.audioAsVoice !== undefined ||
-    inlineDirectives?.hasReplyTag ||
-    inlineDirectives?.hasAudioTag ||
-    payload.spokenText ||
-    payload.ttsSupplement ||
-    payload.isError !== undefined ||
-    payload.channelData,
+      payload.sensitiveMedia !== undefined ||
+      payload.presentation ||
+      payload.delivery ||
+      payload.interactive ||
+      payload.replyToId ||
+      payload.replyToTag !== undefined ||
+      payload.replyToCurrent !== undefined ||
+      payload.audioAsVoice !== undefined ||
+      inlineDirectives?.hasReplyTag ||
+      inlineDirectives?.hasAudioTag ||
+      payload.spokenText ||
+      payload.ttsSupplement ||
+      payload.isError !== undefined ||
+      payload.channelData,
   );
 }
 
 function hasUnmergedReplySemantics(payload: ReplyPayload): boolean {
   return Boolean(
     payload.isReasoning ||
-    payload.isReasoningSnapshot ||
-    payload.isCompactionNotice ||
-    payload.isFallbackNotice ||
-    payload.isStatusNotice ||
-    payload.btw,
+      payload.isReasoningSnapshot ||
+      payload.isCompactionNotice ||
+      payload.isFallbackNotice ||
+      payload.isStatusNotice ||
+      payload.btw,
   );
 }
 

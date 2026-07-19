@@ -298,8 +298,9 @@ export async function materializeRequesterScopedMcpToolsForHarnessRun(
     >
   >
 > {
-  const { materializeRequesterScopedMcpToolsForHarnessRun: materialize } =
-    await import("../agents/agent-bundle-mcp-harness.js");
+  const { materializeRequesterScopedMcpToolsForHarnessRun: materialize } = await import(
+    "../agents/agent-bundle-mcp-harness.js"
+  );
   return materialize(params);
 }
 export { resolveSandboxContext } from "../agents/sandbox.js";

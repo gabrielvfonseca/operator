@@ -303,6 +303,7 @@ async function resolveHarnessCompactApiKey(params: {
     }
     return applySecretRefHeaderSentinels(materialized, compactParams.config);
   };
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let resolved;
   try {
     resolved = await resolvePreparedRuntimeAuthAttempts<Model, HarnessCompactionResolvedAuth>({
@@ -322,7 +323,7 @@ async function resolveHarnessCompactApiKey(params: {
           attempt.plan.forwardedAuthProfileSource === "auto" &&
           Boolean(
             attempt.plan.forwardedAuthProfileId ||
-            attempt.plan.forwardedAuthProfileCandidateIds?.length,
+              attempt.plan.forwardedAuthProfileCandidateIds?.length,
           );
         const existing = hasAutomaticPreparedCandidates
           ? undefined

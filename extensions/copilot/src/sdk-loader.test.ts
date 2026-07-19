@@ -121,7 +121,7 @@ describe("sdk-loader", () => {
     await expect(
       loadCopilotSdk({
         cache: false,
-        fallbackDir: path.join(tmpdir(), "copilot-sdk-loader-missing-" + Date.now()),
+        fallbackDir: path.join(tmpdir(), `copilot-sdk-loader-missing-${Date.now()}`),
         primaryImport,
         fallbackImport,
       }),
@@ -138,7 +138,7 @@ describe("sdk-loader", () => {
       throw new Error("primary boom");
     });
 
-    const fallbackDir = path.join(tmpdir(), "copilot-sdk-loader-missing-" + Date.now());
+    const fallbackDir = path.join(tmpdir(), `copilot-sdk-loader-missing-${Date.now()}`);
     let captured: Error | undefined;
     try {
       await loadCopilotSdk({

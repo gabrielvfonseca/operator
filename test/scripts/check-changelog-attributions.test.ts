@@ -33,7 +33,7 @@ function createRepoWithPrChangelogDiff(entry: string): string {
   run(repo, "git", ["init", "-q", "--initial-branch=main"]);
   run(repo, "git", ["config", "user.email", "test@example.com"]);
   run(repo, "git", ["config", "user.name", "Test User"]);
-  writeFileSync(repo + "/CHANGELOG.md", "# Changelog\n\n## Unreleased\n\n### Fixes\n\n", "utf8");
+  writeFileSync(`${repo}/CHANGELOG.MD`, "# Changelog\n\n## Unreleased\n\n### Fixes\n\n", "utf8");
   run(repo, "git", ["add", "CHANGELOG.md"]);
   run(repo, "git", ["commit", "-qm", "seed"]);
   const baseSha = run(repo, "git", ["rev-parse", "HEAD"]);
@@ -42,7 +42,7 @@ function createRepoWithPrChangelogDiff(entry: string): string {
   run(repo, "git", ["update-ref", "refs/remotes/origin/main", baseSha]);
   run(repo, "git", ["checkout", "-qb", "feature"]);
   writeFileSync(
-    repo + "/CHANGELOG.md",
+    `${repo}/CHANGELOG.MD`,
     `# Changelog\n\n## Unreleased\n\n### Fixes\n\n${entry}\n`,
     "utf8",
   );
@@ -53,7 +53,7 @@ function createRepoWithPrChangelogDiff(entry: string): string {
 
 function createRepoWithChangelog(content: string): string {
   const repo = mkdtempSync(path.join(os.tmpdir(), "openclaw-changelog-policy-"));
-  writeFileSync(repo + "/CHANGELOG.md", content, "utf8");
+  writeFileSync(`${repo}/CHANGELOG.MD`, content, "utf8");
   return repo;
 }
 

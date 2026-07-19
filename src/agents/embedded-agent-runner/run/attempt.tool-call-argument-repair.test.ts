@@ -260,9 +260,9 @@ describe("openai-completions malformed tool-call argument repair", () => {
         .filter((event) => (event as { type?: string }).type === "toolcall_delta")
         .map((event) => (event as { delta?: string }).delta),
     ).toEqual(['{"text":"[MAS', 'KED]"}']);
-    const endEvent = events.find(
-      (event) => (event as { type?: string }).type === "toolcall_end",
-    ) as { toolCall?: { arguments?: unknown } } | undefined;
+    const endEvent = events.find((event) => (event as { type?: string }).type === "toolcall_end") as
+      | { toolCall?: { arguments?: unknown } }
+      | undefined;
     expect(endEvent?.toolCall?.arguments).toEqual({ text: "John Smith" });
     await expect(stream.result()).resolves.toMatchObject({
       content: [{ arguments: { text: "John Smith" } }],
@@ -430,6 +430,7 @@ const re = /\d+/;
   it("keeps unknown member-looking prose inside smart-quoted non-freeform args", async () => {
     const result = await runToolCallRepairCase({
       toolName: "grep",
+      // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
       delta: String.raw` {“pattern”:“Use ”, “foo”: “bar” in prose”,“path”:“safe.txt”}`,
     });
 
@@ -443,6 +444,7 @@ const re = /\d+/;
   it("keeps known option-looking prose inside unrelated smart-quoted args", async () => {
     const result = await runToolCallRepairCase({
       toolName: "grep",
+      // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
       delta: String.raw` {“pattern”:“Use ”, “limit”: “bar” in prose”,“path”:“safe.txt”}`,
     });
 
@@ -457,6 +459,7 @@ const re = /\d+/;
     const result = await runToolCallRepairCase({
       toolName: "grep",
       preambleToolName: "read",
+      // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
       delta: String.raw` {“pattern”:“Use ”, “limit”: “bar” in prose”,“path”:“safe.txt”}`,
     });
 
@@ -489,6 +492,7 @@ const re = /\d+/;
 
   it("keeps duplicate-looking smart-quoted args inside content", async () => {
     const result = await runToolCallRepairCase({
+      // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
       delta: String.raw` {“path”:“safe.txt”,“content”:“text ”, “path”: “other.txt””}`,
     });
 
@@ -500,6 +504,7 @@ const re = /\d+/;
 
   it("keeps unknown member-looking prose inside smart-quoted content", async () => {
     const result = await runToolCallRepairCase({
+      // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
       delta: String.raw` {“path”:“safe.txt”,“content”:“Use ”, “foo”: “bar” in prose”}`,
     });
 
@@ -512,6 +517,7 @@ const re = /\d+/;
 
   it("keeps member-looking prose inside mixed ASCII-key smart-quoted content", async () => {
     const result = await runToolCallRepairCase({
+      // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
       delta: String.raw` {"path":"safe.txt","content":“Use ”, “foo”: “bar” in prose”}`,
     });
 

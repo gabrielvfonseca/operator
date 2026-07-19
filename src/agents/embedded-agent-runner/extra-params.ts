@@ -593,7 +593,7 @@ function resolveAliasedParamValueFromKeys(
   sources: Array<Record<string, unknown> | undefined>,
   keys: readonly string[],
 ): unknown {
-  let resolved: unknown = undefined;
+  let resolved: unknown;
   let seen = false;
   for (const source of sources) {
     if (!source) {

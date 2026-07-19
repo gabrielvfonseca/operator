@@ -20,9 +20,7 @@ import { lineSetupWizard } from "./setup-surface.js";
 
 const { getBotInfoMock, MessagingApiClientMock } = vi.hoisted(() => {
   const getBotInfoMockLocal = vi.fn();
-  const MessagingApiClientMockLocal = vi.fn(function () {
-    return { getBotInfo: getBotInfoMockLocal };
-  });
+  const MessagingApiClientMockLocal = vi.fn(() => ({ getBotInfo: getBotInfoMockLocal }));
   return {
     getBotInfoMock: getBotInfoMockLocal,
     MessagingApiClientMock: MessagingApiClientMockLocal,
@@ -315,9 +313,7 @@ describe("probeLineBot", () => {
   beforeEach(() => {
     getBotInfoMock.mockReset();
     MessagingApiClientMock.mockReset();
-    MessagingApiClientMock.mockImplementation(function () {
-      return { getBotInfo: getBotInfoMock };
-    });
+    MessagingApiClientMock.mockImplementation(() => ({ getBotInfo: getBotInfoMock }));
   });
 
   afterEach(() => {
@@ -357,9 +353,7 @@ describe("linePlugin status.probeAccount", () => {
     vi.resetModules();
     const { lineStatusAdapter } = await import("./status.js");
     MessagingApiClientMock.mockReset();
-    MessagingApiClientMock.mockImplementation(function () {
-      return { getBotInfo: getBotInfoMock };
-    });
+    MessagingApiClientMock.mockImplementation(() => ({ getBotInfo: getBotInfoMock }));
     getBotInfoMock.mockResolvedValue({
       displayName: "Operator",
       userId: "U123",

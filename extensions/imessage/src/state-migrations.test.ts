@@ -32,21 +32,21 @@ describe("detectIMessageLegacyStateMigrations", () => {
     fs.mkdirSync(path.join(imsgDir, "catchup"), { recursive: true });
     fs.writeFileSync(
       path.join(imsgDir, "reply-cache.jsonl"),
-      JSON.stringify({
+      `${JSON.stringify({
         accountId: "default",
         messageId: "guid-1",
         shortId: "1",
         timestamp: Date.now(),
         chatIdentifier: "+15551234567",
-      }) + "\n",
+      })}\n`,
     );
     fs.writeFileSync(
       path.join(imsgDir, "sent-echoes.jsonl"),
-      JSON.stringify({
+      `${JSON.stringify({
         scope: "default:imessage:+15551234567",
         text: "hello",
         timestamp: Date.now(),
-      }) + "\n",
+      })}\n`,
     );
     fs.writeFileSync(
       path.join(imsgDir, "catchup", "default__37a8eec1ce19.json"),
@@ -90,7 +90,7 @@ describe("detectIMessageLegacyStateMigrations", () => {
 
     const catchupPlan = plans.find((plan) => plan.label === "iMessage catchup cursor");
     expect(catchupPlan?.kind).toBe("plugin-state-import");
-    if (!catchupPlan || catchupPlan.kind !== "plugin-state-import") {
+    if (catchupPlan?.kind !== "plugin-state-import") {
       throw new Error("expected catchup plugin-state-import plan");
     }
     const [catchupEntry] = await catchupPlan.readEntries();
@@ -111,7 +111,7 @@ describe("detectIMessageLegacyStateMigrations", () => {
 
     const counterPlan = plans.find((plan) => plan.label === "iMessage reply short-id counter");
     expect(counterPlan?.kind).toBe("plugin-state-import");
-    if (!counterPlan || counterPlan.kind !== "plugin-state-import") {
+    if (counterPlan?.kind !== "plugin-state-import") {
       throw new Error("expected reply counter plugin-state-import plan");
     }
     expect(
@@ -144,7 +144,7 @@ describe("detectIMessageLegacyStateMigrations", () => {
     });
     const replyPlan = plans.find((plan) => plan.label === "iMessage reply short-id cache");
     expect(replyPlan?.kind).toBe("plugin-state-import");
-    if (!replyPlan || replyPlan.kind !== "plugin-state-import") {
+    if (replyPlan?.kind !== "plugin-state-import") {
       throw new Error("expected reply cache plugin-state-import plan");
     }
     fs.rmSync(sourcePath);
@@ -182,10 +182,10 @@ describe("detectIMessageLegacyStateMigrations", () => {
     });
     const replyPlan = plans.find((plan) => plan.label === "iMessage reply short-id cache");
     const counterPlan = plans.find((plan) => plan.label === "iMessage reply short-id counter");
-    if (!replyPlan || replyPlan.kind !== "plugin-state-import") {
+    if (replyPlan?.kind !== "plugin-state-import") {
       throw new Error("expected reply cache plugin-state-import plan");
     }
-    if (!counterPlan || counterPlan.kind !== "plugin-state-import") {
+    if (counterPlan?.kind !== "plugin-state-import") {
       throw new Error("expected reply counter plugin-state-import plan");
     }
 
@@ -220,7 +220,7 @@ describe("detectIMessageLegacyStateMigrations", () => {
       cleanupSource: "rename",
       cleanupWhenEmpty: true,
     });
-    if (!orphanPlan || orphanPlan.kind !== "plugin-state-import") {
+    if (orphanPlan?.kind !== "plugin-state-import") {
       throw new Error("expected orphan catchup plugin-state-import plan");
     }
     expect(await orphanPlan.readEntries()).toEqual([]);
@@ -251,7 +251,7 @@ describe("detectIMessageLegacyStateMigrations", () => {
     expect(plans.map((plan) => plan.label)).toEqual(["iMessage catchup cursor"]);
     const [plan] = plans;
     expect(plan?.kind).toBe("plugin-state-import");
-    if (!plan || plan.kind !== "plugin-state-import") {
+    if (plan?.kind !== "plugin-state-import") {
       throw new Error("expected catchup plugin-state-import plan");
     }
     expect(plan.sourcePath).toBe(sourcePath);
@@ -283,7 +283,7 @@ describe("detectIMessageLegacyStateMigrations", () => {
       stateDir,
     });
     const catchupPlan = plans.find((plan) => plan.label === "iMessage catchup cursor");
-    if (!catchupPlan || catchupPlan.kind !== "plugin-state-import") {
+    if (catchupPlan?.kind !== "plugin-state-import") {
       throw new Error("expected catchup plugin-state-import plan");
     }
 

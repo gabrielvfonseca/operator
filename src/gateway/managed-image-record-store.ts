@@ -258,8 +258,7 @@ export function deleteClaimedManagedImageRecord(
         .where("attachment_id", "=", planned.attachmentId),
     );
     if (
-      !row ||
-      row.cleanup_pending !== 1 ||
+      row?.cleanup_pending !== 1 ||
       !managedImageRecordsEqual(managedImageRecordFromRow(row), planned)
     ) {
       return false;

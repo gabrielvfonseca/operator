@@ -980,8 +980,8 @@ export async function addCronJob(state: CronState): Promise<CronSaveResult> {
     // user selects an editable schedule kind, the update must apply it.
     const preserveSchedule = Boolean(
       state.cronEditingJobId &&
-      (editingJob?.schedule as { kind?: string } | undefined)?.kind === "on-exit" &&
-      form.scheduleKind === "on-exit",
+        (editingJob?.schedule as { kind?: string } | undefined)?.kind === "on-exit" &&
+        form.scheduleKind === "on-exit",
     );
     const schedule = preserveSchedule ? undefined : buildCronSchedule(form);
     const preserveLockedPayload = Boolean(

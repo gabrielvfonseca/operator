@@ -78,9 +78,11 @@ export function renderIframeEmbed(
   }
   if (decision.status === "blocked") {
     return html`<div class="workspace-widget__placeholder" data-test-id="workspace-embed-blocked">
-      ${decision.reason === "external"
-        ? t("workspaces.widget.embed.blockedExternal")
-        : t("workspaces.widget.embed.blockedScheme")}
+      ${
+        decision.reason === "external"
+          ? t("workspaces.widget.embed.blockedExternal")
+          : t("workspaces.widget.embed.blockedScheme")
+      }
     </div>`;
   }
   return html`<iframe

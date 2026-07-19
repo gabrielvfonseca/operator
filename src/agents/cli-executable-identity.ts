@@ -226,7 +226,7 @@ async function resolvePackageTreeArtifact(params: {
   entrypointPath: string;
   policy: CliBackendRuntimeArtifactPolicy | undefined;
 }): Promise<CliExecutableIdentity["runtimeArtifact"] | undefined> {
-  if (!params.policy || params.policy.kind !== "bundled-package-tree") {
+  if (params.policy?.kind !== "bundled-package-tree") {
     return undefined;
   }
   const rootPath = await findOwnedPackageRoot({

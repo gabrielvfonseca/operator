@@ -82,7 +82,7 @@ function redactCommandCronEventForExternalDelivery(evt: CronEvent, job?: CronJob
   const embeddedJobState = evt.job?.state;
   const stripEmbeddedJobDiagnostics = Boolean(
     embeddedJobState &&
-    ("lastDiagnostics" in embeddedJobState || "lastDiagnosticSummary" in embeddedJobState),
+      ("lastDiagnostics" in embeddedJobState || "lastDiagnosticSummary" in embeddedJobState),
   );
   if (
     summary === evt.summary &&

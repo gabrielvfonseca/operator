@@ -801,6 +801,7 @@ describe("gateway-status command", () => {
             mode: "local",
             auth: {
               mode: "token",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               token: "${CUSTOM_GATEWAY_TOKEN}",
             },
           },

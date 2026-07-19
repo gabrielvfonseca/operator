@@ -918,7 +918,7 @@ function classifyFailoverClassificationFromErrorType(
 
 function isProvider(provider: string | undefined, match: string): boolean {
   const normalized = normalizeOptionalLowercaseString(provider);
-  return Boolean(normalized && normalized.includes(match));
+  return Boolean(normalized?.includes(match));
 }
 
 function hasProviderBilling429Override(provider: string | undefined): boolean {
@@ -1151,7 +1151,7 @@ export function classifyFailoverSignal(signal: FailoverSignal): FailoverClassifi
   }
   const hasStructuredProviderSignal = Boolean(
     signal.provider &&
-    (explicitStatus !== undefined || signal.code !== undefined || signal.errorType !== undefined),
+      (explicitStatus !== undefined || signal.code !== undefined || signal.errorType !== undefined),
   );
   const messageClassification = signal.message
     ? classifyFailoverClassificationFromMessage(signal.message, signal.provider, {
@@ -1326,7 +1326,7 @@ export function classifyAssistantFailoverReason(
   msg: AssistantMessage | undefined,
   opts?: { provider?: string },
 ): FailoverReason | null {
-  if (!msg || msg.stopReason !== "error") {
+  if (msg?.stopReason !== "error") {
     return null;
   }
   return failoverReasonFromClassification(
@@ -1601,7 +1601,7 @@ export function formatUserFacingAssistantErrorText(
 }
 
 export function isRateLimitAssistantError(msg: AssistantMessage | undefined): boolean {
-  if (!msg || msg.stopReason !== "error") {
+  if (msg?.stopReason !== "error") {
     return false;
   }
   return isRateLimitErrorMessage(msg.errorMessage ?? "");
@@ -1625,7 +1625,7 @@ function isMissingToolCallInputError(raw: string): boolean {
 }
 
 export function isBillingAssistantError(msg: AssistantMessage | undefined): boolean {
-  if (!msg || msg.stopReason !== "error") {
+  if (msg?.stopReason !== "error") {
     return false;
   }
   return isBillingErrorMessage(msg.errorMessage ?? "");
@@ -1735,7 +1735,7 @@ export function isCloudCodeAssistFormatError(raw: string): boolean {
 }
 
 export function isAuthAssistantError(msg: AssistantMessage | undefined): boolean {
-  if (!msg || msg.stopReason !== "error") {
+  if (msg?.stopReason !== "error") {
     return false;
   }
   return isAuthErrorMessage(msg.errorMessage ?? "");

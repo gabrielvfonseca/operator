@@ -47,7 +47,7 @@ describe("readMemoryHostResponseTextSnippet", () => {
   it("drops partial UTF-8 characters when byte-capped snippets truncate a stream", async () => {
     const stream = new ReadableStream<Uint8Array>({
       start(controller) {
-        controller.enqueue(new TextEncoder().encode("ab" + String.fromCodePoint(0x1f600) + "cd"));
+        controller.enqueue(new TextEncoder().encode(`ab${String.fromCodePoint(0x1f600)}cd`));
       },
       cancel() {},
     });

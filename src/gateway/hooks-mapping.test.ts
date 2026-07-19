@@ -241,6 +241,7 @@ describe("hooks mapping", () => {
     const transformsRoot = path.join(configDir, "hooks", "transforms");
     fs.mkdirSync(transformsRoot, { recursive: true });
     const modPath = path.join(transformsRoot, "transform.mjs");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const placeholder = "${payload.name}";
     fs.writeFileSync(
       modPath,
@@ -283,6 +284,7 @@ describe("hooks mapping", () => {
         "export default ({ payload }) => ({",
         '  kind: "agent",',
         '  message: "Transformed",',
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "  sessionKey: `hook:gmail:${payload.subject}`,",
         "});",
       ],

@@ -166,7 +166,7 @@ export function isConfiguredAwsSdkAuthProfileForProvider(params: {
   profileId: string;
 }): boolean {
   const profileConfig = params.cfg?.auth?.profiles?.[params.profileId];
-  if (!profileConfig || profileConfig.mode !== "aws-sdk") {
+  if (profileConfig?.mode !== "aws-sdk") {
     return false;
   }
   const providerAuthKey = resolveProviderIdForAuth(params.provider, { config: params.cfg });

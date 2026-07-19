@@ -1179,8 +1179,9 @@ describe("mattermost inbound user posts", () => {
       team_id: "team-1",
       type: "D",
     });
-    const { monitorMattermostProvider: monitorMattermostProviderLocal } =
-      await import("./monitor.js");
+    const { monitorMattermostProvider: monitorMattermostProviderLocal } = await import(
+      "./monitor.js"
+    );
 
     const monitor = monitorMattermostProviderLocal({
       config: directConfig,

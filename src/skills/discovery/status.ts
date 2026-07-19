@@ -271,8 +271,8 @@ function buildSkillStatus(
   const isEnvSatisfied = (envName: string) =>
     Boolean(
       process.env[envName] ||
-      skillConfig?.env?.[envName] ||
-      (skillConfig?.apiKey && entry.metadata?.primaryEnv === envName),
+        skillConfig?.env?.[envName] ||
+        (skillConfig?.apiKey && entry.metadata?.primaryEnv === envName),
     );
   const isConfigSatisfied = (pathStr: string) => isSkillConfigPathTruthy(config, pathStr);
   const skillSource = indexed.source;

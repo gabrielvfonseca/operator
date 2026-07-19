@@ -326,7 +326,7 @@ async function didWriteMetadataChange(
     return false;
   }
   const afterStat = await ops.statFile(absolutePath).catch(() => null);
-  if (!afterStat || afterStat.type !== "file") {
+  if (afterStat?.type !== "file") {
     return false;
   }
   return afterStat.size !== beforeStat.size || afterStat.mtimeMs !== beforeStat.mtimeMs;

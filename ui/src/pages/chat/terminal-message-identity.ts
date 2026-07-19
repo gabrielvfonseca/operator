@@ -99,8 +99,8 @@ export function reconcileAuthoritativeTerminalHistory<T>(options: {
   const terminal = authoritativeTerminals.get(options.host);
   const historyContainsTerminal = Boolean(
     terminal &&
-    areUiSessionKeysEquivalent(terminal.sessionKey, options.sessionKey) &&
-    options.visibleMessages.some((message) => messageOperatorId(message) === terminal.messageId),
+      areUiSessionKeysEquivalent(terminal.sessionKey, options.sessionKey) &&
+      options.visibleMessages.some((message) => messageOperatorId(message) === terminal.messageId),
   );
   if (!terminal || !historyContainsTerminal) {
     return options;

@@ -560,8 +560,9 @@ describe("getHealthSnapshot", () => {
     const previousStateDir = process.env.OPERATOR_STATE_DIR;
     process.env.OPERATOR_STATE_DIR = tmpStateDir;
     try {
-      const { moveDeliveryQueueEntryToFailed, upsertDeliveryQueueEntry } =
-        await import("../infra/delivery-queue-sqlite.js");
+      const { moveDeliveryQueueEntryToFailed, upsertDeliveryQueueEntry } = await import(
+        "../infra/delivery-queue-sqlite.js"
+      );
       const clean = await getHealthSnapshot({ timeoutMs: 10, probe: false });
       expect(clean.deliveryQueues).toBeUndefined();
 

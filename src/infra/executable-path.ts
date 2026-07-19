@@ -46,7 +46,7 @@ export function resolveExecutablePathCandidate(
   if (path.isAbsolute(expanded)) {
     return path.resolve(expanded);
   }
-  const base = options?.cwd && options.cwd.trim() ? options.cwd.trim() : process.cwd();
+  const base = options?.cwd?.trim() ? options.cwd.trim() : process.cwd();
   return path.resolve(base, expanded);
 }
 

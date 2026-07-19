@@ -57,7 +57,7 @@ export function resolveRequestedLocalAudioBackend(params: {
 }): string | undefined {
   const command = commandId(params.command);
   if (command === "sherpa-onnx-offline") {
-    const providerIndex = params.args.findIndex((arg) => arg === "--provider");
+    const providerIndex = params.args.indexOf("--provider");
     return (
       (providerIndex >= 0 ? params.args[providerIndex + 1] : undefined) ??
       params.args.find((arg) => arg.startsWith("--provider="))?.slice("--provider=".length) ??

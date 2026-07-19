@@ -904,25 +904,24 @@ export async function resolveSystemAgentVerifiedInferenceRoute(
     }
     currentRuntimeArtifactFingerprint = artifactFingerprint;
   }
-  const currentAuthFingerprint = await (
-    binding.auth.proofKind === "runtime-owner"
-      ? resolveCurrentRuntimeOwnerFingerprint({
-          route: currentExecution,
-          kind: binding.auth.runtimeOwnerKind!,
-          runtimeOwnerId: binding.auth.runtimeOwnerId!,
-          ...(binding.auth.authProfileId ? { authProfileId: binding.auth.authProfileId } : {}),
-          ...(binding.auth.skipLocalCredential ? { skipLocalCredential: true } : {}),
-          ...(currentRuntimeArtifactFingerprint
-            ? { runtimeArtifactFingerprint: currentRuntimeArtifactFingerprint }
-            : {}),
-          deps,
-        })
-      : resolveCurrentAuthFingerprint({
-          route: currentExecution,
-          ...(binding.auth.authProfileId ? { authProfileId: binding.auth.authProfileId } : {}),
-          ...(binding.auth.skipLocalCredential ? { skipLocalCredential: true } : {}),
-          deps,
-        })
+  const currentAuthFingerprint = await (binding.auth.proofKind === "runtime-owner"
+    ? resolveCurrentRuntimeOwnerFingerprint({
+        route: currentExecution,
+        kind: binding.auth.runtimeOwnerKind!,
+        runtimeOwnerId: binding.auth.runtimeOwnerId!,
+        ...(binding.auth.authProfileId ? { authProfileId: binding.auth.authProfileId } : {}),
+        ...(binding.auth.skipLocalCredential ? { skipLocalCredential: true } : {}),
+        ...(currentRuntimeArtifactFingerprint
+          ? { runtimeArtifactFingerprint: currentRuntimeArtifactFingerprint }
+          : {}),
+        deps,
+      })
+    : resolveCurrentAuthFingerprint({
+        route: currentExecution,
+        ...(binding.auth.authProfileId ? { authProfileId: binding.auth.authProfileId } : {}),
+        ...(binding.auth.skipLocalCredential ? { skipLocalCredential: true } : {}),
+        deps,
+      })
   ).catch(() => undefined);
   if (currentAuthFingerprint !== binding.auth.authFingerprint) {
     return null;

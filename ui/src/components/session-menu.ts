@@ -223,11 +223,13 @@ class SessionMenu extends OperatorLightDomElement {
           ?disabled=${this.disabled}
         >
           <span class="session-menu__text">${label}</span>
-          ${radio && checked
-            ? html`<span slot="details" class="session-menu__check" aria-hidden="true"
+          ${
+            radio && checked
+              ? html`<span slot="details" class="session-menu__check" aria-hidden="true"
                 >${icons.check}</span
               >`
-            : nothing}
+              : nothing
+          }
           ${digit ? menuShortcutHint(digit) : nothing}
         </wa-dropdown-item>
       `;
@@ -236,9 +238,11 @@ class SessionMenu extends OperatorLightDomElement {
       ${this.groups.map((group) =>
         entry(group, session.category === group, `move-to-group:${encodeURIComponent(group)}`),
       )}
-      ${session.category
-        ? entry(t("sessionsView.removeFromGroup"), false, "move-to-group:", false)
-        : nothing}
+      ${
+        session.category
+          ? entry(t("sessionsView.removeFromGroup"), false, "move-to-group:", false)
+          : nothing
+      }
       ${entry(t("sessionsView.newGroup"), false, "new-group", false)}
     `;
   }
@@ -273,8 +277,9 @@ class SessionMenu extends OperatorLightDomElement {
           aria-label=${menuLabel}
           style="position: fixed; left: ${clampedX}px; top: ${clampedY}px; width: 1px; height: 1px; opacity: 0; pointer-events: none;"
         ></button>
-        ${!batch && this.canOpenChat
-          ? html`
+        ${
+          !batch && this.canOpenChat
+            ? html`
               <wa-dropdown-item
                 class="session-menu__item"
                 value="open-chat"
@@ -289,11 +294,13 @@ class SessionMenu extends OperatorLightDomElement {
                 ${menuShortcutHint("o")}
               </wa-dropdown-item>
             `
-          : nothing}
+            : nothing
+        }
         ${batch ? nothing : this.renderWorkItems()}
-        ${batch
-          ? nothing
-          : html`
+        ${
+          batch
+            ? nothing
+            : html`
               <wa-dropdown-item
                 class="session-menu__item"
                 value="toggle-pin"
@@ -305,13 +312,14 @@ class SessionMenu extends OperatorLightDomElement {
                   >${session.pinned ? icons.pinOff : icons.pin}</span
                 >
                 <span class="session-menu__text"
-                  >${session.pinned
-                    ? t("sessionsView.unpinSession")
-                    : t("sessionsView.pinSession")}</span
+                  >${
+                    session.pinned ? t("sessionsView.unpinSession") : t("sessionsView.pinSession")
+                  }</span
                 >
                 ${menuShortcutHint("p")}
               </wa-dropdown-item>
-            `}
+            `
+        }
         <wa-dropdown-item
           class="session-menu__item"
           value="toggle-unread"
@@ -323,19 +331,22 @@ class SessionMenu extends OperatorLightDomElement {
             >${session.unread ? icons.eye : icons.circle}</span
           >
           <span class="session-menu__text"
-            >${batch
-              ? session.unread
-                ? t("sessionsView.markReadCount", { count })
-                : t("sessionsView.markUnreadCount", { count })
-              : session.unread
-                ? t("sessionsView.markRead")
-                : t("sessionsView.markUnread")}</span
+            >${
+              batch
+                ? session.unread
+                  ? t("sessionsView.markReadCount", { count })
+                  : t("sessionsView.markUnreadCount", { count })
+                : session.unread
+                  ? t("sessionsView.markRead")
+                  : t("sessionsView.markUnread")
+            }</span
           >
           ${menuShortcutHint("u")}
         </wa-dropdown-item>
-        ${batch
-          ? nothing
-          : html`
+        ${
+          batch
+            ? nothing
+            : html`
               <wa-dropdown-item
                 class="session-menu__item"
                 value="rename"
@@ -358,9 +369,11 @@ class SessionMenu extends OperatorLightDomElement {
                 <span class="session-menu__text">${t("sessionsView.forkSession")}</span>
                 ${menuShortcutHint("f")}
               </wa-dropdown-item>
-            `}
-        ${!batch && this.workboard
-          ? html`
+            `
+        }
+        ${
+          !batch && this.workboard
+            ? html`
               <wa-dropdown-item
                 class="session-menu__item"
                 value="workboard"
@@ -372,26 +385,32 @@ class SessionMenu extends OperatorLightDomElement {
                   >${this.workboard.captured ? icons.check : icons.plus}</span
                 >
                 <span class="session-menu__text"
-                  >${this.workboard.captured
-                    ? t("sessionsView.openWorkboardCard")
-                    : t("sessionsView.addToWorkboard")}</span
+                  >${
+                    this.workboard.captured
+                      ? t("sessionsView.openWorkboardCard")
+                      : t("sessionsView.addToWorkboard")
+                  }</span
                 >
                 ${menuShortcutHint("w")}
               </wa-dropdown-item>
             `
-          : nothing}
+            : nothing
+        }
         <wa-dropdown-item class="session-menu__item" ?disabled=${this.disabled}>
           <span slot="icon" class="session-menu__icon" aria-hidden="true">${icons.folder}</span>
           <span class="session-menu__text"
-            >${batch
-              ? t("sessionsView.moveToGroupMenuCount", { count })
-              : t("sessionsView.moveToGroupMenu")}</span
+            >${
+              batch
+                ? t("sessionsView.moveToGroupMenuCount", { count })
+                : t("sessionsView.moveToGroupMenu")
+            }</span
           >
           ${this.renderGroupSubmenu()}
         </wa-dropdown-item>
         <div class="session-menu__separator" role="separator"></div>
-        ${!batch && this.cloudWorkerStopAllowed
-          ? html`
+        ${
+          !batch && this.cloudWorkerStopAllowed
+            ? html`
               <wa-dropdown-item
                 class="session-menu__item session-menu__item--destructive"
                 value="stop-cloud-worker"
@@ -402,7 +421,8 @@ class SessionMenu extends OperatorLightDomElement {
                 <span class="session-menu__text">${t("sessionsView.stopCloudWorker")}</span>
               </wa-dropdown-item>
             `
-          : nothing}
+            : nothing
+        }
         <wa-dropdown-item
           class="session-menu__item"
           value="toggle-archived"
@@ -414,11 +434,13 @@ class SessionMenu extends OperatorLightDomElement {
             >${session.archived ? icons.archiveRestore : icons.archive}</span
           >
           <span class="session-menu__text"
-            >${batch
-              ? t("sessionsView.archiveSessionCount", { count })
-              : session.archived
-                ? t("sessionsView.restoreSession")
-                : t("sessionsView.archiveSession")}</span
+            >${
+              batch
+                ? t("sessionsView.archiveSessionCount", { count })
+                : session.archived
+                  ? t("sessionsView.restoreSession")
+                  : t("sessionsView.archiveSession")
+            }</span
           >
           ${menuShortcutHint("a")}
         </wa-dropdown-item>
@@ -432,9 +454,11 @@ class SessionMenu extends OperatorLightDomElement {
         >
           <span slot="icon" class="session-menu__icon" aria-hidden="true">${icons.trash}</span>
           <span class="session-menu__text"
-            >${batch
-              ? t("sessionsView.deleteSessionCount", { count })
-              : t("sessionsView.deleteSessionMenu")}</span
+            >${
+              batch
+                ? t("sessionsView.deleteSessionCount", { count })
+                : t("sessionsView.deleteSessionMenu")
+            }</span
           >
           ${menuShortcutHint("d")}
         </wa-dropdown-item>

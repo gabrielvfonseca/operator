@@ -428,6 +428,7 @@ describe("resolveApiKeyForProfile secret refs", () => {
     ).rejects.toThrow(/mode is "oauth"/i);
   });
 
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   it("resolves inline ${ENV} api_key values", async () => {
     const profileId = "openai:inline-env";
     const previous = process.env.OPENAI_API_KEY;
@@ -441,6 +442,7 @@ describe("resolveApiKeyForProfile secret refs", () => {
             [profileId]: {
               type: "api_key",
               provider: "openai",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               key: "${OPENAI_API_KEY}",
             },
           },
@@ -461,6 +463,7 @@ describe("resolveApiKeyForProfile secret refs", () => {
     }
   });
 
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   it("resolves inline ${ENV} token values", async () => {
     const profileId = "github-copilot:inline-env";
     const previous = process.env.GITHUB_TOKEN;
@@ -474,6 +477,7 @@ describe("resolveApiKeyForProfile secret refs", () => {
             [profileId]: {
               type: "token",
               provider: "github-copilot",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               token: "${GITHUB_TOKEN}",
             },
           },

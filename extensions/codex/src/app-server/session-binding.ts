@@ -425,7 +425,7 @@ export function normalizeStoredCodexAppServerBindingFingerprints(
   value: unknown,
 ): StoredCodexAppServerBinding | undefined {
   const stored = readStoredCodexAppServerBinding(value);
-  if (!stored || stored.state !== "active") {
+  if (stored?.state !== "active") {
     return stored;
   }
   const binding = normalizeLegacyBindingFingerprints(
@@ -1390,8 +1390,8 @@ export function isCodexAppServerNativeAuthProfile(
     const provider = credential.provider?.trim();
     return Boolean(
       provider &&
-      resolveProviderIdForAuth(provider, { config: lookup.config }) ===
-        CODEX_APP_SERVER_NATIVE_AUTH_PROVIDER,
+        resolveProviderIdForAuth(provider, { config: lookup.config }) ===
+          CODEX_APP_SERVER_NATIVE_AUTH_PROVIDER,
     );
   } catch (error) {
     embeddedAgentLog.debug("failed to resolve codex app-server auth profile provider", {

@@ -2,7 +2,6 @@
 // Write CLI startup metadata
 
 import fs from "node:fs";
-import path from "node:path";
 
 console.error("[write-cli-startup] Writing CLI startup metadata...");
 

@@ -1,7 +1,6 @@
 // Coverage for normalizing assistant replay content before provider requests.
 import type { AgentMessage } from "@gabrielvfonseca/operator/plugin-sdk/agent-core";
 import { describe, expect, it } from "vitest";
-import { OPENCLAW_TRANSCRIPT_ARTIFACT_API } from "../../shared/transcript-only-operator-assistant.js";
 import {
   INTERNAL_RUNTIME_CONTEXT_BEGIN,
   INTERNAL_RUNTIME_CONTEXT_END,

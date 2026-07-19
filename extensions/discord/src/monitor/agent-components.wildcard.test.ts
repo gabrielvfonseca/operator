@@ -4,7 +4,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 let buildDiscordComponentCustomId: typeof import("../components.js").buildDiscordComponentCustomId;
 let buildDiscordModalCustomId: typeof import("../components.js").buildDiscordModalCustomId;
 type DiscordComponentFactory =
-  (typeof import("./agent-components.js").createDiscordComponentControls)[number];
+  typeof import("./agent-components.js").createDiscordComponentControls[number];
 let createDiscordComponentButton: DiscordComponentFactory;
 let createDiscordComponentChannelSelect: DiscordComponentFactory;
 let createDiscordComponentMentionableSelect: DiscordComponentFactory;

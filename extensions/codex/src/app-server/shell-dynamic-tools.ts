@@ -2,7 +2,7 @@ import type { CodexPluginConfig } from "./config.js";
 import { normalizeCodexDynamicToolName } from "./dynamic-tool-profile.js";
 
 type OperatorCodingToolsFactory =
-  (typeof import("openclaw/plugin-sdk/agent-harness"))["createOperatorCodingTools"];
+  typeof import("openclaw/plugin-sdk/agent-harness")["createOperatorCodingTools"];
 type OperatorDynamicTool = ReturnType<OperatorCodingToolsFactory>[number];
 
 export const CODEX_NODE_EXEC_DYNAMIC_TOOL_NAME = "node_exec";

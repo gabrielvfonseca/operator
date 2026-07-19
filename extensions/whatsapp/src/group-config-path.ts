@@ -31,9 +31,9 @@ function normalizePathAccountId(accountId?: string | null): string {
 function hasConfiguredField(config: unknown, field: WhatsAppGroupScopeField): boolean {
   return Boolean(
     config &&
-    typeof config === "object" &&
-    Object.hasOwn(config as Record<string, unknown>, field) &&
-    (config as Record<string, unknown>)[field] !== undefined,
+      typeof config === "object" &&
+      Object.hasOwn(config as Record<string, unknown>, field) &&
+      (config as Record<string, unknown>)[field] !== undefined,
   );
 }
 

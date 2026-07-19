@@ -371,9 +371,7 @@ describe("fs-safe", () => {
     await fs.mkdir(path.dirname(targetPath), { recursive: true });
     await fs.writeFile(targetPath, "seed");
 
-    await (
-      await openRoot(root)
-    ).append("nested/out.txt", "next", {
+    await (await openRoot(root)).append("nested/out.txt", "next", {
       prependNewlineIfNeeded: true,
     });
 
@@ -513,9 +511,7 @@ describe("fs-safe", () => {
       slotPath: slot,
       outsideDir: outside,
       runWrite: async (relativePath) =>
-        await (
-          await openRoot(root)
-        ).write(relativePath, "new-content", {
+        await (await openRoot(root)).write(relativePath, "new-content", {
           mkdir: false,
         }),
     });
@@ -532,9 +528,7 @@ describe("fs-safe", () => {
       slotPath: slot,
       outsideDir: outside,
       runWrite: async (relativePath) =>
-        await (
-          await openRoot(root)
-        ).append(relativePath, "new-content", {
+        await (await openRoot(root)).append(relativePath, "new-content", {
           mkdir: false,
           prependNewlineIfNeeded: true,
         }),
@@ -607,9 +601,7 @@ describe("fs-safe", () => {
       slotPath: slot,
       outsideDir: outside,
       runWrite: async (relativePath) =>
-        await (
-          await openRoot(root)
-        ).copyIn(relativePath, sourcePath, {
+        await (await openRoot(root)).copyIn(relativePath, sourcePath, {
           mkdir: false,
         }),
     });

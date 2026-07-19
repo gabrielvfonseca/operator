@@ -222,6 +222,7 @@ describe("memory plugin e2e", () => {
 
       const config = memoryPlugin.configSchema?.parse?.({
         embedding: {
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           apiKey: "${TEST_MEMORY_API_KEY}",
         },
         dbPath: getDbPath(),
@@ -2676,7 +2677,9 @@ describe("memory plugin e2e", () => {
         dbPath: getDbPath(),
         storageOptions: {
           region: "us-west-2",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           access_key: "${TEST_MEMORY_STORAGE_ACCESS_KEY}",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           secret_key: "${TEST_MEMORY_STORAGE_SECRET_KEY}",
         },
       }) as MemoryPluginTestConfig | undefined;
@@ -2715,6 +2718,7 @@ describe("memory plugin e2e", () => {
           },
           dbPath: getDbPath(),
           storageOptions: {
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             secret_key: "${TEST_MEMORY_STORAGE_MISSING}",
           },
         });

@@ -902,7 +902,7 @@ export function buildEmbeddedRunPayloads(params: {
       if (item.replyToCurrent !== undefined) {
         payload.replyToCurrent = item.replyToCurrent;
       }
-      if (item.audioAsVoice || Boolean(hasAudioAsVoiceTag && item.media?.length)) {
+      if (item.audioAsVoice || (hasAudioAsVoiceTag && item.media?.length)) {
         payload.audioAsVoice = true;
       }
       if (item.presentation) {

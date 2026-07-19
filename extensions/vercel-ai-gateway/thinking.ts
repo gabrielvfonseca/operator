@@ -51,9 +51,9 @@ function resolveOpenAiThinkingProfile(modelId: string): ProviderThinkingProfile 
 function hasVercelSpecificClaudeProfile(profile: ProviderThinkingProfile): boolean {
   return Boolean(
     profile.defaultLevel ||
-    profile.levels.some(
-      (level) => level.id === "adaptive" || level.id === "xhigh" || level.id === "max",
-    ),
+      profile.levels.some(
+        (level) => level.id === "adaptive" || level.id === "xhigh" || level.id === "max",
+      ),
   );
 }
 

@@ -15,9 +15,7 @@ function isMemoryOnlyMigration(ctx: MigrationProviderContext): boolean {
 }
 
 export function buildCodexMigrationProvider(
-  params: {
-    runtime?: MigrationProviderContext["runtime"];
-  } = {},
+  params: { runtime?: MigrationProviderContext["runtime"] } = {},
 ): MigrationProviderPlugin {
   return {
     id: "codex",

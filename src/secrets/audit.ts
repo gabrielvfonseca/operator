@@ -614,10 +614,7 @@ function summarizeFindings(findings: SecretsAuditFinding[]): SecretsAuditReport[
 /** Runs local storage/config audit and returns a structured report. */
 /** Runs a secrets audit over config/auth stores and returns structured findings. */
 export async function runSecretsAudit(
-  params: {
-    env?: NodeJS.ProcessEnv;
-    allowExec?: boolean;
-  } = {},
+  params: { env?: NodeJS.ProcessEnv; allowExec?: boolean } = {},
 ): Promise<SecretsAuditReport> {
   const env = params.env ?? process.env;
   const allowExec = Boolean(params.allowExec);

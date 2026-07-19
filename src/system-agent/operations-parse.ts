@@ -52,7 +52,7 @@ export type SystemAgentCommandDeps = {
     cliOptions: ConfigSetOptions;
   }) => Promise<void>;
   runDoctor?: (runtime: RuntimeEnv, options: DoctorOptions) => Promise<void>;
-  runGatewayRestart?: () => Promise<void | boolean>;
+  runGatewayRestart?: () => Promise<undefined | boolean>;
   runGatewayStart?: () => Promise<void>;
   runGatewayStop?: () => Promise<void>;
   runPluginInstall?: (spec: string, runtime: RuntimeEnv) => Promise<void>;
@@ -64,7 +64,7 @@ export type SystemAgentCommandDeps = {
     session?: string;
     deliver?: boolean;
     historyLimit?: number;
-  }) => Promise<TuiResult | void>;
+  }) => Promise<TuiResult | undefined>;
   /** Where setup side effects run; the gateway surface never manages its own daemon. */
   setupSurface?: "cli" | "gateway";
   applySetup?: typeof import("./setup-apply.js").applySystemAgentSetup;

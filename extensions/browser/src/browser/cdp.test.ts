@@ -250,7 +250,7 @@ describe("cdp", () => {
     if (!wsServer) {
       throw new Error("ws server not initialized");
     }
-    wsServer.on("headers", (headers, req) => {
+    wsServer.on("headers", (_headers, req) => {
       receivedHeaders = Object.fromEntries(
         Object.entries(req.headers).map(([k, v]) => [k, String(v)]),
       );

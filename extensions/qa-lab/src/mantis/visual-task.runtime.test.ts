@@ -354,7 +354,7 @@ describe("mantis visual task runtime", () => {
       ["pnpm", "--dir", repoRoot],
     ]);
     const launchArgs = commands.find((entry) => entry.args[0] === "desktop")?.args ?? [];
-    const launchShellIndex = launchArgs.findIndex((arg) => arg === "--");
+    const launchShellIndex = launchArgs.indexOf("--");
     expect(launchArgs.slice(launchShellIndex, launchShellIndex + 3)).toEqual(["--", "sh", "-lc"]);
     expect(launchArgs[launchShellIndex + 3]).toContain("--no-first-run");
     const visionArgs = commands.find((entry) => entry.command === "pnpm")?.args ?? [];

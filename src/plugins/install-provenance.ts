@@ -73,8 +73,8 @@ export function isOperatorTrustedPluginInstallSpec(
     });
   return Boolean(
     bundled ??
-    resolveOperatorTrustedNpmPackageInstall(npmSpec, bundledSources) ??
-    resolveCatalogOfficialExternalInstallPlan(npmSpec),
+      resolveOperatorTrustedNpmPackageInstall(npmSpec, bundledSources) ??
+      resolveCatalogOfficialExternalInstallPlan(npmSpec),
   );
 }
 

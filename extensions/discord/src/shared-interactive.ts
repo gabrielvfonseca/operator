@@ -191,7 +191,6 @@ export function buildDiscordPresentationComponents(
     }
     if (block.type === "divider") {
       spec.blocks?.push({ type: "separator" });
-      continue;
     }
   }
   for (const block of presentation.blocks) {

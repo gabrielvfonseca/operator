@@ -354,6 +354,7 @@ export async function runNodeHost(opts: NodeHostRunOptions): Promise<void> {
   const readinessPromise = startGatewayClientWhenEventLoopReady(client, {
     clientOptions: { preauthHandshakeTimeoutMs: cfg.gateway?.handshakeTimeoutMs },
   });
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let readiness;
   try {
     readiness = await readinessPromise;

@@ -188,12 +188,12 @@ describe("scripts/committer", () => {
     installHook(
       repo,
       ".githooks/pre-commit",
-      [
+      `${[
         "#!/usr/bin/env bash",
         "set -euo pipefail",
         "printf 'formatted\\n' > note.txt",
         "git add note.txt",
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
     writeRepoFile(repo, "note.txt", "raw\n");
 

@@ -348,7 +348,9 @@ function renderShellSnippet(options = {}) {
   const env = scenarioEnv(scenario);
   const homeTemplate = `operator-${label}-${scenario}-home.XXXXXX`;
   const lines = [
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'OPERATOR_TEST_STATE_TMP_ROOT="${OPERATOR_TEST_STATE_TMPDIR:-${TMPDIR:-/tmp}}"',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'OPERATOR_TEST_STATE_TMP_ROOT="${OPERATOR_TEST_STATE_TMP_ROOT%/}"',
     '[ -n "$OPERATOR_TEST_STATE_TMP_ROOT" ] || OPERATOR_TEST_STATE_TMP_ROOT="/tmp"',
     "export OPERATOR_TEST_STATE_TMP_ROOT",

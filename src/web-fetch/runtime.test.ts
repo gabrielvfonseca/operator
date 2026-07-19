@@ -103,8 +103,9 @@ describe("web fetch runtime", () => {
   let clearSecretsRuntimeSnapshot: typeof import("../secrets/runtime.js").clearSecretsRuntimeSnapshot;
 
   beforeAll(async () => {
-    ({ clearWebFetchRuntimeCachesForTest, resolveWebFetchDefinition } =
-      await import("./runtime.js"));
+    ({ clearWebFetchRuntimeCachesForTest, resolveWebFetchDefinition } = await import(
+      "./runtime.js"
+    ));
     ({ clearSecretsRuntimeSnapshot } = await import("../secrets/runtime.js"));
   });
 

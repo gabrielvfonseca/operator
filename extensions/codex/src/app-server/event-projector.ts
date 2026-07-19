@@ -290,8 +290,7 @@ export class CodexAppServerEventProjector {
     const reasoningText = this.reasoningProjection.reasoningText();
     const planText = this.reasoningProjection.planText();
     const hasAssistantItemText = this.assistantProjection.hasAssistantItemTextForSynthesis();
-    const legacyFailClosed =
-      !this.completedTurn || this.completedTurn.status !== "completed" || hasAssistantItemText;
+    const legacyFailClosed = this.completedTurn?.status !== "completed" || hasAssistantItemText;
     const hasDeliverableAssistantOnCompletedTurn =
       this.completedTurn?.status === "completed" &&
       assistantTexts.some((text) => text.trim().length > 0);

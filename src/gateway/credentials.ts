@@ -148,7 +148,7 @@ function resolveLocalGatewayCredentials(params: {
     params.plan.localToken.refPath &&
     params.localTokenPrecedence === "config-first" &&
     !params.plan.localToken.value &&
-    Boolean(params.plan.envToken) &&
+    params.plan.envToken &&
     localTokenCanWin
   ) {
     throwUnresolvedGatewaySecretInput(params.plan.localToken.refPath);
@@ -157,7 +157,7 @@ function resolveLocalGatewayCredentials(params: {
     params.plan.localPassword.refPath &&
     params.localPasswordPrecedence === "config-first" && // pragma: allowlist secret
     !params.plan.localPassword.value &&
-    Boolean(params.plan.envPassword) &&
+    params.plan.envPassword &&
     localPasswordCanWin
   ) {
     throwUnresolvedGatewaySecretInput(params.plan.localPassword.refPath);

@@ -149,9 +149,9 @@ function shouldLoadUsageSummary(params: {
   const auth = normalizeOptionalLowercaseString(params.selectedModelAuth);
   return Boolean(
     params.credentialType === "oauth" ||
-    params.credentialType === "token" ||
-    auth?.startsWith("oauth") ||
-    auth?.startsWith("token"),
+      params.credentialType === "token" ||
+      auth?.startsWith("oauth") ||
+      auth?.startsWith("token"),
   );
 }
 

@@ -228,6 +228,7 @@ describe("prepareCliBundleMcpConfig user mcp.servers", () => {
           operator: {
             type: "http",
             url: "http://127.0.0.1:23119/mcp",
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             headers: { Authorization: "Bearer ${OPERATOR_MCP_TOKEN}" },
           },
         },

@@ -829,7 +829,7 @@ function parseIpv6Parts(address) {
 
 function extractUnsafeEmbeddedIpv4FromIpv6(address) {
   const parts = parseIpv6Parts(address);
-  if (!parts || parts.length !== 8) {
+  if (parts?.length !== 8) {
     return null;
   }
   const candidates = [];

@@ -15,8 +15,8 @@ if [[ -z "$CHANGELOG_FILE" ]]; then
     CHANGELOG_FILE="$SCRIPT_DIR/../CHANGELOG.md"
   elif [[ -f "CHANGELOG.md" ]]; then
     CHANGELOG_FILE="CHANGELOG.md"
-  elif [[ -f "../CHANGELOG.md" ]]; then
-    CHANGELOG_FILE="../CHANGELOG.md"
+  elif [[ -f "../CHANGELOG.MD" ]]; then
+    CHANGELOG_FILE="../CHANGELOG.MD"
   else
     echo "Error: Could not find CHANGELOG.md" >&2
     exit 1

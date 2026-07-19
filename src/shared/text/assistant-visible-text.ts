@@ -756,6 +756,7 @@ export function stripDowngradedToolCallText(text: string): string {
     if (startChar === "{" || startChar === "[") {
       let depth = 0;
       let inString = false;
+      // biome-ignore lint/suspicious/noShadowRestrictedNames: migrated from oxlint
       let escape = false;
       for (let idx = index; idx < input.length; idx += 1) {
         const ch = input[idx];
@@ -786,6 +787,7 @@ export function stripDowngradedToolCallText(text: string): string {
     }
 
     if (startChar === '"') {
+      // biome-ignore lint/suspicious/noShadowRestrictedNames: migrated from oxlint
       let escape = false;
       for (let idx = index + 1; idx < input.length; idx += 1) {
         const ch = input[idx];

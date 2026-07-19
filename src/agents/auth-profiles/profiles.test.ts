@@ -349,7 +349,7 @@ describe("promoteAuthProfileInOrder", () => {
         publish();
         throw new Error("postcommit publication failed");
       });
-      let result: ReturnType<typeof saveAuthProfileStore> = undefined;
+      let result: ReturnType<typeof saveAuthProfileStore>;
       try {
         expect(() => {
           result = saveAuthProfileStore(store("sk-new"), agentDir);
@@ -1023,7 +1023,7 @@ describe("promoteAuthProfileInOrder", () => {
       const originalCredential =
         loadAuthProfileStoreWithoutExternalProfiles(mainAgentDir).profiles[originalProfileId];
       expect(originalCredential?.type).toBe("oauth");
-      if (!originalCredential || originalCredential.type !== "oauth") {
+      if (originalCredential?.type !== "oauth") {
         throw new Error("expected original oauth credential");
       }
       saveAuthProfileStore(

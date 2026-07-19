@@ -344,7 +344,7 @@ export function pruneContextMessages(params: {
 
   for (let i = pruneStartIndex; i < cutoffIndex; i++) {
     const msg = messages[i];
-    if (!msg || msg.role !== "toolResult") {
+    if (msg?.role !== "toolResult") {
       continue;
     }
     if (!isToolPrunable(msg.toolName)) {
@@ -381,7 +381,7 @@ export function pruneContextMessages(params: {
   let prunableToolChars = 0;
   for (const i of prunableToolIndexes) {
     const msg = outputAfterSoftTrim[i];
-    if (!msg || msg.role !== "toolResult") {
+    if (msg?.role !== "toolResult") {
       continue;
     }
     prunableToolChars += estimateMessageChars(msg);
@@ -395,7 +395,7 @@ export function pruneContextMessages(params: {
       break;
     }
     const msg = (next ?? messages)[i];
-    if (!msg || msg.role !== "toolResult") {
+    if (msg?.role !== "toolResult") {
       continue;
     }
 

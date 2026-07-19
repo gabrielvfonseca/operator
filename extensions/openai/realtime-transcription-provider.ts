@@ -201,6 +201,7 @@ function createOpenAIRealtimeTranscriptionSession(
         config.onSpeechStart?.();
         return;
 
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
       case "error": {
         const detail = readRealtimeErrorDetail(event.error);
         const error = new Error(detail);
@@ -268,8 +269,8 @@ export function buildOpenAIRealtimeTranscriptionProvider(): RealtimeTranscriptio
     isConfigured: ({ cfg, providerConfig }) =>
       Boolean(
         normalizeProviderConfig(providerConfig).apiKey ||
-        process.env.OPENAI_API_KEY?.trim() ||
-        isProviderAuthProfileConfigured({ provider: "openai", cfg, profileTypes: ["api_key"] }),
+          process.env.OPENAI_API_KEY?.trim() ||
+          isProviderAuthProfileConfigured({ provider: "openai", cfg, profileTypes: ["api_key"] }),
       ),
     createSession: (req) => {
       const config = normalizeProviderConfig(req.providerConfig);

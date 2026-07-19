@@ -1270,8 +1270,8 @@ describe("dispatchReplyFromConfig", () => {
       SessionKey: "agent:main:discord:direct:U1",
     });
     let receivedOptions: GetReplyOptions | undefined;
-    let commandOutputResult: false | void = undefined;
-    let itemEventResult: false | void = undefined;
+    let commandOutputResult: false | undefined;
+    let itemEventResult: false | undefined;
     const replyResolver = vi.fn(async (_ctx: MsgContext, opts?: GetReplyOptions) => {
       receivedOptions = opts;
       commandOutputResult = await opts?.onCommandOutput?.({

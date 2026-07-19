@@ -16,11 +16,13 @@ class UpdateBanner extends OperatorLightDomContentsElement {
       return nothing;
     }
     return html`
-      ${props.statusBanner
-        ? html`<div class="callout ${props.statusBanner.tone}" role="alert">
+      ${
+        props.statusBanner
+          ? html`<div class="callout ${props.statusBanner.tone}" role="alert">
             ${props.statusBanner.text}
           </div>`
-        : nothing}
+          : nothing
+      }
     `;
   }
 }

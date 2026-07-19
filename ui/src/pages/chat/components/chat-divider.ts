@@ -15,23 +15,29 @@ export function renderChatDivider(
         <span class="chat-divider__line"></span>
         <span class="chat-divider__label">
           <span>${item.label}</span>
-          ${item.metric
-            ? html`
+          ${
+            item.metric
+              ? html`
                 <span class="chat-divider__separator" aria-hidden="true">·</span>
                 <span class="chat-divider__metric">${item.metric}</span>
               `
-            : nothing}
+              : nothing
+          }
         </span>
         <span class="chat-divider__line"></span>
       </div>
-      ${item.description || item.action
-        ? html`
+      ${
+        item.description || item.action
+          ? html`
             <div class="chat-divider__details">
-              ${item.description
-                ? html`<span class="chat-divider__description">${item.description}</span>`
-                : nothing}
-              ${item.action?.kind === "session-checkpoints" && onOpenSessionCheckpoints
-                ? html`
+              ${
+                item.description
+                  ? html`<span class="chat-divider__description">${item.description}</span>`
+                  : nothing
+              }
+              ${
+                item.action?.kind === "session-checkpoints" && onOpenSessionCheckpoints
+                  ? html`
                     <button
                       type="button"
                       class="btn btn--subtle btn--sm chat-divider__action"
@@ -40,10 +46,12 @@ export function renderChatDivider(
                       ${item.action.label}
                     </button>
                   `
-                : nothing}
+                  : nothing
+              }
             </div>
           `
-        : nothing}
+          : nothing
+      }
     </div>
   `;
 }

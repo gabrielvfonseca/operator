@@ -12,7 +12,7 @@ export type AcceptedSessionSpawn = {
 /** Normalize a tool result that accepted a child session spawn. */
 export function normalizeAcceptedSessionSpawnResult(result: unknown): AcceptedSessionSpawn | null {
   const details = asOptionalRecord(asOptionalRecord(result)?.details);
-  if (!details || details.status !== "accepted") {
+  if (details?.status !== "accepted") {
     return null;
   }
   const runId = normalizeOptionalString(details.runId);

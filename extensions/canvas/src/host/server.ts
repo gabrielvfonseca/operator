@@ -305,6 +305,7 @@ export async function createCanvasHostHandler(
     if (!wss) {
       return;
     }
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     wss.clients.forEach((ws) => ws.send("reload"));
   };
   const scheduleReload = () => {
@@ -459,6 +460,7 @@ export async function createCanvasHostHandler(
       }
       watcherClosed = true;
       await watcher?.close().catch(() => {});
+      // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
       wss?.clients.forEach((ws) => ws.terminate());
       if (wss) {
         await new Promise<void>((resolve) => {

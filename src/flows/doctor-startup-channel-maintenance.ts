@@ -29,8 +29,9 @@ export async function collectChannelPreviewWarningHealthFindings(params: {
   env?: NodeJS.ProcessEnv;
   allowExec?: boolean;
 }): Promise<readonly HealthFinding[]> {
-  const { collectChannelDoctorPreviewWarnings } =
-    await import("../commands/doctor/shared/channel-doctor.js");
+  const { collectChannelDoctorPreviewWarnings } = await import(
+    "../commands/doctor/shared/channel-doctor.js"
+  );
   const doctorFixCommand = params.doctorFixCommand ?? "operator doctor --fix";
   const previewConfig = await resolveDoctorChannelPreviewConfig({
     cfg: params.cfg,

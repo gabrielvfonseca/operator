@@ -240,11 +240,14 @@ type ChannelSetupWizardPrepare = (params: {
       cfg?: OperatorConfig;
       credentialValues?: ChannelSetupWizardCredentialValues;
     }
-  | void
-  | Promise<{
-      cfg?: OperatorConfig;
-      credentialValues?: ChannelSetupWizardCredentialValues;
-    } | void>;
+  | undefined
+  | Promise<
+      | {
+          cfg?: OperatorConfig;
+          credentialValues?: ChannelSetupWizardCredentialValues;
+        }
+      | undefined
+    >;
 
 /** Optional post-step hook for final validation, writes, or post prompts. */
 type ChannelSetupWizardFinalize = (params: {
@@ -260,11 +263,14 @@ type ChannelSetupWizardFinalize = (params: {
       cfg?: OperatorConfig;
       credentialValues?: ChannelSetupWizardCredentialValues;
     }
-  | void
-  | Promise<{
-      cfg?: OperatorConfig;
-      credentialValues?: ChannelSetupWizardCredentialValues;
-    } | void>;
+  | undefined
+  | Promise<
+      | {
+          cfg?: OperatorConfig;
+          credentialValues?: ChannelSetupWizardCredentialValues;
+        }
+      | undefined
+    >;
 
 /** Full declarative setup wizard consumed by the generic setup adapter. */
 export type ChannelSetupWizard = {

@@ -84,7 +84,7 @@ function describeSystemdCgroupLoadWarnings(runtime?: GatewayServiceSystemdRuntim
 export function getSystemdCgroupHygieneSummary(
   runtime?: GatewayServiceSystemdRuntime,
 ): string | null {
-  if (!runtime || !runtime.killMode) {
+  if (!runtime?.killMode) {
     return null;
   }
   const details = describeSystemdCgroupLoadWarnings(runtime);

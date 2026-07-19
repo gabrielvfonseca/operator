@@ -1705,11 +1705,10 @@ describe("tui command handlers", () => {
   });
 
   it("renders model listing feedback before the backend list resolves", async () => {
-    let resolveModels: (
-      value: Array<{ provider: string; id: string; name?: string }>,
-    ) => void = () => {
-      throw new Error("model list promise resolver was not initialized");
-    };
+    let resolveModels: (value: Array<{ provider: string; id: string; name?: string }>) => void =
+      () => {
+        throw new Error("model list promise resolver was not initialized");
+      };
     const listModelsPromise = new Promise<Array<{ provider: string; id: string; name?: string }>>(
       (resolve) => {
         resolveModels = (value) => resolve(value);

@@ -99,9 +99,9 @@ function hasManagedServiceHandoffContext(
   if (supervisor === "launchd") {
     return Boolean(
       env.OPERATOR_LAUNCHD_LABEL?.trim() ||
-      env.LAUNCH_JOB_LABEL?.trim() ||
-      env.LAUNCH_JOB_NAME?.trim() ||
-      env.XPC_SERVICE_NAME?.trim(),
+        env.LAUNCH_JOB_LABEL?.trim() ||
+        env.LAUNCH_JOB_NAME?.trim() ||
+        env.XPC_SERVICE_NAME?.trim(),
     );
   }
   if (supervisor === "systemd") {
@@ -113,8 +113,8 @@ function hasManagedServiceHandoffContext(
   if (supervisor === "schtasks") {
     return Boolean(
       env.OPERATOR_WINDOWS_TASK_NAME?.trim() ||
-      (env.OPERATOR_SERVICE_MARKER?.trim() === GATEWAY_SERVICE_MARKER &&
-        env.OPERATOR_SERVICE_KIND?.trim() === GATEWAY_SERVICE_KIND),
+        (env.OPERATOR_SERVICE_MARKER?.trim() === GATEWAY_SERVICE_MARKER &&
+          env.OPERATOR_SERVICE_KIND?.trim() === GATEWAY_SERVICE_KIND),
     );
   }
   return false;

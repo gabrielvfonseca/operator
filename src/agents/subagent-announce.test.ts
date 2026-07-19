@@ -33,7 +33,7 @@ const queueEmbeddedAgentMessageWithOutcomeMock = vi.fn(
 const waitForEmbeddedAgentRunEndMock = vi.fn(
   async (_sessionId: string, _timeoutMs?: number) => true,
 );
-let mockConfig: ReturnType<(typeof import("../config/config.js"))["getRuntimeConfig"]> = {
+let mockConfig: ReturnType<typeof import("../config/config.js")["getRuntimeConfig"]> = {
   session: {
     mainKey: "main",
     scope: "per-sender",

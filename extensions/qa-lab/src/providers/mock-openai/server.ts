@@ -222,7 +222,7 @@ async function buildResponsesPayload(
       return buildToolCallEventsWithArgs("tool_search_code", {
         code: [
           `const hits = await operator.tools.search(${JSON.stringify(targetTool)}, { limit: 1 });`,
-          "const match = hits.find((tool) => tool.name === " + JSON.stringify(targetTool) + ");",
+          `const match = hits.find((tool) => tool.name === ${JSON.stringify(targetTool)});`,
           "if (!match) throw new Error('target tool not found');",
           `return await operator.tools.call(match.id, ${JSON.stringify(plannedArgs)});`,
         ].join("\n"),
@@ -1468,7 +1468,7 @@ export async function startQaMockOpenAiServer(params?: {
         });
         if (body.stream === false) {
           const completion = events.at(-1);
-          if (!completion || completion.type !== "response.completed") {
+          if (completion?.type !== "response.completed") {
             writeJson(res, 500, { error: "mock completion failed" });
             return;
           }

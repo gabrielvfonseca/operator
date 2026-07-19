@@ -164,10 +164,7 @@ function pushUnique(paths: string[], candidate: string) {
 }
 
 export function defaultCatalogPathCandidates(
-  params: {
-    env?: Record<string, string | undefined>;
-    homeDir?: string;
-  } = {},
+  params: { env?: Record<string, string | undefined>; homeDir?: string } = {},
 ): string[] {
   const env = params.env ?? process.env;
   const homeDir = params.homeDir ?? os.homedir();
@@ -192,10 +189,7 @@ async function pathExists(filePath: string): Promise<boolean> {
 }
 
 export async function findDefaultCatalogPath(
-  params: {
-    env?: Record<string, string | undefined>;
-    homeDir?: string;
-  } = {},
+  params: { env?: Record<string, string | undefined>; homeDir?: string } = {},
 ): Promise<CatalogPathResolution> {
   const candidates = defaultCatalogPathCandidates(params);
   for (const candidate of candidates) {

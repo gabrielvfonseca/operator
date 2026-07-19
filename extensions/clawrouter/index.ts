@@ -136,8 +136,9 @@ export default definePluginEntry({
           let discoveryApiKey = auth.discoveryApiKey;
           if (!discoveryApiKey) {
             try {
-              const { resolveApiKeyForProvider } =
-                await import("openclaw/plugin-sdk/provider-auth-runtime");
+              const { resolveApiKeyForProvider } = await import(
+                "openclaw/plugin-sdk/provider-auth-runtime"
+              );
               discoveryApiKey = (
                 await resolveApiKeyForProvider({
                   provider: PROVIDER_ID,
@@ -186,8 +187,9 @@ export default definePluginEntry({
       },
       prepareDynamicModel: async (ctx) => {
         const scope = dynamicModelScope(ctx);
-        const { resolveApiKeyForProvider } =
-          await import("openclaw/plugin-sdk/provider-auth-runtime");
+        const { resolveApiKeyForProvider } = await import(
+          "openclaw/plugin-sdk/provider-auth-runtime"
+        );
         const apiKey = (
           await resolveApiKeyForProvider({
             provider: PROVIDER_ID,

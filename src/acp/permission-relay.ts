@@ -160,7 +160,7 @@ export function resolveGatewayDecisionFromPermissionOutcome(
   options: readonly PermissionOption[],
 ): GatewayExecApprovalDecision | undefined {
   const outcome = response?.outcome;
-  if (!outcome || outcome.outcome !== "selected") {
+  if (outcome?.outcome !== "selected") {
     return undefined;
   }
   const selected = options.find((option) => option.optionId === outcome.optionId);

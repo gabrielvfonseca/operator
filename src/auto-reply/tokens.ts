@@ -93,7 +93,7 @@ function isSilentReplyEnvelopeText(
     return false;
   }
   const trimmed = text.trim();
-  if (!trimmed || !trimmed.startsWith("{") || !trimmed.endsWith("}") || !trimmed.includes(token)) {
+  if (!trimmed?.startsWith("{") || !trimmed.endsWith("}") || !trimmed.includes(token)) {
     return false;
   }
   try {
@@ -169,9 +169,9 @@ function hasPlainReasoningFinalSilentToken(text: string, token: string): boolean
   return (
     Boolean(
       finalLine &&
-      silentIntentTextRe.test(finalLine) &&
-      previousLines &&
-      !substantiveAnswerCueRe.test(previousLines),
+        silentIntentTextRe.test(finalLine) &&
+        previousLines &&
+        !substantiveAnswerCueRe.test(previousLines),
     ) || bareReasoningPlaceholderRe.test(withoutToken)
   );
 }

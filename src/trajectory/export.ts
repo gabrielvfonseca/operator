@@ -297,6 +297,7 @@ async function parseJsonlFile<T>(
     validate?: (value: unknown) => value is T;
   },
 ): Promise<{ events: T[]; warnings: JsonlParseWarning[] }> {
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let stat;
   try {
     stat = await fsp.stat(filePath);

@@ -1588,7 +1588,7 @@ async function sendMessageTelegramWithContext(
     return { messageId: String(mediaMessageId), chatId: resolvedChatId };
   }
 
-  if (!text || !text.trim()) {
+  if (!text?.trim()) {
     throw new Error("Message must be non-empty for Telegram sends");
   }
   const textResult = await sendChunkedText(text, "text send");

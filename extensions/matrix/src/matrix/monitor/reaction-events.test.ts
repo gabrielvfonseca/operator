@@ -113,11 +113,7 @@ function createReactionClient(
 }
 
 function createReactionEvent(
-  params: {
-    eventId?: string;
-    targetEventId?: string;
-    reactionKey?: string;
-  } = {},
+  params: { eventId?: string; targetEventId?: string; reactionKey?: string } = {},
 ): MatrixReactionEvent {
   return {
     event_id: params.eventId ?? "$reaction-1",

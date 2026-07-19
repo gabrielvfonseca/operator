@@ -2,7 +2,6 @@
 // Write build info metadata
 
 import fs from "node:fs";
-import path from "node:path";
 
 console.error("[write-build-info] Writing build metadata...");
 

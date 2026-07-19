@@ -151,11 +151,13 @@ export function renderAgentOverview(params: {
         <div class="settings-row settings-row--stacked">
           <div class="agent-identity-editor">
             <span class="agent-identity-editor__avatar" aria-hidden="true">
-              ${identityAvatarUrl
-                ? html`<img src=${identityAvatarUrl} alt="" decoding="async" />`
-                : html`<span class="agent-identity-editor__avatar-text"
+              ${
+                identityAvatarUrl
+                  ? html`<img src=${identityAvatarUrl} alt="" decoding="async" />`
+                  : html`<span class="agent-identity-editor__avatar-text"
                     >${identityAvatarText}</span
-                  >`}
+                  >`
+              }
             </span>
             <div class="agent-identity-editor__fields">
               <label class="field">
@@ -184,16 +186,20 @@ export function renderAgentOverview(params: {
               </label>
             </div>
           </div>
-          ${params.identityError
-            ? html`<div class="settings-row__desc" role="alert" style="color: var(--danger);">
+          ${
+            params.identityError
+              ? html`<div class="settings-row__desc" role="alert" style="color: var(--danger);">
                 ${params.identityError}
               </div>`
-            : nothing}
+              : nothing
+          }
           <div class="agent-identity-editor__actions">
             <label class="btn btn--sm">
-              ${identityAvatarUrl
-                ? t("agents.identity.replaceImage")
-                : t("agents.identity.chooseImage")}
+              ${
+                identityAvatarUrl
+                  ? t("agents.identity.replaceImage")
+                  : t("agents.identity.chooseImage")
+              }
               <input
                 type="file"
                 accept="image/*"
@@ -242,16 +248,20 @@ export function renderAgentOverview(params: {
           <dd><code>${thinkingDefault}</code></dd>
           <dt>${t("agents.context.skillsFilter")}</dt>
           <dd>
-            ${skillFilter
-              ? t("agents.overview.selectedSkills", { count: String(skillCount) })
-              : t("agents.overview.allSkills")}
+            ${
+              skillFilter
+                ? t("agents.overview.selectedSkills", { count: String(skillCount) })
+                : t("agents.overview.allSkills")
+            }
           </dd>
         </dl>
       `,
     )}
-    ${configDirty
-      ? html`<div class="callout warn">${t("agents.overview.unsavedConfig")}</div>`
-      : nothing}
+    ${
+      configDirty
+        ? html`<div class="callout warn">${t("agents.overview.unsavedConfig")}</div>`
+        : nothing
+    }
     ${renderSettingsSection(
       {
         title: t("agents.overview.modelSelection"),
@@ -287,19 +297,23 @@ export function renderAgentOverview(params: {
               @change=${(e: Event) =>
                 onModelChange(agent.id, (e.target as HTMLSelectElement).value || null)}
             >
-              ${isDefault
-                ? html`
+              ${
+                isDefault
+                  ? html`
                     <option value="" ?selected=${!selectedPrimary}>
                       ${t("agents.overview.notSet")}
                     </option>
                   `
-                : html`
+                  : html`
                     <option value="" ?selected=${!selectedPrimary}>
-                      ${defaultPrimary
-                        ? t("agents.overview.inheritDefaultModel", { model: defaultPrimary })
-                        : t("agents.overview.inheritDefault")}
+                      ${
+                        defaultPrimary
+                          ? t("agents.overview.inheritDefaultModel", { model: defaultPrimary })
+                          : t("agents.overview.inheritDefault")
+                      }
                     </option>
-                  `}
+                  `
+              }
               ${buildModelOptions(
                 configForm,
                 effectivePrimary ?? undefined,

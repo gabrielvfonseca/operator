@@ -38,8 +38,9 @@ describe("runtime channel config collectors", () => {
   });
 
   it("uses the bundled channel contract-api collector when bootstrap secrets are unavailable", async () => {
-    const { collectChannelConfigAssignments } =
-      await import("./runtime-config-collectors-channels.js");
+    const { collectChannelConfigAssignments } = await import(
+      "./runtime-config-collectors-channels.js"
+    );
     const collectRuntimeConfigAssignments = vi.fn();
     loadChannelSecretContractApi.mockReturnValue({
       collectRuntimeConfigAssignments,
@@ -71,8 +72,9 @@ describe("runtime channel config collectors", () => {
   });
 
   it("falls back to bootstrap secrets when no channel contract-api is published", async () => {
-    const { collectChannelConfigAssignments } =
-      await import("./runtime-config-collectors-channels.js");
+    const { collectChannelConfigAssignments } = await import(
+      "./runtime-config-collectors-channels.js"
+    );
     const collectRuntimeConfigAssignments = vi.fn();
     loadChannelSecretContractApi.mockReturnValue(undefined);
     getBootstrapChannelSecrets.mockReturnValue({

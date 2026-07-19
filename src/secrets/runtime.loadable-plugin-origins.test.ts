@@ -115,6 +115,7 @@ describe("prepareSecretsRuntimeSnapshot loadable plugin origins", () => {
         "process.stdin.on('data', (chunk) => input += chunk);",
         "process.stdin.on('end', () => {",
         "  const request = JSON.parse(input);",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "  process.stdout.write(JSON.stringify({ protocolVersion: 1, values: Object.fromEntries(request.ids.map((id) => [id, `value:${id}`])) }));",
         "});",
         "",
@@ -137,6 +138,7 @@ describe("prepareSecretsRuntimeSnapshot loadable plugin origins", () => {
         vault: {
           providerAlias: "vault",
           source: "exec",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           command: "${node}",
           args: ["./resolve.mjs"],
         },

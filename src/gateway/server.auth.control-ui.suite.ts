@@ -268,8 +268,9 @@ export function registerControlUiAndPairingSuite(): void {
     scopes?: string[];
   }): Promise<{ identityPath: string; identity: { deviceId: string } }> => {
     const { publicKeyRawBase64UrlFromPem } = await import("../infra/device-identity.js");
-    const { approveDevicePairing, requestDevicePairing } =
-      await import("../infra/device-pairing.js");
+    const { approveDevicePairing, requestDevicePairing } = await import(
+      "../infra/device-pairing.js"
+    );
     const { identityPath, identity } = await createOperatorIdentityFixture(params.identityPrefix);
     const scopes = params.scopes ?? ["operator.read"];
     const devicePublicKey = publicKeyRawBase64UrlFromPem(identity.publicKeyPem);
@@ -349,8 +350,9 @@ export function registerControlUiAndPairingSuite(): void {
   test("rejects trusted-proxy control ui without device identity even with self-declared scopes", async () => {
     await configureTrustedProxyControlUiAuth();
     const { publicKeyRawBase64UrlFromPem } = await import("../infra/device-identity.js");
-    const { rejectDevicePairing, requestDevicePairing } =
-      await import("../infra/device-pairing.js");
+    const { rejectDevicePairing, requestDevicePairing } = await import(
+      "../infra/device-pairing.js"
+    );
     const { identity } = await createOperatorIdentityFixture("operator-control-ui-trusted-proxy-");
     const pendingRequest = await requestDevicePairing({
       deviceId: identity.deviceId,
@@ -1136,13 +1138,16 @@ export function registerControlUiAndPairingSuite(): void {
   });
 
   test("qr setup code returns node token plus full operator handoff", async () => {
-    const { issueDeviceBootstrapToken, verifyDeviceBootstrapToken } =
-      await import("../infra/device-bootstrap.js");
+    const { issueDeviceBootstrapToken, verifyDeviceBootstrapToken } = await import(
+      "../infra/device-bootstrap.js"
+    );
     const { publicKeyRawBase64UrlFromPem } = await import("../infra/device-identity.js");
-    const { FULL_ACCESS_PAIRING_SETUP_BOOTSTRAP_PROFILE } =
-      await import("../shared/device-bootstrap-profile.js");
-    const { getPairedDevice, listDevicePairing, verifyDeviceToken } =
-      await import("../infra/device-pairing.js");
+    const { FULL_ACCESS_PAIRING_SETUP_BOOTSTRAP_PROFILE } = await import(
+      "../shared/device-bootstrap-profile.js"
+    );
+    const { getPairedDevice, listDevicePairing, verifyDeviceToken } = await import(
+      "../infra/device-pairing.js"
+    );
     const { server, port, prevToken } = await startControlUiServer("secret");
 
     const { identityPath, identity } = await createOperatorIdentityFixture(
@@ -1539,13 +1544,16 @@ export function registerControlUiAndPairingSuite(): void {
   );
 
   test("qr bootstrap retry keeps full operator handoff after paired approval", async () => {
-    const { issueDeviceBootstrapToken, verifyDeviceBootstrapToken } =
-      await import("../infra/device-bootstrap.js");
+    const { issueDeviceBootstrapToken, verifyDeviceBootstrapToken } = await import(
+      "../infra/device-bootstrap.js"
+    );
     const { publicKeyRawBase64UrlFromPem } = await import("../infra/device-identity.js");
-    const { approveBootstrapDevicePairing, requestDevicePairing } =
-      await import("../infra/device-pairing.js");
-    const { FULL_ACCESS_PAIRING_SETUP_BOOTSTRAP_PROFILE } =
-      await import("../shared/device-bootstrap-profile.js");
+    const { approveBootstrapDevicePairing, requestDevicePairing } = await import(
+      "../infra/device-pairing.js"
+    );
+    const { FULL_ACCESS_PAIRING_SETUP_BOOTSTRAP_PROFILE } = await import(
+      "../shared/device-bootstrap-profile.js"
+    );
     const { server, port, prevToken } = await startControlUiServer("secret");
     const { identityPath, identity } = await createOperatorIdentityFixture(
       "operator-bootstrap-node-retry-",
@@ -1927,10 +1935,12 @@ export function registerControlUiAndPairingSuite(): void {
 
   test("silently approves control ui operator bootstrap tokens with control-ui purpose", async () => {
     const { issueDeviceBootstrapToken } = await import("../infra/device-bootstrap.js");
-    const { getPairedDevice, listDevicePairing, verifyDeviceToken } =
-      await import("../infra/device-pairing.js");
-    const { BOOTSTRAP_HANDOFF_OPERATOR_SCOPES } =
-      await import("../shared/device-bootstrap-profile.js");
+    const { getPairedDevice, listDevicePairing, verifyDeviceToken } = await import(
+      "../infra/device-pairing.js"
+    );
+    const { BOOTSTRAP_HANDOFF_OPERATOR_SCOPES } = await import(
+      "../shared/device-bootstrap-profile.js"
+    );
     testState.gatewayControlUi = { allowedOrigins: ["https://localhost"] };
     const { server, port, prevToken } = await startControlUiServer("secret");
 
@@ -2020,8 +2030,9 @@ export function registerControlUiAndPairingSuite(): void {
   test("requires pairing for control ui bootstrap token without control-ui purpose", async () => {
     const { issueDeviceBootstrapToken } = await import("../infra/device-bootstrap.js");
     const { getPairedDevice, listDevicePairing } = await import("../infra/device-pairing.js");
-    const { BOOTSTRAP_HANDOFF_OPERATOR_SCOPES } =
-      await import("../shared/device-bootstrap-profile.js");
+    const { BOOTSTRAP_HANDOFF_OPERATOR_SCOPES } = await import(
+      "../shared/device-bootstrap-profile.js"
+    );
     testState.gatewayControlUi = { allowedOrigins: ["https://localhost"] };
     const { server, port, prevToken } = await startControlUiServer("secret");
 

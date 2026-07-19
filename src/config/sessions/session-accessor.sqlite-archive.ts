@@ -69,9 +69,7 @@ function findMatchingSqliteTranscriptArchive(params: {
       if (readSessionArchiveContentSync(archivePath) === params.content) {
         return archivePath;
       }
-    } catch {
-      continue;
-    }
+    } catch {}
   }
   return null;
 }

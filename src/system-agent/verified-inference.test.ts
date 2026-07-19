@@ -338,7 +338,7 @@ describe("verified Operator inference binding", () => {
       agents: { defaults: { model: "claude-cli/claude-opus-4-8" } },
     } satisfies OperatorConfig;
     const route = await resolveSystemAgentConfiguredRouteFromConfig(cliConfig);
-    if (!route || route.runner !== "cli") {
+    if (route?.runner !== "cli") {
       throw new Error("missing test CLI route");
     }
     const resolveOwner = vi.fn(async () => "opaque-cli-owner");
@@ -406,7 +406,7 @@ describe("verified Operator inference binding", () => {
       },
     } satisfies OperatorConfig;
     const route = await resolveSystemAgentConfiguredRouteFromConfig(cliConfig);
-    if (!route || route.runner !== "cli") {
+    if (route?.runner !== "cli") {
       throw new Error("missing test CLI route");
     }
     const binding = await createSystemAgentVerifiedInferenceBinding({
@@ -442,7 +442,7 @@ describe("verified Operator inference binding", () => {
       agents: { defaults: { model: "claude-cli/claude-opus-4-8" } },
     } satisfies OperatorConfig;
     const route = await resolveSystemAgentConfiguredRouteFromConfig(cliConfig);
-    if (!route || route.runner !== "cli") {
+    if (route?.runner !== "cli") {
       throw new Error("missing test CLI route");
     }
     const resolveAuth = vi.fn(() => "strict-cli-credential");
@@ -490,7 +490,7 @@ describe("verified Operator inference binding", () => {
       auth: { profiles: { [profileId]: { provider: "claude-cli", mode: "api_key" } } },
     } satisfies OperatorConfig;
     const route = await resolveSystemAgentConfiguredRouteFromConfig(cliConfig);
-    if (!route || route.runner !== "cli" || route.authProfileId !== profileId) {
+    if (route?.runner !== "cli" || route.authProfileId !== profileId) {
       throw new Error("missing test CLI SecretRef route");
     }
     const credential = {
@@ -576,7 +576,7 @@ describe("verified Operator inference binding", () => {
       },
     } satisfies OperatorConfig;
     const route = await resolveSystemAgentConfiguredRouteFromConfig(harnessConfig);
-    if (!route || route.runner !== "embedded" || route.agentHarnessRuntimeOverride !== "codex") {
+    if (route?.runner !== "embedded" || route.agentHarnessRuntimeOverride !== "codex") {
       throw new Error("missing test plugin harness route");
     }
     const runtimeOwnerFingerprint = fingerprintOpaqueRuntimeOwner({
@@ -629,7 +629,7 @@ describe("verified Operator inference binding", () => {
       },
     } satisfies OperatorConfig;
     const route = await resolveSystemAgentConfiguredRouteFromConfig(harnessConfig);
-    if (!route || route.runner !== "embedded") {
+    if (route?.runner !== "embedded") {
       throw new Error("missing test plugin harness route");
     }
     const runtimeOwnerFingerprint = fingerprintOpaqueRuntimeOwner({
@@ -684,7 +684,7 @@ describe("verified Operator inference binding", () => {
       },
     } satisfies OperatorConfig;
     const route = await resolveSystemAgentConfiguredRouteFromConfig(harnessConfig);
-    if (!route || route.runner !== "embedded") {
+    if (route?.runner !== "embedded") {
       throw new Error("missing test plugin harness route");
     }
     const authFingerprint = fingerprintAuthProfileCredential({
@@ -756,7 +756,7 @@ describe("verified Operator inference binding", () => {
       },
     } satisfies OperatorConfig;
     const resolved = await resolveSystemAgentConfiguredRouteFromConfig(harnessConfig);
-    if (!resolved || resolved.runner !== "embedded") {
+    if (resolved?.runner !== "embedded") {
       throw new Error("missing test plugin harness route");
     }
     const configuredRoute = {
@@ -805,7 +805,7 @@ describe("verified Operator inference binding", () => {
       },
     } satisfies OperatorConfig;
     const resolved = await resolveSystemAgentConfiguredRouteFromConfig(harnessConfig);
-    if (!resolved || resolved.runner !== "embedded") {
+    if (resolved?.runner !== "embedded") {
       throw new Error("missing test embedded route");
     }
     const configuredRoute = {
@@ -862,7 +862,7 @@ describe("verified Operator inference binding", () => {
       },
     } satisfies OperatorConfig;
     const resolved = await resolveSystemAgentConfiguredRouteFromConfig(harnessConfig);
-    if (!resolved || resolved.runner !== "embedded") {
+    if (resolved?.runner !== "embedded") {
       throw new Error("missing test plugin harness route");
     }
     const configuredRoute = {
@@ -913,7 +913,7 @@ describe("verified Operator inference binding", () => {
       plugins: { entries: { codex: { config: { appServer: { command: "codex" } } } } },
     } satisfies OperatorConfig;
     const route = await resolveSystemAgentConfiguredRouteFromConfig(harnessConfig);
-    if (!route || route.runner !== "embedded" || route.agentHarnessRuntimeOverride !== "codex") {
+    if (route?.runner !== "embedded" || route.agentHarnessRuntimeOverride !== "codex") {
       throw new Error("missing test plugin harness route");
     }
     const runtimeOwnerFingerprint = fingerprintOpaqueRuntimeOwner({
@@ -968,7 +968,7 @@ describe("verified Operator inference binding", () => {
       auth: { profiles: { "openai:verified": { provider: "openai", mode: "api_key" } } },
     } satisfies OperatorConfig;
     const route = await resolveSystemAgentConfiguredRouteFromConfig(harnessConfig);
-    if (!route || route.runner !== "embedded") {
+    if (route?.runner !== "embedded") {
       throw new Error("missing test plugin harness route");
     }
     const authFingerprint = fingerprintResolvedAuthProfileCredential({
@@ -1046,7 +1046,7 @@ describe("verified Operator inference binding", () => {
       auth: { profiles: { "openai:work": { provider: "openai", mode: "api_key" } } },
     } satisfies OperatorConfig;
     const route = await resolveSystemAgentConfiguredRouteFromConfig(harnessConfig);
-    if (!route || route.runner !== "embedded" || route.authProfileId !== "openai:work") {
+    if (route?.runner !== "embedded" || route.authProfileId !== "openai:work") {
       throw new Error("missing test plugin harness profile route");
     }
     const credential = {
@@ -1153,7 +1153,7 @@ describe("verified Operator inference binding", () => {
       },
     } satisfies OperatorConfig;
     const route = await resolveSystemAgentConfiguredRouteFromConfig(bedrockConfig);
-    if (!route || route.runner !== "embedded") {
+    if (route?.runner !== "embedded") {
       throw new Error("missing test AWS route");
     }
     const auth = { source: "aws-sdk default chain", mode: "aws-sdk" as const };

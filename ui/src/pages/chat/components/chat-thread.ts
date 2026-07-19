@@ -309,9 +309,9 @@ class ChatSessionVirtualizerHost implements ReactiveControllerHost {
               }
               return html`
                 <div
-                  class="chat-virtual-row ${virtualRow.index === 0
-                    ? "chat-virtual-row--first"
-                    : ""}"
+                  class="chat-virtual-row ${
+                    virtualRow.index === 0 ? "chat-virtual-row--first" : ""
+                  }"
                   style=${styleMap({
                     transform: `translateY(${
                       virtualRow.start - virtualizer.options.scrollMargin
@@ -603,8 +603,9 @@ export function renderChatPinnedMessages(
           >${icons.chevronDown}</span
         >
       </button>
-      ${state.pinnedExpanded
-        ? html`
+      ${
+        state.pinnedExpanded
+          ? html`
             <div class="agent-chat__pinned-list">
               ${entries.map(
                 ({ index, text, role }) => html`
@@ -632,7 +633,8 @@ export function renderChatPinnedMessages(
               )}
             </div>
           `
-        : nothing}
+          : nothing
+      }
     </div>
   `;
 }
@@ -850,14 +852,16 @@ function renderLoadingSkeleton() {
 function renderHistorySentinel(loading: boolean) {
   return html`
     <div class="chat-history-sentinel">
-      ${loading
-        ? html`
+      ${
+        loading
+          ? html`
             <div class="chat-history-loading" role="status">
               <span class="session-run-spinner" aria-hidden="true"></span>
               <span>${t("common.loading")}</span>
             </div>
           `
-        : nothing}
+          : nothing
+      }
     </div>
   `;
 }
@@ -867,7 +871,7 @@ function latestTranscriptAnnouncement(
 ): ChatTranscriptAnnouncement | null {
   for (let itemIndex = items.length - 1; itemIndex >= 0; itemIndex -= 1) {
     const item = items[itemIndex];
-    if (!item || item.kind !== "group" || item.role.toLowerCase() !== "assistant") {
+    if (item?.kind !== "group" || item.role.toLowerCase() !== "assistant") {
       continue;
     }
     for (let messageIndex = item.messages.length - 1; messageIndex >= 0; messageIndex -= 1) {
@@ -1134,14 +1138,18 @@ function renderChatThreadContents(
     showLoadingSkeleton || isEmpty
       ? html`
           <div class="chat-thread-inner">
-            ${props.historyPagination
-              ? renderHistorySentinel(props.historyPagination.loading)
-              : nothing}
+            ${
+              props.historyPagination
+                ? renderHistorySentinel(props.historyPagination.loading)
+                : nothing
+            }
             ${showLoadingSkeleton ? renderLoadingSkeleton() : nothing}
             ${isEmpty && !state.searchOpen ? renderWelcomeState(props) : nothing}
-            ${isEmpty && state.searchOpen
-              ? html` <div class="agent-chat__empty">${t("chat.thread.noMatches")}</div> `
-              : nothing}
+            ${
+              isEmpty && state.searchOpen
+                ? html` <div class="agent-chat__empty">${t("chat.thread.noMatches")}</div> `
+                : nothing
+            }
           </div>
         `
       : transcript.render(
@@ -1165,12 +1173,12 @@ function renderChatThreadContents(
       @scroll=${props.onChatScroll}
       @wheel=${props.onHistoryIntent ? { handleEvent: props.onHistoryIntent, passive: true } : null}
       @keydown=${props.onHistoryIntent}
-      @touchstart=${props.onHistoryIntent
-        ? { handleEvent: props.onHistoryIntent, passive: true }
-        : null}
-      @touchmove=${props.onHistoryIntent
-        ? { handleEvent: props.onHistoryIntent, passive: true }
-        : null}
+      @touchstart=${
+        props.onHistoryIntent ? { handleEvent: props.onHistoryIntent, passive: true } : null
+      }
+      @touchmove=${
+        props.onHistoryIntent ? { handleEvent: props.onHistoryIntent, passive: true } : null
+      }
       @touchend=${props.onHistoryIntent}
       @touchcancel=${props.onHistoryIntent}
       @mousedown=${beginNativeWindowDragFromTopInset}

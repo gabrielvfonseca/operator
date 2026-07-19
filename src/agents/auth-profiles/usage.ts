@@ -197,9 +197,9 @@ function resolveWhamResetMs(window: WhamUsageWindow | undefined, now: number): n
 function isWhamWindowExhausted(window: WhamUsageWindow | undefined): boolean {
   return Boolean(
     window &&
-    typeof window.used_percent === "number" &&
-    Number.isFinite(window.used_percent) &&
-    window.used_percent >= 100,
+      typeof window.used_percent === "number" &&
+      Number.isFinite(window.used_percent) &&
+      window.used_percent >= 100,
   );
 }
 
@@ -372,8 +372,7 @@ function shouldHalfOpenProbeWhamBlock(params: {
   const profile = params.store.profiles[params.profileId];
   const stats = params.store.usageStats?.[params.profileId];
   if (
-    !stats ||
-    stats.blockedSource !== "wham" ||
+    stats?.blockedSource !== "wham" ||
     stats.blockedReason !== "subscription_limit" ||
     !isActiveUnusableWindow(stats.blockedUntil, params.now) ||
     isActiveUnusableWindow(stats.cooldownUntil, params.now) ||
@@ -491,8 +490,7 @@ async function runWhamHalfOpenReprobe(params: {
       const currentProfile = freshStore.profiles[params.profileId];
       const currentStats = freshStore.usageStats?.[params.profileId];
       if (
-        !currentStats ||
-        currentStats.blockedSource !== "wham" ||
+        currentStats?.blockedSource !== "wham" ||
         currentStats.blockedReason !== "subscription_limit" ||
         currentStats.lastProbeAt !== params.startedAt ||
         !matchesWhamBlockGeneration(currentStats, generation) ||

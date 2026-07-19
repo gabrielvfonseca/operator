@@ -11,10 +11,7 @@ export type EnvMap = Record<string, string | undefined>;
 type AccessSyncFn = (path: string, mode?: number) => void;
 
 function resolveLinuxSystemCaBundle(
-  params: {
-    platform?: NodeJS.Platform;
-    accessSync?: AccessSyncFn;
-  } = {},
+  params: { platform?: NodeJS.Platform; accessSync?: AccessSyncFn } = {},
 ): string | undefined {
   const platform = params.platform ?? process.platform;
   if (platform !== "linux") {
@@ -26,9 +23,7 @@ function resolveLinuxSystemCaBundle(
     try {
       accessSync(candidate, fs.constants.R_OK);
       return candidate;
-    } catch {
-      continue;
-    }
+    } catch {}
   }
   return undefined;
 }

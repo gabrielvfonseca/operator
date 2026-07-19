@@ -118,11 +118,15 @@ describe("redactSensitiveText", () => {
 
   it("preserves shell env references in assignments", () => {
     const input = [
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'DISCORD_BOT_TOKEN="${DISCORD_BOT_TOKEN:-}"',
       "OPENAI_API_KEY=$OPENAI_API_KEY",
       "API_KEY=$API_KEY",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "TOKEN=${TOKEN}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "PASSWORD=${PASSWORD:-}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "GITHUB_TOKEN=${GITHUB_TOKEN}",
     ].join("\n");
     const output = redactSensitiveText(input, { mode: "tools" });
@@ -139,6 +143,7 @@ describe("redactSensitiveText", () => {
     const input = `DISCORD_BOT_TOKEN="\${DISCORD_BOT_TOKEN:-${fallback}}"`;
     const output = redactSensitiveText(input, { mode: "tools" });
     expect(output).not.toContain(fallback);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(output).toBe('DISCORD_BOT_TOKEN="${DISC…890}"');
   });
 
@@ -292,17 +297,23 @@ describe("redactSensitiveText", () => {
     expect(redactSensitiveFieldValue("openai_api_key", "abcdefghijklmnopqrstuvwx1234567890")).toBe(
       "abcdef…7890",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(redactSensitiveFieldValue("DISCORD_BOT_TOKEN", "${DISCORD_BOT_TOKEN:-}")).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${DISCORD_BOT_TOKEN:-}",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(redactSensitiveFieldValue("apiKey", "${OPENAI_API_KEY:-}")).toBe("${OPEN…Y:-}");
     expect(redactSensitiveFieldValue("password", "$SUPERSECRET123")).toBe("***");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(redactSensitiveFieldValue("apiKey", "${SECRET_TOKEN}")).toBe("***");
     expect(
       redactSensitiveFieldValue(
         "DISCORD_BOT_TOKEN",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${DISCORD_BOT_TOKEN:-discordliteral1234567890}",
       ),
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     ).toBe("${DISCORD_BOT_TOKEN:-disco…890}");
     expect(redactSensitiveFieldValue("MONKEY", "banana")).toBe("banana");
   });
@@ -734,6 +745,7 @@ describe("redactSensitiveText", () => {
     const input = "password=value&safe=1";
     const output = redactSensitiveText(input, {
       mode: "tools",
+      // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
       patterns: [String.raw`custom-secret-([A-Za-z0-9]+)`],
     });
     expect(output).toBe(input);
@@ -774,6 +786,7 @@ describe("redactSensitiveText", () => {
     const input = "password=abc123456789012345&confirm=abc123456789012345";
     const output = redactSensitiveText(input, {
       mode: "tools",
+      // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
       patterns: [String.raw`password=([^&]+)&confirm=[^&]+`],
     });
     expect(output).toBe("password=abc123…2345&confirm=abc123456789012345");

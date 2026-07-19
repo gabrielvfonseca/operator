@@ -595,6 +595,7 @@ describe("startCodexAttemptThread", () => {
         "const lines = readline.createInterface({ input: process.stdin });",
         'lines.on("line", (line) => {',
         "  const message = JSON.parse(line);",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         '  fs.appendFileSync(requestLogPath, `${String(message.method)}\\n`, "utf8");',
         "});",
         "setInterval(() => undefined, 1000);",

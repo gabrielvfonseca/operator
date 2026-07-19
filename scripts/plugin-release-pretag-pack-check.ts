@@ -68,6 +68,7 @@ export function runPluginReleasePretagPackCheck(rootDir = resolve(".")) {
     [
       "#!/usr/bin/env bash",
       "set -euo pipefail",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'exec npm exec --yes --package "${CLAWHUB_CLI_PACKAGE}" -- clawhub "$@"',
       "",
     ].join("\n"),

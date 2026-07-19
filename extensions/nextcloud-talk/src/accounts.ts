@@ -45,9 +45,9 @@ const {
     const channel = cfg.channels?.["nextcloud-talk"];
     return Boolean(
       channel?.baseUrl?.trim() &&
-      (hasConfiguredAccountValue(channel.botSecret) ||
-        channel.botSecretFile?.trim() ||
-        process.env.NEXTCLOUD_TALK_BOT_SECRET?.trim()),
+        (hasConfiguredAccountValue(channel.botSecret) ||
+          channel.botSecretFile?.trim() ||
+          process.env.NEXTCLOUD_TALK_BOT_SECRET?.trim()),
     );
   },
 });

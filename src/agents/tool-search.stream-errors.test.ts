@@ -40,7 +40,7 @@ vi.mock("node:child_process", async () => {
 const spawnMock = vi.mocked(spawn);
 
 let toolSearch: typeof import("./tool-search.js");
-let testing: (typeof import("./tool-search.test-support.js"))["testing"];
+let testing: typeof import("./tool-search.test-support.js")["testing"];
 
 describe("tool-search code-mode stream errors", () => {
   beforeAll(async () => {

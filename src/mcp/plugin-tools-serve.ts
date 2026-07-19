@@ -55,10 +55,7 @@ function resolveTools(config: OperatorConfig): AnyAgentTool[] {
 }
 
 export function createPluginToolsMcpServer(
-  params: {
-    config?: OperatorConfig;
-    tools?: AnyAgentTool[];
-  } = {},
+  params: { config?: OperatorConfig; tools?: AnyAgentTool[] } = {},
 ): Server {
   const cfg = params.config ?? getRuntimeConfig();
   const tools = params.tools ?? resolveTools(cfg);

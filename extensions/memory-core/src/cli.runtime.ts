@@ -207,6 +207,7 @@ const DAILY_MEMORY_FILE_NAME_RE = /^(\d{4}-\d{2}-\d{2})(?:-[^/]+)?\.md$/i;
 
 async function listHistoricalDailyFiles(inputPath: string): Promise<string[]> {
   const resolvedPath = path.resolve(inputPath);
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let stat;
   try {
     stat = await fs.stat(resolvedPath);
@@ -697,7 +698,7 @@ async function scanMemoryFiles(
 
 async function summarizeQmdIndexArtifact(manager: MemoryManager): Promise<string | null> {
   const status = manager.status?.();
-  if (!status || status.backend !== "qmd") {
+  if (status?.backend !== "qmd") {
     return null;
   }
   const dbPath = status.dbPath?.trim();
@@ -1651,7 +1652,7 @@ export async function runMemoryPromoteExplain(
       }
 
       const lines = [
-        `${heading("Promotion Explain")} ${muted("(" + agentId + ")")}`,
+        `${heading("Promotion Explain")} ${muted(`(${agentId})`)}`,
         accent(candidate.key),
         muted(
           `${shortenHomePath(candidate.path)}:${String(candidate.startLine)}-${String(candidate.endLine)}`,

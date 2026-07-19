@@ -287,6 +287,7 @@ describe("installOpenClawPluginSdkNativeResolver", () => {
         `const root = ${JSON.stringify(root)};`,
         "const writeJson = (targetPath, value) => {",
         "  fs.mkdirSync(path.dirname(targetPath), { recursive: true });",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         '  fs.writeFileSync(targetPath, `${JSON.stringify(value, null, 2)}\\n`, "utf8");',
         "};",
         'writeJson(path.join(root, "package.json"), {',
@@ -327,6 +328,7 @@ describe("installOpenClawPluginSdkNativeResolver", () => {
         "});",
         "const module = await import(pathToFileURL(entryPath).href);",
         "const lazy = await module.loadLazy();",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "console.log(`${module.eager}:${lazy.lazy}`);",
         "",
       ].join("\n"),

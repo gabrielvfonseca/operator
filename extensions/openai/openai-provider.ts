@@ -883,8 +883,9 @@ export function buildOpenAIProvider(): ProviderPlugin {
       run: async (ctx) => {
         const auth = ctx.resolveProviderAuth(PROVIDER_ID);
         try {
-          const { resolveApiKeyForProvider, resolveProviderAuthProfileMetadata } =
-            await import("openclaw/plugin-sdk/provider-auth-runtime");
+          const { resolveApiKeyForProvider, resolveProviderAuthProfileMetadata } = await import(
+            "openclaw/plugin-sdk/provider-auth-runtime"
+          );
           const runtimeAuth = await resolveApiKeyForProvider({
             provider: PROVIDER_ID,
             cfg: ctx.config,

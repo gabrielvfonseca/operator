@@ -101,7 +101,7 @@ function hasCompatPreflightSignals(config: Record<string, unknown>): boolean {
   const stack: Array<{ path: string[]; value: unknown }> = [{ path: [], value: config }];
   while (stack.length > 0) {
     const current = stack.pop();
-    if (!current || !current.value || typeof current.value !== "object") {
+    if (!current?.value || typeof current.value !== "object") {
       continue;
     }
     if (Array.isArray(current.value)) {

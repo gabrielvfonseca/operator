@@ -224,7 +224,6 @@ async function downloadGraphHostedContent(params: {
       params.logger?.warn?.("msteams graph hostedContent value fetch failed", {
         error: err instanceof Error ? err.message : String(err),
       });
-      continue;
     }
   }
 

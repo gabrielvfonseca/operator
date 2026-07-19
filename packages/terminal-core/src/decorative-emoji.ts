@@ -11,6 +11,7 @@ export type DecorativeEmojiOptions = {
   stream?: { isTTY?: boolean };
 };
 
+// biome-ignore lint/suspicious/noMisleadingCharacterClass: migrated from oxlint
 const EMOJI_GRAPHEME_PATTERN = /[\p{Extended_Pictographic}\p{Regional_Indicator}\u20e3]/u;
 
 /** Detect terminals with known emoji rendering support. */

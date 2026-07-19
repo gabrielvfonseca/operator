@@ -13,7 +13,7 @@ import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/string-coer
 import { Type } from "typebox";
 import type { MemoryCoreAcquireLocalService } from "./memory/embedding-local-service.js";
 type MemorySearchManagerResult = Awaited<
-  ReturnType<(typeof import("./memory/index.js"))["getMemorySearchManager"]>
+  ReturnType<typeof import("./memory/index.js")["getMemorySearchManager"]>
 >;
 type MemoryToolOptions = {
   config?: OperatorConfig;

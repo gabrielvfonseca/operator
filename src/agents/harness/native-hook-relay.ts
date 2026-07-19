@@ -493,7 +493,7 @@ export function registerNativeHookRelay(
       current.expiresAtMs = renewedExpiresAtMs;
       handle.expiresAtMs = renewedExpiresAtMs;
       const bridge = relayBridges.get(relayId);
-      if (bridge && bridge.server.listening) {
+      if (bridge?.server.listening) {
         writeNativeHookRelayBridgeRecordForRegistration(current, bridge);
       }
     },

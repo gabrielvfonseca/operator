@@ -658,15 +658,15 @@ export function runAgentAttempt(params: {
     const resolveReusableCliSessionBinding = async () => {
       const hasManagedClaudeLiveSession = Boolean(
         isClaudeCliProvider(cliExecutionProvider) &&
-        cliSessionBinding?.sessionId &&
-        hasClaudeLiveSessionForOwner({
-          backendId: cliExecutionProvider,
-          agentAccountId: params.runContext.accountId,
-          agentId: params.sessionAgentId,
-          authProfileId: cliSessionBinding.authProfileId,
-          sessionId: params.sessionId,
-          sessionKey: params.sessionKey,
-        }),
+          cliSessionBinding?.sessionId &&
+          hasClaudeLiveSessionForOwner({
+            backendId: cliExecutionProvider,
+            agentAccountId: params.runContext.accountId,
+            agentId: params.sessionAgentId,
+            authProfileId: cliSessionBinding.authProfileId,
+            sessionId: params.sessionId,
+            sessionKey: params.sessionKey,
+          }),
       );
       if (
         !isClaudeCliProvider(cliExecutionProvider) ||

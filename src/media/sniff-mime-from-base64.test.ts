@@ -35,6 +35,6 @@ describe("sniffMimeFromBase64", () => {
     const onePixelPng =
       "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p9sAAAAASUVORK5CYII=";
 
-    await expect(sniffMimeFromBase64(onePixelPng + "!")).resolves.toBeUndefined();
+    await expect(sniffMimeFromBase64(`${onePixelPng}!`)).resolves.toBeUndefined();
   });
 });

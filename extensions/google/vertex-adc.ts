@@ -116,7 +116,7 @@ export function isGoogleVertexCredentialsMarker(
 function hasGoogleVertexProjectEnv(env: NodeJS.ProcessEnv): boolean {
   return Boolean(
     normalizeOptionalString(env.GOOGLE_CLOUD_PROJECT) ||
-    normalizeOptionalString(env.GCLOUD_PROJECT),
+      normalizeOptionalString(env.GCLOUD_PROJECT),
   );
 }
 

@@ -46,8 +46,9 @@ async function resolveProviderChoiceModelPrompt(params: {
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
 }): Promise<ProviderChoiceModelPrompt | undefined> {
-  const { resolvePluginProviders, resolveProviderPluginChoice } =
-    await import("../plugins/provider-auth-choice.runtime.js");
+  const { resolvePluginProviders, resolveProviderPluginChoice } = await import(
+    "../plugins/provider-auth-choice.runtime.js"
+  );
   const providers = resolvePluginProviders({
     config: params.config,
     workspaceDir: params.workspaceDir,
@@ -291,8 +292,8 @@ export async function promptAuthConfig(
       (hasPromptProviderConfiguredModels || hasPromptProviderStaticManifestRows);
     const useProviderScopedCatalog = Boolean(
       promptProvider &&
-      shouldLoadModelCatalog &&
-      (modelPrompt?.loadCatalog === true || hasPromptProviderConfiguredModels),
+        shouldLoadModelCatalog &&
+        (modelPrompt?.loadCatalog === true || hasPromptProviderConfiguredModels),
     );
     const allowlistSelection = await promptModelAllowlist({
       config: next,

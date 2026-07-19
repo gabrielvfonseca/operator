@@ -121,6 +121,7 @@ describeLive("native Codex thread coexistence", () => {
           );
           expect(read.thread.id).toBe(started.thread.id);
 
+          // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
           let listedSource;
           let listedThreads: Array<{ id: string; source?: unknown }> = [];
           for (let attempt = 0; attempt < 50; attempt += 1) {

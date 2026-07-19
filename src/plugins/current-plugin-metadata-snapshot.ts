@@ -105,10 +105,7 @@ export function setCurrentPluginMetadataSnapshot(
   }
   if (options.config) {
     const policyHash = resolveInstalledPluginIndexPolicyHash(options.config);
-    if (
-      policyHash === snapshot.policyHash ||
-      Boolean(compatiblePolicyHashes?.includes(policyHash))
-    ) {
+    if (policyHash === snapshot.policyHash || compatiblePolicyHashes?.includes(policyHash)) {
       currentPluginMetadataConfigIdentityCache.add(options.config);
     }
   }

@@ -1,5 +1,3 @@
-import { spawn } from "node:child_process";
-
 export async function run() {
   console.error("[operator] Starting Operator...");
   const argv = process.argv.slice(2);

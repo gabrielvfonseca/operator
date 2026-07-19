@@ -83,52 +83,50 @@ export function describeOpenAIProviderCatalogContract() {
     };
   })();
 
-  describe(
-    "openai provider catalog contract",
-    { timeout: PROVIDER_CATALOG_CONTRACT_TIMEOUT_MS },
-    () => {
-      beforeEach(async () => {
-        const { openaiProviders } = await contractDepsPromise;
+  describe("openai provider catalog contract", {
+    timeout: PROVIDER_CATALOG_CONTRACT_TIMEOUT_MS,
+  }, () => {
+    beforeEach(async () => {
+      const { openaiProviders } = await contractDepsPromise;
 
-        resolvePluginProvidersMock.mockReset();
-        resolvePluginProvidersMock.mockImplementation((params?: { onlyPluginIds?: string[] }) => {
-          const onlyPluginIds = params?.onlyPluginIds;
-          if (!onlyPluginIds || onlyPluginIds.length === 0) {
-            return openaiProviders;
-          }
-          return onlyPluginIds.includes("openai") ? openaiProviders : [];
-        });
-
-        resolveOwningPluginIdsForProviderMock.mockReset();
-        resolveOwningPluginIdsForProviderMock.mockImplementation((params) => {
-          switch (params.provider) {
-            case "azure-openai-responses":
-            case "openai":
-              return ["openai"];
-            default:
-              return undefined;
-          }
-        });
-
-        resolveCatalogHookProviderPluginIdsMock.mockReset();
-        resolveCatalogHookProviderPluginIdsMock.mockReturnValue(["openai"]);
+      resolvePluginProvidersMock.mockReset();
+      resolvePluginProvidersMock.mockImplementation((params?: { onlyPluginIds?: string[] }) => {
+        const onlyPluginIds = params?.onlyPluginIds;
+        if (!onlyPluginIds || onlyPluginIds.length === 0) {
+          return openaiProviders;
+        }
+        return onlyPluginIds.includes("openai") ? openaiProviders : [];
       });
 
-      it("keeps codex-only missing-auth hints wired through the provider runtime", async () => {
-        const { openaiProvider } = await contractDepsPromise;
-        expectCodexMissingAuthHint(
-          (params) => openaiProvider.buildMissingAuthMessage?.(params.context) ?? undefined,
-          "openai/gpt-5.6-sol",
-        );
+      resolveOwningPluginIdsForProviderMock.mockReset();
+      resolveOwningPluginIdsForProviderMock.mockImplementation((params) => {
+        switch (params.provider) {
+          case "azure-openai-responses":
+          case "openai":
+            return ["openai"];
+          default:
+            return undefined;
+        }
       });
 
-      it("keeps bundled model augmentation wired through the provider runtime", async () => {
-        const { augmentModelCatalogWithProviderPlugins } = await contractDepsPromise;
-        await expectAugmentedCodexCatalog(
-          augmentModelCatalogWithProviderPlugins,
-          expectedOpenaiPluginCodexCatalogEntriesWithGpt55,
-        );
-      });
-    },
-  );
+      resolveCatalogHookProviderPluginIdsMock.mockReset();
+      resolveCatalogHookProviderPluginIdsMock.mockReturnValue(["openai"]);
+    });
+
+    it("keeps codex-only missing-auth hints wired through the provider runtime", async () => {
+      const { openaiProvider } = await contractDepsPromise;
+      expectCodexMissingAuthHint(
+        (params) => openaiProvider.buildMissingAuthMessage?.(params.context) ?? undefined,
+        "openai/gpt-5.6-sol",
+      );
+    });
+
+    it("keeps bundled model augmentation wired through the provider runtime", async () => {
+      const { augmentModelCatalogWithProviderPlugins } = await contractDepsPromise;
+      await expectAugmentedCodexCatalog(
+        augmentModelCatalogWithProviderPlugins,
+        expectedOpenaiPluginCodexCatalogEntriesWithGpt55,
+      );
+    });
+  });
 }

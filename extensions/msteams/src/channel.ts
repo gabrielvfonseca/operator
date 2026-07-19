@@ -1325,7 +1325,7 @@ export const msteamsPlugin: ChannelPlugin<ResolvedMSTeamsAccount, ProbeMSTeamsRe
     threading: {
       buildToolContext: ({ context, hasRepliedRef }) => {
         const nativeChannelId = context.NativeChannelId?.trim();
-        const hasChannelRoute = Boolean(nativeChannelId && nativeChannelId.includes("/"));
+        const hasChannelRoute = Boolean(nativeChannelId?.includes("/"));
         return {
           currentChannelId: normalizeOptionalString(context.To),
           currentChatType:

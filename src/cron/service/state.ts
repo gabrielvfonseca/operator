@@ -55,10 +55,10 @@ export type Logger = {
 
 export type CronSystemEventEnqueueResult =
   | boolean
-  | void
+  | undefined
   | {
       accepted?: boolean;
-      remove?: () => boolean | void;
+      remove?: () => boolean | undefined;
     };
 
 /** Dependency injection surface for the cron service runtime. */

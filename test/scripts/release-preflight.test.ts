@@ -90,11 +90,7 @@ function runPreflight(
 }
 
 function makeReleaseFixture(
-  params: {
-    buildVersion?: string;
-    packageVersion?: string;
-    shortVersion?: string;
-  } = {},
+  params: { buildVersion?: string; packageVersion?: string; shortVersion?: string } = {},
 ): string {
   const root = makeTempDir(tempDirs, "openclaw-release-preflight-fixture-");
   const plistDir = join(root, "apps", "macos", "Sources", "OpenClaw", "Resources");

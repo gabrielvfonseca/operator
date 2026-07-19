@@ -24,7 +24,8 @@ const STATUS_TEXT_MAX_BYTES = readPositiveIntEnv(
   "OPERATOR_NPM_ONBOARD_STATUS_TEXT_MAX_BYTES",
   1024 * 1024,
 );
-const ansiEscapePattern = new RegExp(String.raw`\u001b\[[0-?]*[ -/]*[@-~]`, "g");
+// biome-ignore lint/suspicious/noControlCharactersInRegex: migrated from oxlint
+const ansiEscapePattern = /\u001b\[[0-?]*[ -/]*[@-~]/g;
 
 function readJson(file) {
   return JSON.parse(

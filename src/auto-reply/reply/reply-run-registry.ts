@@ -1018,7 +1018,7 @@ export const replyRunRegistry: ReplyRunRegistry = {
   },
   isStreaming(sessionKey) {
     const operation = this.get(sessionKey);
-    if (!operation || operation.phase !== "running") {
+    if (operation?.phase !== "running") {
       return false;
     }
     return getAttachedBackend(operation)?.isStreaming() ?? false;
@@ -1114,7 +1114,7 @@ export function isReplyRunAbortableForCompaction(sessionId: string): boolean {
 
 export function isReplyRunStreamingForSessionId(sessionId: string): boolean {
   const operation = resolveReplyRunForCurrentSessionId(sessionId);
-  if (!operation || operation.phase !== "running") {
+  if (operation?.phase !== "running") {
     return false;
   }
   return getAttachedBackend(operation)?.isStreaming() ?? false;
@@ -1127,7 +1127,7 @@ export function queueReplyRunMessage(
 ): boolean {
   const operation = resolveReplyRunForCurrentSessionId(sessionId);
   const backend = operation ? getAttachedBackend(operation) : undefined;
-  if (!operation || operation.phase !== "running" || !backend?.queueMessage) {
+  if (operation?.phase !== "running" || !backend?.queueMessage) {
     return false;
   }
   // Steering into an evidence-dead run swallows the human message that would

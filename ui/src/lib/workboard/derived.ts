@@ -14,8 +14,8 @@ const WORKBOARD_RECENT_DONE_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
 function hasWorkboardProofEvidence(card: WorkboardCard): boolean {
   return Boolean(
     card.metadata?.proof?.length ||
-    card.metadata?.artifacts?.length ||
-    card.metadata?.attachments?.length,
+      card.metadata?.artifacts?.length ||
+      card.metadata?.attachments?.length,
   );
 }
 
@@ -45,9 +45,9 @@ function taskFailureRepresentedByCard(
       }
       return Boolean(
         attempt.sessionKey &&
-        taskSessionKeys.some((sessionKey) =>
-          taskSessionKeyMatchesCardSession(sessionKey, attempt.sessionKey ?? ""),
-        ),
+          taskSessionKeys.some((sessionKey) =>
+            taskSessionKeyMatchesCardSession(sessionKey, attempt.sessionKey ?? ""),
+          ),
       );
     }),
   );

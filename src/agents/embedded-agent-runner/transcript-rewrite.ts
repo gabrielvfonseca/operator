@@ -314,7 +314,7 @@ export function rewriteTranscriptEntriesInSessionManager(params: {
   const firstMatchedEntry =
     firstMatchedIndex === undefined ? undefined : branch.at(firstMatchedIndex);
   // matchedIndices only contains indices of branch "message" entries.
-  if (!firstMatchedEntry || firstMatchedEntry.type !== "message") {
+  if (firstMatchedEntry?.type !== "message") {
     return {
       changed: false,
       bytesFreed: 0,
@@ -451,7 +451,7 @@ export function rewriteTranscriptEntriesInState(params: {
   const firstMatchedIndex = matchedIndices.at(0);
   const firstMatchedEntry =
     firstMatchedIndex === undefined ? undefined : branch.at(firstMatchedIndex);
-  if (!firstMatchedEntry || firstMatchedEntry.type !== "message") {
+  if (firstMatchedEntry?.type !== "message") {
     return {
       changed: false,
       bytesFreed: 0,

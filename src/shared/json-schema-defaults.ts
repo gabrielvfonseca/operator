@@ -246,6 +246,7 @@ function validateTypeKeyword(type: unknown, path: string): string | undefined {
 }
 
 function decodePointerSegment(segment: string): string {
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let decodedSegment;
   try {
     decodedSegment = decodeURIComponent(segment);

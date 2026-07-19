@@ -26,8 +26,7 @@ function isValidReplayTimestamp(value: unknown): boolean {
 
 function replayableRole(record: SessionRecord | null): "user" | "assistant" | undefined {
   if (
-    !record ||
-    record.type !== "message" ||
+    record?.type !== "message" ||
     typeof record.id !== "string" ||
     record.id.trim().length === 0 ||
     !isValidReplayTimestamp(record.timestamp) ||

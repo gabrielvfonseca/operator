@@ -116,9 +116,9 @@ export function createPersistCronSessionEntry(params: {
           currentEntry?.lifecycleRevision === params.cronSession.lifecycleRevision;
         const currentRevisionActive = Boolean(
           currentEntry?.lifecycleRevision &&
-          isSessionWorkAdmissionActive(params.cronSession.storePath, [
-            resolveCronLifecycleRevisionIdentity(currentEntry.lifecycleRevision),
-          ]),
+            isSessionWorkAdmissionActive(params.cronSession.storePath, [
+              resolveCronLifecycleRevisionIdentity(currentEntry.lifecycleRevision),
+            ]),
         );
         const initialEntryMatchesOwnershipFields =
           currentEntry !== undefined &&

@@ -625,29 +625,29 @@ export async function resolveIMessageInboundDecision(params: {
     const targetGuids = reactionContext.targetGuids ?? (targetGuid ? [targetGuid] : []);
     const targetIsOwn = Boolean(
       targetGuid &&
-      ((params.echoCache &&
-        hasIMessageEchoMatch({
-          echoCache: params.echoCache,
-          scope: buildIMessageEchoScope({
-            accountId: params.accountId,
-            isGroup,
-            chatId,
-            chatGuid,
-            chatIdentifier,
-            sender,
-          }),
-          messageIds: targetGuids,
-        })) ||
-        targetGuids.some((messageId) =>
-          isKnownFromMeIMessageReactionTarget({
-            messageId,
-            accountId: params.accountId,
-            chatId,
-            chatGuid,
-            chatIdentifier,
-            isKnownFromMeMessageId: params.isKnownFromMeMessageId,
-          }),
-        )),
+        ((params.echoCache &&
+          hasIMessageEchoMatch({
+            echoCache: params.echoCache,
+            scope: buildIMessageEchoScope({
+              accountId: params.accountId,
+              isGroup,
+              chatId,
+              chatGuid,
+              chatIdentifier,
+              sender,
+            }),
+            messageIds: targetGuids,
+          })) ||
+          targetGuids.some((messageId) =>
+            isKnownFromMeIMessageReactionTarget({
+              messageId,
+              accountId: params.accountId,
+              chatId,
+              chatGuid,
+              chatIdentifier,
+              isKnownFromMeMessageId: params.isKnownFromMeMessageId,
+            }),
+          )),
     );
     if (notificationMode === "own" && !targetIsOwn) {
       return { kind: "drop", reason: "reaction target not sent by agent" };

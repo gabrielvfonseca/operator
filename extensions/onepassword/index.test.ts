@@ -109,7 +109,7 @@ describe("onepassword plugin", () => {
       | ((
           event: { toolName: string; toolCallId: string; params: Record<string, unknown> },
           context: { toolName: string; toolCallId: string; agentId: string },
-        ) => Promise<{ block?: boolean } | void>)
+        ) => Promise<{ block?: boolean } | undefined>)
       | undefined;
     if (!beforeToolCall) {
       throw new Error("missing before_tool_call hook");

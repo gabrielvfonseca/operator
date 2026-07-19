@@ -296,6 +296,7 @@ describe("dashboardCommand", () => {
   });
 
   it("keeps URL non-tokenized when env-template gateway.auth.token is unresolved", async () => {
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     mockSnapshot("${CUSTOM_GATEWAY_TOKEN}");
     copyToClipboardMock.mockResolvedValue(true);
     detectBrowserOpenSupportMock.mockResolvedValue({ ok: true });

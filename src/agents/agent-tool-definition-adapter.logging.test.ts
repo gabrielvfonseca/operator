@@ -35,8 +35,9 @@ function firstLogErrorMessage(): unknown {
 describe("agent tool definition adapter logging", () => {
   beforeAll(async () => {
     ({ toToolDefinitions } = await import("./agent-tool-definition-adapter.js"));
-    ({ createBeforeToolCallBlockedError } =
-      await import("./agent-tools.before-tool-call.test-support.js"));
+    ({ createBeforeToolCallBlockedError } = await import(
+      "./agent-tools.before-tool-call.test-support.js"
+    ));
     ({ wrapToolParamValidation, REQUIRED_PARAM_GROUPS } = await import("./agent-tools.params.js"));
     ({ logError } = await import("../logger.js"));
   });

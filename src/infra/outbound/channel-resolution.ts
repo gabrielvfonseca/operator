@@ -114,8 +114,8 @@ function channelPluginHasRuntimeOutboundSurface(plugin: ChannelPlugin | undefine
 function channelPluginHasActivatedOutboundSurface(plugin: ChannelPlugin | undefined): boolean {
   return Boolean(
     plugin?.outbound?.sendText ||
-    plugin?.outbound?.deliveryMode === "gateway" ||
-    resolveSendCapableMessageAdapter(plugin),
+      plugin?.outbound?.deliveryMode === "gateway" ||
+      resolveSendCapableMessageAdapter(plugin),
   );
 }
 

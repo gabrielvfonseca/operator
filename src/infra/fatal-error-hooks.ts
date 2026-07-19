@@ -5,7 +5,7 @@ type FatalErrorHookContext = {
 };
 
 /** Hook that can return one extra diagnostic line for fatal error output. */
-type FatalErrorHook = (context: FatalErrorHookContext) => string | undefined | void;
+type FatalErrorHook = (context: FatalErrorHookContext) => string | undefined | undefined;
 
 const hooks = new Set<FatalErrorHook>();
 

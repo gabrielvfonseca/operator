@@ -227,6 +227,7 @@ function collectWorkspaceTextFileSources(): WorkspaceTextFile[] {
 
 function collectSummaryWorkspaceTextFileSources(): WorkspaceTextFile[] {
   const pluginSdkFiles = collectWorkspaceTextFilesMatchingGit(
+    // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
     String.raw`openclaw/plugin-sdk/[a-z0-9][a-z0-9-]*`,
   );
   if (!pluginSdkFiles) {
@@ -246,7 +247,7 @@ function collectSummaryWorkspaceTextFileSources(): WorkspaceTextFile[] {
 }
 
 function isDocsFile(file: string): boolean {
-  return file.startsWith("docs/") || file === "README.md";
+  return file.startsWith("docs/") || file === "README.MD";
 }
 
 function parseArgs(args: readonly string[]): CliOptions {

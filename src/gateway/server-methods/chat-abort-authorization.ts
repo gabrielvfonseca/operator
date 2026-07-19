@@ -98,7 +98,7 @@ export function canRequesterAbortChatRunWithoutSessionMatch(
   const ownerConnId = normalizeOptionalText(entry.ownerConnId);
   return Boolean(
     (ownerDeviceId && requester.deviceId && ownerDeviceId === requester.deviceId) ||
-    (ownerConnId && requester.connId && ownerConnId === requester.connId),
+      (ownerConnId && requester.connId && ownerConnId === requester.connId),
   );
 }
 
@@ -425,6 +425,6 @@ export function canRequesterAbortQueuedChatTurnWithoutSessionMatch(
   const ownerConnId = normalizeOptionalText(entry.ownerConnId);
   return Boolean(
     (ownerDeviceId && requester.deviceId && ownerDeviceId === requester.deviceId) ||
-    (ownerConnId && requester.connId && ownerConnId === requester.connId),
+      (ownerConnId && requester.connId && ownerConnId === requester.connId),
   );
 }

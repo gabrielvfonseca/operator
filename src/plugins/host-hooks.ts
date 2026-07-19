@@ -78,7 +78,7 @@ export type PluginTrustedToolPolicyRegistration = {
   evaluate: (
     event: PluginHookBeforeToolCallEvent,
     ctx: PluginHookToolContext,
-  ) => PluginToolPolicyDecision | void | Promise<PluginToolPolicyDecision | void>;
+  ) => PluginToolPolicyDecision | undefined | Promise<PluginToolPolicyDecision | undefined>;
 };
 
 export type PluginToolMetadataRegistration = {
@@ -145,7 +145,7 @@ export type PluginSessionActionRegistration = {
   requiredScopes?: OperatorScope[];
   handler: (
     ctx: PluginSessionActionContext,
-  ) => PluginSessionActionResult | void | Promise<PluginSessionActionResult | void>;
+  ) => PluginSessionActionResult | undefined | Promise<PluginSessionActionResult | undefined>;
 };
 
 export type PluginRuntimeLifecycleRegistration = {

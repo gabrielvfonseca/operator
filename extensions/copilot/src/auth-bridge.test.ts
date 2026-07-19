@@ -57,7 +57,7 @@ describe("tokenFingerprint", () => {
     expect(a).toBe(b);
     expect(a.startsWith("sha256:")).toBe(true);
     expect(a.length).toBe("sha256:".length + 12);
-    const expected = "sha256:" + createHash("sha256").update("hello").digest("hex").slice(0, 12);
+    const expected = `sha256:${createHash("sha256").update("hello").digest("hex").slice(0, 12)}`;
     expect(a).toBe(expected);
   });
 

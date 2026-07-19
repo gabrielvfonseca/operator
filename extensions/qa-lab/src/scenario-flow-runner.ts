@@ -5,7 +5,7 @@ import type { QaScenarioFlow, QaSeedScenarioWithSource } from "./scenario-catalo
 
 type QaSuiteStep = {
   name: string;
-  run: () => Promise<string | void>;
+  run: () => Promise<string | undefined>;
 };
 
 type QaSuiteScenarioResult = {
@@ -29,7 +29,7 @@ type QaFlowApi = Record<string, unknown> & {
 type QaFlowVars = Record<string, unknown>;
 type QaFlowImportLoader = () => Promise<unknown>;
 
-const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor as new (
+const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor as new (
   ...args: string[]
 ) => (...fnArgs: unknown[]) => Promise<unknown>;
 

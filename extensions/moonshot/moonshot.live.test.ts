@@ -274,11 +274,11 @@ describeModelLive("moonshot K2.7 Code live", () => {
       expect(firstPayload).not.toHaveProperty("reasoning_effort");
       expect(firstPayload).not.toHaveProperty("temperature");
       const reasoning = first.content.find((block) => block.type === "thinking");
-      if (!reasoning || reasoning.type !== "thinking" || reasoning.thinking.length === 0) {
+      if (reasoning?.type !== "thinking" || reasoning.thinking.length === 0) {
         throw new Error("Moonshot K2.7 Code did not return captured reasoning");
       }
       const toolCall = first.content.find((block) => block.type === "toolCall");
-      if (!toolCall || toolCall.type !== "toolCall") {
+      if (toolCall?.type !== "toolCall") {
         throw new Error(`Moonshot K2.7 Code did not call noop: ${first.stopReason}`);
       }
       expect(toolCall.name).toBe("noop");

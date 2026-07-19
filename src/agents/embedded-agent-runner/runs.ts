@@ -275,9 +275,9 @@ export function isEmbeddedRunAbandoned(params: {
   const normalizedSessionFile = params.sessionFile?.trim();
   return Boolean(
     normalizedSessionFile &&
-    ABANDONED_EMBEDDED_RUN_SESSION_IDS_BY_FILE.has(
-      resolveEmbeddedSessionFileKey(normalizedSessionFile),
-    ),
+      ABANDONED_EMBEDDED_RUN_SESSION_IDS_BY_FILE.has(
+        resolveEmbeddedSessionFileKey(normalizedSessionFile),
+      ),
   );
 }
 

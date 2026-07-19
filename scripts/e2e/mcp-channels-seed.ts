@@ -67,7 +67,7 @@ async function main() {
 
   await fs.writeFile(
     sessionFile,
-    [
+    `${[
       JSON.stringify({ type: "session", version: 1, id: "sess-main" }),
       JSON.stringify({
         id: "msg-1",
@@ -95,18 +95,18 @@ async function main() {
           timestamp: now + 1,
         },
       }),
-    ].join("\n") + "\n",
+    ].join("\n")}\n`,
     "utf-8",
   );
 
   process.stdout.write(
-    JSON.stringify({
+    `${JSON.stringify({
       ok: true,
       stateDir,
       configPath,
       storePath,
       sessionFile,
-    }) + "\n",
+    })}\n`,
   );
 }
 

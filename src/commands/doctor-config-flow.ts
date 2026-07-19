@@ -167,13 +167,15 @@ export async function loadAndMaybeMigrateDoctorConfig(params: {
   pendingChanges = pendingChanges || legacyStep.state.pendingChanges;
   fixHints = legacyStep.state.fixHints;
   const legacyMigrationPartiallyValid = legacyStep.partiallyValid === true;
-  const { collectBlockedLegacyOpenAICodexProviderPlan } =
-    await import("./doctor/shared/legacy-config-migrations.runtime.models.js");
+  const { collectBlockedLegacyOpenAICodexProviderPlan } = await import(
+    "./doctor/shared/legacy-config-migrations.runtime.models.js"
+  );
   const blockedCodexProviderPlan = collectBlockedLegacyOpenAICodexProviderPlan(candidate);
   const blockedCodexModelIdentities = new Set(blockedCodexProviderPlan.blockedModelIdentities);
   if (preflight.cronCodexRuntimePolicyTargets?.length) {
-    const { repairCronCodexRuntimePolicies } =
-      await import("./doctor/cron/runtime-policy-migration.js");
+    const { repairCronCodexRuntimePolicies } = await import(
+      "./doctor/cron/runtime-policy-migration.js"
+    );
     const cronRuntimeRepair = repairCronCodexRuntimePolicies({
       cfg: candidate,
       targets: preflight.cronCodexRuntimePolicyTargets,
@@ -200,8 +202,9 @@ export async function loadAndMaybeMigrateDoctorConfig(params: {
     if (snapshot.parsed === snapshot.sourceConfig) {
       return [];
     }
-    const { findDoctorLegacyConfigIssues } =
-      await import("./doctor/shared/legacy-config-issues.js");
+    const { findDoctorLegacyConfigIssues } = await import(
+      "./doctor/shared/legacy-config-issues.js"
+    );
     return findDoctorLegacyConfigIssues(snapshot.parsed, snapshot.parsed);
   })();
   const seenLegacyIssues = new Set(
@@ -274,8 +277,9 @@ export async function loadAndMaybeMigrateDoctorConfig(params: {
     }));
   }
 
-  const { collectPluginToolAllowlistWarnings } =
-    await import("./doctor/shared/plugin-tool-allowlist-warnings.js");
+  const { collectPluginToolAllowlistWarnings } = await import(
+    "./doctor/shared/plugin-tool-allowlist-warnings.js"
+  );
   const pluginToolAllowlistWarnings = collectPluginToolAllowlistWarnings({
     cfg: candidate,
     env: process.env,
@@ -319,8 +323,9 @@ export async function loadAndMaybeMigrateDoctorConfig(params: {
     }
   }
 
-  const { repairHooksTokenReuseGatewayAuth } =
-    await import("./doctor/shared/hooks-token-reuse-repair.js");
+  const { repairHooksTokenReuseGatewayAuth } = await import(
+    "./doctor/shared/hooks-token-reuse-repair.js"
+  );
   const hooksTokenReuseRepair = await repairHooksTokenReuseGatewayAuth(candidate, process.env);
   emitDoctorChangesPanel(hooksTokenReuseRepair.changes, shouldRepair);
   ({ cfg, candidate, pendingChanges, fixHints } = applyDoctorConfigMutation({

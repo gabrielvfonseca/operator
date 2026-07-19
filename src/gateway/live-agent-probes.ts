@@ -65,10 +65,7 @@ export function shouldRunLiveImageProbe(params: { agent: string; override?: stri
 }
 
 export function createLiveCronProbeSpec(
-  params: {
-    agentId?: string;
-    sessionKey?: string;
-  } = {},
+  params: { agentId?: string; sessionKey?: string } = {},
 ): LiveCronProbeSpec {
   const nonce = randomBytes(3).toString("hex").toUpperCase();
   const normalizedNonce = normalizeOptionalLowercaseString(nonce) ?? "";

@@ -34,8 +34,8 @@ export function shouldPreserveSessionAuthProfileOverride(params: {
     const candidate = normalizeOptionalLowercaseString(rawProvider);
     return Boolean(
       candidate &&
-      resolveProviderIdForAuth(candidate, { config: params.cfg }) ===
-        resolveProviderIdForAuth(provider, { config: params.cfg }),
+        resolveProviderIdForAuth(candidate, { config: params.cfg }) ===
+          resolveProviderIdForAuth(provider, { config: params.cfg }),
     );
   };
   const delimiterIndex = profileOverride.indexOf(":");

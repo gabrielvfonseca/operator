@@ -273,7 +273,7 @@ describe("diagnostic-events", () => {
     globalStore[Symbol.for("operator.diagnosticEventsState")] = {
       listeners: new Set([() => events.push(true)]),
     };
-    onInternalDiagnosticEvent((eventValue, metadata) => {
+    onInternalDiagnosticEvent((_eventValue, metadata) => {
       events.push(metadata.trusted);
     });
 
@@ -429,10 +429,10 @@ describe("diagnostic-events", () => {
   it("isolates diagnostic metadata from listener mutation", () => {
     const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     const seen: boolean[] = [];
-    onInternalDiagnosticEvent((eventValue, metadata) => {
+    onInternalDiagnosticEvent((_eventValue, metadata) => {
       (metadata as { trusted: boolean }).trusted = true;
     });
-    onInternalDiagnosticEvent((eventValue, metadata) => {
+    onInternalDiagnosticEvent((_eventValue, metadata) => {
       seen.push(metadata.trusted);
     });
 

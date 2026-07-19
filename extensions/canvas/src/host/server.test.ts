@@ -335,11 +335,11 @@ describe("canvas host", () => {
 
   it("resets page-unload state when a persisted page is shown again", () => {
     const sockets: MockLiveReloadSocket[] = [];
-    const { consoleError, pagehide, pageshow } = runInjectedScript(
-      function (this: MockLiveReloadSocket) {
-        sockets.push(this);
-      },
-    );
+    const { consoleError, pagehide, pageshow } = runInjectedScript(function (
+      this: MockLiveReloadSocket,
+    ) {
+      sockets.push(this);
+    });
 
     pagehide();
     pageshow();

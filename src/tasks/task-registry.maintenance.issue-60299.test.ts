@@ -26,7 +26,7 @@ const GRACE_EXPIRED_MS = 10 * 60_000;
 function makeStaleTask(overrides: Partial<TaskRecord>): TaskRecord {
   const now = Date.now();
   return {
-    taskId: "task-test-" + Math.random().toString(36).slice(2),
+    taskId: `task-test-${Math.random().toString(36).slice(2)}`,
     runtime: "cron",
     requesterSessionKey: "agent:main:main",
     ownerKey: "system:cron:test",

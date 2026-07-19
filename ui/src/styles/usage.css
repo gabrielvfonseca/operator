@@ -537,11 +537,13 @@
 }
 
 details.usage-filter-select summary,
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .usage-export-menu summary {
   list-style: none;
 }
 
 details.usage-filter-select summary::-webkit-details-marker,
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .usage-export-menu summary::-webkit-details-marker {
   display: none;
 }
@@ -1295,6 +1297,7 @@ details.usage-filter-select summary::-webkit-details-marker,
   border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .daily-bar {
   align-self: end;
   width: min(100%, var(--bar-max-width));
@@ -1783,6 +1786,7 @@ details.usage-filter-select summary::-webkit-details-marker,
   gap: 8px;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .session-log-tools summary {
   font-size: 12px;
   font-weight: 600;

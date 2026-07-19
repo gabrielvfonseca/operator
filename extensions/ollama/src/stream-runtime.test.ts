@@ -1503,7 +1503,7 @@ async function expectDoneEventContent(lines: string[], expectedContent: unknown)
     const events = await collectStreamEvents(stream);
 
     const doneEvent = events.at(-1);
-    if (!doneEvent || doneEvent.type !== "done") {
+    if (doneEvent?.type !== "done") {
       throw new Error("Expected done event");
     }
 
@@ -2962,7 +2962,7 @@ describe("createOllamaStreamFn", () => {
         });
         const events = await collectStreamEvents(stream);
         const doneEvent = events.at(-1);
-        if (!doneEvent || doneEvent.type !== "done") {
+        if (doneEvent?.type !== "done") {
           throw new Error("Expected done event");
         }
 

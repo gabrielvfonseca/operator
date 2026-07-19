@@ -28,7 +28,7 @@ type RealtimeSmokeCliOptions = {
 
 // Keep live stacks behind their owning smoke paths so help and safety helpers stay lightweight.
 type Browser = import("playwright").Browser;
-type ViteDevServer = Awaited<ReturnType<(typeof import("vite"))["createServer"]>>;
+type ViteDevServer = Awaited<ReturnType<typeof import("vite")["createServer"]>>;
 
 type SmokeResult = {
   name: string;
@@ -273,8 +273,9 @@ async function createOpenAIClientSecret(
 }
 
 async function smokeOpenAIBackendBridge(apiKey: string): Promise<SmokeResult> {
-  const { buildOpenAIRealtimeVoiceProvider } =
-    await import("../../extensions/openai/realtime-voice-provider.ts");
+  const { buildOpenAIRealtimeVoiceProvider } = await import(
+    "../../extensions/openai/realtime-voice-provider.ts"
+  );
   const provider = buildOpenAIRealtimeVoiceProvider();
   const events: string[] = [];
   const bridge = provider.createBridge({
@@ -423,6 +424,7 @@ async function smokeOpenAIWebRtc(browser: Browser, apiKey: string): Promise<Smok
             };
           } finally {
             peer?.close();
+            // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
             media?.getTracks().forEach((track) => track.stop());
           }
         },

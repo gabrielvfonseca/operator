@@ -524,6 +524,7 @@ describe("gateway run option collisions", () => {
           vars: { OPERATOR_GATEWAY_TOKEN: "config-token" },
         },
         gateway: {
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           auth: { mode: "token", token: "${OPERATOR_GATEWAY_TOKEN}" },
           mode: "local",
         },
@@ -869,8 +870,9 @@ describe("gateway run option collisions", () => {
           sourceConfig: oldConfig,
           valid: true,
         };
-        const { prepareGatewayRunBootstrap, selectGatewayRunEnvironment } =
-          await import("./pre-bootstrap.js");
+        const { prepareGatewayRunBootstrap, selectGatewayRunEnvironment } = await import(
+          "./pre-bootstrap.js"
+        );
         await selectGatewayRunEnvironment({ opts: {}, runtime: defaultRuntime });
         await prepareGatewayRunBootstrap({ opts: {}, runtime: defaultRuntime });
         expect(pinRuntimePaths).toHaveBeenCalledWith(process.env);
@@ -1325,8 +1327,9 @@ describe("gateway run option collisions", () => {
         sourceConfig: guardedConfig,
         valid: true,
       };
-      const { prepareGatewayRunBootstrap, selectGatewayRunEnvironment } =
-        await import("./pre-bootstrap.js");
+      const { prepareGatewayRunBootstrap, selectGatewayRunEnvironment } = await import(
+        "./pre-bootstrap.js"
+      );
       await selectGatewayRunEnvironment({ opts: {}, runtime: defaultRuntime });
       await prepareGatewayRunBootstrap({ opts: {}, runtime: defaultRuntime });
       expect(process.env.OPERATOR_STATE_DIR).toBe("/tmp/operator-guarded-state");

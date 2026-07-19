@@ -2,7 +2,6 @@
 // Check if CLI bootstrap files exist
 
 import fs from "node:fs";
-import path from "node:path";
 
 console.error("[check] Verifying CLI bootstrap files...");
 
@@ -24,6 +23,7 @@ if (missingFiles.length > 0) {
     "[check] ERROR: CLI bootstrap files missing. Run bun run scripts/typescript-build.mjs first.",
   );
   console.error("[check] Missing files:");
+  // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
   missingFiles.forEach((file) => console.error(`[check]   - ${file}`));
   process.exit(1);
 }

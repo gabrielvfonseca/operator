@@ -162,6 +162,7 @@ describe("config view", () => {
   function queryRequired<T extends Element>(
     container: HTMLElement,
     selector: string,
+    // biome-ignore lint/suspicious/noShadowRestrictedNames: migrated from oxlint
     constructor: new () => T,
   ): T {
     const element = container.querySelector(selector);

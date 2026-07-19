@@ -127,9 +127,9 @@ function isAnthropicCacheRetentionTarget(
 ): parsed is { provider: string; model: string } {
   return Boolean(
     parsed &&
-    (parsed.provider === "anthropic" ||
-      (parsed.provider === "amazon-bedrock" &&
-        normalizeLowercaseStringOrEmpty(parsed.model).includes("anthropic.claude"))),
+      (parsed.provider === "anthropic" ||
+        (parsed.provider === "amazon-bedrock" &&
+          normalizeLowercaseStringOrEmpty(parsed.model).includes("anthropic.claude"))),
   );
 }
 

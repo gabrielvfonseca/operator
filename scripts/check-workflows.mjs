@@ -51,7 +51,7 @@ function exitWithFailure(failure) {
   process.exit(failure.status);
 }
 
-function runPreCommitFromTempVenv(hook, hookArgs) {
+function runPreCommitFromTempVenv(_hook, hookArgs) {
   if (!commandExists("python3", ["--version"])) {
     return false;
   }

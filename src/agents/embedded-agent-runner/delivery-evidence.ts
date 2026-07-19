@@ -419,13 +419,13 @@ export function hasVisibleAgentPayload(
     }
     return Boolean(
       hasNonEmptyString(record.text) ||
-      hasNonEmptyString(record.mediaUrl) ||
-      hasNonEmptyStringArray(record.mediaUrls) ||
-      hasVisibleAttachmentReference(record.attachments) ||
-      record.visible === true ||
-      record.presentation ||
-      record.interactive ||
-      record.channelData,
+        hasNonEmptyString(record.mediaUrl) ||
+        hasNonEmptyStringArray(record.mediaUrls) ||
+        hasVisibleAttachmentReference(record.attachments) ||
+        record.visible === true ||
+        record.presentation ||
+        record.interactive ||
+        record.channelData,
     );
   });
 }

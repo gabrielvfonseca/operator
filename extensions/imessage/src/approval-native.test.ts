@@ -13,10 +13,7 @@ import {
 type IMessageConfig = NonNullable<NonNullable<OperatorConfig["channels"]>["imessage"]>;
 
 function buildConfig(
-  params: {
-    imessage?: Partial<IMessageConfig>;
-    approvals?: OperatorConfig["approvals"];
-  } = {},
+  params: { imessage?: Partial<IMessageConfig>; approvals?: OperatorConfig["approvals"] } = {},
 ): OperatorConfig {
   return {
     channels: {

@@ -5,7 +5,9 @@ import { resolveReplyRoutingDecision } from "./routing-policy.js";
 function isRoutableChannel(channel: string | undefined) {
   return Boolean(
     channel &&
-    ["telegram", "slack", "discord", "signal", "imessage", "whatsapp", "feishu"].includes(channel),
+      ["telegram", "slack", "discord", "signal", "imessage", "whatsapp", "feishu"].includes(
+        channel,
+      ),
   );
 }
 

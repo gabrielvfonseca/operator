@@ -22,8 +22,9 @@ async function resolveUserTarget(input = "Alice") {
 
 describe("resolveMatrixTargets (users)", () => {
   beforeAll(async () => {
-    ({ listMatrixDirectoryGroupsLive, listMatrixDirectoryPeersLive } =
-      await import("./directory-live.js"));
+    ({ listMatrixDirectoryGroupsLive, listMatrixDirectoryPeersLive } = await import(
+      "./directory-live.js"
+    ));
     ({ resolveMatrixTargets } = await import("./resolve-targets.js"));
   });
 

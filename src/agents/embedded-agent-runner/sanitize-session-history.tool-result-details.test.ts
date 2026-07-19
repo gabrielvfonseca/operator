@@ -85,7 +85,7 @@ describe("sanitizeSessionHistory toolResult details stripping", () => {
     });
 
     const assistant = sanitized[0];
-    if (!assistant || assistant.role !== "assistant") {
+    if (assistant?.role !== "assistant") {
       throw new Error("Expected sanitized first message to be an assistant message");
     }
     expect(assistant?.content).toEqual([{ type: "text", text: "plain reply" }]);

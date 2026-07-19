@@ -94,10 +94,8 @@ export interface AgentHarnessStreamOptions {
 }
 
 /** Per-request stream option patch returned by provider hooks. */
-export interface AgentHarnessStreamOptionsPatch extends Omit<
-  Partial<AgentHarnessStreamOptions>,
-  "headers" | "metadata"
-> {
+export interface AgentHarnessStreamOptionsPatch
+  extends Omit<Partial<AgentHarnessStreamOptions>, "headers" | "metadata"> {
   /** Header patch. `undefined` values delete keys; explicit `headers: undefined` clears all headers. */
   headers?: Record<string, string | undefined>;
   /** Metadata patch. `undefined` values delete keys; explicit `metadata: undefined` clears all metadata. */

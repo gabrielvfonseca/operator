@@ -479,6 +479,7 @@ describe("monitorMatrixProvider", () => {
     hoisted.runMatrixStartupMaintenance.mockReset().mockResolvedValue(undefined);
     hoisted.createMatrixRoomMessageHandler.mockReset().mockReturnValue(vi.fn());
     hoisted.setStatus.mockReset();
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     Object.values(hoisted.logger).forEach((mock) => mock.mockReset());
   });
 

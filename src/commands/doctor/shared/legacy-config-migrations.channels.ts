@@ -252,8 +252,8 @@ function hasLegacyThreadBindingSpawnSplit(value: unknown): boolean {
   const threadBindings = getRecord(value);
   return Boolean(
     threadBindings &&
-    (hasOwnKey(threadBindings, "spawnSubagentSessions") ||
-      hasOwnKey(threadBindings, "spawnAcpSessions")),
+      (hasOwnKey(threadBindings, "spawnSubagentSessions") ||
+        hasOwnKey(threadBindings, "spawnAcpSessions")),
   );
 }
 

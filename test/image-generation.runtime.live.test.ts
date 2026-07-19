@@ -256,6 +256,7 @@ describeLive("image generation live (provider sweep)", () => {
           requireProfileKeys: REQUIRE_PROFILE_KEYS,
           hasLiveKeys,
         });
+        // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
         let authLabel;
         try {
           const auth = await resolveApiKeyForProvider({

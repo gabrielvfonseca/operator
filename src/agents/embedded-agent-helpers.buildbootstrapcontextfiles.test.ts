@@ -27,7 +27,7 @@ const makeFile = (overrides: Partial<WorkspaceBootstrapFile>): WorkspaceBootstra
 });
 
 const createLargeBootstrapFiles = (): WorkspaceBootstrapFile[] => [
-  makeFile({ name: "AGENTS.md", content: "a".repeat(10_000) }),
+  makeFile({ name: "AGENTS.MD", content: "a".repeat(10_000) }),
   makeFile({ name: "SOUL.md", path: "/tmp/SOUL.md", content: "b".repeat(10_000) }),
   makeFile({ name: "USER.md", path: "/tmp/USER.md", content: "c".repeat(10_000) }),
 ];
@@ -90,7 +90,7 @@ describe("buildBootstrapContextFiles", () => {
     expect(warnings[0]).toContain("TOOLS.md");
     expect(warnings[0]).toContain("limit 200");
   });
-  it("keeps generic and AGENTS.md truncation valid at UTF-16 boundaries", () => {
+  it("keeps generic and AGENTS.MD truncation valid at UTF-16 boundaries", () => {
     const cases = [
       {
         file: makeFile({
@@ -137,11 +137,11 @@ describe("buildBootstrapContextFiles", () => {
     expect(result?.content).toContain("[...truncated, read HEARTBEAT.md for full content...]");
     expect(result?.content.length).toBeLessThanOrEqual(maxChars);
   });
-  it("keeps policy digest lines from oversized AGENTS.md middle content", () => {
-    // AGENTS.md truncation keeps scoped-policy signals from the middle so model
+  it("keeps policy digest lines from oversized AGENTS.MD middle content", () => {
+    // AGENTS.MD truncation keeps scoped-policy signals from the middle so model
     // prompts do not lose routing instructions just because head/tail are large.
     const requiredScopedInstruction =
-      "- Required scoped instruction: read scoped AGENTS.md before editing subtree work.";
+      "- Required scoped instruction: read scoped AGENTS.MD before editing subtree work.";
     const content = [
       "# Root policy",
       "A".repeat(900),
@@ -155,9 +155,9 @@ describe("buildBootstrapContextFiles", () => {
     });
 
     expect(result?.content.length).toBeLessThanOrEqual(600);
-    expect(result?.content).toContain("[Policy digest from AGENTS.md]");
+    expect(result?.content).toContain("[Policy digest from AGENTS.MD]");
     expect(result?.content).toContain(requiredScopedInstruction);
-    expect(result?.content).toContain("[...truncated, read AGENTS.md for full content...]");
+    expect(result?.content).toContain("[...truncated, read AGENTS.MD for full content...]");
   });
   it("keeps bootstrap bytes in tiny per-file budgets when the marker is longer than the limit", () => {
     const maxChars = 64;
@@ -195,7 +195,7 @@ describe("buildBootstrapContextFiles", () => {
     const files = [makeFile({ content: long })];
     const [result] = buildBootstrapContextFiles(files);
     expect(result?.content).toBe(long);
-    expect(result?.content).not.toContain("[...truncated, read AGENTS.md for full content...]");
+    expect(result?.content).not.toContain("[...truncated, read AGENTS.MD for full content...]");
   });
 
   it("keeps total injected bootstrap characters under the new default total cap", () => {
@@ -220,7 +220,7 @@ describe("buildBootstrapContextFiles", () => {
 
   it("enforces strict total cap even when truncation markers are present", () => {
     const files = [
-      makeFile({ name: "AGENTS.md", content: "a".repeat(1_000) }),
+      makeFile({ name: "AGENTS.MD", content: "a".repeat(1_000) }),
       makeFile({ name: "SOUL.md", path: "/tmp/SOUL.md", content: "b".repeat(1_000) }),
     ];
     const result = buildBootstrapContextFiles(files, {
@@ -234,7 +234,7 @@ describe("buildBootstrapContextFiles", () => {
   it("skips bootstrap injection when remaining total budget is too small", () => {
     // Tiny remaining budgets are worse than useless for full files; skip them
     // instead of adding misleading partial context.
-    const files = [makeFile({ name: "AGENTS.md", content: "a".repeat(1_000) })];
+    const files = [makeFile({ name: "AGENTS.MD", content: "a".repeat(1_000) })];
     const result = buildBootstrapContextFiles(files, {
       maxChars: 200,
       totalMaxChars: 40,

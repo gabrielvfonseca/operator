@@ -11,8 +11,9 @@ let buildStageSplitPlan: typeof import("./compaction-planning.js").buildStageSpl
 
 beforeAll(async () => {
   vi.resetModules();
-  ({ buildHistoryPrunePlan, buildStageSplitPlan, estimateMessagesTokens } =
-    await import("./compaction-planning.js"));
+  ({ buildHistoryPrunePlan, buildStageSplitPlan, estimateMessagesTokens } = await import(
+    "./compaction-planning.js"
+  ));
 });
 
 function splitMessagesByTokenShare(messages: AgentMessage[], parts: number): AgentMessage[][] {

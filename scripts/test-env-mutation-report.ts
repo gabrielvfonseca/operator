@@ -220,10 +220,7 @@ function scanFile(params: {
 }
 
 export function collectTestEnvMutationReport(
-  params: {
-    allowedFiles?: ReadonlyMap<string, string>;
-    repoRoot?: string;
-  } = {},
+  params: { allowedFiles?: ReadonlyMap<string, string>; repoRoot?: string } = {},
 ): TestEnvMutationReport {
   const repoRoot = path.resolve(params.repoRoot ?? process.cwd());
   const allowedFiles = params.allowedFiles ?? DEFAULT_ALLOWED_FILES;

@@ -2,15 +2,9 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "paths": {
-      "openclaw/extension-api": [
-        "../src/extensionAPI.ts"
-      ],
-      "openclaw/plugin-sdk": [
-        "../dist/plugin-sdk/index.d.ts"
-      ],
-      "openclaw/plugin-sdk/*": [
-        "../dist/plugin-sdk/*.d.ts"
-      ],
+      "openclaw/extension-api": ["../src/extensionAPI.ts"],
+      "openclaw/plugin-sdk": ["../dist/plugin-sdk/index.d.ts"],
+      "openclaw/plugin-sdk/*": ["../dist/plugin-sdk/*.d.ts"],
       "openclaw/plugin-sdk/reply-payload-testing": [
         "../packages/plugin-sdk/dist/src/plugin-sdk/reply-payload-testing.d.ts"
       ],
@@ -47,9 +41,7 @@
       "openclaw/plugin-sdk/provider-test-contracts": [
         "../packages/plugin-sdk/dist/src/plugin-sdk/provider-test-contracts.d.ts"
       ],
-      "openclaw/plugin-sdk/test-env": [
-        "../packages/plugin-sdk/dist/src/plugin-sdk/test-env.d.ts"
-      ],
+      "openclaw/plugin-sdk/test-env": ["../packages/plugin-sdk/dist/src/plugin-sdk/test-env.d.ts"],
       "openclaw/plugin-sdk/test-fixtures": [
         "../packages/plugin-sdk/dist/src/plugin-sdk/test-fixtures.d.ts"
       ],
@@ -62,9 +54,7 @@
       "openclaw/plugin-sdk/channel-contract-testing": [
         "../packages/plugin-sdk/dist/src/plugin-sdk/channel-contract-testing.d.ts"
       ],
-      "openclaw/plugin-sdk/account-id": [
-        "../dist/plugin-sdk/account-id.d.ts"
-      ],
+      "openclaw/plugin-sdk/account-id": ["../dist/plugin-sdk/account-id.d.ts"],
       "openclaw/plugin-sdk/channel-entry-contract": [
         "../dist/plugin-sdk/channel-entry-contract.d.ts"
       ],
@@ -80,84 +70,46 @@
       "openclaw/plugin-sdk/channel-secret-tts-runtime": [
         "../dist/plugin-sdk/channel-secret-tts-runtime.d.ts"
       ],
-      "openclaw/plugin-sdk/channel-streaming": [
-        "../dist/plugin-sdk/channel-streaming.d.ts"
-      ],
-      "openclaw/plugin-sdk/error-runtime": [
-        "../dist/plugin-sdk/error-runtime.d.ts"
-      ],
+      "openclaw/plugin-sdk/channel-streaming": ["../dist/plugin-sdk/channel-streaming.d.ts"],
+      "openclaw/plugin-sdk/error-runtime": ["../dist/plugin-sdk/error-runtime.d.ts"],
       "openclaw/plugin-sdk/provider-catalog-live-runtime": [
         "../dist/plugin-sdk/provider-catalog-live-runtime.d.ts"
       ],
       "openclaw/plugin-sdk/provider-catalog-shared": [
         "../dist/plugin-sdk/provider-catalog-shared.d.ts"
       ],
-      "openclaw/plugin-sdk/provider-entry": [
-        "../dist/plugin-sdk/provider-entry.d.ts"
-      ],
-      "openclaw/plugin-sdk/secret-ref-runtime": [
-        "../dist/plugin-sdk/secret-ref-runtime.d.ts"
-      ],
-      "openclaw/plugin-sdk/ssrf-runtime": [
-        "../dist/plugin-sdk/ssrf-runtime.d.ts"
-      ],
-      "@gabrielvfonseca/qa-channel/api.js": [
-        "../dist/plugin-sdk/extensions/qa-channel/api.d.ts"
-      ],
-      "@gabrielvfonseca/matrix/test-api.js": [
-        "../dist/plugin-sdk/extensions/matrix/test-api.d.ts"
-      ],
-      "@gabrielvfonseca/discord/api.js": [
-        "../dist/plugin-sdk/extensions/discord/api.d.ts"
-      ],
-      "@gabrielvfonseca/slack/api.js": [
-        "../dist/plugin-sdk/extensions/slack/api.d.ts"
-      ],
-      "@gabrielvfonseca/telegram/api.js": [
-        "../dist/plugin-sdk/extensions/telegram/api.d.ts"
-      ],
-      "@gabrielvfonseca/whatsapp/api.js": [
-        "../dist/plugin-sdk/extensions/whatsapp/api.d.ts"
-      ],
-      "@gabrielvfonseca/ai": [
-        "../dist/plugin-sdk/packages/ai/src/index.d.ts"
-      ],
+      "openclaw/plugin-sdk/provider-entry": ["../dist/plugin-sdk/provider-entry.d.ts"],
+      "openclaw/plugin-sdk/secret-ref-runtime": ["../dist/plugin-sdk/secret-ref-runtime.d.ts"],
+      "openclaw/plugin-sdk/ssrf-runtime": ["../dist/plugin-sdk/ssrf-runtime.d.ts"],
+      "@gabrielvfonseca/qa-channel/api.js": ["../dist/plugin-sdk/extensions/qa-channel/api.d.ts"],
+      "@gabrielvfonseca/matrix/test-api.js": ["../dist/plugin-sdk/extensions/matrix/test-api.d.ts"],
+      "@gabrielvfonseca/discord/api.js": ["../dist/plugin-sdk/extensions/discord/api.d.ts"],
+      "@gabrielvfonseca/slack/api.js": ["../dist/plugin-sdk/extensions/slack/api.d.ts"],
+      "@gabrielvfonseca/telegram/api.js": ["../dist/plugin-sdk/extensions/telegram/api.d.ts"],
+      "@gabrielvfonseca/whatsapp/api.js": ["../dist/plugin-sdk/extensions/whatsapp/api.d.ts"],
+      "@gabrielvfonseca/ai": ["../dist/plugin-sdk/packages/ai/src/index.d.ts"],
       "@gabrielvfonseca/ai/diagnostics": [
         "../dist/plugin-sdk/packages/ai/src/utils/diagnostics.d.ts"
       ],
       "@gabrielvfonseca/ai/event-stream": [
         "../dist/plugin-sdk/packages/ai/src/utils/event-stream.d.ts"
       ],
-      "@gabrielvfonseca/ai/providers": [
-        "../dist/plugin-sdk/packages/ai/src/providers.d.ts"
-      ],
-      "@gabrielvfonseca/ai/types": [
-        "../dist/plugin-sdk/packages/ai/src/types.d.ts"
-      ],
-      "@gabrielvfonseca/ai/validation": [
-        "../dist/plugin-sdk/packages/ai/src/validation.d.ts"
-      ],
-      "@gabrielvfonseca/ai/internal/*": [
-        "../dist/plugin-sdk/packages/ai/src/internal/*.d.ts"
-      ],
-      "@gabrielvfonseca/llm-core": [
-        "../dist/plugin-sdk/packages/llm-core/src/index.d.ts"
-      ],
+      "@gabrielvfonseca/ai/providers": ["../dist/plugin-sdk/packages/ai/src/providers.d.ts"],
+      "@gabrielvfonseca/ai/types": ["../dist/plugin-sdk/packages/ai/src/types.d.ts"],
+      "@gabrielvfonseca/ai/validation": ["../dist/plugin-sdk/packages/ai/src/validation.d.ts"],
+      "@gabrielvfonseca/ai/internal/*": ["../dist/plugin-sdk/packages/ai/src/internal/*.d.ts"],
+      "@gabrielvfonseca/llm-core": ["../dist/plugin-sdk/packages/llm-core/src/index.d.ts"],
       "@gabrielvfonseca/llm-core/diagnostics": [
         "../dist/plugin-sdk/packages/llm-core/src/utils/diagnostics.d.ts"
       ],
       "@gabrielvfonseca/llm-core/event-stream": [
         "../dist/plugin-sdk/packages/llm-core/src/utils/event-stream.d.ts"
       ],
-      "@gabrielvfonseca/llm-core/types": [
-        "../dist/plugin-sdk/packages/llm-core/src/types.d.ts"
-      ],
+      "@gabrielvfonseca/llm-core/types": ["../dist/plugin-sdk/packages/llm-core/src/types.d.ts"],
       "@gabrielvfonseca/llm-core/validation": [
         "../dist/plugin-sdk/packages/llm-core/src/validation.d.ts"
       ],
-      "@gabrielvfonseca/llm-core/*": [
-        "../dist/plugin-sdk/packages/llm-core/src/*.d.ts"
-      ],
+      "@gabrielvfonseca/llm-core/*": ["../dist/plugin-sdk/packages/llm-core/src/*.d.ts"],
       "@gabrielvfonseca/model-catalog-core": [
         "../dist/plugin-sdk/packages/model-catalog-core/src/index.d.ts"
       ],
@@ -212,9 +164,7 @@
       "@gabrielvfonseca/markdown-core/types": [
         "../dist/plugin-sdk/packages/markdown-core/src/types.d.ts"
       ],
-      "@gabrielvfonseca/markdown-core/*": [
-        "../dist/plugin-sdk/packages/markdown-core/src/*.d.ts"
-      ],
+      "@gabrielvfonseca/markdown-core/*": ["../dist/plugin-sdk/packages/markdown-core/src/*.d.ts"],
       "@gabrielvfonseca/media-generation-core": [
         "../dist/plugin-sdk/packages/media-generation-core/src/index.d.ts"
       ],
@@ -233,9 +183,7 @@
       "@gabrielvfonseca/media-generation-core/*": [
         "../dist/plugin-sdk/packages/media-generation-core/src/*.d.ts"
       ],
-      "@gabrielvfonseca/media-core": [
-        "../dist/plugin-sdk/packages/media-core/src/index.d.ts"
-      ],
+      "@gabrielvfonseca/media-core": ["../dist/plugin-sdk/packages/media-core/src/index.d.ts"],
       "@gabrielvfonseca/media-core/base64": [
         "../dist/plugin-sdk/packages/media-core/src/base64.d.ts"
       ],
@@ -257,15 +205,11 @@
       "@gabrielvfonseca/media-core/media-source-url": [
         "../dist/plugin-sdk/packages/media-core/src/media-source-url.d.ts"
       ],
-      "@gabrielvfonseca/media-core/mime": [
-        "../dist/plugin-sdk/packages/media-core/src/mime.d.ts"
-      ],
+      "@gabrielvfonseca/media-core/mime": ["../dist/plugin-sdk/packages/media-core/src/mime.d.ts"],
       "@gabrielvfonseca/media-core/read-byte-stream-with-limit": [
         "../dist/plugin-sdk/packages/media-core/src/read-byte-stream-with-limit.d.ts"
       ],
-      "@gabrielvfonseca/media-core/*": [
-        "../dist/plugin-sdk/packages/media-core/src/*.d.ts"
-      ],
+      "@gabrielvfonseca/media-core/*": ["../dist/plugin-sdk/packages/media-core/src/*.d.ts"],
       "@gabrielvfonseca/normalization-core/record-coerce": [
         "../dist/plugin-sdk/packages/normalization-core/src/record-coerce.d.ts"
       ],
@@ -275,21 +219,13 @@
       "@gabrielvfonseca/normalization-core/*": [
         "../dist/plugin-sdk/packages/normalization-core/src/*.d.ts"
       ],
-      "@gabrielvfonseca/retry": [
-        "../dist/plugin-sdk/packages/retry/src/index.d.ts"
-      ],
-      "@gabrielvfonseca/workboard-contract": [
-        "../packages/workboard-contract/src/index.ts"
-      ],
-      "@gabrielvfonseca/acp-core": [
-        "../dist/plugin-sdk/packages/acp-core/src/index.d.ts"
-      ],
+      "@gabrielvfonseca/retry": ["../dist/plugin-sdk/packages/retry/src/index.d.ts"],
+      "@gabrielvfonseca/workboard-contract": ["../packages/workboard-contract/src/index.ts"],
+      "@gabrielvfonseca/acp-core": ["../dist/plugin-sdk/packages/acp-core/src/index.d.ts"],
       "@gabrielvfonseca/acp-core/normalize-text": [
         "../dist/plugin-sdk/packages/acp-core/src/normalize-text.d.ts"
       ],
-      "@gabrielvfonseca/acp-core/meta": [
-        "../dist/plugin-sdk/packages/acp-core/src/meta.d.ts"
-      ],
+      "@gabrielvfonseca/acp-core/meta": ["../dist/plugin-sdk/packages/acp-core/src/meta.d.ts"],
       "@gabrielvfonseca/acp-core/numeric-options": [
         "../dist/plugin-sdk/packages/acp-core/src/numeric-options.d.ts"
       ],
@@ -305,9 +241,7 @@
       "@gabrielvfonseca/acp-core/session-lineage-meta": [
         "../dist/plugin-sdk/packages/acp-core/src/session-lineage-meta.d.ts"
       ],
-      "@gabrielvfonseca/acp-core/types": [
-        "../dist/plugin-sdk/packages/acp-core/src/types.d.ts"
-      ],
+      "@gabrielvfonseca/acp-core/types": ["../dist/plugin-sdk/packages/acp-core/src/types.d.ts"],
       "@gabrielvfonseca/acp-core/runtime/error-text": [
         "../dist/plugin-sdk/packages/acp-core/src/runtime/error-text.d.ts"
       ],
@@ -323,9 +257,7 @@
       "@gabrielvfonseca/acp-core/runtime/types": [
         "../dist/plugin-sdk/packages/acp-core/src/runtime/types.d.ts"
       ],
-      "@gabrielvfonseca/acp-core/*": [
-        "../dist/plugin-sdk/packages/acp-core/src/*.d.ts"
-      ],
+      "@gabrielvfonseca/acp-core/*": ["../dist/plugin-sdk/packages/acp-core/src/*.d.ts"],
       "@gabrielvfonseca/terminal-core": [
         "../dist/plugin-sdk/packages/terminal-core/src/index.d.ts"
       ],
@@ -380,29 +312,15 @@
       "@gabrielvfonseca/terminal-core/theme": [
         "../dist/plugin-sdk/packages/terminal-core/src/theme.d.ts"
       ],
-      "@gabrielvfonseca/terminal-core/*": [
-        "../dist/plugin-sdk/packages/terminal-core/src/*.d.ts"
-      ],
-      "@gabrielvfonseca/*.js": [
-        "../packages/plugin-sdk/dist/extensions/*.d.ts",
-        "../extensions/*"
-      ],
-      "@gabrielvfonseca/*": [
-        "../packages/plugin-sdk/dist/extensions/*",
-        "../extensions/*"
-      ],
-      "openclaw/plugin-sdk/qa-channel": [
-        "../dist/plugin-sdk/src/plugin-sdk/qa-channel.d.ts"
-      ],
+      "@gabrielvfonseca/terminal-core/*": ["../dist/plugin-sdk/packages/terminal-core/src/*.d.ts"],
+      "@gabrielvfonseca/*.js": ["../packages/plugin-sdk/dist/extensions/*.d.ts", "../extensions/*"],
+      "@gabrielvfonseca/*": ["../packages/plugin-sdk/dist/extensions/*", "../extensions/*"],
+      "openclaw/plugin-sdk/qa-channel": ["../dist/plugin-sdk/src/plugin-sdk/qa-channel.d.ts"],
       "openclaw/plugin-sdk/qa-channel-protocol": [
         "../dist/plugin-sdk/src/plugin-sdk/qa-channel-protocol.d.ts"
       ],
-      "openclaw/plugin-sdk/qa-runtime": [
-        "../dist/plugin-sdk/src/plugin-sdk/qa-runtime.d.ts"
-      ],
-      "@gabrielvfonseca/plugin-sdk/*": [
-        "../dist/plugin-sdk/*.d.ts"
-      ]
+      "openclaw/plugin-sdk/qa-runtime": ["../dist/plugin-sdk/src/plugin-sdk/qa-runtime.d.ts"],
+      "@gabrielvfonseca/plugin-sdk/*": ["../dist/plugin-sdk/*.d.ts"]
     }
   }
 }

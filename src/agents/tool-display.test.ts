@@ -633,7 +633,7 @@ describe("tool display details", () => {
       "echo <(printf suffix)#tag",
       "echo $(case x in x) printf ok;; esac)#tag",
     ]) {
-      const withHeredoc = [expansion + " <<STOP", "body", "STOP"].join("\n");
+      const withHeredoc = [`${expansion} <<STOP`, "body", "STOP"].join("\n");
       scanBodies(withHeredoc);
     }
     expect(bodies).toEqual(["body\nSTOP", "body\nSTOP", "body\nSTOP"]);

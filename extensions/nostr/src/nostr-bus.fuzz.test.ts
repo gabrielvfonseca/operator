@@ -270,7 +270,7 @@ describe("Metrics fuzz", () => {
 
     it("handles very long relay URL", () => {
       const metrics = createPlainMetrics();
-      const longUrl = "wss://" + "a".repeat(10000) + ".com";
+      const longUrl = `wss://${"a".repeat(10000)}.com`;
       expect(metrics.emit("relay.connect", 1, { relay: longUrl })).toBeUndefined();
 
       const snapshot = metrics.getSnapshot();

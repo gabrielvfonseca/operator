@@ -147,8 +147,9 @@ function countCacheControlMarkers(payload: unknown): number {
 
 describe("createAnthropicVertexStreamFn", () => {
   beforeAll(async () => {
-    ({ createAnthropicVertexStreamFn, createAnthropicVertexStreamFnForModel } =
-      await import("./stream-runtime.js"));
+    ({ createAnthropicVertexStreamFn, createAnthropicVertexStreamFnForModel } = await import(
+      "./stream-runtime.js"
+    ));
   });
 
   it("omits projectId when ADC credentials are used without an explicit project", () => {

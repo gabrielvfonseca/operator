@@ -51,6 +51,7 @@
    hovered/focused so the thread reads as a clean stream; overlaid into the
    group's bottom margin (no reserved flow height) so message rhythm stays
    even. Touch devices restore the in-flow always-visible footer below. */
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .chat-group-footer {
   position: absolute;
   top: 100%;
@@ -159,7 +160,7 @@
 
 .chat-group-footer button:hover,
 .chat-message-actions-row button:hover {
-  opacity: 1 !important;
+  opacity: 1;
   background: var(--bg-hover, rgba(255, 255, 255, 0.08));
 }
 
@@ -175,7 +176,7 @@
 }
 
 .chat-group-delete:hover {
-  color: var(--danger) !important;
+  color: var(--danger);
 }
 
 /* Chat divider (e.g., compaction marker) */
@@ -385,8 +386,7 @@ img.chat-avatar {
   color: color-mix(in srgb, var(--foreground) 80%, var(--primary) 20%);
 }
 
-@media (hover: none),
-  (max-width: 768px),
+@media (hover: none), (max-width: 768px),
   (max-width: 932px) and (max-height: 500px) and (orientation: landscape) {
   /* No hover to reveal an overlay: restore the in-flow always-visible footer
      and the tighter rhythm that accounts for its height. */
@@ -395,6 +395,7 @@ img.chat-avatar {
     margin-bottom: 14px;
   }
 
+  /* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
   .chat-group-footer {
     position: static;
     flex-wrap: wrap;
@@ -422,7 +423,9 @@ img.chat-avatar {
 
 /* Skins .btn/.btn--xs buttons: background and svg sizing stay with the .btn
    base so these match every other icon button; only the muted color is bespoke. */
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .chat-copy-btn,
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .chat-expand-btn {
   color: var(--muted);
 }
@@ -572,6 +575,7 @@ details.msg-meta:not([open]) .msg-meta__details {
   display: none;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .msg-meta__details {
   display: inline-flex;
   align-items: center;
@@ -591,6 +595,7 @@ details.msg-meta:not([open]) .msg-meta__details {
   box-shadow: 0 8px 24px color-mix(in srgb, #000 30%, transparent);
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .chat-group.user .msg-meta__details {
   right: 0;
   left: auto;

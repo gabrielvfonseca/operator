@@ -96,9 +96,7 @@ async function findSystemSystemdUnitPath(env: GatewayServiceEnv): Promise<string
     try {
       await fs.access(candidate);
       return candidate;
-    } catch {
-      continue;
-    }
+    } catch {}
   }
   return null;
 }
@@ -591,12 +589,7 @@ async function resolveSystemdEnvironmentFiles(params: {
       try {
         const fromFile = await readSystemdEnvironmentFile(pathname);
         Object.assign(resolved, fromFile.environment);
-      } catch {
-        // Keep service auditing resilient even when env files are unavailable
-        // in the current runtime context. Both optional and non-optional
-        // EnvironmentFile entries are skipped gracefully for diagnostics.
-        continue;
-      }
+      } catch {}
     }
   }
   return { environment: resolved };

@@ -91,10 +91,7 @@ function mergeMigrationProviders(
 }
 
 export function ensureStandaloneMigrationProviderRegistryLoaded(
-  params: {
-    cfg?: OperatorConfig;
-    providerId?: string;
-  } = {},
+  params: { cfg?: OperatorConfig; providerId?: string } = {},
 ): void {
   const resolution = resolveMigrationProviderPluginResolution(params);
   if (resolution.pluginIds.length === 0) {
@@ -143,9 +140,7 @@ export function resolvePluginMigrationProvider(params: {
 }
 
 export function resolvePluginMigrationProviders(
-  params: {
-    cfg?: OperatorConfig;
-  } = {},
+  params: { cfg?: OperatorConfig } = {},
 ): MigrationProviderPlugin[] {
   const activeRegistry = getLoadedRuntimePluginRegistry();
   const activeProviders = activeRegistry?.migrationProviders ?? [];

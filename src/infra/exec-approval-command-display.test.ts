@@ -148,7 +148,7 @@ describe("sanitizeExecApprovalDisplayText", () => {
   });
 
   it("does not split surrogate pairs at the display truncation boundary", () => {
-    const command = "a".repeat(16 * 1024 - 1) + "😀tail";
+    const command = `${"a".repeat(16 * 1024 - 1)}😀tail`;
     const result = sanitizeExecApprovalDisplayText(command);
 
     expect(result).toContain("[truncated]");
@@ -169,7 +169,7 @@ describe("sanitizeExecApprovalDisplayText", () => {
     // would split the token below the pattern's minimum length and leak the prefix. With
     // redaction first, the full token is masked before any size-based truncation runs.
     const padding = "a ".repeat(10 * 1024);
-    const cmd = padding + "ghp_1234567890abcdefghij1234567890abcdef";
+    const cmd = `${padding}ghp_1234567890abcdefghij1234567890abcdef`;
     const result = sanitizeExecApprovalDisplayText(cmd);
     expect(result).not.toContain("ghp_1234567890abcdefghij1234567890abcdef");
     expect(result).not.toContain("ghp_1234567890");

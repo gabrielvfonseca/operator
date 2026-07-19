@@ -174,8 +174,9 @@ describe("web search runtime", () => {
 
   beforeAll(async () => {
     ({ hasUsableWebSearchProvider, runWebSearch } = await import("./runtime.js"));
-    ({ activateSecretsRuntimeSnapshot, clearSecretsRuntimeSnapshot } =
-      await import("../secrets/runtime.js"));
+    ({ activateSecretsRuntimeSnapshot, clearSecretsRuntimeSnapshot } = await import(
+      "../secrets/runtime.js"
+    ));
     ({ setRuntimeConfigSnapshot } = await import("../config/config.js"));
   });
 

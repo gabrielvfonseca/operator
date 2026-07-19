@@ -95,10 +95,7 @@ function appendCurrentTimeLine(text: string, timeLine: string): string {
 }
 
 export function buildMemoryFlushPlan(
-  params: {
-    cfg?: OperatorConfig;
-    nowMs?: number;
-  } = {},
+  params: { cfg?: OperatorConfig; nowMs?: number } = {},
 ): MemoryFlushPlan | null {
   const resolved = params;
   const nowMs = resolveMemoryCoreNowMs(resolved.nowMs);

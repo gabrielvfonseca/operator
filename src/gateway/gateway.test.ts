@@ -369,80 +369,78 @@ describe("gateway e2e", () => {
     },
   );
 
-  it(
-    "re-resolves a startup auth SecretRef override when secrets reload",
-    { timeout: GATEWAY_E2E_TIMEOUT_MS },
-    async () => {
-      const { envSnapshot, tempHome } = await setupGatewayTempHome({
-        prefix: "operator-gw-startup-auth-ref-",
+  it("re-resolves a startup auth SecretRef override when secrets reload", {
+    timeout: GATEWAY_E2E_TIMEOUT_MS,
+  }, async () => {
+    const { envSnapshot, tempHome } = await setupGatewayTempHome({
+      prefix: "operator-gw-startup-auth-ref-",
+    });
+    let server: Awaited<ReturnType<typeof startGatewayServer>> | undefined;
+    let oldClient: Awaited<ReturnType<typeof connectGatewayClient>> | undefined;
+    try {
+      const configPath = await createGatewayConfigPath(tempHome);
+      setTestEnvValue("OPERATOR_CONFIG_PATH", configPath);
+      const configIO = createConfigIO({ configPath });
+      const fileToken = nextGatewayId("startup-auth-file-token");
+      const oldToken = nextGatewayId("startup-auth-ref-old");
+      const newToken = nextGatewayId("startup-auth-ref-new");
+      await configIO.writeConfigFile({
+        gateway: { auth: { mode: "token", token: fileToken } },
+        logging: { level: "info" },
       });
-      let server: Awaited<ReturnType<typeof startGatewayServer>> | undefined;
-      let oldClient: Awaited<ReturnType<typeof connectGatewayClient>> | undefined;
-      try {
-        const configPath = await createGatewayConfigPath(tempHome);
-        setTestEnvValue("OPERATOR_CONFIG_PATH", configPath);
-        const configIO = createConfigIO({ configPath });
-        const fileToken = nextGatewayId("startup-auth-file-token");
-        const oldToken = nextGatewayId("startup-auth-ref-old");
-        const newToken = nextGatewayId("startup-auth-ref-new");
-        await configIO.writeConfigFile({
-          gateway: { auth: { mode: "token", token: fileToken } },
-          logging: { level: "info" },
-        });
-        setTestEnvValue("OPERATOR_TEST_GATEWAY_OVERRIDE_TOKEN", oldToken);
-        const port = await getFreeGatewayPort();
-        server = await startGatewayServer(port, {
-          bind: "loopback",
-          auth: {
-            mode: "token",
-            token: {
-              source: "env",
-              provider: "default",
-              id: "OPERATOR_TEST_GATEWAY_OVERRIDE_TOKEN",
-            },
+      setTestEnvValue("OPERATOR_TEST_GATEWAY_OVERRIDE_TOKEN", oldToken);
+      const port = await getFreeGatewayPort();
+      server = await startGatewayServer(port, {
+        bind: "loopback",
+        auth: {
+          mode: "token",
+          token: {
+            source: "env",
+            provider: "default",
+            id: "OPERATOR_TEST_GATEWAY_OVERRIDE_TOKEN",
           },
-          controlUiEnabled: false,
-        });
-        oldClient = await connectGatewayClient({
-          url: `ws://127.0.0.1:${port}`,
-          token: oldToken,
-          clientDisplayName: "vitest-startup-auth-ref-old",
-        });
+        },
+        controlUiEnabled: false,
+      });
+      oldClient = await connectGatewayClient({
+        url: `ws://127.0.0.1:${port}`,
+        token: oldToken,
+        clientDisplayName: "vitest-startup-auth-ref-old",
+      });
 
-        setTestEnvValue("OPERATOR_TEST_GATEWAY_OVERRIDE_TOKEN", newToken);
-        const reload = await oldClient
-          .request<{ ok?: boolean }>("secrets.reload", {})
-          .catch((error: unknown) => (error instanceof Error ? error : new Error(String(error))));
-        if (!(reload instanceof Error)) {
-          expect(reload.ok).toBe(true);
-        }
-        const newClient = await connectGatewayClient({
-          url: `ws://127.0.0.1:${port}`,
-          token: newToken,
-          clientDisplayName: "vitest-startup-auth-ref-new",
-        });
-        await disconnectGatewayClient(newClient);
-
-        await writeConfigFile({
-          gateway: { auth: { mode: "token", token: fileToken } },
-          logging: { level: "debug" },
-        });
-        const persisted = JSON.parse(await fs.readFile(configPath, "utf-8")) as {
-          gateway?: { auth?: { token?: unknown } };
-        };
-        expect(persisted.gateway?.auth?.token).toBe(fileToken);
-      } finally {
-        if (oldClient) {
-          await disconnectGatewayClient(oldClient);
-        }
-        if (server) {
-          await server.close({ reason: "startup auth SecretRef rotation test complete" });
-        }
-        await removeGatewayTempHome(tempHome);
-        envSnapshot.restore();
+      setTestEnvValue("OPERATOR_TEST_GATEWAY_OVERRIDE_TOKEN", newToken);
+      const reload = await oldClient
+        .request<{ ok?: boolean }>("secrets.reload", {})
+        .catch((error: unknown) => (error instanceof Error ? error : new Error(String(error))));
+      if (!(reload instanceof Error)) {
+        expect(reload.ok).toBe(true);
       }
-    },
-  );
+      const newClient = await connectGatewayClient({
+        url: `ws://127.0.0.1:${port}`,
+        token: newToken,
+        clientDisplayName: "vitest-startup-auth-ref-new",
+      });
+      await disconnectGatewayClient(newClient);
+
+      await writeConfigFile({
+        gateway: { auth: { mode: "token", token: fileToken } },
+        logging: { level: "debug" },
+      });
+      const persisted = JSON.parse(await fs.readFile(configPath, "utf-8")) as {
+        gateway?: { auth?: { token?: unknown } };
+      };
+      expect(persisted.gateway?.auth?.token).toBe(fileToken);
+    } finally {
+      if (oldClient) {
+        await disconnectGatewayClient(oldClient);
+      }
+      if (server) {
+        await server.close({ reason: "startup auth SecretRef rotation test complete" });
+      }
+      await removeGatewayTempHome(tempHome);
+      envSnapshot.restore();
+    }
+  });
 
   it("preserves runtime-seeded Control UI origins across a safe direct reload", async () => {
     const { envSnapshot, tempHome } = await setupGatewayTempHome({
@@ -503,106 +501,103 @@ describe("gateway e2e", () => {
     }
   });
 
-  it(
-    "accepts a gateway agent request over ws and returns a run id",
-    { timeout: GATEWAY_E2E_TIMEOUT_MS },
-    async () => {
-      const { baseUrl: openaiBaseUrl, restore } = installOpenAiResponsesMock();
-      const { envSnapshot, tempHome, workspaceDir } = await setupGatewayTempHome({
-        prefix: "operator-gw-mock-home-",
-        minimalGateway: true,
-      });
+  it("accepts a gateway agent request over ws and returns a run id", {
+    timeout: GATEWAY_E2E_TIMEOUT_MS,
+  }, async () => {
+    const { baseUrl: openaiBaseUrl, restore } = installOpenAiResponsesMock();
+    const { envSnapshot, tempHome, workspaceDir } = await setupGatewayTempHome({
+      prefix: "operator-gw-mock-home-",
+      minimalGateway: true,
+    });
 
-      const token = nextGatewayId("test-token");
-      setTestEnvValue("OPERATOR_GATEWAY_TOKEN", token);
+    const token = nextGatewayId("test-token");
+    setTestEnvValue("OPERATOR_GATEWAY_TOKEN", token);
 
-      const configPath = await createGatewayConfigPath(tempHome);
-      const mockProvider = buildMockOpenAiResponsesProvider(openaiBaseUrl);
+    const configPath = await createGatewayConfigPath(tempHome);
+    const mockProvider = buildMockOpenAiResponsesProvider(openaiBaseUrl);
 
-      const cfg = {
-        agents: {
-          defaults: {
-            workspace: workspaceDir,
-            model: { primary: mockProvider.modelRef },
-            models: {
-              [mockProvider.modelRef]: {
-                params: {
-                  transport: "sse",
-                  openaiWsWarmup: false,
-                },
+    const cfg = {
+      agents: {
+        defaults: {
+          workspace: workspaceDir,
+          model: { primary: mockProvider.modelRef },
+          models: {
+            [mockProvider.modelRef]: {
+              params: {
+                transport: "sse",
+                openaiWsWarmup: false,
               },
             },
           },
-          // The request below runs sessionKey "agent:dev:mock-openai"; the
-          // gateway rejects session keys whose agent id is not declared.
-          list: [{ id: "dev", default: true }],
         },
-        models: {
-          mode: "replace",
-          providers: {
-            [mockProvider.providerId]: mockProvider.config,
-          },
+        // The request below runs sessionKey "agent:dev:mock-openai"; the
+        // gateway rejects session keys whose agent id is not declared.
+        list: [{ id: "dev", default: true }],
+      },
+      models: {
+        mode: "replace",
+        providers: {
+          [mockProvider.providerId]: mockProvider.config,
         },
-        gateway: { auth: { token } },
-      };
+      },
+      gateway: { auth: { token } },
+    };
 
-      const { server, client } = await startGatewayWithClient({
-        cfg,
-        configPath,
-        token,
-        clientDisplayName: "vitest-mock-openai",
-      });
+    const { server, client } = await startGatewayWithClient({
+      cfg,
+      configPath,
+      token,
+      clientDisplayName: "vitest-mock-openai",
+    });
 
-      try {
-        const sessionKey = "agent:dev:mock-openai";
+    try {
+      const sessionKey = "agent:dev:mock-openai";
 
-        const runId = nextGatewayId("run");
-        const payload = await client.request(
-          "agent",
-          {
-            sessionKey,
-            idempotencyKey: `idem-${runId}`,
-            message: "Reply with ok.",
-            deliver: false,
-          },
-          { expectFinal: false },
-        );
+      const runId = nextGatewayId("run");
+      const payload = await client.request(
+        "agent",
+        {
+          sessionKey,
+          idempotencyKey: `idem-${runId}`,
+          message: "Reply with ok.",
+          deliver: false,
+        },
+        { expectFinal: false },
+      );
 
-        expect(payload?.status).toBe("accepted");
-        expect(typeof payload?.runId).toBe("string");
+      expect(payload?.status).toBe("accepted");
+      expect(typeof payload?.runId).toBe("string");
 
-        const abortPayload = await client.request(
-          "sessions.abort",
-          { runId: payload.runId },
-          { timeoutMs: 5_000 },
-        );
-        expect(["aborted", "no-active-run"]).toContain(abortPayload?.status);
-      } finally {
-        await disconnectGatewayClient(client);
-        await server.close({ reason: "mock openai test complete" });
-        await removeGatewayTempHome(tempHome);
-        restore();
-        envSnapshot.restore();
-      }
-    },
-  );
+      const abortPayload = await client.request(
+        "sessions.abort",
+        { runId: payload.runId },
+        { timeoutMs: 5_000 },
+      );
+      expect(["aborted", "no-active-run"]).toContain(abortPayload?.status);
+    } finally {
+      await disconnectGatewayClient(client);
+      await server.close({ reason: "mock openai test complete" });
+      await removeGatewayTempHome(tempHome);
+      restore();
+      envSnapshot.restore();
+    }
+  });
 
-  it(
-    "does not reload workspace plugins when POST /tools/invoke rebuilds tools for the same workspace",
-    { timeout: GATEWAY_E2E_TIMEOUT_MS },
-    async () => {
-      const { envSnapshot, tempHome, workspaceDir } = await setupGatewayTempHome({
-        prefix: "operator-gw-http-tools-home-",
-      });
+  it("does not reload workspace plugins when POST /tools/invoke rebuilds tools for the same workspace", {
+    timeout: GATEWAY_E2E_TIMEOUT_MS,
+  }, async () => {
+    const { envSnapshot, tempHome, workspaceDir } = await setupGatewayTempHome({
+      prefix: "operator-gw-http-tools-home-",
+    });
 
-      const token = nextGatewayId("http-tools-token");
-      setTestEnvValue("OPERATOR_GATEWAY_TOKEN", token);
-      const registerCountPath = path.join(tempHome, "workspace-plugin-register-count.txt");
-      await writeWorkspacePlugin({
-        workspaceDir,
-        id: "http-probe",
-        activation: { onStartup: true },
-        body: `
+    const token = nextGatewayId("http-tools-token");
+    setTestEnvValue("OPERATOR_GATEWAY_TOKEN", token);
+    const registerCountPath = path.join(tempHome, "workspace-plugin-register-count.txt");
+    await writeWorkspacePlugin({
+      workspaceDir,
+      id: "http-probe",
+      activation: { onStartup: true },
+      body: `
 const fs = require("node:fs");
 const counterPath = ${JSON.stringify(registerCountPath)};
 module.exports = {
@@ -615,316 +610,309 @@ module.exports = {
   },
 };
 `.trimStart(),
+    });
+
+    const configPath = await createGatewayConfigPath(tempHome);
+    const cfg = {
+      agents: {
+        defaults: { workspace: workspaceDir },
+        list: [{ id: "main", default: true, tools: { allow: ["agents_list"] } }],
+      },
+      plugins: {
+        allow: ["http-probe"],
+      },
+      gateway: { auth: { token } },
+    };
+    await fs.writeFile(configPath, `${JSON.stringify(cfg, null, 2)}\n`);
+    setTestEnvValue("OPERATOR_CONFIG_PATH", configPath);
+
+    const { port, server } = await startLoopbackTokenGateway(token);
+
+    try {
+      const beforeCount = await readCounterWithRetry(registerCountPath);
+      expect(beforeCount).toBeGreaterThan(0);
+
+      const res = await fetch(`http://127.0.0.1:${port}/tools/invoke`, {
+        method: "POST",
+        headers: {
+          authorization: `Bearer ${token}`,
+          "content-type": "application/json",
+          connection: "close",
+        },
+        body: JSON.stringify({
+          tool: "agents_list",
+          action: "json",
+          args: {},
+          sessionKey: "main",
+        }),
       });
 
-      const configPath = await createGatewayConfigPath(tempHome);
-      const cfg = {
-        agents: {
-          defaults: { workspace: workspaceDir },
-          list: [{ id: "main", default: true, tools: { allow: ["agents_list"] } }],
-        },
-        plugins: {
-          allow: ["http-probe"],
-        },
-        gateway: { auth: { token } },
-      };
-      await fs.writeFile(configPath, `${JSON.stringify(cfg, null, 2)}\n`);
-      setTestEnvValue("OPERATOR_CONFIG_PATH", configPath);
+      expect(res.status).toBe(200);
+      const body = await res.json();
+      expect(body.ok).toBe(true);
 
-      const { port, server } = await startLoopbackTokenGateway(token);
+      const afterCount = await readCounterWithRetry(registerCountPath);
+      expect(afterCount).toBe(beforeCount);
+    } finally {
+      await server.close({ reason: "http tools workspace test complete" });
+      await removeGatewayTempHome(tempHome);
+      envSnapshot.restore();
+    }
+  });
 
-      try {
-        const beforeCount = await readCounterWithRetry(registerCountPath);
-        expect(beforeCount).toBeGreaterThan(0);
+  it("runs wizard over ws and writes auth token config", {
+    timeout: GATEWAY_E2E_TIMEOUT_MS,
+  }, async () => {
+    const { envSnapshot, tempHome } = await setupGatewayTempHome({
+      prefix: "operator-wizard-home-",
+      minimalGateway: true,
+    });
+    deleteTestEnvValue("OPERATOR_GATEWAY_TOKEN");
 
-        const res = await fetch(`http://127.0.0.1:${port}/tools/invoke`, {
-          method: "POST",
-          headers: {
-            authorization: `Bearer ${token}`,
-            "content-type": "application/json",
-            connection: "close",
-          },
-          body: JSON.stringify({
-            tool: "agents_list",
-            action: "json",
-            args: {},
-            sessionKey: "main",
-          }),
+    const configPath = await createGatewayConfigPath(tempHome);
+    setTestEnvValue("OPERATOR_CONFIG_PATH", configPath);
+    clearRuntimeConfigSnapshot();
+    clearConfigCache();
+
+    const wizardToken = nextGatewayId("wiz-token");
+    const port = await getFreeGatewayPort();
+    const server = await startGatewayServer(port, {
+      bind: "loopback",
+      auth: { mode: "token", token: wizardToken },
+      controlUiEnabled: false,
+      wizardRunner: async (_opts, _runtime, prompter) => {
+        await prompter.intro("Wizard E2E");
+        await prompter.note("write token");
+        const token = await prompter.text({ message: "token" });
+        await createConfigIO({ configPath }).writeConfigFile({
+          gateway: { auth: { mode: "token", token } },
         });
+        await prompter.outro("ok");
+      },
+    });
 
-        expect(res.status).toBe(200);
-        const body = await res.json();
-        expect(body.ok).toBe(true);
+    const client = await connectGatewayClient({
+      url: `ws://127.0.0.1:${port}`,
+      token: wizardToken,
+      clientDisplayName: "vitest-wizard",
+    });
 
-        const afterCount = await readCounterWithRetry(registerCountPath);
-        expect(afterCount).toBe(beforeCount);
-      } finally {
-        await server.close({ reason: "http tools workspace test complete" });
-        await removeGatewayTempHome(tempHome);
-        envSnapshot.restore();
-      }
-    },
-  );
-
-  it(
-    "runs wizard over ws and writes auth token config",
-    { timeout: GATEWAY_E2E_TIMEOUT_MS },
-    async () => {
-      const { envSnapshot, tempHome } = await setupGatewayTempHome({
-        prefix: "operator-wizard-home-",
-        minimalGateway: true,
-      });
-      deleteTestEnvValue("OPERATOR_GATEWAY_TOKEN");
-
-      const configPath = await createGatewayConfigPath(tempHome);
-      setTestEnvValue("OPERATOR_CONFIG_PATH", configPath);
-      clearRuntimeConfigSnapshot();
-      clearConfigCache();
-
-      const wizardToken = nextGatewayId("wiz-token");
-      const port = await getFreeGatewayPort();
-      const server = await startGatewayServer(port, {
-        bind: "loopback",
-        auth: { mode: "token", token: wizardToken },
-        controlUiEnabled: false,
-        wizardRunner: async (_opts, _runtime, prompter) => {
-          await prompter.intro("Wizard E2E");
-          await prompter.note("write token");
-          const token = await prompter.text({ message: "token" });
-          await createConfigIO({ configPath }).writeConfigFile({
-            gateway: { auth: { mode: "token", token } },
-          });
-          await prompter.outro("ok");
-        },
-      });
-
-      const client = await connectGatewayClient({
-        url: `ws://127.0.0.1:${port}`,
-        token: wizardToken,
-        clientDisplayName: "vitest-wizard",
-      });
-
-      try {
-        const start = await client.request<{
-          sessionId?: string;
-          done: boolean;
-          status: "running" | "done" | "cancelled" | "error";
-          step?: {
-            id: string;
-            type: "note" | "select" | "text" | "confirm" | "multiselect" | "progress";
-          };
-          error?: string;
-        }>("wizard.start", { mode: "local" });
-        const sessionId = start.sessionId;
-        expect(typeof sessionId).toBe("string");
-
-        let next = start;
-        let didSendToken = false;
-        const seenSteps: string[] = [];
-        while (!next.done) {
-          const step = next.step;
-          if (!step) {
-            throw new Error("wizard missing step");
-          }
-          seenSteps.push(`${step.type}:${step.id}`);
-          const value = step.type === "text" ? wizardToken : null;
-          if (step.type === "text") {
-            didSendToken = true;
-          }
-          next = await client.request(
-            "wizard.next",
-            {
-              sessionId,
-              answer: { stepId: step.id, value },
-            },
-            { timeoutMs: 60_000 },
-          );
-        }
-
-        expect(didSendToken, `seenSteps=${seenSteps.join(",")} final=${JSON.stringify(next)}`).toBe(
-          true,
-        );
-        expect(next.status).toBe("done");
-
-        await expect
-          .poll(
-            async () => {
-              const parsed = JSON.parse(await fs.readFile(configPath, "utf8"));
-              const token = (parsed as Record<string, unknown>)?.gateway as
-                | Record<string, unknown>
-                | undefined;
-              return (token?.auth as { token?: string } | undefined)?.token;
-            },
-            { timeout: 5_000 },
-          )
-          .toBe(wizardToken);
-      } finally {
-        await disconnectGatewayClient(client);
-        await server.close({ reason: "wizard e2e complete" });
-      }
-
-      const port2 = await getFreeGatewayPort();
-      const server2 = await startGatewayServer(port2, {
-        bind: "loopback",
-        controlUiEnabled: false,
-      });
-      try {
-        const resNoToken = await connectDeviceAuthReq({
-          url: `ws://127.0.0.1:${port2}`,
-        });
-        expect(resNoToken.ok).toBe(false);
-        expect(resNoToken.error?.message ?? "").toContain("unauthorized");
-
-        const resToken = await connectDeviceAuthReq({
-          url: `ws://127.0.0.1:${port2}`,
-          token: wizardToken,
-        });
-        expect(resToken.ok).toBe(true);
-      } finally {
-        await server2.close({ reason: "wizard auth verify" });
-        await removeGatewayTempHome(tempHome);
-        envSnapshot.restore();
-      }
-    },
-  );
-
-  it(
-    "routes wizard.start flow channels to the channel wizard runner",
-    { timeout: GATEWAY_E2E_TIMEOUT_MS },
-    async () => {
-      const { envSnapshot, tempHome } = await setupGatewayTempHome({
-        prefix: "operator-wizard-channels-home-",
-        minimalGateway: true,
-      });
-      const wizAuth = nextGatewayId("wiz-chan");
-      const port = await getFreeGatewayPort();
-      const channelRuns: Array<string | undefined> = [];
-      const server = await startGatewayServer(port, {
-        bind: "loopback",
-        auth: { mode: "token", token: wizAuth },
-        controlUiEnabled: false,
-        wizardRunner: async () => {
-          throw new Error("setup wizard runner must not run for flow channels");
-        },
-        channelWizardRunner: async (opts, _runtime, prompter) => {
-          channelRuns.push(opts.channel);
-          await prompter.intro("Channel setup");
-          const choice = await prompter.select({
-            message: "channel",
-            options: [{ value: opts.channel ?? "none", label: opts.channel ?? "none" }],
-          });
-          opts.onConfigured?.([{ channel: choice, accountId: "default" }]);
-          await prompter.outro(`configured ${choice}`);
-        },
-      });
-
-      const client = await connectGatewayClient({
-        url: `ws://127.0.0.1:${port}`,
-        token: wizAuth,
-        clientDisplayName: "vitest-wizard-channels",
-      });
-
-      try {
-        const start = await client.request<{
-          sessionId?: string;
-          done: boolean;
-          status: "running" | "done" | "cancelled" | "error";
-          step?: { id: string; type: string };
-          channels?: string[];
-          accounts?: Array<{ channel: string; accountId: string }>;
-        }>("wizard.start", { flow: "channels", channel: "telegram" });
-        const sessionId = start.sessionId;
-        expect(typeof sessionId).toBe("string");
-
-        let next = start;
-        const seenSteps: string[] = [];
-        while (!next.done) {
-          const step = next.step;
-          if (!step) {
-            throw new Error("wizard missing step");
-          }
-          seenSteps.push(step.type);
-          next = await client.request(
-            "wizard.next",
-            {
-              sessionId,
-              answer: { stepId: step.id, value: step.type === "select" ? "telegram" : null },
-            },
-            { timeoutMs: 60_000 },
-          );
-        }
-
-        expect(next.status, `seenSteps=${seenSteps.join(",")}`).toBe("done");
-        expect(seenSteps).toContain("select");
-        expect(channelRuns).toEqual(["telegram"]);
-        expect(next.channels).toEqual(["telegram"]);
-        expect(next.accounts).toEqual([{ channel: "telegram", accountId: "default" }]);
-      } finally {
-        await disconnectGatewayClient(client);
-        await server.close({ reason: "wizard channels flow complete" });
-        await removeGatewayTempHome(tempHome);
-        envSnapshot.restore();
-      }
-    },
-  );
-
-  it(
-    "ignores env-driven plugin auto-enable in minimal gateway mode",
-    { timeout: GATEWAY_E2E_TIMEOUT_MS },
-    async () => {
-      const envSnapshot = captureEnv([
-        "HOME",
-        "OPERATOR_STATE_DIR",
-        "OPERATOR_CONFIG_PATH",
-        "OPERATOR_GATEWAY_TOKEN",
-        "OPERATOR_SKIP_CHANNELS",
-        "OPERATOR_SKIP_GMAIL_WATCHER",
-        "OPERATOR_SKIP_CRON",
-        "OPERATOR_SKIP_CANVAS_HOST",
-        "OPERATOR_SKIP_BROWSER_CONTROL_SERVER",
-        "OPERATOR_SKIP_PROVIDERS",
-        "OPERATOR_BUNDLED_PLUGINS_DIR",
-        "OPERATOR_TEST_MINIMAL_GATEWAY",
-        "DISCORD_BOT_TOKEN",
-      ]);
-
-      const tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "operator-minimal-gateway-home-"));
-      const configPath = await createGatewayConfigPath(tempHome);
-      const bundledPluginsDir = path.join(tempHome, "operator-test-no-bundled-extensions");
-      setTestEnvValue("HOME", tempHome);
-      setTestEnvValue("OPERATOR_STATE_DIR", path.join(tempHome, ".operator"));
-      setTestEnvValue("OPERATOR_CONFIG_PATH", configPath);
-      setTestEnvValue("OPERATOR_SKIP_CHANNELS", "1");
-      setTestEnvValue("OPERATOR_SKIP_GMAIL_WATCHER", "1");
-      setTestEnvValue("OPERATOR_SKIP_CRON", "1");
-      setTestEnvValue("OPERATOR_SKIP_CANVAS_HOST", "1");
-      setTestEnvValue("OPERATOR_SKIP_BROWSER_CONTROL_SERVER", "1");
-      setTestEnvValue("OPERATOR_SKIP_PROVIDERS", "1");
-      setTestEnvValue("OPERATOR_BUNDLED_PLUGINS_DIR", bundledPluginsDir);
-      setTestEnvValue("OPERATOR_TEST_MINIMAL_GATEWAY", "1");
-      setTestEnvValue("DISCORD_BOT_TOKEN", "discord-test-token");
-
-      const token = nextGatewayId("minimal-token");
-      setTestEnvValue("OPERATOR_GATEWAY_TOKEN", token);
-      await fs.mkdir(bundledPluginsDir, { recursive: true });
-      await fs.writeFile(
-        configPath,
-        `${JSON.stringify({ gateway: { auth: { mode: "token", token } } }, null, 2)}\n`,
-      );
-
-      const { server } = await startLoopbackTokenGateway(token);
-
-      try {
-        const parsed = JSON.parse(await fs.readFile(configPath, "utf8")) as {
-          channels?: Record<string, unknown>;
-          plugins?: { entries?: Record<string, { enabled?: boolean }> };
+    try {
+      const start = await client.request<{
+        sessionId?: string;
+        done: boolean;
+        status: "running" | "done" | "cancelled" | "error";
+        step?: {
+          id: string;
+          type: "note" | "select" | "text" | "confirm" | "multiselect" | "progress";
         };
-        expect(parsed.plugins?.entries?.discord).toBeUndefined();
-      } finally {
-        await server.close({ reason: "minimal gateway auto-enable verify" });
-        await removeGatewayTempHome(tempHome);
-        envSnapshot.restore();
+        error?: string;
+      }>("wizard.start", { mode: "local" });
+      const sessionId = start.sessionId;
+      expect(typeof sessionId).toBe("string");
+
+      let next = start;
+      let didSendToken = false;
+      const seenSteps: string[] = [];
+      while (!next.done) {
+        const step = next.step;
+        if (!step) {
+          throw new Error("wizard missing step");
+        }
+        seenSteps.push(`${step.type}:${step.id}`);
+        const value = step.type === "text" ? wizardToken : null;
+        if (step.type === "text") {
+          didSendToken = true;
+        }
+        next = await client.request(
+          "wizard.next",
+          {
+            sessionId,
+            answer: { stepId: step.id, value },
+          },
+          { timeoutMs: 60_000 },
+        );
       }
-    },
-  );
+
+      expect(didSendToken, `seenSteps=${seenSteps.join(",")} final=${JSON.stringify(next)}`).toBe(
+        true,
+      );
+      expect(next.status).toBe("done");
+
+      await expect
+        .poll(
+          async () => {
+            const parsed = JSON.parse(await fs.readFile(configPath, "utf8"));
+            const token = (parsed as Record<string, unknown>)?.gateway as
+              | Record<string, unknown>
+              | undefined;
+            return (token?.auth as { token?: string } | undefined)?.token;
+          },
+          { timeout: 5_000 },
+        )
+        .toBe(wizardToken);
+    } finally {
+      await disconnectGatewayClient(client);
+      await server.close({ reason: "wizard e2e complete" });
+    }
+
+    const port2 = await getFreeGatewayPort();
+    const server2 = await startGatewayServer(port2, {
+      bind: "loopback",
+      controlUiEnabled: false,
+    });
+    try {
+      const resNoToken = await connectDeviceAuthReq({
+        url: `ws://127.0.0.1:${port2}`,
+      });
+      expect(resNoToken.ok).toBe(false);
+      expect(resNoToken.error?.message ?? "").toContain("unauthorized");
+
+      const resToken = await connectDeviceAuthReq({
+        url: `ws://127.0.0.1:${port2}`,
+        token: wizardToken,
+      });
+      expect(resToken.ok).toBe(true);
+    } finally {
+      await server2.close({ reason: "wizard auth verify" });
+      await removeGatewayTempHome(tempHome);
+      envSnapshot.restore();
+    }
+  });
+
+  it("routes wizard.start flow channels to the channel wizard runner", {
+    timeout: GATEWAY_E2E_TIMEOUT_MS,
+  }, async () => {
+    const { envSnapshot, tempHome } = await setupGatewayTempHome({
+      prefix: "operator-wizard-channels-home-",
+      minimalGateway: true,
+    });
+    const wizAuth = nextGatewayId("wiz-chan");
+    const port = await getFreeGatewayPort();
+    const channelRuns: Array<string | undefined> = [];
+    const server = await startGatewayServer(port, {
+      bind: "loopback",
+      auth: { mode: "token", token: wizAuth },
+      controlUiEnabled: false,
+      wizardRunner: async () => {
+        throw new Error("setup wizard runner must not run for flow channels");
+      },
+      channelWizardRunner: async (opts, _runtime, prompter) => {
+        channelRuns.push(opts.channel);
+        await prompter.intro("Channel setup");
+        const choice = await prompter.select({
+          message: "channel",
+          options: [{ value: opts.channel ?? "none", label: opts.channel ?? "none" }],
+        });
+        opts.onConfigured?.([{ channel: choice, accountId: "default" }]);
+        await prompter.outro(`configured ${choice}`);
+      },
+    });
+
+    const client = await connectGatewayClient({
+      url: `ws://127.0.0.1:${port}`,
+      token: wizAuth,
+      clientDisplayName: "vitest-wizard-channels",
+    });
+
+    try {
+      const start = await client.request<{
+        sessionId?: string;
+        done: boolean;
+        status: "running" | "done" | "cancelled" | "error";
+        step?: { id: string; type: string };
+        channels?: string[];
+        accounts?: Array<{ channel: string; accountId: string }>;
+      }>("wizard.start", { flow: "channels", channel: "telegram" });
+      const sessionId = start.sessionId;
+      expect(typeof sessionId).toBe("string");
+
+      let next = start;
+      const seenSteps: string[] = [];
+      while (!next.done) {
+        const step = next.step;
+        if (!step) {
+          throw new Error("wizard missing step");
+        }
+        seenSteps.push(step.type);
+        next = await client.request(
+          "wizard.next",
+          {
+            sessionId,
+            answer: { stepId: step.id, value: step.type === "select" ? "telegram" : null },
+          },
+          { timeoutMs: 60_000 },
+        );
+      }
+
+      expect(next.status, `seenSteps=${seenSteps.join(",")}`).toBe("done");
+      expect(seenSteps).toContain("select");
+      expect(channelRuns).toEqual(["telegram"]);
+      expect(next.channels).toEqual(["telegram"]);
+      expect(next.accounts).toEqual([{ channel: "telegram", accountId: "default" }]);
+    } finally {
+      await disconnectGatewayClient(client);
+      await server.close({ reason: "wizard channels flow complete" });
+      await removeGatewayTempHome(tempHome);
+      envSnapshot.restore();
+    }
+  });
+
+  it("ignores env-driven plugin auto-enable in minimal gateway mode", {
+    timeout: GATEWAY_E2E_TIMEOUT_MS,
+  }, async () => {
+    const envSnapshot = captureEnv([
+      "HOME",
+      "OPERATOR_STATE_DIR",
+      "OPERATOR_CONFIG_PATH",
+      "OPERATOR_GATEWAY_TOKEN",
+      "OPERATOR_SKIP_CHANNELS",
+      "OPERATOR_SKIP_GMAIL_WATCHER",
+      "OPERATOR_SKIP_CRON",
+      "OPERATOR_SKIP_CANVAS_HOST",
+      "OPERATOR_SKIP_BROWSER_CONTROL_SERVER",
+      "OPERATOR_SKIP_PROVIDERS",
+      "OPERATOR_BUNDLED_PLUGINS_DIR",
+      "OPERATOR_TEST_MINIMAL_GATEWAY",
+      "DISCORD_BOT_TOKEN",
+    ]);
+
+    const tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "operator-minimal-gateway-home-"));
+    const configPath = await createGatewayConfigPath(tempHome);
+    const bundledPluginsDir = path.join(tempHome, "operator-test-no-bundled-extensions");
+    setTestEnvValue("HOME", tempHome);
+    setTestEnvValue("OPERATOR_STATE_DIR", path.join(tempHome, ".operator"));
+    setTestEnvValue("OPERATOR_CONFIG_PATH", configPath);
+    setTestEnvValue("OPERATOR_SKIP_CHANNELS", "1");
+    setTestEnvValue("OPERATOR_SKIP_GMAIL_WATCHER", "1");
+    setTestEnvValue("OPERATOR_SKIP_CRON", "1");
+    setTestEnvValue("OPERATOR_SKIP_CANVAS_HOST", "1");
+    setTestEnvValue("OPERATOR_SKIP_BROWSER_CONTROL_SERVER", "1");
+    setTestEnvValue("OPERATOR_SKIP_PROVIDERS", "1");
+    setTestEnvValue("OPERATOR_BUNDLED_PLUGINS_DIR", bundledPluginsDir);
+    setTestEnvValue("OPERATOR_TEST_MINIMAL_GATEWAY", "1");
+    setTestEnvValue("DISCORD_BOT_TOKEN", "discord-test-token");
+
+    const token = nextGatewayId("minimal-token");
+    setTestEnvValue("OPERATOR_GATEWAY_TOKEN", token);
+    await fs.mkdir(bundledPluginsDir, { recursive: true });
+    await fs.writeFile(
+      configPath,
+      `${JSON.stringify({ gateway: { auth: { mode: "token", token } } }, null, 2)}\n`,
+    );
+
+    const { server } = await startLoopbackTokenGateway(token);
+
+    try {
+      const parsed = JSON.parse(await fs.readFile(configPath, "utf8")) as {
+        channels?: Record<string, unknown>;
+        plugins?: { entries?: Record<string, { enabled?: boolean }> };
+      };
+      expect(parsed.plugins?.entries?.discord).toBeUndefined();
+    } finally {
+      await server.close({ reason: "minimal gateway auto-enable verify" });
+      await removeGatewayTempHome(tempHome);
+      envSnapshot.restore();
+    }
+  });
 });

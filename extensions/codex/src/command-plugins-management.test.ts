@@ -47,7 +47,7 @@ const fakeCtx: PluginCommandContext = {
 
 function buttonCommands(result: PluginCommandResult): string[] {
   const block = result.presentation?.blocks.find((candidate) => candidate.type === "buttons");
-  if (!block || block.type !== "buttons") {
+  if (block?.type !== "buttons") {
     throw new Error("expected button presentation");
   }
   return block.buttons.map((button) =>

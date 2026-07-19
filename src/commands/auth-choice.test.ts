@@ -92,9 +92,9 @@ const detectZaiEndpoint = vi.hoisted(() => vi.fn<DetectZaiEndpoint>(async () => 
 
 vi.mock("../agents/agent-scope.js", () => ({
   resolveDefaultAgentId: () => "main",
-  resolveAgentDir: (configForTest: unknown, agentId: string) =>
+  resolveAgentDir: (_configForTest: unknown, agentId: string) =>
     `${process.env.OPERATOR_STATE_DIR ?? "/tmp/operator-state"}/agents/${agentId}/agent`,
-  resolveAgentWorkspaceDir: (configForTest: unknown, agentId: string) =>
+  resolveAgentWorkspaceDir: (_configForTest: unknown, agentId: string) =>
     `/tmp/operator-workspaces/${agentId}`,
   // Required by src/agents/model-runtime-policy.ts, which is transitively
   // imported through provider-auth-choice -> copilot-runtime-plugin-install ->

@@ -127,7 +127,7 @@ vi.mock("./subagent-announce-delivery.js", () => ({
 }));
 
 vi.mock("./subagent-announce-origin.js", () => ({
-  resolveAnnounceOrigin: vi.fn((entry, requesterOrigin) => requesterOrigin),
+  resolveAnnounceOrigin: vi.fn((_entry, requesterOrigin) => requesterOrigin),
 }));
 
 vi.mock("./subagent-registry-steer-runtime.js", () => ({

@@ -496,7 +496,7 @@ export function createOAuthManager(adapter: OAuthManagerAdapter) {
       return await withFileLock(globalRefreshLockPath, OAUTH_REFRESH_LOCK_OPTIONS, async () => {
         const store = loadStoredOAuthRefreshStore(ownerAgentDir);
         const cred = store.profiles[params.profileId];
-        if (!cred || cred.type !== "oauth") {
+        if (cred?.type !== "oauth") {
           return null;
         }
         let credentialToRefresh = cred;

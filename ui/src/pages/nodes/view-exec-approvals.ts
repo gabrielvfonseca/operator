@@ -120,6 +120,7 @@ function resolveExecApprovalsAgents(
   const configAgents = resolveConfigAgents(config);
   const approvalsAgents = Object.keys(form?.agents ?? {});
   const merged = new Map<string, ExecApprovalsAgentOption>();
+  // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
   configAgents.forEach((agent) => merged.set(agent.id, agent));
   approvalsAgents.forEach((id) => {
     if (merged.has(id)) {
@@ -176,7 +177,7 @@ export function resolveExecApprovalsState(props: NodesProps): ExecApprovalsState
   const selectedScope = resolveExecApprovalsScope(props.execApprovalsSelectedAgent, agents);
   const selectedAgent =
     selectedScope !== EXEC_APPROVALS_DEFAULT_SCOPE
-      ? (((form?.agents ?? {})[selectedScope] as Record<string, unknown> | undefined) ?? null)
+      ? ((form?.agents?.[selectedScope] as Record<string, unknown> | undefined) ?? null)
       : null;
   const allowlist = Array.isArray((selectedAgent as { allowlist?: unknown })?.allowlist)
     ? ((selectedAgent as { allowlist?: ExecApprovalsAllowlistEntry[] }).allowlist ?? [])
@@ -220,18 +221,20 @@ export function renderExecApprovals(state: ExecApprovalsState) {
   `;
   const rows = html`
     ${renderExecApprovalsTarget(state)}
-    ${!ready
-      ? renderSettingsRow({
-          title: t("nodes.execApprovals.loadHint"),
-          control: html`
+    ${
+      !ready
+        ? renderSettingsRow({
+            title: t("nodes.execApprovals.loadHint"),
+            control: html`
             <button class="btn" ?disabled=${state.loading || !targetReady} @click=${state.onLoad}>
               ${state.loading ? t("common.loading") : t("common.loadApprovals")}
             </button>
           `,
-        })
-      : state.nativePolicy
-        ? renderNativeExecApprovals(state.nativePolicy)
-        : html`${renderExecApprovalsScope(state)} ${renderExecApprovalsPolicy(state)}`}
+          })
+        : state.nativePolicy
+          ? renderNativeExecApprovals(state.nativePolicy)
+          : html`${renderExecApprovalsScope(state)} ${renderExecApprovalsPolicy(state)}`
+    }
   `;
   return html`
     ${renderSettingsSection(
@@ -245,9 +248,11 @@ export function renderExecApprovals(state: ExecApprovalsState) {
       },
       rows,
     )}
-    ${ready && !state.nativePolicy && state.selectedScope !== EXEC_APPROVALS_DEFAULT_SCOPE
-      ? renderExecApprovalsAllowlist(state)
-      : nothing}
+    ${
+      ready && !state.nativePolicy && state.selectedScope !== EXEC_APPROVALS_DEFAULT_SCOPE
+        ? renderExecApprovalsAllowlist(state)
+        : nothing
+    }
   `;
 }
 
@@ -316,11 +321,12 @@ function renderExecApprovalsTarget(state: ExecApprovalsState) {
         </select>
       `,
     })}
-    ${state.target === "node"
-      ? renderSettingsRow({
-          title: t("nodes.execApprovals.node"),
-          description: hasNodes ? undefined : t("nodes.execApprovals.noNodes"),
-          control: html`
+    ${
+      state.target === "node"
+        ? renderSettingsRow({
+            title: t("nodes.execApprovals.node"),
+            description: hasNodes ? undefined : t("nodes.execApprovals.noNodes"),
+            control: html`
             <select
               class="settings-select"
               aria-label=${t("nodes.execApprovals.node")}
@@ -342,8 +348,9 @@ function renderExecApprovalsTarget(state: ExecApprovalsState) {
               )}
             </select>
           `,
-        })
-      : nothing}
+          })
+        : nothing
+    }
   `;
 }
 
@@ -393,11 +400,13 @@ function renderPolicySelect(
         }
       }}
     >
-      ${!options.isDefaults
-        ? html`<option value="__default__" ?selected=${options.currentValue === "__default__"}>
+      ${
+        !options.isDefaults
+          ? html`<option value="__default__" ?selected=${options.currentValue === "__default__"}>
             ${t("nodes.execApprovals.useDefaultValue", { value: options.defaultValue })}
           </option>`
-        : nothing}
+          : nothing
+      }
       ${options.values.map(
         (option) =>
           html`<option value=${option.value} ?selected=${options.currentValue === option.value}>
@@ -484,15 +493,17 @@ function renderExecApprovalsPolicy(state: ExecApprovalsState) {
               value: autoEffective ? t("nodes.execApprovals.on") : t("nodes.execApprovals.off"),
             }),
       control: html`
-        ${!isDefaults && !autoIsDefault
-          ? html`<button
+        ${
+          !isDefaults && !autoIsDefault
+            ? html`<button
               class="btn btn--sm"
               ?disabled=${state.disabled}
               @click=${() => state.onRemove([...basePath, "autoAllowSkills"])}
             >
               ${t("nodes.execApprovals.useDefault")}
             </button>`
-          : nothing}
+            : nothing
+        }
         ${renderSettingsToggle({
           checked: autoEffective,
           disabled: state.disabled,

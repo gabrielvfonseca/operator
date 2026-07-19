@@ -50,8 +50,8 @@ function isSessionWriteLockTimeoutError(err: unknown): boolean {
     err instanceof SessionWriteLockTimeoutError ||
     Boolean(
       err &&
-      typeof err === "object" &&
-      (err as { code?: unknown }).code === SESSION_WRITE_LOCK_TIMEOUT_CODE,
+        typeof err === "object" &&
+        (err as { code?: unknown }).code === SESSION_WRITE_LOCK_TIMEOUT_CODE,
     )
   );
 }
@@ -62,8 +62,8 @@ function isSessionWriteLockStaleError(err: unknown): boolean {
     err instanceof SessionWriteLockStaleError ||
     Boolean(
       err &&
-      typeof err === "object" &&
-      (err as { code?: unknown }).code === SESSION_WRITE_LOCK_STALE_CODE,
+        typeof err === "object" &&
+        (err as { code?: unknown }).code === SESSION_WRITE_LOCK_STALE_CODE,
     )
   );
 }

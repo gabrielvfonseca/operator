@@ -311,7 +311,7 @@ function extractRelaySlackMessageEvent(
   frame: unknown,
 ): { deliveryId: string; message: SlackMessageEvent; route: SlackRelayRoute } | undefined {
   const record = asRecord(frame);
-  if (!record || record.type !== "slack_event") {
+  if (record?.type !== "slack_event") {
     return undefined;
   }
   const deliveryId = stringValue(record.delivery_id);
@@ -340,7 +340,7 @@ function extractRelayHello(
   frame: unknown,
 ): { identity: SlackRelayIdentity | undefined } | undefined {
   const record = asRecord(frame);
-  if (!record || record.type !== "hello") {
+  if (record?.type !== "hello") {
     return undefined;
   }
   return {

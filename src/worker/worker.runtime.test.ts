@@ -762,9 +762,7 @@ describe("worker runtime", () => {
     expect(gateway.inferenceRequests[0]?.context.systemPrompt).toContain("worker-bootstrap-marker");
     const toolNames = gateway.inferenceRequests[0]?.context.tools?.map((tool) => tool.name) ?? [];
     expect(toolNames).toHaveLength(6);
-    const terminalIndex = gateway.applicationOrder.findIndex(
-      (entry) => entry === "live:lifecycle:end",
-    );
+    const terminalIndex = gateway.applicationOrder.indexOf("live:lifecycle:end");
     const finalTranscriptIndex = gateway.applicationOrder.findLastIndex((entry) =>
       entry.startsWith("transcript:"),
     );

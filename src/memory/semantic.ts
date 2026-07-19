@@ -50,7 +50,7 @@ export function createSemanticClient(config: MemorySemanticConfig): SemanticClie
   async function ensureQdrant() {
     if (qdrant) return qdrant;
     try {
-      // @ts-ignore external module
+      // @ts-expect-error external module
       const mod = await import("qdrant-client");
       const client = new mod.QdrantClient({ url: config.qdrantUrl });
       await client.getCollections();

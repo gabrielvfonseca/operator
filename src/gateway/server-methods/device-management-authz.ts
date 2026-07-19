@@ -40,8 +40,8 @@ export function resolveDeviceManagementAuthz(
 export function deniesCrossDeviceManagement(authz: DeviceManagementAuthz): boolean {
   return Boolean(
     authz.callerDeviceId &&
-    authz.callerDeviceId !== authz.normalizedTargetDeviceId &&
-    !authz.isAdminCaller,
+      authz.callerDeviceId !== authz.normalizedTargetDeviceId &&
+      !authz.isAdminCaller,
   );
 }
 

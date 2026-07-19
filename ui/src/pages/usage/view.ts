@@ -163,9 +163,11 @@ function renderProviderUsage(providers: ProviderUsageSnapshot[]) {
                     <div class="provider-usage-card__name">${provider.displayName}</div>
                     <div class="provider-usage-card__id">${provider.provider}</div>
                   </div>
-                  ${provider.plan
-                    ? html`<span class="provider-usage-plan">${provider.plan}</span>`
-                    : nothing}
+                  ${
+                    provider.plan
+                      ? html`<span class="provider-usage-plan">${provider.plan}</span>`
+                      : nothing
+                  }
                 </div>
                 ${renderProviderUsageDetails(provider)}
               </article>
@@ -441,9 +443,11 @@ export function renderUsage(props: UsageProps) {
       >
         <button slot="trigger" type="button" class="usage-filter-trigger">
           <span>${label}</span>
-          ${selectedCount > 0
-            ? html`<span class="settings-count">${selectedCount}</span>`
-            : html` <span class="settings-count">${t("usage.filters.all")}</span> `}
+          ${
+            selectedCount > 0
+              ? html`<span class="settings-count">${selectedCount}</span>`
+              : html` <span class="settings-count">${t("usage.filters.all")}</span> `
+          }
         </button>
         <wa-dropdown-item value="command:select-all" ?disabled=${allSelected}>
           ${t("usage.filters.selectAll")}
@@ -477,12 +481,16 @@ export function renderUsage(props: UsageProps) {
           <div class="settings-section__header">
             <h2 class="settings-section__heading">${t("usage.filters.title")}</h2>
             <div class="settings-section__actions">
-              ${data.loading || cacheStatusTitle
-                ? renderUsageLoadingStatus(t("usage.loading.badge"), cacheStatusTitle ?? "")
-                : nothing}
-              ${isEmpty
-                ? html`<span class="usage-query-hint">${t("usage.empty.hint")}</span>`
-                : nothing}
+              ${
+                data.loading || cacheStatusTitle
+                  ? renderUsageLoadingStatus(t("usage.loading.badge"), cacheStatusTitle ?? "")
+                  : nothing
+              }
+              ${
+                isEmpty
+                  ? html`<span class="usage-query-hint">${t("usage.empty.hint")}</span>`
+                  : nothing
+              }
             </div>
           </div>
           <div
@@ -490,8 +498,9 @@ export function renderUsage(props: UsageProps) {
           >
             <div class="usage-header-row">
               <div class="usage-header-metrics">
-                ${displayTotals
-                  ? html`
+                ${
+                  displayTotals
+                    ? html`
                       <span class="usage-metric-badge">
                         <strong>${formatTokens(displayTotals.totalTokens)}</strong>
                         ${t("usage.metrics.tokens")}
@@ -502,12 +511,15 @@ export function renderUsage(props: UsageProps) {
                       </span>
                       <span class="usage-metric-badge">
                         <strong>${displaySessionCount}</strong>
-                        ${displaySessionCount === 1
-                          ? t("usage.metrics.session")
-                          : t("usage.metrics.sessions")}
+                        ${
+                          displaySessionCount === 1
+                            ? t("usage.metrics.session")
+                            : t("usage.metrics.sessions")
+                        }
                       </span>
                     `
-                  : nothing}
+                    : nothing
+                }
                 <button
                   class="btn btn--sm usage-pin-btn ${display.headerPinned ? "active" : ""}"
                   @click=${filterActions.onToggleHeaderPinned}
@@ -695,20 +707,24 @@ export function renderUsage(props: UsageProps) {
                   >
                     ${t("usage.query.apply")}
                   </button>
-                  ${hasDraftQuery || hasQuery
-                    ? html`
+                  ${
+                    hasDraftQuery || hasQuery
+                      ? html`
                         <button class="btn btn--sm" @click=${filterActions.onClearQuery}>
                           ${t("usage.filters.clear")}
                         </button>
                       `
-                    : nothing}
+                      : nothing
+                  }
                   <span class="usage-query-hint">
-                    ${hasQuery
-                      ? t("usage.query.matching", {
-                          shown: String(filteredSessions.length),
-                          total: String(totalSessions),
-                        })
-                      : t("usage.query.inRange", { total: String(totalSessions) })}
+                    ${
+                      hasQuery
+                        ? t("usage.query.matching", {
+                            shown: String(filteredSessions.length),
+                            total: String(totalSessions),
+                          })
+                        : t("usage.query.inRange", { total: String(totalSessions) })
+                    }
                   </span>
                 </div>
               </div>
@@ -719,8 +735,9 @@ export function renderUsage(props: UsageProps) {
                 ${renderFilterSelect("tool", t("usage.filters.tool"), toolOptions)}
                 <span class="usage-query-hint">${t("usage.query.tip")}</span>
               </div>
-              ${queryTerms.length > 0
-                ? html`
+              ${
+                queryTerms.length > 0
+                  ? html`
                     <div class="usage-query-chips">
                       ${queryTerms.map((term) => {
                         const label = term.raw;
@@ -743,9 +760,11 @@ export function renderUsage(props: UsageProps) {
                       })}
                     </div>
                   `
-                : nothing}
-              ${querySuggestions.length > 0
-                ? html`
+                  : nothing
+              }
+              ${
+                querySuggestions.length > 0
+                  ? html`
                     <div class="usage-query-suggestions">
                       ${querySuggestions.map(
                         (suggestion) => html`
@@ -762,40 +781,50 @@ export function renderUsage(props: UsageProps) {
                       )}
                     </div>
                   `
-                : nothing}
-              ${queryWarnings.length > 0
-                ? html`
+                  : nothing
+              }
+              ${
+                queryWarnings.length > 0
+                  ? html`
                     <div class="callout warning usage-callout usage-callout--tight">
                       ${queryWarnings.join(" · ")}
                     </div>
                   `
-                : nothing}
+                  : nothing
+              }
             </div>
 
-            ${data.error
-              ? html`<div class="callout danger usage-callout">${data.error}</div>`
-              : nothing}
-            ${cacheStatusTitle
-              ? html`
+            ${
+              data.error
+                ? html`<div class="callout danger usage-callout">${data.error}</div>`
+                : nothing
+            }
+            ${
+              cacheStatusTitle
+                ? html`
                   <div class="callout warning usage-callout usage-cache-warning">
                     ${t("usage.cacheStatus.warning")} ${cacheStatusTitle}
                   </div>
                 `
-              : nothing}
-            ${data.sessionsLimitReached
-              ? html`
+                : nothing
+            }
+            ${
+              data.sessionsLimitReached
+                ? html`
                   <div class="callout warning usage-callout">
                     ${t("usage.sessions.limitReached")}
                   </div>
                 `
-              : nothing}
+                : nothing
+            }
           </div>
         </section>
 
         ${renderProviderUsage(data.providerUsage)}
-        ${isEmpty
-          ? renderUsageEmptyState(filterActions.onRefresh)
-          : html`
+        ${
+          isEmpty
+            ? renderUsageEmptyState(filterActions.onRefresh)
+            : html`
               ${renderUsageInsights(
                 insightTotals,
                 insightAggregates,
@@ -827,9 +856,11 @@ export function renderUsage(props: UsageProps) {
                       displayActions.onDailyChartModeChange,
                       filterActions.onSelectDay,
                     )}
-                    ${displayTotals
-                      ? renderCostBreakdownCompact(displayTotals, display.chartMode)
-                      : nothing}
+                    ${
+                      displayTotals
+                        ? renderCostBreakdownCompact(displayTotals, display.chartMode)
+                        : nothing
+                    }
                   </div>
                   ${renderSessionsCard(
                     filteredSessions,
@@ -849,8 +880,9 @@ export function renderUsage(props: UsageProps) {
                     filterActions.onClearSessions,
                   )}
                 </div>
-                ${primarySelectedEntry
-                  ? html`<div class="usage-grid-column">
+                ${
+                  primarySelectedEntry
+                    ? html`<div class="usage-grid-column">
                       ${renderSessionDetailPanel(
                         primarySelectedEntry,
                         detail.timeSeries,
@@ -880,9 +912,11 @@ export function renderUsage(props: UsageProps) {
                         filterActions.onClearSessions,
                       )}
                     </div>`
-                  : nothing}
+                    : nothing
+                }
               </div>
-            `}
+            `
+        }
       </div>
     `,
     { wide: true },

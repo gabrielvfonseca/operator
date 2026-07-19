@@ -67,7 +67,7 @@ function wrapStreamMessageObjects(
   // Patch both final result and streamed partial/message events. Tool execution can consume either
   // path depending on provider wrapper shape, so one-sided decoding would leave escaped args live.
   (stream as { [Symbol.asyncIterator]: typeof originalAsyncIterator })[Symbol.asyncIterator] =
-    function () {
+    () => {
       const iterator = originalAsyncIterator();
       return {
         async next() {

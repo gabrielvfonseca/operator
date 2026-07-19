@@ -224,6 +224,7 @@ describe("models-config provider auth provenance", () => {
           providers: {
             vllm: {
               baseUrl: "http://127.0.0.1:8000/v1",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               apiKey: "${MY_VLLM_KEY}",
               api: "openai-completions",
               models: [],
@@ -251,6 +252,7 @@ describe("models-config provider auth provenance", () => {
           providers: {
             vllm: {
               baseUrl: "http://127.0.0.1:8000/v1",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               apiKey: "${MY_VLLM_KEY}",
               api: "openai-completions",
               models: [],

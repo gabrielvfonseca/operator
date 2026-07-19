@@ -259,10 +259,9 @@ describe("pairing cli", () => {
         channel: "telegram",
         code: "ABCDEFGH",
       });
-      const replaceCall = requireFirstMockCall(
-        replaceConfigFile.mock.calls,
-        "config replace",
-      )[0] as { nextConfig?: { commands?: { ownerAllowFrom?: string[] } } } | undefined;
+      const replaceCall = requireFirstMockCall(replaceConfigFile.mock.calls, "config replace")[0] as
+        | { nextConfig?: { commands?: { ownerAllowFrom?: string[] } } }
+        | undefined;
       expect(replaceCall?.nextConfig?.commands?.ownerAllowFrom).toEqual(["telegram:123"]);
       expect(log.mock.calls).toEqual([
         [`${theme.success("Approved")} ${theme.muted("telegram")} sender ${theme.command("123")}.`],

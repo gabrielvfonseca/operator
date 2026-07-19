@@ -413,7 +413,7 @@ export function buildToolModelConfigFromCandidates(params: {
   const deduped: string[] = [];
   for (const candidate of params.candidates) {
     const trimmed = candidate?.trim();
-    if (!trimmed || !trimmed.includes("/")) {
+    if (!trimmed?.includes("/")) {
       continue;
     }
     const provider = trimmed.slice(0, trimmed.indexOf("/")).trim();

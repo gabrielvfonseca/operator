@@ -74,6 +74,7 @@ describe("lmstudio-runtime", () => {
       resolveLmstudioRuntimeApiKey({
         config: buildLmstudioConfig({
           auth: "api-key",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           apiKey: "${LM_API_TOKEN}",
         }),
         env: {
@@ -149,6 +150,7 @@ describe("lmstudio-runtime", () => {
     await expect(
       resolveLmstudioRuntimeApiKey({
         config: buildLmstudioConfig({
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           apiKey: "${LMSTUDIO_API_KEY}",
           headers: {
             Authorization: "Bearer proxy-token",
@@ -271,6 +273,7 @@ describe("lmstudio-runtime", () => {
     await expect(
       resolveLmstudioConfiguredApiKey({
         config: buildLmstudioConfig({
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           apiKey: "${LM_API_TOKEN}",
         }),
         env: {
@@ -284,6 +287,7 @@ describe("lmstudio-runtime", () => {
     await expect(
       resolveLmstudioConfiguredApiKey({
         config: buildLmstudioConfig({
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           apiKey: "${LMSTUDIO_API_KEY}",
         }),
         env: {
@@ -297,6 +301,7 @@ describe("lmstudio-runtime", () => {
     await expect(
       resolveLmstudioConfiguredApiKey({
         config: buildLmstudioConfig({
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           apiKey: "${LMSTUDIO_API_KEY}",
         }),
         env: {},

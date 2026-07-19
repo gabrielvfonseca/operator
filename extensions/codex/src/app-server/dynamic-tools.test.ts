@@ -3076,7 +3076,7 @@ describe("createCodexDynamicToolBridge", () => {
     const registry = createEmptyPluginRegistry();
     const middlewareContexts: Record<string, unknown>[] = [];
     const legacyContexts: Record<string, unknown>[] = [];
-    const middleware = vi.fn(async (eventValue: unknown, ctx: Record<string, unknown>) => {
+    const middleware = vi.fn(async (_eventValue: unknown, ctx: Record<string, unknown>) => {
       middlewareContexts.push(ctx);
       return undefined;
     });
@@ -3086,10 +3086,10 @@ describe("createCodexDynamicToolBridge", () => {
         handler: (
           event: unknown,
           ctx: Record<string, unknown>,
-        ) => Promise<{ result: AgentToolResult<unknown> } | void>,
+        ) => Promise<{ result: AgentToolResult<unknown> } | undefined>,
       ) => void;
     }) => {
-      codex.on("tool_result", async (eventValue, ctx) => {
+      codex.on("tool_result", async (_eventValue, ctx) => {
         legacyContexts.push(ctx);
       });
     };

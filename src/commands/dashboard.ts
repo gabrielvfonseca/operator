@@ -110,7 +110,11 @@ async function hasVerifiedLoopbackAlias(
   // that the process also owns the loopback endpoint before credentials are delivered there.
   return Boolean(
     portUsage &&
-    isSameProcessSpecificIpv4WithLoopbackListeners(portUsage.listeners, target.port, expectedHost),
+      isSameProcessSpecificIpv4WithLoopbackListeners(
+        portUsage.listeners,
+        target.port,
+        expectedHost,
+      ),
   );
 }
 

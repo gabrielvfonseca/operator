@@ -351,7 +351,7 @@ const queryChromeCookieDb = (cookieDb: string): string | null => {
     const buf = Buffer.from(hex, "hex");
     const service = chromeServiceNameForPath(cookieDb);
     const decrypted = decryptChromeCookieValue(buf, service);
-    return decrypted && decrypted.startsWith("sk-ant-") ? decrypted : null;
+    return decrypted?.startsWith("sk-ant-") ? decrypted : null;
   } catch {
     return null;
   }
@@ -374,7 +374,7 @@ const queryFirefoxCookieDb = (cookieDb: string): string | null => {
       ],
       { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"], timeout: 5000 },
     ).trim();
-    return out && out.startsWith("sk-ant-") ? out : null;
+    return out?.startsWith("sk-ant-") ? out : null;
   } catch {
     return null;
   }

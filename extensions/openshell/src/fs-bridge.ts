@@ -282,7 +282,7 @@ class OpenShellFsBridge implements SandboxFsBridge {
       const hostPath = relative ? path.resolve(agentRoot, ...relative.split("/")) : agentRoot;
       return {
         hostPath,
-        relativePath: relative ? agentContainerRoot + "/" + relative : agentContainerRoot,
+        relativePath: relative ? `${agentContainerRoot}/${relative}` : agentContainerRoot,
         containerPath: relative
           ? path.posix.join(agentContainerRoot, relative)
           : agentContainerRoot,

@@ -178,7 +178,7 @@ function annotateInterSessionUserMessages(messages: AgentMessage[]): AgentMessag
 }
 
 function sanitizeUserReplayContent(message: AgentMessage): AgentMessage | null {
-  if (!message || message.role !== "user") {
+  if (message?.role !== "user") {
     return message;
   }
   const replayContent = (message as { content?: unknown }).content;
@@ -273,7 +273,7 @@ export function normalizeAssistantReplayContent(messages: AgentMessage[]): Agent
       }
       continue;
     }
-    if (!message || message.role !== "assistant") {
+    if (message?.role !== "assistant") {
       out.push(message);
       continue;
     }
@@ -369,7 +369,7 @@ export function normalizeAssistantReplayContent(messages: AgentMessage[]): Agent
 }
 
 function isReplayDroppableTrailingAssistant(message: AgentMessage | undefined): boolean {
-  if (!message || message.role !== "assistant") {
+  if (message?.role !== "assistant") {
     return false;
   }
   const content = (message as { content?: unknown }).content;
@@ -485,7 +485,7 @@ function ensureAssistantUsageSnapshots(messages: AgentMessage[]): AgentMessage[]
   const out = [...messages];
   for (let i = 0; i < out.length; i += 1) {
     const message = out[i] as (AgentMessage & { role?: unknown; usage?: unknown }) | undefined;
-    if (!message || message.role !== "assistant") {
+    if (message?.role !== "assistant") {
       continue;
     }
     const normalizedUsage = normalizeAssistantUsageSnapshot(message.usage);

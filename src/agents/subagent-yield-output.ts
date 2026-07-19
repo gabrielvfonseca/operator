@@ -38,7 +38,7 @@ function isToolCallBlock(value: unknown): boolean {
 /** Returns true when an assistant message requested the sessions_yield tool. */
 export function assistantCallsSessionsYield(message: unknown): boolean {
   const record = asOptionalRecord(message);
-  if (!record || record.role !== "assistant" || !Array.isArray(record.content)) {
+  if (record?.role !== "assistant" || !Array.isArray(record.content)) {
     return false;
   }
   return record.content.some(

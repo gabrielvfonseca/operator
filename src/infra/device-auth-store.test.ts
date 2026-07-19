@@ -84,7 +84,7 @@ describe("infra/device-auth-store", () => {
       await fs.mkdir(path.dirname(deviceAuthFile(stateDir)), { recursive: true });
       await fs.writeFile(
         deviceAuthFile(stateDir),
-        JSON.stringify({
+        `${JSON.stringify({
           version: 1,
           deviceId: "device-1",
           tokens: {
@@ -95,7 +95,7 @@ describe("infra/device-auth-store", () => {
               updatedAtMs: "bad-time",
             },
           },
-        }) + "\n",
+        })}\n`,
         "utf8",
       );
 

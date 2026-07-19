@@ -246,12 +246,15 @@ describe("check-workflows", () => {
       'description: "Run the focused Windows-native CI test shard after probing"',
     );
     expect(workflow).toContain("default: false");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("if: ${{ inputs.run_windows_ci }}");
     expect(workflow).toContain("source .github/actions/setup-pnpm-store-cache/ensure-node.sh");
     expect(workflow).toContain("uses: ./.github/actions/setup-pnpm-store-cache");
     expect(workflow).toContain("pnpm install --frozen-lockfile --prefer-offline");
     expect(workflow).toContain("pnpm test:windows:ci");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("if: ${{ always() && !cancelled() }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain("if: ${{ always() && !cancelled() && inputs.require_wsl2 }}");
   });
 });

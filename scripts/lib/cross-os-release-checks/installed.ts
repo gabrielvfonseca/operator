@@ -709,6 +709,7 @@ export async function runInstalledAgentTurn(params: {
   label: string;
   logPath: string;
 }): Promise<AgentTurnResult> {
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let lastError;
   for (let attempt = 1; attempt <= 2; attempt += 1) {
     const sessionId = buildCrossOsReleaseAgentSessionId(params.label, attempt);
@@ -754,6 +755,7 @@ export async function runInstalledAgentTurn(params: {
 }
 
 export function verifyDevUpdateStatus(stdout: string, options: { ref?: string } = {}) {
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let payload;
   try {
     payload = JSON.parse(stdout) as {
@@ -784,7 +786,7 @@ export function verifyDevUpdateStatus(stdout: string, options: { ref?: string } 
   if (looksLikeCommitSha(expectedRef)) {
     const normalizedSha = typeof sha === "string" ? sha.toLowerCase() : "";
     const normalizedExpectedRef = expectedRef.toLowerCase();
-    if (!normalizedSha || !normalizedSha.startsWith(normalizedExpectedRef)) {
+    if (!normalizedSha?.startsWith(normalizedExpectedRef)) {
       throw new Error(
         `Dev update status did not report sha=${expectedRef}. Found ${sha ?? "<missing>"}.`,
       );

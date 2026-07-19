@@ -17,6 +17,7 @@ const RUNTIME_SHIMS: Partial<Record<string, string>> = {
     "  if (!trimmed) {",
     '    return "/";',
     "  }",
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     '  const withSlash = trimmed.startsWith("/") ? trimmed : `/${trimmed}`;',
     '  if (withSlash.length > 1 && withSlash.endsWith("/")) {',
     "    return withSlash.slice(0, -1);",

@@ -43,9 +43,7 @@ export function copyArrayEntries(value: unknown): unknown[] {
   for (let index = 0; index < length; index += 1) {
     try {
       entries.push(arrayValue[index]);
-    } catch {
-      continue;
-    }
+    } catch {}
   }
   return entries;
 }

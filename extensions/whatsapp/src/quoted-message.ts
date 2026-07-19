@@ -71,7 +71,7 @@ function normalizeComparableJid(jid: string | undefined): string | undefined {
 }
 
 function isGroupJid(jid: string | undefined): boolean {
-  return Boolean(jid && jid.endsWith("@g.us"));
+  return Boolean(jid?.endsWith("@g.us"));
 }
 
 function areComparableE164sEqual(left: string | undefined, right: string | undefined): boolean {

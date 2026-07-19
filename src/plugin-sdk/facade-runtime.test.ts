@@ -640,10 +640,7 @@ describe("plugin-sdk facade runtime", () => {
     useBundledPluginDirOverrideForTest(dir);
 
     function createTestSnapshot(
-      params: {
-        config?: OperatorConfig;
-        plugins?: SnapshotPluginRecord[];
-      } = {},
+      params: { config?: OperatorConfig; plugins?: SnapshotPluginRecord[] } = {},
     ): PluginMetadataSnapshot {
       const policyHash = resolveInstalledPluginIndexPolicyHash(params.config);
       return {

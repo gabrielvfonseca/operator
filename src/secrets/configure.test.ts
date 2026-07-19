@@ -116,6 +116,7 @@ describe("runSecretsConfigureInteractive", () => {
               providerAlias: "vault",
               displayName: "HashiCorp Vault",
               source: "exec",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               command: "${node}",
               args: ["./vault-secret-ref-resolver.js"],
               passEnv: ["VAULT_ADDR", "VAULT_TOKEN"],

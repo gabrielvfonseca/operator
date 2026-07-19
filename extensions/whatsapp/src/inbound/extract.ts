@@ -372,9 +372,9 @@ function hasInteractiveResponseContent(message: proto.IMessage | undefined): boo
   // envelopes, only as explicit user choices.
   return Boolean(
     message.buttonsResponseMessage ||
-    message.listResponseMessage ||
-    message.templateButtonReplyMessage ||
-    message.interactiveResponseMessage,
+      message.listResponseMessage ||
+      message.templateButtonReplyMessage ||
+      message.interactiveResponseMessage,
   );
 }
 

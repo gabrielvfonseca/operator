@@ -75,6 +75,7 @@ describe("Operator performance workflow", () => {
     const workflow = readFileSync(WORKFLOW, "utf8");
 
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "run-name: ${{ inputs.dispatch_id != '' && format('Operator Performance {0}', inputs.dispatch_id) || 'Operator Performance' }}",
     );
     expect(workflow).toContain("dispatch_id:");
@@ -114,12 +115,14 @@ describe("Operator performance workflow", () => {
       "OCM_LINUX_X64_SHA256: 57530199d21eb5bfa29695749928b40fd2869484c7edff69b7c65bfc84f2f1aa",
     );
     expect(installRun).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '"https://github.com/shakkernerd/ocm/releases/download/${OCM_VERSION}/ocm-x86_64-unknown-linux-gnu.tar.gz"',
     );
     expect(installRun).toContain("--max-time 180");
     expect(installRun).toContain(
       "--retry 8 --retry-max-time 180 --retry-all-errors --retry-connrefused",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(installRun).toContain('echo "${OCM_LINUX_X64_SHA256}  ${ocm_archive}" | sha256sum -c -');
   });
 
@@ -134,16 +137,21 @@ describe("Operator performance workflow", () => {
     expect(workflow.jobs?.kova?.needs).toBe("resolve_target");
     expect(workflow.jobs?.source_performance?.needs).toBe("resolve_target");
     expect(resolveTarget.id).toBe("resolve");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(resolveTarget.env?.GH_TOKEN).toBe("${{ github.token }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(resolveTarget.env?.TARGET_REF_INPUT).toBe("${{ inputs.target_ref }}");
     expect(resolveTarget.run).toContain("encodeURIComponent");
     expect(resolveTarget.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'gh api "repos/${GITHUB_REPOSITORY}/commits/${encoded_ref}"',
     );
     expect(resolveTarget.run).toContain("checkout_ref=$resolved_sha");
     expect(resolveTarget.run).toContain("tested_sha=$resolved_sha");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(checkout.with?.ref).toBe("${{ needs.resolve_target.outputs.checkout_ref }}");
     expect(record.run).toContain('[[ "$tested_sha" != "$EXPECTED_TESTED_SHA" ]]');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(sourceCheckout.with?.ref).toBe("${{ needs.resolve_target.outputs.checkout_ref }}");
     expect(sourceRecord.run).toContain('[[ "$tested_sha" != "$EXPECTED_TESTED_SHA" ]]');
     expect(
@@ -174,7 +182,9 @@ describe("Operator performance workflow", () => {
     expect(baseline.env?.CLAWGRIT_REPORTS_TOKEN).toBeUndefined();
     expect(run).toContain('remote add origin "https://github.com/operator/clawgrit-reports.git"');
     expect(run).toContain("fetch --filter=blob:none --depth=1 origin main");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(run).toContain('cat-file -e "FETCH_HEAD:${pointer}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(run).toContain('show "FETCH_HEAD:${pointer}"');
     expect(run).toContain("sparse-checkout init --no-cone");
     expect(run).toContain("printf '/%s/source/\\n'");
@@ -202,6 +212,7 @@ describe("Operator performance workflow", () => {
     const deadlineFailure = [
       "  if (( gateway_ready_remaining <= 0 )); then",
       '    cat "$gateway_log" >&2',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '    echo "Timed out after ${gateway_ready_timeout_seconds}s waiting for gateway health." >&2',
       "    exit 1",
       "  fi",
@@ -213,6 +224,7 @@ describe("Operator performance workflow", () => {
       "  fi",
     ].join("\n");
     const boundedProbe =
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'curl -fsS --connect-timeout 2 --max-time "$gateway_probe_timeout" "http://127.0.0.1:${gateway_port}/healthz"';
 
     expect(run).toContain("gateway_ready_timeout_seconds=120");
@@ -246,11 +258,13 @@ describe("Operator performance workflow", () => {
 
     expect(publisher?.needs).toEqual(["resolve_target", "kova", "source_performance"]);
     expect(publisher?.if).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ always() && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.publish_reports == true)) && needs.resolve_target.result == 'success' && needs.kova.result != 'cancelled' && needs.source_performance.result != 'cancelled' }}",
     );
     expect(publisher?.["runs-on"]).toBe("ubuntu-24.04");
     expect(publisher?.permissions?.actions).toBe("read");
     expect(publisher?.env?.REPORT_PUBLISH_REQUIRED).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ github.event_name == 'schedule' || inputs.profile == 'release' }}",
     );
     expect(kovaSteps.some((step) => step.name === "Upload Kova artifacts")).toBe(true);
@@ -288,9 +302,11 @@ describe("Operator performance workflow", () => {
 
     expect(guard?.needs).toEqual(["resolve_target", "kova", "publish"]);
     expect(guard?.if).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ always() && github.event_name == 'workflow_dispatch' && inputs.publish_reports != true }}",
     );
     expect(guard?.permissions?.contents).toBe("read");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(verify.env?.PUBLISH_RESULT).toBe("${{ needs.publish.result }}");
     expect(verify.run).toContain('[[ "$PUBLISH_RESULT" != "skipped" ]]');
     expect(verify.run).toContain("Artifact-only performance mode requires");
@@ -302,6 +318,7 @@ describe("Operator performance workflow", () => {
     const publishSteps = publisher?.steps ?? [];
     const appToken = findStep("Create clawgrit reports app token", "publish");
     const publish = findStep("Publish to clawgrit reports", "publish");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const appTokenOutput = "${{ steps.clawgrit_app_token.outputs.token }}";
     const tokenConsumers = publishSteps.filter((step) =>
       Object.values(step.env ?? {}).includes(appTokenOutput),
@@ -309,6 +326,7 @@ describe("Operator performance workflow", () => {
 
     expect(appToken.id).toBe("clawgrit_app_token");
     expect(appToken.if).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ steps.prepare.outputs.ready == 'true' && steps.prepare.outputs.already_published != 'true' }}",
     );
     expect(appToken.uses).toBe(
@@ -316,6 +334,7 @@ describe("Operator performance workflow", () => {
     );
     expect(appToken.with).toEqual({
       "client-id": "Iv23liOECG0slfuhz093",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "private-key": "${{ secrets.CLAWSWEEPER_APP_PRIVATE_KEY }}",
       owner: "operator",
       repositories: "clawgrit-reports",
@@ -325,8 +344,10 @@ describe("Operator performance workflow", () => {
     expect(tokenConsumers.map((step) => step.name)).toEqual(["Publish to clawgrit reports"]);
     expect(publish.env?.CLAWGRIT_REPORTS_APP_TOKEN).toBe(appTokenOutput);
     expect(workflowText.split(appTokenOutput)).toHaveLength(2);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflowText.split("${{ secrets.CLAWSWEEPER_APP_PRIVATE_KEY }}")).toHaveLength(2);
     expect(publish.if).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ steps.prepare.outputs.ready == 'true' && steps.prepare.outputs.already_published != 'true' }}",
     );
     expect(workflowText).not.toContain("CLAWGRIT_REPORTS_TOKEN");
@@ -335,6 +356,7 @@ describe("Operator performance workflow", () => {
   });
 
   it("keeps manual non-release publication advisory", () => {
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const continuation = "${{ env.REPORT_PUBLISH_REQUIRED != 'true' }}";
     const steps = [
       findStep("Create clawgrit reports app token", "publish"),
@@ -364,32 +386,44 @@ describe("Operator performance workflow", () => {
     const publish = findStep("Publish to clawgrit reports", "publish");
 
     expect(JSON.stringify(kovaJob)).not.toContain("CLAWSWEEPER_APP_PRIVATE_KEY");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(artifact.env?.GH_TOKEN).toBe("${{ github.token }}");
     expect(artifact.run).toContain("gh api --paginate");
     expect(artifact.run).toContain("candidate_attempt <= GITHUB_RUN_ATTEMPT");
     expect(artifact.run).toContain('echo "producer_attempt=$producer_attempt"');
     expect(artifact.run).toContain('echo "source_producer_attempt=$source_producer_attempt"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(paths.run).toContain('mktemp -d "${RUNNER_TEMP}/clawgrit-input.XXXXXX"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(paths.run).toContain('mktemp -d "${RUNNER_TEMP}/clawgrit-reports.XXXXXX"');
     expect(download.uses).toBe(
       "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(download.with?.["artifact-ids"]).toBe("${{ steps.artifact.outputs.ids }}");
     expect(download.with?.name).toBeUndefined();
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(download.with?.path).toBe("${{ steps.paths.outputs.input_root }}");
     expect(JSON.stringify(artifact.env ?? {})).not.toContain("clawgrit_app_token.outputs.token");
     expect(JSON.stringify(download.env ?? {})).not.toContain("clawgrit_app_token.outputs.token");
     expect(JSON.stringify(prepare.env ?? {})).not.toContain("clawgrit_app_token.outputs.token");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(prepare.env?.TESTED_SHA).toBe("${{ needs.resolve_target.outputs.tested_sha }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(prepare.env?.PRODUCER_ATTEMPT).toBe("${{ steps.artifact.outputs.producer_attempt }}");
     expect(prepare.env?.SOURCE_PRODUCER_ATTEMPT).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ steps.artifact.outputs.source_producer_attempt }}",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(prepare.run).toContain('find "$input_root" -type d -path "*/reports/${LANE_ID}"');
     expect(prepare.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'source_path="${input_root}/operator-performance-source-${GITHUB_RUN_ID}-${SOURCE_PRODUCER_ATTEMPT}/${LANE_ID}"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(prepare.run).toContain('run_slug="${GITHUB_RUN_ID}-${PRODUCER_ATTEMPT}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(prepare.run).toContain('cat-file -e "HEAD:${dest_rel}/report.json"');
     expect(prepare.run).toContain('echo "already_published=true"');
     expect(prepare.run).toContain('git -C "$reports_root" diff --cached --quiet');
@@ -401,6 +435,7 @@ describe("Operator performance workflow", () => {
       'remote add origin "https://github.com/operator/clawgrit-reports.git"',
     );
     expect(publish.env?.CLAWGRIT_REPORTS_APP_TOKEN).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ steps.clawgrit_app_token.outputs.token }}",
     );
     expect(publish.if).toContain("steps.prepare.outputs.already_published != 'true'");
@@ -409,6 +444,7 @@ describe("Operator performance workflow", () => {
     expect(publish.run).toContain("GIT_CONFIG_KEY_0=core.hooksPath");
     expect(publish.run).toContain("GIT_CONFIG_VALUE_0=/dev/null");
     expect(publish.run).toContain("GIT_CONFIG_KEY_1=http.https://github.com/.extraheader");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(publish.run).toContain('GIT_CONFIG_VALUE_1="AUTHORIZATION: basic ${auth_header}"');
     expect(publish.run).not.toContain("export GIT_CONFIG_");
     expect(readFileSync(WORKFLOW, "utf8")).not.toContain("https://x-access-token:");
@@ -420,6 +456,7 @@ describe("Operator performance workflow", () => {
     expect(publish.run).toContain(
       'git -C "$reports_root" -c core.hooksPath=/dev/null fetch --depth=1 origin main',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(publish.run).toContain('git_local cat-file -e "FETCH_HEAD:${DEST_REL}/report.json"');
     expect(publish.run).toContain("git_local checkout --detach FETCH_HEAD");
     expect(publish.run).toContain('git_local cherry-pick -X theirs "$report_commit"');
@@ -443,6 +480,7 @@ describe("Operator performance workflow", () => {
       "scripts/lib/kova-report-selector.mjs",
     );
     expect(helper.with).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ref: "${{ github.sha }}",
       path: ".artifacts/performance-publisher",
       "sparse-checkout":
@@ -450,13 +488,16 @@ describe("Operator performance workflow", () => {
       "sparse-checkout-cone-mode": false,
       "persist-credentials": false,
     });
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(upload.with?.path).toContain(".artifacts/kova/bundles/${{ matrix.lane }}");
     expect(upload.with?.path).not.toContain(".artifacts/operator-performance/source");
     expect(sourceUpload.with).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       name: "operator-performance-source-${{ github.run_id }}-${{ github.run_attempt }}",
       path: ".artifacts/operator-performance/source",
       "if-no-files-found": "error",
     });
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(prepare.env?.ARTIFACT_ID).toBe("${{ steps.artifact.outputs.id }}");
     expect(prepare.run).toContain('node "$PERFORMANCE_PUBLISHER_HELPER"');
     expect(prepare.run).toContain('--bundle-destination "$dest/bundles"');
@@ -709,6 +750,7 @@ esac
       "scenario:agent-cold-warm-message",
     ]);
     expect(includeFilters.every((filters) => !filters.includes(" "))).toBe(true);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(plan.run).toContain('plan_dir="${RUNNER_TEMP}/kova-plans"');
     expect(plan.run).toContain('--include "$INCLUDE_FILTERS"');
     expect(plan.run).toContain('--repeat "$repeat"');
@@ -734,12 +776,14 @@ esac
 
     expect(managedServiceLanes).toEqual(["true", "true", "false"]);
     expect(prepare.if).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ steps.lane.outputs.run == 'true' && matrix.managed_service == 'true' }}",
     );
     expect(prepare.run).toContain("set -euo pipefail");
     expect(prepare.run).toContain('test "$(ps -p 1 -o comm= | xargs)" = systemd');
     expect(prepare.run).toContain("sudo systemctl is-active --quiet systemd-logind.service");
     expect(prepare.run).toContain('sudo loginctl enable-linger "$user"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(prepare.run).toContain('sudo systemctl start "user@${uid}.service"');
     expect(prepare.run).toContain(
       'runtime_dir="$(loginctl show-user "$user" --property=RuntimePath --value)"',
@@ -793,8 +837,10 @@ esac
     expect(summary).toBeGreaterThan(bundle);
     expect(integrityExit).toBeGreaterThan(summary);
     expect(run).toContain("evidence_status=$?");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(run).toContain("bundle_status=${PIPESTATUS[0]}");
     expect(run).toContain("summary_status=$?");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(run).toContain("Summary generation failed with status ${summary_status}");
   });
 
@@ -809,6 +855,7 @@ esac
     expect(run).toContain('--plan "$KOVA_PLAN_JSON"');
     expect(run).toContain('--report "$report_json"');
     expect(run).toContain('--profile "$PROFILE"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(run).toContain('--target "local-build:${GITHUB_WORKSPACE}"');
     expect(run).toContain('--repeat "$repeat"');
     expect(run).toContain('--include "$INCLUDE_FILTERS"');
@@ -824,6 +871,7 @@ esac
     expect(runKova.run).toContain('kova-report-selector.mjs" --report-dir "$REPORT_DIR"');
     expect(validate.run).toContain('kova-report-selector.mjs" --report-dir "$REPORT_DIR"');
     expect(publish.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'node "$PERFORMANCE_REPORT_SELECTOR" --report-dir "${report_dirs[0]}"',
     );
     expect(runKova.run).not.toContain("tail -n 1");
@@ -840,6 +888,7 @@ esac
     );
     expect(configure.run).toContain("OCM_INTERNAL_NPM_BIN=$npm_wrapper");
     expect(configure.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'if [[ -f "${GITHUB_WORKSPACE}/packages/ai/package.json" ]]; then',
     );
     expect(configure.run).toContain(
@@ -852,7 +901,9 @@ esac
     const runKova = findStep("Run Kova");
 
     expect(configureAuth.if).toContain("matrix.live == 'true'");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(configureAuth.env?.OPENAI_API_KEY).toBe("${{ secrets.OPENAI_API_KEY }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(configureAuth.run).toContain('if [[ -z "${OPENAI_API_KEY:-}" ]]; then');
     expect(configureAuth.run).toContain("cannot run without live evidence");
     expect(configureAuth.run).toContain("exit 1");
@@ -868,6 +919,7 @@ esac
     expect(validateEvidence.if).toContain("steps.lane.outputs.run == 'true'");
     expect(validateEvidence.run).toContain('kova-report-selector.mjs" --report-dir "$REPORT_DIR"');
     expect(validateEvidence.run).toContain('"$BUNDLE_DIR/bundle.json"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(validateEvidence.run).toContain('"$SUMMARY_DIR/${LANE_ID}.md"');
     expect(validateEvidence.run).toContain("exit 1");
     expect(upload.with?.["if-no-files-found"]).toBe("error");

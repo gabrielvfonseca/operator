@@ -72,7 +72,7 @@ assertPathInside(npmRoot, codexBin, "managed Codex binary");
 
 const list = readJson("/tmp/operator-plugins-list.json");
 const plugin = (list.plugins || []).find((entry) => entry.id === "codex");
-if (!plugin || plugin.enabled !== true || plugin.status !== "loaded") {
+if (plugin?.enabled !== true || plugin.status !== "loaded") {
   throw new Error(`codex plugin was not enabled+loaded: ${JSON.stringify(plugin)}`);
 }
 

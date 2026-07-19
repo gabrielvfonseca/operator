@@ -88,6 +88,7 @@ export const sessionSubscriptionHandlers: GatewayRequestHandlers = {
       defaultAgentId: resolveDefaultAgentId(cfg),
     });
     if (connId) {
+      // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
       let approvalReplay;
       if (p.includeApprovals === true) {
         // Subscribe before the authoritative snapshot so a transition cannot

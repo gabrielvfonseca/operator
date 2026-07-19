@@ -251,7 +251,7 @@ function getDiagnosticEventsState(create) {
 function onDiagnosticEventFromSharedState(listener) {
   const state = getDiagnosticEventsState(true);
   const internalListener = (event, metadata) => {
-    if (metadata && metadata.trusted) {
+    if (metadata?.trusted) {
       return;
     }
     if (event && event.type === "log.record") {

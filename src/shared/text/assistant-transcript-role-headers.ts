@@ -15,7 +15,7 @@ export function detectAssistantTranscriptRoleHeaderText(
     linkify: false,
     tableMode: "off",
   }).annotations?.[0];
-  if (!annotation || annotation.type !== "assistant_transcript_role") {
+  if (annotation?.type !== "assistant_transcript_role") {
     return null;
   }
   return { kind: annotation.kind, role: annotation.role };

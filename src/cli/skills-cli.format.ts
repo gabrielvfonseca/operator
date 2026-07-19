@@ -62,11 +62,10 @@ function normalizeSkillEmoji(emoji?: string): string {
   return decorativeEmoji("📦");
 }
 
-const REMAINING_ESC_SEQUENCE_REGEX = new RegExp(
-  String.raw`\u001b(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])`,
-  "g",
-);
-const JSON_CONTROL_CHAR_REGEX = new RegExp(String.raw`[\u0000-\u001f\u007f-\u009f]`, "g");
+// biome-ignore lint/suspicious/noControlCharactersInRegex: migrated from oxlint
+const REMAINING_ESC_SEQUENCE_REGEX = /\u001b(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])/g;
+// biome-ignore lint/suspicious/noControlCharactersInRegex: migrated from oxlint
+const JSON_CONTROL_CHAR_REGEX = /[\u0000-\u001f\u007f-\u009f]/g;
 
 function sanitizeJsonString(value: string): string {
   return stripAnsi(value)

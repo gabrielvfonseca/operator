@@ -1,5 +1,3 @@
-// Google Meet plugin module implements chrome behavior.
-import type { OperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import { callGatewayFromCli } from "@gabrielvfonseca/operator/plugin-sdk/gateway-runtime";
 import { addTimerTimeoutGraceMs } from "@gabrielvfonseca/operator/plugin-sdk/number-runtime";
 import type { PluginRuntime } from "@gabrielvfonseca/operator/plugin-sdk/plugin-runtime";
@@ -1667,9 +1665,9 @@ export async function launchChromeMeetOnNode(params: {
     if (!result.bridgeId) {
       throw new Error("Google Meet node did not return an audio bridge id.");
     }
-    const bridge = await (
-      params.mode === "agent" ? startNodeAgentAudioBridge : startNodeRealtimeAudioBridge
-    )({
+    const bridge = await (params.mode === "agent"
+      ? startNodeAgentAudioBridge
+      : startNodeRealtimeAudioBridge)({
       config:
         params.mode === "agent"
           ? params.config

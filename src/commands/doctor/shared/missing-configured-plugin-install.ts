@@ -160,7 +160,7 @@ function isClawHubReviewNotice(message: string): boolean {
 }
 
 function recordClawHubInstallSpec(record: PluginInstallRecord | undefined): string | undefined {
-  if (!record || record.source !== "clawhub") {
+  if (record?.source !== "clawhub") {
     return undefined;
   }
   if (record.spec) {
@@ -585,9 +585,7 @@ function collectLegacyNpmDeclarationInstallCandidates(params: {
         missingPluginIds: params.missingPluginIds,
         blockedPluginIds: params.blockedPluginIds,
       });
-    } catch {
-      continue;
-    }
+    } catch {}
   }
 
   return [...candidates.values()].toSorted((left, right) =>

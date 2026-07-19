@@ -678,10 +678,7 @@ export function listAuditEvents(params: {
 
 /** Delete expired metadata during Gateway startup and periodic worker maintenance. */
 export function pruneExpiredAuditEvents(
-  params: {
-    now?: number;
-    database?: OperatorStateDatabaseOptions;
-  } = {},
+  params: { now?: number; database?: OperatorStateDatabaseOptions } = {},
 ): void {
   runOperatorStateWriteTransaction(({ db }) => {
     executeSqliteQuerySync(

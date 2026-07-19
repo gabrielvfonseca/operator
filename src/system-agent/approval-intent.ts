@@ -101,8 +101,7 @@ export async function classifySystemAgentApprovalIntent(
     // A second direct completion would bypass CLI and plugin-harness execution
     // ownership. Those routes require an exact closed-list approval instead.
     if (
-      !route ||
-      route.runner !== "embedded" ||
+      route?.runner !== "embedded" ||
       route.agentHarnessRuntimeOverride !== "@gabrielvfonseca/operator"
     ) {
       return "other";

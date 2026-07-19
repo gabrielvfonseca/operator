@@ -130,7 +130,7 @@ function resolveOpenAICodexProfile(params: { profileId: string; agentDir: string
 function requireOAuthProfile(store: AuthProfileStore, profileId: string): OAuthCredential {
   const profile = store.profiles[profileId];
   expect(profile?.type).toBe("oauth");
-  if (!profile || profile.type !== "oauth") {
+  if (profile?.type !== "oauth") {
     throw new Error(`expected OAuth profile ${profileId}`);
   }
   return profile;

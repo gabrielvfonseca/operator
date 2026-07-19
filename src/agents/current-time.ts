@@ -31,7 +31,7 @@ export function resolveCronStyleNow(cfg: TimeConfigLike, nowMs: number): CronSty
   const timestampMs = resolveDateTimestampMs(nowMs);
   const date = new Date(timestampMs);
   const formattedTime = formatUserTime(date, userTimezone, userTimeFormat) ?? date.toISOString();
-  const utcTime = date.toISOString().replace("T", " ").slice(0, 16) + " UTC";
+  const utcTime = `${date.toISOString().replace("T", " ").slice(0, 16)} UTC`;
   const timeLine = `Current time: ${formattedTime} (${userTimezone})\nReference UTC: ${utcTime}`;
   return { userTimezone, formattedTime, timeLine };
 }

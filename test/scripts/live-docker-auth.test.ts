@@ -27,6 +27,7 @@ function runDockerRunArgs(pathPrefix: string) {
     "unset OPENCLAW_LIVE_DOCKER_PIDS_LIMIT OPENCLAW_DOCKER_E2E_PIDS_LIMIT",
     "ARGS=()",
     "openclaw_live_init_docker_run_args ARGS 42s || exit $?",
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     "printf '%s\\n' \"${ARGS[@]}\"",
   ].join("\n");
 
@@ -138,6 +139,7 @@ describe("scripts/lib/live-docker-auth.sh", () => {
           "source scripts/lib/live-docker-auth.sh",
           "ARGS=()",
           "OPENCLAW_LIVE_DOCKER_AVAILABLE_CPUS=8 openclaw_live_init_docker_run_args ARGS 42s",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           "printf '%s\\n' \"${ARGS[@]}\"",
         ].join("\n"),
       ],
@@ -241,6 +243,7 @@ describe("scripts/lib/live-docker-auth.sh", () => {
           "source scripts/lib/live-docker-auth.sh",
           "ARGS=()",
           "OPENCLAW_LIVE_DOCKER_DISABLE_RESOURCE_LIMITS=1 openclaw_live_init_docker_run_args ARGS 42s",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           "printf '%s\\n' \"${ARGS[@]}\"",
         ].join("\n"),
       ],
@@ -286,6 +289,7 @@ describe("scripts/lib/live-docker-auth.sh", () => {
           "source scripts/lib/live-docker-auth.sh",
           "ARGS=()",
           "OPENCLAW_LIVE_DOCKER_PIDS_LIMIT=0008 openclaw_live_init_docker_run_args ARGS 42s",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           "printf '%s\\n' \"${ARGS[@]}\"",
         ].join("\n"),
       ],

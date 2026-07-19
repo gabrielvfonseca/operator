@@ -1290,7 +1290,7 @@ describe("server-channels auto restart", () => {
   });
 
   it("emits startup trace spans for channel preflight and handoff", async () => {
-    const measureMock = vi.fn(async (name: string, run: () => unknown) => await run());
+    const measureMock = vi.fn(async (_name: string, run: () => unknown) => await run());
     const startupTrace = {
       measure: async <T>(name: string, run: () => T | Promise<T>) =>
         (await measureMock(name, run)) as T,
@@ -1352,7 +1352,7 @@ describe("server-channels auto restart", () => {
 
   it("does not start deferred channel accounts after stop wins the startup handoff", async () => {
     const releaseAccountStart = createDeferred();
-    const measureMock = vi.fn(async (name: string, run: () => unknown) => await run());
+    const measureMock = vi.fn(async (_name: string, run: () => unknown) => await run());
     const startupTrace = {
       measure: async <T>(name: string, run: () => T | Promise<T>) =>
         (await measureMock(name, run)) as T,
@@ -1419,6 +1419,7 @@ describe("server-channels auto restart", () => {
     expect(maxActive).toBe(4);
     expect(startAccount).not.toHaveBeenCalled();
 
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     releases.splice(0, 4).forEach((release) => release());
     await waitForMicrotaskCondition(
       () => isConfigured.mock.calls.length === 6,
@@ -1428,6 +1429,7 @@ describe("server-channels auto restart", () => {
     expect(isConfigured).toHaveBeenCalledTimes(6);
     expect(maxActive).toBe(4);
 
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     releases.splice(0).forEach((release) => release());
     await start;
     expect(startAccount).toHaveBeenCalledTimes(6);
@@ -1468,6 +1470,7 @@ describe("server-channels auto restart", () => {
     expect(releases).toHaveLength(4);
     expect(maxActive).toBe(4);
 
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     releases.splice(0, 4).forEach((release) => release());
     await waitForMicrotaskCondition(
       () => releases.length === 2,
@@ -1477,6 +1480,7 @@ describe("server-channels auto restart", () => {
     expect(releases).toHaveLength(2);
     expect(maxActive).toBe(4);
 
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     releases.splice(0).forEach((release) => release());
     await start;
 

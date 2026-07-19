@@ -661,6 +661,7 @@ async function readDreamDiary(
 ): Promise<Omit<DoctorMemoryDreamDiaryPayload, "agentId">> {
   for (const name of DREAM_DIARY_FILE_NAMES) {
     const filePath = path.join(workspaceDir, name);
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let stat;
     try {
       stat = await fs.lstat(filePath);

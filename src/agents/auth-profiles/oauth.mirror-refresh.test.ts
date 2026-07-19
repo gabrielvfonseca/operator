@@ -49,7 +49,7 @@ function expectPersistedOpenAICodexProfile(
 
 function requireOAuthCredential(store: AuthProfileStore, profileId: string): OAuthCredential {
   const profile = store.profiles[profileId];
-  if (!profile || profile.type !== "oauth") {
+  if (profile?.type !== "oauth") {
     throw new Error(`expected OAuth credential for ${profileId}`);
   }
   return profile;
@@ -273,7 +273,7 @@ describe("resolveApiKeyForProfile OAuth refresh mirror-to-main (#26322)", () => 
 
     const store = ensureAuthProfileStore(subAgentDir);
     const credential = store.profiles[profileId];
-    if (!credential || credential.type !== "oauth") {
+    if (credential?.type !== "oauth") {
       throw new Error("expected seeded OAuth profile");
     }
     store.profiles[profileId] = { ...credential, expires: 0 };

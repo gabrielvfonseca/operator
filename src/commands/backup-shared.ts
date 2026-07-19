@@ -278,11 +278,7 @@ async function canonicalizeExistingPath(targetPath: string): Promise<string> {
 
 /** Resolve the backup plan from the current Operator state/config/workspace paths on disk. */
 export async function resolveBackupPlanFromDisk(
-  params: {
-    includeWorkspace?: boolean;
-    onlyConfig?: boolean;
-    nowMs?: number;
-  } = {},
+  params: { includeWorkspace?: boolean; onlyConfig?: boolean; nowMs?: number } = {},
 ): Promise<BackupPlan> {
   const includeWorkspace = params.includeWorkspace ?? true;
   const onlyConfig = params.onlyConfig ?? false;

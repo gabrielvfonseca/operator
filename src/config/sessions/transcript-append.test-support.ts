@@ -609,9 +609,7 @@ async function findTranscriptMessageByIdempotencyKey(
           typeof parsed.id === "string" && parsed.id.trim().length > 0 ? parsed.id : idempotencyKey,
         message,
       };
-    } catch {
-      continue;
-    }
+    } catch {}
   }
   return undefined;
 }

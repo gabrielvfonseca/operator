@@ -116,7 +116,7 @@ describe("hardenManualCompactionBoundary", () => {
     const reopened = SessionManager.open(sessionFile);
     const latest = reopened.getLeafEntry();
     expect(latest?.type).toBe("compaction");
-    if (!latest || latest.type !== "compaction") {
+    if (latest?.type !== "compaction") {
       throw new Error("expected latest leaf to be a compaction entry");
     }
     expect(latest.firstKeptEntryId).toBe(latestCompactionId);
@@ -151,7 +151,7 @@ describe("hardenManualCompactionBoundary", () => {
     const reopened = SessionManager.open(sessionFile);
     const latest = reopened.getLeafEntry();
     expect(latest?.type).toBe("compaction");
-    if (!latest || latest.type !== "compaction") {
+    if (latest?.type !== "compaction") {
       throw new Error("expected latest leaf to be a compaction entry");
     }
     expect(latest.id).toBe(latestCompactionId);
@@ -189,7 +189,7 @@ describe("hardenManualCompactionBoundary", () => {
     const reopened = SessionManager.open(sessionFile);
     const latest = reopened.getLeafEntry();
     expect(latest?.type).toBe("compaction");
-    if (!latest || latest.type !== "compaction") {
+    if (latest?.type !== "compaction") {
       throw new Error("expected latest leaf to be a compaction entry");
     }
     expect(latest.firstKeptEntryId).toBe(keepId);
@@ -217,7 +217,7 @@ describe("hardenManualCompactionBoundary", () => {
     const reopened = SessionManager.open(sessionFile);
     const latest = reopened.getLeafEntry();
     expect(latest?.type).toBe("compaction");
-    if (!latest || latest.type !== "compaction") {
+    if (latest?.type !== "compaction") {
       throw new Error("expected latest leaf to be a compaction entry");
     }
     expect(latest.firstKeptEntryId).toBe(keepId);

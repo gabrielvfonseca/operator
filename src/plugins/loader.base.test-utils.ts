@@ -89,6 +89,7 @@ describe("loadOperatorPlugins", () => {
     expect(metrics.loadAndRegisterMs).toEqual(expect.any(Number));
   });
 
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   it("resolves ${ENV_VAR} references in plugin config before handing config to the plugin", () => {
     useNoBundledPlugins();
     const plugin = writePlugin({
@@ -110,6 +111,7 @@ describe("loadOperatorPlugins", () => {
     });
     const probe = globalThis as unknown as Record<string, unknown>;
     const entries = {
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "env-config-probe": { config: { apiKey: "${ENV_CONFIG_PROBE_SECRET}" } },
     };
 
@@ -153,6 +155,7 @@ describe("loadOperatorPlugins", () => {
             },
           },
           plugins: {
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             load: { paths: ["${ENV_CONFIG_PROBE_PLUGIN_FILE}"] },
             allow: ["env-config-probe"],
             entries,
@@ -182,6 +185,7 @@ describe("loadOperatorPlugins", () => {
       });
     });
     expect(probe.envConfigProbeResult).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       apiKey: "${ENV_CONFIG_PROBE_SECRET}",
     });
   });
@@ -1832,7 +1836,7 @@ describe("loadOperatorPlugins", () => {
               (event) => {
                 event.context.bootstrapFiles = [
                   {
-                    name: "AGENTS.md",
+                    name: "AGENTS.MD",
                     path: "/tmp/override-AGENTS.md",
                     content: "override bootstrap rules",
                     missing: false,
@@ -1860,7 +1864,7 @@ describe("loadOperatorPlugins", () => {
     const updated = await applyBootstrapHookOverrides({
       files: [
         {
-          name: "AGENTS.md",
+          name: "AGENTS.MD",
           path: "/tmp/base-AGENTS.md",
           content: "base bootstrap rules",
           missing: false,
@@ -1872,7 +1876,7 @@ describe("loadOperatorPlugins", () => {
 
     expect(updated).toEqual([
       {
-        name: "AGENTS.md",
+        name: "AGENTS.MD",
         path: "/tmp/override-AGENTS.md",
         content: "override bootstrap rules",
         missing: false,

@@ -32,9 +32,9 @@ export type CodexAppServerExtensionRuntime = {
       event: CodexAppServerToolResultEvent,
       ctx: CodexAppServerExtensionContext,
     ) =>
-      | Promise<CodexAppServerToolResultHandlerResult | void>
+      | Promise<CodexAppServerToolResultHandlerResult | undefined>
       | CodexAppServerToolResultHandlerResult
-      | void,
+      | undefined,
   ) => void;
 };
 

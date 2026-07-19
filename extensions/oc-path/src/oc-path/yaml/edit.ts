@@ -103,6 +103,7 @@ function formatInsertionMarker(
 function guardYamlSentinel(value: unknown, ocPath: string): void {
   guardSentinel(value, ocPath);
   if (Array.isArray(value)) {
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     value.forEach((item, index) => guardYamlSentinel(item, `${ocPath}/${index}`));
     return;
   }

@@ -32,8 +32,9 @@ function runToolStreamCase(params: ToolStreamCase) {
 
 describe("extra-params: provider tool_stream support", () => {
   beforeEach(async () => {
-    ({ runExtraParamsCase, testing: extraParamsTesting } =
-      await import("./extra-params.test-support.js"));
+    ({ runExtraParamsCase, testing: extraParamsTesting } = await import(
+      "./extra-params.test-support.js"
+    ));
     extraParamsTesting.setProviderRuntimeDepsForTest({
       prepareProviderExtraParams: (params) => {
         // Z.AI and xAI require streaming tool-call deltas unless config

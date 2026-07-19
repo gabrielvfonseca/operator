@@ -127,7 +127,7 @@ function createMockResponse(): MockResponse {
     _getStatusCode: () => statusCode,
   }) as MockResponse;
 
-  res.write = function (chunk: unknown) {
+  res.write = (chunk: unknown) => {
     data += responseChunkText(chunk);
     return true;
   };

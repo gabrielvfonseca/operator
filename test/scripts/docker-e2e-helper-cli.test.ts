@@ -653,6 +653,7 @@ describe("Docker E2E helper CLIs", () => {
           "  }));",
           "  process.exit(0);",
           "}",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           "console.error(`unexpected gh args: ${args.join(' ')}`);",
           "process.exit(1);",
           "",
@@ -737,6 +738,7 @@ describe("Docker E2E helper CLIs", () => {
           "  }));",
           "  process.exit(0);",
           "}",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           "console.error(`unexpected gh args: ${args.join(' ')}`);",
           "process.exit(1);",
           "",

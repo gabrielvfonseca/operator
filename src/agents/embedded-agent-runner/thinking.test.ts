@@ -493,7 +493,7 @@ describe("wrapAnthropicStreamWithRecovery", () => {
     ).rejects.toBe(anthropicThinkingError);
     expect(callCount).toBe(2);
     const retryMessage = contexts[1]?.messages?.[0];
-    if (!retryMessage || retryMessage.role !== "assistant") {
+    if (retryMessage?.role !== "assistant") {
       throw new Error("Expected Anthropic recovery retry to start with an assistant message");
     }
     expect(retryMessage.content).toEqual([
@@ -530,7 +530,7 @@ describe("wrapAnthropicStreamWithRecovery", () => {
     ).rejects.toBe(anthropicThinkingError);
 
     const retryMessage = contexts[1]?.messages?.[0];
-    if (!retryMessage || retryMessage.role !== "assistant") {
+    if (retryMessage?.role !== "assistant") {
       throw new Error("Expected Anthropic recovery retry to start with an assistant message");
     }
     expect(retryMessage.content).toEqual([{ type: "text", text: "visible answer" }]);
@@ -813,7 +813,7 @@ describe("wrapAnthropicStreamWithRecovery", () => {
     await expect(response.result()).resolves.toEqual(finalMessage);
     expect(callCount).toBe(2);
     const retryMessage = contexts[1]?.messages?.[0];
-    if (!retryMessage || retryMessage.role !== "assistant") {
+    if (retryMessage?.role !== "assistant") {
       throw new Error("Expected Anthropic recovery retry to start with an assistant message");
     }
     expect(retryMessage.content).toEqual([

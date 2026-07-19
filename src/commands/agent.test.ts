@@ -791,8 +791,9 @@ describe("agentCommand", () => {
     await withTempHome(async (home) => {
       const store = path.join(home, "sessions.json");
       mockConfig(home, store);
-      const { getPluginRuntimeGatewayRequestScope } =
-        await import("../plugins/runtime/gateway-request-scope.js");
+      const { getPluginRuntimeGatewayRequestScope } = await import(
+        "../plugins/runtime/gateway-request-scope.js"
+      );
       vi.mocked(attemptExecutionRuntime.runAgentAttempt).mockImplementationOnce(async () => {
         const scope = getPluginRuntimeGatewayRequestScope();
         expect(scope?.context?.getRuntimeConfig()).toMatchObject({

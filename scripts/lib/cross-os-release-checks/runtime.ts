@@ -188,6 +188,7 @@ export async function waitForGateway(params: LaneCommandParams) {
   const statusArgs = await resolveGatewayStatusArgs(params.lane, params.env, params.logPath);
   const deadline = Date.now() + gatewayReadyDeadlineMs();
   while (Date.now() < deadline) {
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let result;
     try {
       result = await runOperator({
@@ -291,6 +292,7 @@ export async function runModelsSet(params: LaneCommandParams & { providerConfig:
 export async function runAgentTurn(
   params: LaneCommandParams & { label: string },
 ): Promise<AgentTurnResult> {
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let lastError;
   for (let attempt = 1; attempt <= 2; attempt += 1) {
     const sessionId = buildCrossOsReleaseAgentSessionId(params.label, attempt);

@@ -121,7 +121,7 @@ export function collectClawHubVerdictTargets(
   const targets = new Map<string, { registry: string; slug: string; version: string }>();
   for (const skill of report.skills) {
     const link = skill.clawhub;
-    if (!link || link.status !== "linked" || !link.valid) {
+    if (link?.status !== "linked" || !link.valid) {
       continue;
     }
     if (!canAutoFetchVerdictRegistry(link.registry)) {

@@ -73,14 +73,14 @@ function registerDuplicateBootstrapFileHook() {
     context.bootstrapFiles = [
       ...context.bootstrapFiles,
       {
-        name: "AGENTS.md",
-        path: "AGENTS.md",
+        name: "AGENTS.MD",
+        path: "AGENTS.MD",
         content: "duplicate relative hook content",
         missing: false,
       },
       {
-        name: "AGENTS.md",
-        path: path.join(context.workspaceDir, ".", "AGENTS.md"),
+        name: "AGENTS.MD",
+        path: path.join(context.workspaceDir, ".", "AGENTS.MD"),
         content: "duplicate absolute hook content",
         missing: false,
       },
@@ -106,7 +106,7 @@ function registerBootstrapFileHook(relativePath = "BOOTSTRAP.md") {
 async function createHeartbeatAgentsWorkspace() {
   const workspaceDir = await makeTempWorkspace("operator-bootstrap-");
   await fs.writeFile(path.join(workspaceDir, "HEARTBEAT.md"), "check inbox", "utf8");
-  await fs.writeFile(path.join(workspaceDir, "AGENTS.md"), "repo rules", "utf8");
+  await fs.writeFile(path.join(workspaceDir, "AGENTS.MD"), "repo rules", "utf8");
   return workspaceDir;
 }
 
@@ -140,7 +140,7 @@ function expectHeartbeatExcludedAndAgentsKept(files: WorkspaceBootstrapFile[]) {
   // must remain in the bootstrap set.
   const fileNames = files.map((file) => file.name);
   expect(fileNames).not.toContain("HEARTBEAT.md");
-  expect(fileNames).toContain("AGENTS.md");
+  expect(fileNames).toContain("AGENTS.MD");
 }
 
 describe("resolveBootstrapFilesForRun", () => {
@@ -168,7 +168,7 @@ describe("resolveBootstrapFilesForRun", () => {
     });
 
     expect(files.map((file) => path.relative(workspaceDir, file.path))).toEqual([
-      "AGENTS.md",
+      "AGENTS.MD",
       "SOUL.md",
       "TOOLS.md",
       "IDENTITY.md",
@@ -184,7 +184,7 @@ describe("resolveBootstrapFilesForRun", () => {
     registerDuplicateBootstrapFileHook();
 
     const workspaceDir = await makeTempWorkspace("operator-bootstrap-");
-    const agentsPath = path.join(workspaceDir, "AGENTS.md");
+    const agentsPath = path.join(workspaceDir, "AGENTS.MD");
     await fs.writeFile(agentsPath, "workspace rules", "utf8");
 
     const files = await resolveBootstrapFilesForRun({ workspaceDir });
@@ -202,24 +202,24 @@ describe("resolveBootstrapFilesForRun", () => {
   it("ignores stale workspace BOOTSTRAP.md once setup is completed", async () => {
     const workspaceDir = await makeTempWorkspace("operator-bootstrap-");
     await writeCompletedWorkspaceState(workspaceDir);
-    await fs.writeFile(path.join(workspaceDir, "AGENTS.md"), "rules", "utf8");
+    await fs.writeFile(path.join(workspaceDir, "AGENTS.MD"), "rules", "utf8");
     await fs.writeFile(path.join(workspaceDir, "BOOTSTRAP.md"), "stale ritual", "utf8");
 
     const files = await resolveBootstrapFilesForRun({ workspaceDir });
 
-    expect(files.map((file) => file.name)).toContain("AGENTS.md");
+    expect(files.map((file) => file.name)).toContain("AGENTS.MD");
     expect(files.map((file) => file.name)).not.toContain("BOOTSTRAP.md");
   });
 
   it("ignores stale workspace BOOTSTRAP.md when legacy setup state is completed", async () => {
     const workspaceDir = await makeTempWorkspace("operator-bootstrap-");
     await writeLegacyCompletedWorkspaceState(workspaceDir);
-    await fs.writeFile(path.join(workspaceDir, "AGENTS.md"), "rules", "utf8");
+    await fs.writeFile(path.join(workspaceDir, "AGENTS.MD"), "rules", "utf8");
     await fs.writeFile(path.join(workspaceDir, "BOOTSTRAP.md"), "stale ritual", "utf8");
 
     const files = await resolveBootstrapFilesForRun({ workspaceDir });
 
-    expect(files.map((file) => file.name)).toContain("AGENTS.md");
+    expect(files.map((file) => file.name)).toContain("AGENTS.MD");
     expect(files.map((file) => file.name)).not.toContain("BOOTSTRAP.md");
   });
 
@@ -228,7 +228,7 @@ describe("resolveBootstrapFilesForRun", () => {
     await fs.mkdir(path.join(workspaceDir, "operator-workspace-state.json"), {
       recursive: true,
     });
-    await fs.writeFile(path.join(workspaceDir, "AGENTS.md"), "rules", "utf8");
+    await fs.writeFile(path.join(workspaceDir, "AGENTS.MD"), "rules", "utf8");
     await fs.writeFile(path.join(workspaceDir, "BOOTSTRAP.md"), "ritual", "utf8");
 
     const files = await resolveBootstrapFilesForRun({ workspaceDir });
@@ -240,7 +240,7 @@ describe("resolveBootstrapFilesForRun", () => {
     registerBootstrapFileHook();
     const workspaceDir = await makeTempWorkspace("operator-bootstrap-");
     await writeCompletedWorkspaceState(workspaceDir);
-    await fs.writeFile(path.join(workspaceDir, "AGENTS.md"), "rules", "utf8");
+    await fs.writeFile(path.join(workspaceDir, "AGENTS.MD"), "rules", "utf8");
     await fs.writeFile(path.join(workspaceDir, "BOOTSTRAP.md"), "stale ritual", "utf8");
 
     const files = await resolveBootstrapFilesForRun({ workspaceDir });
@@ -254,14 +254,14 @@ describe("resolveBootstrapFilesForRun", () => {
     const workspaceDir = path.join(parentDir, "workspace");
     await fs.mkdir(workspaceDir, { recursive: true });
     await writeCompletedWorkspaceState(workspaceDir);
-    await fs.writeFile(path.join(workspaceDir, "AGENTS.md"), "rules", "utf8");
+    await fs.writeFile(path.join(workspaceDir, "AGENTS.MD"), "rules", "utf8");
     await fs.writeFile(path.join(workspaceDir, "BOOTSTRAP.md"), "stale ritual", "utf8");
 
     const files = await withEnvAsync({ OPERATOR_HOME: parentDir }, async () =>
       resolveBootstrapFilesForRun({ workspaceDir: "~/workspace" }),
     );
 
-    expect(files.map((file) => file.name)).toContain("AGENTS.md");
+    expect(files.map((file) => file.name)).toContain("AGENTS.MD");
     expect(files.map((file) => file.name)).not.toContain("BOOTSTRAP.md");
   });
 
@@ -270,7 +270,7 @@ describe("resolveBootstrapFilesForRun", () => {
     const workspaceDir = await makeTempWorkspace("operator-bootstrap-");
     await fs.mkdir(path.join(workspaceDir, "packages", "core"), { recursive: true });
     await writeCompletedWorkspaceState(workspaceDir);
-    await fs.writeFile(path.join(workspaceDir, "AGENTS.md"), "rules", "utf8");
+    await fs.writeFile(path.join(workspaceDir, "AGENTS.MD"), "rules", "utf8");
     await fs.writeFile(path.join(workspaceDir, "BOOTSTRAP.md"), "stale ritual", "utf8");
     await fs.writeFile(
       path.join(workspaceDir, "packages", "core", "BOOTSTRAP.md"),
@@ -290,7 +290,7 @@ describe("resolveBootstrapFilesForRun", () => {
     const workspaceDir = await makeTempWorkspace("operator-bootstrap-subagent-");
     await Promise.all(
       [
-        ["AGENTS.md", "project rules"],
+        ["AGENTS.MD", "project rules"],
         ["TOOLS.md", "tool rules"],
         ["SOUL.md", "persona"],
         ["IDENTITY.md", "identity"],
@@ -312,14 +312,14 @@ describe("resolveBootstrapFilesForRun", () => {
       sessionKey: "agent:main:subagent:worker",
     });
 
-    expect(files.map((file) => file.name)).toStrictEqual(["AGENTS.md", "TOOLS.md"]);
+    expect(files.map((file) => file.name)).toStrictEqual(["AGENTS.MD", "TOOLS.md"]);
   });
 
   it("keeps cron sessions on their existing minimal bootstrap files", async () => {
     const workspaceDir = await makeTempWorkspace("operator-bootstrap-cron-");
     await Promise.all(
       [
-        ["AGENTS.md", "project rules"],
+        ["AGENTS.MD", "project rules"],
         ["TOOLS.md", "tool rules"],
         ["SOUL.md", "persona"],
         ["IDENTITY.md", "identity"],
@@ -342,7 +342,7 @@ describe("resolveBootstrapFilesForRun", () => {
     });
 
     expect(files.map((file) => file.name)).toStrictEqual([
-      "AGENTS.md",
+      "AGENTS.MD",
       "SOUL.md",
       "TOOLS.md",
       "IDENTITY.md",
@@ -370,7 +370,7 @@ describe("resolveBootstrapContextForRun", () => {
   it("keeps BOOTSTRAP.md available in shared injected context for non-attempt consumers", async () => {
     const workspaceDir = await makeTempWorkspace("operator-bootstrap-");
     await fs.writeFile(path.join(workspaceDir, "BOOTSTRAP.md"), "ritual", "utf8");
-    await fs.writeFile(path.join(workspaceDir, "AGENTS.md"), "rules", "utf8");
+    await fs.writeFile(path.join(workspaceDir, "AGENTS.MD"), "rules", "utf8");
 
     const result = await resolveBootstrapContextForRun({ workspaceDir });
 
@@ -378,7 +378,7 @@ describe("resolveBootstrapContextForRun", () => {
     expect(bootstrapFileNames).toContain("BOOTSTRAP.md");
     const contextFileNames = new Set(result.contextFiles.map((file) => path.basename(file.path)));
     expect(contextFileNames.has("BOOTSTRAP.md")).toBe(true);
-    expect(contextFileNames.has("AGENTS.md")).toBe(true);
+    expect(contextFileNames.has("AGENTS.MD")).toBe(true);
   });
 
   it("uses heartbeat-only bootstrap files in lightweight heartbeat mode", async () => {
@@ -525,10 +525,10 @@ describe("hasCompletedBootstrapTurn", () => {
     const sessionFile = path.join(tmpDir, "user-only.jsonl");
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         JSON.stringify({ type: "session", id: "s1" }),
         JSON.stringify({ type: "message", message: { role: "user", content: "hello" } }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf8",
     );
     expect(await hasCompletedBootstrapTurn(sessionFile)).toBe(false);
@@ -538,11 +538,11 @@ describe("hasCompletedBootstrapTurn", () => {
     const sessionFile = path.join(tmpDir, "assistant-no-marker.jsonl");
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         JSON.stringify({ type: "session", id: "s1" }),
         JSON.stringify({ type: "message", message: { role: "user", content: "hello" } }),
         JSON.stringify({ type: "message", message: { role: "assistant", content: "hi" } }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf8",
     );
     expect(await hasCompletedBootstrapTurn(sessionFile)).toBe(false);
@@ -552,14 +552,14 @@ describe("hasCompletedBootstrapTurn", () => {
     const sessionFile = path.join(tmpDir, "full-bootstrap.jsonl");
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         JSON.stringify({ type: "message", message: { role: "assistant", content: "hi" } }),
         JSON.stringify({
           type: "custom",
           customType: FULL_BOOTSTRAP_COMPLETED_CUSTOM_TYPE,
           data: { timestamp: 1 },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf8",
     );
     expect(await hasCompletedBootstrapTurn(sessionFile)).toBe(true);
@@ -569,14 +569,14 @@ describe("hasCompletedBootstrapTurn", () => {
     const sessionFile = path.join(tmpDir, "post-compaction.jsonl");
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         JSON.stringify({
           type: "custom",
           customType: FULL_BOOTSTRAP_COMPLETED_CUSTOM_TYPE,
           data: { timestamp: 1 },
         }),
         JSON.stringify({ type: "compaction", summary: "trimmed" }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf8",
     );
     expect(await hasCompletedBootstrapTurn(sessionFile)).toBe(false);
@@ -586,7 +586,7 @@ describe("hasCompletedBootstrapTurn", () => {
     const sessionFile = path.join(tmpDir, "assistant-after-compaction.jsonl");
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         JSON.stringify({
           type: "custom",
           customType: FULL_BOOTSTRAP_COMPLETED_CUSTOM_TYPE,
@@ -600,7 +600,7 @@ describe("hasCompletedBootstrapTurn", () => {
           customType: FULL_BOOTSTRAP_COMPLETED_CUSTOM_TYPE,
           data: { timestamp: 2 },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf8",
     );
     expect(await hasCompletedBootstrapTurn(sessionFile)).toBe(true);
@@ -610,14 +610,14 @@ describe("hasCompletedBootstrapTurn", () => {
     const sessionFile = path.join(tmpDir, "malformed.jsonl");
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         "{broken",
         JSON.stringify({
           type: "custom",
           customType: FULL_BOOTSTRAP_COMPLETED_CUSTOM_TYPE,
           data: { timestamp: 1 },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf8",
     );
     expect(await hasCompletedBootstrapTurn(sessionFile)).toBe(true);
@@ -628,14 +628,14 @@ describe("hasCompletedBootstrapTurn", () => {
     const hugePrefix = "x".repeat(300 * 1024);
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         JSON.stringify({ type: "message", message: { role: "user", content: hugePrefix } }),
         JSON.stringify({
           type: "custom",
           customType: FULL_BOOTSTRAP_COMPLETED_CUSTOM_TYPE,
           data: { timestamp: 1 },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf8",
     );
     expect(await hasCompletedBootstrapTurn(sessionFile)).toBe(true);

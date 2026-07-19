@@ -1294,7 +1294,7 @@ describe("readSessionMessages", () => {
     );
     fs.writeFileSync(
       sessionFile,
-      [
+      `${[
         { type: "session", version: 1, id: sessionId },
         {
           type: "message",
@@ -1310,7 +1310,7 @@ describe("readSessionMessages", () => {
         },
       ]
         .map((line) => JSON.stringify(line))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf-8",
     );
 

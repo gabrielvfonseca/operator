@@ -69,7 +69,7 @@ export function isSafeScpRemoteHost(value: string | null | undefined): boolean {
 /** Normalize an absolute remote path that is safe for SCP command construction. */
 export function normalizeScpRemotePath(value: string | null | undefined): string | undefined {
   const trimmed = normalizeOptionalString(value);
-  if (!trimmed || !trimmed.startsWith("/")) {
+  if (!trimmed?.startsWith("/")) {
     return undefined;
   }
 

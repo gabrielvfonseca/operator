@@ -98,6 +98,7 @@ describe("readBestEffortConfig", () => {
       await withEnvAsync({ ZAI_API_KEY: "shell-token", Z_AI_API_KEY: undefined }, async () => {
         await writeOperatorConfig(home, {
           env: { vars: { Z_AI_API_KEY: "config-token" } },
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           gateway: { auth: { mode: "token", token: "${ZAI_API_KEY}" }, mode: "local" },
         });
 
@@ -119,6 +120,7 @@ describe("readBestEffortConfig", () => {
       await withEnvAsync({ ZAI_API_KEY: "invocation-token", Z_AI_API_KEY: undefined }, async () => {
         await writeOperatorConfig(home, {
           env: { vars: { Z_AI_API_KEY: "config-token" } },
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           gateway: { auth: { mode: "token", token: "${Z_AI_API_KEY}" }, mode: "local" },
         });
 

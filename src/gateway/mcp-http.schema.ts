@@ -41,6 +41,7 @@ function readLoopbackToolDescription(tool: McpLoopbackTool): string | undefined 
 }
 
 function readLoopbackToolParameters(tool: McpLoopbackTool): Record<string, unknown> | undefined {
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let value;
   try {
     value = (tool as unknown as { parameters?: unknown }).parameters;

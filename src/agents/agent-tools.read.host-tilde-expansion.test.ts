@@ -50,8 +50,9 @@ vi.mock("./sessions/index.js", async () => {
   };
 });
 
-const { createHostWorkspaceEditTool, createHostWorkspaceWriteTool } =
-  await import("./agent-tools.read.js");
+const { createHostWorkspaceEditTool, createHostWorkspaceWriteTool } = await import(
+  "./agent-tools.read.js"
+);
 
 const osHome = () => process.env.HOME ?? os.homedir();
 const toTildePath = (absolutePath: string) => absolutePath.replace(osHome(), "~");

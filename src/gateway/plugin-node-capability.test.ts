@@ -77,6 +77,7 @@ describe("plugin node capability helpers", () => {
   });
 
   test("marks malformed request targets without throwing", () => {
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     for (const rawUrl of ["//", "///", "//${jndi:ldap://example}.action"]) {
       const normalized = normalizePluginNodeCapabilityScopedUrl(rawUrl);
       expect(normalized).toMatchObject({

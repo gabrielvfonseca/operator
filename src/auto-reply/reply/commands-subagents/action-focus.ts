@@ -161,6 +161,7 @@ export async function handleSubagentsFocusAction(
     return stopWithText("⚠️ Conversation bindings are unavailable for this account.");
   }
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let binding;
   try {
     binding = await bindingService.bind({

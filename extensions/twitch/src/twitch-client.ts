@@ -355,7 +355,9 @@ export class TwitchClientManager {
    * Disconnect all clients
    */
   async disconnectAll(): Promise<void> {
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     this.pendingClients.forEach((client) => client.quit());
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     this.clients.forEach((client) => client.quit());
     this.pendingClients.clear();
     this.connectionPromises.clear();

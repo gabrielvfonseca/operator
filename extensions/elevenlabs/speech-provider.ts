@@ -549,8 +549,8 @@ export function buildElevenLabsSpeechProvider(): SpeechProviderPlugin {
     isConfigured: ({ providerConfig }) =>
       Boolean(
         readElevenLabsProviderConfig(providerConfig).apiKey ||
-        resolveElevenLabsApiKeyWithProfileFallback() ||
-        process.env.XI_API_KEY,
+          resolveElevenLabsApiKeyWithProfileFallback() ||
+          process.env.XI_API_KEY,
       ),
     synthesize: async (req) => {
       const overrides = req.providerOverrides ?? {};

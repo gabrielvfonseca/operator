@@ -404,7 +404,7 @@ export async function setupChannels(
           t("wizard.channels.pluginMissingRecoverable", {
             channel,
             listCommand: formatCliCommand("operator plugins list"),
-            enableCommand: formatCliCommand("operator plugins enable " + channel),
+            enableCommand: formatCliCommand(`operator plugins enable ${channel}`),
           }),
           t("wizard.channels.setupTitle"),
         );

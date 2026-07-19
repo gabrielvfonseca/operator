@@ -835,13 +835,13 @@ describe("buildAgentSystemPrompt", () => {
     const prompt = buildAgentSystemPrompt({
       workspaceDir: "/tmp/operator",
       contextFiles: [
-        { path: "AGENTS.md", content: "Alpha" },
+        { path: "AGENTS.MD", content: "Alpha" },
         { path: "IDENTITY.md", content: "Bravo" },
       ],
     });
 
     expect(prompt).toContain("# Project Context");
-    expect(prompt).toContain("## AGENTS.md");
+    expect(prompt).toContain("## AGENTS.MD");
     expect(prompt).toContain("Alpha");
     expect(prompt).toContain("## IDENTITY.md");
     expect(prompt).toContain("Bravo");
@@ -853,12 +853,12 @@ describe("buildAgentSystemPrompt", () => {
       contextFiles: [
         { path: undefined as unknown as string, content: "Missing path" },
         { path: "   ", content: "Blank path" },
-        { path: "AGENTS.md", content: "Alpha" },
+        { path: "AGENTS.MD", content: "Alpha" },
       ],
     });
 
     expect(prompt).toContain("# Project Context");
-    expect(prompt).toContain("## AGENTS.md");
+    expect(prompt).toContain("## AGENTS.MD");
     expect(prompt).toContain("Alpha");
     expect(prompt).not.toContain("Missing path");
     expect(prompt).not.toContain("Blank path");
@@ -1494,7 +1494,7 @@ describe("buildAgentSystemPrompt", () => {
       },
       contextFiles: [
         {
-          path: "AGENTS.md",
+          path: "AGENTS.MD",
           content: "Project rules mention ## Messaging, ## Group Chat Context, and ## Reactions.",
         },
       ],

@@ -119,6 +119,7 @@ describe("discord config schema", () => {
 
   it("rejects unsafe numeric Discord application IDs", () => {
     const issues = expectInvalidDiscordConfig({
+      // biome-ignore lint/correctness/noPrecisionLoss: migrated from oxlint
       applicationId: 106232522769186816,
     });
 
@@ -342,6 +343,7 @@ describe("discord config schema", () => {
   });
 
   it("rejects numeric IDs that are not valid non-negative safe integers", () => {
+    // biome-ignore lint/correctness/noPrecisionLoss: migrated from oxlint
     const cases = [106232522769186816, -1, 123.45];
     for (const id of cases) {
       const issues = expectInvalidDiscordConfig({ allowFrom: [id] });

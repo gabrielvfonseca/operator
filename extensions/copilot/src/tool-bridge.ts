@@ -25,7 +25,7 @@ import {
 } from "@github/copilot-sdk";
 
 type CreateOperatorCodingTools =
-  (typeof import("openclaw/plugin-sdk/agent-harness"))["createOperatorCodingTools"];
+  typeof import("openclaw/plugin-sdk/agent-harness")["createOperatorCodingTools"];
 type OperatorCodingToolsOptions = NonNullable<Parameters<CreateOperatorCodingTools>[0]>;
 type AgentHarnessToolSurfaceRuntime = ReturnType<typeof createAgentHarnessToolSurfaceRuntime>;
 type CatalogExecuteParams = Parameters<
@@ -553,6 +553,7 @@ function convertOperatorToolToSdkTool(
       );
     }
 
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let preparedArgs;
     try {
       preparedArgs = sourceTool.prepareArguments ? sourceTool.prepareArguments(args) : args;

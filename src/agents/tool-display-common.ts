@@ -563,7 +563,7 @@ function summarizeToolSearchCallInput(raw: string | undefined): string | undefin
   }
   const queryMatch = value.match(/query\s*:\s*["']([^"']{1,80})["']/s);
   if (queryMatch?.[1]) {
-    return "query " + queryMatch[1].trim();
+    return `query ${queryMatch[1].trim()}`;
   }
   const actionMatch = value.match(/action\s*:\s*["']([^"']{1,80})["']/s);
   if (actionMatch?.[1]) {
@@ -575,7 +575,7 @@ function summarizeToolSearchCallInput(raw: string | undefined): string | undefin
   }
   const sessionMatch = value.match(/sessionId\s*:\s*["']([^"']{1,80})["']/s);
   if (sessionMatch?.[1]) {
-    return "session " + sessionMatch[1].trim();
+    return `session ${sessionMatch[1].trim()}`;
   }
   const idMatch = value.match(/id\s*:\s*["']([^"']{1,80})["']/s);
   if (idMatch?.[1]) {
@@ -619,7 +619,7 @@ export function resolveToolSearchCodeDisplayTarget(
     const query = summarizeToolSearchTarget(searchMatch[1]);
     return {
       toolName: "tool_search_code",
-      detail: query ? "search " + query : "search tools",
+      detail: query ? `search ${query}` : "search tools",
       bridgeVerb: "search",
     };
   }

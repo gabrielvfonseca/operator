@@ -1231,10 +1231,7 @@ function resolveExplicitLiveFallbackApi(provider: string): Api {
 }
 
 function resolveDefaultBedrockLiveBaseUrl(
-  params: {
-    cfg?: OperatorConfig;
-    env?: NodeJS.ProcessEnv;
-  } = {},
+  params: { cfg?: OperatorConfig; env?: NodeJS.ProcessEnv } = {},
 ): string {
   const env = params.env ?? process.env;
   const region =
@@ -3114,8 +3111,9 @@ async function verifyGatewayUltraSubagentHandoff(params: {
   sessionKey: string;
   thinkingLevel: string;
 }): Promise<void> {
-  const { listSubagentRunsForRequester } =
-    await import("../agents/subagent-registry.test-helpers.js");
+  const { listSubagentRunsForRequester } = await import(
+    "../agents/subagent-registry.test-helpers.js"
+  );
   const existingRunIds = new Set(
     listSubagentRunsForRequester(params.sessionKey).map((entry) => entry.runId),
   );
@@ -4150,7 +4148,7 @@ function parseExplicitLiveModelRef(
         : rawModelId;
     return provider && modelId ? { provider, modelId } : null;
   }
-  if (!providerFilter || providerFilter.size !== 1) {
+  if (providerFilter?.size !== 1) {
     return null;
   }
   const [provider] = [...providerFilter];
@@ -4290,7 +4288,7 @@ async function resolveGatewayLiveRequestedModels(): Promise<string | undefined> 
       "OPENCLAW_LIVE_GATEWAY_OPENAI_API_DEFAULT cannot be combined with OPENCLAW_LIVE_GATEWAY_MODELS",
     );
   }
-  if (!PROVIDERS || PROVIDERS.size !== 1 || !PROVIDERS.has("openai")) {
+  if (PROVIDERS?.size !== 1 || !PROVIDERS.has("openai")) {
     throw new Error(
       "OPENCLAW_LIVE_GATEWAY_OPENAI_API_DEFAULT requires OPENCLAW_LIVE_GATEWAY_PROVIDERS=openai",
     );

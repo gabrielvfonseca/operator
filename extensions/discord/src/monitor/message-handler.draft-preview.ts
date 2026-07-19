@@ -268,11 +268,7 @@ export function createDiscordDraftPreviewController(params: {
         return undefined;
       }
       const currentPreviewText = discordStreamMode === "block" ? draftText : lastPartialText;
-      if (
-        currentPreviewText &&
-        currentPreviewText.startsWith(trimmed) &&
-        trimmed.length < currentPreviewText.length
-      ) {
+      if (currentPreviewText?.startsWith(trimmed) && trimmed.length < currentPreviewText.length) {
         return undefined;
       }
       return trimmed;
@@ -296,11 +292,7 @@ export function createDiscordDraftPreviewController(params: {
       progressDraft.suppress();
       hasStreamedMessage = true;
       if (discordStreamMode === "partial") {
-        if (
-          lastPartialText &&
-          lastPartialText.startsWith(cleaned) &&
-          cleaned.length < lastPartialText.length
-        ) {
+        if (lastPartialText?.startsWith(cleaned) && cleaned.length < lastPartialText.length) {
           return;
         }
         lastPartialText = cleaned;

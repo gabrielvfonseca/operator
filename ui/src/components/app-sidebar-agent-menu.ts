@@ -135,19 +135,23 @@ function renderAgentRow(agent: AgentMenuAgent, params: SidebarAgentMenuParams) {
     >
       <span slot="icon" class="sidebar-agent-section__avatar" aria-hidden="true">${initial}</span>
       <span class="sidebar-customize-menu__text">${label}</span>
-      ${active
-        ? html`<span slot="details" class="session-menu__check" aria-hidden="true"
+      ${
+        active
+          ? html`<span slot="details" class="session-menu__check" aria-hidden="true"
             >${icons.check}</span
           >`
-        : nothing}
-      ${unread > 0
-        ? html`<span
+          : nothing
+      }
+      ${
+        unread > 0
+          ? html`<span
             slot="details"
             class="session-unread-dot"
             role="img"
             aria-label=${t("sessionsView.unread")}
           ></span>`
-        : nothing}
+          : nothing
+      }
     </wa-dropdown-item>
   `;
 }
@@ -251,11 +255,13 @@ export function renderSidebarAgentMenu(params: SidebarAgentMenuParams) {
           aria-label=${t("agentChip.menuLabel")}
           style="position: fixed; left: ${position.x}px; bottom: ${position.bottom}px; width: 1px; height: 1px; opacity: 0; pointer-events: none;"
         ></button>
-        ${agents.length > 1
-          ? html`
+        ${
+          agents.length > 1
+            ? html`
               <div class="sidebar-customize-menu__title">${t("agentChip.agents")}</div>
-              ${showFilter
-                ? html`
+              ${
+                showFilter
+                  ? html`
                     <div class="sidebar-agent-menu__filter">
                       <input
                         type="text"
@@ -279,6 +285,7 @@ export function renderSidebarAgentMenu(params: SidebarAgentMenuParams) {
                             );
                             const target = event.key === "ArrowDown" ? items.at(0) : items.at(-1);
                             if (target) {
+                              // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
                               items.forEach((item) => (item.active = item === target));
                               target.focus({ preventScroll: true });
                             }
@@ -293,16 +300,20 @@ export function renderSidebarAgentMenu(params: SidebarAgentMenuParams) {
                       />
                     </div>
                   `
-                : nothing}
+                  : nothing
+              }
               ${rows.map((entry) => renderAgentRow(entry, params))}
-              ${rows.length === 0
-                ? html`<div class="sidebar-agent-menu__empty">
+              ${
+                rows.length === 0
+                  ? html`<div class="sidebar-agent-menu__empty">
                     ${t("agentChip.noAgentMatches")}
                   </div>`
-                : nothing}
+                  : nothing
+              }
               <div class="sidebar-customize-menu__separator" role="separator"></div>
             `
-          : nothing}
+            : nothing
+        }
         <wa-dropdown-item
           class="sidebar-customize-menu__item"
           value="command:capabilities"

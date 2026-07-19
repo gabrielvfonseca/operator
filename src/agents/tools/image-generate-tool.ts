@@ -920,14 +920,13 @@ export function createImageGenerateTool(options?: {
   ) {
     return null;
   }
-  const sandboxConfig =
-    options?.sandbox && options.sandbox.root.trim()
-      ? {
-          root: options.sandbox.root.trim(),
-          bridge: options.sandbox.bridge,
-          workspaceOnly: options.fsPolicy?.workspaceOnly === true,
-        }
-      : null;
+  const sandboxConfig = options?.sandbox?.root.trim()
+    ? {
+        root: options.sandbox.root.trim(),
+        bridge: options.sandbox.bridge,
+        workspaceOnly: options.fsPolicy?.workspaceOnly === true,
+      }
+    : null;
   const scheduleBackgroundWork =
     options?.scheduleBackgroundWork ?? defaultScheduleImageGenerateBackgroundWork;
 

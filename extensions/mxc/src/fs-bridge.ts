@@ -81,9 +81,7 @@ class MxcFsBridge implements SandboxFsBridge {
     const buffer = Buffer.isBuffer(params.data)
       ? params.data
       : Buffer.from(params.data, params.encoding ?? "utf8");
-    await (
-      await fsRoot(target.mount.hostRoot)
-    ).write(target.mountRelativePath, buffer, {
+    await (await fsRoot(target.mount.hostRoot)).write(target.mountRelativePath, buffer, {
       mkdir: params.mkdir !== false,
     });
   }

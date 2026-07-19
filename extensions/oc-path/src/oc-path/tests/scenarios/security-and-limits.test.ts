@@ -86,7 +86,7 @@ describe("file-slot containment", () => {
 
 describe("path-string and traversal caps", () => {
   it("parseOcPath rejects strings longer than MAX_PATH_LENGTH", () => {
-    expect(() => parseOcPath("oc://X/" + "a".repeat(PATH_LENGTH_LIMIT))).toThrow(
+    expect(() => parseOcPath(`oc://X/${"a".repeat(PATH_LENGTH_LIMIT)}`)).toThrow(
       /exceeds .* bytes/,
     );
   });
@@ -136,7 +136,7 @@ describe("path-string and traversal caps", () => {
   });
 
   it("parseOcPath accepts a path right at the cap", () => {
-    const justUnder = "oc://X/" + "a".repeat(PATH_LENGTH_LIMIT - "oc://X/".length);
+    const justUnder = `oc://X/${"a".repeat(PATH_LENGTH_LIMIT - "oc://X/".length)}`;
     expect(() => parseOcPath(justUnder)).not.toThrow();
   });
 
@@ -183,7 +183,7 @@ describe("path-string and traversal caps", () => {
     for (let i = 0; i < MAX_TRAVERSAL_DEPTH + 50; i++) {
       nested = `{"a":${nested}}`;
     }
-    const { diagnostics } = parseJsonl(nested + "\n");
+    const { diagnostics } = parseJsonl(`${nested}\n`);
     expect(diagnostics.some((d) => d.code === "OC_JSONL_LINE_MALFORMED")).toBe(true);
   });
 });

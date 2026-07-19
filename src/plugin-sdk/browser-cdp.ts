@@ -59,7 +59,7 @@ export function parseBrowserHttpUrl(raw: string, label: string): BrowserHttpUrlP
   if (hasExplicitPort && !parsed.port) {
     // URL normalizes away default ports, but config diagnostics need to preserve
     // whether the operator explicitly wrote `:80` or `:443`.
-    const proto = parsed.protocol + "//";
+    const proto = `${parsed.protocol}//`;
     const rest = normalized.slice(proto.length);
     const atIdx = rest.indexOf("@");
     const hostStart = atIdx >= 0 ? atIdx + 1 : 0;
@@ -71,7 +71,7 @@ export function parseBrowserHttpUrl(raw: string, label: string): BrowserHttpUrlP
           return idx < 0 ? hostPart.length : idx;
         })();
     const insertAt = hostStart + hostLen;
-    normalizedWithPort = proto + rest.slice(0, insertAt) + ":" + port + rest.slice(insertAt);
+    normalizedWithPort = `${proto + rest.slice(0, insertAt)}:${port}${rest.slice(insertAt)}`;
   } else {
     normalizedWithPort = normalized;
   }

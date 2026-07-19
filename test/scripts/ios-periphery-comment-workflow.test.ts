@@ -461,9 +461,11 @@ describe("iOS Periphery comment workflow", () => {
     );
 
     expect(upload?.with?.name).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "ios-periphery-dead-code-${{ github.run_id }}-${{ github.run_attempt }}",
     );
     expect(upload?.if).toBe("always()");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(upload?.with?.path).toBe("${{ runner.temp }}/ios-periphery");
     expect(upload?.with?.["if-no-files-found"]).toBe("error");
   });

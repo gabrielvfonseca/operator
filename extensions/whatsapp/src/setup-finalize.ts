@@ -440,7 +440,7 @@ export async function finalizeWhatsAppSetup(params: {
         t("wizard.whatsapp.helpTitle"),
       );
     };
-    let loginWeb: (typeof import("./login.js"))["loginWeb"] | undefined;
+    let loginWeb: typeof import("./login.js")["loginWeb"] | undefined;
     try {
       ({ loginWeb } = await import("./login.js"));
     } catch (error) {

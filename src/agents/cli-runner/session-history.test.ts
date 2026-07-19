@@ -216,7 +216,7 @@ describe("loadCliSessionHistoryMessages", () => {
     });
     fs.appendFileSync(
       sessionFile,
-      [
+      `${[
         {
           type: "message",
           id: "side-entry",
@@ -245,7 +245,7 @@ describe("loadCliSessionHistoryMessages", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf-8",
     );
 
@@ -436,7 +436,7 @@ describe("loadCliSessionHistoryMessages", () => {
     fs.mkdirSync(path.dirname(sessionFile), { recursive: true });
     fs.writeFileSync(
       sessionFile,
-      [
+      `${[
         JSON.stringify({
           type: "session",
           version: CURRENT_SESSION_VERSION,
@@ -462,7 +462,7 @@ describe("loadCliSessionHistoryMessages", () => {
           timestamp: new Date(2).toISOString(),
           message: { role: "user", content: "tail history", timestamp: 2 },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf-8",
     );
 
@@ -499,7 +499,7 @@ describe("loadCliSessionHistoryMessages", () => {
     fs.mkdirSync(path.dirname(sessionFile), { recursive: true });
     fs.writeFileSync(
       sessionFile,
-      [
+      `${[
         JSON.stringify({
           type: "session",
           version: CURRENT_SESSION_VERSION,
@@ -546,7 +546,7 @@ describe("loadCliSessionHistoryMessages", () => {
           timestamp: new Date(5).toISOString(),
           message: { role: "assistant", content: "active history", timestamp: 5 },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf-8",
     );
 

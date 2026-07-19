@@ -14,11 +14,7 @@ vi.mock("./commands-session-store.js", () => ({
 }));
 
 function buildActivationParams(
-  overrides: {
-    commandBody?: string;
-    isAuthorizedSender?: boolean;
-    senderIsOwner?: boolean;
-  } = {},
+  overrides: { commandBody?: string; isAuthorizedSender?: boolean; senderIsOwner?: boolean } = {},
 ): HandleCommandsParams {
   const commandBody = overrides.commandBody ?? "/activation always";
   return {

@@ -142,11 +142,7 @@ function setupMattermostTrace(recorder: WireRecorder) {
     if (!trimmed) {
       return undefined;
     }
-    if (
-      lastPartialText &&
-      lastPartialText.startsWith(trimmed) &&
-      trimmed.length < lastPartialText.length
-    ) {
+    if (lastPartialText?.startsWith(trimmed) && trimmed.length < lastPartialText.length) {
       return undefined;
     }
     return trimmed;
@@ -201,11 +197,7 @@ function setupMattermostTrace(recorder: WireRecorder) {
         if (!cleaned || cleaned === lastPartialText) {
           break;
         }
-        if (
-          lastPartialText &&
-          lastPartialText.startsWith(cleaned) &&
-          cleaned.length < lastPartialText.length
-        ) {
+        if (lastPartialText?.startsWith(cleaned) && cleaned.length < lastPartialText.length) {
           break;
         }
         lastPartialText = cleaned;

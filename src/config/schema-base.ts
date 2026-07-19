@@ -158,7 +158,7 @@ type BaseConfigSchemaStablePayload = Omit<BaseConfigSchemaResponse, "generatedAt
 function stripChannelSchema(schema: ConfigSchema): ConfigSchema {
   const next = cloneSchema(schema);
   const root = asJsonSchemaObject(next);
-  if (!root || !root.properties) {
+  if (!root?.properties) {
     return next;
   }
   // Allow `$schema` in config files for editor tooling, but hide it from the

@@ -228,7 +228,7 @@ export function resolvePluginInstallRequestContext(params: {
       error: fileSpec.error,
     };
   }
-  const normalizedSpec = fileSpec && fileSpec.ok ? fileSpec.path : params.rawSpec;
+  const normalizedSpec = fileSpec?.ok ? fileSpec.path : params.rawSpec;
   const bundledRecovered = resolveBundledInstallRecoveryMetadata({
     rawSpec: params.rawSpec,
     normalizedSpec,

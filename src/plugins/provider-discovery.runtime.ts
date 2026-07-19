@@ -415,8 +415,8 @@ function resolveRuntimeEntryProviders(entryResult: ProviderDiscoveryEntryResult)
     }
     return Boolean(
       provider.pluginId &&
-      entryResult.entryPluginIds.has(provider.pluginId) &&
-      typeof provider.staticCatalog?.run === "function",
+        entryResult.entryPluginIds.has(provider.pluginId) &&
+        typeof provider.staticCatalog?.run === "function",
     );
   });
 }

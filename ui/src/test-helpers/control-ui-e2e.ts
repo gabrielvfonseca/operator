@@ -944,7 +944,7 @@ function installControlUiMockGateway(input: {
 
     send(raw: string | ArrayBufferLike | Blob | ArrayBufferView): void {
       const frame = parseFrame(raw);
-      if (!frame || frame.type !== "req") {
+      if (frame?.type !== "req") {
         return;
       }
       const id = typeof frame.id === "string" ? frame.id : "";

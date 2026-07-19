@@ -1045,7 +1045,7 @@ function resolveNamespacePath(
   parent: unknown;
 } {
   let current: unknown = scope;
-  let parent: unknown = undefined;
+  let parent: unknown;
   for (const segment of path) {
     assertNamespacePathSegment(segment);
     parent = current;

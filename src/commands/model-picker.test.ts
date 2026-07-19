@@ -103,9 +103,9 @@ const hasRuntimeAvailableProviderAuth = vi.hoisted(() =>
       const providerConfig = cfg?.models?.providers?.[provider];
       return Boolean(
         providerConfig?.baseUrl?.startsWith("http://127.0.0.1") &&
-        providerConfig.api &&
-        providerConfig.models?.length &&
-        !providerConfig.apiKey,
+          providerConfig.api &&
+          providerConfig.models?.length &&
+          !providerConfig.apiKey,
       );
     },
   ),

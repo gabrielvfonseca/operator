@@ -58,8 +58,9 @@ let stageSandboxMediaMock: typeof import("./stage-sandbox-media.runtime.js").sta
 
 async function loadGetReplyRuntimeForTest() {
   ({ getReplyFromConfig } = await loadGetReplyModuleForTest({ cacheKey: import.meta.url }));
-  ({ resolveDefaultModel: resolveDefaultModelMock } =
-    await import("./directive-handling.defaults.js"));
+  ({ resolveDefaultModel: resolveDefaultModelMock } = await import(
+    "./directive-handling.defaults.js"
+  ));
   ({ runPreparedReply: runPreparedReplyMock } = await import("./get-reply-run.js"));
   ({ stageSandboxMedia: stageSandboxMediaMock } = await import("./stage-sandbox-media.runtime.js"));
 }

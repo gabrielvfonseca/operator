@@ -44,7 +44,9 @@ function hasUnsafePathSegments(url: string): boolean {
 }
 
 function parseGenericGitUrl(url: string): GitSource | null {
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let host;
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let path;
 
   const scpLikeMatch = url.match(/^git@([^:]+):(.+)$/);

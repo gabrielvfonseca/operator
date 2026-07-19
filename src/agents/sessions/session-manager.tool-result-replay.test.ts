@@ -159,7 +159,7 @@ describe("SessionManager tool-result replay", () => {
     const sessionManager = SessionManager.open(sessionFile, dir, "/tmp/tool-result-replay");
     const context = sessionManager.buildSessionContext();
     const toolResult = context.messages.find((message) => message.role === "toolResult");
-    if (!toolResult || toolResult.role !== "toolResult") {
+    if (toolResult?.role !== "toolResult") {
       throw new Error("tool result message missing");
     }
 
@@ -176,7 +176,7 @@ describe("SessionManager tool-result replay", () => {
       "/tmp/tool-result-replay",
     ).buildSessionContext();
     const assistant = context.messages.find((message) => message.role === "assistant");
-    if (!assistant || assistant.role !== "assistant") {
+    if (assistant?.role !== "assistant") {
       throw new Error("assistant message missing");
     }
     expect(assistant.content).toEqual([{ type: "text", text: "assistant replay text" }]);
@@ -249,7 +249,7 @@ describe("SessionManager tool-result replay", () => {
       "/tmp/tool-result-replay",
     ).buildSessionContext();
     const toolResult = context.messages.find((message) => message.role === "toolResult");
-    if (!toolResult || toolResult.role !== "toolResult") {
+    if (toolResult?.role !== "toolResult") {
       throw new Error("tool result message missing");
     }
     expect(toolResult.content).toEqual([content]);

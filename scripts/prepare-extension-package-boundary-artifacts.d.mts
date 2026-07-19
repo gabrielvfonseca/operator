@@ -56,4 +56,3 @@ export function runNodeStepsInParallel(steps: unknown): Promise<void>;
  * Chooses serial or parallel artifact execution based on local heavy-check policy.
  */
 export function runNodeSteps(steps: unknown, env?: NodeJS.ProcessEnv): Promise<void>;
-import { spawnSync } from "node:child_process";

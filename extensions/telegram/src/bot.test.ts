@@ -60,8 +60,9 @@ const {
   wasSentByBot,
 } = await import("./bot.create-telegram-bot.test-harness.js");
 const { recordOutboundMessageForPromptContext } = await import("./outbound-message-context.js");
-const { runWithTelegramSpooledReplayUpdate, runWithTelegramUpdateProcessingFrame } =
-  await import("./bot-processing-outcome.js");
+const { runWithTelegramSpooledReplayUpdate, runWithTelegramUpdateProcessingFrame } = await import(
+  "./bot-processing-outcome.js"
+);
 
 let createTelegramBotBase: typeof import("./bot-core.js").createTelegramBotCore;
 let createTelegramBot: (

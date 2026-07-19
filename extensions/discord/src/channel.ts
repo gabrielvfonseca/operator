@@ -120,9 +120,7 @@ function startDiscordStartupProbe(params: {
 }): void {
   void (async () => {
     try {
-      const probe = await (
-        await loadDiscordProbeRuntime()
-      ).probeDiscord(params.token, 2500, {
+      const probe = await (await loadDiscordProbeRuntime()).probeDiscord(params.token, 2500, {
         includeApplication: true,
       });
       if (params.abortSignal.aborted) {
@@ -247,7 +245,7 @@ function resolveDiscordStartupAccountIds(cfg: OperatorConfig): string[] {
 
 function resolveDiscordStartupDelayMs(cfg: OperatorConfig, accountId: string): number {
   const startupAccountIds = resolveDiscordStartupAccountIds(cfg);
-  const startupIndex = startupAccountIds.findIndex((candidateId) => candidateId === accountId);
+  const startupIndex = startupAccountIds.indexOf(accountId);
   return startupIndex <= 0 ? 0 : startupIndex * DISCORD_ACCOUNT_STARTUP_STAGGER_MS;
 }
 
@@ -379,9 +377,11 @@ export const discordPlugin: ChannelPlugin<ResolvedDiscordAccount, DiscordProbe> 
                     normalized.startsWith("channel:")
                   ? "channel"
                   : undefined;
-            const resolved = await (
-              await loadDiscordTargetResolverModule()
-            ).resolveDiscordTarget(input, { cfg, accountId }, defaultKind ? { defaultKind } : {});
+            const resolved = await (await loadDiscordTargetResolverModule()).resolveDiscordTarget(
+              input,
+              { cfg, accountId },
+              defaultKind ? { defaultKind } : {},
+            );
             if (!resolved) {
               return null;
             }
@@ -521,12 +521,10 @@ export const discordPlugin: ChannelPlugin<ResolvedDiscordAccount, DiscordProbe> 
         sendTyping: async ({ cfg, to, accountId, threadId }) => {
           const resolvedTo = resolveDiscordAttachedOutboundTarget({ to, threadId });
           const target = parseDiscordTarget(resolvedTo, { defaultKind: "channel" });
-          if (!target || target.kind !== "channel") {
+          if (target?.kind !== "channel") {
             return;
           }
-          await (
-            await loadDiscordSendModule()
-          ).sendTypingDiscord(target.id, {
+          await (await loadDiscordSendModule()).sendTypingDiscord(target.id, {
             cfg,
             accountId: accountId ?? undefined,
           });
@@ -572,7 +570,7 @@ export const discordPlugin: ChannelPlugin<ResolvedDiscordAccount, DiscordProbe> 
               channelId: parsedTarget?.kind === "channel" ? parsedTarget.id : undefined,
             },
           };
-          if (!parsedTarget || parsedTarget.kind !== "channel") {
+          if (parsedTarget?.kind !== "channel") {
             return {
               details,
               lines: [
@@ -736,6 +734,7 @@ export const discordPlugin: ChannelPlugin<ResolvedDiscordAccount, DiscordProbe> 
             log: ctx.log,
           });
           ctx.log?.info(`[${account.accountId}] starting provider`);
+          // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
           let commandDeployHashStore;
           try {
             commandDeployHashStore = openDiscordCommandDeployHashStore(
@@ -767,9 +766,7 @@ export const discordPlugin: ChannelPlugin<ResolvedDiscordAccount, DiscordProbe> 
         message: PAIRING_APPROVED_MESSAGE,
         normalizeAllowEntry: createPairingPrefixStripper(/^(discord|user):/i),
         notify: async ({ cfg, id, message, accountId }) => {
-          await (
-            await loadDiscordSendModule()
-          ).sendMessageDiscord(`user:${id}`, message, {
+          await (await loadDiscordSendModule()).sendMessageDiscord(`user:${id}`, message, {
             cfg,
             ...(accountId ? { accountId } : {}),
           });

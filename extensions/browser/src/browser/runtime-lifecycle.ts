@@ -92,8 +92,9 @@ async function stopBrowserRuntimeInternal(
 
   if (finalizeGlobalAdapters) {
     try {
-      const { disposeGatewayExtensionRelay } =
-        await import("./extension-relay/gateway-relay-route.js");
+      const { disposeGatewayExtensionRelay } = await import(
+        "./extension-relay/gateway-relay-route.js"
+      );
       disposeGatewayExtensionRelay();
     } catch (err) {
       firstError ??= toRuntimeLifecycleError(err, "Gateway browser relay cleanup failed.");

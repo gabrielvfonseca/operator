@@ -90,7 +90,7 @@ type WebFetchConfig = NonNullable<OperatorConfig["tools"]>["web"] extends infer 
     : undefined
   : undefined;
 type ResolveWebFetchDefinition =
-  (typeof import("../../web-fetch/runtime.js"))["resolveWebFetchDefinition"];
+  typeof import("../../web-fetch/runtime.js")["resolveWebFetchDefinition"];
 type WebFetchProviderFallback = ReturnType<ResolveWebFetchDefinition>;
 type WebFetchRuntimeModule = Pick<
   typeof import("../../web-fetch/runtime.js"),

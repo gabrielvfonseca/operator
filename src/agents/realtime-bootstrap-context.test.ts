@@ -34,7 +34,7 @@ describe("resolveRealtimeBootstrapContextInstructions", () => {
     await fs.writeFile(path.join(workspaceDir, "IDENTITY.md"), "Name: Wilfred\n", "utf8");
     await fs.writeFile(path.join(workspaceDir, "USER.md"), "User likes concise answers.\n", "utf8");
     await fs.writeFile(path.join(workspaceDir, "SOUL.md"), "Warm and dry.\n", "utf8");
-    await fs.writeFile(path.join(workspaceDir, "AGENTS.md"), "Do not load me here.\n", "utf8");
+    await fs.writeFile(path.join(workspaceDir, "AGENTS.MD"), "Do not load me here.\n", "utf8");
 
     const instructions = await resolveRealtimeBootstrapContextInstructions({
       config: makeConfig(workspaceDir),
@@ -49,7 +49,7 @@ describe("resolveRealtimeBootstrapContextInstructions", () => {
     expect(instructions).toContain("User likes concise answers.");
     expect(instructions).toContain("### SOUL.md");
     expect(instructions).toContain("Warm and dry.");
-    expect(instructions).not.toContain("AGENTS.md");
+    expect(instructions).not.toContain("AGENTS.MD");
     expect(instructions).not.toContain("Do not load me here.");
     expect(instructions).not.toContain("operator_agent_consult");
     expect(instructions).not.toContain(workspaceDir);
@@ -59,11 +59,11 @@ describe("resolveRealtimeBootstrapContextInstructions", () => {
     // Runtime callers may pass unchecked file arrays; unsupported files must be filtered.
     const workspaceDir = await makeWorkspace();
     const warnings: string[] = [];
-    const uncheckedFiles = ["IDENTITY.md", "AGENTS.md"] as unknown as NonNullable<
+    const uncheckedFiles = ["IDENTITY.md", "AGENTS.MD"] as unknown as NonNullable<
       Parameters<typeof resolveRealtimeBootstrapContextInstructions>[0]["files"]
     >;
     await fs.writeFile(path.join(workspaceDir, "IDENTITY.md"), "Name: Wilfred\n", "utf8");
-    await fs.writeFile(path.join(workspaceDir, "AGENTS.md"), "Do not load me here.\n", "utf8");
+    await fs.writeFile(path.join(workspaceDir, "AGENTS.MD"), "Do not load me here.\n", "utf8");
 
     const instructions = await resolveRealtimeBootstrapContextInstructions({
       config: makeConfig(workspaceDir),
@@ -74,9 +74,9 @@ describe("resolveRealtimeBootstrapContextInstructions", () => {
 
     expect(instructions).toContain("### IDENTITY.md");
     expect(instructions).toContain("Name: Wilfred");
-    expect(instructions).not.toContain("AGENTS.md");
+    expect(instructions).not.toContain("AGENTS.MD");
     expect(instructions).not.toContain("Do not load me here.");
-    expect(warnings).toContain('skipping unsupported realtime bootstrap context file "AGENTS.md"');
+    expect(warnings).toContain('skipping unsupported realtime bootstrap context file "AGENTS.MD"');
   });
 
   it("keeps the complete injected instruction text within the default budget", async () => {

@@ -18,15 +18,9 @@ const {
   relayStop: vi.fn(),
   webRtcStart: vi.fn(async () => undefined),
   webRtcStop: vi.fn(),
-  googleCtor: vi.fn(function () {
-    return { start: googleStart, stop: googleStop };
-  }),
-  relayCtor: vi.fn(function () {
-    return { start: relayStart, stop: relayStop };
-  }),
-  webRtcCtor: vi.fn(function () {
-    return { start: webRtcStart, stop: webRtcStop };
-  }),
+  googleCtor: vi.fn(() => ({ start: googleStart, stop: googleStop })),
+  relayCtor: vi.fn(() => ({ start: relayStart, stop: relayStop })),
+  webRtcCtor: vi.fn(() => ({ start: webRtcStart, stop: webRtcStop })),
 }));
 
 vi.mock("./realtime-talk-google-live.ts", () => ({

@@ -311,9 +311,7 @@ describe("formatAssistantErrorText", () => {
 
   it("returns generic rate limit message when no specific details are present", () => {
     const msg = makeAssistantError("429 Too Many Requests");
-    expect(formatAssistantErrorText(msg)).toBe(
-      "⚠️ API rate limit reached. Please try again later.",
-    );
+    expect(formatAssistantErrorText(msg)).toBe("⚠️ API rate limit reached. Please try again later.");
   });
 
   it("strips leading HTTP status code prefix from non-JSON rate limit messages", () => {

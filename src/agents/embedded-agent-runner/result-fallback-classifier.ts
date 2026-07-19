@@ -28,10 +28,10 @@ type ProviderErrorPayloadFailoverReason = Extract<
 function isEmbeddedAgentRunResult(value: unknown): value is EmbeddedAgentRunResult {
   return Boolean(
     value &&
-    typeof value === "object" &&
-    "meta" in value &&
-    (value as { meta?: unknown }).meta &&
-    typeof (value as { meta?: unknown }).meta === "object",
+      typeof value === "object" &&
+      "meta" in value &&
+      (value as { meta?: unknown }).meta &&
+      typeof (value as { meta?: unknown }).meta === "object",
   );
 }
 

@@ -181,8 +181,9 @@ function getCurrentMetadataSnapshotArg(index = 0): Record<string, unknown> | und
 }
 
 beforeAll(async () => {
-  ({ readBestEffortRuntimeConfigSchema, loadGatewayRuntimeConfigSchema } =
-    await import("./runtime-schema.js"));
+  ({ readBestEffortRuntimeConfigSchema, loadGatewayRuntimeConfigSchema } = await import(
+    "./runtime-schema.js"
+  ));
 });
 
 afterEach(() => {

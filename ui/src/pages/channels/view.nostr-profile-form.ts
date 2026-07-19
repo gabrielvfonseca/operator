@@ -128,9 +128,11 @@ export function renderNostrProfileForm(params: {
         <div class="settings-row__text">
           <label class="settings-row__title" for="${inputId}">${label}</label>
           ${help ? html`<span class="settings-row__desc">${help}</span>` : nothing}
-          ${error
-            ? html`<span class="settings-row__desc" style="color: var(--danger);">${error}</span>`
-            : nothing}
+          ${
+            error
+              ? html`<span class="settings-row__desc" style="color: var(--danger);">${error}</span>`
+              : nothing
+          }
         </div>
         <div class="settings-row__control">${control}</div>
       </div>
@@ -175,8 +177,9 @@ export function renderNostrProfileForm(params: {
       </div>
     </div>
 
-    ${state.error
-      ? html`
+    ${
+      state.error
+        ? html`
           <div class="settings-row">
             <div class="settings-row__text">
               <span class="settings-row__title"
@@ -186,16 +189,19 @@ export function renderNostrProfileForm(params: {
             </div>
           </div>
         `
-      : nothing}
-    ${state.success
-      ? html`
+        : nothing
+    }
+    ${
+      state.success
+        ? html`
           <div class="settings-row">
             <div class="settings-row__text">
               <span class="settings-row__desc">${state.success}</span>
             </div>
           </div>
         `
-      : nothing}
+        : nothing
+    }
     ${renderPicturePreview()}
     ${renderField("name", t("channels.nostr.username"), {
       placeholder: t("channels.nostr.placeholders.username"),
@@ -218,8 +224,9 @@ export function renderNostrProfileForm(params: {
       placeholder: t("channels.nostr.placeholders.avatarUrl"),
       help: t("channels.nostr.avatarHelp"),
     })}
-    ${state.showAdvanced
-      ? html`
+    ${
+      state.showAdvanced
+        ? html`
           <div class="settings-row">
             <div class="settings-row__text">
               <span class="settings-row__title">${t("channels.nostr.advanced")}</span>
@@ -245,13 +252,16 @@ export function renderNostrProfileForm(params: {
             help: t("channels.nostr.lightningHelp"),
           })}
         `
-      : nothing}
+        : nothing
+    }
 
     <div class="settings-row">
       <div class="settings-row__text">
-        ${isDirty
-          ? html`<span class="settings-row__desc">${t("common.unsavedChanges")}</span>`
-          : nothing}
+        ${
+          isDirty
+            ? html`<span class="settings-row__desc">${t("common.unsavedChanges")}</span>`
+            : nothing
+        }
       </div>
       <div class="settings-row__control">
         <button

@@ -62,7 +62,7 @@ function buildTelegramLink(link: MarkdownLinkSpan, text: string) {
   if (!isTelegramRichLinkHref(href)) {
     return null;
   }
-  // Suppress auto-linkified file references (e.g. README.md → http://README.md)
+  // Suppress auto-linkified file references (e.g. README.md → http:/README.MD)
   const label = text.slice(link.start, link.end);
   if (isAutoLinkedFileRef(href, label)) {
     return null;

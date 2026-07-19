@@ -118,8 +118,8 @@ export async function runTtsConvert(params: {
   });
   const hasExplicitSelection = Boolean(
     overrides.provider ||
-    normalizeOptionalString(params.modelId) ||
-    normalizeOptionalString(params.voiceId),
+      normalizeOptionalString(params.modelId) ||
+      normalizeOptionalString(params.voiceId),
   );
   const result = await textToSpeech({
     text: params.text,

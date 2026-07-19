@@ -124,6 +124,7 @@ function makeDeclaredExtensionArchive(
   size: number,
 ): string {
   const tarPath = path.join(root, `${kind}.tar`);
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   const python = String.raw`
 import sys
 import tarfile
@@ -335,6 +336,7 @@ with open(sys.argv[1], "wb") as output:
 
 function makePaxHeavyTar(root: string, memberCount: number, keyCount: number): string {
   const tarPath = path.join(root, "pax-heavy.tar");
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   const python = String.raw`
 import sys
 import tarfile
@@ -369,6 +371,7 @@ with tarfile.open(sys.argv[1], "w", format=tarfile.PAX_FORMAT) as archive:
 }
 
 function probeTarInfoCache(tarPath: string) {
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   const launcher = String.raw`
 import subprocess
 import sys
@@ -376,6 +379,7 @@ import sys
 completed = subprocess.run([sys.executable, "-c", sys.argv[1], *sys.argv[2:]])
 raise SystemExit(completed.returncode)
 `;
+  // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
   const python = String.raw`
 import importlib.util
 import json

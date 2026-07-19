@@ -475,7 +475,7 @@ if (!entrySet.has("npm-shrinkwrap.json")) {
         `npm-shrinkwrap.json version ${shrinkwrap.version ?? "<missing>"} does not match package.json version ${packageVersion || "<missing>"}`,
       );
     }
-    if (!rootPackage || rootPackage.name !== "operator") {
+    if (rootPackage?.name !== "operator") {
       errors.push("npm-shrinkwrap.json packages root must name operator");
     }
     if (rootPackage?.version !== packageVersion) {

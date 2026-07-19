@@ -335,7 +335,6 @@ export function canonicalizeSessionStore(params: {
     if (!existingMeta?.isCanonical && isCanonical) {
       canonical[canonicalKey] = entry;
       meta.set(canonicalKey, { isCanonical, updatedAt: incomingUpdated });
-      continue;
     }
   }
 

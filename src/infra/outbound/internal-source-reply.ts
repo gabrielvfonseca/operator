@@ -52,10 +52,10 @@ function hasCurrentSourceReplyContext(input: InternalSourceReplySinkInput): bool
   const currentMessageId = input.toolContext?.currentMessageId;
   return Boolean(
     normalizeOptionalString(input.toolContext?.currentChannelId) ||
-    normalizeOptionalString(input.toolContext?.currentMessagingTarget) ||
-    normalizeOptionalString(input.toolContext?.currentThreadTs) ||
-    (typeof currentMessageId === "number" && Number.isFinite(currentMessageId)) ||
-    normalizeOptionalString(currentMessageId),
+      normalizeOptionalString(input.toolContext?.currentMessagingTarget) ||
+      normalizeOptionalString(input.toolContext?.currentThreadTs) ||
+      (typeof currentMessageId === "number" && Number.isFinite(currentMessageId)) ||
+      normalizeOptionalString(currentMessageId),
   );
 }
 

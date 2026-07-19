@@ -127,8 +127,9 @@ function resolveToolsArg(resolveToolsMock: { mock: { calls: unknown[][] } }, ind
 
 describe("handleToolsCommand", () => {
   beforeAll(async () => {
-    ({ buildCommandTestParams: buildCommandTestParamsImpl } =
-      await import("./commands.test-harness.js"));
+    ({ buildCommandTestParams: buildCommandTestParamsImpl } = await import(
+      "./commands.test-harness.js"
+    ));
     ({ handleToolsCommand: handleToolsCommandImpl } = await import("./commands-info.js"));
   });
 

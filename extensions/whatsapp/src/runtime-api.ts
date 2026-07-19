@@ -19,7 +19,7 @@ export { normalizeE164 } from "@gabrielvfonseca/operator/plugin-sdk/account-reso
 export type { DmPolicy, GroupPolicy } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 import type { OperatorConfig as RuntimeOperatorConfig } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 
-export { type ChannelMessageActionName } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
+export type { ChannelMessageActionName } from "@gabrielvfonseca/operator/plugin-sdk/channel-contract";
 export { loadOutboundMediaFromUrl } from "./outbound-media.runtime.js";
 export {
   resolveWhatsAppGroupRequireMention,

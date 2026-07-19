@@ -64,6 +64,7 @@ describe("minimal npm extended-stable workflow", () => {
     const parsed = workflow();
     const raw = readFileSync(workflowPath, "utf8");
     expect(raw).toContain("version: 1");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(raw).toContain("operator-npm-preflight-${{ inputs.tag }}");
     expect(raw.match(/operator-npm-extended-stable-release\.mjs validate-request/g)).toHaveLength(
       3,
@@ -73,6 +74,7 @@ describe("minimal npm extended-stable workflow", () => {
     );
     expect(
       step(parsed.jobs?.preflight_operator_npm, "Validate npm release request").env?.PREFLIGHT_ONLY,
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     ).toBe("${{ inputs.preflight_only }}");
     expect(
       step(parsed.jobs?.validate_publish_request, "Validate npm release request").run,
@@ -98,6 +100,7 @@ describe("minimal npm extended-stable workflow", () => {
     ];
     for (const policyStep of policySteps) {
       expect(policyStep.env?.BYPASS_EXTENDED_STABLE_GUARD).toBe(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ inputs.bypass_extended_stable_guard }}",
       );
     }
@@ -107,6 +110,7 @@ describe("minimal npm extended-stable workflow", () => {
     );
     expect(trustedRef.env?.BYPASS_EXTENDED_STABLE_GUARD).toBeUndefined();
     expect(trustedRef.run).not.toContain("BYPASS_EXTENDED_STABLE_GUARD");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(trustedRef.run).toContain('"${WORKFLOW_REF}" == refs/heads/extended-stable/*');
 
     const summary = step(
@@ -114,8 +118,10 @@ describe("minimal npm extended-stable workflow", () => {
       "Summarize extended-stable npm publication",
     );
     expect(summary.env?.BYPASS_EXTENDED_STABLE_GUARD).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ inputs.bypass_extended_stable_guard }}",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(summary.run).toContain("Extended-stable guard bypass: ${BYPASS_EXTENDED_STABLE_GUARD}");
   });
 
@@ -123,14 +129,17 @@ describe("minimal npm extended-stable workflow", () => {
     const parsed = workflow();
     const preflight = parsed.jobs?.preflight_operator_npm;
     const metadata = step(preflight, "Validate release metadata");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(metadata.run).toContain('RELEASE_BRANCH_REF="${RELEASE_SHA}"');
     expect(metadata.run).not.toContain("Validation-only SHA mode only supports");
 
     const plugins = step(preflight, "Exercise all extended-stable plugin npm packages");
     expect(step(preflight, "Verify release contents").env).toMatchObject({
       OPERATOR_RELEASE_CHECK_LOCAL_PACKAGE_TARBALL_DIR:
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ steps.ai_runtime_tarballs.outputs.dir }}",
     });
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(plugins.if).toBe("${{ inputs.npm_dist_tag == 'extended-stable' }}");
     expect(plugins.env).toMatchObject({
       OPERATOR_PLUGIN_NPM_PUBLISH_TAG: "extended-stable",
@@ -151,6 +160,7 @@ describe("minimal npm extended-stable workflow", () => {
     const restore = step(preflight, "Restore preflight build outputs");
     expect(restore.uses).toContain("actions/cache/restore@");
     expect(restore.with?.key).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ runner.os }}-npm-preflight-dist-v1-${{ steps.preflight_cache_key.outputs.sha }}-${{ hashFiles('pnpm-lock.yaml') }}",
     );
 
@@ -166,6 +176,7 @@ describe("minimal npm extended-stable workflow", () => {
 
     const save = step(preflight, "Save preflight build outputs");
     expect(save.uses).toContain("actions/cache/save@");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(save.with?.key).toBe("${{ steps.dist_build_cache.outputs.cache-primary-key }}");
   });
 
@@ -178,9 +189,11 @@ describe("minimal npm extended-stable workflow", () => {
       "Verify full release validation run metadata",
     );
     expect(fullValidationRun.env?.FULL_RELEASE_VALIDATION_RUN_ATTEMPT).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ inputs.full_release_validation_run_attempt }}",
     );
     expect(fullValidationRun.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "actions/runs/${FULL_RELEASE_VALIDATION_RUN_ID}/attempts/${FULL_RELEASE_VALIDATION_RUN_ATTEMPT}",
     );
     expect(fullValidationRun.run).toContain(
@@ -201,6 +214,7 @@ describe("minimal npm extended-stable workflow", () => {
       parsed.jobs?.validate_publish_request,
       "Require preflight artifact promotion on real publish",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(required.env?.PLUGIN_NPM_RUN_ID).toBe("${{ inputs.plugin_npm_run_id }}");
     expect(required.run).toContain("Extended-stable publish requires plugin_npm_run_id");
 
@@ -239,6 +253,7 @@ describe("minimal npm extended-stable workflow", () => {
     );
     expect(provenance.run).toContain('echo "tarball_path=$ARTIFACT_TARBALL_PATH"');
     expect(publishStep.env?.PUBLISH_TARBALL_PATH).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ steps.preflight_provenance.outputs.tarball_path }}",
     );
     expect(publish?.steps?.map((candidate) => candidate.name)).not.toContain(

@@ -46,6 +46,7 @@ function normalizeDarwinTmpPath(filePath: string): string {
 function normalizeComparablePath(filePath: string): string {
   const resolved = normalizeDarwinTmpPath(path.resolve(filePath));
   const parent = normalizeDarwinTmpPath(path.dirname(resolved));
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let comparableParent;
   try {
     comparableParent = normalizeDarwinTmpPath(fsSync.realpathSync.native(parent));

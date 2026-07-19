@@ -396,6 +396,7 @@ if (confirmed.nonce !== nonce || confirmed.expiresAtMs !== renewed.expiresAtMs) 
 process.stdout.write("renewed " + nonce + "\n");
 `;
 
+// biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
 export const REMOTE_WORKSPACE_RESUME_JS = String.raw`const crypto = require("node:crypto");
 const fs = require("node:fs");
 const os = require("node:os");

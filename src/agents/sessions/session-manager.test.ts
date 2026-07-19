@@ -493,12 +493,11 @@ describe("SessionManager.open", () => {
       ...assistantEntry,
       message: { role: "assistant", content: [{ type: "text", text: "important answer" }] },
     };
-    const originalTranscript =
-      [
-        JSON.stringify(originalHeader).slice(0, 30),
-        JSON.stringify(userEntry),
-        JSON.stringify(assistantEntry),
-      ].join("\n") + "\n";
+    const originalTranscript = `${[
+      JSON.stringify(originalHeader).slice(0, 30),
+      JSON.stringify(userEntry),
+      JSON.stringify(assistantEntry),
+    ].join("\n")}\n`;
     await fs.writeFile(sessionFile, originalTranscript, "utf8");
     if (process.platform !== "win32") {
       await fs.chmod(sessionFile, 0o600);
@@ -1544,7 +1543,7 @@ describe("SessionManager.open", () => {
 
     const loaded = loadEntriesFromFile(sessionFile);
     const messageEntry = loaded[1];
-    if (!messageEntry || messageEntry.type !== "message") {
+    if (messageEntry?.type !== "message") {
       throw new Error("expected message entry");
     }
     (messageEntry.message as { content: unknown }).content = "caller-owned mutation";
@@ -1704,7 +1703,7 @@ describe("SessionManager.open", () => {
 
     const opened = SessionManager.open(sessionFile, dir, dir);
     const returnedEntry = opened.getEntries()[0];
-    if (!returnedEntry || returnedEntry.type !== "message") {
+    if (returnedEntry?.type !== "message") {
       throw new Error("expected message entry");
     }
     expect(() => {
@@ -1745,7 +1744,7 @@ describe("SessionManager.open", () => {
 
     const opened = SessionManager.open(sessionFile, dir, dir);
     const returnedEntry = opened.getEntries()[0];
-    if (!returnedEntry || returnedEntry.type !== "message") {
+    if (returnedEntry?.type !== "message") {
       throw new Error("expected message entry");
     }
 
@@ -1873,11 +1872,11 @@ describe("SessionManager.open", () => {
     };
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         JSON.stringify(buildSessionHeader(dir, "original-session")),
         JSON.stringify(metadata),
         JSON.stringify(assistantEntry),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf8",
     );
 
@@ -1916,9 +1915,9 @@ describe("SessionManager.open", () => {
     };
     await fs.writeFile(
       sessionFile,
-      [buildSessionHeader(dir, "session-1"), userEntry, metadata]
+      `${[buildSessionHeader(dir, "session-1"), userEntry, metadata]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf8",
     );
 
@@ -1997,9 +1996,15 @@ describe("SessionManager.open", () => {
     };
     await fs.writeFile(
       sessionFile,
-      [buildSessionHeader(dir, "session-1"), userEntry, metadata, assistantEntry, compactionEntry]
+      `${[
+        buildSessionHeader(dir, "session-1"),
+        userEntry,
+        metadata,
+        assistantEntry,
+        compactionEntry,
+      ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf8",
     );
 
@@ -2051,7 +2056,7 @@ describe("SessionManager.open", () => {
     };
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         buildSessionHeader(dir, "session-1"),
         opaqueRoot,
         branchAUser,
@@ -2060,7 +2065,7 @@ describe("SessionManager.open", () => {
         compactionEntry,
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf8",
     );
 
@@ -2094,9 +2099,9 @@ describe("SessionManager.open", () => {
     };
     await fs.writeFile(
       sessionFile,
-      [buildSessionHeader(dir, "session-1"), userEntry, sessionEvent]
+      `${[buildSessionHeader(dir, "session-1"), userEntry, sessionEvent]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf8",
     );
 
@@ -2145,9 +2150,15 @@ describe("SessionManager.open", () => {
     };
     await fs.writeFile(
       sessionFile,
-      [buildSessionHeader(dir, "session-1"), rootEntry, abandonedEntry, leafEntry, replacementEntry]
+      `${[
+        buildSessionHeader(dir, "session-1"),
+        rootEntry,
+        abandonedEntry,
+        leafEntry,
+        replacementEntry,
+      ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf8",
     );
 
@@ -2633,9 +2644,9 @@ describe("SessionManager.open", () => {
     };
     await fs.writeFile(
       sessionFile,
-      [buildSessionHeader(dir, "session-1"), baseAnswer, metadata]
+      `${[buildSessionHeader(dir, "session-1"), baseAnswer, metadata]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf-8",
     );
 
@@ -2693,7 +2704,7 @@ describe("SessionManager.open", () => {
     const sessionFile = path.join(dir, "session.jsonl");
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         buildSessionHeader(dir, "session-1"),
         {
           type: "message",
@@ -2716,7 +2727,7 @@ describe("SessionManager.open", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf8",
     );
 
@@ -2734,7 +2745,7 @@ describe("SessionManager.open", () => {
     const sessionFile = path.join(dir, "session.jsonl");
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         buildSessionHeader(dir, "session-1"),
         {
           type: "message",
@@ -2766,7 +2777,7 @@ describe("SessionManager.open", () => {
         },
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf-8",
     );
 
@@ -2904,7 +2915,7 @@ describe("SessionManager.open", () => {
     };
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         buildSessionHeader(dir, "session-1"),
         rootEntry,
         labelEntry,
@@ -2913,7 +2924,7 @@ describe("SessionManager.open", () => {
         replacementEntry,
       ]
         .map((entry) => JSON.stringify(entry))
-        .join("\n") + "\n",
+        .join("\n")}\n`,
       "utf8",
     );
 

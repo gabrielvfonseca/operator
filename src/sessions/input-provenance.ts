@@ -101,7 +101,7 @@ export function shouldPreserveUserFacingSessionStateForInputProvenance(value: un
 export function hasInterSessionUserProvenance(
   message: { role?: unknown; provenance?: unknown } | undefined,
 ): boolean {
-  if (!message || message.role !== "user") {
+  if (message?.role !== "user") {
     return false;
   }
   return isInterSessionInputProvenance(message.provenance);

@@ -156,8 +156,9 @@ describe("dispatchReplyFromConfig ACP abort", () => {
     ({ dispatchReplyFromConfig } = await import("./dispatch-from-config.js"));
     ({ tryDispatchAcpReplyHook } = await import("../../plugin-sdk/acp-runtime.js"));
     ({ resetInboundDedupe } = await import("./inbound-dedupe.js"));
-    ({ replyRunRegistry, getActiveReplyRunCount, createReplyOperation } =
-      await import("./reply-run-registry.js"));
+    ({ replyRunRegistry, getActiveReplyRunCount, createReplyOperation } = await import(
+      "./reply-run-registry.js"
+    ));
     ({ testing: replyRunTesting } = await import("./reply-run-registry.test-support.js"));
   });
 

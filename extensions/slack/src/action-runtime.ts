@@ -245,10 +245,10 @@ function isCurrentSlackReadTarget(params: {
   const requesterAccountId = params.context?.requesterAccountId?.trim();
   return Boolean(
     normalizeOptionalLowercaseString(params.context?.currentChannelProvider) === "slack" &&
-    requesterAccountId &&
-    normalizeAccountId(requesterAccountId) === normalizeAccountId(params.account.accountId) &&
-    params.context &&
-    slackContextTargetsMatch(params.channelId, params.context),
+      requesterAccountId &&
+      normalizeAccountId(requesterAccountId) === normalizeAccountId(params.account.accountId) &&
+      params.context &&
+      slackContextTargetsMatch(params.channelId, params.context),
   );
 }
 

@@ -546,7 +546,7 @@ async function deliverMediaReply(params: {
         } catch (voiceErr) {
           if (isVoiceMessagesForbidden(voiceErr)) {
             const fallbackText = resolveVoiceFallbackText(params.reply);
-            if (!fallbackText || !fallbackText.trim()) {
+            if (!fallbackText?.trim()) {
               throw voiceErr;
             }
             logVerbose(

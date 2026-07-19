@@ -43,13 +43,13 @@ export function createResponsesToolCallTracker<TState extends ResponsesToolCallS
   const identitiesConflict = (state: TState, identity: ResponsesToolCallIdentity): boolean =>
     Boolean(
       (state.itemId && identity.itemId && state.itemId !== identity.itemId) ||
-      (state.callId && identity.callId && state.callId !== identity.callId),
+        (state.callId && identity.callId && state.callId !== identity.callId),
     );
 
   const sharesIdentity = (state: TState, identity: ResponsesToolCallIdentity): boolean =>
     Boolean(
       (state.itemId && identity.itemId && state.itemId === identity.itemId) ||
-      (state.callId && identity.callId && state.callId === identity.callId),
+        (state.callId && identity.callId && state.callId === identity.callId),
     );
 
   const adoptIdentity = (state: TState, identity: ResponsesToolCallIdentity): TState => {

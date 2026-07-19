@@ -384,10 +384,10 @@ function isCodexDiagnosticsConfirmationAction(args: string): boolean {
   const normalized = action?.toLowerCase();
   return Boolean(
     token &&
-    (normalized === "confirm" ||
-      normalized === "--confirm" ||
-      normalized === "cancel" ||
-      normalized === "--cancel"),
+      (normalized === "confirm" ||
+        normalized === "--confirm" ||
+        normalized === "cancel" ||
+        normalized === "--cancel"),
   );
 }
 
@@ -422,7 +422,7 @@ async function executeCodexDiagnosticsAddon(
   const targetSessionEntry = params.sessionStore?.[params.sessionKey] ?? params.sessionEntry;
   const commandBody = args ? `${CODEX_DIAGNOSTICS_COMMAND} ${args}` : CODEX_DIAGNOSTICS_COMMAND;
   const match = matchPluginCommand(commandBody);
-  if (!match || match.command.pluginId !== "codex") {
+  if (match?.command.pluginId !== "codex") {
     return undefined;
   }
   return await executePluginCommand({

@@ -1171,6 +1171,7 @@ describe("scripts/docker/setup.sh", () => {
     const compose = await readFile(join(repoRoot, "docker-compose.yml"), "utf8");
     expect(
       compose.split(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         '"${OPENCLAW_AUTH_PROFILE_SECRET_DIR:-${HOME:-/tmp}/.operator-auth-profile-secrets}:/home/node/.config/operator"',
       ),
     ).toHaveLength(3);

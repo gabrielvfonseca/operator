@@ -161,6 +161,7 @@ describe("security audit gateway config findings", () => {
 
   it("does not warn when gateway.auth.token resolves from OPERATOR_GATEWAY_TOKEN", () => {
     const cfg: OperatorConfig = {
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       gateway: { auth: { token: "${OPERATOR_GATEWAY_TOKEN}" } },
       secrets: { providers: { default: { source: "env" } } },
     };

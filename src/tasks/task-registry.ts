@@ -1076,8 +1076,7 @@ function syncManagedFlowCancellationFromTask(task: TaskRecord): void {
   }
   let flow = getTaskFlowById(flowId);
   if (
-    !flow ||
-    flow.syncMode !== "managed" ||
+    flow?.syncMode !== "managed" ||
     flow.cancelRequestedAt == null ||
     isTerminalFlowStatus(flow.status)
   ) {
@@ -1105,8 +1104,7 @@ function syncManagedFlowCancellationFromTask(task: TaskRecord): void {
     }
     flow = result.current;
     if (
-      !flow ||
-      flow.syncMode !== "managed" ||
+      flow?.syncMode !== "managed" ||
       flow.cancelRequestedAt == null ||
       isTerminalFlowStatus(flow.status)
     ) {
@@ -1373,9 +1371,9 @@ function canDeliverParentReviewTaskToBoundDiscordThread(task: TaskRecord): boole
   // not a general parent-review direct-delivery relaxation.
   return Boolean(
     channel === "discord" &&
-    to?.startsWith("channel:") &&
-    threadId &&
-    canDeliverToRequesterOrigin(origin),
+      to?.startsWith("channel:") &&
+      threadId &&
+      canDeliverToRequesterOrigin(origin),
   );
 }
 

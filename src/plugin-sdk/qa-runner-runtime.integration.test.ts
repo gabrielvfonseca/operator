@@ -120,7 +120,7 @@ describe("plugin-sdk qa-runner-runtime linked plugin smoke", () => {
     const contributions = listQaRunnerCliContributions();
     const contribution = contributions[0];
     expect(contribution?.status).toBe("available");
-    if (!contribution || contribution.status !== "available") {
+    if (contribution?.status !== "available") {
       throw new Error("Expected linked QA runner contribution to be available");
     }
     const register = contribution.registration["register"];

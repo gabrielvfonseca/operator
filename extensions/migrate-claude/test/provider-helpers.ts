@@ -54,7 +54,7 @@ export function makeConfigRuntime(
         mutate,
       }: {
         afterWrite?: unknown;
-        mutate: (draft: OperatorConfig, context: unknown) => Promise<unknown> | void;
+        mutate: (draft: OperatorConfig, context: unknown) => Promise<unknown> | undefined;
       }) => {
         const next = structuredClone(config);
         const result = await mutate(next, {

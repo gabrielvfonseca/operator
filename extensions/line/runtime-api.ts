@@ -52,7 +52,7 @@ export {
   resolveDefaultLineAccountId,
   resolveLineAccount,
 } from "./src/accounts.js";
-export { type NormalizedAllowFrom } from "./src/bot-access.js";
+export type { NormalizedAllowFrom } from "./src/bot-access.js";
 export { resolveLineChannelAccessToken } from "./src/channel-access-token.js";
 export {
   LineChannelConfigSchema,

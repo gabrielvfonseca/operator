@@ -141,6 +141,7 @@ export async function installDownloadSpec(params: {
     };
   }
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let filename;
   try {
     const parsed = new URL(url);
@@ -152,7 +153,9 @@ export async function installDownloadSpec(params: {
     filename = "download";
   }
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let canonicalRoot;
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let targetDir;
   try {
     await ensureDir(root);
@@ -193,6 +196,7 @@ export async function installDownloadSpec(params: {
       code: null,
     };
   }
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let downloaded;
   try {
     const result = await downloadFile({

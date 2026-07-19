@@ -126,8 +126,9 @@ type ExplicitProxyTelegramDispatcherPolicy = Extract<
 >;
 
 beforeAll(async () => {
-  ({ resolveTelegramApiBase, resolveTelegramFetch, resolveTelegramTransport } =
-    await import("./fetch.js"));
+  ({ resolveTelegramApiBase, resolveTelegramFetch, resolveTelegramTransport } = await import(
+    "./fetch.js"
+  ));
 });
 
 beforeEach(() => {

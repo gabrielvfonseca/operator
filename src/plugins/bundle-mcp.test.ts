@@ -237,10 +237,14 @@ describe("loadEnabledBundleMcpConfig", () => {
             name: "inline-claude",
             mcpServers: {
               inlineProbe: {
+                // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
                 command: "${CLAUDE_PLUGIN_ROOT}/bin/server.sh",
+                // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
                 args: ["${CLAUDE_PLUGIN_ROOT}/servers/probe.mjs", "./local-probe.mjs"],
+                // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
                 cwd: "${CLAUDE_PLUGIN_ROOT}",
                 env: {
+                  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
                   PLUGIN_ROOT: "${CLAUDE_PLUGIN_ROOT}",
                 },
               },

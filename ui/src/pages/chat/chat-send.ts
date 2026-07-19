@@ -504,8 +504,8 @@ function pendingComposerRestorePlan(host: ChatHost, snapshot: PendingComposerSna
   const willRestoreDraft = snapshot.previousDraft != null && !host.chatMessage.trim();
   const willRestoreAttachments = Boolean(
     snapshot.previousAttachments?.length &&
-    host.chatAttachments.length === 0 &&
-    (willRestoreDraft || !host.chatMessage.trim()),
+      host.chatAttachments.length === 0 &&
+      (willRestoreDraft || !host.chatMessage.trim()),
   );
   return {
     complete:
@@ -1591,8 +1591,8 @@ function historyContainsQueuedSend(history: ChatHistoryResult, item: ChatQueueIt
 function historySessionIsIdle(history: ChatHistoryResult): boolean {
   return Boolean(
     history.sessionInfo &&
-    history.sessionInfo.hasActiveRun !== true &&
-    !isSessionRunActive(history.sessionInfo),
+      history.sessionInfo.hasActiveRun !== true &&
+      !isSessionRunActive(history.sessionInfo),
   );
 }
 
@@ -1926,7 +1926,6 @@ async function drainStoredChatOutbox(
       return "blocked";
     }
     if (result === "failed") {
-      continue;
     }
   }
 }

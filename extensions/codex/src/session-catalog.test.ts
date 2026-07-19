@@ -1028,7 +1028,7 @@ describe("Codex supervision catalog", () => {
     const command = createCodexSessionCatalogNodeHostCommands(createEligibleControl()).find(
       (candidate) => candidate.command === CODEX_TERMINAL_RESUME_COMMAND,
     );
-    if (!command || command.duplex !== true) {
+    if (command?.duplex !== true) {
       throw new Error("Codex terminal command was not registered as duplex");
     }
     await expect(
@@ -1065,7 +1065,7 @@ describe("Codex supervision catalog", () => {
         })),
       }),
     ).find((candidate) => candidate.command === CODEX_TERMINAL_RESUME_COMMAND);
-    if (!command || command.duplex !== true) {
+    if (command?.duplex !== true) {
       throw new Error("Codex terminal command was not registered as duplex");
     }
 

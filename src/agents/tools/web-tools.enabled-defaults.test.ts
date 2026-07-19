@@ -47,8 +47,9 @@ vi.mock("../../secrets/runtime-state.js", () => ({
 
 vi.mock("../../web-search/runtime.js", async () => {
   const { getActivePluginRegistry } = await import("../../plugins/runtime.js");
-  const { getActiveRuntimeWebToolsMetadata } =
-    await import("../../secrets/runtime-web-tools-state.js");
+  const { getActiveRuntimeWebToolsMetadata } = await import(
+    "../../secrets/runtime-web-tools-state.js"
+  );
   const resolveRuntimeDefinition = (options?: {
     config?: unknown;
     runtimeWebSearch?: { selectedProvider?: string; providerConfigured?: string };

@@ -1004,12 +1004,12 @@ function buildPayloadSummary(payload: ReplyPayload): NormalizedOutboundPayload {
 function hasDeliveryResultIdentity(result: OutboundDeliveryResult): boolean {
   return Boolean(
     result.messageId ||
-    result.chatId ||
-    result.channelId ||
-    result.roomId ||
-    result.conversationId ||
-    result.toJid ||
-    result.pollId,
+      result.chatId ||
+      result.channelId ||
+      result.roomId ||
+      result.conversationId ||
+      result.toJid ||
+      result.pollId,
   );
 }
 

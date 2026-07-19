@@ -91,7 +91,7 @@ export function hasSessionUserTurnBeenSent(
   state: EmbeddedSessionPromptState,
   message: AgentMessage | undefined,
 ): boolean | undefined {
-  if (!message || message.role !== "user") {
+  if (message?.role !== "user") {
     return undefined;
   }
   const idempotencyKey = (message as { idempotencyKey?: unknown }).idempotencyKey;

@@ -1613,6 +1613,7 @@ export class QmdMemoryManager implements MemorySearchManager {
   > {
     const start = normalizePositiveInteger(from, 1);
     const count = normalizePositiveInteger(lines, Number.MAX_SAFE_INTEGER);
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let handle;
     try {
       handle = await fs.open(absPath);

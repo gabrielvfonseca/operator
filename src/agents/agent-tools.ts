@@ -1,9 +1,3 @@
-/**
- * Builds the effective Operator agent tool surface.
- * Assembles core, shell, channel, Operator, plugin, and Tool Search tools, then
- * applies sandbox, profile, provider, sender, group, and sub-agent policy.
- */
-import path from "node:path";
 import type {
   SourceReplyDeliveryMode,
   TaskSuggestionDeliveryMode,
@@ -58,10 +52,7 @@ import type { ProcessToolDefaults } from "./bash-tools.process.js";
 import { processSchema } from "./bash-tools.schemas.js";
 import { listChannelAgentTools } from "./channel-tools.js";
 import { shouldSuppressManagedWebSearchTool } from "./codex-native-web-search.js";
-import {
-  resolveConversationCapabilityProfile,
-  type ResolvedConversationCapabilityProfile,
-} from "./conversation-capability-profile.js";
+import { resolveConversationCapabilityProfile } from "./conversation-capability-profile.js";
 import type { OperatorCodingToolConstructionPlan } from "./core-tool-factory-descriptors.js";
 import { resolveImageSanitizationLimits } from "./image-sanitization.js";
 import { createLazyExecTool, resolveExecToolConfig } from "./lazy-exec-tool.js";

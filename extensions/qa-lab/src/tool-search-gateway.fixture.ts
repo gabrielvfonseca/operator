@@ -199,6 +199,7 @@ async function writeFakePlugin(params: {
       "        description: spec.description,",
       "        parameters: spec.parameters,",
       "        execute: async (_toolCallId, input) => ({",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "          content: [{ type: 'text', text: `FAKE_PLUGIN_OK ${spec.name} ${JSON.stringify(input ?? {})}` }],",
       "          details: { status: 'ok', tool: spec.name, input },",
       "        }),",

@@ -1554,11 +1554,11 @@ export function createMatrixRoomMessageHandler(params: MatrixMonitorHandlerParam
       const groupSystemPrompt = normalizeOptionalString(roomConfig?.systemPrompt);
       const quoteHidden = Boolean(
         replyContext &&
-        !evaluateSupplementalContextVisibility({
-          mode: contextVisibilityMode,
-          kind: "quote",
-          senderAllowed: replySenderAllowed,
-        }).include,
+          !evaluateSupplementalContextVisibility({
+            mode: contextVisibilityMode,
+            kind: "quote",
+            senderAllowed: replySenderAllowed,
+          }).include,
       );
       const ctxPayload = buildChannelInboundEventContext({
         channel: "matrix",
@@ -1668,16 +1668,16 @@ export function createMatrixRoomMessageHandler(params: MatrixMonitorHandlerParam
       const shouldAckReaction = () =>
         Boolean(
           ackReaction &&
-          core.channel.reactions.shouldAckReaction({
-            scope: ackScope,
-            isDirect: isDirectMessage,
-            isGroup: isRoom,
-            isMentionableGroup: isRoom,
-            requireMention: shouldRequireMention,
-            canDetectMention,
-            effectiveWasMentioned: wasMentioned || shouldBypassMention,
-            shouldBypassMention,
-          }),
+            core.channel.reactions.shouldAckReaction({
+              scope: ackScope,
+              isDirect: isDirectMessage,
+              isGroup: isRoom,
+              isMentionableGroup: isRoom,
+              requireMention: shouldRequireMention,
+              canDetectMention,
+              effectiveWasMentioned: wasMentioned || shouldBypassMention,
+              shouldBypassMention,
+            }),
         );
       if (shouldAckReaction() && messageId) {
         loadMatrixSendModule()

@@ -900,13 +900,13 @@ describe("Integration: saveSessionStore with pruning", () => {
       [freshKey]: { sessionId: "fresh-budget-session", updatedAt: now },
     });
     await seedSqliteTranscriptMessage({
-      content: "old-" + "x".repeat(1_200),
+      content: `old-${"x".repeat(1_200)}`,
       sessionId: "old-budget-session",
       sessionKey: oldKey,
       storePath,
     });
     await seedSqliteTranscriptMessage({
-      content: "fresh-" + "y".repeat(1_200),
+      content: `fresh-${"y".repeat(1_200)}`,
       sessionId: "fresh-budget-session",
       sessionKey: freshKey,
       storePath,
@@ -961,13 +961,13 @@ describe("Integration: saveSessionStore with pruning", () => {
       [freshKey]: { sessionId: "fresh-apply-budget-session", updatedAt: now },
     });
     await seedSqliteTranscriptMessage({
-      content: "old-" + "x".repeat(1_200),
+      content: `old-${"x".repeat(1_200)}`,
       sessionId: "old-apply-budget-session",
       sessionKey: oldKey,
       storePath,
     });
     await seedSqliteTranscriptMessage({
-      content: "fresh-" + "y".repeat(1_200),
+      content: `fresh-${"y".repeat(1_200)}`,
       sessionId: "fresh-apply-budget-session",
       sessionKey: freshKey,
       storePath,
@@ -1026,7 +1026,7 @@ describe("Integration: saveSessionStore with pruning", () => {
       [freshKey]: { sessionId: "fresh-trajectory-budget-session", updatedAt: now },
     });
     await seedSqliteTrajectoryEvent({
-      content: "old-" + "x".repeat(1_400),
+      content: `old-${"x".repeat(1_400)}`,
       sessionId: "old-trajectory-budget-session",
       sessionKey: oldKey,
       storePath,
@@ -1076,7 +1076,7 @@ describe("Integration: saveSessionStore with pruning", () => {
       [freshKey]: { sessionId: "fresh-trajectory-apply-budget-session", updatedAt: now },
     });
     await seedSqliteTrajectoryEvent({
-      content: "old-" + "x".repeat(1_400),
+      content: `old-${"x".repeat(1_400)}`,
       sessionId: "old-trajectory-apply-budget-session",
       sessionKey: oldKey,
       storePath,

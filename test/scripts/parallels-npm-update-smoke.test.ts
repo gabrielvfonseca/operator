@@ -239,6 +239,7 @@ exit 1
     expect(script).toContain("--beta-validation [target]");
     expect(script).toContain("resolveOpenClawRegistryVersion");
     expect(script).toContain("this.options.updateTarget = version");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain("this.options.freshTargetSpec = `openclaw@${version}`");
     expect(script).toContain("runFreshTargetInstalls");
     expect(script).toContain("freshTargetStatus");
@@ -643,6 +644,7 @@ exit 1
     expect(transports).toContain("runWindowsBackgroundPowerShell");
     expect(transports).toContain("__OPENCLAW_BACKGROUND_EXIT__");
     expect(transports).toContain("__OPENCLAW_BACKGROUND_DONE__");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(transports).toContain("${options.label} timed out");
   });
 

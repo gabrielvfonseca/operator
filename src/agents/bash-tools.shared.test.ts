@@ -73,7 +73,7 @@ describe("deriveSessionName", () => {
 
 describe("chunkString", () => {
   it("preserves surrogate pairs at chunk boundaries", () => {
-    const input = "a".repeat(8191) + "🚀b";
+    const input = `${"a".repeat(8191)}🚀b`;
     expect(chunkString(input, 8192)).toEqual(["a".repeat(8191), "🚀b"]);
   });
 

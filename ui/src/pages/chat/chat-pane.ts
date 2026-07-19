@@ -371,15 +371,15 @@ class ChatPane extends OperatorLightDomElement {
     const state = this.state;
     return Boolean(
       state?.connected &&
-      uiSessionEventMatches(
-        {
-          agentsList: this.context.agents.state.agentsList,
-          hello: this.context.gateway.snapshot.hello,
-          sessionKey: state.sessionKey,
-        },
-        suggestion.sessionKey,
-        suggestion.agentId,
-      ),
+        uiSessionEventMatches(
+          {
+            agentsList: this.context.agents.state.agentsList,
+            hello: this.context.gateway.snapshot.hello,
+            sessionKey: state.sessionKey,
+          },
+          suggestion.sessionKey,
+          suggestion.agentId,
+        ),
     );
   }
 
@@ -1258,7 +1258,7 @@ class ChatPane extends OperatorLightDomElement {
 
   private readonly createSession = async (): Promise<boolean> => {
     const state = this.state;
-    if (!state || !state.client || !state.connected) {
+    if (!state?.client || !state.connected) {
       return false;
     }
     const context = this.context;
@@ -1376,7 +1376,7 @@ class ChatPane extends OperatorLightDomElement {
 
   private sendPendingSkillWorkshopRevision(expectedSessionKey: string) {
     const state = this.state;
-    if (!this.active || !state || !state.connected || state.sessionKey !== expectedSessionKey) {
+    if (!this.active || !state?.connected || state.sessionKey !== expectedSessionKey) {
       return;
     }
     const revision = this.context.skillWorkshopRevision.consume(expectedSessionKey);
@@ -1857,8 +1857,9 @@ class ChatPane extends OperatorLightDomElement {
           ${renderSessionDiffToggle(sessionWorkspace)}
           ${renderBackgroundTasksToggle(backgroundTasks)}
           ${renderSessionWorkspaceToggle(sessionWorkspace)}
-          ${!this.narrow
-            ? html`
+          ${
+            !this.narrow
+              ? html`
                 <operator-tooltip .content=${t("chat.splitView.splitDown")}>
                   <button
                     class="btn btn--ghost btn--icon chat-icon-btn"
@@ -1880,7 +1881,8 @@ class ChatPane extends OperatorLightDomElement {
                   </button>
                 </operator-tooltip>
               `
-            : nothing}
+              : nothing
+          }
           <operator-tooltip .content=${t("chat.splitView.closePane")}>
             <button
               class="btn btn--ghost btn--icon chat-icon-btn"

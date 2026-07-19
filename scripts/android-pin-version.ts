@@ -87,6 +87,7 @@ export function parseArgs(argv: string[]): CliOptions {
         break;
       }
       case "-h":
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
       case "--help": {
         console.log(`${usage()}\n`);
         process.exit(0);

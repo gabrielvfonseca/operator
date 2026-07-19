@@ -84,9 +84,9 @@ export function isFailoverError(err: unknown): err is FailoverError {
   }
   return Boolean(
     err &&
-    typeof err === "object" &&
-    (err as { name?: unknown }).name === "FailoverError" &&
-    typeof (err as { reason?: unknown }).reason === "string",
+      typeof err === "object" &&
+      (err as { name?: unknown }).name === "FailoverError" &&
+      typeof (err as { reason?: unknown }).reason === "string",
   );
 }
 
@@ -360,9 +360,9 @@ function isEmbeddedAttemptSessionTakeover(err: unknown): boolean {
 function hasPreservedTakeoverPromptError(err: unknown): err is Record<"promptError", unknown> {
   return Boolean(
     isEmbeddedAttemptSessionTakeover(err) &&
-    err &&
-    typeof err === "object" &&
-    Object.hasOwn(err, "promptError"),
+      err &&
+      typeof err === "object" &&
+      Object.hasOwn(err, "promptError"),
   );
 }
 

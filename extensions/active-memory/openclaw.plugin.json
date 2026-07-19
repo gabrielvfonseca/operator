@@ -40,10 +40,7 @@
         "enum": ["off", "minimal", "low", "medium", "high", "xhigh", "adaptive"]
       },
       "fastMode": {
-        "anyOf": [
-          { "type": "boolean" },
-          { "type": "string", "enum": ["auto"] }
-        ]
+        "anyOf": [{ "type": "boolean" }, { "type": "string", "enum": ["auto"] }]
       },
       "timeoutMs": { "type": "integer", "minimum": 250, "maximum": 120000 },
       "setupGraceTimeoutMs": { "type": "integer", "minimum": 0, "maximum": 30000 },

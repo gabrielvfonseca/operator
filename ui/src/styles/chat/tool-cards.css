@@ -25,6 +25,7 @@
   margin-left: -8px;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .chat-tool-msg-summary {
   display: flex;
   align-items: center;
@@ -368,6 +369,7 @@
   user-select: none;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .chat-diff__sign {
   flex-shrink: 0;
   width: 16px;
@@ -377,6 +379,7 @@
   user-select: none;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .chat-diff__text {
   white-space: pre;
   tab-size: 4;
@@ -570,6 +573,7 @@
   }
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .chat-tool-card__actions {
   display: inline-flex;
   align-items: center;
@@ -789,6 +793,7 @@
   transform: rotate(180deg);
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .chat-tool-card__raw-toggle-icon {
   display: inline-flex;
   align-items: center;
@@ -993,6 +998,7 @@
   border-top: 0;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .chat-activity-group__body .chat-tool-msg-summary {
   padding: 7px 12px;
   border-radius: 0;
@@ -1359,6 +1365,7 @@ wa-tooltip.chat-tasks-status__preview::part(body) {
 }
 
 @media (pointer: coarse) {
+  /* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
   .chat-tool-msg-summary,
   .chat-activity-group__summary {
     padding-top: 8px;

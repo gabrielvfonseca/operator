@@ -449,7 +449,7 @@ export class MemoryIndexManager extends MemoryManagerEmbeddingOps implements Mem
           try {
             await manager.markSessionStartupCatchupDirtyFiles();
           } catch (err) {
-            log.warn("memory status session dirty detection failed: " + String(err));
+            log.warn(`memory status session dirty detection failed: ${String(err)}`);
           }
         }
         return manager;
@@ -1652,7 +1652,7 @@ export class MemoryIndexManager extends MemoryManagerEmbeddingOps implements Mem
 function hasTargetedSessionSyncParams(params: MemorySyncParams | undefined): boolean {
   return Boolean(
     params?.sessions?.some((session) => session.sessionId.trim().length > 0) ||
-    params?.archiveFiles?.some((sessionFile) => sessionFile.trim().length > 0),
+      params?.archiveFiles?.some((sessionFile) => sessionFile.trim().length > 0),
   );
 }
 

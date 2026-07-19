@@ -22,6 +22,7 @@ function escapeRegex(value: string): string {
 
 function cleanupTestStateHomeTrap(): string {
   return [
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'cleanup_operator_test_state_home() { [ -z "${OPERATOR_TEST_STATE_HOME:-}" ] || rm -rf "$OPERATOR_TEST_STATE_HOME"; }',
     "trap cleanup_operator_test_state_home EXIT",
   ].join("; ");
@@ -109,6 +110,7 @@ describe("scripts/lib/operator-test-state", () => {
         "update-stable",
       ]);
       expect(stdout).toContain(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'OPERATOR_TEST_STATE_TMP_ROOT="${OPERATOR_TEST_STATE_TMPDIR:-${TMPDIR:-/tmp}}"',
       );
       expect(stdout).toContain(

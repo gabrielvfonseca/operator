@@ -31,7 +31,7 @@ export async function deliverFinalizableDraftPreview<TPayload, TId, TEdit>(param
   draft?: DraftPreviewFinalizerDraft<TId>;
   buildFinalEdit: (payload: TPayload) => TEdit | undefined;
   editFinal: (id: TId, edit: TEdit) => Promise<void>;
-  deliverNormally: (payload: TPayload) => Promise<boolean | void>;
+  deliverNormally: (payload: TPayload) => Promise<boolean | undefined>;
   onPreviewFinalized?: (id: TId) => Promise<void> | void;
   onNormalDelivered?: () => Promise<void> | void;
   logPreviewEditFailure?: (error: unknown) => void;

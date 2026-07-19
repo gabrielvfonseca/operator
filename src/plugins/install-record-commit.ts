@@ -84,7 +84,7 @@ export function stripPendingPluginInstallRecords(
 type ConfigCommit = (
   config: OperatorConfig,
   writeOptions?: ConfigWriteOptions,
-) => Promise<ConfigReplaceResult | void>;
+) => Promise<ConfigReplaceResult | undefined>;
 const PLUGIN_SOURCE_CHANGED_RESTART_REASON = "plugin source changed";
 
 function mergeAfterWrite(
@@ -278,7 +278,7 @@ async function commitPluginInstallRecordsWithWriter(params: {
   nextConfig: OperatorConfig;
   writeOptions?: ConfigWriteOptions;
   commit: ConfigCommit;
-}): Promise<ConfigReplaceResult | void> {
+}): Promise<ConfigReplaceResult | undefined> {
   const previousInstallRecords =
     params.previousInstallRecords ?? (await loadInstalledPluginIndexInstallRecords());
   const retainedMarkerPaths: string[] = [];

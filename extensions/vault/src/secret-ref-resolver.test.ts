@@ -257,6 +257,7 @@ describe("plugin manifest", () => {
     expect(manifest.secretProviderIntegrations?.vault).toMatchObject({
       providerAlias: "vault",
       source: "exec",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       command: "${node}",
       args: ["./vault-secret-ref-resolver.js"],
       passEnv: expect.arrayContaining([

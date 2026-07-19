@@ -130,15 +130,19 @@ export class AgentSelect extends OperatorLightDomElement {
     return html`
       <wa-dropdown class="agent-select" placement="bottom-start" @wa-select=${this.handleSelect}>
         <button slot="trigger" type="button" class="agent-select__trigger" ?disabled=${unavailable}>
-          ${selectedAgent
-            ? html`
+          ${
+            selectedAgent
+              ? html`
                 ${this.renderAvatar(selectedAgent)}
                 <span class="agent-select__label">${normalizeAgentLabel(selectedAgent)}</span>
-                ${selectedBadge
-                  ? html`<span class="agent-select__badge">${selectedBadge}</span>`
-                  : nothing}
+                ${
+                  selectedBadge
+                    ? html`<span class="agent-select__badge">${selectedBadge}</span>`
+                    : nothing
+                }
               `
-            : html`<span class="agent-select__label">${t("agents.noAgents")}</span>`}
+              : html`<span class="agent-select__label">${t("agents.noAgents")}</span>`
+          }
           <span class="agent-select__chevron" aria-hidden="true">${icons.chevronDown}</span>
         </button>
         ${this.agents.map((agent) => {
@@ -154,9 +158,11 @@ export class AgentSelect extends OperatorLightDomElement {
             >
               <span slot="icon">${this.renderAvatar(agent)}</span>
               <span class="agent-select__option-label">${normalizeAgentLabel(agent)}</span>
-              ${badge
-                ? html`<span slot="details" class="agent-select__badge">${badge}</span>`
-                : nothing}
+              ${
+                badge
+                  ? html`<span slot="details" class="agent-select__badge">${badge}</span>`
+                  : nothing
+              }
             </wa-dropdown-item>
           `;
         })}

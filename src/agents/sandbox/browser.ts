@@ -449,14 +449,13 @@ export async function ensureSandboxBrowser(params: {
   const evaluateMatches =
     !existing || existing.bridge.state.resolved.evaluateEnabled === desiredEvaluateEnabled;
   const canReuse = Boolean(
-    existing &&
-    existing.bridge.server.listening &&
-    existing.containerName === containerName &&
-    existingProfile?.cdpPort === mappedCdp &&
-    existingProfile?.cdpUrl === cdpUrl &&
-    policyMatches &&
-    authMatches &&
-    evaluateMatches,
+    existing?.bridge.server.listening &&
+      existing.containerName === containerName &&
+      existingProfile?.cdpPort === mappedCdp &&
+      existingProfile?.cdpUrl === cdpUrl &&
+      policyMatches &&
+      authMatches &&
+      evaluateMatches,
   );
   if (existing && !canReuse) {
     await stopCachedBrowserBridge(params.scopeKey, existing);

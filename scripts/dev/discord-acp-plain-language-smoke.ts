@@ -819,9 +819,11 @@ async function run(argv = process.argv.slice(2)): Promise<SuccessResult | Failur
   });
 
   let readAuthHeader = "";
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let sentMessageId;
   let setupStage: "discord-api" | "send-message" = "discord-api";
   let senderAuthorId: string | undefined;
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let minBindingBoundAt;
   let webhookForCleanup: WebhookForCleanup | undefined;
 

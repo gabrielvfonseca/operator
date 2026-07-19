@@ -77,7 +77,7 @@ export async function installPluginFromPluginsCommand(params: {
   if (fileSpec && !fileSpec.ok) {
     return { ok: false, error: fileSpec.error };
   }
-  const normalized = fileSpec && fileSpec.ok ? fileSpec.path : params.raw;
+  const normalized = fileSpec?.ok ? fileSpec.path : params.raw;
   const resolved = resolveUserPath(normalized);
   const installMode = params.force ? "update" : "install";
 

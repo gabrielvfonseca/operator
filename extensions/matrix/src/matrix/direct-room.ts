@@ -28,10 +28,10 @@ export function isStrictDirectMembership(params: {
   const joinedMembers = params.joinedMembers ?? [];
   return Boolean(
     selfUserId &&
-    remoteUserId &&
-    joinedMembers.length === 2 &&
-    joinedMembers.includes(selfUserId) &&
-    joinedMembers.includes(remoteUserId),
+      remoteUserId &&
+      joinedMembers.length === 2 &&
+      joinedMembers.includes(selfUserId) &&
+      joinedMembers.includes(remoteUserId),
   );
 }
 

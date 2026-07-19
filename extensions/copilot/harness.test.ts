@@ -549,7 +549,7 @@ describe("createCopilotAgentHarness", () => {
       const pool = makePoolMock();
       const deleteSession = vi.fn().mockResolvedValue(undefined);
       const client = createMockCopilotClient({ deleteSession });
-      mocks.runCopilotAttempt.mockImplementation(async (params, deps) => {
+      mocks.runCopilotAttempt.mockImplementation(async (_params, deps) => {
         deps.onSessionEstablished?.({
           sdkSessionId: "sdk-sess-123",
           pooledClient: { key: TEST_POOL_KEY, client },
@@ -581,7 +581,7 @@ describe("createCopilotAgentHarness", () => {
       const pool = makePoolMock();
       const deleteSession = vi.fn().mockRejectedValue(new Error("session not found"));
       const client = createMockCopilotClient({ deleteSession });
-      mocks.runCopilotAttempt.mockImplementation(async (params, deps) => {
+      mocks.runCopilotAttempt.mockImplementation(async (_params, deps) => {
         deps.onSessionEstablished?.({
           sdkSessionId: "sdk-sess-err",
           pooledClient: { key: TEST_POOL_KEY, client },
@@ -600,7 +600,7 @@ describe("createCopilotAgentHarness", () => {
       const pool = makePoolMock();
       const deleteSession = vi.fn().mockResolvedValue(undefined);
       const client = createMockCopilotClient({ deleteSession });
-      mocks.runCopilotAttempt.mockImplementation(async (params, deps) => {
+      mocks.runCopilotAttempt.mockImplementation(async (_params, deps) => {
         deps.onSessionEstablished?.({
           sdkSessionId: "sdk-sess-x",
           pooledClient: { key: TEST_POOL_KEY, client },
@@ -620,7 +620,7 @@ describe("createCopilotAgentHarness", () => {
       const pool = makePoolMock();
       const deleteSession = vi.fn().mockResolvedValue(undefined);
       const client = createMockCopilotClient({ deleteSession });
-      mocks.runCopilotAttempt.mockImplementation(async (params, deps) => {
+      mocks.runCopilotAttempt.mockImplementation(async (_params, deps) => {
         deps.onSessionEstablished?.({
           sdkSessionId: "sdk-sess-y",
           pooledClient: { key: TEST_POOL_KEY, client },
@@ -640,7 +640,7 @@ describe("createCopilotAgentHarness", () => {
     const pool = makePoolMock();
     const deleteSession = vi.fn().mockResolvedValue(undefined);
     const client = createMockCopilotClient({ deleteSession });
-    mocks.runCopilotAttempt.mockImplementation(async (params, deps) => {
+    mocks.runCopilotAttempt.mockImplementation(async (_params, deps) => {
       deps.onSessionEstablished?.({
         sdkSessionId: "sdk-sess-d",
         pooledClient: { key: TEST_POOL_KEY, client },

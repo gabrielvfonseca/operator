@@ -249,7 +249,7 @@ export function createRealtimeVoiceForcedConsultCoordinator<TContext = unknown>(
     },
     schedule(handle, delayMs, run) {
       const stored = getStored(handle);
-      if (!stored || !stored.pending || stored.timer) {
+      if (!stored?.pending || stored.timer) {
         return;
       }
       stored.timer = setTimer(

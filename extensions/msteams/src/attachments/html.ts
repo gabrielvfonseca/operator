@@ -117,9 +117,9 @@ function isAdvertisedFileAttachment(attachment: MSTeamsAttachmentLike): boolean 
   }
   return Boolean(
     isDownloadableAttachment(attachment) ||
-    isLikelyImageAttachment(attachment) ||
-    attachment.name?.trim() ||
-    contentType,
+      isLikelyImageAttachment(attachment) ||
+      attachment.name?.trim() ||
+      contentType,
   );
 }
 

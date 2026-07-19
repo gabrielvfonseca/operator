@@ -18,11 +18,11 @@ function isTypeOnlyImportDeclaration(node) {
   const clause = node.importClause;
   return Boolean(
     clause &&
-    (ts.isTypeOnlyImportDeclaration(clause) ||
-      (!clause.name &&
-        ts.isNamedImports(clause.namedBindings) &&
-        clause.namedBindings.elements.length > 0 &&
-        clause.namedBindings.elements.every(ts.isTypeOnlyImportOrExportDeclaration))),
+      (ts.isTypeOnlyImportDeclaration(clause) ||
+        (!clause.name &&
+          ts.isNamedImports(clause.namedBindings) &&
+          clause.namedBindings.elements.length > 0 &&
+          clause.namedBindings.elements.every(ts.isTypeOnlyImportOrExportDeclaration))),
   );
 }
 
@@ -32,9 +32,9 @@ function isTypeOnlyExportDeclaration(node) {
     node.isTypeOnly === true ||
     Boolean(
       clause &&
-      ts.isNamedExports(clause) &&
-      clause.elements.length > 0 &&
-      clause.elements.every(ts.isTypeOnlyImportOrExportDeclaration),
+        ts.isNamedExports(clause) &&
+        clause.elements.length > 0 &&
+        clause.elements.every(ts.isTypeOnlyImportOrExportDeclaration),
     )
   );
 }

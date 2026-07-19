@@ -229,7 +229,7 @@ export function matchesNoProxy(targetUrl: string, env: NodeJS.ProcessEnv = proce
     if (targetHost === normalizedEntry) {
       return true;
     }
-    if (targetHost.endsWith("." + normalizedEntry)) {
+    if (targetHost.endsWith(`.${normalizedEntry}`)) {
       return true;
     }
   }

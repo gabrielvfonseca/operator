@@ -370,12 +370,11 @@ describe("sessionFileHasContent", () => {
     // JSONL-based parser (CWE-703 fix) finds the assistant record that a
     // naive byte-prefix approach would miss.
     const bigContent = "x".repeat(300 * 1024);
-    const lines =
-      [
-        `{"type":"session","id":"s1"}`,
-        `{"type":"message","message":{"role":"user","content":"${bigContent}"}}`,
-        `{"type":"message","message":{"role":"assistant","content":"done"}}`,
-      ].join("\n") + "\n";
+    const lines = `${[
+      `{"type":"session","id":"s1"}`,
+      `{"type":"message","message":{"role":"user","content":"${bigContent}"}}`,
+      `{"type":"message","message":{"role":"assistant","content":"done"}}`,
+    ].join("\n")}\n`;
     await fs.writeFile(file, lines, "utf-8");
     expect(await sessionFileHasContent(file)).toBe(true);
   });
@@ -753,7 +752,7 @@ describe("claudeCliSessionTranscriptHasOrphanedToolUse", () => {
     });
     await fs.mkdir(projectDir, { recursive: true });
     const file = path.join(projectDir, `${sessionId}.jsonl`);
-    await fs.writeFile(file, lines.map((l) => JSON.stringify(l)).join("\n") + "\n", "utf-8");
+    await fs.writeFile(file, `${lines.map((l) => JSON.stringify(l)).join("\n")}\n`, "utf-8");
     return file;
   }
 

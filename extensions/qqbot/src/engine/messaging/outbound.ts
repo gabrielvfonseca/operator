@@ -120,6 +120,7 @@ export async function sendText(ctx: OutboundContext): Promise<OutboundResult> {
     let lastIndex = 0;
     const mediaTagRegexWithIndex =
       /<(qqimg|qqvoice|qqvideo|qqfile|qqmedia)>([^<>]+)<\/(?:qqimg|qqvoice|qqvideo|qqfile|qqmedia|img)>/gi;
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let match;
 
     while ((match = mediaTagRegexWithIndex.exec(text)) !== null) {

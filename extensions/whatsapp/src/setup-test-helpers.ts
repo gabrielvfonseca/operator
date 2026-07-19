@@ -71,9 +71,7 @@ export function createWhatsAppLinkingHarness<T extends WizardPromptHarness>(
 }
 
 export function createWhatsAppWorkAccountConfig(
-  params: {
-    defaultAccount?: string;
-  } = {},
+  params: { defaultAccount?: string } = {},
 ): WhatsAppSetupConfig {
   return {
     channels: {

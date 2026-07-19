@@ -128,6 +128,7 @@ function runManagedSupervisorClassifier(
       "set -euo pipefail",
       classifierFunctions,
       "loaded_launch_jobs() {",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '  [[ "${OPENCLAW_TEST_FAIL_ENUMERATION:-0}" != "1" ]] || return 1',
       "  cut -d'|' -f1,2 \"$OPENCLAW_TEST_LOADED_JOBS\"",
       "}",
@@ -232,6 +233,7 @@ function runRestartLockHarness(lockDir: string) {
       "#!/usr/bin/env bash",
       "set -euo pipefail",
       `LOCK_DIR=${shellQuote(lockDir)}`,
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'LOCK_PID_FILE="${LOCK_DIR}/pid"',
       "LOCK_HELD=0",
       "WAIT_FOR_LOCK=0",
@@ -333,10 +335,13 @@ describe("scripts/restart-mac.sh", () => {
   it("uses a fail-closed gateway port verification helper", () => {
     const script = readFileSync(restartScriptPath, "utf8");
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('source "${ROOT_DIR}/scripts/lib/restart-mac-gateway.sh"');
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'run_step "verify gateway port ${GATEWAY_PORT} (unsigned)" verify_gateway_port_listening "${GATEWAY_PORT}"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).not.toContain("lsof -iTCP:${GATEWAY_PORT} -sTCP:LISTEN | head -n 5 || true");
   });
 
@@ -352,8 +357,10 @@ describe("scripts/restart-mac.sh", () => {
     const script = readFileSync(restartScriptPath, "utf8");
 
     expect(script).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'LOG_PATH="${OPENCLAW_RESTART_LOG:-${TMPDIR:-/tmp}/openclaw-restart-${LOCK_KEY}.log}"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).not.toContain('LOG_PATH="${OPENCLAW_RESTART_LOG:-/tmp/openclaw-restart.log}"');
   });
 
@@ -395,10 +402,13 @@ describe("scripts/restart-mac.sh", () => {
       script.indexOf("choose_app_bundle", script.indexOf("choose_app_bundle()") + 1),
     );
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('fail "OPENCLAW_APP_BUNDLE does not exist: ${APP_BUNDLE}"');
     expect(chooseBlock).toContain("canonicalize_app_bundle");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(chooseBlock.indexOf("${ROOT_DIR}/dist/OpenClaw.app")).toBeGreaterThan(-1);
     expect(chooseBlock.indexOf("/Applications/OpenClaw.app")).toBeGreaterThan(-1);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(chooseBlock.indexOf("${ROOT_DIR}/dist/OpenClaw.app")).toBeLessThan(
       chooseBlock.indexOf("/Applications/OpenClaw.app"),
     );
@@ -413,11 +423,16 @@ describe("scripts/restart-mac.sh", () => {
 
     expect(cleanupBlock).toContain("ps axww -o pid=,command=");
     expect(cleanupBlock).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '"${ROOT_DIR}/dist/OpenClaw.app/${APP_EXECUTABLE_RELATIVE_PATH}"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(cleanupBlock).toContain('"/Applications/OpenClaw.app/${APP_EXECUTABLE_RELATIVE_PATH}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(cleanupBlock).toContain('"${DEBUG_PROCESS_PATTERN}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(cleanupBlock).toContain('"${LOCAL_PROCESS_PATTERN}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(cleanupBlock).toContain('"${RELEASE_PROCESS_PATTERN}"');
     expect(cleanupBlock).not.toContain("APP_PROCESS_PATTERN");
     expect(cleanupBlock).not.toContain("pkill");
@@ -453,7 +468,9 @@ describe("scripts/restart-mac.sh", () => {
     expect(initialTargetBlock).not.toContain("kill_all_openclaw");
     expect(switchTargetBlock).toContain("foreign_openclaw_process_pids");
     expect(switchTargetBlock).toContain("kill_managed_openclaw");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('[[ "${executable}" == "${TARGET_EXECUTABLE}" ]] && continue');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('process_pids_for_executable "${TARGET_EXECUTABLE}"');
     expect(script).toContain("target-only restart deferred");
   });
@@ -523,6 +540,7 @@ describe("scripts/restart-mac.sh", () => {
     const launchIndex = script.indexOf('run_step "launch app"');
 
     expect(packageIndex).toBeGreaterThan(-1);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('OPENCLAW_PACKAGE_APP_ROOT="${STAGED_APP_BUNDLE}"');
     expect(verifyIndex).toBeGreaterThan(packageIndex);
     expect(switchIndex).toBeGreaterThan(packageIndex);
@@ -538,8 +556,11 @@ describe("scripts/restart-mac.sh", () => {
       script.indexOf("choose_app_bundle()"),
     );
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(installBlock).toContain('mv "${TARGET_APP_BUNDLE}" "${previous}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(installBlock).toContain('if ! mv "${STAGED_APP_BUNDLE}" "${TARGET_APP_BUNDLE}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(installBlock).toContain('mv "${previous}" "${TARGET_APP_BUNDLE}"');
   });
 
@@ -554,6 +575,7 @@ describe("scripts/restart-mac.sh", () => {
       script.indexOf("known_openclaw_executables()"),
     );
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(managedKillBlock).toContain('kill -KILL "${pid}"');
     expect(managedKillBlock).toContain("managed_openclaw_process_pids");
     expect(broadKillBlock).not.toContain("kill -KILL");
@@ -580,6 +602,7 @@ describe("scripts/restart-mac.sh", () => {
     const verifyBlock = script.slice(script.indexOf("# 5) Verify the app is alive."));
 
     expect(verifyBlock).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'process_pids_matching "${APP_BUNDLE}/${APP_EXECUTABLE_RELATIVE_PATH}"',
     );
     expect(verifyBlock).not.toContain("APP_PROCESS_PATTERN");
@@ -589,7 +612,9 @@ describe("scripts/restart-mac.sh", () => {
   it("forces LaunchServices to start the selected app bundle", () => {
     const script = readFileSync(restartScriptPath, "utf8");
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('/usr/bin/open -n "${APP_BUNDLE}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).not.toContain('/usr/bin/open "${APP_BUNDLE}"');
   });
 

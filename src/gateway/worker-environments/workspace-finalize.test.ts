@@ -6,7 +6,7 @@ describe("final worker workspace fences", () => {
     const log: string[] = [];
     await verifyReconciledWorkspaceFinal(
       {
-        manifestRef: "sha256:" + "a".repeat(64),
+        manifestRef: `sha256:${"a".repeat(64)}`,
         changed: true,
         verifyStable: async () => {
           log.push("remote");
@@ -31,7 +31,7 @@ describe("final worker workspace fences", () => {
     await expect(
       verifyReconciledWorkspaceFinal(
         {
-          manifestRef: "sha256:" + "a".repeat(64),
+          manifestRef: `sha256:${"a".repeat(64)}`,
           changed: true,
           verifyStable: async () => {
             remoteVerifications += 1;

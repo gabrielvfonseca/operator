@@ -270,10 +270,7 @@ async function runMatrixToolProgressScenario(
   if (params.mentionSafety) {
     assertMatrixQaToolProgressMentionsInert(progress.event);
   }
-  if (
-    params.rejectProgressBodyPattern &&
-    params.rejectProgressBodyPattern.test(progress.event.body ?? "")
-  ) {
+  if (params.rejectProgressBodyPattern?.test(progress.event.body ?? "")) {
     throw new Error(
       `${params.rejectProgressBodyMessage ?? "Matrix tool progress preview body matched a rejected pattern"}: ${progress.event.body ?? "<none>"}`,
     );

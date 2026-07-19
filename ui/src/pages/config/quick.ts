@@ -614,9 +614,9 @@ function renderSystemStat(stat: SystemStat) {
     <div class="config-host__stat" title=${stat.title ?? ""}>
       <div class="config-host__stat-label">${stat.label}</div>
       <div class="config-host__stat-value">
-        ${stat.value}${stat.unit
-          ? html` <span class="config-host__stat-unit">${stat.unit}</span>`
-          : nothing}
+        ${stat.value}${
+          stat.unit ? html` <span class="config-host__stat-unit">${stat.unit}</span>` : nothing
+        }
       </div>
       ${stat.usedFraction == null ? nothing : renderSystemMeter(stat.label, stat.usedFraction)}
       ${stat.detail ? html`<div class="config-host__stat-detail">${stat.detail}</div>` : nothing}
@@ -737,12 +737,14 @@ function renderSystemSection(props: QuickSettingsProps) {
             ${info ? `${info.osLabel} · ${info.arch}` : placeholder}
           </div>
           <div class="config-host__meta">
-            ${info
-              ? t("quickSettings.system.runtime", {
-                  version: info.nodeVersion,
-                  pid: String(info.pid),
-                })
-              : placeholder}
+            ${
+              info
+                ? t("quickSettings.system.runtime", {
+                    version: info.nodeVersion,
+                    pid: String(info.pid),
+                  })
+                : placeholder
+            }
           </div>
           ${address ? html`<code class="config-host__address">${address}</code>` : nothing}
         </div>
@@ -777,15 +779,17 @@ function renderAppearanceSection(props: QuickSettingsProps) {
               }
             },
           })}
-          ${props.hasCustomTheme
-            ? nothing
-            : html`<button
+          ${
+            props.hasCustomTheme
+              ? nothing
+              : html`<button
                 type="button"
                 class="btn btn--sm"
                 @click=${() => props.onOpenCustomThemeImport?.()}
               >
                 ${importedThemeName}
-              </button>`}
+              </button>`
+          }
         `,
       }),
       renderSettingsRow({
@@ -855,9 +859,9 @@ function renderAppearanceSection(props: QuickSettingsProps) {
                   : (entry.name ?? palette.id);
               return html`
                 <span
-                  class="lobsterdex__mini lobster-pet--palette-${palette.id} ${seen
-                    ? ""
-                    : "lobsterdex__mini--unseen"}"
+                  class="lobsterdex__mini lobster-pet--palette-${palette.id} ${
+                    seen ? "" : "lobsterdex__mini--unseen"
+                  }"
                   style="--lob-shell:${palette.shell};--lob-claw:${palette.claw}"
                   title=${title}
                 >
@@ -883,7 +887,7 @@ function renderPersonalSection(props: QuickSettingsProps) {
   const assistantAvatarUrl = resolveAssistantPreviewAvatarUrl(props);
   const assistantAvatarRendered = Boolean(
     assistantAvatarUrl ||
-    resolveAssistantTextAvatar(props.assistantAvatarOverride ?? props.assistantAvatar),
+      resolveAssistantTextAvatar(props.assistantAvatarOverride ?? props.assistantAvatar),
   );
   const assistantAvatarOverride = normalizeOptionalString(props.assistantAvatarOverride);
   const assistantAvatarSource = formatAssistantAvatarSource(
@@ -970,29 +974,36 @@ function renderPersonalSection(props: QuickSettingsProps) {
           <div class="config-identity__eyebrow">${t("quickSettings.personal.assistant")}</div>
           <div class="config-identity__title">${assistantName}</div>
           <div class="config-identity__sub">${assistantAvatarSubtitle}</div>
-          ${assistantAvatarSource
-            ? html`
+          ${
+            assistantAvatarSource
+              ? html`
                 <div class="config-identity__source" title=${props.assistantAvatarSource ?? ""}>
                   <span>${assistantAvatarSourceLabel}</span>
                   <code>${assistantAvatarSource}</code>
                 </div>
               `
-            : nothing}
-          ${assistantAvatarIssue
-            ? html`<div class="config-identity__issue">
+              : nothing
+          }
+          ${
+            assistantAvatarIssue
+              ? html`<div class="config-identity__issue">
                 ${renderSettingsStatus({ kind: "warn", label: assistantAvatarIssue })}
               </div>`
-            : nothing}
-          ${canOverrideAssistantAvatar
-            ? html`
+              : nothing
+          }
+          ${
+            canOverrideAssistantAvatar
+              ? html`
                 <div class="config-identity__repair">
                   <div class="config-identity__actions">
                     <label class="btn btn--sm">
-                      ${props.assistantAvatarUploadBusy
-                        ? t("common.saving")
-                        : assistantAvatarOverride
-                          ? t("quickSettings.personal.replaceImage")
-                          : t("quickSettings.personal.chooseImage")}
+                      ${
+                        props.assistantAvatarUploadBusy
+                          ? t("common.saving")
+                          : assistantAvatarOverride
+                            ? t("quickSettings.personal.replaceImage")
+                            : t("quickSettings.personal.chooseImage")
+                      }
                       <input
                         type="file"
                         accept="image/*"
@@ -1001,8 +1012,9 @@ function renderPersonalSection(props: QuickSettingsProps) {
                         @change=${(e: Event) => handleAssistantAvatarFileSelect(e, props)}
                       />
                     </label>
-                    ${assistantAvatarOverride
-                      ? html`
+                    ${
+                      assistantAvatarOverride
+                        ? html`
                           <button
                             type="button"
                             class="btn btn--sm btn--ghost"
@@ -1014,17 +1026,21 @@ function renderPersonalSection(props: QuickSettingsProps) {
                             ${t("quickSettings.personal.clearOverride")}
                           </button>
                         `
-                      : nothing}
+                        : nothing
+                    }
                   </div>
                   <div class="config-identity__hint muted">
                     ${t("quickSettings.personal.overrideHint")}
                   </div>
                 </div>
               `
-            : nothing}
-          ${props.assistantAvatarUploadError
-            ? html`<div class="config-identity__error">${props.assistantAvatarUploadError}</div>`
-            : nothing}
+              : nothing
+          }
+          ${
+            props.assistantAvatarUploadError
+              ? html`<div class="config-identity__error">${props.assistantAvatarUploadError}</div>`
+              : nothing
+          }
         </div>
       </section>
     `,

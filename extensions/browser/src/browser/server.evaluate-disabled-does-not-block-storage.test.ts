@@ -78,8 +78,9 @@ vi.mock("./server-context.js", async () => {
   };
 });
 
-const { startBrowserControlServerFromConfig, stopBrowserControlServer } =
-  await import("../server.js");
+const { startBrowserControlServerFromConfig, stopBrowserControlServer } = await import(
+  "../server.js"
+);
 
 describe("browser control evaluate gating", () => {
   beforeEach(async () => {

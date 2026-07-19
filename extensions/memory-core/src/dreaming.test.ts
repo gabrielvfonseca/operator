@@ -280,7 +280,7 @@ function getGatewayStopHandler(
 ): (
   event: { reason?: string },
   ctx: { config?: OperatorConfig; workspaceDir?: string; getCron?: () => unknown },
-) => Promise<unknown> | void {
+) => Promise<unknown> | undefined {
   const call = onMock.mock.calls.find(([eventName]) => eventName === "gateway_stop");
   if (!call) {
     throw new Error("gateway_stop hook was not registered");
@@ -288,7 +288,7 @@ function getGatewayStopHandler(
   return call[1] as (
     event: { reason?: string },
     ctx: { config?: OperatorConfig; workspaceDir?: string; getCron?: () => unknown },
-  ) => Promise<unknown> | void;
+  ) => Promise<unknown> | undefined;
 }
 
 async function triggerGatewayStart(

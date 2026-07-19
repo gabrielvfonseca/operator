@@ -40,7 +40,7 @@ type FinalizableLivePreviewAdapter<TPayload, TId, TEdit> = {
     liveState: LiveMessageState<TPayload>,
   ) => Promise<void> | void;
   buildSupplementalPayload?: (payload: TPayload) => TPayload | undefined;
-  deliverSupplemental?: (payload: TPayload) => Promise<boolean | void>;
+  deliverSupplemental?: (payload: TPayload) => Promise<boolean | undefined>;
   handlePreviewEditError?: (params: {
     error: unknown;
     id: TId;
@@ -122,7 +122,7 @@ export async function deliverFinalizableLivePreview<TPayload, TId, TEdit>(params
   buildFinalEdit: (payload: TPayload) => TEdit | undefined;
   editFinal: (id: TId, edit: TEdit) => Promise<void>;
   resolveFinalizedId?: (id: TId, edit: TEdit) => TId | undefined;
-  deliverNormally: (payload: TPayload) => Promise<boolean | void>;
+  deliverNormally: (payload: TPayload) => Promise<boolean | undefined>;
   createPreviewReceipt?: (id: TId, edit: TEdit) => MessageReceipt;
   onPreviewFinalized?: (
     id: TId,
@@ -130,7 +130,7 @@ export async function deliverFinalizableLivePreview<TPayload, TId, TEdit>(params
     liveState: LiveMessageState<TPayload>,
   ) => Promise<void> | void;
   buildSupplementalPayload?: (payload: TPayload) => TPayload | undefined;
-  deliverSupplemental?: (payload: TPayload) => Promise<boolean | void>;
+  deliverSupplemental?: (payload: TPayload) => Promise<boolean | undefined>;
   handlePreviewEditError?: (params: {
     error: unknown;
     id: TId;
@@ -212,6 +212,7 @@ export async function deliverFinalizableLivePreview<TPayload, TId, TEdit>(params
   }
   liveState = markLiveMessageCancelled(liveState);
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let delivered;
   try {
     const result = await params.deliverNormally(params.payload);
@@ -234,7 +235,7 @@ export async function deliverWithFinalizableLivePreviewAdapter<TPayload, TId, TE
   payload: TPayload;
   liveState?: LiveMessageState<TPayload>;
   adapter?: FinalizableLivePreviewAdapter<TPayload, TId, TEdit>;
-  deliverNormally: (payload: TPayload) => Promise<boolean | void>;
+  deliverNormally: (payload: TPayload) => Promise<boolean | undefined>;
   onNormalDelivered?: () => Promise<void> | void;
 }): Promise<LivePreviewFinalizerResult<TPayload>> {
   if (!params.adapter) {

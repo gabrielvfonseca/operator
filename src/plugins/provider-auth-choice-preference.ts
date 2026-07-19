@@ -20,8 +20,9 @@ export async function resolvePreferredProviderForAuthChoice(params: {
     return manifestResolved.providerId;
   }
 
-  const { resolveProviderPluginChoice, resolvePluginProviders } =
-    await import("./provider-auth-choice.runtime.js");
+  const { resolveProviderPluginChoice, resolvePluginProviders } = await import(
+    "./provider-auth-choice.runtime.js"
+  );
   const providers = resolvePluginProviders({
     config: params.config,
     workspaceDir: params.workspaceDir,

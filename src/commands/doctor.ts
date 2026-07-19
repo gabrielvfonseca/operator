@@ -186,8 +186,9 @@ async function maybeCreateSessionSqliteGithubIssue(
     }
     return;
   }
-  const { createSessionSqliteGithubIssue } =
-    await import("./doctor-session-sqlite-github-issue.js");
+  const { createSessionSqliteGithubIssue } = await import(
+    "./doctor-session-sqlite-github-issue.js"
+  );
   const created = createSessionSqliteGithubIssue(report.supportIssue);
   if (created.ok) {
     report.supportIssue.github = { status: "created", url: created.url };

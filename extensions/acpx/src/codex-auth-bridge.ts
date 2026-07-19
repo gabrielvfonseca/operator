@@ -145,8 +145,10 @@ const DIAGNOSTIC_REDACTION_RULES: DiagnosticRedactionRuleSpec[] = [
   },
   {
     source:
+      // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
       String.raw`-----BEGIN [A-Z ]*PRI` +
       String.raw`VATE KEY-----[\s\S]+?-----END [A-Z ]*PRI` +
+      // biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
       String.raw`VATE KEY-----`,
     flags: "g",
     replacement: "[REDACTED_PRIVATE_KEY]",

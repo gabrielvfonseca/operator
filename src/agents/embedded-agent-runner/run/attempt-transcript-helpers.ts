@@ -40,7 +40,7 @@ export function repairAttemptToolUseResultPairing(
 }
 
 function isMidTurnPrecheckAssistantError(message: AgentMessage | undefined): boolean {
-  if (!message || message.role !== "assistant") {
+  if (message?.role !== "assistant") {
     return false;
   }
   const record = message as unknown as { stopReason?: unknown; errorMessage?: unknown };

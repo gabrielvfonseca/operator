@@ -349,6 +349,7 @@ export function formatDiscordDeployErrorDetails(err: unknown): string {
     details.push(`code=${discordCode}`);
   }
   if (rawBody !== undefined && !isRedundantDiscordDeployBody(rawBody)) {
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let bodyText;
     try {
       bodyText = JSON.stringify(rawBody);

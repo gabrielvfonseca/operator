@@ -152,7 +152,7 @@ describe("classifyEmbeddedAgentRunResultForModelFallback", () => {
     });
 
     expect(result).toEqual({
-      message: "openai/gpt-5.5 ended with a provider error: " + errorText,
+      message: `openai/gpt-5.5 ended with a provider error: ${errorText}`,
       reason: "rate_limit",
       code: "embedded_error_payload",
       rawError: errorText,

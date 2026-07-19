@@ -167,6 +167,7 @@ function resolveStructuredAttachmentSource(
 
 function buildActionMediaSourceParamKeys(extraParamKeys?: readonly string[]): string[] {
   const keys = new Set<string>(BASE_ACTION_MEDIA_SOURCE_PARAM_KEYS);
+  // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
   extraParamKeys?.forEach((key) => keys.add(key));
   return Array.from(keys);
 }

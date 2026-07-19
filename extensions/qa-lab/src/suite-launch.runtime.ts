@@ -800,8 +800,6 @@ export async function runQaSuite(...args: [QaSuiteRunParams?]): Promise<QaSuiteR
 export async function runQaFlowSuiteFromRuntime(
   ...args: [QaSuiteRunParams?]
 ): Promise<QaSuiteResult> {
-  return await (
-    await loadQaFlowSuiteRuntime()
-  )(args[0]);
+  return await (await loadQaFlowSuiteRuntime())(args[0]);
 }
 /* oxlint-disable max-lines -- TODO: split this grandfathered oversized file. */

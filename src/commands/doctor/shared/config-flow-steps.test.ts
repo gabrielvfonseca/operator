@@ -176,6 +176,7 @@ describe("doctor config flow steps", () => {
         },
         models: {
           providers: {
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             openai: { apiKey: "${OPENAI_API_KEY}" },
           },
         },
@@ -202,6 +203,7 @@ describe("doctor config flow steps", () => {
           },
           models: {
             providers: {
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               openai: { apiKey: "${OPENAI_API_KEY}" },
             },
           },
@@ -240,6 +242,7 @@ describe("doctor config flow steps", () => {
         },
         models: {
           providers: {
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             openai: { apiKey: "${OPENAI_API_KEY}" },
           },
         },
@@ -269,6 +272,7 @@ describe("doctor config flow steps", () => {
           },
           models: {
             providers: {
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               openai: { apiKey: "${OPENAI_API_KEY}" },
             },
           },

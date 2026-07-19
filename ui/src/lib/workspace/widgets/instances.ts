@@ -77,22 +77,26 @@ export function renderInstances(widget: WorkspaceWidget, value: unknown): Templa
         (instance) => html`
           <li class="workspace-list__row">
             <span
-              class="workspace-dot ${instance.healthy
-                ? "workspace-dot--ok"
-                : "workspace-dot--warn"}"
+              class="workspace-dot ${
+                instance.healthy ? "workspace-dot--ok" : "workspace-dot--warn"
+              }"
               aria-hidden="true"
             ></span>
             <span class="workspace-list__label">${instance.id}</span>
-            ${instance.detail
-              ? html`<span class="workspace-list__meta">${instance.detail}</span>`
-              : nothing}
-            ${instance.lastInputMs !== null
-              ? html`<span class="workspace-list__meta"
+            ${
+              instance.detail
+                ? html`<span class="workspace-list__meta">${instance.detail}</span>`
+                : nothing
+            }
+            ${
+              instance.lastInputMs !== null
+                ? html`<span class="workspace-list__meta"
                   >${t("workspaces.widget.instances.idle", {
                     duration: formatMs(instance.lastInputMs),
                   })}</span
                 >`
-              : nothing}
+                : nothing
+            }
           </li>
         `,
       )}

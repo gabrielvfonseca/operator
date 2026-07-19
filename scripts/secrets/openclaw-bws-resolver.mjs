@@ -45,8 +45,7 @@ const main = async () => {
     throw new Error("BWS_ACCESS_TOKEN is required");
   }
 
-  const bwsBin =
-    process.env.BWS_BIN && process.env.BWS_BIN.trim() ? process.env.BWS_BIN.trim() : "bws";
+  const bwsBin = process.env.BWS_BIN?.trim() ? process.env.BWS_BIN.trim() : "bws";
   const raw = execFileSync(bwsBin, ["secret", "list"], {
     encoding: "utf8",
     env: {

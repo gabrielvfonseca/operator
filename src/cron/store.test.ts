@@ -733,6 +733,7 @@ describe("cron store", () => {
       const { storePath } = await makeStorePath();
       const job = expectDefined(
         makeStore(`sqlite-string-thread-id-job-${threadId}`, true).jobs[0],
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "makeStore(`sqlite-string-thread-id-job-${threadId}`, true).jobs[0] test invariant",
       );
       job.delivery = {

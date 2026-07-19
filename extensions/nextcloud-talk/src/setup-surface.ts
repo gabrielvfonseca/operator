@@ -61,8 +61,8 @@ export const nextcloudTalkSetupWizard: ChannelSetupWizard = {
     const resolvedAccount = resolveNextcloudTalkAccount({ cfg: cfg as CoreConfig, accountId });
     const hasApiCredentials = Boolean(
       resolvedAccount.config.apiUser?.trim() &&
-      (hasConfiguredSecretInput(resolvedAccount.config.apiPassword) ||
-        resolvedAccount.config.apiPasswordFile),
+        (hasConfiguredSecretInput(resolvedAccount.config.apiPassword) ||
+          resolvedAccount.config.apiPasswordFile),
     );
     const configureApiCredentials = await prompter.confirm({
       message: t("wizard.nextcloudTalk.configureApiCredentials"),
@@ -94,7 +94,7 @@ export const nextcloudTalkSetupWizard: ChannelSetupWizard = {
           accountConfigured: Boolean(resolvedAccount.secret && resolvedAccount.baseUrl),
           hasConfiguredValue: Boolean(
             hasConfiguredSecretInput(resolvedAccount.config.botSecret) ||
-            resolvedAccount.config.botSecretFile,
+              resolvedAccount.config.botSecretFile,
           ),
           resolvedValue: resolvedAccount.secret || undefined,
           envValue:
@@ -142,7 +142,7 @@ export const nextcloudTalkSetupWizard: ChannelSetupWizard = {
         const apiUser = resolvedAccount.config.apiUser?.trim();
         const apiPasswordConfigured = Boolean(
           hasConfiguredSecretInput(resolvedAccount.config.apiPassword) ||
-          resolvedAccount.config.apiPasswordFile,
+            resolvedAccount.config.apiPasswordFile,
         );
         return {
           accountConfigured: Boolean(apiUser && apiPasswordConfigured),

@@ -288,9 +288,7 @@ export async function handleInlineActions(params: {
       return { kind: "reply", reply: undefined };
     }
     if (cutoff) {
-      await (
-        await loadAbortCutoffRuntime()
-      ).clearAbortCutoffInSessionRuntime({
+      await (await loadAbortCutoffRuntime()).clearAbortCutoffInSessionRuntime({
         sessionEntry: targetSessionEntry,
         sessionStore,
         sessionKey,

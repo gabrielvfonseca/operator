@@ -280,6 +280,7 @@ function readStreamingSandboxHttpResponse(params: {
   });
 }
 
+// biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
 const SANDBOX_HTTP_REQUEST_SCRIPT = String.raw`
 tmp=$(mktemp "$TMPDIR/operator-http.XXXXXX.py" 2>/dev/null || mktemp "/tmp/operator-http.XXXXXX.py") || exit 1
 trap 'rm -f "$tmp"' EXIT

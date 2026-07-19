@@ -76,9 +76,11 @@ describe("extended-stable Full Release Validation workflow", () => {
       expect(run).toContain(child.target);
     }
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(fullValidation).toContain("PARENT_WORKFLOW_SHA: ${{ github.sha }}");
     expect(fullValidation).toContain('if [[ "$head_sha" != "$PARENT_WORKFLOW_SHA" ]]');
     expect(fullValidation).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "child run used workflow SHA ${head_sha}, expected parent workflow SHA ${PARENT_WORKFLOW_SHA}",
     );
   });

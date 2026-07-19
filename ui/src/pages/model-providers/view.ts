@@ -187,18 +187,20 @@ function renderProbeResult(result: ModelsProbeResult | undefined) {
   }
   return html`
     <div
-      class="model-providers__probe model-providers__probe--${result.status === "ok"
-        ? "success"
-        : "error"}"
+      class="model-providers__probe model-providers__probe--${
+        result.status === "ok" ? "success" : "error"
+      }"
       role="status"
     >
       <div class="model-providers__probe-summary">
         <strong>${t(`modelProviders.probe.status.${result.status}`)}</strong>
-        ${result.latencyMs !== undefined
-          ? html`<span
+        ${
+          result.latencyMs !== undefined
+            ? html`<span
               >${t("modelProviders.probe.latency", { ms: String(result.latencyMs) })}</span
             >`
-          : nothing}
+            : nothing
+        }
       </div>
       ${result.error ? html`<div>${result.error}</div>` : nothing}
       ${result.results.map(
@@ -206,9 +208,11 @@ function renderProbeResult(result: ModelsProbeResult | undefined) {
           <div class="model-providers__probe-target">
             <span>${target.label}</span>
             <span>
-              ${t(`modelProviders.probe.status.${target.status}`)}${target.latencyMs !== undefined
-                ? ` · ${t("modelProviders.probe.latency", { ms: String(target.latencyMs) })}`
-                : ""}
+              ${t(`modelProviders.probe.status.${target.status}`)}${
+                target.latencyMs !== undefined
+                  ? ` · ${t("modelProviders.probe.latency", { ms: String(target.latencyMs) })}`
+                  : ""
+              }
             </span>
             ${target.error ? html`<small>${target.error}</small>` : nothing}
           </div>
@@ -233,9 +237,11 @@ function renderKeyEditor(card: ModelProviderCard, props: ModelProvidersViewProps
         <input
           type="password"
           autocomplete="off"
-          placeholder=${card.apiKey?.source === "config"
-            ? t("modelProviders.apiKey.replacePlaceholder")
-            : t("modelProviders.apiKey.placeholder")}
+          placeholder=${
+            card.apiKey?.source === "config"
+              ? t("modelProviders.apiKey.replacePlaceholder")
+              : t("modelProviders.apiKey.placeholder")
+          }
           .value=${props.keyDraft}
           ?disabled=${busy || !props.canMutate || authModeBlocked}
           @input=${(event: Event) =>
@@ -275,8 +281,9 @@ function renderProviderActions(card: ModelProviderCard, props: ModelProvidersVie
     : blocked;
   return html`
     <div class="model-providers__card-actions">
-      ${isConfigured
-        ? html`
+      ${
+        isConfigured
+          ? html`
             <button
               class="btn btn--sm"
               ?disabled=${probeBusy || !props.canMutate || !props.probeAvailable}
@@ -286,23 +293,29 @@ function renderProviderActions(card: ModelProviderCard, props: ModelProvidersVie
               ${probeBusy ? t("modelProviders.probe.testing") : t("modelProviders.probe.test")}
             </button>
           `
-        : nothing}
-      ${apiKeyUnsupported
-        ? nothing
-        : html`
+          : nothing
+      }
+      ${
+        apiKeyUnsupported
+          ? nothing
+          : html`
             <button
               class="btn btn--sm"
               ?disabled=${keyBusy || !props.canMutate || authModeBlocked}
               title=${keyBlocked}
               @click=${() => props.onOpenKeyEditor(card.id)}
             >
-              ${card.hasConfigApiKey
-                ? t("modelProviders.apiKey.replace")
-                : t("modelProviders.apiKey.set")}
+              ${
+                card.hasConfigApiKey
+                  ? t("modelProviders.apiKey.replace")
+                  : t("modelProviders.apiKey.set")
+              }
             </button>
-          `}
-      ${card.hasConfigApiKey
-        ? html`
+          `
+      }
+      ${
+        card.hasConfigApiKey
+          ? html`
             <button
               class="btn btn--sm danger"
               ?disabled=${keyBusy || !props.canMutate || authModeBlocked}
@@ -312,9 +325,11 @@ function renderProviderActions(card: ModelProviderCard, props: ModelProvidersVie
               ${t("modelProviders.apiKey.remove")}
             </button>
           `
-        : nothing}
-      ${canLogout
-        ? html`
+          : nothing
+      }
+      ${
+        canLogout
+          ? html`
             <button
               class="btn btn--sm"
               ?disabled=${logoutBusy || !props.canMutate}
@@ -324,10 +339,12 @@ function renderProviderActions(card: ModelProviderCard, props: ModelProvidersVie
               ${t("modelProviders.logout.action")}
             </button>
           `
-        : nothing}
+          : nothing
+      }
     </div>
-    ${props.pendingLogoutProvider === card.id
-      ? html`
+    ${
+      props.pendingLogoutProvider === card.id
+        ? html`
           <div class="model-providers__confirm" role="alert">
             <span>${t("modelProviders.logout.confirm", { provider: card.displayName })}</span>
             <div class="model-providers__form-actions">
@@ -336,9 +353,11 @@ function renderProviderActions(card: ModelProviderCard, props: ModelProvidersVie
                 ?disabled=${logoutBusy}
                 @click=${() => props.onLogout(card.id, card.logoutTargets)}
               >
-                ${logoutBusy
-                  ? t("modelProviders.logout.loggingOut")
-                  : t("modelProviders.logout.action")}
+                ${
+                  logoutBusy
+                    ? t("modelProviders.logout.loggingOut")
+                    : t("modelProviders.logout.action")
+                }
               </button>
               <button class="btn btn--sm" ?disabled=${logoutBusy} @click=${props.onCancelLogout}>
                 ${t("common.cancel")}
@@ -346,7 +365,8 @@ function renderProviderActions(card: ModelProviderCard, props: ModelProvidersVie
             </div>
           </div>
         `
-      : nothing}
+        : nothing
+    }
   `;
 }
 
@@ -374,25 +394,32 @@ function renderProviderRow(card: ModelProviderCard, props: ModelProvidersViewPro
         </div>
       </div>
       ${renderCredentialSummary(card)}
-      ${card.usage
-        ? renderProviderUsageDetails(card.usage)
-        : html`<div class="model-providers__no-stats">${t("modelProviders.noStats")}</div>`}
+      ${
+        card.usage
+          ? renderProviderUsageDetails(card.usage)
+          : html`<div class="model-providers__no-stats">${t("modelProviders.noStats")}</div>`
+      }
       ${renderLocalCost(card, props.costDays)} ${renderProviderActions(card, props)}
       ${renderKeyEditor(card, props)} ${renderProbeResult(props.probeResults[card.id])}
-      ${message
-        ? html`<div class="callout ${message.kind}" role="status">${message.text}</div>`
-        : nothing}
+      ${
+        message
+          ? html`<div class="callout ${message.kind}" role="status">${message.text}</div>`
+          : nothing
+      }
     </div>
   `;
 }
 
 function renderAddProvider(props: ModelProvidersViewProps) {
   const rows = html`
-    ${props.unconfiguredProviders.length === 0
-      ? renderSettingsEmpty(t("modelProviders.add.none"))
-      : nothing}
-    ${props.addProviderOpen
-      ? html`
+    ${
+      props.unconfiguredProviders.length === 0
+        ? renderSettingsEmpty(t("modelProviders.add.none"))
+        : nothing
+    }
+    ${
+      props.addProviderOpen
+        ? html`
           <div class="settings-row settings-row--stacked">
             <div class="model-providers__add-form">
               <label class="field">
@@ -423,22 +450,25 @@ function renderAddProvider(props: ModelProvidersViewProps) {
               </label>
               <button
                 class="btn primary"
-                ?disabled=${Boolean(props.busy.add) ||
-                !props.addProviderId ||
-                !props.addProviderKey.trim()}
+                ?disabled=${
+                  Boolean(props.busy.add) || !props.addProviderId || !props.addProviderKey.trim()
+                }
                 @click=${props.onAddProvider}
               >
                 ${props.busy.add ? t("modelProviders.saving") : t("modelProviders.add.save")}
               </button>
             </div>
-            ${props.messages.add
-              ? html`<div class="callout ${props.messages.add.kind}" role="status">
+            ${
+              props.messages.add
+                ? html`<div class="callout ${props.messages.add.kind}" role="status">
                   ${props.messages.add.text}
                 </div>`
-              : nothing}
+                : nothing
+            }
           </div>
         `
-      : nothing}
+        : nothing
+    }
   `;
   return renderSettingsSection(
     {
@@ -473,22 +503,26 @@ export function renderModelProviders(props: ModelProvidersViewProps) {
     );
   }
   const providerRows = html`
-    ${props.error
-      ? html`
+    ${
+      props.error
+        ? html`
           <div class="settings-row">
             <div class="settings-row__text">
               <span class="settings-row__desc provider-usage-error">${props.error}</span>
             </div>
           </div>
         `
-      : nothing}
-    ${props.cards.length === 0
-      ? renderSettingsEmpty(
-          html`<strong>${t("modelProviders.emptyTitle")}</strong><br />${t(
+        : nothing
+    }
+    ${
+      props.cards.length === 0
+        ? renderSettingsEmpty(
+            html`<strong>${t("modelProviders.emptyTitle")}</strong><br />${t(
               "modelProviders.emptySubtitle",
             )}`,
-        )
-      : props.cards.map((card) => renderProviderRow(card, props))}
+          )
+        : props.cards.map((card) => renderProviderRow(card, props))
+    }
   `;
   return renderSettingsPage(html`
     ${renderDefaultModels({
@@ -526,8 +560,10 @@ export function renderModelProviders(props: ModelProvidersViewProps) {
       providerRows,
     )}
     ${renderAddProvider(props)}
-    ${props.mutationBlockedReason
-      ? html`<div class="callout warning">${props.mutationBlockedReason}</div>`
-      : nothing}
+    ${
+      props.mutationBlockedReason
+        ? html`<div class="callout warning">${props.mutationBlockedReason}</div>`
+        : nothing
+    }
   `);
 }

@@ -517,8 +517,9 @@ describe("warnUnregisteredConfiguredMemoryEmbeddingProviders", () => {
   }
 
   it("warns when a configured memory embedding provider is not registered", async () => {
-    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } =
-      await import("./server-startup-plugins.js");
+    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } = await import(
+      "./server-startup-plugins.js"
+    );
     const log = createLog();
     warnUnregisteredConfiguredMemoryEmbeddingProviders({
       config: {
@@ -532,8 +533,9 @@ describe("warnUnregisteredConfiguredMemoryEmbeddingProviders", () => {
   });
 
   it("does not warn when the configured memory embedding provider is registered", async () => {
-    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } =
-      await import("./server-startup-plugins.js");
+    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } = await import(
+      "./server-startup-plugins.js"
+    );
     const log = createLog();
     warnUnregisteredConfiguredMemoryEmbeddingProviders({
       config: {
@@ -546,8 +548,9 @@ describe("warnUnregisteredConfiguredMemoryEmbeddingProviders", () => {
   });
 
   it("warns when a configured memory embedding fallback is not registered", async () => {
-    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } =
-      await import("./server-startup-plugins.js");
+    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } = await import(
+      "./server-startup-plugins.js"
+    );
     const log = createLog();
     warnUnregisteredConfiguredMemoryEmbeddingProviders({
       config: {
@@ -561,8 +564,9 @@ describe("warnUnregisteredConfiguredMemoryEmbeddingProviders", () => {
   });
 
   it("does not warn when the configured memory embedding fallback is registered", async () => {
-    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } =
-      await import("./server-startup-plugins.js");
+    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } = await import(
+      "./server-startup-plugins.js"
+    );
     const log = createLog();
     warnUnregisteredConfiguredMemoryEmbeddingProviders({
       config: {
@@ -575,8 +579,9 @@ describe("warnUnregisteredConfiguredMemoryEmbeddingProviders", () => {
   });
 
   it("does not warn when a generic embedding provider can serve configured memory search", async () => {
-    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } =
-      await import("./server-startup-plugins.js");
+    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } = await import(
+      "./server-startup-plugins.js"
+    );
     const log = createLog();
     warnUnregisteredConfiguredMemoryEmbeddingProviders({
       config: {
@@ -589,8 +594,9 @@ describe("warnUnregisteredConfiguredMemoryEmbeddingProviders", () => {
   });
 
   it("does not warn for core generic memory embedding providers", async () => {
-    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } =
-      await import("./server-startup-plugins.js");
+    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } = await import(
+      "./server-startup-plugins.js"
+    );
     const log = createLog();
     warnUnregisteredConfiguredMemoryEmbeddingProviders({
       config: {
@@ -603,8 +609,9 @@ describe("warnUnregisteredConfiguredMemoryEmbeddingProviders", () => {
   });
 
   it("does not warn for custom providers backed by core generic embeddings", async () => {
-    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } =
-      await import("./server-startup-plugins.js");
+    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } = await import(
+      "./server-startup-plugins.js"
+    );
     const log = createLog();
     warnUnregisteredConfiguredMemoryEmbeddingProviders({
       config: {
@@ -626,8 +633,9 @@ describe("warnUnregisteredConfiguredMemoryEmbeddingProviders", () => {
   });
 
   it("does not warn for memory embedding fallbacks when primary provider is fts-only", async () => {
-    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } =
-      await import("./server-startup-plugins.js");
+    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } = await import(
+      "./server-startup-plugins.js"
+    );
     const log = createLog();
     warnUnregisteredConfiguredMemoryEmbeddingProviders({
       config: {
@@ -640,8 +648,9 @@ describe("warnUnregisteredConfiguredMemoryEmbeddingProviders", () => {
   });
 
   it("does not warn for memory embedding providers when the memory slot is disabled", async () => {
-    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } =
-      await import("./server-startup-plugins.js");
+    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } = await import(
+      "./server-startup-plugins.js"
+    );
     const log = createLog();
     warnUnregisteredConfiguredMemoryEmbeddingProviders({
       config: {
@@ -679,8 +688,9 @@ describe("warnUnregisteredConfiguredMemoryEmbeddingProviders", () => {
   ])(
     "does not warn for custom %s entries whose api-owner plugin is registered",
     async (source, _path) => {
-      const { warnUnregisteredConfiguredMemoryEmbeddingProviders } =
-        await import("./server-startup-plugins.js");
+      const { warnUnregisteredConfiguredMemoryEmbeddingProviders } = await import(
+        "./server-startup-plugins.js"
+      );
       const log = createLog();
       warnUnregisteredConfiguredMemoryEmbeddingProviders({
         config: customOllamaConfig(source),
@@ -692,8 +702,9 @@ describe("warnUnregisteredConfiguredMemoryEmbeddingProviders", () => {
   );
 
   it("warns for custom providers whose api-owner plugin is not registered", async () => {
-    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } =
-      await import("./server-startup-plugins.js");
+    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } = await import(
+      "./server-startup-plugins.js"
+    );
     const log = createLog();
     warnUnregisteredConfiguredMemoryEmbeddingProviders({
       config: customOllamaConfig(),
@@ -705,8 +716,9 @@ describe("warnUnregisteredConfiguredMemoryEmbeddingProviders", () => {
   });
 
   it("warns for custom fallbacks whose api-owner plugin is not registered", async () => {
-    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } =
-      await import("./server-startup-plugins.js");
+    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } = await import(
+      "./server-startup-plugins.js"
+    );
     const log = createLog();
     warnUnregisteredConfiguredMemoryEmbeddingProviders({
       config: customOllamaConfig("fallback"),
@@ -718,8 +730,9 @@ describe("warnUnregisteredConfiguredMemoryEmbeddingProviders", () => {
   });
 
   it("warns for local memory search when the llama.cpp provider is not registered", async () => {
-    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } =
-      await import("./server-startup-plugins.js");
+    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } = await import(
+      "./server-startup-plugins.js"
+    );
     const log = createLog();
     warnUnregisteredConfiguredMemoryEmbeddingProviders({
       config: {
@@ -741,8 +754,9 @@ describe("warnUnregisteredConfiguredMemoryEmbeddingProviders", () => {
   });
 
   it("does not warn for disabled memory search providers", async () => {
-    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } =
-      await import("./server-startup-plugins.js");
+    const { warnUnregisteredConfiguredMemoryEmbeddingProviders } = await import(
+      "./server-startup-plugins.js"
+    );
     const log = createLog();
     warnUnregisteredConfiguredMemoryEmbeddingProviders({
       config: {

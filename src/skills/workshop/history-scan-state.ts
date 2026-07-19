@@ -90,9 +90,9 @@ export function emptyHistoryScanResult(): SkillHistoryScanResult {
 export function isStoredHistoryScanState(value: unknown): value is StoredSkillHistoryScanState {
   return Boolean(
     value &&
-    typeof value === "object" &&
-    !Array.isArray(value) &&
-    (value as { schema?: unknown }).schema === HISTORY_SCAN_SCHEMA,
+      typeof value === "object" &&
+      !Array.isArray(value) &&
+      (value as { schema?: unknown }).schema === HISTORY_SCAN_SCHEMA,
   );
 }
 

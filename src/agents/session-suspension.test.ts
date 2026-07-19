@@ -45,8 +45,9 @@ describe("session suspension", () => {
       vi.clearAllTimers();
     }
     vi.useRealTimers();
-    const { resetSessionSuspensionStateForTest } =
-      await import("./session-suspension.test-support.js");
+    const { resetSessionSuspensionStateForTest } = await import(
+      "./session-suspension.test-support.js"
+    );
     resetSessionSuspensionStateForTest();
     sessionAccessorMocks.patchSessionEntry.mockClear();
     commandQueueMocks.setCommandLaneConcurrency.mockClear();
@@ -235,8 +236,9 @@ describe("session suspension", () => {
   it("clamps rescheduled cleanup timers after wall-clock rollback", async () => {
     vi.useFakeTimers();
     vi.setSystemTime(1_000);
-    const { enableSessionSuspensionTimersForGatewayStart } =
-      await import("./session-suspension.js");
+    const { enableSessionSuspensionTimersForGatewayStart } = await import(
+      "./session-suspension.js"
+    );
     const { seedClearedLaneResumeForTest } = await import("./session-suspension.test-support.js");
     const setTimeoutSpy = vi.spyOn(globalThis, "setTimeout");
     const customLaneId = "plugin:voice:room-3";
@@ -362,8 +364,9 @@ describe("session suspension", () => {
   });
 
   it("defers session suspension only for the outer fallback candidate run", async () => {
-    const { resolveSessionSuspensionTarget, runWithDeferredSessionSuspension } =
-      await import("./session-suspension.js");
+    const { resolveSessionSuspensionTarget, runWithDeferredSessionSuspension } = await import(
+      "./session-suspension.js"
+    );
     const onDeferred = vi.fn();
 
     expect(resolveSessionSuspensionTarget()).toEqual({ mode: "suspend" });

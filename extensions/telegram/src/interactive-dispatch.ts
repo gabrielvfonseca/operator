@@ -48,14 +48,16 @@ export type TelegramInteractiveHandlerContext = {
   getCurrentConversationBinding: () => Promise<PluginConversationBinding | null>;
 };
 
-export type TelegramInteractiveHandlerResult = {
-  handled?: boolean;
-  /**
-   * Submit text through Telegram's normal inbound path after the callback handler
-   * returns, so plugin buttons can act like user-authored replies.
-   */
-  submitText?: string;
-} | void;
+export type TelegramInteractiveHandlerResult =
+  | {
+      handled?: boolean;
+      /**
+       * Submit text through Telegram's normal inbound path after the callback handler
+       * returns, so plugin buttons can act like user-authored replies.
+       */
+      submitText?: string;
+    }
+  | undefined;
 
 export type TelegramInteractiveHandlerRegistration = PluginInteractiveRegistration<
   TelegramInteractiveHandlerContext,

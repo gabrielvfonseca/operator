@@ -56,8 +56,9 @@ const fixtureSuite = createFixtureSuite("operator-models-runtime-source-");
 
 beforeAll(async () => {
   await fixtureSuite.setup();
-  ({ clearConfigCache, clearRuntimeConfigSnapshot, setRuntimeConfigSnapshot } =
-    await import("../config/io.js"));
+  ({ clearConfigCache, clearRuntimeConfigSnapshot, setRuntimeConfigSnapshot } = await import(
+    "../config/io.js"
+  ));
   ({ ensureOperatorModelsJson } = await import("./models-config.js"));
   ({ resetModelsJsonReadyCacheForTest } = await import("./models-config-state.test-support.js"));
   ({ planOperatorModelsJsonWithDeps } = await import("./models-config.plan.test-support.js"));

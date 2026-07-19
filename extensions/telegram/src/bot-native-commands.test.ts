@@ -151,8 +151,9 @@ function registerCustomTelegramCommandMenu(
 
 describe("registerTelegramNativeCommands", () => {
   beforeAll(async () => {
-    ({ registerTelegramNativeCommands, parseTelegramNativeCommandCallbackData } =
-      await import("./bot-native-commands.js"));
+    ({ registerTelegramNativeCommands, parseTelegramNativeCommandCallbackData } = await import(
+      "./bot-native-commands.js"
+    ));
   });
 
   beforeEach(() => {
@@ -285,7 +286,7 @@ describe("registerTelegramNativeCommands", () => {
   it("keeps sub-100 commands by shortening long descriptions to fit Telegram payload budget", async () => {
     const customCommands = Array.from({ length: 92 }, (_, index) => ({
       command: `cmd_${index}`,
-      description: `Command ${index} ` + "x".repeat(120),
+      description: `Command ${index} ${"x".repeat(120)}`,
     }));
     const { runtimeLog, setMyCommands } = registerCustomTelegramCommandMenu(customCommands);
 

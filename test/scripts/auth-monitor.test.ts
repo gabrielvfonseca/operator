@@ -41,8 +41,10 @@ describe("auth monitoring scripts", () => {
 
     expect(joined).not.toContain(privateHomePath);
     expect(joined).not.toContain(privateHostAlias);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(joined).toContain("Run on the OpenClaw host: ${SCRIPT_DIR}/mobile-reauth.sh");
     for (const script of TERMUX_WIDGET_PATHS.map(readScript)) {
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(script).toContain('SERVER="${OPENCLAW_SERVER:-openclaw-host}"');
     }
     expect(readScript("scripts/termux-sync-widget.sh")).toContain(
@@ -59,6 +61,7 @@ describe("auth monitoring scripts", () => {
   it("keeps mobile reauth wired to local auth status and Claude token setup", () => {
     const script = readScript(MOBILE_REAUTH_PATH);
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"');
     expect(script).toContain('"$SCRIPT_DIR/claude-auth-status.sh" simple');
     expect(script).toContain('"$SCRIPT_DIR/claude-auth-status.sh" full');

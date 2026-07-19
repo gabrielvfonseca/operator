@@ -62,8 +62,9 @@ function createLegacyPrompter(callbacks: OAuthLoginCallbacks): WizardPrompter {
 }
 
 async function refreshViaProviderRuntime(refreshToken: string): Promise<OAuthCredentials> {
-  const { refreshProviderOAuthCredentialWithPlugin } =
-    await import("../../../plugins/provider-runtime.runtime.js");
+  const { refreshProviderOAuthCredentialWithPlugin } = await import(
+    "../../../plugins/provider-runtime.runtime.js"
+  );
   const refreshed = await refreshProviderOAuthCredentialWithPlugin({
     provider: OPENAI_CODEX_PROVIDER_ID,
     context: {
@@ -87,8 +88,9 @@ async function refreshViaProviderRuntime(refreshToken: string): Promise<OAuthCre
 /** Runs the ChatGPT/Codex OAuth login flow and returns normalized credentials. */
 async function loginOpenAICodex(callbacks: OpenAICodexLoginCallbacks): Promise<OAuthCredentials> {
   throwIfOAuthLoginAborted(callbacks.signal);
-  const { loginOpenAICodexOAuth } =
-    await import("../../../plugins/provider-openai-chatgpt-oauth.js");
+  const { loginOpenAICodexOAuth } = await import(
+    "../../../plugins/provider-openai-chatgpt-oauth.js"
+  );
   const manualCodeInput = callbacks.onManualCodeInput;
   const onManualCodeInput = manualCodeInput
     ? async () => await withOAuthLoginAbort(manualCodeInput(), callbacks.signal)

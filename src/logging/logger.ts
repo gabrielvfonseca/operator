@@ -280,7 +280,7 @@ function stringifyFileLogMessagePart(value: unknown): string | undefined {
 function buildFileLogMessage(numericArgs: readonly unknown[]): string | undefined {
   const parts = numericArgs
     .map(stringifyFileLogMessagePart)
-    .filter((part): part is string => Boolean(part && part.trim()));
+    .filter((part): part is string => Boolean(part?.trim()));
   if (parts.length === 0) {
     return undefined;
   }

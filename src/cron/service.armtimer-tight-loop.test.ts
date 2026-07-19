@@ -49,7 +49,7 @@ describe("CronService - armTimer tight loop prevention", () => {
 
   function latestTimeoutHandle(timeoutSpy: ReturnType<typeof vi.spyOn>) {
     const result = timeoutSpy.mock.results.at(-1);
-    if (!result || result.type !== "return") {
+    if (result?.type !== "return") {
       throw new Error("Expected setTimeout to return a timer handle");
     }
     return result.value;

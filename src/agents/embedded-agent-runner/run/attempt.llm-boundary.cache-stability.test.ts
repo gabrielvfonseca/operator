@@ -476,8 +476,8 @@ function runtimeCarrier(content: string, timestamp: number): AgentMsg {
 function isCarrier(message: unknown): boolean {
   return Boolean(
     message &&
-    typeof message === "object" &&
-    (message as { customType?: unknown }).customType === OPERATOR_RUNTIME_CONTEXT_CUSTOM_TYPE,
+      typeof message === "object" &&
+      (message as { customType?: unknown }).customType === OPERATOR_RUNTIME_CONTEXT_CUSTOM_TYPE,
   );
 }
 

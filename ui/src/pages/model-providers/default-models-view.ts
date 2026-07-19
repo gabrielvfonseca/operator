@@ -76,9 +76,11 @@ export function renderDefaultModels(props: DefaultModelsViewProps) {
   const title = props.mutationBlockedReason ?? "";
   const body = html`
     <div class="settings-row settings-row--stacked model-providers__defaults">
-      ${props.models.length === 0
-        ? html`<div class="callout warning">${t("modelProviders.defaults.noModels")}</div>`
-        : nothing}
+      ${
+        props.models.length === 0
+          ? html`<div class="callout warning">${t("modelProviders.defaults.noModels")}</div>`
+          : nothing
+      }
       <div class="model-providers__default-grid">
         <label class="field">
           <span>${t("modelProviders.defaults.primary")}</span>
@@ -121,10 +123,11 @@ export function renderDefaultModels(props: DefaultModelsViewProps) {
           <span>${t("modelProviders.defaults.fallbacks")}</span>
           ${saving ? html`<span class="muted">${t("modelProviders.saving")}</span>` : nothing}
         </div>
-        ${props.selection.fallbacks.length === 0
-          ? html`<div class="card-sub">${t("modelProviders.defaults.noFallbacks")}</div>`
-          : props.selection.fallbacks.map(
-              (fallback, index) => html`
+        ${
+          props.selection.fallbacks.length === 0
+            ? html`<div class="card-sub">${t("modelProviders.defaults.noFallbacks")}</div>`
+            : props.selection.fallbacks.map(
+                (fallback, index) => html`
                 <div class="model-providers__fallback-row">
                   <code>${fallback}</code>
                   <button
@@ -137,7 +140,8 @@ export function renderDefaultModels(props: DefaultModelsViewProps) {
                   </button>
                 </div>
               `,
-            )}
+              )
+        }
         <label class="field model-providers__fallback-add">
           <span>${t("modelProviders.defaults.addFallback")}</span>
           <select
@@ -163,9 +167,11 @@ export function renderDefaultModels(props: DefaultModelsViewProps) {
           </select>
         </label>
       </div>
-      ${props.message
-        ? html`<div class="callout ${props.message.kind}" role="status">${props.message.text}</div>`
-        : nothing}
+      ${
+        props.message
+          ? html`<div class="callout ${props.message.kind}" role="status">${props.message.text}</div>`
+          : nothing
+      }
     </div>
   `;
   return renderSettingsSection(
@@ -174,9 +180,11 @@ export function renderDefaultModels(props: DefaultModelsViewProps) {
       description: t("modelProviders.defaults.subtitle"),
       actions: html`
         <div class="model-providers__form-actions">
-          ${props.dirty
-            ? html`<span class="muted">${t("modelProviders.defaults.unsaved")}</span>`
-            : nothing}
+          ${
+            props.dirty
+              ? html`<span class="muted">${t("modelProviders.defaults.unsaved")}</span>`
+              : nothing
+          }
           <button class="btn btn--sm" ?disabled=${saving || !props.dirty} @click=${props.onReset}>
             ${t("common.cancel")}
           </button>

@@ -83,7 +83,7 @@ export function rewriteTelegramApprovalDecisionAlias(value: string): string {
   if (!TELEGRAM_APPROVE_ALLOW_ALWAYS_PATTERN.test(value)) {
     return value;
   }
-  return value.slice(0, -"allow-always".length) + "always";
+  return `${value.slice(0, -"allow-always".length)}always`;
 }
 
 export function sanitizeTelegramCallbackData(value: string): string | undefined {

@@ -82,9 +82,9 @@ async function createSpaceFromParams(config: GoogleMeetConfig, raw: Record<strin
 function hasGoogleMeetOAuth(config: GoogleMeetConfig, raw: Record<string, unknown>): boolean {
   return Boolean(
     normalizeOptionalString(raw.accessToken) ??
-    normalizeOptionalString(raw.refreshToken) ??
-    config.oauth.accessToken ??
-    config.oauth.refreshToken,
+      normalizeOptionalString(raw.refreshToken) ??
+      config.oauth.accessToken ??
+      config.oauth.refreshToken,
   );
 }
 

@@ -431,9 +431,9 @@ function shouldSkipLocalCliCredentialEpoch(params: {
 }): boolean {
   return Boolean(
     params.authEpochMode === "profile-only" &&
-    params.authProfileId &&
-    params.authCredential &&
-    params.preparedExecution,
+      params.authProfileId &&
+      params.authCredential &&
+      params.preparedExecution,
   );
 }
 
@@ -452,10 +452,10 @@ function shouldRefreshAuthProfileForExecution(params: {
 }): boolean {
   return Boolean(
     params.backendId === "google-gemini-cli" &&
-    params.authProfileId &&
-    (params.authCredential?.type === "oauth" ||
-      params.authCredential?.type === "api_key" ||
-      params.authCredential?.type === "token"),
+      params.authProfileId &&
+      (params.authCredential?.type === "oauth" ||
+        params.authCredential?.type === "api_key" ||
+        params.authCredential?.type === "token"),
   );
 }
 
@@ -814,8 +814,7 @@ export async function prepareCliRunContext(
   }
   const mcpDeliveryCaptureEnabled = bundleMcpEnabled && Boolean(mcpLoopbackRuntime);
   let cleanupPreparedResources: (() => Promise<void>) | undefined;
-  let preparedExecution: Awaited<ReturnType<NonNullable<typeof backendResolved.prepareExecution>>> =
-    undefined;
+  let preparedExecution: Awaited<ReturnType<NonNullable<typeof backendResolved.prepareExecution>>>;
   try {
     const mcpClientGrant = mcpLoopbackRuntime
       ? prepareDeps.mintMcpLoopbackClientGrant({

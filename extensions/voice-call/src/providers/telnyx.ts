@@ -134,7 +134,7 @@ export class TelnyxProvider implements VoiceCallProvider {
       const payload = JSON.parse(ctx.rawBody);
       const data = payload.data;
 
-      if (!data || !data.event_type) {
+      if (!data?.event_type) {
         return { events: [], statusCode: 200 };
       }
 

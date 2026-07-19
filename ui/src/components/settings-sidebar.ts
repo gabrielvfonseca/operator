@@ -236,8 +236,9 @@ export function renderSettingsSidebar(props: SettingsSidebarProps) {
             props.onSearchQueryChange("");
           }}
         />
-        ${props.searchQuery
-          ? html`
+        ${
+          props.searchQuery
+            ? html`
               <button
                 type="button"
                 class="settings-sidebar__search-clear"
@@ -253,19 +254,23 @@ export function renderSettingsSidebar(props: SettingsSidebarProps) {
                 ${icons.x}
               </button>
             `
-          : nothing}
+            : nothing
+        }
       </div>
       <nav class="settings-sidebar__nav" aria-label=${t("common.settingsSections")}>
-        ${navigationGroups.length === 0
-          ? html`<p class="settings-sidebar__empty" role="status">
+        ${
+          navigationGroups.length === 0
+            ? html`<p class="settings-sidebar__empty" role="status">
               ${t("nav.settingsSearchNoResults")}
             </p>`
-          : navigationGroups.map(
-              (group) => html`
+            : navigationGroups.map(
+                (group) => html`
                 <div class="settings-sidebar__group">
-                  ${group.labelKey
-                    ? html`<div class="settings-sidebar__group-label">${t(group.labelKey)}</div>`
-                    : nothing}
+                  ${
+                    group.labelKey
+                      ? html`<div class="settings-sidebar__group-label">${t(group.labelKey)}</div>`
+                      : nothing
+                  }
                   ${group.items.map(
                     (item) => html`
                       ${renderItem(props, item.routeId)}
@@ -274,7 +279,8 @@ export function renderSettingsSidebar(props: SettingsSidebarProps) {
                   )}
                 </div>
               `,
-            )}
+              )
+        }
       </nav>
       <operator-sidebar-update-card
         .updateAvailable=${props.updateAvailable}
@@ -283,16 +289,20 @@ export function renderSettingsSidebar(props: SettingsSidebarProps) {
       ></operator-sidebar-update-card>
       <footer class="settings-sidebar__footer">
         <span
-          class="sidebar-status__dot ${props.connected
-            ? "sidebar-connection-status--online"
-            : "sidebar-connection-status--offline"}"
+          class="sidebar-status__dot ${
+            props.connected
+              ? "sidebar-connection-status--online"
+              : "sidebar-connection-status--offline"
+          }"
           role="img"
           aria-label=${gatewayStatus}
         ></span>
         <span class="settings-sidebar__footer-status">${gatewayStatus}</span>
-        ${props.version
-          ? html`<span class="settings-sidebar__footer-version">${props.version}</span>`
-          : nothing}
+        ${
+          props.version
+            ? html`<span class="settings-sidebar__footer-version">${props.version}</span>`
+            : nothing
+        }
       </footer>
     </aside>
   `;

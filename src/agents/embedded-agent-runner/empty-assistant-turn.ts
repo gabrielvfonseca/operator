@@ -54,9 +54,9 @@ function hasZeroTokenUsageSnapshot(usage: unknown): boolean {
 export function isZeroUsageEmptyStopAssistantTurn(message: EmptyAssistantTurnLike | null): boolean {
   return Boolean(
     message &&
-    message.stopReason === "stop" &&
-    Array.isArray(message.content) &&
-    message.content.length === 0 &&
-    hasZeroTokenUsageSnapshot(message.usage),
+      message.stopReason === "stop" &&
+      Array.isArray(message.content) &&
+      message.content.length === 0 &&
+      hasZeroTokenUsageSnapshot(message.usage),
   );
 }

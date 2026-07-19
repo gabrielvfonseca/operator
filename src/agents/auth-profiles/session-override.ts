@@ -66,9 +66,7 @@ async function persistSessionAuthProfileOverrideState(params: {
   if (!storePath) {
     return;
   }
-  const persisted = await (
-    await loadSessionAccessor()
-  ).patchSessionEntry(
+  const persisted = await (await loadSessionAccessor()).patchSessionEntry(
     { storePath, sessionKey },
     (current) => ({
       ...state,

@@ -175,12 +175,12 @@ export function resolveFallbackTransition(params: {
     ? fallbackActive
     : Boolean(
         previousState.selectedModel &&
-        previousState.activeModel &&
-        !areRuntimeModelRefsEquivalent(
-          previousState.selectedModel,
-          previousState.activeModel,
-          comparisonOptions,
-        ),
+          previousState.activeModel &&
+          !areRuntimeModelRefsEquivalent(
+            previousState.selectedModel,
+            previousState.activeModel,
+            comparisonOptions,
+          ),
       );
   const fallbackCleared = !fallbackActive && previousStateWasRealFallback;
   const reasonSummary = buildFallbackReasonSummary(params.attempts);

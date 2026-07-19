@@ -320,7 +320,9 @@ const VALIDATE_REMOTE_WORKDIR_SCRIPT = [
   'root="$2"',
   'case "$target" in /*) ;; *) echo "remote directory must be absolute: $target" >&2; exit 1 ;; esac',
   'case "$root" in /*) ;; *) echo "remote root must be absolute: $root" >&2; exit 1 ;; esac',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   'target="${target%/}"',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   'root="${root%/}"',
   '[ -n "$target" ] || target="/"',
   '[ -n "$root" ] || root="/"',
@@ -328,9 +330,12 @@ const VALIDATE_REMOTE_WORKDIR_SCRIPT = [
   '  case "$target/" in "$root"/*|"$root/") ;; *) echo "remote directory must stay under root: $target" >&2; exit 1 ;; esac',
   "fi",
   'for path_to_check in "$target" "$root"; do',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '  relative="${path_to_check#/}"',
   '  while [ -n "$relative" ]; do',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '    part="${relative%%/*}"',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '    if [ "$part" = "$relative" ]; then relative=""; else relative="${relative#*/}"; fi',
   '    [ -n "$part" ] || continue',
   '    case "$part" in "."|"..") echo "unsafe remote directory component: $part" >&2; exit 1 ;; esac',
@@ -339,11 +344,15 @@ const VALIDATE_REMOTE_WORKDIR_SCRIPT = [
   'if [ -L "$root" ]; then echo "unsafe remote root symlink: $root" >&2; exit 1; fi',
   'if [ ! -d "$root" ]; then echo "remote root not found: $root" >&2; exit 1; fi',
   'canonical_root="$(cd "$root" && pwd -P)"',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   'relative="${target#"$root"}"',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   'relative="${relative#/}"',
   'current="$canonical_root"',
   'while [ -n "$relative" ]; do',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '  part="${relative%%/*}"',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '  if [ "$part" = "$relative" ]; then relative=""; else relative="${relative#*/}"; fi',
   '  [ -n "$part" ] || continue',
   '  if [ "$current" = "/" ]; then next="/$part"; else next="$current/$part"; fi',
@@ -715,18 +724,24 @@ export async function runSshSandboxCommand(
 export const ENSURE_REMOTE_REAL_DIRECTORY_SCRIPT = [
   "set -e",
   'target="$1"',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   'root="${2:-$1}"',
   'case "$target" in /*) ;; *) echo "remote directory must be absolute: $target" >&2; exit 1 ;; esac',
   'case "$root" in /*) ;; *) echo "remote root must be absolute: $root" >&2; exit 1 ;; esac',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   'target="${target%/}"',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   'root="${root%/}"',
   '[ -n "$target" ] || target="/"',
   '[ -n "$root" ] || root="/"',
   'case "$target/" in "$root"/*|"$root/") ;; *) echo "remote directory must stay under root: $target" >&2; exit 1 ;; esac',
   'for path_to_check in "$target" "$root"; do',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '  relative="${path_to_check#/}"',
   '  while [ -n "$relative" ]; do',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '    part="${relative%%/*}"',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '    if [ "$part" = "$relative" ]; then relative=""; else relative="${relative#*/}"; fi',
   '    [ -n "$part" ] || continue',
   '    case "$part" in "."|"..") echo "unsafe remote directory component: $part" >&2; exit 1 ;; esac',
@@ -735,11 +750,15 @@ export const ENSURE_REMOTE_REAL_DIRECTORY_SCRIPT = [
   'if [ -L "$root" ]; then echo "unsafe remote root symlink: $root" >&2; exit 1; fi',
   'mkdir -p -- "$root"',
   'canonical_root="$(cd "$root" && pwd -P)"',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   'relative="${target#"$root"}"',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   'relative="${relative#/}"',
   'current="$canonical_root"',
   'while [ -n "$relative" ]; do',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '  part="${relative%%/*}"',
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   '  if [ "$part" = "$relative" ]; then relative=""; else relative="${relative#*/}"; fi',
   '  [ -n "$part" ] || continue',
   '  if [ "$current" = "/" ]; then next="/$part"; else next="$current/$part"; fi',

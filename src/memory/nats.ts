@@ -27,7 +27,7 @@ export function createNatsClient(config: MemoryNatsConfig): NatsClient {
   async function ensureNats() {
     if (nc) return nc;
     try {
-      // @ts-ignore external module
+      // @ts-expect-error external module
       const mod = await import("nats");
       const nats = await mod.connect({ servers: config.url ?? "nats://localhost:4222" });
       nc = nats;

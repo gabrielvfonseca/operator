@@ -52,7 +52,7 @@ const mockFsModule = () => {
         return actualFs.readFileSync(p, encoding);
       }
       const entry = state.entries.get(abs(p));
-      if (!entry || entry.kind !== "file") {
+      if (entry?.kind !== "file") {
         throw new Error(`ENOENT: no such file, open '${p}'`);
       }
       return encoding ? entry.content : Buffer.from(entry.content, "utf-8");
@@ -92,7 +92,7 @@ const mockFsPromisesModule = () => {
         return await actualFsPromises.readFile(p, encoding);
       }
       const entry = state.entries.get(abs(p));
-      if (!entry || entry.kind !== "file") {
+      if (entry?.kind !== "file") {
         throw new Error(`ENOENT: no such file, open '${p}'`);
       }
       return entry.content;
@@ -111,8 +111,9 @@ describe("resolveOperatorPackageRoot", () => {
   let resolveOperatorPackageRootSync: typeof import("./openclaw-root.js").resolveOperatorPackageRootSync;
 
   beforeAll(async () => {
-    ({ resolveOperatorPackageRoot, resolveOperatorPackageRootSync } =
-      await import("./openclaw-root.js"));
+    ({ resolveOperatorPackageRoot, resolveOperatorPackageRootSync } = await import(
+      "./openclaw-root.js"
+    ));
   });
 
   it.each([

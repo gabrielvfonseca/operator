@@ -197,7 +197,7 @@ async function loadApplicationConfig(params: {
         return null;
       }
     }
-    if (!res || !res.ok) {
+    if (!res?.ok) {
       return null;
     }
     const parsed = (await res.json()) as ControlUiBootstrapConfig;

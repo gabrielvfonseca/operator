@@ -6,8 +6,9 @@ export const handleSystemAgentCommand: CommandHandler = async (params, allowText
   if (!allowTextCommands) {
     return null;
   }
-  const { extractSystemAgentRescueMessage, runSystemAgentRescueMessage } =
-    await import("../../system-agent/rescue-message.js");
+  const { extractSystemAgentRescueMessage, runSystemAgentRescueMessage } = await import(
+    "../../system-agent/rescue-message.js"
+  );
   if (extractSystemAgentRescueMessage(params.command.commandBodyNormalized) === null) {
     return null;
   }

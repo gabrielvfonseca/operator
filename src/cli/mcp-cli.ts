@@ -1248,7 +1248,7 @@ export function registerMcpCli(program: Command) {
         fail(`MCP server "${name}" needs a URL for OAuth login.`);
       }
       const resolved = resolveMcpTransportConfig(name, server);
-      if (!resolved || resolved.kind !== "http") {
+      if (resolved?.kind !== "http") {
         fail(`MCP server "${name}" needs a valid HTTP transport for OAuth login.`);
       }
       const result = await runMcpOAuthLogin({
@@ -1296,7 +1296,7 @@ export function registerMcpCli(program: Command) {
         );
       }
       const resolved = resolveMcpTransportConfig(name, server);
-      if (!resolved || resolved.kind !== "http") {
+      if (resolved?.kind !== "http") {
         fail(`MCP server "${name}" needs a valid HTTP transport for OAuth logout.`);
       }
       await clearMcpOAuthCredentials({
@@ -1310,8 +1310,9 @@ export function registerMcpCli(program: Command) {
     .command("reload")
     .description("Dispose cached MCP runtimes so new config is used on the next turn")
     .action(async () => {
-      const { disposeAllSessionMcpRuntimes } =
-        await import("../agents/agent-bundle-mcp-runtime.js");
+      const { disposeAllSessionMcpRuntimes } = await import(
+        "../agents/agent-bundle-mcp-runtime.js"
+      );
       await disposeAllSessionMcpRuntimes();
       defaultRuntime.log(
         "Disposed cached MCP runtimes. Active agents use new MCP config on their next runtime build.",

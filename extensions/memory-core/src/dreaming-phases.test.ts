@@ -1188,6 +1188,7 @@ describe("memory-core dreaming phases", () => {
       workspaceDir,
     );
 
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let firstSessionIngestion;
     try {
       await withDreamingTestClock(async () => {
@@ -1608,7 +1609,7 @@ describe("memory-core dreaming phases", () => {
 
     await fs.writeFile(
       path.join(sessionsDir, "archived.jsonl.deleted.2026-04-16T18-06-16.529Z"),
-      [
+      `${[
         JSON.stringify({
           type: "message",
           message: {
@@ -1625,19 +1626,19 @@ describe("memory-core dreaming phases", () => {
             content: "Running the nightly sync now.",
           },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf-8",
     );
     await fs.writeFile(
       path.join(sessionsDir, "ordinary.checkpoint.11111111-1111-4111-8111-111111111111.jsonl"),
-      JSON.stringify({
+      `${JSON.stringify({
         type: "message",
         message: {
           role: "user",
           timestamp: "2026-04-16T18:03:00.000Z",
           content: "Checkpoint chatter should stay out.",
         },
-      }) + "\n",
+      })}\n`,
       "utf-8",
     );
     await seedDreamingSessionTranscript({
@@ -1838,17 +1839,16 @@ describe("memory-core dreaming phases", () => {
     const sessionsDir = resolveSessionTranscriptsDirForAgent("main");
     await fs.mkdir(sessionsDir, { recursive: true });
     const oldMessage = "Move backups to S3 Glacier.";
-    const oldArchiveContent =
-      [
-        JSON.stringify({
-          type: "message",
-          message: {
-            role: "user",
-            timestamp: "2026-04-05T18:01:00.000Z",
-            content: [{ type: "text", text: oldMessage }],
-          },
-        }),
-      ].join("\n") + "\n";
+    const oldArchiveContent = `${[
+      JSON.stringify({
+        type: "message",
+        message: {
+          role: "user",
+          timestamp: "2026-04-05T18:01:00.000Z",
+          content: [{ type: "text", text: oldMessage }],
+        },
+      }),
+    ].join("\n")}\n`;
     await seedDreamingSessionTranscript({
       sessionId: "dreaming-main",
       messages: [
@@ -1945,7 +1945,7 @@ describe("memory-core dreaming phases", () => {
     );
     await fs.writeFile(
       archivePath,
-      [
+      `${[
         JSON.stringify({
           type: "message",
           message: {
@@ -1954,7 +1954,7 @@ describe("memory-core dreaming phases", () => {
             content: [{ type: "text", text: "Archived session should not be dreamed." }],
           },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf-8",
     );
     const mtime = new Date("2026-04-06T01:05:00.000Z");

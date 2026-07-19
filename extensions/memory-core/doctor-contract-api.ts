@@ -262,9 +262,9 @@ function readVectorTableSqlDimensions(
   schema: string,
   tableName: string,
 ): number | undefined {
-  const row = db
-    .prepare(`SELECT sql FROM ${schema}.sqlite_master WHERE name = ?`)
-    .get(tableName) as { sql?: unknown } | undefined;
+  const row = db.prepare(`SELECT sql FROM ${schema}.sqlite_master WHERE name = ?`).get(tableName) as
+    | { sql?: unknown }
+    | undefined;
   if (typeof row?.sql !== "string") {
     return undefined;
   }

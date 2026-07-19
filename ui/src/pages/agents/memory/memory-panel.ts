@@ -263,7 +263,7 @@ class AgentMemoryPanel extends OperatorLightDomElement {
 
   private async loadAll(refreshConfig = false) {
     const scope = this.captureTaskScope();
-    if (!scope || !scope.state.client || !scope.state.connected) {
+    if (!scope?.state.client || !scope.state.connected) {
       return;
     }
     const runtimeConfig = this.context.runtimeConfig;

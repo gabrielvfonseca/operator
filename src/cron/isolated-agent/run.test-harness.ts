@@ -700,17 +700,17 @@ function resetRunOutcomeMocks(): void {
       result: undefined,
       delivered: Boolean(
         sourceDeliveryOutcome?.verifiedMessageToolDelivery ||
-        (deliveryRequested &&
-          !skipHeartbeatDelivery &&
-          !sourceDeliveryOutcome?.satisfiesSourceDelivery &&
-          resolvedDelivery.ok),
+          (deliveryRequested &&
+            !skipHeartbeatDelivery &&
+            !sourceDeliveryOutcome?.satisfiesSourceDelivery &&
+            resolvedDelivery.ok),
       ),
       deliveryAttempted: Boolean(
         sourceDeliveryOutcome?.verifiedMessageToolDelivery ||
-        (deliveryRequested &&
-          !skipHeartbeatDelivery &&
-          !sourceDeliveryOutcome?.satisfiesSourceDelivery &&
-          resolvedDelivery.ok),
+          (deliveryRequested &&
+            !skipHeartbeatDelivery &&
+            !sourceDeliveryOutcome?.satisfiesSourceDelivery &&
+            resolvedDelivery.ok),
       ),
       cronRunSessionCleanupAttempted: false,
       summary,

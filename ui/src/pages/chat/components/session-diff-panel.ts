@@ -134,9 +134,11 @@ class SessionDiffPanel extends OperatorLightDomElement {
     }
     return html`
       ${renderDiffBlock(parsed.lines)}
-      ${parsed.truncated
-        ? html`<div class="session-diff__note">${t("chat.sessionDiff.truncatedFile")}</div>`
-        : nothing}
+      ${
+        parsed.truncated
+          ? html`<div class="session-diff__note">${t("chat.sessionDiff.truncatedFile")}</div>`
+          : nothing
+      }
     `;
   }
 
@@ -159,13 +161,17 @@ class SessionDiffPanel extends OperatorLightDomElement {
             title=${statusLabel(file)}
           ></span>
           <span class="session-diff__path">
-            ${file.oldPath
-              ? html`<span class="session-diff__old-path">${file.oldPath}</span> → `
-              : nothing}${file.path}
+            ${
+              file.oldPath
+                ? html`<span class="session-diff__old-path">${file.oldPath}</span> → `
+                : nothing
+            }${file.path}
           </span>
-          ${file.untracked === true
-            ? html`<span class="session-diff__badge">${t("chat.sessionDiff.untracked")}</span>`
-            : nothing}
+          ${
+            file.untracked === true
+              ? html`<span class="session-diff__badge">${t("chat.sessionDiff.untracked")}</span>`
+              : nothing
+          }
           ${renderDiffStatChips({ added: file.additions, removed: file.deletions })}
         </button>
         ${collapsed ? nothing : this.renderFileBody(view)}
@@ -189,12 +195,16 @@ class SessionDiffPanel extends OperatorLightDomElement {
     }
     return html`
       ${this.renderSummary(result)}
-      ${result.files.length === 0
-        ? html`<div class="session-diff__note">${t("chat.sessionDiff.empty")}</div>`
-        : this.views.map((view) => this.renderFile(view))}
-      ${result.truncated === true
-        ? html`<div class="session-diff__note">${t("chat.sessionDiff.truncatedResult")}</div>`
-        : nothing}
+      ${
+        result.files.length === 0
+          ? html`<div class="session-diff__note">${t("chat.sessionDiff.empty")}</div>`
+          : this.views.map((view) => this.renderFile(view))
+      }
+      ${
+        result.truncated === true
+          ? html`<div class="session-diff__note">${t("chat.sessionDiff.truncatedResult")}</div>`
+          : nothing
+      }
     `;
   }
 

@@ -120,11 +120,13 @@ function renderCollection(
             <small>${fileCount(collection.items.length)}</small>
           </span>
         </label>
-        ${conflicts > 0
-          ? html`<span class="memory-import__badge memory-import__badge--conflict">
+        ${
+          conflicts > 0
+            ? html`<span class="memory-import__badge memory-import__badge--conflict">
               ${t("memoryImport.alreadyImported", { count: String(conflicts) })}
             </span>`
-          : nothing}
+            : nothing
+        }
       </div>
       <details ?open=${collection.items.length <= 4}>
         <summary>${t("memoryImport.reviewFiles")}</summary>
@@ -135,11 +137,13 @@ function renderCollection(
                 <span class="memory-import__file-icon" aria-hidden="true">${icons.fileText}</span>
                 <code title=${item.source ?? artifactLabel(item)}>${artifactLabel(item)}</code>
                 <span class="memory-import__file-status memory-import__file-status--${item.status}">
-                  ${item.status === "planned"
-                    ? t("memoryImport.ready")
-                    : item.status === "conflict"
-                      ? t("memoryImport.existing")
-                      : item.status}
+                  ${
+                    item.status === "planned"
+                      ? t("memoryImport.ready")
+                      : item.status === "conflict"
+                        ? t("memoryImport.existing")
+                        : item.status
+                  }
                 </span>
               </li>
             `,
@@ -172,22 +176,27 @@ function renderResult(result: MigrationsMemoryApplyResult | undefined) {
           ${t(incomplete ? "memoryImport.importIncomplete" : "memoryImport.importComplete")}
         </strong>
         <span>
-          ${incomplete
-            ? t("memoryImport.importedWithIssues", {
-                conflicts: String(result.summary.conflicts),
-                errors: String(result.summary.errors),
-                migrated: String(result.summary.migrated),
-              })
-            : t("memoryImport.importedCount", { count: String(result.summary.migrated) })}
+          ${
+            incomplete
+              ? t("memoryImport.importedWithIssues", {
+                  conflicts: String(result.summary.conflicts),
+                  errors: String(result.summary.errors),
+                  migrated: String(result.summary.migrated),
+                })
+              : t("memoryImport.importedCount", { count: String(result.summary.migrated) })
+          }
         </span>
-        ${result.reportDir
-          ? html`<span class="memory-import__result-path">
+        ${
+          result.reportDir
+            ? html`<span class="memory-import__result-path">
               ${t("memoryImport.reportSaved")}:
               <code title=${result.reportDir}>${result.reportDir}</code>
             </span>`
-          : nothing}
-        ${resultDetailItems.length > 0
-          ? html`<ul class="memory-import__result-issues">
+            : nothing
+        }
+        ${
+          resultDetailItems.length > 0
+            ? html`<ul class="memory-import__result-issues">
               ${resultDetailItems.map((item) => {
                 const recoveryArtifacts = [
                   {
@@ -217,7 +226,8 @@ function renderResult(result: MigrationsMemoryApplyResult | undefined) {
                 </li>`;
               })}
             </ul>`
-          : nothing}
+            : nothing
+        }
       </div>
     </div>
   `;
@@ -240,36 +250,41 @@ function renderProvider(props: MemoryImportViewProps, provider: MemoryMigrationP
           </div>
         </div>
         <span
-          class="memory-import__badge ${provider.found
-            ? "memory-import__badge--ready"
-            : "memory-import__badge--muted"}"
+          class="memory-import__badge ${
+            provider.found ? "memory-import__badge--ready" : "memory-import__badge--muted"
+          }"
         >
           ${provider.found ? fileCount(provider.items.length) : t("memoryImport.notFound")}
         </span>
       </div>
 
-      ${provider.error
-        ? html`<div class="callout danger" role="alert">${provider.error}</div>`
-        : !provider.found
-          ? html`<div class="memory-import__empty">
+      ${
+        provider.error
+          ? html`<div class="callout danger" role="alert">${provider.error}</div>`
+          : !provider.found
+            ? html`<div class="memory-import__empty">
               ${provider.message ?? t("memoryImport.noMemoryFound")}
             </div>`
-          : html`
+            : html`
               <dl class="memory-import__paths">
-                ${provider.source
-                  ? html`<div>
+                ${
+                  provider.source
+                    ? html`<div>
                       <dt>${t("memoryImport.source")}</dt>
                       <dd><code title=${provider.source}>${provider.source}</code></dd>
                     </div>`
-                  : nothing}
-                ${provider.target
-                  ? html`<div>
+                    : nothing
+                }
+                ${
+                  provider.target
+                    ? html`<div>
                       <dt>${t("memoryImport.destination")}</dt>
                       <dd>
                         <code title=${provider.target}>${provider.target}/memory/imports/</code>
                       </dd>
                     </div>`
-                  : nothing}
+                    : nothing
+                }
               </dl>
               <div class="memory-import__collections">
                 ${groups.map((group) =>
@@ -284,23 +299,28 @@ function renderProvider(props: MemoryImportViewProps, provider: MemoryMigrationP
               </div>
               <div class="memory-import__provider-actions">
                 <span>
-                  ${selectedIds.size > 0
-                    ? t("memoryImport.selectedCount", { count: String(selectedIds.size) })
-                    : t("memoryImport.selectAtLeastOne")}
+                  ${
+                    selectedIds.size > 0
+                      ? t("memoryImport.selectedCount", { count: String(selectedIds.size) })
+                      : t("memoryImport.selectAtLeastOne")
+                  }
                 </span>
                 <button
                   class="btn primary"
                   data-test-id="memory-import-provider-button"
-                  ?disabled=${selectedIds.size === 0 ||
-                  props.applyingProviderId !== null ||
-                  props.loading ||
-                  props.error !== null}
+                  ?disabled=${
+                    selectedIds.size === 0 ||
+                    props.applyingProviderId !== null ||
+                    props.loading ||
+                    props.error !== null
+                  }
                   @click=${() => props.onRequestImport(provider.providerId)}
                 >
                   ${applying ? t("common.importing") : t("memoryImport.importSelected")}
                 </button>
               </div>
-            `}
+            `
+      }
       ${renderResult(props.lastResults[provider.providerId])}
     </article>
   `;
@@ -334,9 +354,11 @@ function renderConfirmation(props: MemoryImportViewProps) {
           </div>
         </div>
         <div class="callout ${props.replaceExisting ? "warn" : ""}">
-          ${props.replaceExisting
-            ? t("memoryImport.confirmReplace")
-            : t("memoryImport.confirmBackup")}
+          ${
+            props.replaceExisting
+              ? t("memoryImport.confirmReplace")
+              : t("memoryImport.confirmBackup")
+          }
         </div>
         <div class="exec-approval-actions">
           <button
@@ -417,17 +439,21 @@ export function renderMemoryImport(props: MemoryImportViewProps) {
       </section>
 
       ${props.error ? html`<div class="callout danger" role="alert">${props.error}</div>` : nothing}
-      ${props.applyError
-        ? html`<div class="callout danger" role="alert">${props.applyError}</div>`
-        : nothing}
-      ${props.loading && !props.plan
-        ? html`<section class="card memory-import__loading" aria-busy="true">
+      ${
+        props.applyError
+          ? html`<div class="callout danger" role="alert">${props.applyError}</div>`
+          : nothing
+      }
+      ${
+        props.loading && !props.plan
+          ? html`<section class="card memory-import__loading" aria-busy="true">
             <div class="memory-import__skeleton"></div>
             <div class="memory-import__skeleton"></div>
           </section>`
-        : html`<div class="memory-import__grid">
+          : html`<div class="memory-import__grid">
             ${(props.plan?.providers ?? []).map((provider) => renderProvider(props, provider))}
-          </div>`}
+          </div>`
+      }
       ${renderConfirmation(props)}
     </div>
   `;

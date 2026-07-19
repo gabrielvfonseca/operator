@@ -1,9 +1,3 @@
-/**
- * Sandbox context resolver.
- *
- * Prepares workspace layout, backend handle, filesystem bridge, browser bridge, and registry state for one run.
- */
-import fs from "node:fs/promises";
 import type { OperatorConfig } from "../../config/types.operator.js";
 import {
   ensureBrowserControlAuth,
@@ -24,7 +18,6 @@ import { updateRegistry } from "./registry.js";
 import { resolveSandboxRuntimeStatus } from "./runtime-status.js";
 import { resolveSandboxWorkspaceLayoutPaths } from "./shared.js";
 import type { SandboxContext, SandboxWorkspaceInfo } from "./types.js";
-import { ensureSandboxWorkspace } from "./workspace.js";
 
 async function ensureSandboxWorkspaceLayout(params: {
   cfg: ReturnType<typeof resolveSandboxConfigForAgent>;
@@ -116,19 +109,15 @@ export async function resolveSandboxContext(params: {
     await (await import("./prune.js")).maybePruneSandboxes(cfg);
   }
 
-  const {
-    agentWorkspaceDir,
-    scopeKey,
-    skillsWorkspaceDir,
-    workspaceDir,
-  } = await ensureSandboxWorkspaceLayout({
-    cfg,
-    agentId: runtime.agentId,
-    rawSessionKey,
-    config: params.config,
-    execOverrides: params.execOverrides,
-    workspaceDir: params.workspaceDir,
-  });
+  const { agentWorkspaceDir, scopeKey, skillsWorkspaceDir, workspaceDir } =
+    await ensureSandboxWorkspaceLayout({
+      cfg,
+      agentId: runtime.agentId,
+      rawSessionKey,
+      config: params.config,
+      execOverrides: params.execOverrides,
+      workspaceDir: params.workspaceDir,
+    });
 
   const docker = await resolveSandboxDockerUser({
     docker: cfg.docker,
@@ -238,18 +227,14 @@ export async function ensureSandboxWorkspaceForSession(params: {
   }
   const { rawSessionKey, cfg, runtime } = resolved;
 
-  const {
-    agentWorkspaceDir,
-    scopeKey,
-    skillsWorkspaceDir,
-    workspaceDir,
-  } = await ensureSandboxWorkspaceLayout({
-    cfg,
-    agentId: runtime.agentId,
-    rawSessionKey,
-    config: params.config,
-    workspaceDir: params.workspaceDir,
-  });
+  const { agentWorkspaceDir, scopeKey, skillsWorkspaceDir, workspaceDir } =
+    await ensureSandboxWorkspaceLayout({
+      cfg,
+      agentId: runtime.agentId,
+      rawSessionKey,
+      config: params.config,
+      workspaceDir: params.workspaceDir,
+    });
 
   const containerWorkdir = resolveSandboxWorkspaceInfoWorkdir({
     cfg,

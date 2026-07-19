@@ -32,7 +32,7 @@ export function createWorkingMemoryClient(config: MemoryWorkingConfig): WorkingM
   async function ensureClient(): Promise<typeof client> {
     if (client) return client;
     try {
-      // @ts-ignore external module
+      // @ts-expect-error external module
       const mod = await import("redis");
       const redisClient = mod.createClient({ url: config.redisUrl });
       await redisClient.connect();

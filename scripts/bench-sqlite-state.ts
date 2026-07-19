@@ -520,6 +520,7 @@ function main(): void {
     const seedStarted = nowMs();
     seedStateDatabase(stateDatabase.db, config);
     const perAgentEntries = Math.ceil(config.agentCacheEntries / config.agentCount);
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     agentDatabases.forEach((database, index) =>
       seedAgentDatabase(database.db, perAgentEntries, index),
     );
@@ -537,6 +538,7 @@ function main(): void {
 
     const checkpointStarted = nowMs();
     checkpoint(stateDatabase.db);
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     agentDatabases.forEach((database) => checkpoint(database.db));
     const checkpointMs = nowMs() - checkpointStarted;
 

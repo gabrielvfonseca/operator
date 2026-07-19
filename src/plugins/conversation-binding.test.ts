@@ -178,8 +178,9 @@ beforeAll(async () => {
     resolvePluginConversationBindingApproval,
   } = await import("./conversation-binding.js"));
   ({ bindPluginSessionConversation } = await import("./session-conversation-binding.js"));
-  ({ registerSessionBindingAdapter, unregisterSessionBindingAdapter } =
-    await import("../infra/outbound/session-binding-service.js"));
+  ({ registerSessionBindingAdapter, unregisterSessionBindingAdapter } = await import(
+    "../infra/outbound/session-binding-service.js"
+  ));
   ({ setActivePluginRegistry } = await import("./runtime.js"));
 });
 

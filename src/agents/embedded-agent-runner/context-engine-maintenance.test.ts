@@ -111,8 +111,9 @@ vi.mock("./transcript-rewrite.js", () => ({
 async function loadFreshContextEngineMaintenanceModuleForTest() {
   // The module owns singleton deferred-maintenance state, so reload between
   // cases before asserting abort or queue behavior.
-  ({ runContextEngineMaintenance, waitForDeferredTurnMaintenanceForSession } =
-    await import("./context-engine-maintenance.js"));
+  ({ runContextEngineMaintenance, waitForDeferredTurnMaintenanceForSession } = await import(
+    "./context-engine-maintenance.js"
+  ));
   ({ createDeferredTurnMaintenanceAbortSignal, resetDeferredTurnMaintenanceStateForTest } =
     await import("./context-engine-maintenance.test-support.js"));
   resetDeferredTurnMaintenanceStateForTest();

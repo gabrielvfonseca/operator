@@ -13,6 +13,7 @@ describe("inspectTelegramAccount SecretRef resolution", () => {
       const cfg: OperatorConfig = {
         channels: {
           telegram: {
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             botToken: "${TG_STATUS_TOKEN}",
           },
         },
@@ -41,6 +42,7 @@ describe("inspectTelegramAccount SecretRef resolution", () => {
         },
         channels: {
           telegram: {
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             botToken: "${TG_NOT_ALLOWED}",
           },
         },
@@ -69,6 +71,7 @@ describe("inspectTelegramAccount SecretRef resolution", () => {
         },
         channels: {
           telegram: {
+            // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
             botToken: "${TG_EXEC_PROVIDER}",
           },
         },

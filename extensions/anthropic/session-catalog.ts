@@ -1143,7 +1143,7 @@ async function continueClaudeSession(
       // Node rows stay CLI-only: desktop transcripts on nodes have no
       // node-side run command and remain view-only.
       record = await resolveNodeClaudeRecord({ runtime: api.runtime, nodeId, threadId });
-      if (!record || record.source !== "claude-cli") {
+      if (record?.source !== "claude-cli") {
         throw new ClaudeCatalogParamsError("only Claude CLI sessions can be continued");
       }
     } else {

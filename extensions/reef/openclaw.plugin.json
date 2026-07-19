@@ -4,13 +4,9 @@
   "description": "Guarded end-to-end encrypted claw channel",
   "activation": {
     "onStartup": true,
-    "onCommands": [
-      "reef"
-    ]
+    "onCommands": ["reef"]
   },
-  "channels": [
-    "reef"
-  ],
+  "channels": ["reef"],
   "configSchema": {
     "type": "object",
     "additionalProperties": false,
@@ -32,19 +28,10 @@
       "guard": {
         "type": "object",
         "additionalProperties": false,
-        "required": [
-          "provider",
-          "pinnedModel",
-          "apiKeyEnv",
-          "policyVersion",
-          "timeoutMs"
-        ],
+        "required": ["provider", "pinnedModel", "apiKeyEnv", "policyVersion", "timeoutMs"],
         "properties": {
           "provider": {
-            "enum": [
-              "anthropic",
-              "openai"
-            ]
+            "enum": ["anthropic", "openai"]
           },
           "pinnedModel": {
             "type": "string",
@@ -70,11 +57,7 @@
         "minLength": 1
       },
       "requestPolicy": {
-        "enum": [
-          "code-only",
-          "friends-of-friends",
-          "open"
-        ],
+        "enum": ["code-only", "friends-of-friends", "open"],
         "default": "code-only"
       },
       "enabled": {
@@ -106,19 +89,10 @@
           "guard": {
             "type": "object",
             "additionalProperties": false,
-            "required": [
-              "provider",
-              "pinnedModel",
-              "apiKeyEnv",
-              "policyVersion",
-              "timeoutMs"
-            ],
+            "required": ["provider", "pinnedModel", "apiKeyEnv", "policyVersion", "timeoutMs"],
             "properties": {
               "provider": {
-                "enum": [
-                  "anthropic",
-                  "openai"
-                ]
+                "enum": ["anthropic", "openai"]
               },
               "pinnedModel": {
                 "type": "string",
@@ -144,11 +118,7 @@
             "minLength": 1
           },
           "requestPolicy": {
-            "enum": [
-              "code-only",
-              "friends-of-friends",
-              "open"
-            ],
+            "enum": ["code-only", "friends-of-friends", "open"],
             "default": "code-only"
           },
           "enabled": {

@@ -11,7 +11,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 type SpeechSynthesisTarget = SpeechSynthesisRequest["target"];
 
-const runFfmpegMock = vi.hoisted(() => vi.fn<(args: string[]) => Promise<string | void>>());
+const runFfmpegMock = vi.hoisted(() => vi.fn<(args: string[]) => Promise<string | undefined>>());
 const debugLogMock = vi.hoisted(() => vi.fn());
 
 vi.mock("openclaw/plugin-sdk/media-runtime", () => ({
@@ -99,7 +99,7 @@ function requireFfmpegArgs(index = 0) {
 }
 
 function expectArgsContainSequence(args: string[], sequence: string[]) {
-  const startIndex = args.findIndex((arg, index) =>
+  const startIndex = args.findIndex((_arg, index) =>
     sequence.every((expected, offset) => args[index + offset] === expected),
   );
   expect(startIndex).toBeGreaterThanOrEqual(0);

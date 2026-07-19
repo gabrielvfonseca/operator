@@ -392,6 +392,7 @@ describe("openclaw path CLI", () => {
       const filePath = join(workspaceDir, "operator.json");
       writeFileSync(
         filePath,
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         '{ "agents": { "list": [{ "tools": { "exec": { "security": "deny" } } }] }, "gateway": { "auth": { "token": "${TOKEN}" } } }\n',
         "utf-8",
       );

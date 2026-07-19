@@ -519,8 +519,9 @@ export class ChatPage extends OperatorLightDomElement {
                     splitWeight(column.paneWeights, paneIndex, "rendered split pane weight"),
                     splitMode,
                   )}
-                  ${paneIndex < column.panes.length - 1
-                    ? html`
+                  ${
+                    paneIndex < column.panes.length - 1
+                      ? html`
                         <resizable-divider
                           orientation="horizontal"
                           .splitRatio=${splitRatio(
@@ -541,12 +542,14 @@ export class ChatPage extends OperatorLightDomElement {
                           }}
                         ></resizable-divider>
                       `
-                    : nothing}
+                      : nothing
+                  }
                 `,
               )}
             </div>
-            ${columnIndex < renderedColumns.length - 1
-              ? html`
+            ${
+              columnIndex < renderedColumns.length - 1
+                ? html`
                   <resizable-divider
                     .splitRatio=${splitRatio(
                       layout.columnWeights,
@@ -566,7 +569,8 @@ export class ChatPage extends OperatorLightDomElement {
                     }}
                   ></resizable-divider>
                 `
-              : nothing}
+                : nothing
+            }
           `,
         )}
       </div>
@@ -579,20 +583,24 @@ export class ChatPage extends OperatorLightDomElement {
     return html`
       <div class="chat-split-view__drop-container">
         ${this.renderSplitLayout(layout ?? this.classicLayout(), Boolean(layout))}
-        ${indicator
-          ? html`<div
-              class="chat-split-view__drop-indicator ${indicator.zone.kind === "center"
-                ? "chat-split-view__drop-indicator--center"
-                : ""}"
+        ${
+          indicator
+            ? html`<div
+              class="chat-split-view__drop-indicator ${
+                indicator.zone.kind === "center" ? "chat-split-view__drop-indicator--center" : ""
+              }"
               style=${`left: ${indicator.rect.left}px; top: ${indicator.rect.top}px; width: ${indicator.rect.width}px; height: ${indicator.rect.height}px;`}
             >
               <span class="chat-split-view__drop-indicator-label"
-                >${indicator.zone.kind === "center"
-                  ? t("chat.splitView.dropOpenHere")
-                  : t("chat.splitView.dropSplit")}</span
+                >${
+                  indicator.zone.kind === "center"
+                    ? t("chat.splitView.dropOpenHere")
+                    : t("chat.splitView.dropSplit")
+                }</span
               >
             </div>`
-          : nothing}
+            : nothing
+        }
       </div>
     `;
   }

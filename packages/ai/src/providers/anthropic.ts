@@ -1460,7 +1460,7 @@ function convertMessages(
 
     for (let i = params.length - 1; i >= 0; i--) {
       const message = params[i];
-      if (!message || message.role !== "user" || cacheBreakpointOptOutParamIndexes.has(i)) {
+      if (message?.role !== "user" || cacheBreakpointOptOutParamIndexes.has(i)) {
         continue;
       }
 

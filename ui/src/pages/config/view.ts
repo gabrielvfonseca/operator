@@ -770,7 +770,7 @@ function truncateValue(value: unknown, maxLen = 40): string {
   if (str.length <= maxLen) {
     return str;
   }
-  return truncateUtf16Safe(str, maxLen - 3) + "...";
+  return `${truncateUtf16Safe(str, maxLen - 3)}...`;
 }
 
 function hintKeyMatchesPathPrefix(hintKey: string, path: ConfigDiffPath): boolean {
@@ -949,9 +949,11 @@ function renderNotificationsSection(props: ConfigProps) {
               @click=${() => props.onWebPushSubscribe?.()}
             >
               ${push.loading ? icons.loader : nothing}
-              ${push.loading
-                ? t("configView.notifications.subscribing")
-                : t("configView.notifications.enable")}
+              ${
+                push.loading
+                  ? t("configView.notifications.subscribing")
+                  : t("configView.notifications.enable")
+              }
             </button>
           `
       : nothing;
@@ -986,32 +988,38 @@ function renderNotificationsSection(props: ConfigProps) {
               label: subscriptionLabel,
             }),
           })}
-          ${actionButtons !== nothing
-            ? html`
+          ${
+            actionButtons !== nothing
+              ? html`
                 <div class="settings-row">
                   <div class="settings-row__control">${actionButtons}</div>
                 </div>
               `
-            : nothing}
-          ${push.permission === "denied"
-            ? renderSettingsRow({
-                title: t("configView.notifications.blocked"),
-                description: t("configView.notifications.blockedHint"),
-                control: renderSettingsStatus({
-                  kind: "danger",
-                  label: t("configView.notifications.denied"),
-                }),
-              })
-            : nothing}
-          ${push.error
-            ? html`
+              : nothing
+          }
+          ${
+            push.permission === "denied"
+              ? renderSettingsRow({
+                  title: t("configView.notifications.blocked"),
+                  description: t("configView.notifications.blockedHint"),
+                  control: renderSettingsStatus({
+                    kind: "danger",
+                    label: t("configView.notifications.denied"),
+                  }),
+                })
+              : nothing
+          }
+          ${
+            push.error
+              ? html`
                 <div class="settings-row">
                   <div class="settings-row__text">
                     <span class="cfg-field__error">${push.error}</span>
                   </div>
                 </div>
               `
-            : nothing}
+              : nothing
+          }
         </div>
       </section>
     </div>
@@ -1172,9 +1180,9 @@ function renderAppearanceSection(props: ConfigProps) {
               ${themeOptions.map(
                 (opt) => html`
                   <button
-                    class="settings-theme-card ${opt.id === props.theme
-                      ? "settings-theme-card--active"
-                      : ""}"
+                    class="settings-theme-card ${
+                      opt.id === props.theme ? "settings-theme-card--active" : ""
+                    }"
                     title=${opt.description}
                     @click=${(e: Event) => {
                       if (opt.id === "custom" && !props.hasCustomTheme) {
@@ -1191,19 +1199,22 @@ function renderAppearanceSection(props: ConfigProps) {
                   >
                     <span class="settings-theme-card__icon" aria-hidden="true">${opt.icon}</span>
                     <span class="settings-theme-card__label">${opt.label}</span>
-                    ${opt.id === props.theme
-                      ? html`<span class="settings-theme-card__check" aria-hidden="true"
+                    ${
+                      opt.id === props.theme
+                        ? html`<span class="settings-theme-card__check" aria-hidden="true"
                           >${icons.check}</span
                         >`
-                      : nothing}
+                        : nothing
+                    }
                   </button>
                 `,
               )}
             </div>
           </div>
           <div class="settings-row settings-row--stacked">
-            ${showCustomThemeImport
-              ? html`
+            ${
+              showCustomThemeImport
+                ? html`
                   <div class="settings-theme-import">
                     <div class="settings-theme-import__copy">
                       <div class="settings-theme-import__title">
@@ -1241,26 +1252,33 @@ function renderAppearanceSection(props: ConfigProps) {
                     <div class="settings-theme-import__actions">
                       <button
                         class="btn btn--sm primary"
-                        ?disabled=${props.customThemeImportBusy ||
-                        props.customThemeImportUrl.trim().length === 0}
+                        ?disabled=${
+                          props.customThemeImportBusy ||
+                          props.customThemeImportUrl.trim().length === 0
+                        }
                         @click=${props.onImportCustomTheme}
                       >
-                        ${props.customThemeImportBusy
-                          ? t("common.importing")
-                          : props.hasCustomTheme
-                            ? t("configView.appearance.replace", { name: importedName })
-                            : t("configView.appearance.importTheme")}
+                        ${
+                          props.customThemeImportBusy
+                            ? t("common.importing")
+                            : props.hasCustomTheme
+                              ? t("configView.appearance.replace", { name: importedName })
+                              : t("configView.appearance.importTheme")
+                        }
                       </button>
-                      ${props.hasCustomTheme
-                        ? html`
+                      ${
+                        props.hasCustomTheme
+                          ? html`
                             <button class="btn btn--sm danger" @click=${props.onClearCustomTheme}>
                               ${t("configView.appearance.clear", { name: importedName })}
                             </button>
                           `
-                        : nothing}
+                          : nothing
+                      }
                     </div>
-                    ${props.hasCustomTheme
-                      ? html`
+                    ${
+                      props.hasCustomTheme
+                        ? html`
                           <div class="settings-theme-import__meta">
                             <span class="settings-theme-import__meta-label"
                               >${t("configView.appearance.loaded")}</span
@@ -1270,26 +1288,31 @@ function renderAppearanceSection(props: ConfigProps) {
                             >
                           </div>
                         `
-                      : nothing}
-                    ${props.customThemeImportMessage
-                      ? html`
+                        : nothing
+                    }
+                    ${
+                      props.customThemeImportMessage
+                        ? html`
                           <div
-                            class="settings-theme-import__message settings-theme-import__message--${props
-                              .customThemeImportMessage.kind}"
+                            class="settings-theme-import__message settings-theme-import__message--${
+                              props.customThemeImportMessage.kind
+                            }"
                           >
                             ${props.customThemeImportMessage.text}
                           </div>
                         `
-                      : nothing}
+                        : nothing
+                    }
                   </div>
                 `
-              : html`
+                : html`
                   <p class="settings-theme-import__inline-hint">
                     ${t("configView.appearance.inlineHintBefore")}
                     <strong>${t("configView.appearance.import")}</strong>
                     ${t("configView.appearance.inlineHintAfter")}
                   </p>
-                `}
+                `
+            }
           </div>
         </div>
       </section>
@@ -1338,12 +1361,14 @@ function renderAppearanceSection(props: ConfigProps) {
               label: props.connected ? t("common.connected") : t("common.offline"),
             }),
           })}
-          ${props.assistantName
-            ? renderSettingsRow({
-                title: t("configView.connection.assistant"),
-                control: renderSettingsValue(props.assistantName),
-              })
-            : nothing}
+          ${
+            props.assistantName
+              ? renderSettingsRow({
+                  title: t("configView.connection.assistant"),
+                  control: renderSettingsValue(props.assistantName),
+                })
+              : nothing
+          }
         </div>
       </section>
     </div>
@@ -1549,7 +1574,7 @@ export function renderConfig(props: ConfigProps) {
         (key) =>
           (isVisibleVirtualSection(key) || key in schemaProps) &&
           (!include || include.has(key)) &&
-          (!exclude || !exclude.has(key)),
+          !exclude?.has(key),
       )
       .map((key) => ({ key, label: resolveNavSectionLabel(key) })),
   })).filter((category) => category.sections.length > 0);
@@ -1586,10 +1611,12 @@ export function renderConfig(props: ConfigProps) {
           (cat) => html`
             <div class="config-accordion-group">
               <button
-                class="config-accordion-group__header ${props.activeSection != null &&
-                cat.sections.some((s) => s.key === props.activeSection)
-                  ? "config-accordion-group__header--active"
-                  : ""}"
+                class="config-accordion-group__header ${
+                  props.activeSection != null &&
+                  cat.sections.some((s) => s.key === props.activeSection)
+                    ? "config-accordion-group__header--active"
+                    : ""
+                }"
                 @click=${(e: Event) => {
                   const firstKey = cat.sections[0]?.key ?? null;
                   const isCurrentlyInGroup = cat.sections.some(
@@ -1604,11 +1631,11 @@ export function renderConfig(props: ConfigProps) {
                 </span>
                 <span>${cat.label}</span>
                 <svg
-                  class="config-accordion-group__chevron ${cat.sections.some(
-                    (s) => s.key === props.activeSection,
-                  )
-                    ? "config-accordion-group__chevron--open"
-                    : ""}"
+                  class="config-accordion-group__chevron ${
+                    cat.sections.some((s) => s.key === props.activeSection)
+                      ? "config-accordion-group__chevron--open"
+                      : ""
+                  }"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -1619,15 +1646,18 @@ export function renderConfig(props: ConfigProps) {
                   <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
               </button>
-              ${cat.sections.some((s) => s.key === props.activeSection)
-                ? html`
+              ${
+                cat.sections.some((s) => s.key === props.activeSection)
+                  ? html`
                     <div class="config-accordion-group__items">
                       ${cat.sections.map(
                         (s) => html`
                           <button
-                            class="config-accordion-group__item ${props.activeSection === s.key
-                              ? "config-accordion-group__item--active"
-                              : ""}"
+                            class="config-accordion-group__item ${
+                              props.activeSection === s.key
+                                ? "config-accordion-group__item--active"
+                                : ""
+                            }"
                             @click=${(e: Event) => {
                               props.onSectionChange(s.key);
                               resetContentScroll(e.currentTarget);
@@ -1642,7 +1672,8 @@ export function renderConfig(props: ConfigProps) {
                       )}
                     </div>
                   `
-                : nothing}
+                  : nothing
+              }
             </div>
           `,
         )}
@@ -1709,9 +1740,10 @@ export function renderConfig(props: ConfigProps) {
               </svg>
             </summary>
             <div class="config-diff__content">
-              ${rawDiff.length > 0
-                ? rawDiff.map(
-                    (change) => html`
+              ${
+                rawDiff.length > 0
+                  ? rawDiff.map(
+                      (change) => html`
                       <div class="config-diff__item">
                         <div class="config-diff__path">${formatConfigDiffPath(change.path)}</div>
                         <div class="config-diff__values">
@@ -1735,8 +1767,9 @@ export function renderConfig(props: ConfigProps) {
                         </div>
                       </div>
                     `,
-                  )
-                : html`<div class="config-diff__item">${t("configView.rawDiffUnavailable")}</div>`}
+                    )
+                  : html`<div class="config-diff__item">${t("configView.rawDiffUnavailable")}</div>`
+              }
             </div>
           </details>
         `
@@ -1778,20 +1811,24 @@ export function renderConfig(props: ConfigProps) {
 
   const lead = html`
     <div class="config-lead">
-      ${showToolbar
-        ? html`
+      ${
+        showToolbar
+          ? html`
             <div class="config-toolbar">
-              ${showModeToggle
-                ? html`
+              ${
+                showModeToggle
+                  ? html`
                     <div class="config-mode-toggle">
                       <button
                         class="config-mode-toggle__btn ${formMode === "form" ? "active" : ""}"
                         ?disabled=${props.schemaLoading || !props.schema || rawDraftPending}
-                        title=${rawDraftPending
-                          ? t("configView.rawDraftPendingFormTitle")
-                          : formUnsafe
-                            ? t("configView.formUnsafeTitle")
-                            : ""}
+                        title=${
+                          rawDraftPending
+                            ? t("configView.rawDraftPendingFormTitle")
+                            : formUnsafe
+                              ? t("configView.formUnsafeTitle")
+                              : ""
+                        }
                         @click=${() => props.onFormModeChange("form")}
                       >
                         ${t("configView.form")}
@@ -1799,26 +1836,31 @@ export function renderConfig(props: ConfigProps) {
                       <button
                         class="config-mode-toggle__btn ${formMode === "raw" ? "active" : ""}"
                         ?disabled=${!rawAvailable}
-                        title=${rawAvailable
-                          ? t("configView.rawTitle")
-                          : t("configView.rawUnavailableTitle")}
+                        title=${
+                          rawAvailable
+                            ? t("configView.rawTitle")
+                            : t("configView.rawUnavailableTitle")
+                        }
                         @click=${() => props.onFormModeChange("raw")}
                       >
                         ${t("configView.raw")}
                       </button>
                     </div>
                   `
-                : nothing}
+                  : nothing
+              }
               ${sectionTabs}
               <div class="config-toolbar__status" role="status" aria-live="polite">
                 ${autoSaveStatus}
               </div>
             </div>
           `
-        : nothing}
+          : nothing
+      }
       ${settingsLayout === "accordion" ? renderAccordionNav() : nothing} ${applyBanner}
-      ${showValidityWarning
-        ? html`
+      ${
+        showValidityWarning
+          ? html`
             <div class="config-validity-warning">
               <svg
                 class="config-validity-warning__icon"
@@ -1849,7 +1891,8 @@ export function renderConfig(props: ConfigProps) {
               </button>
             </div>
           `
-        : nothing}
+          : nothing
+      }
     </div>
   `;
 
@@ -1862,46 +1905,52 @@ export function renderConfig(props: ConfigProps) {
       role="region"
       aria-label=${t("common.settingsSections")}
     >
-      ${props.activeSection === "__appearance__"
-        ? includeVirtualSections
-          ? renderAppearanceSection(props)
-          : nothing
-        : props.activeSection === "__notifications__"
+      ${
+        props.activeSection === "__appearance__"
           ? includeVirtualSections
-            ? renderNotificationsSection(props)
+            ? renderAppearanceSection(props)
             : nothing
-          : formMode === "form"
-            ? html`
-                ${formUnsafe && showModeToggle && rawAvailable
-                  ? html`<div class="callout info">${t("configView.formUnsafe")}</div>`
-                  : nothing}
+          : props.activeSection === "__notifications__"
+            ? includeVirtualSections
+              ? renderNotificationsSection(props)
+              : nothing
+            : formMode === "form"
+              ? html`
+                ${
+                  formUnsafe && showModeToggle && rawAvailable
+                    ? html`<div class="callout info">${t("configView.formUnsafe")}</div>`
+                    : nothing
+                }
                 ${showAppearanceOnRoot ? renderAppearanceSection(props) : nothing}
-                ${props.schemaLoading
-                  ? html`
+                ${
+                  props.schemaLoading
+                    ? html`
                       <div class="config-loading">
                         <div class="config-loading__spinner"></div>
                         <span>${t("configView.loadingSchema")}</span>
                       </div>
                     `
-                  : renderConfigForm({
-                      schema: analysis.schema,
-                      uiHints: props.uiHints,
-                      value: props.formValue,
-                      rawAvailable,
-                      disabled: configBusy || !props.formValue,
-                      unsupportedPaths: analysis.unsupportedPaths,
-                      onPatch: props.onFormPatch,
-                      activeSection: props.activeSection,
-                      activeSubsection: effectiveSubsection,
-                      sectionActions:
-                        props.activeSection === "env"
-                          ? html`
+                    : renderConfigForm({
+                        schema: analysis.schema,
+                        uiHints: props.uiHints,
+                        value: props.formValue,
+                        rawAvailable,
+                        disabled: configBusy || !props.formValue,
+                        unsupportedPaths: analysis.unsupportedPaths,
+                        onPatch: props.onFormPatch,
+                        activeSection: props.activeSection,
+                        activeSubsection: effectiveSubsection,
+                        sectionActions:
+                          props.activeSection === "env"
+                            ? html`
                               <button
                                 class="btn btn--sm ${envSensitiveVisible ? "active" : ""}"
                                 aria-pressed=${envSensitiveVisible ? "true" : "false"}
-                                title=${envSensitiveVisible
-                                  ? t("configView.hideEnvValues")
-                                  : t("configView.revealEnvValues")}
+                                title=${
+                                  envSensitiveVisible
+                                    ? t("configView.hideEnvValues")
+                                    : t("configView.revealEnvValues")
+                                }
                                 @click=${() => {
                                   viewState.envRevealed = !viewState.envRevealed;
                                   requestUpdate();
@@ -1911,36 +1960,40 @@ export function renderConfig(props: ConfigProps) {
                                 ${t("configView.peek")}
                               </button>
                             `
-                          : undefined,
-                      revealSensitive: props.activeSection === "env" ? envSensitiveVisible : false,
-                      isSensitivePathRevealed: (path) => isSensitivePathRevealed(viewState, path),
-                      onToggleSensitivePath: (path) => {
-                        toggleSensitivePathReveal(viewState, path);
-                        requestUpdate();
-                      },
-                    })}
+                            : undefined,
+                        revealSensitive:
+                          props.activeSection === "env" ? envSensitiveVisible : false,
+                        isSensitivePathRevealed: (path) => isSensitivePathRevealed(viewState, path),
+                        onToggleSensitivePath: (path) => {
+                          toggleSensitivePathReveal(viewState, path);
+                          requestUpdate();
+                        },
+                      })
+                }
               `
-            : (() => {
-                const sensitiveCount = countSensitiveConfigValues(
-                  props.formValue,
-                  [],
-                  props.uiHints,
-                );
-                const blurred = sensitiveCount > 0 && !viewState.rawRevealed;
-                return html`
+              : (() => {
+                  const sensitiveCount = countSensitiveConfigValues(
+                    props.formValue,
+                    [],
+                    props.uiHints,
+                  );
+                  const blurred = sensitiveCount > 0 && !viewState.rawRevealed;
+                  return html`
                   <div class="settings-page">
                     ${rawDiffPanel}
                     <!-- Raw editor: one group surface owning file-level operations. -->
                     <div class="settings-group">
                       <div class="settings-row settings-row--stacked">
                         <div class="config-raw-actions">
-                          ${props.onOpenFile
-                            ? html`
+                          ${
+                            props.onOpenFile
+                              ? html`
                                 <button class="btn btn--sm" @click=${props.onOpenFile}>
                                   ${icons.fileText} ${t("configView.open")}
                                 </button>
                               `
-                            : nothing}
+                              : nothing
+                          }
                           <button
                             class="btn btn--sm"
                             ?disabled=${configBusy || !hasRawChanges}
@@ -1964,8 +2017,9 @@ export function renderConfig(props: ConfigProps) {
                         <div class="field config-raw-field">
                           <span style="display:flex;align-items:center;gap:8px;">
                             ${t("configView.rawConfig")}
-                            ${sensitiveCount > 0
-                              ? html`
+                            ${
+                              sensitiveCount > 0
+                                ? html`
                                   <span class="settings-count"
                                     >${t(
                                       sensitiveCount === 1
@@ -1973,19 +2027,21 @@ export function renderConfig(props: ConfigProps) {
                                         : "configView.secretCountPlural",
                                       { count: String(sensitiveCount) },
                                     )}
-                                    ${blurred
-                                      ? t("configView.redacted")
-                                      : t("configView.visible")}</span
+                                    ${
+                                      blurred ? t("configView.redacted") : t("configView.visible")
+                                    }</span
                                   >
                                   <operator-tooltip
-                                    .content=${blurred
-                                      ? t("configView.revealSensitive")
-                                      : t("configView.hideSensitive")}
+                                    .content=${
+                                      blurred
+                                        ? t("configView.revealSensitive")
+                                        : t("configView.hideSensitive")
+                                    }
                                   >
                                     <button
-                                      class="btn btn--icon config-raw-toggle ${blurred
-                                        ? ""
-                                        : "active"}"
+                                      class="btn btn--icon config-raw-toggle ${
+                                        blurred ? "" : "active"
+                                      }"
                                       aria-label=${t("configView.toggleRawRedaction")}
                                       aria-pressed=${!blurred}
                                       @click=${() => {
@@ -1997,10 +2053,12 @@ export function renderConfig(props: ConfigProps) {
                                     </button>
                                   </operator-tooltip>
                                 `
-                              : nothing}
+                                : nothing
+                            }
                           </span>
-                          ${blurred
-                            ? html`
+                          ${
+                            blurred
+                              ? html`
                                 <div class="callout info" style="margin-top: 12px">
                                   ${t(
                                     sensitiveCount === 1
@@ -2010,7 +2068,7 @@ export function renderConfig(props: ConfigProps) {
                                   )}
                                 </div>
                               `
-                            : html`
+                              : html`
                                 <textarea
                                   placeholder=${t("configView.rawConfig")}
                                   .value=${props.raw}
@@ -2019,18 +2077,22 @@ export function renderConfig(props: ConfigProps) {
                                     props.onRawChange((e.target as HTMLTextAreaElement).value);
                                   }}
                                 ></textarea>
-                              `}
+                              `
+                          }
                         </div>
                       </div>
                     </div>
                   </div>
                 `;
-              })()}
-      ${props.issues.length > 0
-        ? html`<div class="callout danger" style="margin-top: 12px;">
+                })()
+      }
+      ${
+        props.issues.length > 0
+          ? html`<div class="callout danger" style="margin-top: 12px;">
             <pre class="code-block">${JSON.stringify(props.issues, null, 2)}</pre>
           </div>`
-        : nothing}
+          : nothing
+      }
     </div>
   `;
 }

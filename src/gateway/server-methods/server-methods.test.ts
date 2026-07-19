@@ -1837,7 +1837,7 @@ describe("projectRecentChatDisplayMessages", () => {
             type: "toolCall",
             id: "call-read",
             name: "read",
-            arguments: { path: "AGENTS.md" },
+            arguments: { path: "AGENTS.MD" },
           },
         ],
         timestamp: 2,
@@ -5169,8 +5169,9 @@ describe("gateway healthHandlers.health cache freshness", () => {
     const previousStateDir = process.env.OPERATOR_STATE_DIR;
     process.env.OPERATOR_STATE_DIR = tmpStateDir;
     try {
-      const { moveDeliveryQueueEntryToFailed, upsertDeliveryQueueEntry } =
-        await import("../../infra/delivery-queue-sqlite.js");
+      const { moveDeliveryQueueEntryToFailed, upsertDeliveryQueueEntry } = await import(
+        "../../infra/delivery-queue-sqlite.js"
+      );
       // The cached snapshot was built before this delivery dead-lettered.
       const cached = {
         ok: true,

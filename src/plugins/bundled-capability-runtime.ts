@@ -257,7 +257,7 @@ export function loadBundledCapabilityRuntimeRegistry(params: {
 
   for (const candidate of discovery.candidates) {
     const manifest = manifestByRoot.get(candidate.rootDir);
-    if (!manifest || manifest.origin !== "bundled" || !pluginIds.has(manifest.id)) {
+    if (manifest?.origin !== "bundled" || !pluginIds.has(manifest.id)) {
       continue;
     }
     if (seenPluginIds.has(manifest.id)) {

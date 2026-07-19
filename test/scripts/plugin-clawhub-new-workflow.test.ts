@@ -70,6 +70,7 @@ describe("Plugin ClawHub New workflow", () => {
     }
     const resolve = job("resolve_bootstrap_plan");
     const checkout = step(resolve, "Checkout");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(checkout.with?.ref).toBe("${{ github.sha }}");
     const guard = step(resolve, "Require trusted workflow source").run ?? "";
     expect(guard).toContain('WORKFLOW_REF}" == "refs/heads/main"');
@@ -79,9 +80,12 @@ describe("Plugin ClawHub New workflow", () => {
       "Plugin ClawHub New workflow SHA does not match the parent-approved trusted-main SHA.",
     );
     const target = step(resolve, "Resolve checked-out ref").run ?? "";
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(target).toContain('[[ "${TARGET_REF}" =~ ^[a-f0-9]{40}$ ]]');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(target).toContain('git rev-parse "${RELEASE_TAG}^{commit}"');
     expect(target).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "Plugin ClawHub bootstrap target ${TARGET_REF} does not match ${RELEASE_TAG} (${tag_sha}).",
     );
     expect(target).toContain("refs/remotes/origin/release");
@@ -89,6 +93,7 @@ describe("Plugin ClawHub New workflow", () => {
 
   it("supports a secretless pre-tag validation mode without tag or parent approval", () => {
     const resolveRun = step(job("resolve_bootstrap_plan"), "Resolve checked-out ref").run ?? "";
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(resolveRun).toContain('[[ "${PRETAG_VALIDATION}" == "true" ]]');
     expect(resolveRun).toContain(
       "Plugin ClawHub pre-tag validation must not include a release tag or parent approval tuple.",
@@ -129,25 +134,35 @@ describe("Plugin ClawHub New workflow", () => {
       contents: "read",
     });
     expect(step(approval, "Download parent ClawHub bootstrap approval").with).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       name: "clawhub-bootstrap-approval-${{ inputs.release_publish_run_id }}-${{ inputs.release_publish_run_attempt }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "run-id": "${{ inputs.release_publish_run_id }}",
     });
     const validation = step(approval, "Validate release publish approval run");
     expect(validation.env).toMatchObject({
       RELEASE_APPROVAL_KIND: "clawhub-bootstrap",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       CHILD_WORKFLOW_SHA: "${{ github.sha }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       RELEASE_PACKAGES: "${{ inputs.plugins }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       RELEASE_TAG: "${{ inputs.release_tag }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       RELEASE_TARGET_SHA: "${{ needs.resolve_bootstrap_plan.outputs.ref_revision }}",
     });
     expect(validation.run).toContain("gh attestation verify");
     expect(validation.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "actions/runs/${RELEASE_PUBLISH_RUN_ID}/attempts/${EXPECTED_RUN_ATTEMPT}",
     );
     expect(validation.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'EXPECTED_WORKFLOW_REF="refs/tags/${EXPECTED_WORKFLOW_BRANCH}"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(validation.run).toContain('--source-ref "${EXPECTED_WORKFLOW_REF}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(validation.run).toContain('--source-digest "${EXPECTED_WORKFLOW_SHA}"');
   });
 
@@ -156,6 +171,7 @@ describe("Plugin ClawHub New workflow", () => {
       job("validate_release_publish_approval"),
       "Validate release publish approval run",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(validation.env?.CHILD_WORKFLOW_SHA).toBe("${{ github.sha }}");
     expect(readFileSync("scripts/validate-release-publish-approval.mjs", "utf8")).toContain(
       "bootstrapWorkflowSha: childWorkflowSha",
@@ -170,17 +186,26 @@ describe("Plugin ClawHub New workflow", () => {
     const serialized = JSON.stringify(pack);
     expect(serialized).not.toContain("secrets.");
     expect(pack.outputs).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       artifact_digest: "${{ steps.upload.outputs.artifact-digest }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       artifact_id: "${{ steps.upload.outputs.artifact-id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       artifact_name: "${{ steps.artifact.outputs.name }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       artifact_run_attempt: "${{ github.run_attempt }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       artifact_run_id: "${{ github.run_id }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       artifact_size: "${{ steps.upload_binding.outputs.size }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       clawhub_toolchain_sha256: "${{ steps.clawhub_cli.outputs.lock_sha256 }}",
     });
     expect(step(pack, "Upload immutable ClawHub bootstrap artifact").with).toMatchObject({
       archive: true,
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       name: "${{ steps.artifact.outputs.name }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       path: "${{ runner.temp }}/clawhub-bootstrap-artifact",
     });
     const packRun = step(pack, "Pack immutable ClawHub bootstrap artifacts").run ?? "";
@@ -203,8 +228,11 @@ describe("Plugin ClawHub New workflow", () => {
     const binding =
       step(validate, "Download and verify immutable ClawHub bootstrap artifact").run ?? "";
     expect(binding).toContain("clawhub-bootstrap-artifact.mjs download");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(binding).toContain('--artifact-size "${ARTIFACT_SIZE}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(binding).toContain('--run-attempt "${ARTIFACT_RUN_ATTEMPT}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(binding).toContain('--consumer-run-attempt "${GITHUB_RUN_ATTEMPT}"');
     expect(binding).toContain('--producer-job-name "Pack immutable ClawHub bootstrap artifacts"');
     expect(binding).toContain("--clawhub-toolchain-integrity");
@@ -217,9 +245,11 @@ describe("Plugin ClawHub New workflow", () => {
       "--mode configure-only-preflight",
     );
     expect(step(validate, "Require configure-only registry bytes to match target").run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '--terminal-run-attempt "${GITHUB_RUN_ATTEMPT}"',
     );
     expect(step(validate, "Upload immutable bootstrap validation evidence").with?.name).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "clawhub-bootstrap-validation-${{ github.run_id }}-${{ github.run_attempt }}",
     );
   });
@@ -235,6 +265,7 @@ describe("Plugin ClawHub New workflow", () => {
 
     const checkout = step(publish, "Checkout trusted workflow tooling");
     expect(checkout.with).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ref: "${{ github.sha }}",
       path: ".release-harness",
       "persist-credentials": false,
@@ -249,14 +280,19 @@ describe("Plugin ClawHub New workflow", () => {
     const binding =
       step(publish, "Download and verify immutable ClawHub bootstrap artifact").run ?? "";
     expect(binding).toContain("clawhub-bootstrap-artifact.mjs download");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(binding).toContain('--artifact-size "${ARTIFACT_SIZE}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(binding).toContain('--run-attempt "${ARTIFACT_RUN_ATTEMPT}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(binding).toContain('--consumer-run-attempt "${GITHUB_RUN_ATTEMPT}"');
     expect(binding).toContain('--producer-job-name "Pack immutable ClawHub bootstrap artifacts"');
     expect(binding).toContain("--clawhub-toolchain-integrity");
     expect(binding).toContain("--clawhub-toolchain-sha256");
     expect(binding).toContain("--clawhub-toolchain-version");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(binding).toContain('--workflow-head-branch "${WORKFLOW_HEAD_BRANCH}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(binding).toContain('--workflow-ref "${WORKFLOW_REF}"');
   });
 
@@ -307,6 +343,7 @@ describe("Plugin ClawHub New workflow", () => {
     expect(publishRun).toContain('mode}" == "publish"');
     expect(publishRun).toContain("GitHub Actions immutable bootstrap retry");
     expect(publishRun).toContain("GitHub Actions trusted publisher repair before OIDC migration");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(publishRun).toContain('"${OPENCLAW_CLAWHUB_CLI}" package trusted-publisher set');
     expect(publishRun).toContain("timeout --signal=TERM --kill-after=10s 300s");
     expect(publishRun).toContain("--repository openclaw/openclaw");
@@ -316,9 +353,11 @@ describe("Plugin ClawHub New workflow", () => {
       ".release-harness/scripts/verify-clawhub-published-artifact.mjs",
     );
     expect(step(publish, "Verify exact ClawHub registry artifact bytes").run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '--terminal-run-attempt "${GITHUB_RUN_ATTEMPT}"',
     );
     expect(step(publish, "Upload ClawHub bootstrap readback evidence").with?.name).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "clawhub-bootstrap-readback-${{ github.run_id }}-${{ github.run_attempt }}",
     );
     expect(
@@ -340,12 +379,16 @@ describe("Plugin ClawHub New workflow", () => {
       "f44f670d70f13a8cde566a174cae5be682ad98456ec7a85aafd497f7d8c71816",
     );
     expect(materializerSource).toContain("lock_sha256=");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(materializerSource).toContain("integrity=${clawhub_integrity}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(materializerSource).toContain("cli=${clawhub_cli}");
     expect(source).not.toContain("npm exec");
     expect(source).not.toContain("npm install");
     expect(source).not.toContain("CLAWHUB_CLI_PACKAGE");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).toContain("OPENCLAW_CLAWHUB_CLI: ${{ steps.clawhub_cli.outputs.cli }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).toContain('"${OPENCLAW_CLAWHUB_CLI}" package trusted-publisher set');
   });
 

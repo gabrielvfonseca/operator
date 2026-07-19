@@ -264,8 +264,8 @@ export function buildElevenLabsRealtimeTranscriptionProvider(): RealtimeTranscri
     isConfigured: ({ providerConfig }) =>
       Boolean(
         normalizeProviderConfig(providerConfig).apiKey ||
-        resolveElevenLabsApiKeyWithProfileFallback() ||
-        process.env.XI_API_KEY,
+          resolveElevenLabsApiKeyWithProfileFallback() ||
+          process.env.XI_API_KEY,
       ),
     createSession: (req) => {
       const config = normalizeProviderConfig(req.providerConfig);

@@ -349,7 +349,7 @@ describe("skills cli commands", () => {
 
   function routeWorkspaceByAgent() {
     resolveAgentWorkspaceDirMock.mockImplementation(
-      (configForTest: unknown, agentId: string) => `/tmp/workspace-${agentId}`,
+      (_configForTest: unknown, agentId: string) => `/tmp/workspace-${agentId}`,
     );
   }
 

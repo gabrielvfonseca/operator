@@ -118,6 +118,7 @@ describe("package-mac-dist plist validation", () => {
     const swiftIndex = script.indexOf("\nrequire_swift_toolchain\n");
     const versionIndex = script.indexOf('if [[ -z "$APP_VERSION_INPUT" ]]');
     const appBuildIndex = script.indexOf(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'if [[ -z "${APP_BUILD:-}" && "$BUILD_CONFIG" == "release" ]]',
     );
     const packageAppIndex = script.indexOf('"$ROOT_DIR/scripts/package-mac-app.sh"');
@@ -191,6 +192,7 @@ describe("package-mac-dist plist validation", () => {
         "#!/usr/bin/env bash",
         "set -euo pipefail",
         'printf "global|%s|%s\\n" "$PWD" "$*" >> "$OPENCLAW_TEST_LOG"',
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "--version" ]]; then echo "11.8.0"; fi',
         "",
       ].join("\n"),
@@ -202,6 +204,7 @@ describe("package-mac-dist plist validation", () => {
         "#!/usr/bin/env bash",
         "set -euo pipefail",
         'printf "corepack|%s|%s\\n" "$PWD" "$*" >> "$OPENCLAW_TEST_LOG"',
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'if [[ "${1:-}" == "pnpm" && "${2:-}" == "--version" ]]; then',
         '  if grep -q "pnpm@11.2.2" package.json 2>/dev/null; then echo "11.2.2"; else echo "11.8.0"; fi',
         "fi",
@@ -383,6 +386,7 @@ describe("package-mac-dist plist validation", () => {
     const script = readFileSync(scriptPath, "utf8");
     const dsymBlock = script.slice(script.indexOf('if [[ "$SKIP_DSYM" != "1" ]]'));
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(dsymBlock).toContain('for arch in "${DSYM_ARCHS[@]}"');
     expect(dsymBlock).toContain('if [[ ! -d "$BUILD_ROOT/$arch" ]]; then');
     expect(dsymBlock).toContain('MISSING_DSYM_ARCHS+=("$arch")');
@@ -394,9 +398,12 @@ describe("package-mac-dist plist validation", () => {
     expect(dsymBlock).toContain("exit 1");
     expect(script).toContain('if ! cp -R "$1" "$TMP_DSYM"; then');
     expect(dsymBlock).toContain("cleanup_tmp_dsym");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(dsymBlock).toContain('copy_dsym_to_tmp "${DSYM_PATHS[0]}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(dsymBlock).not.toContain('cp -R "${DSYM_PATHS[0]}" "$TMP_DSYM"');
     expect(dsymBlock).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'if ! /usr/bin/lipo -create "${DWARF_INPUTS[@]}" -output "$DWARF_OUT"; then',
     );
     expect(dsymBlock).toContain('if ! ditto -c -k --keepParent "$TMP_DSYM" "$DSYM_ZIP"; then');

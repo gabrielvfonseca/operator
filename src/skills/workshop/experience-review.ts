@@ -147,8 +147,9 @@ export async function prepareSkillExperienceReviewCandidate(
   if (!resolveSkillWorkshopConfig(config).autonomous.enabled) {
     return undefined;
   }
-  const { resolveConversationCapabilityProfile } =
-    await import("../../agents/conversation-capability-profile.js");
+  const { resolveConversationCapabilityProfile } = await import(
+    "../../agents/conversation-capability-profile.js"
+  );
   const { resolveSandboxRuntimeStatus } = await import("../../agents/sandbox.js");
   const { isToolAllowedByPolicies } = await import("../../agents/tool-policy-match.js");
   const { mergeAlsoAllowPolicy } = await import("../../agents/tool-policy.js");

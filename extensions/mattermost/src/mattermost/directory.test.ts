@@ -34,8 +34,9 @@ let listMattermostDirectoryPeers: typeof import("./directory.js").listMattermost
 
 describe("mattermost directory", () => {
   beforeAll(async () => {
-    ({ listMattermostDirectoryGroups, listMattermostDirectoryPeers } =
-      await import("./directory.js"));
+    ({ listMattermostDirectoryGroups, listMattermostDirectoryPeers } = await import(
+      "./directory.js"
+    ));
   });
 
   beforeEach(() => {

@@ -420,7 +420,7 @@ export function findCutPoint(
 
   for (let i = endIndex - 1; i >= startIndex; i--) {
     const entry = entries[i];
-    if (!entry || entry.type !== "message") {
+    if (entry?.type !== "message") {
       continue;
     }
     const messageTokens = estimateTokens(entry.message);

@@ -43,7 +43,7 @@ async function importToolWithCommandResults(tarBuffer: Buffer, ...results: MockC
     runCommandWithTimeout.mockImplementationOnce(
       async (
         _argv: string[],
-        options: { onOutputChunk?: (chunk: Buffer, stream: string) => boolean | void },
+        options: { onOutputChunk?: (chunk: Buffer, stream: string) => boolean | undefined },
       ) => {
         if (result.error instanceof Error && result.termination === "error") {
           throw result.error;
@@ -192,7 +192,7 @@ describe("dir.fetch tar validation", () => {
   });
 
   it("stops name validation at the entry cap", async () => {
-    const tarLines = Array.from({ length: 5001 }, (_, index) => `file-${index}`).join("\n") + "\n";
+    const tarLines = `${Array.from({ length: 5001 }, (_, index) => `file-${index}`).join("\n")}\n`;
     const { module, runCommandWithTimeout } = await importToolWithCommandResults(
       Buffer.from("archive"),
       { stdout: tarLines },
@@ -217,7 +217,7 @@ describe("dir.fetch tar validation", () => {
 
   it("surfaces a UTF-16-safe tar stderr tail", async () => {
     const oldNoise = "n".repeat(250);
-    const recent = "🤖" + "f".repeat(199);
+    const recent = `🤖${"f".repeat(199)}`;
     const { module } = await importToolWithCommandResults(Buffer.from("archive"), {
       code: 2,
       stderr: oldNoise + recent,

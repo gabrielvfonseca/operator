@@ -1289,7 +1289,7 @@ export function createAnthropicMessagesTransportStreamFn(): StreamFn {
             contentIndex === undefined
               ? undefined
               : (output.content[contentIndex] as TransportContentBlock | undefined);
-          if (!block || block.type !== "thinking") {
+          if (block?.type !== "thinking") {
             block = { type: "thinking", thinking: "", thinkingSignature: "reasoning_content" };
             output.content.push(block);
             contentIndex = output.content.length - 1;
@@ -1327,7 +1327,7 @@ export function createAnthropicMessagesTransportStreamFn(): StreamFn {
             contentIndex === undefined
               ? undefined
               : (output.content[contentIndex] as TransportContentBlock | undefined);
-          if (!block || block.type !== "text") {
+          if (block?.type !== "text") {
             block = { type: "text", text: "" };
             output.content.push(block);
             contentIndex = output.content.length - 1;

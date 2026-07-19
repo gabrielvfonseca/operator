@@ -81,8 +81,8 @@ type PluginHookBeforeAgentStartOverrideResult = Omit<
 >;
 
 export const stripPromptMutationFieldsFromLegacyHookResult = (
-  result: PluginHookBeforeAgentStartResult | void,
-): PluginHookBeforeAgentStartOverrideResult | void => {
+  result: PluginHookBeforeAgentStartResult | undefined,
+): PluginHookBeforeAgentStartOverrideResult | undefined => {
   if (!result || typeof result !== "object") {
     return result;
   }

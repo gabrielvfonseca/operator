@@ -346,7 +346,7 @@ function validateRequestFromRepository() {
   const parsed = effectiveReleaseTag.startsWith("v")
     ? parseReleaseVersion(effectiveReleaseTag.slice(1))
     : null;
-  if (!parsed || parsed.channel !== "stable" || parsed.correctionNumber !== undefined) {
+  if (parsed?.channel !== "stable" || parsed.correctionNumber !== undefined) {
     return validateExtendedStableNpmReleaseRequest({
       npmDistTag,
       bypassExtendedStableGuard,

@@ -210,7 +210,7 @@ export function inferUniqueProviderFromConfiguredModels(
   if (configuredModels) {
     for (const key of Object.keys(configuredModels)) {
       const ref = key.trim();
-      if (!ref || !ref.includes("/") || ref.endsWith("/*")) {
+      if (!ref?.includes("/") || ref.endsWith("/*")) {
         continue;
       }
       const parsed = parseModelRef(ref, DEFAULT_PROVIDER, {
@@ -348,7 +348,7 @@ function resolveConfiguredOpenRouterCompatFreeRef(
   );
   for (const entry of openrouterProviderConfig?.models ?? []) {
     const modelId = entry?.id?.trim();
-    if (!modelId || !modelId.includes("/") || !modelId.endsWith(":free")) {
+    if (!modelId?.includes("/") || !modelId.endsWith(":free")) {
       continue;
     }
     return normalizeModelRef("openrouter", modelId, {

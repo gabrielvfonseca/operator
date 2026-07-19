@@ -61,6 +61,7 @@ function buildCanonicalPathCandidates(
   let malformedEncoding = false;
   let decodePasses = 0;
   for (let pass = 0; pass < maxDecodePasses; pass++) {
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let nextDecoded;
     try {
       nextDecoded = decodeURIComponent(decoded);

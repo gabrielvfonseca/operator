@@ -14,9 +14,9 @@ vi.mock("../channels/config-presence.js", () => ({
   hasMeaningfulChannelConfig: (value: unknown) =>
     Boolean(
       value &&
-      typeof value === "object" &&
-      !Array.isArray(value) &&
-      Object.keys(value).some((key) => key !== "enabled"),
+        typeof value === "object" &&
+        !Array.isArray(value) &&
+        Object.keys(value).some((key) => key !== "enabled"),
     ),
   listPotentialConfiguredChannelIds: (
     config: OperatorConfig,

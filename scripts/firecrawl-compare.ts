@@ -92,6 +92,7 @@ async function run() {
 
   for (const url of targets) {
     console.log(`\n=== ${url}`);
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let localStatus;
     let localTitle = "";
     let localText = "";

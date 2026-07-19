@@ -777,7 +777,7 @@ function annotateToolTurnOutcome(
   let sawAssistantReply = false;
   for (let index = items.length - 1; index >= 0; index -= 1) {
     const item = items[index];
-    if (!item || item.kind !== "group") {
+    if (item?.kind !== "group") {
       continue;
     }
     const role = item.role.toLowerCase();
@@ -1305,7 +1305,7 @@ function buildChatItems(props: BuildChatItemsProps): Array<ChatItem | MessageGro
       continue;
     }
     const item = items[assistantIndex];
-    if (!item || item.kind !== "message") {
+    if (item?.kind !== "message") {
       continue;
     }
     items[assistantIndex] = {

@@ -302,7 +302,7 @@ async function detectGitRoot(root: string): Promise<string | null> {
   const res = await runCommandWithTimeout(["git", "-C", root, "rev-parse", "--show-toplevel"], {
     timeoutMs: 4000,
   }).catch(() => null);
-  if (!res || res.code !== 0) {
+  if (res?.code !== 0) {
     return null;
   }
   const top = res.stdout.trim();
@@ -349,7 +349,7 @@ async function checkGitUpdateStatus(params: {
       },
     ).catch(() => null),
   ]);
-  if (!branchRes || branchRes.code !== 0) {
+  if (branchRes?.code !== 0) {
     return { ...base, error: branchRes?.stderr?.trim() || "git unavailable" };
   }
   const branch = branchRes.stdout.trim() || null;

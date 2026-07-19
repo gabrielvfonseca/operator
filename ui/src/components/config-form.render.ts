@@ -96,8 +96,7 @@ export function renderConfigForm(props: ConfigFormProps) {
     if (
       sectionSchema &&
       schemaType(sectionSchema) === "object" &&
-      sectionSchema.properties &&
-      sectionSchema.properties[activeSubsection]
+      sectionSchema.properties?.[activeSubsection]
     ) {
       subsectionContext = {
         sectionKey: activeSection,
@@ -128,13 +127,17 @@ export function renderConfigForm(props: ConfigFormProps) {
     <section class="settings-section" id=${params.id}>
       <div class="settings-section__header">
         <h2 class="settings-section__heading">${params.label}</h2>
-        ${props.sectionActions
-          ? html`<div class="settings-section__actions">${props.sectionActions}</div>`
-          : nothing}
+        ${
+          props.sectionActions
+            ? html`<div class="settings-section__actions">${props.sectionActions}</div>`
+            : nothing
+        }
       </div>
-      ${params.description
-        ? html`<p class="settings-section__desc">${params.description}</p>`
-        : nothing}
+      ${
+        params.description
+          ? html`<p class="settings-section__desc">${params.description}</p>`
+          : nothing
+      }
       <div class="settings-group">
         ${renderNode({
           schema: params.node,

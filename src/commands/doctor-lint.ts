@@ -142,12 +142,12 @@ function writeJsonResult(result: {
   findings: readonly HealthFinding[];
 }): void {
   process.stdout.write(
-    JSON.stringify({
+    `${JSON.stringify({
       ok: result.ok,
       checksRun: result.checksRun,
       checksSkipped: result.checksSkipped,
       findings: result.findings.map(toJsonFinding),
-    }) + "\n",
+    })}\n`,
   );
 }
 

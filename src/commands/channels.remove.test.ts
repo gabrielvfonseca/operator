@@ -53,8 +53,9 @@ vi.mock("./channel-setup/plugin-install.js", async () => {
   const actual = await vi.importActual<typeof import("./channel-setup/plugin-install.js")>(
     "./channel-setup/plugin-install.js",
   );
-  const { createMockChannelSetupPluginInstallModule } =
-    await import("./channels.plugin-install.test-helpers.js");
+  const { createMockChannelSetupPluginInstallModule } = await import(
+    "./channels.plugin-install.test-helpers.js"
+  );
   return createMockChannelSetupPluginInstallModule(actual);
 });
 

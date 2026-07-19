@@ -140,6 +140,7 @@ describe("telegram user credential IO", () => {
       /^telegram-user-[0-9a-f-]{36}$/u,
     );
     expect(readFileSync("scripts/e2e/telegram-user-credential.ts", "utf8")).not.toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "telegram-user-${Date.now()}-${Math.random()",
     );
   });

@@ -344,6 +344,7 @@ describe("downloadMSTeamsGraphMedia attachment sourcing and error logging", () =
     vi.clearAllMocks();
   });
 
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   it("does NOT call the nonexistent ${messageUrl}/attachments sub-resource", async () => {
     // The Graph v1.0 API does not expose a `/attachments` sub-resource on
     // channel or chat messages. Issue #58617 documented that the old code

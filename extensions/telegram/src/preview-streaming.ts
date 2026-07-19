@@ -5,9 +5,7 @@ import {
 } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 
 export function resolveTelegramPreviewStreamMode(
-  params: {
-    streaming?: unknown;
-  } = {},
+  params: { streaming?: unknown } = {},
 ): StreamingMode {
   return resolveChannelPreviewStreamMode(params, "partial");
 }

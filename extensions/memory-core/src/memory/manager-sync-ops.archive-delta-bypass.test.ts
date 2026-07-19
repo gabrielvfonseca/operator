@@ -130,10 +130,10 @@ describe("session archive delta bypass", () => {
     const filePath = path.join(tmpDir, name);
     await fs.writeFile(
       filePath,
-      JSON.stringify({
+      `${JSON.stringify({
         type: "message",
         message: { role: "user", content: "short archived session" },
-      }) + "\n",
+      })}\n`,
       "utf-8",
     );
     return filePath;

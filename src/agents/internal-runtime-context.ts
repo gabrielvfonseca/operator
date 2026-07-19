@@ -22,8 +22,7 @@ export const OPERATOR_RUNTIME_EVENT_HEADER = "Operator runtime event.";
 /** Custom message type used for structured runtime-context messages. */
 export const OPERATOR_RUNTIME_CONTEXT_CUSTOM_TYPE = "operator.runtime-context";
 
-const LEGACY_INTERNAL_CONTEXT_HEADER =
-  ["Operator runtime context (internal):", OPERATOR_RUNTIME_CONTEXT_NOTICE, ""].join("\n") + "\n";
+const LEGACY_INTERNAL_CONTEXT_HEADER = `${["Operator runtime context (internal):", OPERATOR_RUNTIME_CONTEXT_NOTICE, ""].join("\n")}\n`;
 
 const LEGACY_INTERNAL_EVENT_MARKER = "[Internal task completion event]";
 const LEGACY_INTERNAL_EVENT_SEPARATOR = "\n\n---\n\n";

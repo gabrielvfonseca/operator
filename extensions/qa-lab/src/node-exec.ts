@@ -43,6 +43,7 @@ export async function resolveQaNodeExecPath(params?: {
   const locator =
     platform === "win32" ? resolveQaWindowsSystem32ExePath("where.exe", params?.env) : "which";
   const execFileImpl = params?.execFileImpl ?? execFileAsync;
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let stdout;
   try {
     ({ stdout } = await execFileImpl(locator, ["node"], {

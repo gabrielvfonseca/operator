@@ -541,7 +541,7 @@ export function extractMessagingToolSourceReplyPayload(
   result: unknown,
 ): MessagingToolSourceReplyPayload | undefined {
   const details = readToolResultDetails(result);
-  if (!details || details.sourceReplySink !== "internal-ui") {
+  if (details?.sourceReplySink !== "internal-ui") {
     return undefined;
   }
   const status = normalizeOptionalLowercaseString(details.deliveryStatus);

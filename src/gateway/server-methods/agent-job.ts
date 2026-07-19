@@ -281,7 +281,7 @@ function ensureAgentRunListener() {
   }
   agentRunListenerStarted = true;
   onAgentEvent((evt) => {
-    if (!evt || evt.stream !== "lifecycle") {
+    if (evt?.stream !== "lifecycle") {
       return;
     }
     const phase = evt.data?.phase;

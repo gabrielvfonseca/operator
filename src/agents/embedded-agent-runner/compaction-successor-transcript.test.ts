@@ -418,7 +418,7 @@ describe("rotateTranscriptAfterCompaction", () => {
     expect(hardened.applied).toBe(true);
     const staleLeaf = staleManager.getLeafEntry();
     expect(staleLeaf?.type).toBe("compaction");
-    if (!staleLeaf || staleLeaf.type !== "compaction") {
+    if (staleLeaf?.type !== "compaction") {
       throw new Error("expected stale leaf to be a compaction entry");
     }
     expect(staleLeaf.firstKeptEntryId).toBe(recentTailId);
@@ -440,7 +440,7 @@ describe("rotateTranscriptAfterCompaction", () => {
     const successorCompaction = successor
       .getEntries()
       .find((entry) => entry.type === "compaction" && entry.id === compactionId);
-    if (!successorCompaction || successorCompaction.type !== "compaction") {
+    if (successorCompaction?.type !== "compaction") {
       throw new Error("expected successor compaction entry");
     }
     expect(successorCompaction.firstKeptEntryId).toBe(compactionId);

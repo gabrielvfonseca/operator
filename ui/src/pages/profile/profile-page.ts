@@ -284,11 +284,13 @@ export class ProfilePage extends OperatorLightDomElement {
           <span class="profile-hero__badge">Operator</span>
         </div>
         <div class="profile-hero__chips">
-          ${since
-            ? html`<span class="profile-hero__chip">
+          ${
+            since
+              ? html`<span class="profile-hero__chip">
                 ${t("profilePage.sinceChip", { date: formatMonthYear(since) })}
               </span>`
-            : nothing}
+              : nothing
+          }
           ${channels.map(
             (entry) => html`
               <span
@@ -475,9 +477,11 @@ export class ProfilePage extends OperatorLightDomElement {
                     <span class="profile-tools__bar" aria-hidden="true">
                       <span
                         class="profile-tools__bar-fill"
-                        style="width: ${maxToolCount > 0
-                          ? Math.max(4, Math.round((tool.count / maxToolCount) * 100))
-                          : 0}%"
+                        style="width: ${
+                          maxToolCount > 0
+                            ? Math.max(4, Math.round((tool.count / maxToolCount) * 100))
+                            : 0
+                        }%"
                       ></span>
                     </span>
                     <span class="profile-tools__count">

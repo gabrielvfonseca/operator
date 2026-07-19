@@ -840,6 +840,7 @@ export function createWorkerEnvironmentStore(
       deliveredAtMs: number;
     }): void {
       const environmentId = required(input.environmentId, "id");
+      // biome-ignore lint/correctness/noVoidTypeReturn: migrated from oxlint
       return write((db) => {
         const environment = getRequired(db, environmentId);
         const credential = findCredential(db, environmentId);

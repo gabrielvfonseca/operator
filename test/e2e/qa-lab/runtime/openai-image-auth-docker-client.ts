@@ -241,12 +241,12 @@ async function main() {
     );
 
     process.stdout.write(
-      JSON.stringify({
+      `${JSON.stringify({
         ok: true,
         routes: records.map((entry) => entry.url),
         directBytes: directResult.images[0]?.buffer.length,
         codexBytes: codexResult.images[0]?.buffer.length,
-      }) + "\n",
+      })}\n`,
     );
   } finally {
     await mock.close();

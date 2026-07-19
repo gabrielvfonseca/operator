@@ -184,7 +184,7 @@ function truncateSummary(text: string, max = 50): string {
   // Slice on a code-point boundary so a surrogate pair (emoji / astral char)
   // straddling the limit is dropped whole, instead of leaving a lone surrogate
   // half that Feishu renders as the replacement char.
-  return clean.length <= max ? clean : sliceUtf16Safe(clean, 0, max - 3) + "...";
+  return clean.length <= max ? clean : `${sliceUtf16Safe(clean, 0, max - 3)}...`;
 }
 
 function hasNaturalStreamingBoundary(text: string): boolean {
@@ -346,6 +346,7 @@ export class FeishuStreamingSession {
     // reliably routes streaming cards into Feishu topics, whereas
     // message.create with root_id may silently ignore root_id for card
     // references (card_id format).
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let sendRes;
     const sendOptions = options ?? {};
     const sendMode = resolveStreamingCardSendMode(sendOptions);
@@ -572,7 +573,7 @@ export class FeishuStreamingSession {
   }
 
   private async updateNoteContent(note: string): Promise<void> {
-    if (!this.state || !this.state.hasNote) {
+    if (!this.state?.hasNote) {
       return;
     }
     const apiBase = resolveApiBase(this.creds.domain);

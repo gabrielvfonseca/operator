@@ -359,6 +359,7 @@ function buildSnapshotFile(stdout: string): string | null {
 
   return [
     "# Operator exec shell snapshot. Generated; do not edit.",
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'if [ -n "${BASH_VERSION:-}" ]; then shopt -s expand_aliases 2>/dev/null || true; fi',
     "unalias -a 2>/dev/null || true",
     shellState,

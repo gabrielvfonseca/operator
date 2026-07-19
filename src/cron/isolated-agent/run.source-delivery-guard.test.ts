@@ -16,8 +16,9 @@ import {
 const actualDeliveryPlanModule =
   await vi.importActual<typeof import("../delivery-plan.js")>("../delivery-plan.js");
 const { executeCronRun } = await import("./run-executor.js");
-const { resolveCronSourceDeliveryPlan, resolveFallbackCronSourceDeliveryPlan } =
-  await import("./source-delivery-fallback.js");
+const { resolveCronSourceDeliveryPlan, resolveFallbackCronSourceDeliveryPlan } = await import(
+  "./source-delivery-fallback.js"
+);
 
 const emptySkillsSnapshot: SkillSnapshot = {
   prompt: "",

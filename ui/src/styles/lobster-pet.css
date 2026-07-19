@@ -108,6 +108,7 @@ openclaw-lobster-pet {
   height: 100%;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .lobster-pet__svg {
   display: block;
   width: 100%;
@@ -137,15 +138,18 @@ openclaw-lobster-pet {
 
 /* Claw size scales the paths inside the group: act animations own the group
    transform, so scaling here composes instead of being overridden mid-wave. */
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .lob-claw > path {
   transform: scale(var(--lob-claw-scale, 1));
   transform-box: view-box;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .lob-claw--l > path {
   transform-origin: 25px 52px;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .lob-claw--r > path {
   transform-origin: 95px 52px;
 }
@@ -232,6 +236,7 @@ openclaw-lobster-pet {
 }
 
 /* Petting: content closed eyes and a floating heart. */
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .lobster-pet--act-pet .lob-eye-open {
   opacity: 0;
 }
@@ -320,6 +325,7 @@ openclaw-lobster-pet {
 
 /* ---- Nap: eyes shut, z's drift up ---- */
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .lobster-pet--act-nap .lob-eye-open {
   opacity: 0;
 }
@@ -703,8 +709,8 @@ openclaw-lobster-pet {
 @media (prefers-reduced-motion: reduce) {
   openclaw-lobster-pet .lobster-pet,
   openclaw-lobster-pet .lobster-pet * {
-    animation: none !important;
-    transition: none !important;
+    animation: none;
+    transition: none;
   }
 }
 
@@ -821,6 +827,7 @@ openclaw-lobster-pet {
   animation-delay: var(--lob-blink-delay, 0s);
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .sidebar-brand__pet .lob-eye-open {
   animation: lobster-pet-blink-open 5.2s linear infinite;
   animation-delay: var(--lob-blink-delay, 0s);
@@ -852,9 +859,10 @@ openclaw-lobster-pet {
 
 @media (prefers-reduced-motion: reduce) {
   .sidebar-brand__pet,
+  /* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
   .sidebar-brand__pet *,
   .sidebar-brand__logo {
-    animation: none !important;
-    transition: none !important;
+    animation: none;
+    transition: none;
   }
 }

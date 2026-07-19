@@ -444,6 +444,7 @@ export async function parseAndSendMediaTags(
   let lastIndex = 0;
   const regex2 =
     /<(qqimg|qqvoice|qqvideo|qqfile|qqmedia)>([^<>]+)<\/(?:qqimg|qqvoice|qqvideo|qqfile|qqmedia|img)>/gi;
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let match;
 
   while ((match = regex2.exec(text)) !== null) {
@@ -601,7 +602,7 @@ export async function sendPlainReply(
       if (!collectedImageUrls.includes(url)) {
         collectedImageUrls.push(url);
         log?.debug?.(
-          `Collected ${isDataUrl ? "Base64" : "media URL"}: ${isDataUrl ? `(length: ${url.length})` : truncateUtf16Safe(url, 80) + "..."}`,
+          `Collected ${isDataUrl ? "Base64" : "media URL"}: ${isDataUrl ? `(length: ${url.length})` : `${truncateUtf16Safe(url, 80)}...`}`,
         );
       }
       return true;
@@ -869,7 +870,7 @@ async function sendMarkdownReply(
   // Append markdown images.
   if (imagesToAppend.length > 0) {
     result = result.trim();
-    result = result ? result + "\n\n" + imagesToAppend.join("\n") : imagesToAppend.join("\n");
+    result = result ? `${result}\n\n${imagesToAppend.join("\n")}` : imagesToAppend.join("\n");
   }
 
   // Send markdown text.

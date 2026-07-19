@@ -478,7 +478,7 @@ async function runToolOnlyTurn(params: {
   }
 
   expect(text.length).toBe(0);
-  if (!toolCall || toolCall.type !== "toolCall") {
+  if (toolCall?.type !== "toolCall") {
     throw new Error("expected tool call");
   }
   expect(toolCall.name).toBe(params.tool.name);

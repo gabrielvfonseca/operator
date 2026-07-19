@@ -248,6 +248,7 @@ describe("exec approvals safe bins", () => {
     },
     {
       name: "blocks POSIX parameter expansion in safe-bin value tokens",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       argv: ["head", "-c${IFS}16${IFS}${OPERATOR_CONFIG_PATH}"],
       resolvedPath: "/usr/bin/head",
       expected: false,
@@ -256,6 +257,7 @@ describe("exec approvals safe bins", () => {
     },
     {
       name: "blocks POSIX parameter expansion in safe-bin long option values",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       argv: ["head", "--bytes=${IFS}16"],
       resolvedPath: "/usr/bin/head",
       expected: false,
@@ -264,6 +266,7 @@ describe("exec approvals safe bins", () => {
     },
     {
       name: "blocks POSIX parameter expansion in safe-bin positional tokens",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       argv: ["tr", "${IFS}", "_"],
       resolvedPath: "/usr/bin/tr",
       expected: false,

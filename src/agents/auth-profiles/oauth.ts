@@ -250,7 +250,7 @@ async function tryResolveOAuthProfile(
 ): Promise<ResolveApiKeyForProfileResult | null> {
   const { cfg, store, profileId } = params;
   const cred = store.profiles[profileId];
-  if (!cred || cred.type !== "oauth") {
+  if (cred?.type !== "oauth") {
     return null;
   }
   if (

@@ -269,6 +269,7 @@ describe("setOcPath — jsonc leaf with coercion", () => {
   });
 
   it("keeps JSON-looking strings as strings by default", () => {
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const ast = parseJsonc('{ "token": "${TOKEN}" }').ast;
     const r = setOcPath(ast, parseOcPath("oc://operator.json/token"), '{"source":"file"}');
     expect(r.ok).toBe(true);
@@ -279,6 +280,7 @@ describe("setOcPath — jsonc leaf with coercion", () => {
   });
 
   it("replaces a JSONC leaf with parsed JSON when requested", () => {
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     const ast = parseJsonc('{ "token": "${TOKEN}" }').ast;
     const r = setOcPath(
       ast,

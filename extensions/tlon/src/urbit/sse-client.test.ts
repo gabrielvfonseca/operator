@@ -344,9 +344,9 @@ describe("UrbitSSEClient", () => {
         const cap = 16 * 1024 * 1024;
         const prefix = 'id: 1\ndata: {"json":{"text":"';
         const suffix = '"}}';
-        const padLen = cap - Buffer.byteLength(prefix + "😀" + suffix, "utf8");
+        const padLen = cap - Buffer.byteLength(`${prefix}😀${suffix}`, "utf8");
         const stream = Readable.from([
-          prefix + "a".repeat(padLen) + "\uD83D",
+          `${prefix + "a".repeat(padLen)}\uD83D`,
           `\uDE00${suffix}\n`,
           "\n",
         ]);

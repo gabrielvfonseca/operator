@@ -57,11 +57,11 @@ export function hasConfiguredMSTeamsCredentials(cfg?: MSTeamsConfig): boolean {
 
   const hasAppId = Boolean(
     normalizeSecretInputString(cfg?.appId) ||
-    normalizeSecretInputString(process.env.MSTEAMS_APP_ID),
+      normalizeSecretInputString(process.env.MSTEAMS_APP_ID),
   );
   const hasTenantId = Boolean(
     normalizeSecretInputString(cfg?.tenantId) ||
-    normalizeSecretInputString(process.env.MSTEAMS_TENANT_ID),
+      normalizeSecretInputString(process.env.MSTEAMS_TENANT_ID),
   );
 
   if (authType === "federated") {
@@ -75,8 +75,8 @@ export function hasConfiguredMSTeamsCredentials(cfg?: MSTeamsConfig): boolean {
   // "secret" (default) — original logic
   return Boolean(
     normalizeSecretInputString(cfg?.appId) &&
-    hasConfiguredSecretInput(cfg?.appPassword) &&
-    normalizeSecretInputString(cfg?.tenantId),
+      hasConfiguredSecretInput(cfg?.appPassword) &&
+      normalizeSecretInputString(cfg?.tenantId),
   );
 }
 

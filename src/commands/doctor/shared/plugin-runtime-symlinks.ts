@@ -199,7 +199,7 @@ async function inspectCandidate(
     return null;
   }
   const target = await fsApi.readlink(fullPath).catch(() => null);
-  if (!target || !target.includes(PLUGIN_RUNTIME_DEPS_MARKER)) {
+  if (!target?.includes(PLUGIN_RUNTIME_DEPS_MARKER)) {
     return null;
   }
   const resolvedTarget = path.isAbsolute(target)

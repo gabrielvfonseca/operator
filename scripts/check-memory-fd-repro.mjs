@@ -186,6 +186,7 @@ export function parseArgs(argv) {
     switch (arg) {
       case "--":
         break parseArgv;
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
       case "--help":
         console.log(usage());
         process.exit(0);

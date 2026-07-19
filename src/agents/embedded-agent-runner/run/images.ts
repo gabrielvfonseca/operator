@@ -39,15 +39,11 @@ for (const ext of IMAGE_EXTENSION_NAMES) {
   IMAGE_EXTENSIONS.add(`.${ext}`);
 }
 const IMAGE_EXTENSION_PATTERN = IMAGE_EXTENSION_NAMES.join("|");
-const MEDIA_ATTACHED_PATH_REGEX_SOURCE =
-  "^\\s*(.+?\\.(?:" + IMAGE_EXTENSION_PATTERN + "))\\s*(?:\\(|$|\\|)";
-const MESSAGE_IMAGE_REGEX_SOURCE =
-  "\\[Image:\\s*source:\\s*([^\\]]+\\.(?:" + IMAGE_EXTENSION_PATTERN + "))\\]";
-const FILE_URL_REGEX_SOURCE = "file://[^\\s<>\"'`\\]]+\\.(?:" + IMAGE_EXTENSION_PATTERN + ")";
-const WINDOWS_DRIVE_PATH_REGEX_SOURCE =
-  "(?:^|\\s|[\"'`(])([A-Za-z]:[\\\\/][^\\s\"'`()\\[\\]]*\\.(?:" + IMAGE_EXTENSION_PATTERN + "))";
-const PATH_REGEX_SOURCE =
-  "(?:^|\\s|[\"'`(])((\\.\\.?/|[~/])[^\\s\"'`()\\[\\]]*\\.(?:" + IMAGE_EXTENSION_PATTERN + "))";
+const MEDIA_ATTACHED_PATH_REGEX_SOURCE = `^\\s*(.+?\\.(?:${IMAGE_EXTENSION_PATTERN}))\\s*(?:\\(|$|\\|)`;
+const MESSAGE_IMAGE_REGEX_SOURCE = `\\[Image:\\s*source:\\s*([^\\]]+\\.(?:${IMAGE_EXTENSION_PATTERN}))\\]`;
+const FILE_URL_REGEX_SOURCE = `file://[^\\s<>"'\`\\]]+\\.(?:${IMAGE_EXTENSION_PATTERN})`;
+const WINDOWS_DRIVE_PATH_REGEX_SOURCE = `(?:^|\\s|["'\`(])([A-Za-z]:[\\\\/][^\\s"'\`()\\[\\]]*\\.(?:${IMAGE_EXTENSION_PATTERN}))`;
+const PATH_REGEX_SOURCE = `(?:^|\\s|["'\`(])((\\.\\.?/|[~/])[^\\s"'\`()\\[\\]]*\\.(?:${IMAGE_EXTENSION_PATTERN}))`;
 const MEDIA_ATTACHED_PATTERN = /\[media attached(?:\s+\d+\/\d+)?:\s*([^\]]+)\]/gi;
 const MEDIA_ATTACHED_PATH_PATTERN = new RegExp(MEDIA_ATTACHED_PATH_REGEX_SOURCE, "i");
 const MESSAGE_IMAGE_PATTERN = new RegExp(MESSAGE_IMAGE_REGEX_SOURCE, "gi");

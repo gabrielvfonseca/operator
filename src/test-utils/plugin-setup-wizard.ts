@@ -109,9 +109,9 @@ function isDeclarativeSetupWizard(
 ): setupWizard is SetupWizard {
   return Boolean(
     setupWizard &&
-    typeof setupWizard === "object" &&
-    "status" in setupWizard &&
-    "credentials" in setupWizard,
+      typeof setupWizard === "object" &&
+      "status" in setupWizard &&
+      "credentials" in setupWizard,
   );
 }
 

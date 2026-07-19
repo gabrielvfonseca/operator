@@ -80,8 +80,9 @@ describe("loadStaticManifestCatalogRowsForList", () => {
   });
 
   it("loads refreshable manifest rows as registry-backed supplements", async () => {
-    const { loadSupplementalManifestCatalogRowsForList } =
-      await import("./list.manifest-catalog.js");
+    const { loadSupplementalManifestCatalogRowsForList } = await import(
+      "./list.manifest-catalog.js"
+    );
     const manifestRegistry = {
       plugins: [openrouterPlugin, moonshotPlugin],
       diagnostics: [],

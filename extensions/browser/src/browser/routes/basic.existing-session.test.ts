@@ -20,8 +20,9 @@ vi.mock("../chrome.graphics.js", async (importOriginal) => {
 });
 
 const { BrowserProfileUnavailableError } = await import("../errors.js");
-const { getProfileLifecycle, ProfileRestartRequiredError } =
-  await import("../server-context.lifecycle.js");
+const { getProfileLifecycle, ProfileRestartRequiredError } = await import(
+  "../server-context.lifecycle.js"
+);
 const { registerBrowserBasicRoutes } = await import("./basic.js");
 
 function createExistingSessionProfileState(params?: {

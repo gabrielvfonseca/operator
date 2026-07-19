@@ -58,10 +58,12 @@ vi.mock("./bot-message-context.body.js", () => ({
   resolveTelegramInboundBody: async () => inboundBodyResult.value,
 }));
 
-const { buildTelegramMessageContextForTest } =
-  await import("./bot-message-context.test-harness.js");
-const { clearRuntimeConfigSnapshot, setRuntimeConfigSnapshot } =
-  await import("openclaw/plugin-sdk/runtime-config-snapshot");
+const { buildTelegramMessageContextForTest } = await import(
+  "./bot-message-context.test-harness.js"
+);
+const { clearRuntimeConfigSnapshot, setRuntimeConfigSnapshot } = await import(
+  "openclaw/plugin-sdk/runtime-config-snapshot"
+);
 
 beforeEach(() => {
   clearRuntimeConfigSnapshot();

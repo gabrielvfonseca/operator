@@ -2,7 +2,6 @@
 // Runtime post-build steps
 
 import fs from "node:fs";
-import path from "node:path";
 
 console.error("[runtime-postbuild] Running runtime post-build steps...");
 

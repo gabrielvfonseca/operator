@@ -178,8 +178,7 @@ function mergeRetainedSessionDepth(
   incoming: ChatSessionSnapshot,
 ): ChatSessionSnapshot {
   if (
-    !existing ||
-    !existing.sessionId ||
+    !existing?.sessionId ||
     existing.sessionId !== incoming.sessionId ||
     existing.messages.length === 0 ||
     incoming.messages.length === 0

@@ -100,6 +100,7 @@ describe("config validation SecretRef policy guards", () => {
   it("allows env-template strings on unsupported mutable paths", () => {
     const result = validateConfigObjectRaw({
       hooks: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         token: "${HOOK_TOKEN}",
       },
     });

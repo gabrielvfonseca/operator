@@ -181,14 +181,16 @@ class AppSidebar extends AppSidebarSessionListElement {
               .soundsEnabled=${this.lobsterPetSounds}
               .gatewayVersion=${this.gatewayVersion}
             ></operator-lobster-pet>
-            ${this.devGitBranch
-              ? html`<div class="sidebar-footer-branch" title=${this.devGitBranch}>
+            ${
+              this.devGitBranch
+                ? html`<div class="sidebar-footer-branch" title=${this.devGitBranch}>
                   <span class="sidebar-footer-branch__icon" aria-hidden="true"
                     >${icons.gitBranch}</span
                   >
                   <span class="sidebar-footer-branch__name">${this.devGitBranch}</span>
                 </div>`
-              : nothing}
+                : nothing
+            }
             <operator-sidebar-agent-chip
               .agentName=${chipName}
               .avatarUrl=${chipAgent ? resolveAgentAvatarUrl(chipAgent) : null}

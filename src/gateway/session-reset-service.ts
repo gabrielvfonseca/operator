@@ -574,8 +574,7 @@ async function ensureFreshAcpResetState(params: {
       sessionKey: params.sessionKey,
     }) ?? params.acpMeta;
   if (
-    !latestMeta?.identity ||
-    latestMeta.identity.state !== "resolved" ||
+    latestMeta.identity?.state !== "resolved" ||
     (!latestMeta.identity.acpxSessionId && !latestMeta.identity.agentSessionId)
   ) {
     return undefined;

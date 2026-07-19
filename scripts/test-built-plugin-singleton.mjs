@@ -91,6 +91,7 @@ fs.writeFileSync(
     "      acceptsArgs: true,",
     "      nativeNames: { telegram: 'pair', discord: 'pair' },",
     "      async handler({ args }) {",
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     "        return { text: `paired:${args ?? ''}` };",
     "      },",
     "    });",

@@ -125,10 +125,9 @@ export async function createQaTransportAdapter(
   context: QaTransportFactoryContext,
   factories?: readonly QaTransportAdapterFactory[],
 ): Promise<QaTransportAdapterFactoryResult> {
-  return await (
-    factories
-      ? createQaTransportAdapterFactoryRegistry(factories)
-      : qaTransportAdapterFactoryRegistry
+  return await (factories
+    ? createQaTransportAdapterFactoryRegistry(factories)
+    : qaTransportAdapterFactoryRegistry
   ).create(context);
 }
 

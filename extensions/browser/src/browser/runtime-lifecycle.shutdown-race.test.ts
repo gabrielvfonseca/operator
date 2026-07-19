@@ -120,6 +120,7 @@ describe("browser runtime shutdown profile races", () => {
     ).toThrow("Browser runtime is stopping");
     expect(clearState).not.toHaveBeenCalled();
 
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     launches.forEach((launch, index) => launch.resolve(children[index]!));
     await Promise.all(
       starts.map(async (start) => await expect(start).rejects.toThrow(/lifecycle changed/i)),

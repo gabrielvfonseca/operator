@@ -5,9 +5,7 @@ import {
 } from "@gabrielvfonseca/operator/plugin-sdk/channel-outbound";
 
 export function resolveDiscordPreviewStreamMode(
-  params: {
-    streaming?: unknown;
-  } = {},
+  params: { streaming?: unknown } = {},
 ): StreamingMode {
   if (params.streaming === undefined) {
     return "progress";

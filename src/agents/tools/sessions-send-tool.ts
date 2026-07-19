@@ -430,6 +430,7 @@ export function createSessionsSendTool(opts?: {
           ...(requestedAgentId ? { agentId: requestedAgentId } : {}),
           ...(restrictToSpawned ? { spawnedBy: effectiveRequesterKey } : {}),
         };
+        // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
         let resolvedKey;
         try {
           const resolved = await gatewayCall<{ key: string }>({

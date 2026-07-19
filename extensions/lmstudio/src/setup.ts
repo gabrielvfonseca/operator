@@ -713,7 +713,7 @@ export async function configureLmstudioNonInteractive(
     headers: persistedHeaders,
   });
   const hasAuthorizationHeader = hasLmstudioAuthorizationHeader(resolvedHeaders);
-  const useHeaderOnlyAuth = hasAuthorizationHeader && (!resolved || resolved.source !== "flag");
+  const useHeaderOnlyAuth = hasAuthorizationHeader && resolved?.source !== "flag";
   const setupDiscoveryApiKey =
     (useHeaderOnlyAuth ? undefined : resolved?.key) ??
     (shouldUseLmstudioApiKeyPlaceholder({

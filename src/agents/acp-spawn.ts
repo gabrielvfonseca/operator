@@ -1221,12 +1221,12 @@ function resolveAcpSpawnBootstrapDeliveryPlan(params: {
   });
   const bindingMatchesRequesterConversation = Boolean(
     params.requester.origin?.channel &&
-    params.binding?.conversation.channel === params.requester.origin.channel &&
-    params.binding?.conversation.accountId === requesterAccountId &&
-    requesterConversationRef?.conversationId &&
-    params.binding?.conversation.conversationId === requesterConversationRef.conversationId &&
-    (params.binding?.conversation.parentConversationId ?? undefined) ===
-      (requesterConversationRef.parentConversationId ?? undefined),
+      params.binding?.conversation.channel === params.requester.origin.channel &&
+      params.binding?.conversation.accountId === requesterAccountId &&
+      requesterConversationRef?.conversationId &&
+      params.binding?.conversation.conversationId === requesterConversationRef.conversationId &&
+      (params.binding?.conversation.parentConversationId ?? undefined) ===
+        (requesterConversationRef.parentConversationId ?? undefined),
   );
   const boundDeliveryTarget = routeToDeliveryFields(routeFromBindingRecord(params.binding));
   const inferredDeliveryTo =

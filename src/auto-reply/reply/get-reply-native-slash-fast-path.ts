@@ -72,10 +72,10 @@ function shouldRunNativeSlashCommandFastPath(ctx: MsgContext): boolean {
   const commandName = resolveNativeSlashCommandName(ctx);
   return Boolean(
     commandName &&
-    commandName !== "new" &&
-    commandName !== "reset" &&
-    (isNativeCommandTurn(commandTurn) ||
-      shouldRunInternalTextSlashCommandFastPath(ctx, commandTurn, commandName)),
+      commandName !== "new" &&
+      commandName !== "reset" &&
+      (isNativeCommandTurn(commandTurn) ||
+        shouldRunInternalTextSlashCommandFastPath(ctx, commandTurn, commandName)),
   );
 }
 
@@ -229,9 +229,7 @@ export async function maybeResolveNativeSlashCommandFastReply(params: {
     return loadedSkillCommands;
   };
 
-  const commandResult = await (
-    await loadCommandsRuntime()
-  ).handleCommands({
+  const commandResult = await (await loadCommandsRuntime()).handleCommands({
     ctx: sessionState.sessionCtx,
     rootCtx: params.ctx,
     cfg: params.cfg,

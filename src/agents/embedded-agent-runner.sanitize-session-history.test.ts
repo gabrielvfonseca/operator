@@ -99,8 +99,7 @@ vi.mock("../plugins/provider-runtime.js", async () => {
         // Google-style providers may need a synthetic user turn before replaying
         // assistant-first history; the session marker prevents duplicate repair.
         if (
-          provider &&
-          provider.startsWith("google") &&
+          provider?.startsWith("google") &&
           context.messages[0]?.role === "assistant" &&
           context.sessionState
         ) {

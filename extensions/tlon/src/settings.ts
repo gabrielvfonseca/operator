@@ -359,7 +359,7 @@ export function createSettingsManager(api: UrbitSSEClient, logger?: SettingsLogg
     async startSubscription(): Promise<void> {
       await api.subscribe({
         app: "settings",
-        path: "/desk/" + SETTINGS_DESK,
+        path: `/desk/${SETTINGS_DESK}`,
         event: (event) => {
           const update = parseSettingsEvent(event);
           if (!update) {

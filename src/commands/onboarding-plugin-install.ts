@@ -59,7 +59,7 @@ import type { WizardPrompter } from "../wizard/prompts.js";
 
 type InstallChoice = "clawhub" | "npm" | "local" | "skip";
 type InstallPluginFromClawHubResult = Awaited<
-  ReturnType<(typeof import("../plugins/clawhub.js"))["installPluginFromClawHub"]>
+  ReturnType<typeof import("../plugins/clawhub.js")["installPluginFromClawHub"]>
 >;
 const ONBOARDING_PLUGIN_INSTALL_TIMEOUT_MS = 5 * 60 * 1000;
 const ONBOARDING_PLUGIN_INSTALL_WATCHDOG_TIMEOUT_MS = ONBOARDING_PLUGIN_INSTALL_TIMEOUT_MS + 5_000;
@@ -295,9 +295,7 @@ function resolveLocalPath(params: {
       if (fs.statSync(resolved).isDirectory()) {
         return resolved;
       }
-    } catch {
-      continue;
-    }
+    } catch {}
   }
   return null;
 }

@@ -29,8 +29,9 @@ const MODEL = {
 
 describe("runtime-model-auth.runtime", () => {
   beforeAll(async () => {
-    ({ getApiKeyForModel, getRuntimeAuthForModel, resolveApiKeyForProvider } =
-      await import("./runtime-model-auth.runtime.js"));
+    ({ getApiKeyForModel, getRuntimeAuthForModel, resolveApiKeyForProvider } = await import(
+      "./runtime-model-auth.runtime.js"
+    ));
   });
 
   beforeEach(() => {

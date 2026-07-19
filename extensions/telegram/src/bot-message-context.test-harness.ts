@@ -172,8 +172,9 @@ let messageContextMocksInstalled = false;
 async function loadBuildTelegramMessageContext() {
   await installMessageContextTestMocks();
   if (!buildTelegramMessageContextLoader) {
-    ({ buildTelegramMessageContext: buildTelegramMessageContextLoader } =
-      await import("./bot-message-context.js"));
+    ({ buildTelegramMessageContext: buildTelegramMessageContextLoader } = await import(
+      "./bot-message-context.js"
+    ));
   }
   return buildTelegramMessageContextLoader;
 }

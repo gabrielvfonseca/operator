@@ -30,8 +30,9 @@ describe("matrix directory live", () => {
   const cfg = { channels: { matrix: {} } };
 
   beforeAll(async () => {
-    ({ listMatrixDirectoryGroupsLive, listMatrixDirectoryPeersLive } =
-      await import("./directory-live.js"));
+    ({ listMatrixDirectoryGroupsLive, listMatrixDirectoryPeersLive } = await import(
+      "./directory-live.js"
+    ));
     ({ resolveMatrixAuth } = await import("./matrix/client.js"));
   });
 

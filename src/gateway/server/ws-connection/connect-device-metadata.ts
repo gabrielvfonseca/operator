@@ -44,7 +44,7 @@ export function isControlUiOperatorBootstrapProfile(params: {
   requestedScopes: readonly string[];
 }): params is { profile: DeviceBootstrapProfile; requestedScopes: readonly string[] } {
   const { profile, requestedScopes } = params;
-  if (!profile || profile.purpose !== "control-ui") {
+  if (profile?.purpose !== "control-ui") {
     return false;
   }
   if (profile.roles.length !== 1 || profile.roles[0] !== "operator") {
@@ -109,10 +109,10 @@ export function pairedDeviceAllowsBootstrapProfile(params: {
   const device = params.device;
   return Boolean(
     device &&
-    device.publicKey === params.devicePublicKey &&
-    params.profile.roles.every((role) =>
-      pairedDeviceAllowsBootstrapRole({ device, profile: params.profile, role }),
-    ),
+      device.publicKey === params.devicePublicKey &&
+      params.profile.roles.every((role) =>
+        pairedDeviceAllowsBootstrapRole({ device, profile: params.profile, role }),
+      ),
   );
 }
 
@@ -124,8 +124,8 @@ export function pairedDeviceAllowsBootstrapOperator(params: {
   const device = params.device;
   return Boolean(
     device &&
-    device.publicKey === params.devicePublicKey &&
-    pairedDeviceAllowsBootstrapRole({ device, profile: params.profile, role: "operator" }),
+      device.publicKey === params.devicePublicKey &&
+      pairedDeviceAllowsBootstrapRole({ device, profile: params.profile, role: "operator" }),
   );
 }
 

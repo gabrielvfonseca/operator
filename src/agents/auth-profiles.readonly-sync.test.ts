@@ -50,8 +50,9 @@ function firstMockArg(mock: MockWithCalls, label: string) {
 describe("auth profiles read-only external auth overlay", () => {
   beforeEach(async () => {
     vi.resetModules();
-    ({ clearRuntimeAuthProfileStoreSnapshots, loadAuthProfileStoreForRuntime } =
-      await import("./auth-profiles.js"));
+    ({ clearRuntimeAuthProfileStoreSnapshots, loadAuthProfileStoreForRuntime } = await import(
+      "./auth-profiles.js"
+    ));
     clearRuntimeAuthProfileStoreSnapshots();
     resolveExternalAuthProfilesWithPluginsMock.mockClear();
   });

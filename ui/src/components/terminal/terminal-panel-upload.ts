@@ -265,7 +265,7 @@ export class TerminalPanelUploadController {
 
   retry = (): void => {
     const batch = this.batch;
-    if (!batch || batch.state !== "failed" || !batch.retryable) {
+    if (batch?.state !== "failed" || !batch.retryable) {
       return;
     }
     if (!this.host.isCurrent(batch.tab) || !this.host.client()) {
@@ -340,9 +340,10 @@ export function renderTerminalPanelActions(params: {
     >
       ${UPLOAD_GLYPH}
     </button>
-    ${params.fullscreen
-      ? nothing
-      : html`${params.sessionPicker}<button
+    ${
+      params.fullscreen
+        ? nothing
+        : html`${params.sessionPicker}<button
             class="tp-icon ${params.dock === "bottom" ? "is-active" : ""}"
             type="button"
             title=${t("terminal.dockBottom")}
@@ -368,17 +369,21 @@ export function renderTerminalPanelActions(params: {
             @click=${params.onHide}
           >
             ${CLOSE_GLYPH}
-          </button>`}
+          </button>`
+    }
   </div>`;
 }
 
 export function renderTerminalUploadLayer(upload: TerminalPanelUploadController) {
   const progress = upload.progress;
-  return html`${upload.dragActive
-    ? html`<div class="tp-drop-overlay">${t("terminal.dropFiles")}</div>`
-    : nothing}
-  ${progress
-    ? html`<div
+  return html`${
+    upload.dragActive
+      ? html`<div class="tp-drop-overlay">${t("terminal.dropFiles")}</div>`
+      : nothing
+  }
+  ${
+    progress
+      ? html`<div
         class="tp-upload-card ${progress.state === "failed" ? "tp-upload-card--failed" : ""}"
         role=${progress.state === "failed" ? "alert" : "status"}
         aria-live=${progress.state === "failed" ? "assertive" : "polite"}
@@ -386,25 +391,29 @@ export function renderTerminalUploadLayer(upload: TerminalPanelUploadController)
         <div class="tp-upload-card__header">
           <div class="tp-upload-card__copy">
             <div class="tp-upload-card__title">
-              ${progress.state === "failed"
-                ? t("terminal.uploadFailed")
-                : t("terminal.uploadProgress", {
-                    current: String(progress.current),
-                    total: String(progress.total),
-                  })}
+              ${
+                progress.state === "failed"
+                  ? t("terminal.uploadFailed")
+                  : t("terminal.uploadProgress", {
+                      current: String(progress.current),
+                      total: String(progress.total),
+                    })
+              }
             </div>
             <div class="tp-upload-card__file">${progress.fileName}</div>
           </div>
           <div class="tp-upload-card__actions">
-            ${progress.state === "failed" && progress.retryable
-              ? html`<button
+            ${
+              progress.state === "failed" && progress.retryable
+                ? html`<button
                   class="tp-upload-card__action tp-upload-retry"
                   type="button"
                   @click=${upload.retry}
                 >
                   ${t("terminal.retryUpload")}
                 </button>`
-              : nothing}
+                : nothing
+            }
             <button
               class="tp-upload-card__action tp-upload-cancel"
               type="button"
@@ -417,12 +426,14 @@ export function renderTerminalUploadLayer(upload: TerminalPanelUploadController)
         <div
           class="tp-upload-progress"
           role="progressbar"
-          aria-label=${progress.state === "failed"
-            ? t("terminal.uploadFailed")
-            : t("terminal.uploadProgress", {
-                current: String(progress.current),
-                total: String(progress.total),
-              })}
+          aria-label=${
+            progress.state === "failed"
+              ? t("terminal.uploadFailed")
+              : t("terminal.uploadProgress", {
+                  current: String(progress.current),
+                  total: String(progress.total),
+                })
+          }
           aria-valuemin="0"
           aria-valuemax=${String(progress.total)}
           aria-valuenow=${String(progress.completed)}
@@ -431,13 +442,18 @@ export function renderTerminalUploadLayer(upload: TerminalPanelUploadController)
             class="tp-upload-progress__fill"
             style=${`width:${(progress.completed / progress.total) * 100}%`}
           ></span>
-          ${progress.state === "uploading"
-            ? html`<span class="tp-upload-progress__activity"></span>`
-            : nothing}
+          ${
+            progress.state === "uploading"
+              ? html`<span class="tp-upload-progress__activity"></span>`
+              : nothing
+          }
         </div>
-        ${progress.error
-          ? html`<div class="tp-upload-card__error">${progress.error}</div>`
-          : nothing}
+        ${
+          progress.error
+            ? html`<div class="tp-upload-card__error">${progress.error}</div>`
+            : nothing
+        }
       </div>`
-    : nothing}`;
+      : nothing
+  }`;
 }

@@ -83,8 +83,9 @@ describe("gateway cli backend live helpers", () => {
   });
 
   it("defaults the model switch probe to Claude Sonnet -> Opus", async () => {
-    const { resolveCliModelSwitchProbeTarget, shouldRunCliModelSwitchProbe } =
-      await import("./gateway-cli-backend.live-helpers.js");
+    const { resolveCliModelSwitchProbeTarget, shouldRunCliModelSwitchProbe } = await import(
+      "./gateway-cli-backend.live-helpers.js"
+    );
 
     delete process.env.OPERATOR_LIVE_CLI_BACKEND_MODEL_SWITCH_PROBE;
 
@@ -97,8 +98,9 @@ describe("gateway cli backend live helpers", () => {
   });
 
   it("rejects removed Codex CLI refs for live CLI backend selection", async () => {
-    const { resolveCliBackendLiveModelSelection } =
-      await import("./gateway-cli-backend.live-helpers.js");
+    const { resolveCliBackendLiveModelSelection } = await import(
+      "./gateway-cli-backend.live-helpers.js"
+    );
 
     expect(() =>
       resolveCliBackendLiveModelSelection({
@@ -109,8 +111,9 @@ describe("gateway cli backend live helpers", () => {
   });
 
   it("configures legacy CLI model refs as canonical provider models plus CLI runtime", async () => {
-    const { resolveCliBackendLiveModelSelection } =
-      await import("./gateway-cli-backend.live-helpers.js");
+    const { resolveCliBackendLiveModelSelection } = await import(
+      "./gateway-cli-backend.live-helpers.js"
+    );
     cliBackendsTesting.setDepsForTest({
       resolveRuntimeCliBackends: () => [],
       resolvePluginSetupRegistry: () => ({
@@ -238,8 +241,9 @@ describe("gateway cli backend live helpers", () => {
   });
 
   it("retries Codex CLI timeout payloads only before the final attempt", async () => {
-    const { isCliBackendLiveTimeoutPayload, shouldRetryCliBackendLiveTimeout } =
-      await import("./gateway-cli-backend.live-helpers.js");
+    const { isCliBackendLiveTimeoutPayload, shouldRetryCliBackendLiveTimeout } = await import(
+      "./gateway-cli-backend.live-helpers.js"
+    );
     const timeoutPayload = { status: "timeout" };
 
     expect(isCliBackendLiveTimeoutPayload(timeoutPayload)).toBe(true);
@@ -304,8 +308,9 @@ describe("gateway cli backend live helpers", () => {
   });
 
   it("retries cancelled cron MCP replies", async () => {
-    const { shouldRetryCliCronMcpProbeReply } =
-      await import("./gateway-cli-backend.live-helpers.js");
+    const { shouldRetryCliCronMcpProbeReply } = await import(
+      "./gateway-cli-backend.live-helpers.js"
+    );
 
     expect(
       shouldRetryCliCronMcpProbeReply(

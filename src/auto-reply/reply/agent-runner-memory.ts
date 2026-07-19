@@ -1182,9 +1182,9 @@ export async function runMemoryFlushIfNeeded(params: {
   const forceFlushTranscriptBytes = memoryFlushPlan.forceFlushTranscriptBytes;
   const shouldCheckTranscriptSizeForForcedFlush = Boolean(
     canAttemptFlush &&
-    entry &&
-    Number.isFinite(forceFlushTranscriptBytes) &&
-    forceFlushTranscriptBytes > 0,
+      entry &&
+      Number.isFinite(forceFlushTranscriptBytes) &&
+      forceFlushTranscriptBytes > 0,
   );
   const shouldReadSessionLog = shouldReadTranscript || shouldCheckTranscriptSizeForForcedFlush;
   const sessionLogSnapshot = shouldReadSessionLog

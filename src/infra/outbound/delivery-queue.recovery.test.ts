@@ -1115,8 +1115,9 @@ describe("delivery-queue recovery", () => {
     });
 
     try {
-      const { recoverPendingDeliveries: recoverWithAckFailure } =
-        await import("./delivery-queue-recovery.js");
+      const { recoverPendingDeliveries: recoverWithAckFailure } = await import(
+        "./delivery-queue-recovery.js"
+      );
       const summary = await recoverWithAckFailure({
         deliver: asDeliverFn(
           vi.fn().mockResolvedValue([{ channel: "demo-channel-a", messageId: "m1" }]),
@@ -1163,8 +1164,9 @@ describe("delivery-queue recovery", () => {
     });
 
     try {
-      const { recoverPendingDeliveries: recoverWithAckFailure } =
-        await import("./delivery-queue-recovery.js");
+      const { recoverPendingDeliveries: recoverWithAckFailure } = await import(
+        "./delivery-queue-recovery.js"
+      );
       const summary = await recoverWithAckFailure({
         deliver: asDeliverFn(vi.fn().mockResolvedValue([])),
         log: createRecoveryLog(),
@@ -1204,8 +1206,9 @@ describe("delivery-queue recovery", () => {
     });
 
     try {
-      const { recoverPendingDeliveries: recoverWithMarkFailure } =
-        await import("./delivery-queue-recovery.js");
+      const { recoverPendingDeliveries: recoverWithMarkFailure } = await import(
+        "./delivery-queue-recovery.js"
+      );
       const log = createRecoveryLog();
       const summary = await recoverWithMarkFailure({
         deliver: asDeliverFn(
@@ -1263,8 +1266,9 @@ describe("delivery-queue recovery", () => {
     });
 
     try {
-      const { recoverPendingDeliveries: recoverWithMarkFailure } =
-        await import("./delivery-queue-recovery.js");
+      const { recoverPendingDeliveries: recoverWithMarkFailure } = await import(
+        "./delivery-queue-recovery.js"
+      );
       const firstResult = { channel: "demo-channel-a", messageId: "m1" };
       const secondResult = { channel: "demo-channel-a", messageId: "m2" };
       const deliver = vi.fn(async (params: Parameters<DeliverFn>[0]) => {
@@ -1359,10 +1363,12 @@ describe("delivery-queue recovery", () => {
     });
 
     try {
-      const { recoverPendingDeliveries: recoverWithMarkFailure } =
-        await import("./delivery-queue-recovery.js");
-      const { attachOutboundDeliveryCommitHook: attachHookAfterReset } =
-        await import("./delivery-commit-hooks.js");
+      const { recoverPendingDeliveries: recoverWithMarkFailure } = await import(
+        "./delivery-queue-recovery.js"
+      );
+      const { attachOutboundDeliveryCommitHook: attachHookAfterReset } = await import(
+        "./delivery-commit-hooks.js"
+      );
       const result = attachHookAfterReset(
         { channel: "demo-channel-a", messageId: "m1" },
         afterCommit,
@@ -1422,8 +1428,9 @@ describe("delivery-queue recovery", () => {
     });
 
     try {
-      const { recoverPendingDeliveries: recoverWithStateFailures } =
-        await import("./delivery-queue-recovery.js");
+      const { recoverPendingDeliveries: recoverWithStateFailures } = await import(
+        "./delivery-queue-recovery.js"
+      );
       const summary = await recoverWithStateFailures({
         deliver: asDeliverFn(
           vi.fn().mockResolvedValue([{ channel: "demo-channel-a", messageId: "m1" }]),

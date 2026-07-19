@@ -1257,7 +1257,7 @@ describe("finalizeSetupWizard", () => {
         credentialPath: "plugins.entries.perplexity.config.webSearch.apiKey",
       }),
     ]);
-    hasExistingKey.mockImplementation((configForTest, provider) => provider === "perplexity");
+    hasExistingKey.mockImplementation((_configForTest, provider) => provider === "perplexity");
 
     const prompter = createLaterPrompter();
 
@@ -1282,7 +1282,7 @@ describe("finalizeSetupWizard", () => {
         credentialPath: "plugins.entries.firecrawl.config.webSearch.apiKey",
       }),
     ]);
-    hasExistingKey.mockImplementation((configForTest, provider) => provider === "firecrawl");
+    hasExistingKey.mockImplementation((_configForTest, provider) => provider === "firecrawl");
 
     const prompter = createLaterPrompter();
 

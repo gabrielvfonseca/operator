@@ -168,7 +168,7 @@ async function runHooksCliAction<T>(action: () => Promise<T> | T): Promise<T> {
   }
 }
 
-async function runOneShotHooksCliAction(action: () => Promise<number | void>): Promise<void> {
+async function runOneShotHooksCliAction(action: () => Promise<number | undefined>): Promise<void> {
   const result = await runHooksCliAction(action);
   const exitCode = typeof result === "number" ? result : 0;
   // CLI setup and handlers can leave ref'd handles behind. Defer exit until

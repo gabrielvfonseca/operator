@@ -94,7 +94,7 @@ import type { HookClientIpConfig } from "./server/hooks-request-handler.js";
 // increments the generation so a new lifecycle never clears an abort intended for a
 // previous lifecycle's deferred reload.
 let currentReloadGeneration = 0;
-let abortGeneration: number | undefined = undefined;
+let abortGeneration: number | undefined;
 const RESTART_EMISSION_RETRY_MS = 1_000;
 
 /** Signal any in-progress deferred channel reload to abort immediately. */

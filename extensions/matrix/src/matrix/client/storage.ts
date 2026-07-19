@@ -192,8 +192,7 @@ function isCompatibleStorageRoot(params: {
   }
   if (
     params.deviceId &&
-    metadata.deviceId &&
-    metadata.deviceId.trim() &&
+    metadata.deviceId?.trim() &&
     metadata.deviceId.trim() !== params.deviceId.trim()
   ) {
     return false;

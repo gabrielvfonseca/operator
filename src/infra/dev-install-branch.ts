@@ -23,7 +23,7 @@ async function detectDevInstallGitBranch(params: {
   const topRes = await run(["git", "-C", root, "rev-parse", "--show-toplevel"], {
     timeoutMs: GIT_TIMEOUT_MS,
   }).catch(() => null);
-  if (!topRes || topRes.code !== 0) {
+  if (topRes?.code !== 0) {
     return null;
   }
   // Same rule as update-check's installKind: only a package root that is
@@ -37,7 +37,7 @@ async function detectDevInstallGitBranch(params: {
   const branchRes = await run(["git", "-C", root, "rev-parse", "--abbrev-ref", "HEAD"], {
     timeoutMs: GIT_TIMEOUT_MS,
   }).catch(() => null);
-  if (!branchRes || branchRes.code !== 0) {
+  if (branchRes?.code !== 0) {
     return null;
   }
   const branch = branchRes.stdout.trim();

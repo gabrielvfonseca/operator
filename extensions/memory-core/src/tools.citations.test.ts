@@ -361,7 +361,7 @@ describe("memory tools", () => {
       });
       const event = events[0];
       expect(event?.type).toBe("memory.recall.recorded");
-      if (!event || event.type !== "memory.recall.recorded") {
+      if (event?.type !== "memory.recall.recorded") {
         throw new Error("expected memory recall recorded event");
       }
       expect(event.query).toBe("glacier backup");

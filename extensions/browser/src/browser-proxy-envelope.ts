@@ -41,7 +41,7 @@ export type BrowserProxyFile = {
 /** Visit the route-owned file paths that may cross the Browser node boundary. */
 export function visitBrowserProxyFilePaths(
   result: unknown,
-  visit: (filePath: string) => string | void,
+  visit: (filePath: string) => string | undefined,
 ): void {
   if (!result || typeof result !== "object" || Array.isArray(result)) {
     return;

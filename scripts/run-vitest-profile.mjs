@@ -60,7 +60,7 @@ export function parseArgs(argv) {
  * Resolves or creates the directory used for profiler artifacts.
  */
 export function resolveVitestProfileDir({ mode, outputDir }) {
-  if (outputDir && outputDir.trim()) {
+  if (outputDir?.trim()) {
     return path.resolve(outputDir);
   }
 

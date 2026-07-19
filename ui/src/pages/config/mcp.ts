@@ -150,9 +150,11 @@ export function renderMcp(props: McpViewProps) {
             <a href=${props.pluginsHref}>${t("mcpPage.manageServersLink")}</a>
           </p>
           <div class="settings-group">
-            ${rows.length
-              ? rows.map((row) => renderServerRow(row))
-              : renderSettingsEmpty(t("mcpPage.noServers"))}
+            ${
+              rows.length
+                ? rows.map((row) => renderServerRow(row))
+                : renderSettingsEmpty(t("mcpPage.noServers"))
+            }
           </div>
         </section>
       </div>

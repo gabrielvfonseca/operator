@@ -227,7 +227,7 @@ function parseDnsSdBrowse(stdout: string): string[] {
   const instances = new Set<string>();
   for (const raw of stdout.split("\n")) {
     const line = raw.trim();
-    if (!line || !line.includes(GATEWAY_SERVICE_TYPE)) {
+    if (!line?.includes(GATEWAY_SERVICE_TYPE)) {
       continue;
     }
     if (!line.includes("Add")) {

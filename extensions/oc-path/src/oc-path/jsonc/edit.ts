@@ -94,10 +94,12 @@ function guardSentinel(value: JsoncValue, guardPath: string): void {
     return;
   }
   if (value.kind === "array") {
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     value.items.forEach((item, index) => guardSentinel(item, `${guardPath}/${index}`));
     return;
   }
   if (value.kind === "object") {
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     value.entries.forEach((entry) => guardSentinel(entry.value, `${guardPath}/${entry.key}`));
   }
 }

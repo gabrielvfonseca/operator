@@ -628,6 +628,7 @@ export function syncCustomThemeStyleTag(theme: ImportedCustomTheme | null | unde
     style?.remove();
     return;
   }
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let cssText;
   try {
     cssText = buildCustomThemeStyles(theme);

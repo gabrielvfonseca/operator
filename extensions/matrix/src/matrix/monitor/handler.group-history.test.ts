@@ -634,9 +634,7 @@ describe("matrix group chat history — scenario 2: race condition safety", () =
       makeRoomTriggerEvent({ eventId: "$t2", body: "trigger 2", ts: 3000 }),
     );
     expect(finalizeInboundContext).toHaveBeenCalledTimes(2);
-    {
-      expectSomeBodyContaining(inboundHistoryBodies(finalizeInboundContext, 1), "pending msg");
-    }
+    expectSomeBodyContaining(inboundHistoryBodies(finalizeInboundContext, 1), "pending msg");
   });
 
   it("retrying the same failed trigger reuses the original history window", async () => {

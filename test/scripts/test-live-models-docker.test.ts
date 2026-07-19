@@ -10,6 +10,7 @@ describe("scripts/test-live-models-docker.sh", () => {
   it("validates optional live model limits before auth or Docker setup", () => {
     const script = fs.readFileSync(SCRIPT_PATH, "utf8");
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(script).toContain('LIVE_MAX_MODELS="${OPENCLAW_LIVE_MAX_MODELS:-}"');
     expect(script).toContain('[[ -n "$LIVE_MAX_MODELS" && ! "$LIVE_MAX_MODELS" =~ ^\\+?[0-9]+$ ]]');
     expect(script).toContain(

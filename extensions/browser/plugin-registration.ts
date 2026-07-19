@@ -233,8 +233,9 @@ export function registerBrowserPlugin(api: OperatorPluginApi) {
       res.end("Upgrade Required: connect the Operator Chrome extension over WebSocket.");
     },
     handleUpgrade: async (req: IncomingMessage, socket: Duplex, head: Buffer) => {
-      const { handleGatewayExtensionUpgrade } =
-        await import("./src/browser/extension-relay/gateway-relay-route.js");
+      const { handleGatewayExtensionUpgrade } = await import(
+        "./src/browser/extension-relay/gateway-relay-route.js"
+      );
       return await handleGatewayExtensionUpgrade(req, socket, head);
     },
   });

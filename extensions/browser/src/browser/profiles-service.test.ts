@@ -100,8 +100,9 @@ vi.mock("./chrome.js", () => ({
 
 const [{ resolveBrowserConfig, resolveProfile }, { createBrowserProfilesService }] =
   await Promise.all([import("./config.js"), import("./profiles-service.js")]);
-const { deleteBrowserProfileConfig, setDefaultBrowserProfile } =
-  await import("./config-mutations.js");
+const { deleteBrowserProfileConfig, setDefaultBrowserProfile } = await import(
+  "./config-mutations.js"
+);
 
 function createCtx(resolved: BrowserServerState["resolved"]) {
   const state: BrowserServerState = {

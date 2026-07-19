@@ -341,8 +341,9 @@ function createGatewayStartupSecretsRuntimeHarness(prefix: string) {
 }
 
 async function activateImportedStartupConfig(config: OperatorConfig) {
-  const { createRuntimeSecretsActivator: createActivator } =
-    await import("./server-startup-config.js");
+  const { createRuntimeSecretsActivator: createActivator } = await import(
+    "./server-startup-config.js"
+  );
   return await createActivator(runtimeSecretsActivatorOptionsForTest())(
     gatewayTokenConfig(config),
     {
@@ -1038,8 +1039,9 @@ describe("gateway startup config secret preflight", () => {
         clearSecretsRuntimeSnapshot: clearImportedSecretsRuntimeSnapshot,
         getActiveSecretsRuntimeSnapshot: getImportedSecretsRuntimeSnapshot,
       } = await import("../secrets/runtime-state.js");
-      const { getRuntimeConfigSnapshotRefreshHandler } =
-        await import("../config/runtime-snapshot.js");
+      const { getRuntimeConfigSnapshotRefreshHandler } = await import(
+        "../config/runtime-snapshot.js"
+      );
       const result = await activateImportedStartupConfig(
         asConfig({
           agents: {
@@ -1101,8 +1103,9 @@ describe("gateway startup config secret preflight", () => {
     try {
       // A preceding lazy-import test resets Vitest's module cache. Import this
       // whole runtime graph together so the activator and handler share state.
-      const { createRuntimeSecretsActivator: createImportedRuntimeSecretsActivator } =
-        await import("./server-startup-config.js");
+      const { createRuntimeSecretsActivator: createImportedRuntimeSecretsActivator } = await import(
+        "./server-startup-config.js"
+      );
       const secretsRuntime = await import("../secrets/runtime.js");
       clearImportedSecretsRuntimeSnapshot = secretsRuntime.clearSecretsRuntimeSnapshot;
       const activateRuntimeSecrets = createImportedRuntimeSecretsActivator(
@@ -1112,8 +1115,9 @@ describe("gateway startup config secret preflight", () => {
         reason: "startup",
         activate: true,
       });
-      const { getRuntimeConfigSnapshotRefreshHandler } =
-        await import("../config/runtime-snapshot.js");
+      const { getRuntimeConfigSnapshotRefreshHandler } = await import(
+        "../config/runtime-snapshot.js"
+      );
       const staleRefreshHandler = getRuntimeConfigSnapshotRefreshHandler();
       if (!staleRefreshHandler?.preflight) {
         throw new Error("expected startup fast-path refresh preflight handler");

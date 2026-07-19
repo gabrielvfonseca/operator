@@ -10,8 +10,9 @@ vi.mock("../../../plugins/bundled-plugin-startup-metadata.js", () => ({
   inspectBundledPluginStartupMetadata,
 }));
 
-const { configMayRequireStartupPluginConvergence, planStartupPluginConvergence } =
-  await import("./startup-plugin-convergence-plan.js");
+const { configMayRequireStartupPluginConvergence, planStartupPluginConvergence } = await import(
+  "./startup-plugin-convergence-plan.js"
+);
 
 describe("startup plugin convergence planning", () => {
   beforeEach(() => {

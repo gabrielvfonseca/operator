@@ -70,13 +70,13 @@ function coerceMcpAppDescriptor(
   const resultMetaState = record?.resultMetaState === "unavailable" ? "unavailable" : undefined;
   const hasCompleteDescriptor = Boolean(
     serverName &&
-    serverName.length <= 256 &&
-    toolName &&
-    toolName.length <= 256 &&
-    uiResourceUri?.startsWith("ui://") &&
-    uiResourceUri.length <= 2048 &&
-    toolCallId &&
-    toolCallId.length <= 512,
+      serverName.length <= 256 &&
+      toolName &&
+      toolName.length <= 256 &&
+      uiResourceUri?.startsWith("ui://") &&
+      uiResourceUri.length <= 2048 &&
+      toolCallId &&
+      toolCallId.length <= 512,
   );
   return hasCompleteDescriptor
     ? {

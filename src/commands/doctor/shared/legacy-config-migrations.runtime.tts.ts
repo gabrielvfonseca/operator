@@ -71,10 +71,10 @@ function hasLegacyTtsSpeakerSelectionInProviderMap(value: unknown): boolean {
   const providers = getRecord(value);
   return Boolean(
     providers &&
-    Object.entries(providers).some(
-      ([providerId, providerConfig]) =>
-        !isBlockedObjectKey(providerId) && hasLegacySpeakerSelectionKeys(providerConfig),
-    ),
+      Object.entries(providers).some(
+        ([providerId, providerConfig]) =>
+          !isBlockedObjectKey(providerId) && hasLegacySpeakerSelectionKeys(providerConfig),
+      ),
   );
 }
 

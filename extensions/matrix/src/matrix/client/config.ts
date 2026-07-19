@@ -137,7 +137,7 @@ function readEnvSecretRefFallback(params: {
   config?: Pick<CoreConfig, "secrets">;
 }): string | undefined {
   const ref = coerceSecretRef(params.value, params.config?.secrets?.defaults);
-  if (!ref || ref.source !== "env" || !params.env) {
+  if (ref?.source !== "env" || !params.env) {
     return undefined;
   }
 
@@ -420,11 +420,11 @@ function hasScopedMatrixEnvConfig(accountId: string, env: NodeJS.ProcessEnv): bo
   const scoped = resolveScopedMatrixEnvConfig(accountId, env);
   return Boolean(
     scoped.homeserver ||
-    scoped.userId ||
-    scoped.accessToken ||
-    scoped.password ||
-    scoped.deviceId ||
-    scoped.deviceName,
+      scoped.userId ||
+      scoped.accessToken ||
+      scoped.password ||
+      scoped.deviceId ||
+      scoped.deviceName,
   );
 }
 

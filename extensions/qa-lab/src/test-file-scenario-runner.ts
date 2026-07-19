@@ -136,7 +136,9 @@ function replaceScriptArgTokens(
 ) {
   return (args ?? []).map((arg) =>
     arg
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       .replaceAll("${outputDir}", context.outputDir)
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       .replaceAll("${scenarioId}", context.scenarioId),
   );
 }
@@ -491,9 +493,9 @@ async function readScriptProducerEvidence(params: {
   scenario: QaTestFileScenario;
 }): Promise<Pick<QaTestFileScenarioResult, "producerEvidence">> {
   const scenarioOutputDir = path.join(params.outputDir, params.scenario.id);
-  const latestRun = (await readJsonFileIfExists(
-    path.join(scenarioOutputDir, "latest-run.json"),
-  )) as { qaEvidence?: unknown } | undefined;
+  const latestRun = (await readJsonFileIfExists(path.join(scenarioOutputDir, "latest-run.json"))) as
+    | { qaEvidence?: unknown }
+    | undefined;
   const candidates = [
     typeof latestRun?.qaEvidence === "string" ? latestRun.qaEvidence : undefined,
     path.join(scenarioOutputDir, QA_EVIDENCE_FILENAME),

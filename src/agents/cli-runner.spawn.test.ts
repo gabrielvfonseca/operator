@@ -1428,22 +1428,21 @@ describe("runCliAgent spawn path", () => {
         exitCode: 0,
         exitSignal: null,
         durationMs: 50,
-        stdout:
-          [
-            JSON.stringify({
-              type: "message",
-              role: "assistant",
-              content: "partial text",
-              delta: true,
-            }),
-            JSON.stringify({
-              type: "result",
-              status: "error",
-              error: {
-                message: "Gemini stream failed",
-              },
-            }),
-          ].join("\n") + "\n",
+        stdout: `${[
+          JSON.stringify({
+            type: "message",
+            role: "assistant",
+            content: "partial text",
+            delta: true,
+          }),
+          JSON.stringify({
+            type: "result",
+            status: "error",
+            error: {
+              message: "Gemini stream failed",
+            },
+          }),
+        ].join("\n")}\n`,
         stderr: "",
         timedOut: false,
         noOutputTimedOut: false,
@@ -1578,26 +1577,26 @@ describe("runCliAgent spawn path", () => {
     supervisorSpawnMock.mockImplementationOnce(async (...args: unknown[]) => {
       const input = (args[0] ?? {}) as { onStdout?: (chunk: string) => void };
       input.onStdout?.(
-        [
+        `${[
           JSON.stringify({ type: "init", session_id: "session-123" }),
           JSON.stringify({
             type: "stream_event",
             event: { type: "content_block_delta", delta: { type: "text_delta", text: "Hello" } },
           }),
-        ].join("\n") + "\n",
+        ].join("\n")}\n`,
       );
       input.onStdout?.(
-        JSON.stringify({
+        `${JSON.stringify({
           type: "stream_event",
           event: { type: "content_block_delta", delta: { type: "text_delta", text: " world" } },
-        }) + "\n",
+        })}\n`,
       );
       input.onStdout?.(
-        JSON.stringify({
+        `${JSON.stringify({
           type: "result",
           session_id: "session-123",
           result: "Hello world",
-        }) + "\n",
+        })}\n`,
       );
       return createManagedRun({
         reason: "exit",
@@ -1642,7 +1641,7 @@ describe("runCliAgent spawn path", () => {
     supervisorSpawnMock.mockImplementationOnce(async (...args: unknown[]) => {
       const input = (args[0] ?? {}) as { onStdout?: (chunk: string) => void };
       input.onStdout?.(
-        [
+        `${[
           JSON.stringify({ type: "init", session_id: "session-123" }),
           JSON.stringify({
             type: "stream_event",
@@ -1653,7 +1652,7 @@ describe("runCliAgent spawn path", () => {
             session_id: "session-123",
             result: "Hello",
           }),
-        ].join("\n") + "\n",
+        ].join("\n")}\n`,
       );
       return createManagedRun({
         reason: "exit",
@@ -1701,7 +1700,7 @@ describe("runCliAgent spawn path", () => {
         const prompt = (JSON.parse(data) as { message: { content: string } }).message.content;
         const text = prompt === "first" ? "one" : "two";
         stdoutListener?.(
-          [
+          `${[
             JSON.stringify({ type: "system", subtype: "init", session_id: "live-session-1" }),
             JSON.stringify({
               type: "stream_event",
@@ -1715,7 +1714,7 @@ describe("runCliAgent spawn path", () => {
               session_id: "live-session-1",
               result: text,
             }),
-          ].join("\n") + "\n",
+          ].join("\n")}\n`,
         );
         cb?.();
       }),
@@ -1844,10 +1843,10 @@ describe("runCliAgent spawn path", () => {
       write: vi.fn((data: string, cb?: (err?: Error | null) => void) => {
         writes.push(data);
         stdoutListener?.(
-          [
+          `${[
             JSON.stringify({ type: "system", subtype: "init", session_id: "live-session-1" }),
             JSON.stringify({ type: "result", session_id: "live-session-1", result: "one" }),
-          ].join("\n") + "\n",
+          ].join("\n")}\n`,
         );
         cb?.();
       }),
@@ -1924,7 +1923,7 @@ describe("runCliAgent spawn path", () => {
     const stdin = {
       write: vi.fn((_data: string, callback?: (error?: Error | null) => void) => {
         stdoutListener?.(
-          [
+          `${[
             JSON.stringify({ type: "system", subtype: "init", session_id: "live-empty-result" }),
             JSON.stringify({
               type: "stream_event",
@@ -1953,7 +1952,7 @@ describe("runCliAgent spawn path", () => {
               session_id: "live-empty-result",
               result: "",
             }),
-          ].join("\n") + "\n",
+          ].join("\n")}\n`,
         );
         callback?.();
       }),
@@ -2012,7 +2011,7 @@ describe("runCliAgent spawn path", () => {
     const stdin = {
       write: vi.fn((_data: string, callback?: (error?: Error | null) => void) => {
         stdoutListener?.(
-          [
+          `${[
             JSON.stringify({ type: "system", subtype: "init", session_id: "live-quiet-tool" }),
             JSON.stringify({
               type: "assistant",
@@ -2020,7 +2019,7 @@ describe("runCliAgent spawn path", () => {
                 content: [{ type: "tool_use", id: "tool-quiet-1", name: "Bash", input: {} }],
               },
             }),
-          ].join("\n") + "\n",
+          ].join("\n")}\n`,
         );
         callback?.();
       }),
@@ -2087,16 +2086,16 @@ describe("runCliAgent spawn path", () => {
   it("keeps non-capture live prepared backend cleanup with the whole-run owner", async () => {
     let stdoutListener: ((chunk: string) => void) | undefined;
     const stdin = {
-      write: vi.fn((dataValue: string, cb?: (err?: Error | null) => void) => {
+      write: vi.fn((_dataValue: string, cb?: (err?: Error | null) => void) => {
         stdoutListener?.(
-          [
+          `${[
             JSON.stringify({ type: "system", subtype: "init", session_id: "live-session-cleanup" }),
             JSON.stringify({
               type: "result",
               session_id: "live-session-cleanup",
               result: "ok",
             }),
-          ].join("\n") + "\n",
+          ].join("\n")}\n`,
         );
         cb?.();
       }),
@@ -2176,9 +2175,9 @@ describe("runCliAgent spawn path", () => {
           pid: 2347,
           startedAtMs: Date.now(),
           stdin: {
-            write: vi.fn((dataValue: string, cb?: (err?: Error | null) => void) => {
+            write: vi.fn((_dataValue: string, cb?: (err?: Error | null) => void) => {
               stdoutListener?.(
-                [
+                `${[
                   JSON.stringify({
                     type: "system",
                     subtype: "init",
@@ -2189,7 +2188,7 @@ describe("runCliAgent spawn path", () => {
                     session_id: "captured-live-cleanup",
                     result: "ok",
                   }),
-                ].join("\n") + "\n",
+                ].join("\n")}\n`,
               );
               cb?.();
             }),
@@ -2311,13 +2310,13 @@ describe("runCliAgent spawn path", () => {
     const largeText = "x".repeat(270 * 1024);
     let stdoutListener: ((chunk: string) => void) | undefined;
     const stdin = {
-      write: vi.fn((dataValue: string, cb?: (err?: Error | null) => void) => {
+      write: vi.fn((_dataValue: string, cb?: (err?: Error | null) => void) => {
         stdoutListener?.(
-          JSON.stringify({
+          `${JSON.stringify({
             type: "result",
             session_id: "live-session-large",
             result: largeText,
-          }) + "\n",
+          })}\n`,
         );
         cb?.();
       }),
@@ -2355,13 +2354,13 @@ describe("runCliAgent spawn path", () => {
     const largeText = "x".repeat(1500);
     let stdoutListener: ((chunk: string) => void) | undefined;
     const stdin = {
-      write: vi.fn((dataValue: string, cb?: (err?: Error | null) => void) => {
+      write: vi.fn((_dataValue: string, cb?: (err?: Error | null) => void) => {
         stdoutListener?.(
-          JSON.stringify({
+          `${JSON.stringify({
             type: "result",
             session_id: "live-session-tight-output-limit",
             result: largeText,
-          }) + "\n",
+          })}\n`,
         );
         cb?.();
       }),
@@ -2407,13 +2406,13 @@ describe("runCliAgent spawn path", () => {
     const largeText = "x".repeat(1500);
     let stdoutListener: ((chunk: string) => void) | undefined;
     const stdin = {
-      write: vi.fn((dataValue: string, cb?: (err?: Error | null) => void) => {
+      write: vi.fn((_dataValue: string, cb?: (err?: Error | null) => void) => {
         stdoutListener?.(
-          JSON.stringify({
+          `${JSON.stringify({
             type: "result",
             session_id: "live-session-raised-output-limit",
             result: largeText,
-          }) + "\n",
+          })}\n`,
         );
         cb?.();
       }),
@@ -2459,7 +2458,7 @@ describe("runCliAgent spawn path", () => {
       markWriteReady = resolve;
     });
     const stdin = {
-      write: vi.fn((dataValue: string, cb?: (err?: Error | null) => void) => {
+      write: vi.fn((_dataValue: string, cb?: (err?: Error | null) => void) => {
         markWriteReady?.();
         cb?.();
       }),
@@ -2507,14 +2506,14 @@ describe("runCliAgent spawn path", () => {
     expect(replyRunRegistry.isStreaming("agent:main:main")).toBe(true);
 
     stdoutListener?.(
-      [
+      `${[
         JSON.stringify({ type: "system", subtype: "init", session_id: "live-session-reply" }),
         JSON.stringify({
           type: "result",
           session_id: "live-session-reply",
           result: "done",
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
 
     const result = await run;
@@ -2527,17 +2526,17 @@ describe("runCliAgent spawn path", () => {
     let stdoutListener: ((chunk: string) => void) | undefined;
     let turn = 0;
     const stdin = {
-      write: vi.fn((dataValue: string, cb?: (err?: Error | null) => void) => {
+      write: vi.fn((_dataValue: string, cb?: (err?: Error | null) => void) => {
         turn += 1;
         stdoutListener?.(
-          [
+          `${[
             JSON.stringify({ type: "system", subtype: "init", session_id: "live-system" }),
             JSON.stringify({
               type: "result",
               session_id: "live-system",
               result: turn === 1 ? "one" : "two",
             }),
-          ].join("\n") + "\n",
+          ].join("\n")}\n`,
         );
         cb?.();
       }),
@@ -2593,17 +2592,17 @@ describe("runCliAgent spawn path", () => {
       releaseSpawn = resolve;
     });
     const stdin = {
-      write: vi.fn((dataValue: string, cb?: (err?: Error | null) => void) => {
+      write: vi.fn((_dataValue: string, cb?: (err?: Error | null) => void) => {
         turn += 1;
         stdoutListener?.(
-          [
+          `${[
             JSON.stringify({ type: "system", subtype: "init", session_id: "live-concurrent" }),
             JSON.stringify({
               type: "result",
               session_id: "live-concurrent",
               result: turn === 1 ? "one" : "two",
             }),
-          ].join("\n") + "\n",
+          ].join("\n")}\n`,
         );
         cb?.();
       }),
@@ -2664,10 +2663,10 @@ describe("runCliAgent spawn path", () => {
       write: vi.fn((_data: string, cb?: (err?: Error | null) => void) => {
         turn += 1;
         stdoutListener?.(
-          [
+          `${[
             JSON.stringify({ type: "system", subtype: "init", session_id: "live-race" }),
             JSON.stringify({ type: "result", session_id: "live-race", result: `turn-${turn}` }),
-          ].join("\n") + "\n",
+          ].join("\n")}\n`,
         );
         cb?.();
       }),
@@ -2775,9 +2774,9 @@ describe("runCliAgent spawn path", () => {
       const spawnIndex = supervisorSpawnMock.mock.calls.length;
       await spawnReady;
       const stdin = {
-        write: vi.fn((dataValue: string, cb?: (err?: Error | null) => void) => {
+        write: vi.fn((_dataValue: string, cb?: (err?: Error | null) => void) => {
           input.onStdout?.(
-            [
+            `${[
               JSON.stringify({
                 type: "system",
                 subtype: "init",
@@ -2788,7 +2787,7 @@ describe("runCliAgent spawn path", () => {
                 session_id: `live-cap-${spawnIndex}`,
                 result: `ok-${spawnIndex}`,
               }),
-            ].join("\n") + "\n",
+            ].join("\n")}\n`,
           );
           cb?.();
         }),
@@ -3004,9 +3003,9 @@ ${JSON.stringify({
     });
     let stdoutListener: ((chunk: string) => void) | undefined;
     const stdin = {
-      write: vi.fn((data: string, cb?: (err?: Error | null) => void) => {
+      write: vi.fn((_data: string, cb?: (err?: Error | null) => void) => {
         stdoutListener?.(
-          [
+          `${[
             JSON.stringify({
               type: "system",
               subtype: "init",
@@ -3033,7 +3032,7 @@ ${JSON.stringify({
                 ],
               },
             }),
-          ].join("\n") + "\n",
+          ].join("\n")}\n`,
         );
         cb?.();
       }),
@@ -3106,7 +3105,7 @@ ${JSON.stringify({
       ).toBeGreaterThanOrEqual(10_000);
 
       stdoutListener?.(
-        [
+        `${[
           JSON.stringify({
             type: "user",
             session_id: "live-diagnostics",
@@ -3140,7 +3139,7 @@ ${JSON.stringify({
             session_id: "live-diagnostics",
             result: "ok",
           }),
-        ].join("\n") + "\n",
+        ].join("\n")}\n`,
       );
 
       await expect(resultPromise).resolves.toMatchObject({ output: { text: "ok" } });
@@ -3195,7 +3194,7 @@ ${JSON.stringify({
         });
         markMcpLoopbackToolCallFinished(captureHandle);
         stdoutListener?.(
-          [
+          `${[
             JSON.stringify({ type: "system", subtype: "init", session_id: "live-blocked" }),
             JSON.stringify({
               type: "assistant",
@@ -3228,7 +3227,7 @@ ${JSON.stringify({
               },
             }),
             JSON.stringify({ type: "result", session_id: "live-blocked", result: "ok" }),
-          ].join("\n") + "\n",
+          ].join("\n")}\n`,
         );
         cb?.();
       }),
@@ -3297,7 +3296,7 @@ ${JSON.stringify({
     const stdin = {
       write: vi.fn((_data: string, cb?: (err?: Error | null) => void) => {
         stdoutListener?.(
-          [
+          `${[
             JSON.stringify({ type: "system", subtype: "init", session_id: "live-identical" }),
             JSON.stringify({
               type: "assistant",
@@ -3320,7 +3319,7 @@ ${JSON.stringify({
                 ],
               },
             }),
-          ].join("\n") + "\n",
+          ].join("\n")}\n`,
         );
         const captureHandle = markMcpLoopbackToolCallStarted({
           captureKey,
@@ -3338,7 +3337,7 @@ ${JSON.stringify({
         });
         markMcpLoopbackToolCallFinished(captureHandle);
         stdoutListener?.(
-          [
+          `${[
             JSON.stringify({
               type: "user",
               session_id: "live-identical",
@@ -3351,7 +3350,7 @@ ${JSON.stringify({
               },
             }),
             JSON.stringify({ type: "result", session_id: "live-identical", result: "ok" }),
-          ].join("\n") + "\n",
+          ].join("\n")}\n`,
         );
         cb?.();
       }),
@@ -3455,7 +3454,7 @@ ${JSON.stringify({
       const stdin = {
         write: vi.fn((_data: string, cb?: (err?: Error | null) => void) => {
           stdoutListener?.(
-            [
+            `${[
               JSON.stringify({ type: "system", subtype: "init", session_id: "live-timeout" }),
               JSON.stringify({
                 type: "assistant",
@@ -3472,7 +3471,7 @@ ${JSON.stringify({
                   ],
                 },
               }),
-            ].join("\n") + "\n",
+            ].join("\n")}\n`,
           );
           cb?.();
         }),
@@ -4326,18 +4325,18 @@ ${JSON.stringify({
         pid: 2345 + spawnIndex,
         startedAtMs: Date.now(),
         stdin: {
-          write: vi.fn((dataValue: string, cb?: (err?: Error | null) => void) => {
+          write: vi.fn((_dataValue: string, cb?: (err?: Error | null) => void) => {
             const result = turnResults[turnIndex] ?? "ok";
             turnIndex += 1;
             input.onStdout?.(
-              [
+              `${[
                 JSON.stringify({ type: "system", subtype: "init", session_id: "live-session" }),
                 JSON.stringify({
                   type: "result",
                   session_id: "live-session",
                   result,
                 }),
-              ].join("\n") + "\n",
+              ].join("\n")}\n`,
             );
             cb?.();
           }),
@@ -4420,9 +4419,9 @@ ${JSON.stringify({
   it("ignores non-JSON stdout lines from Claude live sessions", async () => {
     let stdoutListener: ((chunk: string) => void) | undefined;
     const stdin = {
-      write: vi.fn((dataValue: string, cb?: (err?: Error | null) => void) => {
+      write: vi.fn((_dataValue: string, cb?: (err?: Error | null) => void) => {
         stdoutListener?.(
-          [
+          `${[
             "Claude CLI warning",
             JSON.stringify({ type: "system", subtype: "init", session_id: "live-mixed" }),
             JSON.stringify({
@@ -4430,7 +4429,7 @@ ${JSON.stringify({
               session_id: "live-mixed",
               result: "mixed-ok",
             }),
-          ].join("\n") + "\n",
+          ].join("\n")}\n`,
         );
         cb?.();
       }),
@@ -4466,9 +4465,9 @@ ${JSON.stringify({
   it("fails Claude live turns on is_error results", async () => {
     let stdoutListener: ((chunk: string) => void) | undefined;
     const stdin = {
-      write: vi.fn((dataValue: string, cb?: (err?: Error | null) => void) => {
+      write: vi.fn((_dataValue: string, cb?: (err?: Error | null) => void) => {
         stdoutListener?.(
-          [
+          `${[
             JSON.stringify({ type: "system", subtype: "init", session_id: "live-error" }),
             JSON.stringify({
               type: "result",
@@ -4476,7 +4475,7 @@ ${JSON.stringify({
               is_error: true,
               result: "Credit balance is too low",
             }),
-          ].join("\n") + "\n",
+          ].join("\n")}\n`,
         );
         cb?.();
       }),
@@ -4516,9 +4515,9 @@ ${JSON.stringify({
   it("surfaces Claude live max-turn results with run and session recovery context", async () => {
     let stdoutListener: ((chunk: string) => void) | undefined;
     const stdin = {
-      write: vi.fn((dataValue: string, cb?: (err?: Error | null) => void) => {
+      write: vi.fn((_dataValue: string, cb?: (err?: Error | null) => void) => {
         stdoutListener?.(
-          [
+          `${[
             JSON.stringify({
               type: "system",
               subtype: "init",
@@ -4533,7 +4532,7 @@ ${JSON.stringify({
               terminal_reason: "max_turns",
               errors: ["Reached maximum number of turns (1)"],
             }),
-          ].join("\n") + "\n",
+          ].join("\n")}\n`,
         );
         cb?.();
       }),
@@ -4585,9 +4584,9 @@ ${JSON.stringify({
       resolveExit = resolve;
     });
     const stdin = {
-      write: vi.fn((dataValue: string, cb?: (err?: Error | null) => void) => {
+      write: vi.fn((_dataValue: string, cb?: (err?: Error | null) => void) => {
         stdoutListener?.(
-          JSON.stringify({ type: "system", subtype: "init", session_id: "live-overflow" }) + "\n",
+          `${JSON.stringify({ type: "system", subtype: "init", session_id: "live-overflow" })}\n`,
         );
         cb?.();
         resolveExit?.({
@@ -4781,17 +4780,17 @@ ${JSON.stringify({
       const cancel = vi.fn();
       cancels.push(cancel);
       const stdin = {
-        write: vi.fn((dataValue: string, cb?: (err?: Error | null) => void) => {
+        write: vi.fn((_dataValue: string, cb?: (err?: Error | null) => void) => {
           if (spawnIndex === 2) {
             stdoutListener?.(
-              [
+              `${[
                 JSON.stringify({ type: "system", subtype: "init", session_id: "live-abort-2" }),
                 JSON.stringify({
                   type: "result",
                   session_id: "live-abort-2",
                   result: "second-ok",
                 }),
-              ].join("\n") + "\n",
+              ].join("\n")}\n`,
             );
           }
           cb?.();
@@ -4845,14 +4844,14 @@ ${JSON.stringify({
     await expectRejectsWithFields(first, { name: "AbortError" });
     expect(cancels[0]).toHaveBeenCalledWith("manual-cancel");
     stdoutListener?.(
-      [
+      `${[
         JSON.stringify({ type: "system", subtype: "init", session_id: "live-abort" }),
         JSON.stringify({
           type: "result",
           session_id: "live-abort",
           result: "discarded",
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
     );
 
     const second = await executePreparedCliRun(
@@ -4880,7 +4879,7 @@ ${JSON.stringify({
     const cancel = vi.fn();
     let pendingWriteCallback: ((err?: Error | null) => void) | undefined;
     const stdin = {
-      write: vi.fn((dataValue: string, cb?: (err?: Error | null) => void) => {
+      write: vi.fn((_dataValue: string, cb?: (err?: Error | null) => void) => {
         pendingWriteCallback = cb;
       }),
       end: vi.fn(),
@@ -4957,17 +4956,17 @@ ${JSON.stringify({
       const cancel = vi.fn();
       cancels.push(cancel);
       const stdin = {
-        write: vi.fn((dataValue: string, cb?: (err?: Error | null) => void) => {
+        write: vi.fn((_dataValue: string, cb?: (err?: Error | null) => void) => {
           const text = spawnIndex === 1 ? "weather-ok" : "git-ok";
           input.onStdout?.(
-            [
+            `${[
               JSON.stringify({ type: "system", subtype: "init", session_id: `live-${spawnIndex}` }),
               JSON.stringify({
                 type: "result",
                 session_id: `live-${spawnIndex}`,
                 result: text,
               }),
-            ].join("\n") + "\n",
+            ].join("\n")}\n`,
           );
           cb?.();
         }),
@@ -5070,14 +5069,14 @@ ${JSON.stringify({
       write: vi.fn((data: string, cb?: (err?: Error | null) => void) => {
         writes.push(data);
         stdoutListener?.(
-          [
+          `${[
             JSON.stringify({ type: "system", subtype: "init", session_id: "live-session-idle" }),
             JSON.stringify({
               type: "result",
               session_id: "live-session-idle",
               result: "idle-ok",
             }),
-          ].join("\n") + "\n",
+          ].join("\n")}\n`,
         );
         cb?.();
       }),
@@ -5154,19 +5153,19 @@ ${JSON.stringify({
     });
     let writeCount = 0;
     const stdin = {
-      write: vi.fn((dataValue: string, cb?: (err?: Error | null) => void) => {
+      write: vi.fn((_dataValue: string, cb?: (err?: Error | null) => void) => {
         writeCount += 1;
         if (writeCount === 1) {
           stderrListener?.("stale stderr from first turn");
           stdoutListener?.(
-            [
+            `${[
               JSON.stringify({ type: "system", subtype: "init", session_id: "live-stderr" }),
               JSON.stringify({
                 type: "result",
                 session_id: "live-stderr",
                 result: "first-ok",
               }),
-            ].join("\n") + "\n",
+            ].join("\n")}\n`,
           );
           cb?.();
           return;
@@ -5501,7 +5500,7 @@ ${JSON.stringify({
     context.reusableCliSession = { mode: "reuse", sessionId: "thread-123" };
     context.bootstrapPromptWarningLines = [
       "[Bootstrap truncation warning]",
-      "- AGENTS.md: 200 raw -> 20 injected",
+      "- AGENTS.MD: 200 raw -> 20 injected",
     ];
 
     await executePreparedCliRun(context, "thread-123");
@@ -5513,7 +5512,7 @@ ${JSON.stringify({
     const promptCarrier = [input.input ?? "", ...(input.argv ?? [])].join("\n");
 
     expect(promptCarrier).toContain("[Bootstrap truncation warning]");
-    expect(promptCarrier).toContain("- AGENTS.md: 200 raw -> 20 injected");
+    expect(promptCarrier).toContain("- AGENTS.MD: 200 raw -> 20 injected");
     expect(promptCarrier).toContain("hi");
   });
 
@@ -5523,9 +5522,9 @@ ${JSON.stringify({
     );
 
     await fs.writeFile(
-      path.join(workspaceDir, "AGENTS.md"),
+      path.join(workspaceDir, "AGENTS.MD"),
       [
-        "# AGENTS.md",
+        "# AGENTS.MD",
         "",
         "Read SOUL.md and IDENTITY.md before replying.",
         "Use the injected workspace bootstrap files as standing instructions.",
@@ -5551,7 +5550,7 @@ ${JSON.stringify({
         contextFiles,
         tools: [],
       });
-      const agentsPath = path.join(workspaceDir, "AGENTS.md");
+      const agentsPath = path.join(workspaceDir, "AGENTS.MD");
       const soulPath = path.join(workspaceDir, "SOUL.md");
       const identityPath = path.join(workspaceDir, "IDENTITY.md");
       const userPath = path.join(workspaceDir, "USER.md");

@@ -98,7 +98,7 @@ acquire_pr_gates_lock() {
   # must not re-acquire the lock the block holder already owns.
   export OPENCLAW_TEST_HEAVY_CHECK_LOCK_HELD=1
   export OPENCLAW_TSGO_HEAVY_CHECK_LOCK_HELD=1
-  export OPENCLAW_OXLINT_SKIP_LOCK=1
+  export OPENCLAW_BIOME_SKIP_LOCK=1
 }
 
 prepare_local_gate_workspace() {
@@ -116,7 +116,7 @@ release_pr_gates_lock() {
   PR_GATES_LOCK_PID=""
   rm -f "$PR_GATES_LOCK_STATUS_FILE"
   PR_GATES_LOCK_STATUS_FILE=""
-  unset OPENCLAW_TEST_HEAVY_CHECK_LOCK_HELD OPENCLAW_TSGO_HEAVY_CHECK_LOCK_HELD OPENCLAW_OXLINT_SKIP_LOCK
+  unset OPENCLAW_TEST_HEAVY_CHECK_LOCK_HELD OPENCLAW_TSGO_HEAVY_CHECK_LOCK_HELD OPENCLAW_BIOME_SKIP_LOCK
 }
 
 run_remote_testbox_full_test_gate() {

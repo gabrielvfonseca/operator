@@ -579,7 +579,7 @@ export async function getHealthSnapshot(params?: {
     const accountIdsToProbe = Array.from(
       new Set(
         [preferredAccountId, defaultAccountId, ...accountIds, ...boundAccountIdsAll].filter(
-          (value) => value && value.trim(),
+          (value) => value?.trim(),
         ),
       ),
     );
@@ -972,7 +972,7 @@ export async function healthCommand(
     }
     for (const plugin of displayPlugins) {
       const channelSummary = summary.channels?.[plugin.id];
-      if (!channelSummary || channelSummary.linked !== true) {
+      if (channelSummary?.linked !== true) {
         continue;
       }
       if (!plugin.status?.logSelfId) {

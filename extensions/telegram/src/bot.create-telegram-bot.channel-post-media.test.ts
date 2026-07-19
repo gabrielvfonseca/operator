@@ -60,8 +60,9 @@ const harness = await import("./bot.create-telegram-bot.test-harness.js");
 const { getLoadConfigMock, getOnHandler, replySpy, sendMessageSpy, telegramBotDepsForTest } =
   harness;
 const { createTelegramBotCore: createTelegramBotBase } = await import("./bot-core.js");
-const { runWithTelegramSpooledReplayUpdate, runWithTelegramUpdateProcessingFrame } =
-  await import("./bot-processing-outcome.js");
+const { runWithTelegramSpooledReplayUpdate, runWithTelegramUpdateProcessingFrame } = await import(
+  "./bot-processing-outcome.js"
+);
 const { MediaFetchError } = await import("./telegram-media.runtime.js");
 
 let createTelegramBot: (
@@ -230,7 +231,7 @@ async function queueChannelPostAlbum(
 
 function replyPayload(): Record<string, unknown> {
   const call = replySpy.mock.calls.at(0);
-  if (!call || !call[0] || typeof call[0] !== "object") {
+  if (!call?.[0] || typeof call[0] !== "object") {
     throw new Error("Expected reply payload");
   }
   return call[0] as Record<string, unknown>;

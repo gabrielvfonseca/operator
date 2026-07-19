@@ -93,11 +93,13 @@ export function renderTable(widget: WorkspaceWidget, value: unknown): TemplateRe
           )}
         </tbody>
       </table>
-      ${remaining > 0
-        ? html`<div class="workspace-table__footer">
+      ${
+        remaining > 0
+          ? html`<div class="workspace-table__footer">
             ${t("workspaces.widget.table.more", { count: String(remaining) })}
           </div>`
-        : nothing}
+          : nothing
+      }
     </div>
   `;
 }

@@ -626,8 +626,9 @@ export async function prepareGatewayRunBootstrap(params: GatewayRunGuardParams):
   preparedGatewayRunStateWasPristine = false;
   preparedGatewayRunCoreStateWasPristine = false;
   const pristineSelectionSignature = resolveGatewayConfigSelectionSignature(process.env);
-  const { planPristineStartupConfigMigrations, planPristineStartupStateMigrations } =
-    await import("../../commands/doctor/shared/pristine-startup-state.js");
+  const { planPristineStartupConfigMigrations, planPristineStartupStateMigrations } = await import(
+    "../../commands/doctor/shared/pristine-startup-state.js"
+  );
   const pristineStatePlan = planPristineStartupStateMigrations(process.env);
   // Stop the early proxy before recovery can select another config/state target. Its lifecycle
   // restores the underlying env snapshot so the selected target's trusted dotenv can replace it.

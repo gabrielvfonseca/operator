@@ -1077,18 +1077,22 @@ class SessionsPage extends OperatorLightDomElement {
         .disabled=${this.loading}
         .forkDisabled=${row.modelSelectionLocked === true}
         .archiveAllowed=${archiveAllowed}
-        .cloudWorkerStopAllowed=${isStoppableCloudWorkerPlacement(row.placement) &&
-        row.hasActiveRun !== true &&
-        isGatewayMethodAdvertised(gateway, "sessions.reclaim") === true}
+        .cloudWorkerStopAllowed=${
+          isStoppableCloudWorkerPlacement(row.placement) &&
+          row.hasActiveRun !== true &&
+          isGatewayMethodAdvertised(gateway, "sessions.reclaim") === true
+        }
         .groups=${this.knownCategories()}
         .canOpenChat=${row.kind !== "global"}
         .work=${this.sessionMenuWork}
-        .workboard=${canCapture && row.kind !== "global"
-          ? {
-              captured: capturedSessionKeys.has(row.key),
-              busy: [...workboardState.capturingSessionKeys][0] === row.key,
-            }
-          : null}
+        .workboard=${
+          canCapture && row.kind !== "global"
+            ? {
+                captured: capturedSessionKeys.has(row.key),
+                busy: [...workboardState.capturingSessionKeys][0] === row.key,
+              }
+            : null
+        }
         .onClose=${() => this.closeSessionMenu()}
         .onAction=${(action: SessionMenuAction) => {
           switch (action.kind) {

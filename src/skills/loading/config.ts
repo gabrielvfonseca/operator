@@ -115,8 +115,8 @@ export function shouldIncludeSkill(params: {
     hasEnv: (envName) =>
       Boolean(
         process.env[envName] ||
-        skillConfig?.env?.[envName] ||
-        (skillConfig?.apiKey && entry.metadata?.primaryEnv === envName),
+          skillConfig?.env?.[envName] ||
+          (skillConfig?.apiKey && entry.metadata?.primaryEnv === envName),
       ),
     isConfigPathTruthy: (configPath) => isSkillConfigPathTruthy(config, configPath),
   });

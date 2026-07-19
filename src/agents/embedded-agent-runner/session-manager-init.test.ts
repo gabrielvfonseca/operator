@@ -80,7 +80,7 @@ describe("prepareSessionManagerForRun", () => {
     const sessionFile = await makeTempFile();
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         JSON.stringify({
           type: "session",
           version: 3,
@@ -95,7 +95,7 @@ describe("prepareSessionManagerForRun", () => {
           timestamp: "2026-05-27T00:00:01.000Z",
           message: { role: "user", content: "old prompt" },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf8",
     );
     const sessionManager = SessionManager.open(sessionFile, path.dirname(sessionFile), "/old/cwd");
@@ -139,7 +139,7 @@ describe("prepareSessionManagerForRun", () => {
     const sessionFile = await makeTempFile();
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         JSON.stringify({
           type: "session",
           id: "parent-session",
@@ -153,7 +153,7 @@ describe("prepareSessionManagerForRun", () => {
           timestamp: "2026-05-27T00:00:01.000Z",
           message: { role: "assistant", content: "copied context" },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf-8",
     );
     const assistantEntry = {
@@ -220,7 +220,7 @@ describe("prepareSessionManagerForRun", () => {
     const sessionFile = await makeTempFile();
     await fs.writeFile(
       sessionFile,
-      [
+      `${[
         JSON.stringify({
           type: "session",
           version: 3,
@@ -241,7 +241,7 @@ describe("prepareSessionManagerForRun", () => {
           targetId: null,
           appendParentId: "plugin-metadata",
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf8",
     );
     const sessionManager = SessionManager.open(sessionFile, path.dirname(sessionFile), "/old/cwd");
@@ -299,17 +299,16 @@ describe("prepareSessionManagerForRun", () => {
     // A corrupt header may still be followed by useful transcript entries; fail
     // closed instead of truncating unknown persisted user data.
     const sessionFile = await makeTempFile();
-    const originalTranscript =
-      [
-        '{"type":"session","id":"broken"',
-        JSON.stringify({
-          type: "message",
-          id: "user-1",
-          parentId: null,
-          timestamp: "2026-05-27T00:00:01.000Z",
-          message: { role: "user", content: "persisted prompt" },
-        }),
-      ].join("\n") + "\n";
+    const originalTranscript = `${[
+      '{"type":"session","id":"broken"',
+      JSON.stringify({
+        type: "message",
+        id: "user-1",
+        parentId: null,
+        timestamp: "2026-05-27T00:00:01.000Z",
+        message: { role: "user", content: "persisted prompt" },
+      }),
+    ].join("\n")}\n`;
     await fs.writeFile(sessionFile, originalTranscript, "utf-8");
     const sessionManager = {
       sessionId: "fresh-session",
@@ -358,19 +357,18 @@ describe("prepareSessionManagerForRun", () => {
 
   it("does not truncate a blank-prefixed transcript with a corrupted header", async () => {
     const sessionFile = await makeTempFile();
-    const originalTranscript =
-      [
-        "",
-        "   ",
-        '{"type":"session","id":"broken"',
-        JSON.stringify({
-          type: "message",
-          id: "user-1",
-          parentId: null,
-          timestamp: "2026-05-27T00:00:01.000Z",
-          message: { role: "user", content: "persisted prompt" },
-        }),
-      ].join("\n") + "\n";
+    const originalTranscript = `${[
+      "",
+      "   ",
+      '{"type":"session","id":"broken"',
+      JSON.stringify({
+        type: "message",
+        id: "user-1",
+        parentId: null,
+        timestamp: "2026-05-27T00:00:01.000Z",
+        message: { role: "user", content: "persisted prompt" },
+      }),
+    ].join("\n")}\n`;
     await fs.writeFile(sessionFile, originalTranscript, "utf-8");
     const sessionManager = {
       sessionId: "fresh-session",
@@ -480,7 +478,7 @@ describe("prepareSessionManagerForRun", () => {
     };
     await fs.writeFile(
       sessionFile,
-      ['{"type":"session","id":"broken"', JSON.stringify(userEntry)].join("\n") + "\n",
+      `${['{"type":"session","id":"broken"', JSON.stringify(userEntry)].join("\n")}\n`,
       "utf-8",
     );
 

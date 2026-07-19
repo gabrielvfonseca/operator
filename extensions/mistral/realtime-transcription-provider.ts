@@ -207,6 +207,7 @@ function createMistralRealtimeTranscriptionSession(
         }
         transport.closeNow();
         return;
+      // biome-ignore lint/suspicious/noFallthroughSwitchClause: migrated from oxlint
       case "error":
         config.onError?.(new Error(readErrorDetail(event)));
 
@@ -251,7 +252,7 @@ export function buildMistralRealtimeTranscriptionProvider(): RealtimeTranscripti
     isConfigured: ({ providerConfig }) =>
       Boolean(
         normalizeProviderConfig(providerConfig).apiKey ||
-        normalizeMistralApiKey(process.env.MISTRAL_API_KEY),
+          normalizeMistralApiKey(process.env.MISTRAL_API_KEY),
       ),
     createSession: (req) => {
       const config = normalizeProviderConfig(req.providerConfig);

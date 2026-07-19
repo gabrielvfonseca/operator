@@ -7,8 +7,6 @@ import { runExec } from "@gabrielvfonseca/operator/plugin-sdk/process-runtime";
 import { sleep } from "@gabrielvfonseca/operator/plugin-sdk/runtime-env";
 import { appendRegularFile } from "@gabrielvfonseca/operator/plugin-sdk/security-runtime";
 import { uniqueStrings } from "@gabrielvfonseca/operator/plugin-sdk/string-coerce-runtime";
-import { resolvePreferredOperatorTmpDir } from "@gabrielvfonseca/operator/plugin-sdk/temp-path";
-import type { OperatorCrablineChannelDriverSelection } from "@openclaw/crabline";
 import type { QaProviderMode } from "./model-selection.js";
 import { resolveQaForwardedLiveEnv, resolveQaLiveProviderConfigPath } from "./providers/env.js";
 import { DEFAULT_QA_LIVE_PROVIDER_MODE, getQaProvider } from "./providers/index.js";
@@ -376,6 +374,7 @@ function renderQaMultipassGuestScript(
   const lines = [
     "#!/usr/bin/env bash",
     "set -euo pipefail",
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     "trap 'status=$?; echo \"guest failure (exit ${status})\" >&2; exit ${status}' ERR",
     "",
     "export DEBIAN_FRONTEND=noninteractive",
@@ -396,6 +395,7 @@ function renderQaMultipassGuestScript(
     "  if command -v node >/dev/null; then",
     "    local node_major",
     '    node_major="$(node -p \'process.versions.node.split(".")[0]\' 2>/dev/null || echo 0)"',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     '    if [ "${node_major}" -ge 22 ]; then',
     "      return 0",
     "    fi",
@@ -408,20 +408,33 @@ function renderQaMultipassGuestScript(
     "  esac",
     "  local node_tmp_dir tarball_name extract_dir base_url",
     '  node_tmp_dir="$(mktemp -d)"',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     "  trap 'rm -rf \"${node_tmp_dir}\"' RETURN",
     '  base_url="https://nodejs.org/dist/latest-v22.x"',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     '  curl -fsSL --connect-timeout 10 --max-time 120 --retry 2 --retry-delay 2 --retry-max-time 120 "${base_url}/SHASUMS256.txt" -o "${node_tmp_dir}/SHASUMS256.txt" >>"$BOOTSTRAP_LOG" 2>&1',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     '  tarball_name="$(awk \'/linux-\'"${node_arch}"\'\\.tar\\.xz$/ { print $2; exit }\' "${node_tmp_dir}/SHASUMS256.txt")"',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     '  [ -n "${tarball_name}" ] || { echo "unable to resolve node tarball for ${node_arch}" >&2; return 1; }',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     '  curl -fsSL --connect-timeout 10 --max-time 120 --retry 2 --retry-delay 2 --retry-max-time 120 "${base_url}/${tarball_name}" -o "${node_tmp_dir}/${tarball_name}" >>"$BOOTSTRAP_LOG" 2>&1',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     '  (cd "${node_tmp_dir}" && grep " ${tarball_name}$" SHASUMS256.txt | sha256sum -c -) >>"$BOOTSTRAP_LOG" 2>&1',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     '  extract_dir="${tarball_name%.tar.xz}"',
     '  sudo mkdir -p /usr/local/lib/nodejs >>"$BOOTSTRAP_LOG" 2>&1',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     '  sudo rm -rf "/usr/local/lib/nodejs/${extract_dir}" >>"$BOOTSTRAP_LOG" 2>&1',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     '  sudo tar -xJf "${node_tmp_dir}/${tarball_name}" -C /usr/local/lib/nodejs >>"$BOOTSTRAP_LOG" 2>&1',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     '  sudo ln -sf "/usr/local/lib/nodejs/${extract_dir}/bin/node" /usr/local/bin/node >>"$BOOTSTRAP_LOG" 2>&1',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     '  sudo ln -sf "/usr/local/lib/nodejs/${extract_dir}/bin/npm" /usr/local/bin/npm >>"$BOOTSTRAP_LOG" 2>&1',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     '  sudo ln -sf "/usr/local/lib/nodejs/${extract_dir}/bin/npx" /usr/local/bin/npx >>"$BOOTSTRAP_LOG" 2>&1',
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     '  sudo ln -sf "/usr/local/lib/nodejs/${extract_dir}/bin/corepack" /usr/local/bin/corepack >>"$BOOTSTRAP_LOG" 2>&1',
     "}",
     "",

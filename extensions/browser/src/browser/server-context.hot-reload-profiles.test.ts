@@ -101,8 +101,9 @@ vi.mock("./pw-ai-module.js", () => ({
 
 const { getRuntimeConfig } = await import("../config/config.js");
 const { resolveBrowserConfig, resolveProfile } = await import("./config.js");
-const { refreshResolvedBrowserConfigFromDisk, resolveBrowserProfileWithHotReload } =
-  await import("./resolved-config-refresh.js");
+const { refreshResolvedBrowserConfigFromDisk, resolveBrowserProfileWithHotReload } = await import(
+  "./resolved-config-refresh.js"
+);
 
 function requireValue<T>(value: T | null | undefined, message: string): T {
   if (value == null) {

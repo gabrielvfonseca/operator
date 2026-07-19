@@ -209,10 +209,9 @@ function normalizeBeforeAgentFinalizeResult(
         if (nextCount > maxAttempts) {
           continue;
         }
-        const revisedReason =
-          reason && reason.includes(retryInstruction)
-            ? reason
-            : [reason, retryInstruction].filter(Boolean).join("\n\n");
+        const revisedReason = reason?.includes(retryInstruction)
+          ? reason
+          : [reason, retryInstruction].filter(Boolean).join("\n\n");
         return { action: "revise", reason: revisedReason };
       }
       return { action: "continue" };

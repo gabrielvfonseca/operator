@@ -15,7 +15,7 @@ export function wrapStreamObjectEvents(
 ): MutableAssistantMessageEventStream {
   const originalAsyncIterator = stream[Symbol.asyncIterator].bind(stream);
   (stream as { [Symbol.asyncIterator]: typeof originalAsyncIterator })[Symbol.asyncIterator] =
-    function () {
+    () => {
       const iterator = originalAsyncIterator();
       return createStreamIteratorWrapper({
         iterator,

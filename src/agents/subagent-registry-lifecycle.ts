@@ -77,8 +77,8 @@ import {
 import { deleteSubagentSessionForCleanup } from "./subagent-session-cleanup.js";
 
 type CaptureSubagentCompletionReply =
-  (typeof import("./subagent-announce.js"))["captureSubagentCompletionReply"];
-type RunSubagentAnnounceFlow = (typeof import("./subagent-announce.js"))["runSubagentAnnounceFlow"];
+  typeof import("./subagent-announce.js")["captureSubagentCompletionReply"];
+type RunSubagentAnnounceFlow = typeof import("./subagent-announce.js")["runSubagentAnnounceFlow"];
 type BrowserCleanupModule = Pick<
   typeof import("../browser-lifecycle-cleanup.js"),
   "cleanupBrowserSessionsForLifecycleEnd"

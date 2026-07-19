@@ -29,7 +29,7 @@ async function writeSession(records: unknown[]): Promise<string> {
   };
   await fs.writeFile(
     sessionFile,
-    [header, ...records].map((record) => JSON.stringify(record)).join("\n") + "\n",
+    `${[header, ...records].map((record) => JSON.stringify(record)).join("\n")}\n`,
   );
   return sessionFile;
 }
@@ -116,7 +116,7 @@ describe("readCodexMirroredSessionHistoryMessages", () => {
     const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-codex-session-history-"));
     tempDirs.push(dir);
     const sessionFile = path.join(dir, "session.jsonl");
-    await fs.writeFile(sessionFile, JSON.stringify({ type: "message", id: "orphan" }) + "\n");
+    await fs.writeFile(sessionFile, `${JSON.stringify({ type: "message", id: "orphan" })}\n`);
 
     await expect(
       readCodexMirroredSessionHistoryMessages(mirroredTarget(sessionFile)),
@@ -129,7 +129,7 @@ describe("readCodexMirroredSessionHistoryMessages", () => {
     const dir = await fs.mkdtemp(path.join(os.tmpdir(), "operator-codex-session-history-"));
     tempDirs.push(dir);
     const sessionFile = path.join(dir, "session.jsonl");
-    await fs.writeFile(sessionFile, JSON.stringify({ type: "session", id: 42 }) + "\n");
+    await fs.writeFile(sessionFile, `${JSON.stringify({ type: "session", id: 42 })}\n`);
 
     await expect(
       readCodexMirroredSessionHistoryMessages(mirroredTarget(sessionFile)),

@@ -37,7 +37,7 @@ describe("buildStatusCommandReportData", () => {
 
     expect(result.overviewRows[0]).toEqual({
       Item: "OS",
-      Value: "macOS · node " + process.versions.node,
+      Value: `macOS · node ${process.versions.node}`,
     });
     expect(result.taskMaintenanceHint).toBe(
       "Task maintenance: cmd:openclaw tasks maintenance --apply",

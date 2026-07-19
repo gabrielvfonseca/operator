@@ -1522,18 +1522,14 @@ export async function monitorMattermostProvider(opts: MonitorMattermostOpts = {}
           if (!chunks.length && formatted) {
             chunks.push(formatted);
           }
-          if (chunks.length != 1) {
+          if (chunks.length !== 1) {
             return undefined;
           }
           const trimmed = chunks[0]?.trim();
           if (!trimmed) {
             return undefined;
           }
-          if (
-            lastPartialText &&
-            lastPartialText.startsWith(trimmed) &&
-            trimmed.length < lastPartialText.length
-          ) {
+          if (lastPartialText?.startsWith(trimmed) && trimmed.length < lastPartialText.length) {
             return undefined;
           }
           return trimmed;
@@ -1547,11 +1543,7 @@ export async function monitorMattermostProvider(opts: MonitorMattermostOpts = {}
           if (cleaned === lastPartialText) {
             return undefined;
           }
-          if (
-            lastPartialText &&
-            lastPartialText.startsWith(cleaned) &&
-            cleaned.length < lastPartialText.length
-          ) {
+          if (lastPartialText?.startsWith(cleaned) && cleaned.length < lastPartialText.length) {
             return undefined;
           }
           const boundarySettled = enterBlockPreviewActivity("text");

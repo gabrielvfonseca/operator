@@ -18,10 +18,12 @@ vi.mock("../../cli/command-secret-targets.js", () => ({
     hoisted.getScopedChannelsCommandSecretTargetsMock(...args),
 }));
 
-const { resolveQueuedReplyExecutionConfig, resolveQueuedReplyRuntimeConfig } =
-  await import("./agent-runner-utils.js");
-const { clearRuntimeConfigSnapshot, setRuntimeConfigSnapshot } =
-  await import("../../config/config.js");
+const { resolveQueuedReplyExecutionConfig, resolveQueuedReplyRuntimeConfig } = await import(
+  "./agent-runner-utils.js"
+);
+const { clearRuntimeConfigSnapshot, setRuntimeConfigSnapshot } = await import(
+  "../../config/config.js"
+);
 
 type ResolveCommandSecretRefsCall = {
   config: OperatorConfig;

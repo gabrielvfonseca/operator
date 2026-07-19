@@ -65,7 +65,7 @@ export function sanitizeInput(text: string): string {
 
   const maxLength = 4000;
   if (sanitized.length > maxLength) {
-    sanitized = truncateUtf16Safe(sanitized, maxLength) + "... [truncated]";
+    sanitized = `${truncateUtf16Safe(sanitized, maxLength)}... [truncated]`;
   }
 
   return sanitized;

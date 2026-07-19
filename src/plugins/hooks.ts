@@ -362,7 +362,7 @@ export function createHookRunner(
     const readRetryCandidates = (
       result: PluginHookBeforeAgentFinalizeResult | undefined,
     ): BeforeAgentFinalizeRetry[] => {
-      if (!result || result.action !== "revise") {
+      if (result?.action !== "revise") {
         return [];
       }
       const candidateList = (result as BeforeAgentFinalizeResultWithRetryCandidates)
@@ -456,7 +456,7 @@ export function createHookRunner(
     hookName: PluginHookName;
     pluginId: string;
     error: unknown;
-  }): never | void => {
+  }): never | undefined => {
     const msg = `[hooks] ${params.hookName} handler from ${params.pluginId} failed: ${formatHookErrorForLog(params.error)}`;
     if (shouldCatchHookErrors(params.hookName)) {
       logger?.error(msg);
@@ -675,7 +675,10 @@ export function createHookRunner(
     for (const hook of hooks) {
       try {
         const promise = Promise.resolve(
-          (hook.handler as (event: unknown, ctx: unknown) => Promise<TResult | void>)(event, ctx),
+          (hook.handler as (event: unknown, ctx: unknown) => Promise<TResult | undefined>)(
+            event,
+            ctx,
+          ),
         );
         const timeoutMs = getClaimingHookTimeoutMs(hookName, hook);
         const handlerResult = timeoutMs ? await withHookTimeout(promise, timeoutMs) : await promise;
@@ -726,7 +729,10 @@ export function createHookRunner(
     for (const hook of hooks) {
       try {
         const promise = Promise.resolve(
-          (hook.handler as (event: unknown, ctx: unknown) => Promise<TResult | void>)(event, ctx),
+          (hook.handler as (event: unknown, ctx: unknown) => Promise<TResult | undefined>)(
+            event,
+            ctx,
+          ),
         );
         const timeoutMs = getClaimingHookTimeoutMs(hookName, hook);
         const handlerResult = timeoutMs ? await withHookTimeout(promise, timeoutMs) : await promise;
@@ -1069,7 +1075,7 @@ export function createHookRunner(
         const handler = hook.handler as (
           event: PluginHookReplyPayloadSendingEvent,
           ctx: PluginHookReplyPayloadSendingContext,
-        ) => Promise<PluginHookReplyPayloadSendingResult | void>;
+        ) => Promise<PluginHookReplyPayloadSendingResult | undefined>;
         const promise = Promise.resolve(
           handler({ ...event, payload: toPluginReplyPayload(currentPayload) }, ctx),
         );

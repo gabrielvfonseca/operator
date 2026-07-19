@@ -21,11 +21,11 @@ openclaw-chat-page {
   width: 100%;
   min-height: 0;
   /* Allow flex shrinking */
-  padding: 0 !important;
+  padding: 0;
   overflow: hidden;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 .chat::after {
@@ -147,7 +147,7 @@ openclaw-chat-pane:has(> .chat-pane__header) .chat-thread {
 }
 
 .chat-thread-inner > :first-child {
-  margin-top: 0 !important;
+  margin-top: 0;
 }
 
 .chat-thread-inner {
@@ -174,7 +174,7 @@ openclaw-chat-pane:has(> .chat-pane__header) .chat-thread {
 }
 
 .chat-virtual-row--first > :first-child {
-  margin-top: 0 !important;
+  margin-top: 0;
 }
 
 .chat-history-sentinel {
@@ -1182,7 +1182,7 @@ openclaw-chat-pane:has(> .chat-pane__header) .chat-thread {
   border-radius: 6px;
   background: color-mix(in srgb, var(--bg) 70%, transparent);
   color: var(--text);
-  font: 11px/1.4 var(--font-mono);
+  font: 11px / 1.4 var(--font-mono);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
@@ -1307,6 +1307,7 @@ openclaw-chat-pane:has(> .chat-pane__header) .chat-thread {
   stroke-linejoin: round;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .chat-pr__number {
   flex: 0 0 auto;
   font-weight: 650;
@@ -1321,7 +1322,7 @@ openclaw-chat-pane:has(> .chat-pane__header) .chat-thread {
   min-width: 0;
   overflow: hidden;
   color: var(--muted);
-  font: 12px/1.4 var(--font-mono);
+  font: 12px / 1.4 var(--font-mono);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -1336,7 +1337,7 @@ openclaw-chat-pane:has(> .chat-pane__header) .chat-thread {
 .chat-pr__diff {
   display: inline-flex;
   gap: 5px;
-  font: 12px/1.4 var(--font-mono);
+  font: 12px / 1.4 var(--font-mono);
 }
 
 .chat-pr__additions {
@@ -1715,6 +1716,7 @@ openclaw-chat-pane:has(> .chat-pane__header) .chat-thread {
   order: 0;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .chat-composer-model-control {
   display: inline-flex;
   flex: 0 0 auto;
@@ -2027,10 +2029,10 @@ openclaw-chat-pane:has(> .chat-pane__header) .chat-thread {
 
 @media (prefers-reduced-motion: reduce) {
   .agent-chat__voice-activity-bar {
-    animation: none !important;
+    animation: none;
     opacity: 0.78;
     transform: scaleY(0.38);
-    transition: none !important;
+    transition: none;
   }
 
   .agent-chat__voice-activity[data-status="connecting"] .agent-chat__voice-activity-bar {
@@ -2051,13 +2053,13 @@ openclaw-chat-pane:has(> .chat-pane__header) .chat-thread {
   }
 
   .chat-send-btn--voice-live::after {
-    animation: none !important;
+    animation: none;
     opacity: 0.45;
   }
 
   .chat-send-btn--voice-live .agent-chat__voice-activity,
   .chat-send-btn__voice-stop-glyph {
-    transition: none !important;
+    transition: none;
   }
 }
 
@@ -2149,6 +2151,7 @@ openclaw-chat-pane:has(> .chat-pane__header) .chat-thread {
   pointer-events: none;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .agent-chat__run-status {
   display: inline-flex;
   align-items: center;
@@ -2456,6 +2459,7 @@ openclaw-chat-pane:has(> .chat-pane__header) .chat-thread {
   }
 
   .agent-chat__composer-controls .chat-controls__model,
+  /* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
   .chat-composer-model-control {
     width: fit-content;
     min-width: 0;
@@ -2578,6 +2582,7 @@ openclaw-chat-pane:has(> .chat-pane__header) .chat-thread {
   }
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .slash-menu {
   position: absolute;
   bottom: 100%;
@@ -2918,6 +2923,7 @@ openclaw-chat-pane:has(> .chat-pane__header) .chat-thread {
 }
 
 /* Chat controls - moved to content-header area, left aligned */
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .chat-controls {
   display: inline-flex;
   align-items: center;
@@ -2939,6 +2945,7 @@ openclaw-chat-pane:has(> .chat-pane__header) .chat-thread {
   max-width: none;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .chat-controls__session-row {
   display: grid;
   grid-template-columns: minmax(116px, 5fr) minmax(132px, 7fr) minmax(180px, 8fr);
@@ -3057,6 +3064,7 @@ openclaw-chat-pane:has(> .chat-pane__header) .chat-thread {
   }
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .chat-controls__model {
   grid-area: model;
   min-width: 0;
@@ -3078,6 +3086,7 @@ openclaw-chat-pane:has(> .chat-pane__header) .chat-thread {
 
 /* Composer controls are quiet text controls: no borders/fills at rest so the
    composer frame stays the only chrome; hover/open get a soft wash. */
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .chat-controls__inline-select-trigger {
   box-sizing: border-box;
   display: flex;
@@ -3192,6 +3201,7 @@ openclaw-chat-pane:has(> .chat-pane__header) .chat-thread {
 
 /* The combined picker contains provider, model, and reasoning controls in one
    bounded surface instead of opening a second flyout. */
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .chat-controls__inline-select-menu--combined {
   left: auto;
   right: 0;
@@ -3790,11 +3800,13 @@ openclaw-chat-pane:has(> .chat-pane__header) .chat-thread {
     max-width: none;
   }
 
+  /* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
   .chat-controls__model {
     min-width: 140px;
     max-width: none;
   }
 
+  /* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
   .chat-controls {
     gap: 8px;
   }
@@ -3871,6 +3883,7 @@ openclaw-chat-pane:has(> .chat-pane__header) .chat-thread {
     font-size: 12px;
   }
 
+  /* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
   .chat-controls {
     flex-wrap: wrap;
     gap: 8px;
@@ -3880,6 +3893,7 @@ openclaw-chat-pane:has(> .chat-pane__header) .chat-thread {
     min-width: 120px;
   }
 
+  /* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
   .chat-controls__model {
     min-width: 150px;
   }
@@ -4012,6 +4026,7 @@ openclaw-chat-pane:has(> .chat-pane__header) .chat-thread {
   }
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .agent-chat__avatar--text {
   width: 80px;
   height: 80px;

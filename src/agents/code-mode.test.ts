@@ -2106,6 +2106,7 @@ describe("Code Mode", () => {
     "const fs = require('node:fs'); return fs;",
     "return import('node:fs');",
     "return import.meta.url;",
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     "return `${import('node:fs')}`;",
   ])("rejects module access: %s", async (code) => {
     const { config, catalogRef, tools: codeModeTools } = createCodeModeHarness();

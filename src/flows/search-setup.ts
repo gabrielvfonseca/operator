@@ -409,8 +409,9 @@ async function finalizeSearchProviderSetup(params: {
   let next = params.nextConfig;
   const installEntry = params.entry[SEARCH_INSTALL_CATALOG_ENTRY];
   if (installEntry && next.tools?.web?.search?.enabled !== false) {
-    const { ensureOnboardingPluginInstalled } =
-      await import("../commands/onboarding-plugin-install.js");
+    const { ensureOnboardingPluginInstalled } = await import(
+      "../commands/onboarding-plugin-install.js"
+    );
     const installed = await ensureOnboardingPluginInstalled({
       cfg: next,
       entry: {

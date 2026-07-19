@@ -88,9 +88,7 @@ function isJsonVerificationResponse(res: Response): boolean {
     return true;
   }
   const mediaType = contentType.split(";", 1)[0]?.trim().toLowerCase();
-  return (
-    mediaType === "application/json" || (mediaType !== undefined && mediaType.endsWith("+json"))
-  );
+  return mediaType === "application/json" || mediaType?.endsWith("+json");
 }
 
 async function requestVerification(params: {

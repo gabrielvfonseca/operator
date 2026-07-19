@@ -22,7 +22,7 @@ import { isParentDefaultHelpAction } from "./parent-default-help.js";
 
 function setProcessTitleForCommand(actionCommand: Command) {
   let current: Command = actionCommand;
-  while (current.parent && current.parent.parent) {
+  while (current.parent?.parent) {
     current = current.parent;
   }
   const name = current.name();
@@ -181,8 +181,9 @@ export function registerPreActionHooks(program: Command, programVersion: string)
       skipConfigGuard: shouldBypassConfigGuardForCommandPath(commandPath),
     });
     if (beforeStateMigrations) {
-      const { reloadTrustedGatewayRunEnvironment } =
-        await import("../gateway-cli/pre-bootstrap.js");
+      const { reloadTrustedGatewayRunEnvironment } = await import(
+        "../gateway-cli/pre-bootstrap.js"
+      );
       await reloadTrustedGatewayRunEnvironment({ runtime: defaultRuntime });
     }
   });

@@ -115,7 +115,7 @@ type QaRunnerTransportAdapterDefinition = {
   createRuntimeEnvPatch?: () => NodeJS.ProcessEnv;
   prepareFlow?: (
     input: QaRunnerTransportFlowPreparationInput,
-  ) => Promise<Record<string, unknown> | void>;
+  ) => Promise<Record<string, unknown> | undefined>;
   handleAction: (params: {
     action: "delete" | "edit" | "react" | "thread-create";
     args: Record<string, unknown>;

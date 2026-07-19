@@ -21,7 +21,7 @@ type ToolResultMessage = Extract<Context["messages"][number], { role: "toolResul
 function requireToolResultMessage(
   message: Context["messages"][number] | undefined,
 ): ToolResultMessage {
-  if (!message || message.role !== "toolResult") {
+  if (message?.role !== "toolResult") {
     throw new Error(`expected toolResult message, got ${message?.role ?? "missing"}`);
   }
   return message;

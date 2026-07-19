@@ -244,8 +244,8 @@ function hasChatScope(ctx?: IMessageChatContext): boolean {
   }
   return Boolean(
     normalizeOptionalString(ctx.chatGuid) ||
-    normalizeOptionalString(ctx.chatIdentifier) ||
-    typeof ctx.chatId === "number",
+      normalizeOptionalString(ctx.chatIdentifier) ||
+      typeof ctx.chatId === "number",
   );
 }
 
@@ -377,7 +377,7 @@ export function isKnownFromMeIMessageMessageId(
   }
   hydrateFromStoreOnce();
   const cached = imessageReplyCacheByMessageId.get(trimmed);
-  if (!cached || cached.isFromMe !== true || cached.accountId !== ctx.accountId) {
+  if (cached?.isFromMe !== true || cached.accountId !== ctx.accountId) {
     return false;
   }
   return isPositiveIMessageChatMatch(cached, ctx);

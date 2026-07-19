@@ -2,7 +2,7 @@
  *
  * Plugin metadata is process-stable: installs, manifests, and catalogs change
  * only on restart or an explicit owner reload/install/doctor flow (see
- * AGENTS.md). A single cold-start discovery scan still re-probes the same paths
+ * AGENTS.MD). A single cold-start discovery scan still re-probes the same paths
  * many times — `detectBundleManifestFormat` checks `skills/`, `.mcp.json`,
  * `settings.json`, ... and `loadBundleManifest`'s capability builders check
  * them again. Across bundled plugins that is thousands of synchronous

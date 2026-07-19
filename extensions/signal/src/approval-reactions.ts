@@ -143,7 +143,7 @@ function targetAccountMatches(params: {
   const routeAccountId = normalizeOptionalString(params.routeAccountId);
   return Boolean(
     routeAccountId &&
-    normalizeAccountId(routeAccountId) === normalizeAccountId(configuredAccountId),
+      normalizeAccountId(routeAccountId) === normalizeAccountId(configuredAccountId),
   );
 }
 

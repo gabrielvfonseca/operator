@@ -2,7 +2,6 @@
 // Create build stamp file
 
 import fs from "node:fs";
-import path from "node:path";
 
 console.error("[build-stamp] Creating build stamp...");
 

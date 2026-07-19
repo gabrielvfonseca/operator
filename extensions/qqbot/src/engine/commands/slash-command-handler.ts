@@ -88,7 +88,7 @@ export async function trySlashCommand(
   // Urgent command detection — bypass queue and execute immediately.
   const contentLower = content.toLowerCase();
   const isUrgentCommand = URGENT_COMMANDS.some(
-    (cmd) => contentLower === cmd.toLowerCase() || contentLower.startsWith(cmd.toLowerCase() + " "),
+    (cmd) => contentLower === cmd.toLowerCase() || contentLower.startsWith(`${cmd.toLowerCase()} `),
   );
   if (isUrgentCommand) {
     if (isGroup && !commandAuthorized) {

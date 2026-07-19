@@ -177,9 +177,7 @@ export const whatsappPlugin: ChannelPlugin<ResolvedWhatsAppAccount> =
           mediaReadFile,
           toolContext,
         }) =>
-          await (
-            await loadWhatsAppChannelReactAction()
-          ).handleWhatsAppMessageAction({
+          await (await loadWhatsAppChannelReactAction()).handleWhatsAppMessageAction({
             action,
             params,
             cfg,
@@ -198,9 +196,12 @@ export const whatsappPlugin: ChannelPlugin<ResolvedWhatsAppAccount> =
             accountId?.trim() ||
             whatsappPlugin.config.defaultAccountId?.(cfg) ||
             DEFAULT_ACCOUNT_ID;
-          await (
-            await loadWhatsAppChannelRuntime()
-          ).loginWeb(Boolean(verbose), undefined, runtime, resolvedAccountId);
+          await (await loadWhatsAppChannelRuntime()).loginWeb(
+            Boolean(verbose),
+            undefined,
+            runtime,
+            resolvedAccountId,
+          );
         },
       },
       lifecycle: {
@@ -354,22 +355,20 @@ export const whatsappPlugin: ChannelPlugin<ResolvedWhatsAppAccount> =
           );
         },
         loginWithQrStart: async ({ accountId, force, timeoutMs, verbose }) =>
-          await (
-            await loadWhatsAppChannelRuntime()
-          ).startWebLoginWithQr({
+          await (await loadWhatsAppChannelRuntime()).startWebLoginWithQr({
             accountId,
             force,
             timeoutMs,
             verbose,
           }),
         loginWithQrWait: async ({ accountId, timeoutMs, currentQrDataUrl }) =>
-          await (
-            await loadWhatsAppChannelRuntime()
-          ).waitForWebLogin({ accountId, timeoutMs, currentQrDataUrl }),
+          await (await loadWhatsAppChannelRuntime()).waitForWebLogin({
+            accountId,
+            timeoutMs,
+            currentQrDataUrl,
+          }),
         logoutAccount: async ({ account, runtime }) => {
-          const cleared = await (
-            await loadWhatsAppChannelRuntime()
-          ).logoutWeb({
+          const cleared = await (await loadWhatsAppChannelRuntime()).logoutWeb({
             authDir: account.authDir,
             isLegacyAuthDir: account.isLegacyAuthDir,
             runtime,

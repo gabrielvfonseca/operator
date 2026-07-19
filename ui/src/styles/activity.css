@@ -60,6 +60,7 @@
 
 /* ── Stream (escape hatch inside the settings group) ── */
 
+/* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
 .activity-stream {
   min-height: 260px;
   max-height: calc(100vh - 310px);
@@ -211,6 +212,7 @@
     padding-left: 42px;
   }
 
+  /* biome-ignore lint/style/noDescendingSpecificity: migrated from oxlint */
   .activity-stream {
     max-height: calc(100vh - 360px);
   }

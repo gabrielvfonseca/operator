@@ -30,8 +30,8 @@ export interface SessionLike {
     <K extends SessionEventType>(
       eventType: K,
       handler: (event: Extract<SessionEvent, { type: K }>) => void,
-    ): (() => void) | void;
-    (eventType: string, handler: (event: SessionEvent) => void): (() => void) | void;
+    ): (() => void) | undefined;
+    (eventType: string, handler: (event: SessionEvent) => void): (() => void) | undefined;
   };
   rpc?: {
     history?: {

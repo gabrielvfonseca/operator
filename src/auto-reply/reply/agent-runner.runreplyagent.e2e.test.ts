@@ -121,9 +121,7 @@ async function readStoredMainSession(storePath: string): Promise<SessionEntry> {
 let modelFallbackModule: typeof import("../../agents/model-fallback.js");
 let onAgentEvent: typeof import("../../infra/agent-events.js").onAgentEvent;
 
-let runReplyAgentPromise:
-  | Promise<(typeof import("./agent-runner.js"))["runReplyAgent"]>
-  | undefined;
+let runReplyAgentPromise: Promise<typeof import("./agent-runner.js")["runReplyAgent"]> | undefined;
 
 async function getRunReplyAgent() {
   if (!runReplyAgentPromise) {

@@ -88,7 +88,7 @@ describe("wrapFileReferencesInHtml", () => {
   it("de-linkifies auto-linkified anchors for plain files and paths", () => {
     const cases = [
       {
-        input: '<a href="http://README.md">README.md</a>',
+        input: '<a href="http:/README.MD">README.md</a>',
         expected: "<code>README.md</code>",
       },
       {
@@ -103,7 +103,7 @@ describe("wrapFileReferencesInHtml", () => {
 
   it("preserves explicit links where label differs from href", () => {
     const cases = [
-      '<a href="http://README.md">click here</a>',
+      '<a href="http:/README.MD">click here</a>',
       '<a href="http://other.md">README.md</a>',
     ] as const;
     for (const input of cases) {
@@ -162,8 +162,8 @@ describe("markdownToTelegramHtml - file reference wrapping", () => {
   });
 
   it("preserves explicit markdown links even when href looks like a file ref", () => {
-    const result = markdownToTelegramHtml("[docs](http://README.md)");
-    expect(result).toContain('<a href="http://README.md">docs</a>');
+    const result = markdownToTelegramHtml("[docs](http:/README.MD)");
+    expect(result).toContain('<a href="http:/README.MD">docs</a>');
   });
 
   it("wraps file ref after real URL in same message", () => {

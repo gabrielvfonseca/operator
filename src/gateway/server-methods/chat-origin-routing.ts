@@ -266,10 +266,10 @@ export function resolveChatSendOriginatingRoute(params: {
   // unless an old caller omitted client metadata entirely.
   const canInheritDeliverableRoute = Boolean(
     !isFromWebchatClient &&
-    sessionChannelHint &&
-    sessionChannelHint !== INTERNAL_MESSAGE_CHANNEL &&
-    ((!isChannelAgnosticSessionScope && (isChannelScopedSession || hasLegacyChannelPeerShape)) ||
-      canInheritConfiguredMainRoute),
+      sessionChannelHint &&
+      sessionChannelHint !== INTERNAL_MESSAGE_CHANNEL &&
+      ((!isChannelAgnosticSessionScope && (isChannelScopedSession || hasLegacyChannelPeerShape)) ||
+        canInheritConfiguredMainRoute),
   );
   const hasDeliverableRoute =
     canInheritDeliverableRoute &&

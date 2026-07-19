@@ -46,11 +46,7 @@ function resolveMatrixPresentationContent(
 ): Record<string, unknown> | undefined {
   const extraContent = toRecord(resolveMatrixChannelData(payload).extraContent);
   const presentation = toRecord(extraContent?.[MATRIX_OPERATOR_PRESENTATION_KEY]);
-  if (
-    !presentation ||
-    presentation.version !== 1 ||
-    presentation.type !== MATRIX_OPERATOR_PRESENTATION_TYPE
-  ) {
+  if (presentation?.version !== 1 || presentation.type !== MATRIX_OPERATOR_PRESENTATION_TYPE) {
     return undefined;
   }
   return presentation;

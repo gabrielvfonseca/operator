@@ -68,8 +68,7 @@ export function buildMicrosoftFoundryProvider(): ProviderPlugin {
     onModelSelected: async (ctx) => {
       const providerConfig = ctx.config.models?.providers?.[PROVIDER_ID];
       if (
-        !providerConfig ||
-        !providerConfig.baseUrl?.trim() ||
+        !providerConfig?.baseUrl?.trim() ||
         !Array.isArray(providerConfig.models) ||
         !ctx.model.startsWith(`${PROVIDER_ID}/`)
       ) {

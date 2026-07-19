@@ -216,9 +216,7 @@ export async function issueDeviceBootstrapToken(
 
 /** Remove every outstanding bootstrap token from the pairing state file. */
 export async function clearDeviceBootstrapTokens(
-  params: {
-    baseDir?: string;
-  } = {},
+  params: { baseDir?: string } = {},
 ): Promise<{ removed: number }> {
   return await withLock(async () => {
     const state = await loadState(params.baseDir);

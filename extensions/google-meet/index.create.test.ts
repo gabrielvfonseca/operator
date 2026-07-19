@@ -130,6 +130,8 @@ async function runCreateMeetBrowserScript(params: { buttonText: string }) {
           if (typeof proxy.body?.fn !== "string") {
             throw new Error("expected browser create script");
           }
+          // biome-ignore lint/security/noGlobalEval: migrated from oxlint
+          // biome-ignore lint/complexity/noCommaOperator: migrated from oxlint
           const fn = (0, eval)(`(${proxy.body.fn})`) as () => Promise<BrowserScriptResult>;
           scriptResult = await fn();
           return {

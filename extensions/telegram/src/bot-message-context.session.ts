@@ -450,8 +450,9 @@ export async function buildTelegramInboundContextPayload(params: {
         isTelegramHistoryEntryAfterAmbientWatermark(entry, ambientTranscriptWatermark),
       )
       .slice(-historyLimit);
-    watermarkedGroupHistoryEntries =
-      selectTelegramGroupHistoryAfterLastSelf(fullGroupHistoryEntries).slice(-historyLimit);
+    watermarkedGroupHistoryEntries = selectTelegramGroupHistoryAfterLastSelf(
+      fullGroupHistoryEntries,
+    ).slice(-historyLimit);
     groupHistoryPromptEntries =
       inboundEventKind === "room_event" ? fullGroupHistoryEntries : watermarkedGroupHistoryEntries;
   }

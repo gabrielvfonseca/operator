@@ -414,9 +414,9 @@ describeLive("gateway live (native Codex conversation binding)", () => {
 
       await fs.mkdir(workspace, { recursive: true });
       await fs.writeFile(
-        path.join(workspace, "AGENTS.md"),
+        path.join(workspace, "AGENTS.MD"),
         [
-          "# AGENTS.md",
+          "# AGENTS.MD",
           "",
           "Follow exact reply instructions from the user.",
           "Do not add commentary when asked for an exact response.",

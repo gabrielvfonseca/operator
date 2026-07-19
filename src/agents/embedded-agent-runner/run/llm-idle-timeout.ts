@@ -481,7 +481,7 @@ export function streamWithIdleTimeout(
     const wrapStream = (stream: MutableAssistantMessageEventStream) => {
       const originalAsyncIterator = stream[Symbol.asyncIterator].bind(stream);
       (stream as { [Symbol.asyncIterator]: typeof originalAsyncIterator })[Symbol.asyncIterator] =
-        function () {
+        () => {
           const iterator = originalAsyncIterator();
           let idleTimer: NodeJS.Timeout | null = null;
           let waitingForProvider = false;

@@ -32,8 +32,9 @@ let createModelSelectionStateForTest: typeof import("../auto-reply/reply/model-s
 
 describe("model-selection plugin runtime normalization", () => {
   beforeAll(async () => {
-    ({ createModelSelectionState: createModelSelectionStateForTest } =
-      await import("../auto-reply/reply/model-selection.js"));
+    ({ createModelSelectionState: createModelSelectionStateForTest } = await import(
+      "../auto-reply/reply/model-selection.js"
+    ));
   });
 
   beforeEach(() => {

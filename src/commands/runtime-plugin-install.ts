@@ -173,8 +173,9 @@ async function repairRuntimePluginInstallForModelSelection(params: {
   ) {
     return { required: false, changes: [], warnings: [] };
   }
-  const { repairMissingPluginInstallsForIds } =
-    await import("./doctor/shared/missing-configured-plugin-install.js");
+  const { repairMissingPluginInstallsForIds } = await import(
+    "./doctor/shared/missing-configured-plugin-install.js"
+  );
   const result = await repairMissingPluginInstallsForIds({
     cfg: params.cfg,
     pluginIds: [params.descriptor.pluginId],

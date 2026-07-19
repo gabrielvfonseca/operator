@@ -259,11 +259,11 @@ function hasSendableMedia(payload: GoogleChatManualApprovalSuppressionPayload): 
 function hasStructuredPayloadPart(payload: GoogleChatManualApprovalSuppressionPayload): boolean {
   return Boolean(
     hasSendableMedia(payload) ||
-    payload.presentation ||
-    payload.interactive ||
-    payload.btw ||
-    payload.spokenText ||
-    payload.ttsSupplement,
+      payload.presentation ||
+      payload.interactive ||
+      payload.btw ||
+      payload.spokenText ||
+      payload.ttsSupplement,
   );
 }
 

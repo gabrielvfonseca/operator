@@ -108,9 +108,7 @@ function collectServeGatewayUrls(
         continue;
       }
       urls.push(`wss://${endpoint.host}`);
-    } catch {
-      continue;
-    }
+    } catch {}
   }
   return urls;
 }
@@ -179,9 +177,7 @@ export async function resolveTailnetHostWithRunner(
       if (host) {
         return host;
       }
-    } catch {
-      continue;
-    }
+    } catch {}
   }
   return null;
 }
@@ -206,9 +202,7 @@ export async function resolveTailscaleServeGatewayUrlsWithRunner(
       if (urls.length > 0) {
         return urls;
       }
-    } catch {
-      continue;
-    }
+    } catch {}
   }
   return [];
 }

@@ -237,6 +237,8 @@ export async function qaWebEvaluate<T = unknown>(params: QaWebEvaluateParams): P
   let timeout: ReturnType<typeof setTimeout> | undefined;
   try {
     return (await Promise.race([
+      // biome-ignore lint/security/noGlobalEval: migrated from oxlint
+      // biome-ignore lint/complexity/noCommaOperator: migrated from oxlint
       session.page.evaluate(({ expression }) => (0, eval)(expression) as unknown, {
         expression: params.expression,
       }),

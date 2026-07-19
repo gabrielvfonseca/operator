@@ -44,7 +44,7 @@ function resolveSourceManagedApiKeyMarker(params: {
     value: params.sourceProvider?.apiKey,
     defaults: params.sourceSecretDefaults,
   }).ref;
-  if (!sourceApiKeyRef || !sourceApiKeyRef.id.trim()) {
+  if (!sourceApiKeyRef?.id.trim()) {
     return undefined;
   }
   return sourceApiKeyRef.source === "env"
@@ -68,7 +68,7 @@ function resolveSourceManagedHeaderMarkers(params: {
       value: headerValue,
       defaults: params.sourceSecretDefaults,
     }).ref;
-    if (!sourceHeaderRef || !sourceHeaderRef.id.trim()) {
+    if (!sourceHeaderRef?.id.trim()) {
       continue;
     }
     markers[headerName] =

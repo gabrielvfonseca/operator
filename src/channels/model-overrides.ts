@@ -136,7 +136,7 @@ function expandPeerIds(
   ids: (string | null | undefined)[],
   channel: string,
 ): (string | null | undefined)[] {
-  const channelPrefix = channel.toLowerCase() + ":";
+  const channelPrefix = `${channel.toLowerCase()}:`;
   const expanded: (string | null | undefined)[] = [];
   for (const id of ids) {
     if (id != null) {

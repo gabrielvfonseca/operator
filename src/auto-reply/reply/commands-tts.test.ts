@@ -334,7 +334,7 @@ describe("handleTtsCommands status fallback reporting", () => {
     const sessionFile = path.join(tempDir, "session.jsonl");
     fs.writeFileSync(
       sessionFile,
-      [
+      `${[
         JSON.stringify({ type: "session", id: "s1" }),
         JSON.stringify({
           type: "message",
@@ -366,7 +366,7 @@ describe("handleTtsCommands status fallback reporting", () => {
             ],
           },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf-8",
     );
     ttsMocks.textToSpeech.mockResolvedValue({
@@ -401,13 +401,13 @@ describe("handleTtsCommands status fallback reporting", () => {
     const sessionFile = path.join(tempDir, "session.jsonl");
     fs.writeFileSync(
       sessionFile,
-      [
+      `${[
         JSON.stringify({ type: "session", id: "s1" }),
         JSON.stringify({
           type: "message",
           message: { role: "assistant", content: [{ type: "text", text: "read me once" }] },
         }),
-      ].join("\n") + "\n",
+      ].join("\n")}\n`,
       "utf-8",
     );
     ttsMocks.textToSpeech.mockResolvedValue({

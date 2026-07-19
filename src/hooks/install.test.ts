@@ -32,8 +32,9 @@ vi.mock("../plugins/install-security-scan.js", () => ({
 
 vi.resetModules();
 
-const { HOOK_INSTALL_ERROR_CODE, installHooksFromNpmSpec, installHooksFromPath } =
-  await import("./install.js");
+const { HOOK_INSTALL_ERROR_CODE, installHooksFromNpmSpec, installHooksFromPath } = await import(
+  "./install.js"
+);
 const hookInstallRuntime = await import("./install.runtime.js");
 
 const fixtureRoot = path.join(process.cwd(), ".tmp", `operator-hook-install-${randomUUID()}`);

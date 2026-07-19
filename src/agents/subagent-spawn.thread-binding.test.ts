@@ -77,8 +77,9 @@ describe("spawnSubagentDirect thread binding delivery", () => {
       getSessionBindingService: () => currentSessionBindingService,
       resolveConversationDeliveryTarget: (params) => currentDeliveryTargetResolver(params),
     }));
-    ({ setActivePluginRegistry: setActivePluginRegistryForTest } =
-      await import("../plugins/runtime.js"));
+    ({ setActivePluginRegistry: setActivePluginRegistryForTest } = await import(
+      "../plugins/runtime.js"
+    ));
     ({
       createChannelTestPluginBase: createChannelTestPluginBaseForTest,
       createTestRegistry: createTestRegistryForTest,

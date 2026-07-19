@@ -61,7 +61,7 @@ function resolveTranscriptReadLimits(
 async function streamBoundedTranscriptJsonl(params: {
   sessionFile: string;
   limits?: TranscriptReadLimits;
-  onRecord: (record: unknown) => boolean | void;
+  onRecord: (record: unknown) => boolean | undefined;
 }): Promise<void> {
   const limits = resolveTranscriptReadLimits(params.limits);
   try {
@@ -142,7 +142,7 @@ function estimateTranscriptEventsBytes(events: readonly unknown[]): number {
 async function streamRuntimeTranscriptEvents(params: {
   target: SessionTranscriptTargetParams;
   limits?: TranscriptReadLimits;
-  onRecord: (record: unknown) => boolean | void;
+  onRecord: (record: unknown) => boolean | undefined;
 }): Promise<void> {
   const limits = resolveTranscriptReadLimits(params.limits);
   let events: readonly unknown[];
@@ -171,7 +171,7 @@ async function streamRuntimeTranscriptEvents(params: {
 async function streamActiveMemoryTranscriptRecords(params: {
   source: ActiveMemoryTranscriptSource;
   limits?: TranscriptReadLimits;
-  onRecord: (record: unknown) => boolean | void;
+  onRecord: (record: unknown) => boolean | undefined;
 }): Promise<void> {
   if (params.source.kind === "runtime") {
     await streamRuntimeTranscriptEvents({
@@ -403,7 +403,7 @@ function hasUsableMemoryResultInSessionRecord(
       typeof details?.expandedSummaryCount === "number" &&
       Number.isFinite(details.expandedSummaryCount) &&
       details.expandedSummaryCount > 0 &&
-      Boolean(normalizeOptionalString(details?.answer))
+      normalizeOptionalString(details?.answer)
     ) {
       return true;
     }

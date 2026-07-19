@@ -272,10 +272,7 @@ function findLegacyWhatsAppHealthCrontabLines(crontab: unknown): string[] {
 
 /** Return a warning when the user's crontab still runs the old WhatsApp health script. */
 export async function collectLegacyWhatsAppCrontabHealthWarning(
-  params: {
-    platform?: NodeJS.Platform;
-    readCrontab?: CrontabReader;
-  } = {},
+  params: { platform?: NodeJS.Platform; readCrontab?: CrontabReader } = {},
 ): Promise<string | null> {
   if ((params.platform ?? process.platform) !== "linux") {
     return null;
@@ -303,10 +300,7 @@ export async function collectLegacyWhatsAppCrontabHealthWarning(
 
 /** Emit the legacy WhatsApp crontab warning when present. */
 export async function noteLegacyWhatsAppCrontabHealthCheck(
-  params: {
-    platform?: NodeJS.Platform;
-    readCrontab?: CrontabReader;
-  } = {},
+  params: { platform?: NodeJS.Platform; readCrontab?: CrontabReader } = {},
 ): Promise<void> {
   const warning = await collectLegacyWhatsAppCrontabHealthWarning(params);
   if (warning) {

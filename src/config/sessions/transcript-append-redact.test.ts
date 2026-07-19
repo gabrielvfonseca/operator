@@ -411,6 +411,7 @@ describe("appendSessionTranscriptMessage - redaction", () => {
     );
     const config: OperatorConfig = { logging: { redactSensitive: "tools" } };
     const toolOutput =
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'DISCORD_BOT_TOKEN="${DISCORD_BOT_TOKEN:-}"\nTELEGRAM_BOT_TOKEN="${TELEGRAM_BOT_TOKEN:-}"';
 
     await appendSessionTranscriptMessage({
@@ -427,7 +428,9 @@ describe("appendSessionTranscriptMessage - redaction", () => {
     });
 
     const raw = fs.readFileSync(sessionFile, "utf-8");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(raw).toContain("${DISCORD_BOT_TOKEN:-}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(raw).toContain("${TELEGRAM_BOT_TOKEN:-}");
 
     const [msg] = readMessages(sessionFile) as Array<{

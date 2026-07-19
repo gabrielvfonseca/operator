@@ -232,7 +232,7 @@ describeLive("github-copilot connection-bound Responses IDs live", () => {
     expect(replayedAssistant?.id).toMatch(/^msg_[a-f0-9]{16}$/);
     expect(replayedAssistant?.id).not.toBe(staleId);
     const toolCall = result.content.find((block) => block.type === "toolCall");
-    if (!toolCall || toolCall.type !== "toolCall") {
+    if (toolCall?.type !== "toolCall") {
       throw new Error(`Copilot did not call capture_probe: ${result.stopReason}`);
     }
     expect(toolCall.name).toBe("capture_probe");

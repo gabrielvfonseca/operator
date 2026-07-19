@@ -5,7 +5,9 @@ import { fileURLToPath } from "node:url";
 import { isRecord } from "@gabrielvfonseca/normalization-core/record-coerce";
 import { describe, expect, it } from "vitest";
 import rootPackageJson from "../../package.json" with { type: "json" };
-import officialExternalProviderCatalog from "../../scripts/lib/official-external-provider-catalog.json" with { type: "json" };
+import officialExternalProviderCatalog from "../../scripts/lib/official-external-provider-catalog.json" with {
+  type: "json",
+};
 import { parseJsonWithJson5Fallback } from "../utils/parse-json-compat.js";
 import { listOfficialExternalProviderEndpointManifests } from "./official-external-provider-endpoints.js";
 

@@ -716,8 +716,8 @@ function planFromExplanation(params: {
     topLevelSteps.length === 1 &&
     Boolean(
       topLevelStep &&
-      shellWrapperRiskForStep(topLevelStep, params.explanation.risks) &&
-      (!unanalyzableRisk || riskInsideStep(unanalyzableRisk, topLevelStep)),
+        shellWrapperRiskForStep(topLevelStep, params.explanation.risks) &&
+        (!unanalyzableRisk || riskInsideStep(unanalyzableRisk, topLevelStep)),
     );
   if (!params.explanation.ok || (blockingRisk && !canFallBackToExactWrapper)) {
     return unanalyzablePlan({

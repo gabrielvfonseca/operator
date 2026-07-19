@@ -49,7 +49,7 @@ export function logAcceptedEnvOption(option: AcceptedEnvOption): void {
     return;
   }
   const rawValue = option.value ?? process.env[option.key];
-  if (!rawValue || !rawValue.trim()) {
+  if (!rawValue?.trim()) {
     return;
   }
   loggedEnv.add(option.key);

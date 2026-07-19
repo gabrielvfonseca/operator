@@ -156,6 +156,7 @@ vi.mock("../process/supervisor/index.js", () => {
     return commands;
   };
   const applySegmentShellEffects = (segment: string, env: NodeJS.ProcessEnv) => {
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     if (segment === 'export PATH="${OPERATOR_PREPEND_PATH}${PATH:+:$PATH}"') {
       const prepend = env.OPERATOR_PREPEND_PATH ?? "";
       const current = readEnvPath(env);

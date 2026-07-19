@@ -381,7 +381,9 @@ describe("plugins cli update", () => {
           installs: {
             alpha: {
               source: "npm",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               spec: "${PLUGIN_SPEC}",
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
               installPath: "${PLUGIN_PATH}",
             },
           },

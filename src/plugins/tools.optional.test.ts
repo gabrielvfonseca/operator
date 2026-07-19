@@ -496,10 +496,12 @@ describe("resolvePluginTools optional tools", () => {
       resetPluginRuntimeStateForTest,
       setActivePluginRegistry,
     } = await import("./runtime.js"));
-    ({ getPluginRuntimeGatewayRequestScope, withPluginRuntimeGatewayRequestScope } =
-      await import("./runtime/gateway-request-scope.js"));
-    ({ clearCurrentPluginMetadataSnapshot, setCurrentPluginMetadataSnapshot } =
-      await import("./current-plugin-metadata-snapshot.js"));
+    ({ getPluginRuntimeGatewayRequestScope, withPluginRuntimeGatewayRequestScope } = await import(
+      "./runtime/gateway-request-scope.js"
+    ));
+    ({ clearCurrentPluginMetadataSnapshot, setCurrentPluginMetadataSnapshot } = await import(
+      "./current-plugin-metadata-snapshot.js"
+    ));
     ({ resetPluginToolDescriptorCacheForTest } = await import("./tools.test-fixtures.js"));
   });
 

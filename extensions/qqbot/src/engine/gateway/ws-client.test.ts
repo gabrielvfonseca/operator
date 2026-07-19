@@ -27,9 +27,9 @@ beforeAll(async () => {
     hasAmbientNodeProxyConfigured: vi.fn(() =>
       Boolean(
         process.env.HTTPS_PROXY ??
-        process.env.https_proxy ??
-        process.env.HTTP_PROXY ??
-        process.env.http_proxy,
+          process.env.https_proxy ??
+          process.env.HTTP_PROXY ??
+          process.env.http_proxy,
       ),
     ),
   }));

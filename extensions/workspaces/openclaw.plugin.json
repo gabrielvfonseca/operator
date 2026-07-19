@@ -5,9 +5,7 @@
   "enabledByDefault": false,
   "activation": {
     "onStartup": true,
-    "onCommands": [
-      "workspaces"
-    ]
+    "onCommands": ["workspaces"]
   },
   "configSchema": {
     "type": "object",

@@ -267,11 +267,11 @@ export function rememberAppendedSessionEntry(params: {
   const isVerifiedOwnedAppend = (snapshot: SessionFileSnapshot | undefined) =>
     Boolean(
       publishOwnedAppend &&
-      beforeAppendSnapshot &&
-      snapshot &&
-      snapshot.dev === beforeAppendSnapshot.dev &&
-      snapshot.ino === beforeAppendSnapshot.ino &&
-      snapshot.size === beforeAppendSnapshot.size + appendedByteLength,
+        beforeAppendSnapshot &&
+        snapshot &&
+        snapshot.dev === beforeAppendSnapshot.dev &&
+        snapshot.ino === beforeAppendSnapshot.ino &&
+        snapshot.size === beforeAppendSnapshot.size + appendedByteLength,
     );
   if (!cacheOwnedAppend) {
     sessionEntriesCache.delete(resolvedPath);
@@ -409,6 +409,7 @@ export function jsonSerializationCanRunUserCode(
   }
 }
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: migrated from oxlint
 function hasOwnProperty(value: object, key: string): boolean {
   return Object.hasOwn(value, key);
 }

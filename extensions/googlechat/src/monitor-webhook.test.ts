@@ -109,8 +109,9 @@ async function runWebhookHandler(options?: {
 
 describe("googlechat monitor webhook", () => {
   beforeAll(async () => {
-    ({ createGoogleChatWebhookRequestHandler, warnAppPrincipalMisconfiguration } =
-      await import("./monitor-webhook.js"));
+    ({ createGoogleChatWebhookRequestHandler, warnAppPrincipalMisconfiguration } = await import(
+      "./monitor-webhook.js"
+    ));
   });
 
   beforeEach(() => {

@@ -487,7 +487,7 @@ export async function tryDispatchAcpReply(params: {
     identityPendingBeforeTurn &&
     (Boolean(
       params.ctx.MessageThreadId != null &&
-      (normalizeOptionalString(String(params.ctx.MessageThreadId)) ?? ""),
+        (normalizeOptionalString(String(params.ctx.MessageThreadId)) ?? ""),
     ) ||
       (await hasBoundConversationForSession({
         cfg: params.cfg,

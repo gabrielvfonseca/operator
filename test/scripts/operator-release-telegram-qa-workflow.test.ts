@@ -224,6 +224,7 @@ describe("release Telegram QA workflow", () => {
     );
     expect(source.match(/collaborators\/\$\{permission_actor\}\/permission/gu)).toHaveLength(2);
     expect((source.match(/extended-stable\/\[0-9\]/gu) ?? []).length).toBeGreaterThanOrEqual(2);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).not.toContain("collaborators/${signer}/permission");
   });
 
@@ -273,8 +274,10 @@ describe("release Telegram QA workflow", () => {
     expect(dispatch?.run).toContain("$(openssl rand -hex 16)");
     expect(dispatch?.run).toContain("trap cancel_child_on_failure EXIT");
     expect(dispatch?.run).toContain("for _ in $(seq 1 6)");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(dispatch?.run).toContain("/actions/runs/${run_id}/cancel");
     expect(dispatch?.run).toContain("for dispatch_attempt in 1 2 3 4 5");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(dispatch?.run).toContain('gh api "repos/${GITHUB_REPOSITORY}/commits/main"');
     expect(dispatch?.run).toContain(
       'if [[ "$child_head_sha" == "$expected_trusted_workflow_sha" ]]; then',
@@ -282,6 +285,7 @@ describe("release Telegram QA workflow", () => {
     expect(dispatch?.run).toContain("Trusted main moved from");
     expect(dispatch?.run).toContain("Trusted main kept moving");
     expect(dispatch?.run).toContain("for _ in $(seq 1 1080)");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(dispatch?.run).toContain("Trusted Telegram QA concluded ${conclusion}");
     expect(
       releaseSource.match(
@@ -363,6 +367,7 @@ describe("release Telegram QA workflow", () => {
     expect(
       workflowStep(workflowJob("trusted_identity"), "Verify dispatched-main identity").env
         ?.TARGET_REF,
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     ).toBe("${{ inputs.target_ref }}");
 
     const trustedSha = "b".repeat(40);
@@ -462,6 +467,7 @@ describe("release Telegram QA workflow", () => {
     }
     expect(statusJob?.if).toBe("always()");
     expect(recordStep?.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "qa_live_telegram_release_checks-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.env",
     );
     for (const field of [
@@ -479,9 +485,12 @@ describe("release Telegram QA workflow", () => {
     }
     expect(uploadStep?.if).toBe("always()");
     expect(uploadStep?.with?.name).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "release-check-status-qa-live-telegram-${{ inputs.target_sha }}-${{ github.run_id }}-${{ github.run_attempt }}",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(uploadStep?.with?.path).toContain("${{ steps.record_status.outputs.status_file }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(uploadStep?.with?.path).toContain("${{ steps.record_status.outputs.evidence_file }}");
     expect(requireStep?.if).toBe("always()");
     expect(requireStep?.run).toContain('[[ "$STATUS" == "success" ]]');
@@ -532,6 +541,7 @@ describe("release Telegram QA workflow", () => {
     const validateStep = job?.steps?.find(
       (step) => step.name === "Validate required QA credential env",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(validateStep?.env?.RUNNER_ENVIRONMENT).toBe("${{ runner.environment }}");
     expect(validateStep?.env?.CREDENTIAL_ACQUIRE_TIMEOUT_MS).toBe("600000");
     expect(validateStep?.env?.JOB_TIMEOUT_MINUTES).toBe("60");
@@ -558,6 +568,7 @@ describe("release Telegram QA workflow", () => {
     expect(runStep?.run).toContain("--list-scenarios");
     expect(runStep?.run).toContain('"$scenario_id" != "channel-canary"');
     expect(runStep?.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'run_qa_attempt "attempt-${attempt}" "${remaining_scenarios[@]}"',
     );
     expect(
@@ -567,6 +578,7 @@ describe("release Telegram QA workflow", () => {
     const finalizeStep = job?.steps?.find(
       (step) => step.name === "Finalize trusted Telegram process-boundary evidence",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(finalizeStep?.env?.RUN_LANE_OUTCOME).toBe("${{ steps.run_lane.outcome }}");
     expect(finalizeStep?.run).toContain('--arg runLaneOutcome "$RUN_LANE_OUTCOME"');
     expect(finalizeStep?.run).toContain('if $runLaneOutcome == "success" then 2 else 1 end');
@@ -575,20 +587,27 @@ describe("release Telegram QA workflow", () => {
       (step) => step.name === "Capture isolated Telegram runtime diagnostics",
     );
     expect(captureStep?.if).toContain("steps.terminate_sut.outputs.quiescent == 'true'");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(captureStep?.env?.OUTPUT_DIR).toBe("${{ steps.run_lane.outputs.output_dir }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(captureStep?.env?.RUNTIME_ROOT).toBe("${{ steps.create_sut.outputs.runtime_root }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(captureStep?.env?.RUN_LANE_OUTCOME).toBe("${{ steps.run_lane.outcome }}");
     expect(captureStep?.run).toContain('[[ "$RUN_LANE_OUTCOME" != "success" ]]');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(captureStep?.run).toContain("((${#gateway_logs[@]} > 0))");
     expect(captureStep?.run).toContain("mapfile -d '' -t gateway_logs");
     expect(captureStep?.run).toContain("-printf '%T@\\t%p\\0'");
     expect(captureStep?.run).toContain("sort -z -nr");
     expect(captureStep?.run).toContain("sed -z -n '1,8p'");
     expect(captureStep?.run).toContain("cut -z -f2-");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(captureStep?.run).toContain("((${#gateway_logs[@]} <= 8))");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(captureStep?.run).toContain("((${#model_config_proofs[@]} > 0))");
     expect(captureStep?.run).toContain("-name 'operator-*.log'");
     expect(captureStep?.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'trusted_temp_root="$(mktemp -d "${RUNNER_TEMP}/operator-telegram-diagnostics.XXXXXX")"',
     );
     expect(captureStep?.run).not.toContain(".raw");
@@ -623,6 +642,7 @@ describe("release Telegram QA workflow", () => {
     );
 
     const recordStep = job?.steps?.find((step) => step.name === "Record Telegram execution status");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(recordStep?.env?.OUTCOMES).toContain("${{ steps.capture_diagnostics.outcome }}");
   });
 
@@ -741,7 +761,9 @@ describe("release Telegram QA workflow", () => {
     expect(source).toContain("launcher_stage=root-run-setup");
     expect(source).toContain("launcher_stage=enter-mount-namespace");
     expect(source).toContain("set_launcher_stage mask-host-paths");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).toContain('launcher_stage_file="${RUNTIME_ROOT}/launcher-stage-${BASHPID}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).toContain('set_launcher_stage "mask-host-path:${masked_path}"');
     expect(source).toContain("set_launcher_stage mount-proc");
     expect(source).toContain("set_launcher_stage write-identity");
@@ -770,6 +792,7 @@ describe("release Telegram QA workflow", () => {
     expect(source).toContain("runtime_stage=verify-runtime-env");
     expect(source).toContain("runtime_stage=write-sandbox-proof");
     expect(source).toContain("runtime_stage=exec-runtime");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).toContain('TMPDIR="${SUT_RUNTIME_ROOT}/tmp"');
     expect(source).toContain('"$RUNTIME_ROOT"/tmp/operator-qa-suite-*');
     expect(source.indexOf("launcher_stage=enter-mount-namespace")).toBeLessThan(
@@ -778,6 +801,7 @@ describe("release Telegram QA workflow", () => {
     expect(source).not.toContain("exec /usr/bin/unshare");
     expect(source).not.toContain("set -x");
     expect(source).toContain('source_node_bin="$(realpath -e "$(command -v node)")"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).toContain('node_bin="${runtime_root}/node"');
     expect(source).toContain('sudo install -o root -g root -m 0555 "$source_node_bin" "$node_bin"');
     expect(source).toContain(
@@ -786,24 +810,33 @@ describe("release Telegram QA workflow", () => {
     expect(source).toContain('"$node_bin" --version >/dev/null');
     expect(source).toContain('for masked_path in "$RUNNER_HOME" /tmp /var/tmp /dev/shm');
     expect(source).not.toMatch(/^\s+node_bin="\$\(realpath -e "\$\(command -v node\)"\)"$/mu);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).toContain('temp_root="$(realpath -e "${OPERATOR_QA_TEMP_ROOT:?}")"');
     expect(source).toContain("sudo install -d -o root -g root -m 0700 /tmp/operator");
     expect(source).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '-m 0711 \\\n            "${runtime_root}/tmp/operator-${runner_uid}"',
     );
     expect(source).toContain('"$RUNTIME_ROOT"/tmp/operator-"$RUNNER_UID"/operator-qa-suite-*');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).toContain('proc_stat="$(cat "/proc/${pid}/stat")"');
     expect(source).not.toContain('proc_stat="$(cat /proc/self/stat)"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).toContain('if [[ "${1:-}" == "--root-verify" ]]');
     expect(source).toContain("signal.pidfd_send_signal(pidfd, signal_value)");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).toContain('actual_executable="$(realpath -e "/proc/${pid}/exe")"');
     expect(source).toContain("cmdlineSha256: $cmdlineSha256");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).toContain('export HOME="${temp_root}/home"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).toContain('export XDG_CONFIG_HOME="${temp_root}/xdg-config"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).toContain('if [[ "${1:-}" == "--root-terminate-uid" ]]');
     expect(source).toContain("OPERATOR_LOG_LEVEL");
     expect(source).toContain("capture_live_model_config() {");
     expect(source).toContain('capture_live_model_config "$config_path"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(source).toContain('proof_tmp="${RUNTIME_ROOT}/gateway-model-config-${BASHPID}.json"');
     expect(source).toContain("proof_bytes > 0 && proof_bytes <= 65536");
     expect(source).toContain("before the QA suite removes its temp config");
@@ -998,7 +1031,7 @@ describe("release Telegram QA workflow", () => {
     expect(diagnosticSource).toBeTruthy();
 
     const script = `set -Eeuo pipefail\nruntime_stage=runtime-test\n${diagnosticSource}\nfalse`;
-    const failureLine = script.split("\n").findIndex((line) => line === "false") + 1;
+    const failureLine = script.split("\n").indexOf("false") + 1;
     const result = spawnSync("bash", ["-c", script], { encoding: "utf8" });
 
     expect(result.status).toBe(1);

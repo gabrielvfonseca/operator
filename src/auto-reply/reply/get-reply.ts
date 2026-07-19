@@ -409,7 +409,8 @@ export async function getReplyFromConfig(
 
   const workspace = await traceGetReplyPhase("reply.ensure_workspace", async () =>
     useFastTestBootstrap
-      ? (await fs.mkdir(workspaceDirRaw, { recursive: true }), { dir: workspaceDirRaw })
+      ? // biome-ignore lint/complexity/noCommaOperator: migrated from oxlint
+        (await fs.mkdir(workspaceDirRaw, { recursive: true }), { dir: workspaceDirRaw })
       : await ensureAgentWorkspace({
           dir: workspaceDirRaw,
           ensureBootstrapFiles: !agentCfg?.skipBootstrap && !isFastTestEnv,
@@ -675,7 +676,7 @@ export async function getReplyFromConfig(
   const primaryModel = resolvedChannelModelOverride?.ref.model ?? defaultModel;
   const hasSessionModelOverride = Boolean(
     normalizeOptionalString(sessionEntry.modelOverride) ||
-    normalizeOptionalString(sessionEntry.providerOverride),
+      normalizeOptionalString(sessionEntry.providerOverride),
   );
   const storedModelOverride = resolveStoredModelOverride({
     sessionEntry,

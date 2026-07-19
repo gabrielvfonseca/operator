@@ -8,10 +8,10 @@ export {
   getRuntimeConfigSourceSnapshot,
 } from "@gabrielvfonseca/operator/plugin-sdk/runtime-config-snapshot";
 export { mutateConfigFile } from "@gabrielvfonseca/operator/plugin-sdk/config-mutation";
-export {
-  type BrowserConfig,
-  type BrowserProfileConfig,
-  type OperatorConfig,
+export type {
+  BrowserConfig,
+  BrowserProfileConfig,
+  OperatorConfig,
 } from "@gabrielvfonseca/operator/plugin-sdk/config-contracts";
 export {
   normalizePluginsConfig,

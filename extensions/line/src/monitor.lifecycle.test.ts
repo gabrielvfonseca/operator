@@ -537,6 +537,7 @@ describe("monitorLineProvider lifecycle", () => {
     expect(overflowResponse.statusCode).toBe(429);
     expect(overflowResponse.end).toHaveBeenCalledWith("Too Many Requests");
 
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: migrated from oxlint
     heldRequests.splice(0).forEach((req) => req.destroy());
     await Promise.allSettled(firstRequests);
     monitor.stop();

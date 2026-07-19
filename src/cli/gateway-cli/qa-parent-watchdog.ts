@@ -22,7 +22,7 @@ type QaParentWatchdogDeps = {
   clearInterval?: (timer: QaParentWatchdogTimer) => void;
   cwd?: () => string;
   env?: NodeJS.ProcessEnv;
-  exit?: (code?: number) => never | void;
+  exit?: (code?: number) => never | undefined;
   intervalMs?: number;
   kill?: (pid: number, signal?: NodeJS.Signals | 0) => boolean;
   logger?: Pick<ReturnType<typeof createSubsystemLogger>, "warn">;

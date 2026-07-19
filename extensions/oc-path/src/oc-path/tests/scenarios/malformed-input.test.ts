@@ -42,7 +42,7 @@ describe("malformed-input", () => {
       lines.push(`## H${i}`);
       lines.push(`- item ${i}`);
     }
-    const raw = lines.join("\n") + "\n";
+    const raw = `${lines.join("\n")}\n`;
     const { ast } = parseMd(raw);
     expect(ast.blocks.length).toBe(1000);
   });
@@ -138,7 +138,7 @@ describe("malformed-input", () => {
   it("100 KB file", () => {
     const lines: string[] = [];
     for (let i = 0; i < 1000; i++) {
-      lines.push("## H" + i);
+      lines.push(`## H${i}`);
       for (let j = 0; j < 5; j++) {
         lines.push(`- item-${i}-${j}: value with some text content here`);
       }

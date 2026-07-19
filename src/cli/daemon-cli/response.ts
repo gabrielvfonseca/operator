@@ -177,6 +177,7 @@ export async function installDaemonServiceAndEmit(params: {
     return;
   }
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let installed;
   try {
     installed = await params.service.isLoaded({ env: process.env });

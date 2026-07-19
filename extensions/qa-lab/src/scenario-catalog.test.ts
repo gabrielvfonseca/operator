@@ -249,6 +249,7 @@ describe("qa scenario catalog", () => {
       throw new Error(`expected script scenario, got ${uxMatrix.execution.kind}`);
     }
     expect(uxMatrix.execution.path).toBe("scripts/qa/ux-matrix-evidence-producer.ts");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(uxMatrix.execution.args).toStrictEqual(["--artifact-base", "${outputDir}"]);
     expect(uxMatrix.execution.config).toBeUndefined();
     expect(uxMatrix.coverage?.primary).toContain("qa.artifact-safety");
@@ -258,6 +259,7 @@ describe("qa scenario catalog", () => {
     }
     expect(otelSmoke.execution.args).toStrictEqual([
       "--output-dir",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${outputDir}",
       "--logs-exporter",
       "both",

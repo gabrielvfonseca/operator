@@ -303,7 +303,7 @@ function transcriptHasDirectReplySelfMessage(transcriptBytes: string) {
     try {
       const parsed = JSON.parse(trimmed) as unknown;
       const message = isRecord(parsed) && isRecord(parsed.message) ? parsed.message : undefined;
-      if (!message || message.role !== "assistant") {
+      if (message?.role !== "assistant") {
         continue;
       }
       scanner.recordMessage(message);

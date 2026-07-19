@@ -83,7 +83,7 @@ function isDirectSessionKey(sessionKey?: string): boolean {
   if (DIRECT_SESSION_MARKERS.has(parts[1] ?? "")) {
     return hasStrictDirectSessionTail(parts, 1);
   }
-  return Boolean(normalizeOptionalString(parts[1])) && DIRECT_SESSION_MARKERS.has(parts[2] ?? "")
+  return normalizeOptionalString(parts[1]) && DIRECT_SESSION_MARKERS.has(parts[2] ?? "")
     ? hasStrictDirectSessionTail(parts, 2)
     : false;
 }

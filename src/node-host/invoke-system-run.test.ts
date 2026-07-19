@@ -1078,7 +1078,9 @@ describe("handleSystemRunInvoke mac app exec host routing", () => {
         preferMacAppExecHost: false,
         security: "allowlist",
         ask: "off",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         command: ["/bin/sh", "-lc", "head -c${IFS}16${IFS}${OPERATOR_CONFIG_PATH}"],
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         rawCommand: "head -c${IFS}16${IFS}${OPERATOR_CONFIG_PATH}",
       });
 

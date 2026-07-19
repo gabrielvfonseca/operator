@@ -652,7 +652,7 @@ describe("doctor.memory.status", () => {
         },
       },
     } as OperatorConfig);
-    resolveAgentWorkspaceDir.mockImplementation((cfg: OperatorConfig, agentId: string) => {
+    resolveAgentWorkspaceDir.mockImplementation((_cfg: OperatorConfig, agentId: string) => {
       if (agentId === "alpha") {
         return alphaWorkspaceDir;
       }
@@ -874,7 +874,7 @@ describe("doctor.memory.status", () => {
           },
         },
       };
-      await fs.writeFile(storePath, JSON.stringify(store, null, 2) + "\n", "utf-8");
+      await fs.writeFile(storePath, `${JSON.stringify(store, null, 2)}\n`, "utf-8");
     };
     await writeStore(mainWorkspaceDir, "main agent memory");
     await writeStore(alphaWorkspaceDir, "alpha agent memory");

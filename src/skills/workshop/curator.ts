@@ -213,7 +213,7 @@ async function loadCuratedSkills(
       continue;
     }
     const record = await readSkillProposalRecord(entry.id, { env: options.env });
-    if (!record || record.status !== "applied" || !record.appliedAt) {
+    if (record?.status !== "applied" || !record.appliedAt) {
       continue;
     }
     const appliedAtMs = Date.parse(record.appliedAt);
@@ -477,10 +477,10 @@ function parseOverlapCandidates(value: string | null | undefined): SkillOverlapC
       ? parsed.overlaps.filter((entry): entry is SkillOverlapCandidate =>
           Boolean(
             entry &&
-            typeof entry === "object" &&
-            typeof (entry as SkillOverlapCandidate).left === "string" &&
-            typeof (entry as SkillOverlapCandidate).right === "string" &&
-            typeof (entry as SkillOverlapCandidate).score === "number",
+              typeof entry === "object" &&
+              typeof (entry as SkillOverlapCandidate).left === "string" &&
+              typeof (entry as SkillOverlapCandidate).right === "string" &&
+              typeof (entry as SkillOverlapCandidate).score === "number",
           ),
         )
       : [];

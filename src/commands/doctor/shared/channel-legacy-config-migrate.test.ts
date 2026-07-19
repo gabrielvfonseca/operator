@@ -31,8 +31,9 @@ beforeAll(async () => {
   // Commands runs on the shared non-isolated worker, so reload after installing
   // this file's mock to avoid inheriting a cached real registry import.
   vi.resetModules();
-  ({ applyChannelDoctorCompatibilityMigrations } =
-    await import("./channel-legacy-config-migrate.js"));
+  ({ applyChannelDoctorCompatibilityMigrations } = await import(
+    "./channel-legacy-config-migrate.js"
+  ));
 });
 
 beforeEach(() => {

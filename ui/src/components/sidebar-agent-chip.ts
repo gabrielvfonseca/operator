@@ -34,21 +34,25 @@ class SidebarAgentChip extends OperatorLightDomContentsElement {
           @click=${(event: MouseEvent) => this.onToggleMenu?.(event.currentTarget as HTMLElement)}
         >
           <span class="sidebar-agent-chip__avatar">
-            ${this.avatarUrl
-              ? html`<img
+            ${
+              this.avatarUrl
+                ? html`<img
                   src=${this.avatarUrl}
                   alt=""
                   aria-hidden="true"
                   loading="lazy"
                   decoding="async"
                 />`
-              : html`<span class="sidebar-agent-chip__avatar-text" aria-hidden="true"
+                : html`<span class="sidebar-agent-chip__avatar-text" aria-hidden="true"
                   >${this.avatarText}</span
-                >`}
+                >`
+            }
             <span
-              class="sidebar-agent-chip__presence ${this.connected
-                ? "sidebar-connection-status--online"
-                : "sidebar-connection-status--offline"}"
+              class="sidebar-agent-chip__presence ${
+                this.connected
+                  ? "sidebar-connection-status--online"
+                  : "sidebar-connection-status--offline"
+              }"
               role="img"
               aria-live="polite"
               aria-label=${this.statusLabel}
@@ -57,17 +61,21 @@ class SidebarAgentChip extends OperatorLightDomContentsElement {
           </span>
           <span class="sidebar-agent-chip__text">
             <span class="sidebar-agent-chip__name">${this.agentName}</span>
-            ${this.subtitle
-              ? html`<span class="sidebar-agent-chip__subtitle">${this.subtitle}</span>`
-              : nothing}
+            ${
+              this.subtitle
+                ? html`<span class="sidebar-agent-chip__subtitle">${this.subtitle}</span>`
+                : nothing
+            }
           </span>
-          ${this.menuUnread && !this.menuOpen
-            ? html`<span
+          ${
+            this.menuUnread && !this.menuOpen
+              ? html`<span
                 class="session-unread-dot sidebar-agent-chip__menu-unread"
                 role="img"
                 aria-label=${t("sessionsView.unread")}
               ></span>`
-            : nothing}
+              : nothing
+          }
         </button>
         <operator-tooltip .content=${t("chat.runControls.newSession")}>
           <button

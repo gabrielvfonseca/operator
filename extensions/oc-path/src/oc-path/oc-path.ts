@@ -137,7 +137,7 @@ export function parseOcPath(input: string): OcPath {
   if (inputBytes > MAX_PATH_LENGTH) {
     fail(
       `oc:// path exceeds ${MAX_PATH_LENGTH} bytes (length: ${inputBytes})`,
-      truncateUtf16Safe(input, 80) + "…",
+      `${truncateUtf16Safe(input, 80)}…`,
       "OC_PATH_TOO_LONG",
     );
   }
@@ -151,7 +151,7 @@ export function parseOcPath(input: string): OcPath {
   if (normalizedBytes > MAX_PATH_LENGTH) {
     fail(
       `oc:// path exceeds ${MAX_PATH_LENGTH} bytes after NFC (length: ${normalizedBytes})`,
-      truncateUtf16Safe(input, 80) + "…",
+      `${truncateUtf16Safe(input, 80)}…`,
       "OC_PATH_TOO_LONG",
     );
   }
@@ -304,24 +304,24 @@ export function formatOcPath(path: OcPath): string {
   const formattedFile = fileNeedsQuote ? quoteSeg(path.file) : path.file;
   let out = OC_SCHEME + formattedFile;
   if (path.section !== undefined) {
-    out += "/" + formatSlot(path.section, "section");
+    out += `/${formatSlot(path.section, "section")}`;
   }
   if (path.item !== undefined) {
-    out += "/" + formatSlot(path.item, "item");
+    out += `/${formatSlot(path.item, "item")}`;
   }
   if (path.field !== undefined) {
-    out += "/" + formatSlot(path.field, "field");
+    out += `/${formatSlot(path.field, "field")}`;
   }
   if (path.session !== undefined) {
     validateSessionSlot(path.session, path.file);
-    out += "?session=" + path.session;
+    out += `?session=${path.session}`;
   }
 
   const outputBytes = Buffer.byteLength(out, "utf8");
   if (outputBytes > MAX_PATH_LENGTH) {
     fail(
       `Formatted oc:// exceeds ${MAX_PATH_LENGTH} bytes (length: ${outputBytes})`,
-      truncateUtf16Safe(out, 80) + "…",
+      `${truncateUtf16Safe(out, 80)}…`,
       "OC_PATH_TOO_LONG",
     );
   }
@@ -551,7 +551,7 @@ function extractSession(queryPart: string, input: string): string | undefined {
 // Walk `s` respecting `[...]`/`{...}`/`"..."` regions. Quoted regions
 // are byte-literal. `onChar` returns "stop" to short-circuit;
 // `onUnbalanced` (must throw) fires on bracket/brace/quote imbalance.
-type ScanCallback = (c: string, i: number, atTop: boolean) => "stop" | void;
+type ScanCallback = (c: string, i: number, atTop: boolean) => "stop" | undefined;
 function scanBracketAware(s: string, onChar: ScanCallback, onUnbalanced: () => never): void {
   let depthBracket = 0;
   let depthBrace = 0;

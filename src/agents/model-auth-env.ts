@@ -51,9 +51,11 @@ function expandAuthEvidencePath(rawPath: string, env: NodeJS.ProcessEnv): string
   }
   const homeDir = normalizeOptionalPathInput(env.HOME) ?? os.homedir();
   const appDataDir = normalizeOptionalPathInput(env.APPDATA);
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   if (trimmed.includes("${APPDATA}") && !appDataDir) {
     return undefined;
   }
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
   return trimmed.replaceAll("${HOME}", homeDir).replaceAll("${APPDATA}", appDataDir ?? "");
 }
 

@@ -47,8 +47,9 @@ vi.mock("./sessions/index.js", async (importOriginal) => {
   };
 });
 
-const { createHostWorkspaceEditTool, createHostWorkspaceWriteTool } =
-  await import("./agent-tools.read.js");
+const { createHostWorkspaceEditTool, createHostWorkspaceWriteTool } = await import(
+  "./agent-tools.read.js"
+);
 
 function requireOps(ops: WorkspaceFileOps | undefined, label: string): WorkspaceFileOps {
   if (!ops) {

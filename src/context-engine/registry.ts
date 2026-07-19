@@ -174,6 +174,7 @@ const LEGACY_UNKNOWN_FIELD_PATTERNS: Record<LegacyCompatKey, readonly RegExp[]> 
     /\b(?:unexpected|extraneous)\s+(?:property|properties|field|fields|key|keys)\b.*['"`]sessionKey['"`]/i,
     /\b(?:unknown|invalid)\s+(?:property|properties|field|fields|key|keys)\b.*['"`]sessionKey['"`]/i,
     /['"`]sessionKey['"`].*\b(?:was|is)\s+not allowed\b/i,
+    // biome-ignore lint/correctness/noEmptyCharacterClassInRegex: migrated from oxlint
     /"code"\s*:\s*"unrecognized_keys"[^]*"sessionKey"/i,
   ],
   prompt: [
@@ -183,6 +184,7 @@ const LEGACY_UNKNOWN_FIELD_PATTERNS: Record<LegacyCompatKey, readonly RegExp[]> 
     /\b(?:unexpected|extraneous)\s+(?:property|properties|field|fields|key|keys)\b.*['"`]prompt['"`]/i,
     /\b(?:unknown|invalid)\s+(?:property|properties|field|fields|key|keys)\b.*['"`]prompt['"`]/i,
     /['"`]prompt['"`].*\b(?:was|is)\s+not allowed\b/i,
+    // biome-ignore lint/correctness/noEmptyCharacterClassInRegex: migrated from oxlint
     /"code"\s*:\s*"unrecognized_keys"[^]*"prompt"/i,
   ],
   runtimeSettings: [
@@ -192,6 +194,7 @@ const LEGACY_UNKNOWN_FIELD_PATTERNS: Record<LegacyCompatKey, readonly RegExp[]> 
     /\b(?:unexpected|extraneous)\s+(?:property|properties|field|fields|key|keys)\b.*['"`]runtimeSettings['"`]/i,
     /\b(?:unknown|invalid)\s+(?:property|properties|field|fields|key|keys)\b.*['"`]runtimeSettings['"`]/i,
     /['"`]runtimeSettings['"`].*\b(?:was|is)\s+not allowed\b/i,
+    // biome-ignore lint/correctness/noEmptyCharacterClassInRegex: migrated from oxlint
     /"code"\s*:\s*"unrecognized_keys"[^]*"runtimeSettings"/i,
   ],
   sessionTarget: [
@@ -201,6 +204,7 @@ const LEGACY_UNKNOWN_FIELD_PATTERNS: Record<LegacyCompatKey, readonly RegExp[]> 
     /\b(?:unexpected|extraneous)\s+(?:property|properties|field|fields|key|keys)\b.*['"`]sessionTarget['"`]/i,
     /\b(?:unknown|invalid)\s+(?:property|properties|field|fields|key|keys)\b.*['"`]sessionTarget['"`]/i,
     /['"`]sessionTarget['"`].*\b(?:was|is)\s+not allowed\b/i,
+    // biome-ignore lint/correctness/noEmptyCharacterClassInRegex: migrated from oxlint
     /"code"\s*:\s*"unrecognized_keys"[^]*"sessionTarget"/i,
   ],
   runtimeContext: [
@@ -210,6 +214,7 @@ const LEGACY_UNKNOWN_FIELD_PATTERNS: Record<LegacyCompatKey, readonly RegExp[]> 
     /\b(?:unexpected|extraneous)\s+(?:property|properties|field|fields|key|keys)\b.*['"`]runtimeContext['"`]/i,
     /\b(?:unknown|invalid)\s+(?:property|properties|field|fields|key|keys)\b.*['"`]runtimeContext['"`]/i,
     /['"`]runtimeContext['"`].*\b(?:was|is)\s+not allowed\b/i,
+    // biome-ignore lint/correctness/noEmptyCharacterClassInRegex: migrated from oxlint
     /"code"\s*:\s*"unrecognized_keys"[^]*"runtimeContext"/i,
   ],
 } as const;
@@ -708,7 +713,7 @@ const GUARDED_CONTEXT_ENGINE_METHODS = new Set<PropertyKey>([
 
 function contextEngineFallbackResult(
   methodName: GuardedContextEngineMethodName,
-): BootstrapResult | ContextEngineMaintenanceResult | IngestResult | IngestBatchResult | void {
+): BootstrapResult | ContextEngineMaintenanceResult | IngestResult | IngestBatchResult | undefined {
   switch (methodName) {
     case "bootstrap":
       return {
@@ -793,7 +798,7 @@ async function invokeFallbackContextEngineMethod(params: {
   | IngestBatchResult
   | IngestResult
   | SubagentSpawnPreparation
-  | void
+  | undefined
 > {
   const fallbackEngine = await params.getFallbackEngine();
   const fallbackMethod = fallbackEngine[params.methodName] as
@@ -808,7 +813,7 @@ async function invokeFallbackContextEngineMethod(params: {
       | IngestBatchResult
       | IngestResult
       | SubagentSpawnPreparation
-      | void;
+      | undefined;
   }
   return contextEngineFallbackResult(params.methodName);
 }

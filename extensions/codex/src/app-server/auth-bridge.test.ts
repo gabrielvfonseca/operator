@@ -156,7 +156,7 @@ type AuthProfileCredential = AuthProfileStore["profiles"][string];
 function expectOAuthProfile(
   profile: AuthProfileCredential | undefined,
 ): Extract<AuthProfileCredential, { type: "oauth" }> {
-  if (!profile || profile.type !== "oauth") {
+  if (profile?.type !== "oauth") {
     throw new Error("Expected OAuth auth profile");
   }
   return profile;

@@ -376,7 +376,7 @@ function oauthAuthProfileConfig(
   profileId: string,
 ): CodexAuthProfileConfig | null {
   const profile = credential.result.profiles[0];
-  if (!profile || profile.credential.type !== "oauth") {
+  if (profile?.credential.type !== "oauth") {
     return null;
   }
   return {

@@ -205,7 +205,7 @@ export const detectDiscordLegacyStateMigrations: BundledChannelLegacyStateMigrat
       cleanupSource: "rename",
       readEntries: () => {
         const store = readLegacyStore(modelPickerSourcePath);
-        if (!store || !store.entries || typeof store.entries !== "object") {
+        if (!store?.entries || typeof store.entries !== "object") {
           return [];
         }
         const out: Array<{ key: string; value: unknown }> = [];

@@ -794,6 +794,7 @@ function observeModelCallStream<T extends AsyncIterable<unknown>>(
   const observedIterator = () =>
     observeModelCallIterator(createIterator(), eventBase, startedAt, state)[Symbol.asyncIterator]();
   const observedResult = createObservedResultFunction(stream, eventBase, startedAt, state);
+  // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
   let hasNonConfigurableIterator;
   try {
     hasNonConfigurableIterator =

@@ -332,8 +332,8 @@ vi.mock("./subagent-registry-runtime.js", () => subagentRegistryMock);
 
 describe("subagent announce formatting", () => {
   let previousFastTestEnv: string | undefined;
-  let runSubagentAnnounceFlow: (typeof import("./subagent-announce.js"))["runSubagentAnnounceFlow"];
-  let subagentAnnounceTesting: (typeof import("./subagent-announce.js"))["testing"];
+  let runSubagentAnnounceFlow: typeof import("./subagent-announce.js")["runSubagentAnnounceFlow"];
+  let subagentAnnounceTesting: typeof import("./subagent-announce.js")["testing"];
 
   beforeAll(async () => {
     // Set FAST_TEST_MODE before importing the module to ensure the module-level
@@ -342,8 +342,9 @@ describe("subagent announce formatting", () => {
     // See: https://github.com/openclaw/openclaw/issues/31298
     previousFastTestEnv = process.env.OPERATOR_TEST_FAST;
     process.env.OPERATOR_TEST_FAST = "1";
-    ({ runSubagentAnnounceFlow, testing: subagentAnnounceTesting } =
-      await import("./subagent-announce.js"));
+    ({ runSubagentAnnounceFlow, testing: subagentAnnounceTesting } = await import(
+      "./subagent-announce.js"
+    ));
   });
 
   afterAll(() => {

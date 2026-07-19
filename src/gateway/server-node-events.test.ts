@@ -633,7 +633,7 @@ describe("node exec events", () => {
     // 178 ASCII chars + emoji (🫠 = 2 UTF-16 code units at pos 178-179) = 180+ total.
     // safe = 179 → old slice(0,179) would land on a lone high surrogate at pos 178.
     const emoji = "🫠";
-    const padded = "A".repeat(178) + emoji + "tail";
+    const padded = `${"A".repeat(178) + emoji}tail`;
     const ctx = buildExecCtx();
     await handleNodeEvent(ctx, "node-2", {
       event: "exec.finished",

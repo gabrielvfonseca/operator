@@ -459,9 +459,9 @@ function renderChatModelReasoningSelect(params: {
       <div class="chat-controls__combined-model">
         <operator-tooltip .content=${entry.label}>
           <button
-            class="chat-controls__inline-select-option chat-controls__combined-model-option ${selected
-              ? "chat-controls__inline-select-option--selected"
-              : ""}"
+            class="chat-controls__inline-select-option chat-controls__combined-model-option ${
+              selected ? "chat-controls__inline-select-option--selected" : ""
+            }"
             data-chat-model-option=${entry.value}
             data-chat-model-default=${entry.isDefault ? "true" : nothing}
             role="option"
@@ -480,23 +480,27 @@ function renderChatModelReasoningSelect(params: {
             <span class="chat-controls__model-option-copy">
               <span class="chat-controls__model-option-title">
                 <span class="chat-controls__model-option-name">${modelLabel}</span>
-                ${entry.isDefault
-                  ? html`<span class="chat-controls__model-default-label"
+                ${
+                  entry.isDefault
+                    ? html`<span class="chat-controls__model-default-label"
                       >${t("chat.modelControls.default")}</span
                     >`
-                  : ""}
+                    : ""
+                }
               </span>
               <span class="chat-controls__model-option-provider">
                 ${providerDisplayLabel(entry.provider)}
               </span>
             </span>
-            ${selected
-              ? html`
+            ${
+              selected
+                ? html`
                   <span class="chat-controls__inline-select-check" aria-hidden="true">
                     ${icons.check}
                   </span>
                 `
-              : ""}
+                : ""
+            }
           </button>
         </operator-tooltip>
       </div>
@@ -505,18 +509,20 @@ function renderChatModelReasoningSelect(params: {
   return html`
     <details class="chat-controls__session chat-controls__inline-select chat-controls__model">
       <summary
-        class="chat-controls__inline-select-trigger ${disabled
-          ? "chat-controls__inline-select-trigger--disabled"
-          : ""}"
+        class="chat-controls__inline-select-trigger ${
+          disabled ? "chat-controls__inline-select-trigger--disabled" : ""
+        }"
         data-chat-model-select="true"
         data-chat-model-locked=${modelSelectionLocked ? "true" : "false"}
         data-chat-thinking-select=${modelOnly ? nothing : "true"}
         data-chat-select-value=${selectedModelValue}
         data-chat-thinking-value=${selectedThinkingValue}
         data-chat-thinking-disabled=${thinkingDisabled ? "true" : "false"}
-        aria-label=${modelOnly
-          ? `${t("chat.selectors.model")}: ${triggerTitle}`
-          : `${t("chat.selectors.model")}, ${t("chat.selectors.thinkingLevel")}: ${triggerTitle}`}
+        aria-label=${
+          modelOnly
+            ? `${t("chat.selectors.model")}: ${triggerTitle}`
+            : `${t("chat.selectors.model")}, ${t("chat.selectors.thinkingLevel")}: ${triggerTitle}`
+        }
         aria-disabled=${disabled ? "true" : "false"}
         @click=${(event: MouseEvent) => {
           if (disabled) {
@@ -533,8 +539,9 @@ function renderChatModelReasoningSelect(params: {
         class="chat-controls__inline-select-menu chat-controls__inline-select-menu--combined"
         aria-label=${t("chat.selectors.model")}
       >
-        ${modelSelectionLocked
-          ? html`
+        ${
+          modelSelectionLocked
+            ? html`
               <div
                 class="chat-controls__locked-model"
                 aria-label=${t("chat.selectors.modelLockedLabel")}
@@ -548,7 +555,7 @@ function renderChatModelReasoningSelect(params: {
                 </span>
               </div>
             `
-          : html`
+            : html`
               <div class="chat-controls__model-browser">
                 <div class="chat-controls__provider-list" aria-label=${t("sessionsView.provider")}>
                   <div class="chat-controls__inline-select-section-label">
@@ -599,26 +606,30 @@ function renderChatModelReasoningSelect(params: {
                   )}
                 </div>
               </div>
-            `}
-        ${showReasoningPanel
-          ? html`
+            `
+        }
+        ${
+          showReasoningPanel
+            ? html`
               <div class="chat-controls__reasoning-panel">
-                ${showReasoning
-                  ? html`
+                ${
+                  showReasoning
+                    ? html`
                       <div class="chat-controls__reasoning-head">
                         <span class="chat-controls__inline-select-section-label"
                           >${t("chat.modelControls.reasoning")}</span
                         >
                         <span class="chat-controls__reasoning-state">
                           <span
-                            class="chat-controls__reasoning-value ${hasThinkingOverride
-                              ? ""
-                              : "chat-controls__reasoning-value--inherit"}"
+                            class="chat-controls__reasoning-value ${
+                              hasThinkingOverride ? "" : "chat-controls__reasoning-value--inherit"
+                            }"
                           >
                             ${reasoningValueText}
                           </span>
-                          ${hasThinkingOverride
-                            ? html`
+                          ${
+                            hasThinkingOverride
+                              ? html`
                                 <operator-tooltip
                                   .content=${`Reset to default (${defaultLevelLabel})`}
                                 >
@@ -641,30 +652,37 @@ function renderChatModelReasoningSelect(params: {
                                   </button>
                                 </operator-tooltip>
                               `
-                            : ""}
+                              : ""
+                          }
                         </span>
                       </div>
-                      ${sliderStops.length > 1
-                        ? html`
+                      ${
+                        sliderStops.length > 1
+                          ? html`
                             <div class="chat-controls__reasoning-slider">
                               <div class="chat-controls__reasoning-dots" aria-hidden="true">
                                 ${sliderStops.map(
                                   (stop, index) =>
                                     html`<span
-                                      class="chat-controls__reasoning-dot ${index ===
-                                      defaultStopIndex
-                                        ? "chat-controls__reasoning-dot--default"
-                                        : ""}"
+                                      class="chat-controls__reasoning-dot ${
+                                        index === defaultStopIndex
+                                          ? "chat-controls__reasoning-dot--default"
+                                          : ""
+                                      }"
                                       data-stop=${stop.value}
                                     ></span>`,
                                 )}
                               </div>
                               <input
-                                class="chat-controls__reasoning-range ${hasThinkingOverride
-                                  ? ""
-                                  : "chat-controls__reasoning-range--inherit"} ${sliderUnanchored
-                                  ? "chat-controls__reasoning-range--unanchored"
-                                  : ""}"
+                                class="chat-controls__reasoning-range ${
+                                  hasThinkingOverride
+                                    ? ""
+                                    : "chat-controls__reasoning-range--inherit"
+                                } ${
+                                  sliderUnanchored
+                                    ? "chat-controls__reasoning-range--unanchored"
+                                    : ""
+                                }"
                                 type="range"
                                 min="0"
                                 max=${sliderStops.length - 1}
@@ -685,12 +703,14 @@ function renderChatModelReasoningSelect(params: {
                               />
                             </div>
                           `
-                        : onlyStop
-                          ? html`
+                          : onlyStop
+                            ? html`
                               <button
-                                class="chat-controls__reasoning-option ${onlyStopSelected
-                                  ? "chat-controls__reasoning-option--selected"
-                                  : ""}"
+                                class="chat-controls__reasoning-option ${
+                                  onlyStopSelected
+                                    ? "chat-controls__reasoning-option--selected"
+                                    : ""
+                                }"
                                 data-chat-thinking-option=${onlyStop.value}
                                 type="button"
                                 aria-pressed=${onlyStopSelected ? "true" : "false"}
@@ -705,8 +725,9 @@ function renderChatModelReasoningSelect(params: {
                                 }}
                               >
                                 <span>${onlyStop.label}</span>
-                                ${onlyStopSelected
-                                  ? html`
+                                ${
+                                  onlyStopSelected
+                                    ? html`
                                       <span
                                         class="chat-controls__inline-select-check"
                                         aria-hidden="true"
@@ -714,23 +735,27 @@ function renderChatModelReasoningSelect(params: {
                                         ${icons.check}
                                       </span>
                                     `
-                                  : ""}
+                                    : ""
+                                }
                               </button>
                             `
-                          : ""}
+                            : ""
+                      }
                     `
-                  : ""}
-                ${showFastMode
-                  ? html`
+                    : ""
+                }
+                ${
+                  showFastMode
+                    ? html`
                       <div class="chat-controls__speed-row">
                         <span class="chat-controls__inline-select-section-label"
                           >${t("chat.modelControls.speed")}</span
                         >
                         <operator-tooltip .content=${speedTooltip}>
                           <button
-                            class="chat-controls__speed-toggle ${fastMode.active
-                              ? "chat-controls__speed-toggle--active"
-                              : ""}"
+                            class="chat-controls__speed-toggle ${
+                              fastMode.active ? "chat-controls__speed-toggle--active" : ""
+                            }"
                             data-chat-speed-toggle=${fastMode.nextValue}
                             type="button"
                             role="switch"
@@ -754,10 +779,12 @@ function renderChatModelReasoningSelect(params: {
                         </operator-tooltip>
                       </div>
                     `
-                  : nothing}
+                    : nothing
+                }
               </div>
             `
-          : ""}
+            : ""
+        }
       </div>
     </details>
   `;

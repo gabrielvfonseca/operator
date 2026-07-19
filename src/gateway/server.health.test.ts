@@ -33,33 +33,31 @@ afterAll(async () => {
 });
 
 describe("gateway server health/presence", () => {
-  test(
-    "connect + health + presence + status succeed",
-    { timeout: HEALTH_E2E_TIMEOUT_MS },
-    async () => {
-      const { ws } = await harness.openClient();
+  test("connect + health + presence + status succeed", {
+    timeout: HEALTH_E2E_TIMEOUT_MS,
+  }, async () => {
+    const { ws } = await harness.openClient();
 
-      const healthP = onceMessage(ws, (o) => o.type === "res" && o.id === "health1");
-      const statusP = onceMessage(ws, (o) => o.type === "res" && o.id === "status1");
-      const presenceP = onceMessage(ws, (o) => o.type === "res" && o.id === "presence1");
+    const healthP = onceMessage(ws, (o) => o.type === "res" && o.id === "health1");
+    const statusP = onceMessage(ws, (o) => o.type === "res" && o.id === "status1");
+    const presenceP = onceMessage(ws, (o) => o.type === "res" && o.id === "presence1");
 
-      const sendReq = (id: string, method: string) =>
-        ws.send(JSON.stringify({ type: "req", id, method }));
-      sendReq("health1", "health");
-      sendReq("status1", "status");
-      sendReq("presence1", "system-presence");
+    const sendReq = (id: string, method: string) =>
+      ws.send(JSON.stringify({ type: "req", id, method }));
+    sendReq("health1", "health");
+    sendReq("status1", "status");
+    sendReq("presence1", "system-presence");
 
-      const health = await healthP;
-      const status = await statusP;
-      const presence = await presenceP;
-      expect(health.ok).toBe(true);
-      expect(status.ok).toBe(true);
-      expect(presence.ok).toBe(true);
-      expect(Array.isArray(presence.payload)).toBe(true);
+    const health = await healthP;
+    const status = await statusP;
+    const presence = await presenceP;
+    expect(health.ok).toBe(true);
+    expect(status.ok).toBe(true);
+    expect(presence.ok).toBe(true);
+    expect(Array.isArray(presence.payload)).toBe(true);
 
-      ws.close();
-    },
-  );
+    ws.close();
+  });
 
   test("broadcasts heartbeat events and serves last-heartbeat", async () => {
     type HeartbeatPayload = {
@@ -116,31 +114,29 @@ describe("gateway server health/presence", () => {
     ws.close();
   });
 
-  test(
-    "presence events carry seq + stateVersion",
-    { timeout: PRESENCE_EVENT_TIMEOUT_MS },
-    async () => {
-      const { ws } = await harness.openClient();
+  test("presence events carry seq + stateVersion", {
+    timeout: PRESENCE_EVENT_TIMEOUT_MS,
+  }, async () => {
+    const { ws } = await harness.openClient();
 
-      const presenceEventP = onceMessage(ws, (o) => o.type === "event" && o.event === "presence");
-      ws.send(
-        JSON.stringify({
-          type: "req",
-          id: "evt-1",
-          method: "system-event",
-          params: { text: "note from test" },
-        }),
-      );
+    const presenceEventP = onceMessage(ws, (o) => o.type === "event" && o.event === "presence");
+    ws.send(
+      JSON.stringify({
+        type: "req",
+        id: "evt-1",
+        method: "system-event",
+        params: { text: "note from test" },
+      }),
+    );
 
-      const evt = await presenceEventP;
-      expect(typeof evt.seq).toBe("number");
-      expect(evt.stateVersion?.presence).toBeGreaterThan(0);
-      const evtPayload = evt.payload as { presence?: unknown } | undefined;
-      expect(Array.isArray(evtPayload?.presence)).toBe(true);
+    const evt = await presenceEventP;
+    expect(typeof evt.seq).toBe("number");
+    expect(evt.stateVersion?.presence).toBeGreaterThan(0);
+    const evtPayload = evt.payload as { presence?: unknown } | undefined;
+    expect(Array.isArray(evtPayload?.presence)).toBe(true);
 
-      ws.close();
-    },
-  );
+    ws.close();
+  });
 
   test("system-event accepts exact-session routing fields", async () => {
     const { ws } = await harness.openClient();
@@ -200,37 +196,35 @@ describe("gateway server health/presence", () => {
     expect(evtPayload?.reason).toBe("gateway stopping");
   });
 
-  test(
-    "presence broadcast reaches multiple clients",
-    { timeout: PRESENCE_EVENT_TIMEOUT_MS },
-    async () => {
-      const clients = await Promise.all([
-        harness.openClient(),
-        harness.openClient(),
-        harness.openClient(),
-      ]);
-      const waits = clients.map(({ ws }) =>
-        onceMessage(ws, (o) => o.type === "event" && o.event === "presence"),
-      );
-      clients[0].ws.send(
-        JSON.stringify({
-          type: "req",
-          id: "broadcast",
-          method: "system-event",
-          params: { text: "fanout" },
-        }),
-      );
-      const events = await Promise.all(waits);
-      for (const evt of events) {
-        const evtPayload = evt.payload as { presence?: unknown[] } | undefined;
-        expect(evtPayload?.presence?.length).toBeGreaterThan(0);
-        expect(typeof evt.seq).toBe("number");
-      }
-      for (const { ws } of clients) {
-        ws.close();
-      }
-    },
-  );
+  test("presence broadcast reaches multiple clients", {
+    timeout: PRESENCE_EVENT_TIMEOUT_MS,
+  }, async () => {
+    const clients = await Promise.all([
+      harness.openClient(),
+      harness.openClient(),
+      harness.openClient(),
+    ]);
+    const waits = clients.map(({ ws }) =>
+      onceMessage(ws, (o) => o.type === "event" && o.event === "presence"),
+    );
+    clients[0].ws.send(
+      JSON.stringify({
+        type: "req",
+        id: "broadcast",
+        method: "system-event",
+        params: { text: "fanout" },
+      }),
+    );
+    const events = await Promise.all(waits);
+    for (const evt of events) {
+      const evtPayload = evt.payload as { presence?: unknown[] } | undefined;
+      expect(evtPayload?.presence?.length).toBeGreaterThan(0);
+      expect(typeof evt.seq).toBe("number");
+    }
+    for (const { ws } of clients) {
+      ws.close();
+    }
+  });
 
   test("presence includes client fingerprint", async () => {
     const role = "operator";

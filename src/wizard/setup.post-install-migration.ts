@@ -124,13 +124,13 @@ function applyMigrationConfigPatches(
     .filter((item): item is Parameters<typeof readMigrationConfigPatchDetails>[0] =>
       Boolean(
         item &&
-        typeof item === "object" &&
-        "kind" in item &&
-        item.kind === "config" &&
-        "action" in item &&
-        item.action === "merge" &&
-        "status" in item &&
-        item.status === "migrated",
+          typeof item === "object" &&
+          "kind" in item &&
+          item.kind === "config" &&
+          "action" in item &&
+          item.action === "merge" &&
+          "status" in item &&
+          item.status === "migrated",
       ),
     )
     .map(readMigrationConfigPatchDetails)
@@ -177,6 +177,7 @@ export async function offerPostInstallMigrations(
       continue;
     }
     const description = describeCandidate(candidate);
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let accepted;
     try {
       accepted = await prompter.confirm({
@@ -196,8 +197,7 @@ export async function offerPostInstallMigrations(
       logMigrationHint(params.runtime, candidate);
       continue;
     }
-    let preparation: Awaited<ReturnType<NonNullable<MigrationProviderPlugin["prepareApply"]>>> =
-      undefined;
+    let preparation: Awaited<ReturnType<NonNullable<MigrationProviderPlugin["prepareApply"]>>>;
     try {
       const [{ migrateDefaultCommand }, { createMigrationLogger }, { resolveStateDir }] =
         await Promise.all([

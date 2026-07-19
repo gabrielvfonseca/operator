@@ -10,8 +10,8 @@ function captureThinkingPayload(params: {
   modelId: string;
   thinkingLevel?: ThinkLevel;
 }): unknown {
-  let capturedThinking: unknown = undefined;
-  const baseStreamFn: StreamFn = (model, context, options) => {
+  let capturedThinking: unknown;
+  const baseStreamFn: StreamFn = (model, _context, options) => {
     const payload: Record<string, unknown> = {};
     options?.onPayload?.(payload, model);
     capturedThinking = payload.thinking;
@@ -96,8 +96,8 @@ describe("createMinimaxThinkingDisabledWrapper", () => {
   });
 
   it("removes implicit disabled thinking for MiniMax-M3", () => {
-    let capturedThinking: unknown = undefined;
-    const baseStreamFn: StreamFn = (model, context, options) => {
+    let capturedThinking: unknown;
+    const baseStreamFn: StreamFn = (model, _context, options) => {
       const payload: Record<string, unknown> = {
         thinking: { type: "disabled" },
       };
@@ -121,8 +121,8 @@ describe("createMinimaxThinkingDisabledWrapper", () => {
   });
 
   it("preserves explicit off thinking for MiniMax-M3", () => {
-    let capturedThinking: unknown = undefined;
-    const baseStreamFn: StreamFn = (model, context, options) => {
+    let capturedThinking: unknown;
+    const baseStreamFn: StreamFn = (model, _context, options) => {
       const payload: Record<string, unknown> = {
         thinking: { type: "disabled" },
       };
@@ -146,8 +146,8 @@ describe("createMinimaxThinkingDisabledWrapper", () => {
   });
 
   it("rewrites MiniMax-M3 default budget thinking to adaptive", () => {
-    let capturedThinking: unknown = undefined;
-    const baseStreamFn: StreamFn = (model, context, options) => {
+    let capturedThinking: unknown;
+    const baseStreamFn: StreamFn = (model, _context, options) => {
       const payload: Record<string, unknown> = {
         thinking: { type: "enabled", budget_tokens: 1024 },
       };
@@ -172,7 +172,7 @@ describe("createMinimaxThinkingDisabledWrapper", () => {
 
   it("restores explicit MiniMax-M3 maxTokens when rewriting budget thinking", () => {
     let capturedPayload: Record<string, unknown> | undefined;
-    const baseStreamFn: StreamFn = (model, context, options) => {
+    const baseStreamFn: StreamFn = (model, _context, options) => {
       const payload: Record<string, unknown> = {
         max_tokens: 8692,
         thinking: { type: "enabled", budget_tokens: 8192 },
@@ -200,8 +200,8 @@ describe("createMinimaxThinkingDisabledWrapper", () => {
   });
 
   it("preserves explicit enabled thinking for MiniMax-M3", () => {
-    let capturedThinking: unknown = undefined;
-    const baseStreamFn: StreamFn = (model, context, options) => {
+    let capturedThinking: unknown;
+    const baseStreamFn: StreamFn = (model, _context, options) => {
       const payload: Record<string, unknown> = {
         thinking: { type: "disabled" },
       };
@@ -232,8 +232,8 @@ describe("createMinimaxThinkingDisabledWrapper", () => {
   });
 
   it("preserves an already-set thinking value", () => {
-    let capturedThinking: unknown = undefined;
-    const baseStreamFn: StreamFn = (model, context, options) => {
+    let capturedThinking: unknown;
+    const baseStreamFn: StreamFn = (model, _context, options) => {
       const payload: Record<string, unknown> = {
         thinking: { type: "enabled", budget_tokens: 1024 },
       };

@@ -111,7 +111,7 @@ async function promptIrcNickServConfig(params: {
 
   const useEnvPassword =
     params.accountId === DEFAULT_ACCOUNT_ID &&
-    Boolean(process.env.IRC_NICKSERV_PASSWORD?.trim()) &&
+    process.env.IRC_NICKSERV_PASSWORD?.trim() &&
     !(existing?.password || existing?.passwordFile)
       ? await params.prompter.confirm({
           message: t("wizard.irc.nickServPasswordEnvPrompt"),

@@ -239,7 +239,7 @@ function expectResultTextContains(result: PluginCommandResult, expected: string)
 
 function buttonCommands(result: PluginCommandResult): string[] {
   const block = result.presentation?.blocks.find((candidate) => candidate.type === "buttons");
-  if (!block || block.type !== "buttons") {
+  if (block?.type !== "buttons") {
     throw new Error("expected button presentation");
   }
   return block.buttons.map((button) =>
@@ -2981,7 +2981,7 @@ describe("codex command", () => {
       },
       { threadId: "thread-222", cwd: "/repo", authProfileId: "openai:second" },
     );
-    const safeCodexControlRequest = vi.fn(async (configForTest, _method, requestParamsLocal) => ({
+    const safeCodexControlRequest = vi.fn(async (_configForTest, _method, requestParamsLocal) => ({
       ok: true as const,
       value: {
         threadId:

@@ -141,7 +141,7 @@ function hasVisiblePendingToolMediaReply(
 ): boolean {
   return Boolean(
     reply &&
-    ((reply.mediaUrls ?? []).some((url) => url.trim().length > 0) || reply.audioAsVoice === true),
+      ((reply.mediaUrls ?? []).some((url) => url.trim().length > 0) || reply.audioAsVoice === true),
   );
 }
 
@@ -400,7 +400,7 @@ export function completeEmbeddedAttemptResult(
     successfulCronAdds: getSuccessfulCronAdds(),
     cloudCodeAssistFormatError: Boolean(
       state.lastAssistant?.errorMessage &&
-      isCloudCodeAssistFormatError(state.lastAssistant.errorMessage),
+        isCloudCodeAssistFormatError(state.lastAssistant.errorMessage),
     ),
     compactionCount: getCompactionCount(),
     compactionTokensAfter: getLastCompactionTokensAfter(),

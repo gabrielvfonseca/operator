@@ -119,7 +119,7 @@ export async function readPostCompactionContext(
     const combined = sections.join("\n\n").replaceAll("YYYY-MM-DD", dateStamp);
     const safeContent =
       combined.length > maxContextChars
-        ? truncateUtf16Safe(combined, maxContextChars) + "\n...[truncated]..."
+        ? `${truncateUtf16Safe(combined, maxContextChars)}\n...[truncated]...`
         : combined;
 
     // When using the default section set, use precise prose that names the

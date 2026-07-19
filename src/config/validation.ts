@@ -718,6 +718,7 @@ function formatUnsupportedMutableSecretRefMessage(pathInner: string): string {
   return [
     `SecretRef objects are not supported at ${pathInner}.`,
     "This credential is runtime-mutable or runtime-managed and must stay a plain string value.",
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     'Use a plain string (env template strings like "${MY_VAR}" are allowed).',
     `See ${SECRETREF_POLICY_DOC_URL}.`,
   ].join(" ");
@@ -763,7 +764,7 @@ function filterUnsupportedMutableSecretRefSchemaIssue(params: {
     return /expected string, received object/i.test(issue.message) ? null : issue;
   }
 
-  if (!issue.path || !policyIssue.path || !policyIssue.path.startsWith(`${issue.path}.`)) {
+  if (!issue.path || !policyIssue.path?.startsWith(`${issue.path}.`)) {
     return issue;
   }
 

@@ -62,7 +62,7 @@ export function createDiscordActivityButton(
   } = {},
 ): DiscordActivityButton | null {
   const runtime = getDiscordActivitiesRuntime();
-  if (!runtime || !runtime.isAccountEnabled(ctx.accountId, ctx.cfg)) {
+  if (!runtime?.isAccountEnabled(ctx.accountId, ctx.cfg)) {
     return null;
   }
   if (applicationId) {

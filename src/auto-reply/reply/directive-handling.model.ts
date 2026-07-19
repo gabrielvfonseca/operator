@@ -522,7 +522,7 @@ function isCompleteSessionEntry(
 ): entry is SessionEntry {
   return Boolean(
     entry &&
-    typeof (entry as Partial<SessionEntry>).sessionId === "string" &&
-    typeof (entry as Partial<SessionEntry>).updatedAt === "number",
+      typeof (entry as Partial<SessionEntry>).sessionId === "string" &&
+      typeof (entry as Partial<SessionEntry>).updatedAt === "number",
   );
 }

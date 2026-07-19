@@ -168,8 +168,8 @@ export function resolveSlackReplyRenderPlan(
     let renderedText = message?.text ?? resolveSlackReplyText(payload, text);
     let textIsSlackMrkdwn = Boolean(
       message &&
-      !message.textIsSlackPlainText &&
-      (message.authoredTextPlacement !== "outside-blocks" || message.nativeDataFallbackBaseText),
+        !message.textIsSlackPlainText &&
+        (message.authoredTextPlacement !== "outside-blocks" || message.nativeDataFallbackBaseText),
     );
     if (blocks?.length && sourceText) {
       if (hasSlackNativeDataBlock(blocks)) {
@@ -209,8 +209,8 @@ function readSlackChannelBlocks(payload: ReplyPayload): SlackBlock[] {
 export function hasSlackReplyStructuredContent(payload: ReplyPayload): boolean {
   return Boolean(
     readSlackChannelBlocks(payload).length ||
-    normalizeMessagePresentation(payload.presentation) ||
-    payload.interactive?.blocks.length,
+      normalizeMessagePresentation(payload.presentation) ||
+      payload.interactive?.blocks.length,
   );
 }
 

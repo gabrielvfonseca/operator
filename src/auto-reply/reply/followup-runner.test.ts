@@ -32,7 +32,7 @@ const resolveQueuedReplyExecutionConfigMock = vi.fn();
 const resolveProviderFollowupFallbackRouteMock = vi.fn();
 const resolveProviderThinkingProfileMock = vi.fn();
 let resolveQueuedReplyExecutionConfigActual:
-  | (typeof import("./agent-runner-utils.js"))["resolveQueuedReplyExecutionConfig"]
+  | typeof import("./agent-runner-utils.js")["resolveQueuedReplyExecutionConfig"]
   | undefined;
 let createFollowupRunner: typeof import("./followup-runner.js").createFollowupRunner;
 let clearRuntimeConfigSnapshot: typeof import("../../config/config.js").clearRuntimeConfigSnapshot;
@@ -514,14 +514,17 @@ async function loadFreshFollowupRunnerModuleForTest() {
       };
     },
   }));
-  ({ testing: cliBackendsTestingForTest } =
-    await import("../../agents/cli-backends.test-support.js"));
+  ({ testing: cliBackendsTestingForTest } = await import(
+    "../../agents/cli-backends.test-support.js"
+  ));
   setFastFollowupCliBackendDeps();
   ({ createFollowupRunner } = await import("./followup-runner.js"));
-  ({ clearRuntimeConfigSnapshot, setRuntimeConfigSnapshot } =
-    await import("../../config/config.js"));
-  ({ clearSessionStoreCacheForTest, loadSessionStore, saveSessionStore } =
-    await import("../../config/sessions/store.js"));
+  ({ clearRuntimeConfigSnapshot, setRuntimeConfigSnapshot } = await import(
+    "../../config/config.js"
+  ));
+  ({ clearSessionStoreCacheForTest, loadSessionStore, saveSessionStore } = await import(
+    "../../config/sessions/store.js"
+  ));
   ({ replaceSessionEntrySync } = await import("../../config/sessions/session-accessor.js"));
   ({ clearFollowupQueue } = await import("./queue/state.js"));
   ({ enqueueFollowupRun } = await import("./queue.js"));
@@ -5752,14 +5755,10 @@ describe("createFollowupRunner messaging delivery and dedupe", () => {
     ]
   >)(
     "keeps %s silent",
-    async (
-      _label: string,
-      agentResult: Record<string, unknown>,
-      queuedOverrides: {
-        currentInboundEventKind?: FollowupRun["currentInboundEventKind"];
-        run?: Partial<FollowupRun["run"]>;
-      },
-    ) => {
+    async (_label: string, agentResult: Record<string, unknown>, queuedOverrides: {
+      currentInboundEventKind?: FollowupRun["currentInboundEventKind"];
+      run?: Partial<FollowupRun["run"]>;
+    }) => {
       const queued = baseQueuedRun("discord");
       const runOverride = queuedOverrides.run;
       const { onBlockReply } = await runMessagingCase({

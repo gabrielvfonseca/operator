@@ -587,6 +587,7 @@ function runGeneratedPublisherScenario(
     writeExecutable(path.join(fakeBin, "gh"), [
       "#!/usr/bin/env bash",
       "set -euo pipefail",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'case "${1-}:${2-}" in',
       "  auth:setup-git) exit 0 ;;",
       "  api:*)",
@@ -750,6 +751,7 @@ describe("ci workflow guards", () => {
     expect(workflow.on.workflow_dispatch.inputs).not.toHaveProperty("loc_base_ref");
     expect(workflow.on.workflow_dispatch.inputs).not.toHaveProperty("pr_number");
     expect(readFileSync(".github/workflows/ci.yml", "utf8")).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "run-name: ${{ github.event_name == 'workflow_dispatch' && inputs.dispatch_id != '' && format('CI {0}', inputs.dispatch_id) || (github.event_name == 'workflow_dispatch' && inputs.release_gate && format('CI release gate {0}', inputs.target_ref) || 'CI') }}",
     );
     const preflightSteps = workflow.jobs.preflight.steps;
@@ -769,6 +771,7 @@ describe("ci workflow guards", () => {
     );
     expect(workflow.jobs.preflight.permissions).toEqual({ contents: "read" });
     expect(readFileSync(".github/workflows/ci.yml", "utf8")).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "OPENCLAW_CI_RUN_ANDROID: ${{ github.event_name == 'workflow_dispatch' && (inputs.release_gate || inputs.include_android) && 'true' || steps.changed_scope.outputs.run_android || 'false' }}",
     );
 
@@ -787,6 +790,7 @@ describe("ci workflow guards", () => {
     const workflow = readTestboxWorkflow();
 
     expect(workflow.jobs.check["runs-on"]).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ github.event_name == 'pull_request' && 'ubuntu-24.04' || 'blacksmith-16vcpu-ubuntu-2404' }}",
     );
     const beginStep = workflow.jobs.check.steps.find(
@@ -797,6 +801,7 @@ describe("ci workflow guards", () => {
     );
     expect(beginStep).toMatchObject({
       if: "github.event_name == 'workflow_dispatch'",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       with: { testbox_id: "${{ inputs.testbox_id }}" },
     });
     expect(runStep).toMatchObject({
@@ -859,6 +864,7 @@ describe("ci workflow guards", () => {
     expect(refresh.strategy.matrix.locale).toEqual(NATIVE_I18N_LOCALES);
     expect(controlUiWorkflow.concurrency["cancel-in-progress"]).toBe(false);
     expect(controlUiWorkflow.concurrency.group.replace(/\s+/gu, " ")).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ github.event_name == 'workflow_dispatch' && inputs.token_preflight_only && format('control-ui-locale-token-preflight-{0}', github.ref) || 'control-ui-locale-refresh' }}",
     );
     expect(controlUiWorkflow.jobs.plan).toBeUndefined();
@@ -898,8 +904,10 @@ describe("ci workflow guards", () => {
     expect(refreshStep.run).toContain("run_openai_refresh");
     expect(refreshStep.run).toContain("repository OpenAI key");
     expect(refreshStep.env.OPENCLAW_DOCS_I18N_OPENAI_API_KEY).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ secrets.OPENCLAW_DOCS_I18N_OPENAI_API_KEY }}",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(refreshStep.env.OPENAI_API_KEY).toBe("${{ secrets.OPENAI_API_KEY }}");
     expect(nativeArtifactStep.run).toContain("git add -A apps/.i18n/native");
     expect(nativeArtifactStep.run).not.toContain("native-source.json");
@@ -937,8 +945,10 @@ describe("ci workflow guards", () => {
     expect(controlUiRefreshStep.run).toContain("run_openai_refresh");
     expect(controlUiRefreshStep.run).toContain("repository OpenAI key");
     expect(controlUiRefreshStep.env.OPENCLAW_DOCS_I18N_OPENAI_API_KEY).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ secrets.OPENCLAW_DOCS_I18N_OPENAI_API_KEY }}",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(controlUiRefreshStep.env.OPENAI_API_KEY).toBe("${{ secrets.OPENAI_API_KEY }}");
     expect(controlUiRefreshStep.env.OPENCLAW_CONTROL_UI_I18N_AUTH_OPTIONAL).toBe("0");
     const controlUiArtifactStep = controlUiWorkflow.jobs.refresh.steps.find(
@@ -974,11 +984,15 @@ describe("ci workflow guards", () => {
             ? "Resolve source commit"
             : "Resolve default branch head"),
       );
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(resolveBase.outputs.sha).toBe("${{ steps.base.outputs.sha }}");
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(resolveStep.env.GH_TOKEN).toBe("${{ github.token }}");
       expect(resolveStep.run).toContain(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         'gh api --method GET "repos/${REPOSITORY}/commits/${DEFAULT_BRANCH}" --jq .sha',
       );
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(resolveStep.run).toContain('[[ ! "${sha}" =~ ^[0-9a-f]{40}$ ]]');
 
       const checkoutSteps = (
@@ -990,6 +1004,7 @@ describe("ci workflow guards", () => {
       );
       expect(checkoutSteps.length).toBeGreaterThan(0);
       for (const checkoutStep of checkoutSteps) {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         expect(checkoutStep.with?.ref).toBe("${{ needs.resolve-base.outputs.sha }}");
         expect(checkoutStep.with?.["persist-credentials"]).toBe(false);
       }
@@ -999,10 +1014,13 @@ describe("ci workflow guards", () => {
       (step: { name?: string }) => step.name === "Resolve source commit",
     );
     expect(controlUiResolveStep.env.TOKEN_PREFLIGHT_ONLY).toContain("inputs.token_preflight_only");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(controlUiResolveStep.env.WORKFLOW_SHA).toBe("${{ github.workflow_sha }}");
     expect(controlUiResolveStep.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'if [[ "${TOKEN_PREFLIGHT_ONLY}" == "true" ]]; then',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(controlUiResolveStep.run).toContain('sha="${WORKFLOW_SHA}"');
 
     for (const preflight of [controlUiPreflight, nativePreflight]) {
@@ -1017,14 +1035,18 @@ describe("ci workflow guards", () => {
         (step: { name?: string }) => step.name === "Create generated PR tokens",
       );
       expect(checkoutStep.with).toMatchObject({
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         ref: "${{ needs.resolve-base.outputs.sha }}",
         "persist-credentials": false,
       });
       expect(tokensStep.uses).toBe("./.github/actions/create-generated-pr-tokens");
       expect(tokensStep.with).toEqual({
         "contents-client-id": "Iv23liOECG0slfuhz093",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "contents-private-key": "${{ secrets.CLAWSWEEPER_APP_PRIVATE_KEY }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "pull-request-app-id": "${{ secrets.MANTIS_GITHUB_APP_ID }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "pull-request-private-key": "${{ secrets.MANTIS_GITHUB_APP_PRIVATE_KEY }}",
       });
     }
@@ -1064,9 +1086,13 @@ describe("ci workflow guards", () => {
       id: "contents-token",
       uses: CREATE_GITHUB_APP_TOKEN_V3,
       with: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "client-id": "${{ inputs.contents-client-id }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "private-key": "${{ inputs.contents-private-key }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         owner: "${{ github.repository_owner }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         repositories: "${{ github.event.repository.name }}",
         "permission-contents": "write",
       },
@@ -1076,26 +1102,36 @@ describe("ci workflow guards", () => {
       id: "pull-request-token",
       uses: CREATE_GITHUB_APP_TOKEN_V3,
       with: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "app-id": "${{ inputs.pull-request-app-id }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "private-key": "${{ inputs.pull-request-private-key }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         owner: "${{ github.repository_owner }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         repositories: "${{ github.event.repository.name }}",
         "permission-pull-requests": "write",
       },
     });
     expect(tokenAction.outputs["contents-token"].value).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ steps.contents-token.outputs.token }}",
     );
     expect(tokenAction.outputs["pull-request-token"].value).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ steps.pull-request-token.outputs.token }}",
     );
     expect(createTokensStep).toMatchObject({
       id: "tokens",
       uses: "./.github/actions/create-generated-pr-tokens",
       with: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "contents-client-id": "${{ inputs.contents-client-id }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "contents-private-key": "${{ inputs.contents-private-key }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "pull-request-app-id": "${{ inputs.pull-request-app-id }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "pull-request-private-key": "${{ inputs.pull-request-private-key }}",
       },
     });
@@ -1104,27 +1140,35 @@ describe("ci workflow guards", () => {
         (step: { uses?: string }) => step.uses === CREATE_GITHUB_APP_TOKEN_V3,
       ),
     ).toEqual([]);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(actionPublishStep.env.CONTENTS_TOKEN).toBe("${{ steps.tokens.outputs.contents-token }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(actionPublishStep.env.GH_TOKEN).toBe("${{ steps.tokens.outputs.pull-request-token }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(actionPublishStep.env.INVALIDATION_PATHS).toBe("${{ inputs.invalidation-paths }}");
     expect(publishAction.inputs["working-directory"]).toEqual({
       description: "Repository root containing the generated files.",
       required: false,
       default: ".",
     });
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(actionPublishStep["working-directory"]).toBe("${{ inputs.working-directory }}");
     expect(publishAction.inputs["overlap-policy"]).toEqual({
       description: "Whether stale inputs or owned-path overlap defer to a successor run or fail.",
       required: false,
       default: "defer",
     });
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(actionPublishStep.env.OVERLAP_POLICY).toBe("${{ inputs.overlap-policy }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(actionPublishStep.run).toContain('case "${OVERLAP_POLICY}" in');
     expect(actionPublishStep.run).toContain("defer | fail");
     expect(actionPublishStep.run).toContain("GIT_TERMINAL_PROMPT=0");
     expect(actionPublishStep.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'git config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ${git_auth}"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(actionPublishStep.run).toContain("printf '::add-mask::%s\\n' \"${git_auth}\"");
     expect(actionPublishStep.run).toContain(
       "git config --local --unset-all http.https://github.com/.extraheader",
@@ -1139,6 +1183,7 @@ describe("ci workflow guards", () => {
     expect(actionPublishStep.run).toContain("refusing a doomed retry");
     expect(actionPublishStep.run).toContain("branch_was_deleted");
     expect(actionPublishStep.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '[[ -n "${remote_head}" && -z "${current_remote_head}" ]]',
     );
     expect(actionPublishStep.run).toContain('push_generated_branch ""');
@@ -1146,8 +1191,10 @@ describe("ci workflow guards", () => {
       "overlap policy decides whether stale output defers or fails",
     );
     expect(actionPublishStep.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'gh api --method GET "repos/${GITHUB_REPOSITORY}/pulls"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(actionPublishStep.run).toContain('-f "head=${GITHUB_REPOSITORY_OWNER}:${HEAD_BRANCH}"');
     expect(actionPublishStep.run).toContain(".head.repo.full_name == env.GITHUB_REPOSITORY");
     expect(actionPublishStep.run).toContain(".head.ref == env.HEAD_BRANCH");
@@ -1155,6 +1202,7 @@ describe("ci workflow guards", () => {
     expect(actionPublishStep.run).not.toContain("gh pr list");
     expect(actionPublishStep.run).toContain("neutralize_stale_pr");
     expect(actionPublishStep.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'git diff --quiet "${source_commit}" "${base_ref}" -- "${invalidation_paths[@]}"',
     );
     expect(actionPublishStep.run).not.toContain("force_retirement");
@@ -1162,31 +1210,42 @@ describe("ci workflow guards", () => {
     expect(actionPublishStep.run).not.toContain("gh pr close");
     expect(actionPublishStep.run).toContain('source_commit="$(git rev-parse HEAD)"');
     expect(actionPublishStep.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'git merge-base --is-ancestor "${source_commit}" "${base_ref}"',
     );
     expect(actionPublishStep.run).toContain("Snapshot the generator's desired blobs");
     expect(actionPublishStep.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'git diff --name-only -z --no-renames "${source_commit}" "${desired_commit}"',
     );
     expect(actionPublishStep.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '[[ "${source_entry}" != "${base_entry}" && "${desired_entry}" != "${base_entry}" ]]',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(actionPublishStep.run).toContain('git switch -C "${HEAD_BRANCH}" "${base_ref}"');
     expect(actionPublishStep.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'git restore --source="${desired_commit}" --staged --worktree -- "${path}"',
     );
     expect(actionPublishStep.run).not.toContain("git rebase");
     expect(actionPublishStep.run).toContain("verify_publication");
     expect(actionPublishStep.run).toContain("desired_matches_tree");
     expect(actionPublishStep.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '[[ "${current_remote_head}" != "${published_commit}" ]]',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(actionPublishStep.run).toContain('[[ "${final_pr_head}" != "${published_commit}" ]]');
     expect(actionPublishStep.run).toContain("gh pr edit");
     expect(actionPublishStep.run).toContain("gh pr create");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(actionPublishStep.run).toContain('--base "${BASE_BRANCH}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(actionPublishStep.run).toContain('--head "${HEAD_BRANCH}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(actionPublishStep.run).toContain('--body-file "${body_file}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(actionPublishStep.run).not.toContain('HEAD:"${BASE_BRANCH}"');
 
     for (const [
@@ -1245,9 +1304,13 @@ describe("ci workflow guards", () => {
       expect(publishStep.uses).toBe("./.github/actions/publish-generated-pr");
       expect(publishStep.with).toMatchObject({
         "contents-client-id": "Iv23liOECG0slfuhz093",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "contents-private-key": "${{ secrets.CLAWSWEEPER_APP_PRIVATE_KEY }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "pull-request-app-id": "${{ secrets.MANTIS_GITHUB_APP_ID }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "pull-request-private-key": "${{ secrets.MANTIS_GITHUB_APP_PRIVATE_KEY }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "base-branch": "${{ github.event.repository.default_branch }}",
         "head-branch": automationBranch,
         "commit-message": commitMessage,
@@ -1270,7 +1333,9 @@ describe("ci workflow guards", () => {
       expect(publishStep.with).not.toHaveProperty("overlap-policy");
       expect(publishStep.with["pr-body"]).toContain("## What Problem This Solves");
       expect(publishStep.with["pr-body"]).toContain("## Evidence");
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(publishStep.with["pr-body"]).toContain("${{ needs.resolve-base.outputs.sha }}");
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expect(publishStep.with["pr-body"]).not.toContain("${{ github.sha }}");
     }
   });
@@ -1437,7 +1502,9 @@ describe("ci workflow guards", () => {
       (step: WorkflowStep) => step.uses === CHECKOUT_V6,
     );
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(checkout.with.ref).toBe("${{ github.workflow_sha }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(checkout.with.ref).not.toBe("${{ github.event.pull_request.base.sha }}");
     expect(source).toContain("Old PR events can carry a stale base SHA");
   });
@@ -1448,6 +1515,7 @@ describe("ci workflow guards", () => {
     expect(action).toContain("base-sha:");
     expect(action).toContain("docs_only:");
     expect(action).toContain("docs_changed:");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(action).toContain("BASE_SHA: ${{ inputs.base-sha }}");
     expect(action).toContain('BASE="$BASE_SHA"');
     expect(action).toContain(
@@ -1505,6 +1573,7 @@ describe("ci workflow guards", () => {
     for (const job of sdkJobs) {
       const setupStep = expectDefined(
         job.steps.find((step: WorkflowStep) =>
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           step.run?.includes("commandlinetools-linux-${CMDLINE_TOOLS_VERSION}_latest.zip"),
         ),
         "Android SDK setup step",
@@ -1518,6 +1587,7 @@ describe("ci workflow guards", () => {
     const workflow = readCiWorkflow();
     const source = readFileSync(".github/workflows/ci.yml", "utf8");
     const runStep = workflow.jobs.android.steps.find(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       (step: WorkflowStep) => step.name === "Run Android ${{ matrix.task }}",
     );
 
@@ -1543,11 +1613,13 @@ describe("ci workflow guards", () => {
 
     expect(admission["runs-on"]).toBe("ubuntu-24.04");
     expect(admission.steps[0].if).toContain("github.ref == 'refs/heads/main'");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(admission.steps[0].run).toContain('sleep "${OPENCLAW_MAIN_CI_DEBOUNCE_SECONDS}"');
     expect(admission.env.OPENCLAW_MAIN_CI_DEBOUNCE_SECONDS).toBe("90");
     expect(workflow.jobs.preflight.needs).toContain("runner-admission");
     expect(workflow.jobs["security-fast"].needs).toContain("runner-admission");
     expect(source).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "cancel-in-progress: ${{ github.event_name == 'pull_request' || (github.event_name == 'push' && github.repository == 'openclaw/openclaw' && github.ref == 'refs/heads/main') }}",
     );
   });
@@ -1653,6 +1725,7 @@ describe("ci workflow guards", () => {
     expect(cleanupStep).toMatchObject({
       if: "inputs.sticky-disk == 'true'",
       uses: "./.github/actions/register-bind-mount-cleanup",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       with: { path: "${{ github.workspace }}/node_modules" },
     });
     expect(action.runs.steps.indexOf(mountStep)).toBeLessThan(
@@ -1667,6 +1740,7 @@ describe("ci workflow guards", () => {
     expect(bindStep.run).not.toContain("PNPM_CONFIG_MODULES_DIR");
     expect(bindStep.run).not.toContain("PNPM_CONFIG_VIRTUAL_STORE_DIR");
     expect(installStep.env).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       STICKY_DISK: "${{ inputs.sticky-disk }}",
       STICKY_ROOT: "/var/tmp/openclaw-node-deps",
     });
@@ -1675,6 +1749,7 @@ describe("ci workflow guards", () => {
       'bash "$GITHUB_ACTION_PATH/sticky-importers.sh" restore "$STICKY_ROOT" "$GITHUB_WORKSPACE"',
     );
     expect(installStep.run).toContain("Sticky dependency snapshot is ready; skipping pnpm install");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(installStep.run.indexOf('pnpm "${install_args[@]}"')).toBeLessThan(
       installStep.run.indexOf(
         'bash "$GITHUB_ACTION_PATH/sticky-importers.sh" capture "$STICKY_ROOT" "$GITHUB_WORKSPACE"',
@@ -2055,6 +2130,7 @@ describe("ci workflow guards", () => {
     }
     for (const jobName of ["macos-swift", "ios-build"]) {
       expect(workflow.jobs[jobName].env.HISTORICAL_TARGET).toBe(
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "${{ needs.preflight.outputs.compatibility_target }}",
       );
     }
@@ -2123,9 +2199,13 @@ describe("ci workflow guards", () => {
     const workflow = readFileSync(".github/workflows/windows-blacksmith-testbox.yml", "utf8");
 
     expect(workflow.match(/--connect-timeout 10 --max-time 30/gu)).toHaveLength(2);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain('echo "phone_home_hydrating_curl=${hydrating_curl_status}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain('echo "phone_home_hydrating_http=${hydrating_http_code}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain('echo "phone_home_ready_curl=${ready_curl_status}"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).toContain('echo "phone_home_ready_http=${http_code}"');
     expect(workflow).toContain('jq -e \'type == "number"\' <<<"$installation_model_id"');
     expect(workflow).toContain('--arg testbox_id "$TESTBOX_ID"');
@@ -2157,10 +2237,13 @@ describe("ci workflow guards", () => {
       "Blacksmith phone-home did not return an SSH public key; testbox cannot accept CLI connections.",
     );
     expect(workflow).not.toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'phone_home_ready_http=${http_code}"\n\n          echo "============================================"',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).not.toContain('\\"testbox_id\\": \\"${TESTBOX_ID}\\"');
     expect(workflow).not.toContain('cat > "$ready_body" <<JSON');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflow).not.toContain('"testbox_id": "${testbox_id}"');
   });
 
@@ -2181,6 +2264,7 @@ describe("ci workflow guards", () => {
     expect(shrinkwrapGuards).toContain("pnpm deps:shrinkwrap:check");
     expect(preflightGuards).toContain("pnpm deps:patches:check");
     expect(parsedWorkflow.jobs.preflight.outputs.diff_base_revision).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ steps.diff_base.outputs.sha }}",
     );
     expect(
@@ -2198,6 +2282,7 @@ describe("ci workflow guards", () => {
         (step: WorkflowStep) => step.name === "Run check shard",
       ).env.PR_BASE_SHA,
     ).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ github.event_name == 'pull_request' && needs.preflight.outputs.diff_base_revision || '' }}",
     );
   });
@@ -2283,6 +2368,7 @@ describe("ci workflow guards", () => {
     const workflow = readCiWorkflow();
     const checksFastSteps = workflow.jobs["checks-fast-core"].steps;
     const checksFastRun = checksFastSteps.find(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       (step: WorkflowStep) => step.name === "Run ${{ matrix.task }} (${{ matrix.runtime }})",
     );
     const releaseGateMerge = checksFastSteps.find(
@@ -2299,18 +2385,23 @@ describe("ci workflow guards", () => {
     expect(checksFastRun.run).toContain("max-lines-ratchet)");
     expect(checksFastRun.run).toContain('has_package_script "check:max-lines-ratchet"');
     expect(checksFastRun.env.RATCHET_EVENT_BASE_SHA).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ github.event_name == 'push' && github.event.before || '' }}",
     );
     expect(checksFastRun.env.RATCHET_PR_HEAD_SHA).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || '' }}",
     );
     expect(checksFastRun.env.RATCHET_MANUAL_TARGET_SHA).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ github.event_name == 'workflow_dispatch' && !inputs.release_gate && needs.preflight.outputs.checkout_revision || '' }}",
     );
     expect(checksFastRun.env.GH_TOKEN).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ matrix.task == 'max-lines-ratchet' && github.token || '' }}",
     );
     expect(releaseGateMerge.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'gh api --method GET "repos/${GITHUB_REPOSITORY}/pulls/${PULL_REQUEST_NUMBER}"',
     );
     expect(releaseGateMerge.run).toContain(
@@ -2321,6 +2412,7 @@ describe("ci workflow guards", () => {
     expect(releaseGateMerge.run).toContain("release-gate pull request is not mergeable");
     expect(releaseGateMerge.run).toContain("sleep 5");
     expect(releaseGateMerge.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '"+refs/pull/${PULL_REQUEST_NUMBER}/merge:refs/remotes/origin/ci-max-lines-merge"',
     );
     expect(releaseGateMerge.run).toContain("git fetch --no-tags --depth=2 origin \\");
@@ -2329,18 +2421,22 @@ describe("ci workflow guards", () => {
     );
     expect(releaseGateMerge.run).toContain('git checkout --detach "$merge_sha"');
     expect(releaseGateMerge.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'echo "RATCHET_RELEASE_BASE_SHA=${base_sha}" >> "$GITHUB_ENV"',
     );
     expect(releaseGateMerge.run).toContain(
       'echo "RATCHET_RELEASE_MERGE_TREE=true" >> "$GITHUB_ENV"',
     );
     expect(checksFastRun.run).toContain("git fetch --no-tags --depth=1 origin \\");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(checksFastRun.run).toContain('git ls-remote origin "refs/heads/${default_branch}"');
     expect(checksFastRun.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '"repos/${GITHUB_REPOSITORY}/compare/${default_sha}...${RATCHET_MANUAL_TARGET_SHA}"',
     );
     expect(checksFastRun.run).toContain("--jq '.merge_base_commit.sha'");
     expect(checksFastRun.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '"+${merge_base_sha}:refs/remotes/origin/ci-max-lines-base"',
     );
     expect(checksFastRun.run).toContain(
@@ -2349,13 +2445,17 @@ describe("ci workflow guards", () => {
     expect(checksFastRun.run).toContain(
       "mapfile -t merge_parents < <(git cat-file -p HEAD | sed -n 's/^parent //p')",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(checksFastRun.run).toContain('"${#merge_parents[@]}" != "2"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(checksFastRun.run).toContain('"${merge_parents[1]:-}" != "$RATCHET_PR_HEAD_SHA"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(checksFastRun.run).toContain('"+${merge_base}:refs/remotes/origin/ci-max-lines-base"');
     expect(checksFastRun.run).not.toContain("ci-max-lines-target^");
     expect(checksFastRun.run).toContain("unset GH_TOKEN");
     expect(checksFastRun.run).toContain('pnpm check:max-lines-ratchet --base "$base_ref"');
     expect(checksFastRun.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'if [[ "${RATCHET_RELEASE_MERGE_TREE:-}" == "true" ]]; then',
     );
     expect(checksFastRun.run).toContain(
@@ -2386,6 +2486,7 @@ describe("ci workflow guards", () => {
 
   it("uses target-owned CI plans and capabilities for older release checkouts", () => {
     const androidRun = readCiWorkflow().jobs.android.steps.find(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       (step: WorkflowStep) => step.name === "Run Android ${{ matrix.task }}",
     ).run;
     expect(androidRun).toContain("build-play-compat)");
@@ -2680,6 +2781,7 @@ describe("ci workflow guards", () => {
       '[[ "$("$swift_tools_dir/swiftformat" --version)" == "$swiftformat_version" ]]',
     );
     expect(workflow.jobs["macos-swift"].env.HISTORICAL_TARGET).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ needs.preflight.outputs.compatibility_target }}",
     );
     expect(swiftInstall.run).toContain('elif [[ "$HISTORICAL_TARGET" == "true" ]]');
@@ -2690,6 +2792,7 @@ describe("ci workflow guards", () => {
       (step: { name?: string }) => step.name === "Run check shard",
     );
     expect(checkShard.env.HISTORICAL_TARGET).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ needs.preflight.outputs.compatibility_target }}",
     );
     expect(checkShard.run).toContain("pnpm tsgo:scripts");
@@ -2713,6 +2816,7 @@ describe("ci workflow guards", () => {
       (step: { name?: string }) => step.name === "Test Control UI",
     );
     expect(workflow.jobs["checks-ui"].env.COMPATIBILITY_TARGET).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ needs.preflight.outputs.compatibility_target }}",
     );
     expect(uiInstall.run).toContain('if [[ "$COMPATIBILITY_TARGET" == "true" ]]');
@@ -2762,6 +2866,7 @@ describe("ci workflow guards", () => {
     );
     expect(localeJob.needs).toEqual(["preflight"]);
     expect(localeJob.if).toBe("needs.preflight.outputs.run_control_ui_i18n == 'true'");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(localeJob["continue-on-error"]).toBe("${{ github.event_name != 'workflow_dispatch' }}");
     expect(localeStep.run).toBe("pnpm ui:i18n:check");
     expect(readFileSync(".github/workflows/full-release-validation.yml", "utf8")).toContain(
@@ -2776,6 +2881,7 @@ describe("ci workflow guards", () => {
     );
 
     expect(startupMemoryStep.env.OPENCLAW_STARTUP_MEMORY_PLUGINS_LIST_MB).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ runner.environment == 'github-hosted' && '425' || '400' }}",
     );
   });
@@ -2807,6 +2913,7 @@ describe("ci workflow guards", () => {
     expect(buildDistStep.if).toBe("steps.dist_build_cache.outputs.cache-hit != 'true'");
     expect(saveStep.uses).toBe("actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae");
     expect(saveStep.if).toBe("steps.dist_build_cache.outputs.cache-hit != 'true'");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(saveStep.with.key).toBe("${{ steps.dist_build_cache.outputs.cache-primary-key }}");
     expect(restoreStep.with.path).toContain("dist/");
     expect(restoreStep.with.path).toContain("dist-runtime/");
@@ -2836,6 +2943,7 @@ describe("ci workflow guards", () => {
     const verifyStep = steps.find((step: WorkflowStep) => step.name === "Verify build artifacts");
     const saveStep = steps.find((step: WorkflowStep) => step.name === "Save dist build cache");
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(resolveSeedsStep.run).toContain('cache_prefix="${RUNNER_OS}-dist-build-v2-"');
     expect(restoreStep.with.path).toContain("packages/*/dist/");
     expect(restoreStep.with.key).toContain("dist-build-v2-");
@@ -2855,6 +2963,7 @@ describe("ci workflow guards", () => {
     expect(run).toContain('start_check "channels"');
     expect(run).toContain('start_check "core-support-boundary"');
     expect(run).not.toContain('start_check "gateway-watch"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(run.indexOf('for index in "${!pids[@]}"')).toBeLessThan(
       run.indexOf('if [ "$RUN_GATEWAY_WATCH" = "true" ]; then'),
     );
@@ -2906,11 +3015,15 @@ describe("ci workflow guards", () => {
     expect(manifestStep.run).toContain(
       'shard.groups?.some((group) => group.shard_name.startsWith("core-tooling"))',
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(nodeTestJob["timeout-minutes"]).toBe("${{ matrix.timeout_minutes || 60 }}");
     expect(runStep.env.OPENCLAW_VITEST_NO_OUTPUT_TIMEOUT_MS).toBe("300000");
     expect(runStep.env.OPENCLAW_VITEST_NO_OUTPUT_RETRY).toBe("1");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(runStep.env.OPENCLAW_NODE_TEST_ENV_JSON).toBe("${{ toJson(matrix.env) }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(runStep.env.OPENCLAW_NODE_TEST_TARGETS_JSON).toBe("${{ toJson(matrix.targets) }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(runStep.env.JOB_CONTEXT_JSON).toBe("${{ toJSON(job) }}");
     // Shard execution policy lives in the unit-tested wrapper script. Frozen
     // release targets load that wrapper from the exact trusted workflow SHA.
@@ -2920,6 +3033,7 @@ describe("ci workflow guards", () => {
       "job_workflow_repository=$(jq -r '.workflow_repository // empty' <<<\"$JOB_CONTEXT_JSON\")",
       "job_workflow_sha=$(jq -r '.workflow_sha // empty' <<<\"$JOB_CONTEXT_JSON\")",
       'git fetch --no-tags --depth=1 "$workflow_remote" "$job_workflow_sha"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'git show "${job_workflow_sha}:${file}" > "${harness_root}/${file}"',
       'node "$runner"',
     ]) {
@@ -2968,6 +3082,7 @@ describe("ci workflow guards", () => {
     );
     expect(checkoutStep.uses).toBe(CHECKOUT_V6);
     expect(checkoutStep.with.ref).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || needs.preflight.outputs.checkout_revision || github.sha }}",
     );
     expect(checkoutStep.with["persist-credentials"]).toBe(false);
@@ -2975,6 +3090,7 @@ describe("ci workflow guards", () => {
     const writeStep = timingJob.steps.find(
       (step: WorkflowStep) => step.name === "Write CI timing summary",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(writeStep.env).toMatchObject({ GH_TOKEN: "${{ github.token }}" });
     expect(writeStep.run).toContain(
       'node scripts/ci-run-timings.mjs "$GITHUB_RUN_ID" --limit 25 > ci-timings-summary.txt',
@@ -3028,6 +3144,7 @@ describe("ci workflow guards", () => {
         .toSorted(),
     );
     expect(gate.if).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ always() && (github.event_name != 'pull_request' || !github.event.pull_request.draft) }}",
     );
     expect(gate["runs-on"]).toBe("ubuntu-24.04");
@@ -3142,6 +3259,7 @@ describe("ci workflow guards", () => {
     expect(validateProfileStep.run).toContain(
       "taxonomy.profiles.find((entry) => entry.id === requested)",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(validateProfileStep.run).toContain("profile=${profile.id}");
     const ensurePlaywrightStep = qaRunJob.steps.find(
       (step: WorkflowStep) => step.name === "Ensure Playwright Chromium",
@@ -3149,12 +3267,15 @@ describe("ci workflow guards", () => {
     expect(ensurePlaywrightStep.run).toBe("node scripts/ensure-playwright-chromium.mjs");
     expect(generateJob.needs).toEqual(["validate_selected_ref", "publisher_preflight"]);
     expect(generateJob.if.replace(/\s+/gu, " ")).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ always() && needs.validate_selected_ref.result == 'success' && (!inputs.publish_pull_request || needs.publisher_preflight.result == 'success') && inputs.qa_evidence_run_id == '' }}",
     );
     expect(generateJob.uses).toBe("./.github/workflows/qa-profile-evidence.yml");
     expect(generateJob.with).toMatchObject({
       // Keep the caller's ref while the callee verifies it against expected_sha.
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ref: "${{ inputs.ref }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expected_sha: "${{ needs.validate_selected_ref.outputs.selected_revision }}",
       qa_profile: "all",
     });
@@ -3169,14 +3290,21 @@ describe("ci workflow guards", () => {
     const validateRefStep = maturityWorkflow.jobs.validate_selected_ref.steps.find(
       (step: WorkflowStep) => step.name === "Validate selected ref",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(workflowStep.env.JOB_CONTEXT).toBe("${{ toJSON(job) }}");
     expect(workflowStep.run).toContain("job.workflow_sha must be a full lowercase commit SHA");
     expect(authorizeStep.env).toEqual({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       CALLER_EVENT_NAME: "${{ github.event_name }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       CALLER_WORKFLOW_REF: "${{ github.workflow_ref }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       JOB_WORKFLOW_FILE_PATH: "${{ steps.workflow.outputs.workflow_file_path }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       JOB_WORKFLOW_REF: "${{ steps.workflow.outputs.workflow_ref }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       JOB_WORKFLOW_REPOSITORY: "${{ steps.workflow.outputs.workflow_repository }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       PUBLISH_PULL_REQUEST: "${{ inputs.publish_pull_request || false }}",
     });
     expect(authorizeStep.run).toContain(
@@ -3188,17 +3316,22 @@ describe("ci workflow guards", () => {
     expect(authorizeStep.run).toContain(
       "Reusable maturity workflows are artifact-only and cannot publish pull requests.",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(validateRefStep.env.EXPECTED_SHA).toBe("${{ inputs.expected_sha }}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(validateRefStep.env.PUBLISH_PULL_REQUEST).toBe("${{ inputs.publish_pull_request }}");
     expect(validateRefStep.env).not.toHaveProperty("TRUSTED_WORKFLOW_SHA");
     expect(validateRefStep.env.EVIDENCE_RUN_ID).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ inputs.qa_evidence_run_id || github.run_id }}",
     );
     for (const fragment of [
       "expected_sha must be a full 40-character SHA",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'branch_candidate="${INPUT_REF#refs/heads/}"',
       'branch_lookup_status="$?"',
       "2) ;;",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "Unable to determine whether '${INPUT_REF}' is a remote branch",
       'git merge-base --is-ancestor "$selected_revision"',
       "':(exclude)qa/maturity-scores.yaml'",
@@ -3210,11 +3343,17 @@ describe("ci workflow guards", () => {
       expect(validateRefStep.run).toContain(fragment);
     }
     expect(maturityWorkflow.jobs.validate_selected_ref.outputs).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       publication_base: "${{ steps.validate.outputs.publication_base }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       publication_head: "${{ steps.validate.outputs.publication_head }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       workflow_file_path: "${{ steps.workflow.outputs.workflow_file_path }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       workflow_ref: "${{ steps.workflow.outputs.workflow_ref }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       workflow_repository: "${{ steps.workflow.outputs.workflow_repository }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       workflow_sha: "${{ steps.workflow.outputs.workflow_sha }}",
     });
 
@@ -3227,6 +3366,7 @@ describe("ci workflow guards", () => {
       "needs.validate_selected_ref.outputs.workflow_repository == 'openclaw/openclaw' }}",
     ].join(" ");
     expect(publisherPreflight.needs).toBe("validate_selected_ref");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(publisherPreflight.if).toBe("${{ inputs.publish_pull_request }}");
     const preflightCheckoutStep = publisherPreflight.steps.find(
       (step: WorkflowStep) => step.name === "Checkout trusted workflow source",
@@ -3237,7 +3377,9 @@ describe("ci workflow guards", () => {
     expect(preflightCheckoutStep).toMatchObject({
       uses: CHECKOUT_V6,
       with: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         repository: "${{ needs.validate_selected_ref.outputs.workflow_repository }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         ref: "${{ needs.validate_selected_ref.outputs.workflow_sha }}",
         "persist-credentials": false,
         submodules: false,
@@ -3248,8 +3390,11 @@ describe("ci workflow guards", () => {
       uses: "./.github/actions/create-generated-pr-tokens",
       with: {
         "contents-client-id": "Iv23liOECG0slfuhz093",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "contents-private-key": "${{ secrets.CLAWSWEEPER_APP_PRIVATE_KEY }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "pull-request-app-id": "${{ secrets.MANTIS_GITHUB_APP_ID }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         "pull-request-private-key": "${{ secrets.MANTIS_GITHUB_APP_PRIVATE_KEY }}",
       },
     });
@@ -3259,6 +3404,7 @@ describe("ci workflow guards", () => {
       "generate_qa_evidence",
     ]);
     expect(publishJob.if.replace(/\s+/gu, " ")).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ always() && needs.validate_selected_ref.result == 'success' && (!inputs.publish_pull_request || needs.publisher_preflight.result == 'success') && (inputs.qa_evidence_run_id != '' || needs.generate_qa_evidence.result == 'success') }}",
     );
     expect(JSON.stringify(publishJob)).not.toMatch(
@@ -3268,8 +3414,10 @@ describe("ci workflow guards", () => {
     const generatedDownloadStep = publishJob.steps.find(
       (step: WorkflowStep) => step.name === "Download generated QA evidence artifact",
     );
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(generatedDownloadStep.if).toBe("${{ inputs.qa_evidence_run_id == '' }}");
     expect(generatedDownloadStep.env.GENERATED_ARTIFACT_NAME).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ needs.generate_qa_evidence.outputs.artifact_name }}",
     );
     expect(generatedDownloadStep.run).toContain('gh run download "$GITHUB_RUN_ID"');
@@ -3289,11 +3437,13 @@ describe("ci workflow guards", () => {
     expect(validateManifestStep.run).toContain("QA evidence manifest profile must be all");
     expect(validateManifestStep.run).toContain("manifest.targetSha !== targetSha");
 
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(qaRunJob.outputs.artifact_name).toBe("${{ steps.evidence.outputs.artifact_name }}");
     const qaEvidenceStep = qaRunJob.steps.find(
       (step: WorkflowStep) => step.name === "Validate QA profile evidence",
     );
     expect(qaEvidenceStep.env.ARTIFACT_NAME).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "qa-profile-evidence-${{ steps.profile.outputs.profile }}-${{ needs.validate_selected_ref.outputs.selected_revision }}",
     );
     expect(qaEvidenceStep.run).toContain("qa-profile-evidence-manifest.json");
@@ -3302,7 +3452,9 @@ describe("ci workflow guards", () => {
       (step: WorkflowStep) => step.name === "Upload QA profile evidence",
     );
     expect(qaUploadStep.with).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       name: "qa-profile-evidence-${{ steps.profile.outputs.profile }}-${{ needs.validate_selected_ref.outputs.selected_revision }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       path: "${{ steps.run_profile.outputs.output_dir }}",
       "if-no-files-found": "error",
     });
@@ -3320,9 +3472,11 @@ describe("ci workflow guards", () => {
     );
     expect(renderCheckoutStep.with["fetch-depth"]).toBe(0);
     expect(generatedPrUploadStep).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       if: "${{ inputs.publish_pull_request }}",
       uses: UPLOAD_ARTIFACT_V7,
       with: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         name: "maturity-scorecard-pr-${{ github.run_id }}-${{ github.run_attempt }}",
         "retention-days": 1,
         "if-no-files-found": "error",
@@ -3355,7 +3509,9 @@ describe("ci workflow guards", () => {
     expect(trustedPublishCheckoutStep).toMatchObject({
       uses: CHECKOUT_V6,
       with: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         repository: "${{ needs.validate_selected_ref.outputs.workflow_repository }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         ref: "${{ needs.validate_selected_ref.outputs.workflow_sha }}",
         "persist-credentials": false,
       },
@@ -3363,6 +3519,7 @@ describe("ci workflow guards", () => {
     expect(selectedCheckoutStep).toMatchObject({
       uses: CHECKOUT_V6,
       with: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         ref: "${{ needs.validate_selected_ref.outputs.selected_revision }}",
         path: "selected",
         "fetch-depth": 0,
@@ -3372,7 +3529,9 @@ describe("ci workflow guards", () => {
     expect(downloadPrFilesStep).toMatchObject({
       uses: DOWNLOAD_ARTIFACT_V8,
       with: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         name: "maturity-scorecard-pr-${{ github.run_id }}-${{ github.run_attempt }}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         path: "${{ steps.staging.outputs.path }}",
       },
     });
@@ -3380,10 +3539,15 @@ describe("ci workflow guards", () => {
     expect(openDocsPrStep.uses).toBe("./.github/actions/publish-generated-pr");
     expect(openDocsPrStep.with).toMatchObject({
       "contents-client-id": "Iv23liOECG0slfuhz093",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "contents-private-key": "${{ secrets.CLAWSWEEPER_APP_PRIVATE_KEY }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "pull-request-app-id": "${{ secrets.MANTIS_GITHUB_APP_ID }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "pull-request-private-key": "${{ secrets.MANTIS_GITHUB_APP_PRIVATE_KEY }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "base-branch": "${{ needs.validate_selected_ref.outputs.publication_base }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "head-branch": "${{ needs.validate_selected_ref.outputs.publication_head }}",
       "working-directory": "selected",
       "commit-message": "docs: update maturity scorecard",
@@ -3508,9 +3672,11 @@ describe("ci workflow guards", () => {
       type: "boolean",
     });
     expect(resolveJob.outputs.run_maturity_scorecard).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ steps.inputs.outputs.run_maturity_scorecard }}",
     );
     expect(summarizeStep.env.RUN_MATURITY_SCORECARD).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ steps.inputs.outputs.run_maturity_scorecard }}",
     );
     expect(summarizeStep.run).toContain("- Maturity scorecard docs:");
@@ -3524,7 +3690,9 @@ describe("ci workflow guards", () => {
     });
     expect(job.uses).toBe("./.github/workflows/maturity-scorecard.yml");
     expect(job.with).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       ref: "${{ needs.resolve_target.outputs.ref }}",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       expected_sha: "${{ needs.resolve_target.outputs.revision }}",
     });
     expect(job.with).not.toHaveProperty("qa_profile");
@@ -3532,9 +3700,11 @@ describe("ci workflow guards", () => {
     expect(Object.keys(job.secrets)).toEqual(["OPENAI_API_KEY"]);
     expect(summaryJob.needs).toContain("maturity_scorecard_release_checks");
     expect(verifyStep.env.MATURITY_SCORECARD_RELEASE_CHECKS_RESULT).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "${{ needs.maturity_scorecard_release_checks.result }}",
     );
     expect(verifyStep.run).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '"maturity_scorecard_release_checks=${MATURITY_SCORECARD_RELEASE_CHECKS_RESULT}"',
     );
     expect(verifyStep.run).not.toContain("qa_profile_release_evidence_release_checks");
@@ -3554,6 +3724,7 @@ describe("ci workflow guards", () => {
     }
     const fastCoreJob = workflow.jobs["checks-fast-core"];
     const runStep = fastCoreJob.steps.find(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       (step: WorkflowStep) => step.name === "Run ${{ matrix.task }} (${{ matrix.runtime }})",
     );
     const smokeProfileJob = workflow.jobs["qa-smoke-ci-profile"];
@@ -3583,6 +3754,7 @@ describe("ci workflow guards", () => {
     expect(runStep.run).toContain("contracts-plugins-ci-routing)");
     expect(runStep.run).toContain("ci-routing)");
     expect(fastCoreJob["runs-on"]).toContain("matrix.runner");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(smokeProfileJob.name).toBe("QA Smoke CI (${{ matrix.name }})");
     expect(smokeBuildStep.run).toContain("node scripts/build-all.mjs qaRuntime");
     expect(smokeBuildStep.run).toContain("pnpm ui:build");
@@ -3590,6 +3762,7 @@ describe("ci workflow guards", () => {
     expect(smokeBuildStep.run).toContain("--skip-build");
     expect(smokeBuildStep.run).toContain("--allow-unreleased-changelog");
     expect(smokeBuildStep.run).toContain("grep -Fq");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(smokeBuildStep.run).toContain('"${package_args[@]}"');
     expect(workflow.jobs["qa-smoke-ci-artifacts"]).toBeUndefined();
     expect(workflow.jobs["qa-smoke-ci"]).toBeUndefined();
@@ -3652,6 +3825,7 @@ describe("ci workflow guards", () => {
     expect(smokeRunStep.run).toContain('scenario_args+=(--scenario "$scenario_id")');
     expect(smokeRunStep.run).toContain('done <<< "$PROFILE_RUNS_TSV"');
     expect(smokeRunStep.run).not.toContain('pids+=("$!")');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(smokeRunStep.run).not.toContain('wait "${pids[$index]}"');
     expect(smokeRunStep.run).not.toContain("--category");
     expect(smokeRunStep.run).not.toContain("--allow-failures");
@@ -3663,6 +3837,7 @@ describe("ci workflow guards", () => {
     expect(smokeRunStep.run).not.toContain("OPENAI_API_KEY");
     expect(smokeUploadStep.if).toBe("always()");
     expect(smokeUploadStep.with).toMatchObject({
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       path: ".artifacts/qa-e2e/smoke-ci-profile-${{ matrix.slug }}/",
       "if-no-files-found": "warn",
     });
@@ -3678,6 +3853,7 @@ describe("ci workflow guards", () => {
     expect(workflow).toContain("repository: openclaw/clawhub");
     expect(workflow).toContain("path: clawhub-source");
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "OPENCLAW_DOCS_SYNC_CLAWHUB_REPO: ${{ github.workspace }}/clawhub-source",
     );
   });
@@ -3734,6 +3910,7 @@ describe("ci workflow guards", () => {
     );
     expect(workflow).toContain('echo "full_codeql=true" >> "$GITHUB_OUTPUT"');
     expect(workflow).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       "if: ${{ github.event_name != 'pull_request' || steps.network-diff-scan.outputs.full_codeql == 'true' }}",
     );
     expect(rawSocketQuery).toContain(

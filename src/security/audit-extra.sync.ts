@@ -1062,10 +1062,10 @@ export function collectMinimalProfileOverrideFindings(cfg: OperatorConfig): Secu
     .filter((entry): entry is { id: string; tools?: AgentToolsConfig } => {
       return Boolean(
         entry &&
-        typeof entry === "object" &&
-        typeof entry.id === "string" &&
-        entry.tools?.profile &&
-        entry.tools.profile !== "minimal",
+          typeof entry === "object" &&
+          typeof entry.id === "string" &&
+          entry.tools?.profile &&
+          entry.tools.profile !== "minimal",
       );
     })
     .map((entry) => `${entry.id}=${entry.tools?.profile}`);

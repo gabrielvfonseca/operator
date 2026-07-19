@@ -279,6 +279,7 @@ describe("sanitizeToolResult", () => {
       content: [
         {
           type: "text",
+          // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
           text: 'DISCORD_BOT_TOKEN="${DISCORD_BOT_TOKEN:-}"\nTELEGRAM_BOT_TOKEN="${TELEGRAM_BOT_TOKEN:-}"',
         },
       ],
@@ -287,6 +288,7 @@ describe("sanitizeToolResult", () => {
     const text = getTextContent(sanitizeToolResult(result));
 
     expect(text).toBe(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'DISCORD_BOT_TOKEN="${DISCORD_BOT_TOKEN:-}"\nTELEGRAM_BOT_TOKEN="${TELEGRAM_BOT_TOKEN:-}"',
     );
   });
@@ -446,9 +448,12 @@ describe("sanitizeToolArgs", () => {
 
   it("preserves structured env placeholders in args", () => {
     const args = {
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       DISCORD_BOT_TOKEN: "${DISCORD_BOT_TOKEN:-}",
       nested: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         apiKey: "${OPENAI_API_KEY:-}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         GITHUB_TOKEN: "${GITHUB_TOKEN:-literalgithub1234567890}",
       },
     };
@@ -459,8 +464,11 @@ describe("sanitizeToolArgs", () => {
         GITHUB_TOKEN: string;
       };
     };
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(sanitized.DISCORD_BOT_TOKEN).toBe("${DISCORD_BOT_TOKEN:-}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(sanitized.nested.apiKey).toBe("${OPEN…Y:-}");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(sanitized.nested.GITHUB_TOKEN).toBe("${GITHUB_TOKEN:-liter…890}");
   });
 

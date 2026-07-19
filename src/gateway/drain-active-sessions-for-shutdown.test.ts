@@ -52,8 +52,9 @@ const {
   emitGatewaySessionEndPluginHook,
   emitGatewaySessionStartPluginHook,
 } = await import("./session-reset-service.js");
-const { forgetActiveSessionForShutdown, listActiveSessionsForShutdown } =
-  await import("./active-sessions-shutdown-tracker.js");
+const { forgetActiveSessionForShutdown, listActiveSessionsForShutdown } = await import(
+  "./active-sessions-shutdown-tracker.js"
+);
 
 const cfg: OperatorConfig = {};
 

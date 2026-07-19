@@ -76,15 +76,19 @@ export function renderCron(widget: WorkspaceWidget, value: unknown): TemplateRes
           <li class="workspace-list__row ${job.enabled ? "" : "workspace-list__row--disabled"}">
             <span class="workspace-list__label">${job.name}</span>
             <span class="workspace-list__meta">
-              ${job.nextRunAtMs !== null
-                ? t("workspaces.widget.cron.next", { time: formatDateTimeMs(job.nextRunAtMs) })
-                : t("workspaces.widget.cron.noNext")}
+              ${
+                job.nextRunAtMs !== null
+                  ? t("workspaces.widget.cron.next", { time: formatDateTimeMs(job.nextRunAtMs) })
+                  : t("workspaces.widget.cron.noNext")
+              }
             </span>
-            ${job.lastStatus
-              ? html`<span class="workspace-badge ${statusClass(job.lastStatus)}"
+            ${
+              job.lastStatus
+                ? html`<span class="workspace-badge ${statusClass(job.lastStatus)}"
                   >${job.lastStatus}</span
                 >`
-              : nothing}
+                : nothing
+            }
           </li>
         `,
       )}

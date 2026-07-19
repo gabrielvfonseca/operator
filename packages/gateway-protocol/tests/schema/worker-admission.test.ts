@@ -420,7 +420,7 @@ describe("worker protocol schemas", () => {
       nested = { nested };
     }
     const transcriptAssistant = transcriptMessages[1];
-    if (!transcriptAssistant || transcriptAssistant.role !== "assistant") {
+    if (transcriptAssistant?.role !== "assistant") {
       throw new Error("expected assistant transcript fixture");
     }
     const candidate = {

@@ -576,8 +576,9 @@ async function maybeWriteGatewayStartupFailureBundle(
   err: unknown,
   reason = "gateway.startup_failed",
 ): Promise<void> {
-  const { writeDiagnosticStabilityBundleForFailureSync } =
-    await import("../../logging/diagnostic-stability-bundle.js");
+  const { writeDiagnosticStabilityBundleForFailureSync } = await import(
+    "../../logging/diagnostic-stability-bundle.js"
+  );
   const result = writeDiagnosticStabilityBundleForFailureSync(reason, err);
   if ("message" in result) {
     gatewayLog.warn(result.message);

@@ -253,8 +253,9 @@ vi.mock("./server-tailscale.js", () => ({
   startGatewayTailscaleExposure: hoisted.startGatewayTailscaleExposure,
 }));
 
-const { startGatewayPostAttachRuntime, startGatewaySidecars, testing } =
-  await import("./server-startup-post-attach.js");
+const { startGatewayPostAttachRuntime, startGatewaySidecars, testing } = await import(
+  "./server-startup-post-attach.js"
+);
 const { scheduleContextCachePrewarm } = await import("./server-startup-context-cache-prewarm.js");
 const { STARTUP_UNAVAILABLE_GATEWAY_METHODS } = await import("./methods/core-descriptors.js");
 const { createGatewayCloseHandler } = await import("./server-close.js");
@@ -2016,8 +2017,9 @@ describe("startGatewayPostAttachRuntime", () => {
     });
     vi.resetModules();
     try {
-      const { startGatewaySidecars: startGatewaySidecarsWithDelayedImport } =
-        await import("./server-startup-post-attach.js");
+      const { startGatewaySidecars: startGatewaySidecarsWithDelayedImport } = await import(
+        "./server-startup-post-attach.js"
+      );
 
       const result = await startGatewaySidecarsWithDelayedImport({
         cfg: {

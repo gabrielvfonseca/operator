@@ -153,14 +153,14 @@ async function makeRootWithEmptyCfg() {
 function writeLegacyTelegramAllowFromStore(oauthDir: string) {
   fs.writeFileSync(
     path.join(oauthDir, "telegram-allowFrom.json"),
-    JSON.stringify(
+    `${JSON.stringify(
       {
         version: 1,
         allowFrom: ["123456"],
       },
       null,
       2,
-    ) + "\n",
+    )}\n`,
     "utf-8",
   );
 }
@@ -1977,9 +1977,9 @@ describe("doctor legacy state migrations", () => {
         .prepare("SELECT flow_id, data_blob_id FROM capture_events WHERE session_id = ?")
         .get("legacy-session"),
     ).toEqual({ flow_id: "legacy-flow", data_blob_id: blobId });
-    const blob = state.db
-      .prepare("SELECT data FROM capture_blobs WHERE blob_id = ?")
-      .get(blobId) as { data?: Uint8Array } | undefined;
+    const blob = state.db.prepare("SELECT data FROM capture_blobs WHERE blob_id = ?").get(blobId) as
+      | { data?: Uint8Array }
+      | undefined;
     expect(gunzipSync(Buffer.from(blob?.data ?? [])).toString("utf8")).toBe('{"legacy":true}');
   });
 

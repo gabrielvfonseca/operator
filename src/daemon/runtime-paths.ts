@@ -81,6 +81,7 @@ type ExecFileAsync = (
 const execFileAsync: ExecFileAsync = async (file, args) =>
   await runExec(file, [...args], { logOutput: false });
 
+// biome-ignore lint/complexity/noUselessStringRaw: migrated from oxlint
 const NODE_RUNTIME_PROBE = String.raw`
 let sqliteVersion = null;
 try {

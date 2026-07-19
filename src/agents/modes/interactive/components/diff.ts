@@ -91,7 +91,7 @@ export function renderDiff(diffText: string): string {
       while (i < lines.length) {
         const currentLine = lines.at(i);
         const p = currentLine === undefined ? null : parseDiffLine(currentLine);
-        if (!p || p.prefix !== "-") {
+        if (p?.prefix !== "-") {
           break;
         }
         removedLines.push({ lineNum: p.lineNum, content: p.content });
@@ -103,7 +103,7 @@ export function renderDiff(diffText: string): string {
       while (i < lines.length) {
         const currentLine = lines.at(i);
         const p = currentLine === undefined ? null : parseDiffLine(currentLine);
-        if (!p || p.prefix !== "+") {
+        if (p?.prefix !== "+") {
           break;
         }
         addedLines.push({ lineNum: p.lineNum, content: p.content });

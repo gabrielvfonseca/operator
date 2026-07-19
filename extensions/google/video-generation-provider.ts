@@ -496,6 +496,7 @@ export function buildGoogleVideoGenerationProvider(): VideoGenerationProvider {
         },
       });
       let usedRestFallback = false;
+      // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
       let operation;
       try {
         operation = await client.models.generateVideos({

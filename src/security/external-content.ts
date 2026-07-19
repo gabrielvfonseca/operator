@@ -150,34 +150,34 @@ const FULLWIDTH_ASCII_OFFSET = 0xfee0;
 
 // Map of Unicode angle bracket homoglyphs to their ASCII equivalents.
 const ANGLE_BRACKET_MAP: Record<number, string> = {
-  0xff1c: "<", // fullwidth <
-  0xff1e: ">", // fullwidth >
-  0x2329: "<", // left-pointing angle bracket
-  0x232a: ">", // right-pointing angle bracket
-  0x3008: "<", // CJK left angle bracket
-  0x3009: ">", // CJK right angle bracket
-  0x2039: "<", // single left-pointing angle quotation mark
-  0x203a: ">", // single right-pointing angle quotation mark
-  0x27e8: "<", // mathematical left angle bracket
-  0x27e9: ">", // mathematical right angle bracket
-  0xfe64: "<", // small less-than sign
-  0xfe65: ">", // small greater-than sign
-  0x00ab: "<", // left-pointing double angle quotation mark
-  0x00bb: ">", // right-pointing double angle quotation mark
-  0x300a: "<", // left double angle bracket
-  0x300b: ">", // right double angle bracket
-  0x27ea: "<", // mathematical left double angle bracket
-  0x27eb: ">", // mathematical right double angle bracket
-  0x27ec: "<", // mathematical left white tortoise shell bracket
-  0x27ed: ">", // mathematical right white tortoise shell bracket
-  0x27ee: "<", // mathematical left flattened parenthesis
-  0x27ef: ">", // mathematical right flattened parenthesis
-  0x276c: "<", // medium left-pointing angle bracket ornament
-  0x276d: ">", // medium right-pointing angle bracket ornament
-  0x276e: "<", // heavy left-pointing angle quotation mark ornament
-  0x276f: ">", // heavy right-pointing angle quotation mark ornament
-  0x02c2: "<", // modifier letter left arrowhead
-  0x02c3: ">", // modifier letter right arrowhead
+  65308: "<", // fullwidth <
+  65310: ">", // fullwidth >
+  9001: "<", // left-pointing angle bracket
+  9002: ">", // right-pointing angle bracket
+  12296: "<", // CJK left angle bracket
+  12297: ">", // CJK right angle bracket
+  8249: "<", // single left-pointing angle quotation mark
+  8250: ">", // single right-pointing angle quotation mark
+  10216: "<", // mathematical left angle bracket
+  10217: ">", // mathematical right angle bracket
+  65124: "<", // small less-than sign
+  65125: ">", // small greater-than sign
+  171: "<", // left-pointing double angle quotation mark
+  187: ">", // right-pointing double angle quotation mark
+  12298: "<", // left double angle bracket
+  12299: ">", // right double angle bracket
+  10218: "<", // mathematical left double angle bracket
+  10219: ">", // mathematical right double angle bracket
+  10220: "<", // mathematical left white tortoise shell bracket
+  10221: ">", // mathematical right white tortoise shell bracket
+  10222: "<", // mathematical left flattened parenthesis
+  10223: ">", // mathematical right flattened parenthesis
+  10092: "<", // medium left-pointing angle bracket ornament
+  10093: ">", // medium right-pointing angle bracket ornament
+  10094: "<", // heavy left-pointing angle quotation mark ornament
+  10095: ">", // heavy right-pointing angle quotation mark ornament
+  706: "<", // modifier letter left arrowhead
+  707: ">", // modifier letter right arrowhead
 };
 
 function foldMarkerChar(char: string): string {

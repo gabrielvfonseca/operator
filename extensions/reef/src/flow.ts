@@ -107,6 +107,7 @@ export class ReefMessageFlow {
     if (!friend || friend.safetyNumberChanged || parsed.keyEpoch !== friend.keyEpoch) {
       throw new Error(`unapproved Reef sender @${relayPeer}`);
     }
+    // biome-ignore lint/suspicious/noImplicitAnyLet: migrated from oxlint
     let result;
     try {
       result = await composeInbound({

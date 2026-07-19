@@ -150,9 +150,9 @@ function isMiddlewareToolResultError(result: unknown): boolean {
   const details = (result as { details?: unknown }).details;
   return Boolean(
     details &&
-    typeof details === "object" &&
-    !Array.isArray(details) &&
-    (details as { middlewareError?: unknown }).middlewareError === true,
+      typeof details === "object" &&
+      !Array.isArray(details) &&
+      (details as { middlewareError?: unknown }).middlewareError === true,
   );
 }
 
@@ -810,13 +810,13 @@ async function emitToolResultOutput(params: {
   const { ctx, toolName, rawToolName, meta, isToolError, result, sanitizedResult } = params;
   const hasStructuredMedia = Boolean(
     result &&
-    typeof result === "object" &&
-    (result as { details?: unknown }).details &&
-    typeof (result as { details?: unknown }).details === "object" &&
-    !Array.isArray((result as { details?: unknown }).details) &&
-    typeof ((result as { details?: { media?: unknown } }).details?.media ?? undefined) ===
-      "object" &&
-    !Array.isArray((result as { details?: { media?: unknown } }).details?.media),
+      typeof result === "object" &&
+      (result as { details?: unknown }).details &&
+      typeof (result as { details?: unknown }).details === "object" &&
+      !Array.isArray((result as { details?: unknown }).details) &&
+      typeof ((result as { details?: { media?: unknown } }).details?.media ?? undefined) ===
+        "object" &&
+      !Array.isArray((result as { details?: { media?: unknown } }).details?.media),
   );
   const approvalPending = readExecApprovalPendingDetails(result);
   if (!isToolError && approvalPending) {

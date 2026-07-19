@@ -204,7 +204,9 @@ describe("gateway auth", () => {
   it("treats env-template auth secrets as SecretRefs instead of plaintext", () => {
     const auth = resolveGatewayAuth({
       authConfig: {
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         token: "${OPERATOR_GATEWAY_TOKEN}",
+        // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
         password: "${OPERATOR_GATEWAY_PASSWORD}",
       },
       env: {

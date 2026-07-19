@@ -847,7 +847,7 @@ export async function modelsAuthAddCommand(opts: { agent?: string }, runtime: Ru
       const method = tokenMethods.find((candidate) => candidate.id === methodId);
       if (!method) {
         throw new Error(
-          `Unknown token auth method "${methodId}". Run ${formatCliCommand("operator models auth login --provider " + providerPlugin.id)} to choose interactively.`,
+          `Unknown token auth method "${methodId}". Run ${formatCliCommand(`operator models auth login --provider ${providerPlugin.id}`)} to choose interactively.`,
         );
       }
       await runProviderAuthMethod({
@@ -1049,7 +1049,7 @@ export async function runModelsAuthLoginFlow(
 
   if (!chosenMethod) {
     throw new Error(
-      `Unknown auth method. Run ${formatCliCommand("operator models auth login --provider " + selectedProvider.id)} without --method to choose interactively.`,
+      `Unknown auth method. Run ${formatCliCommand(`operator models auth login --provider ${selectedProvider.id}`)} without --method to choose interactively.`,
     );
   }
 

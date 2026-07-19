@@ -64,6 +64,7 @@ function writeFakeCrabbox(binDir: string, helpText: string): string {
     const script = [
       "#!/bin/sh",
       'if [ "$1" = "--version" ]; then',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '  printf "%s\\n" "${OPENCLAW_FAKE_CRABBOX_VERSION:-crabbox 0.22.1}"',
       "  exit 0",
       "fi",
@@ -71,6 +72,7 @@ function writeFakeCrabbox(binDir: string, helpText: string): string {
       `  printf "%s" ${shellSingleQuote(helpText)}`,
       "  exit 0",
       "fi",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'if [ "$1" = "run" ] && [ -n "${OPENCLAW_FAKE_CRABBOX_RUN_STATUS:-}" ] && [ "$OPENCLAW_FAKE_CRABBOX_RUN_STATUS" != "0" ]; then',
       '  printf "%s\\n" "fake run failure" >&2',
       '  exit "$OPENCLAW_FAKE_CRABBOX_RUN_STATUS"',
@@ -78,11 +80,13 @@ function writeFakeCrabbox(binDir: string, helpText: string): string {
       'if [ "$1" = "config" ] && [ "$2" = "show" ]; then',
       '  for arg in "$@"; do',
       '    if [ "$arg" = "--json" ]; then',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '      status="${OPENCLAW_FAKE_CRABBOX_CONFIG_STATUS:-0}"',
       '      if [ "$status" != "0" ]; then',
       '        printf "%s\\n" "config unavailable" >&2',
       '        exit "$status"',
       "      fi",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '      if [ -n "${OPENCLAW_FAKE_CRABBOX_CONFIG_JSON+x}" ]; then',
       '        printf "%s" "$OPENCLAW_FAKE_CRABBOX_CONFIG_JSON"',
       "      else",
@@ -93,6 +97,7 @@ function writeFakeCrabbox(binDir: string, helpText: string): string {
       "  done",
       "fi",
       'if [ "$1" = "whoami" ]; then',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '  status="${OPENCLAW_FAKE_CRABBOX_WHOAMI_STATUS:-0}"',
       '  if [ "$status" != "0" ]; then',
       '    printf "%s\\n" "coordinator GET /v1/whoami: http 401: {\\"error\\":\\"unauthorized\\"}" >&2',
@@ -116,6 +121,7 @@ function writeFakeCrabbox(binDir: string, helpText: string): string {
       "  fi",
       '  previous_arg="$arg"',
       "done",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'if [ "${OPENCLAW_FAKE_CRABBOX_DELETE_CWD_AND_EXIT:-}" = "1" ]; then',
       // Let the wrapper finish its synchronous keepalive check so this fixture
       // exercises the post-exit checkout guard, not the active-child monitor.
@@ -125,6 +131,7 @@ function writeFakeCrabbox(binDir: string, helpText: string): string {
       '  rm -rf "$deleted_cwd"',
       "  exit 0",
       "fi",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'if [ "${OPENCLAW_FAKE_CRABBOX_DELETE_CWD_ONCE:-}" = "1" ]; then',
       '  deleted_cwd="$PWD"',
       "  cd / || exit 1",
@@ -144,12 +151,14 @@ function writeFakeCrabbox(binDir: string, helpText: string): string {
       "  fi",
       '  cd "$deleted_cwd" || exit 1',
       "fi",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'if [ -n "${OPENCLAW_FAKE_CRABBOX_DESCENDANT_PID_PATH:-}" ]; then',
       `  ${shellSingleQuote(process.execPath)} --input-type=module --eval ${shellSingleQuote(signalIgnoringDescendantScript)} &`,
       '  printf "%s" "$!" > "$OPENCLAW_FAKE_CRABBOX_DESCENDANT_PID_PATH"',
       '  trap "exit 0" INT TERM HUP',
       "  while :; do sleep 1; done",
       "fi",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'if [ -n "${OPENCLAW_FAKE_CRABBOX_EXPECT_CHANGED_GATE_BUNDLE+x}" ]; then',
       '  expected_bundle="$(mktemp)" || exit 67',
       '  printf "%s" "$OPENCLAW_FAKE_CRABBOX_EXPECT_CHANGED_GATE_BUNDLE" > "$expected_bundle"',
@@ -160,6 +169,7 @@ function writeFakeCrabbox(binDir: string, helpText: string): string {
       "  fi",
       '  rm -f "$expected_bundle"',
       "fi",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'if [ -n "${OPENCLAW_FAKE_CRABBOX_EXPECT_CHANGED_GATE_BUNDLE_BYTES:-}" ]; then',
       '  actual_bundle_bytes="$(wc -c < .openclaw-crabbox-changed-gate.bundle 2>/dev/null | tr -d " ")"',
       '  if [ "$actual_bundle_bytes" != "$OPENCLAW_FAKE_CRABBOX_EXPECT_CHANGED_GATE_BUNDLE_BYTES" ]; then',
@@ -167,6 +177,7 @@ function writeFakeCrabbox(binDir: string, helpText: string): string {
       "    exit 67",
       "  fi",
       "fi",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'if [ "${OPENCLAW_FAKE_CRABBOX_EXPECT_CHANGED_GATE_FORCE_ADD:-}" = "1" ] && [ ! -f "${OPENCLAW_FAKE_GIT_FORCE_ADD_MARKER:-}" ]; then',
       '  printf "%s\\n" "changed-gate bundle was not force-added" >&2',
       "  exit 67",
@@ -369,6 +380,7 @@ function makeFakeGit(
       "#!/bin/sh",
       'if [ "$1" = "worktree" ] && [ "$2" = "add" ]; then',
       '  mkdir -p "$4"',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '  if [ -n "${OPENCLAW_FAKE_GIT_CHANGED_GATE_BUNDLE_SYMLINK_TARGET:-}" ]; then',
       '    ln -s "$OPENCLAW_FAKE_GIT_CHANGED_GATE_BUNDLE_SYMLINK_TARGET" "$4/.openclaw-crabbox-changed-gate.bundle"',
       "  fi",
@@ -379,44 +391,55 @@ function makeFakeGit(
       "fi",
       'if [ "$1" = "-C" ] && [ "$3" = "rev-parse" ]; then',
       '  if [ "$4" = "HEAD" ]; then',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '    printf "%s\\n" "${OPENCLAW_FAKE_GIT_HEAD_SHA:-def456}"',
       '  elif [ "$4" = "HEAD^{tree}" ]; then',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '    printf "%s\\n" "${OPENCLAW_FAKE_GIT_HEAD_TREE_SHA:-tree456}"',
       "  else",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '    printf "%s\\n" "${OPENCLAW_FAKE_GIT_BASE_SHA:-abc123}"',
       "  fi",
       "  exit 0",
       "fi",
       'if [ "$1" = "-C" ] && [ "$3" = "-c" ] && [ "$7" = "commit-tree" ]; then',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '  if [ -n "${OPENCLAW_FAKE_GIT_ROOT_COMMIT_MARKER:-}" ]; then',
       '    for arg in "$@"; do [ "$arg" != "-p" ] || exit 68; done',
       '    : > "$OPENCLAW_FAKE_GIT_ROOT_COMMIT_MARKER"',
       "  fi",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '  if [ -n "${OPENCLAW_FAKE_GIT_SYNTHETIC_COMMIT_MARKER:-}" ]; then',
       '    : > "$OPENCLAW_FAKE_GIT_SYNTHETIC_COMMIT_MARKER"',
       "  fi",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '  printf "%s\\n" "${OPENCLAW_FAKE_GIT_SYNTHETIC_COMMIT_SHA:-synthetic789}"',
       "  exit 0",
       "fi",
       'if [ "$1" = "-C" ] && [ "$3" = "update-ref" ] && [ "$4" = "HEAD" ]; then',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '  if [ -n "${OPENCLAW_FAKE_GIT_SYNTHETIC_HEAD_MARKER:-}" ]; then',
       '    : > "$OPENCLAW_FAKE_GIT_SYNTHETIC_HEAD_MARKER"',
       "  fi",
       "  exit 0",
       "fi",
       'if [ "$1" = "-C" ] && [ "$3" = "bundle" ] && [ "$4" = "create" ]; then',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '  if [ -n "${OPENCLAW_FAKE_GIT_SELF_CONTAINED_BUNDLE_MARKER:-}" ]; then',
       '    [ "$#" = "6" ] && [ "$6" = "HEAD" ] || exit 68',
       '    : > "$OPENCLAW_FAKE_GIT_SELF_CONTAINED_BUNDLE_MARKER"',
       "  fi",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '  if [ -n "${OPENCLAW_FAKE_GIT_BUNDLE_BYTES:-}" ]; then',
       '    head -c "$OPENCLAW_FAKE_GIT_BUNDLE_BYTES" /dev/zero | tr "\\000" x > "$5"',
       "  else",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '    printf "%s" "${OPENCLAW_FAKE_GIT_BUNDLE:-fake-bundle}" > "$5"',
       "  fi",
       "  exit 0",
       "fi",
       'if [ "$1" = "-C" ] && [ "$3" = "add" ] && [ "$4" = "-f" ]; then',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       '  if [ -n "${OPENCLAW_FAKE_GIT_FORCE_ADD_MARKER:-}" ]; then',
       '    : > "$OPENCLAW_FAKE_GIT_FORCE_ADD_MARKER"',
       "  fi",
@@ -454,7 +477,9 @@ function makeFakeGit(
     "const args = process.argv.slice(2);",
     "if (args[0] === 'worktree' && args[1] === 'add') { fs.mkdirSync(args[3], { recursive: true }); if (process.env.OPENCLAW_FAKE_GIT_CHANGED_GATE_BUNDLE_SYMLINK_TARGET) fs.symlinkSync(process.env.OPENCLAW_FAKE_GIT_CHANGED_GATE_BUNDLE_SYMLINK_TARGET, require('node:path').join(args[3], '.openclaw-crabbox-changed-gate.bundle')); process.exit(0); }",
     "if (args[0] === '-C' && args[2] === 'sparse-checkout' && args[3] === 'disable') { process.exit(0); }",
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     "if (args[0] === '-C' && args[2] === 'rev-parse') { const value = args[3] === 'HEAD' ? process.env.OPENCLAW_FAKE_GIT_HEAD_SHA || 'def456' : args[3] === 'HEAD^{tree}' ? process.env.OPENCLAW_FAKE_GIT_HEAD_TREE_SHA || 'tree456' : process.env.OPENCLAW_FAKE_GIT_BASE_SHA || 'abc123'; process.stdout.write(`${value}\\n`); process.exit(0); }",
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     "if (args[0] === '-C' && args[2] === '-c' && args[6] === 'commit-tree') { if (process.env.OPENCLAW_FAKE_GIT_ROOT_COMMIT_MARKER) { if (args.includes('-p')) process.exit(68); fs.writeFileSync(process.env.OPENCLAW_FAKE_GIT_ROOT_COMMIT_MARKER, ''); } if (process.env.OPENCLAW_FAKE_GIT_SYNTHETIC_COMMIT_MARKER) fs.writeFileSync(process.env.OPENCLAW_FAKE_GIT_SYNTHETIC_COMMIT_MARKER, ''); process.stdout.write(`${process.env.OPENCLAW_FAKE_GIT_SYNTHETIC_COMMIT_SHA || 'synthetic789'}\\n`); process.exit(0); }",
     "if (args[0] === '-C' && args[2] === 'update-ref' && args[3] === 'HEAD') { if (process.env.OPENCLAW_FAKE_GIT_SYNTHETIC_HEAD_MARKER) fs.writeFileSync(process.env.OPENCLAW_FAKE_GIT_SYNTHETIC_HEAD_MARKER, ''); process.exit(0); }",
     "if (args[0] === '-C' && args[2] === 'bundle' && args[3] === 'create') { if (process.env.OPENCLAW_FAKE_GIT_SELF_CONTAINED_BUNDLE_MARKER) { if (args.length !== 6 || args[5] !== 'HEAD') process.exit(68); fs.writeFileSync(process.env.OPENCLAW_FAKE_GIT_SELF_CONTAINED_BUNDLE_MARKER, ''); } const bytes = Number(process.env.OPENCLAW_FAKE_GIT_BUNDLE_BYTES || 0); fs.writeFileSync(args[4], bytes ? 'x'.repeat(bytes) : process.env.OPENCLAW_FAKE_GIT_BUNDLE || 'fake-bundle'); process.exit(0); }",
@@ -1048,6 +1073,7 @@ describe("scripts/crabbox-wrapper", () => {
     expect(output.args).not.toContain("--shell");
     expect(output.args.join(" ")).not.toContain("openclaw_crabbox_bootstrap_wsl2_js");
     expect(remoteCommand).toContain("openclaw_crabbox_bootstrap_wsl2_js");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(remoteCommand).toContain("node-v${node_version}-linux-${node_arch}.tar.gz");
     expect(remoteCommand).toContain("sha256sum -c -");
     expect(remoteCommand).toContain("corepack enable --install-directory");
@@ -1488,6 +1514,7 @@ describe("scripts/crabbox-wrapper", () => {
     expect(result.status).toBe(0);
     expect(output.args).toContain("--shell");
     expect(remoteCommand).toContain("openclaw_crabbox_bootstrap_macos_js");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(remoteCommand).toContain("node-v${node_version}-darwin-${node_arch}.tar.gz");
     expect(remoteCommand).toContain("node --version >&2 || return 1");
     expect(remoteCommand).not.toContain("corepack enable");
@@ -2011,14 +2038,18 @@ describe("scripts/crabbox-wrapper", () => {
     const output = parseFakeCrabboxOutput(result);
     const remoteCommand = normalizeShellLineEndings(output.args.at(-1) ?? "");
     expect(result.status).toBe(0);
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(remoteCommand).toContain('macos_locale="${OPENCLAW_CRABBOX_MACOS_LOCALE:-en_US.UTF-8}"');
     expect(remoteCommand).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'case "${LANG:-}" in C.UTF-8|C.utf8|c.UTF-8|c.utf8) export LANG="$macos_locale" ;; esac;',
     );
     expect(remoteCommand).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'case "${LC_ALL:-}" in C.UTF-8|C.utf8|c.UTF-8|c.utf8) export LC_ALL="$macos_locale" ;; esac;',
     );
     expect(remoteCommand).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'case "${LC_CTYPE:-}" in C.UTF-8|C.utf8|c.UTF-8|c.utf8) export LC_CTYPE="$macos_locale" ;; esac;',
     );
     expectGroupedShellCommand(remoteCommand, "node --version");
@@ -2037,8 +2068,10 @@ describe("scripts/crabbox-wrapper", () => {
     expect(result.stderr).toContain("Node/Corepack/pnpm/Bun");
     expect(remoteCommand).toContain("openclaw_crabbox_bootstrap_macos_js");
     expect(remoteCommand).toContain("bun_version=1.3.14");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(remoteCommand).toContain('bun_root="$tool_root/bun-v${bun_version}"');
     expect(remoteCommand).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'npm install --global --prefix "$bun_root" --fetch-timeout=120000 --fetch-retries=2 --fetch-retry-mintimeout=2000 --fetch-retry-maxtimeout=15000 "bun@${bun_version}"',
     );
     expect(remoteCommand).toContain("bun --version >&2 || return 1");
@@ -2073,6 +2106,7 @@ describe("scripts/crabbox-wrapper", () => {
       "bootstrapping pinned user-local JavaScript tooling before the command",
     );
     expect(remoteCommand).toContain("openclaw_crabbox_bootstrap_macos_js");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(remoteCommand).toContain("node-v${node_version}-darwin-${node_arch}.tar.gz");
     expect(remoteCommand).toContain(
       'curl -fsSL --connect-timeout 10 --max-time 300 --retry 2 --retry-delay 2 -o "$tmp_dir/$pkg"',
@@ -2087,6 +2121,7 @@ describe("scripts/crabbox-wrapper", () => {
     );
     expect(remoteCommand).toContain('touch "$ready_marker"');
     expect(remoteCommand).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'install_lock="$tool_root/.node-${node_version}-${node_arch}.lock"',
     );
     expect(remoteCommand).toContain("lock_deadline=$((SECONDS + 300))");
@@ -2101,10 +2136,12 @@ describe("scripts/crabbox-wrapper", () => {
     expect(remoteCommand).toContain("release_install_lock");
     expect(remoteCommand).not.toContain("set -euo pipefail");
     expect(remoteCommand).toContain('return "$status"');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(remoteCommand).toContain('if [ -z "${TMPDIR:-}" ]; then export TMPDIR="/tmp"; fi;');
     expect(remoteCommand).toContain('mkdir -p "$TMPDIR"');
     expect(remoteCommand).toContain("usable TMPDIR not found: $TMPDIR");
     expect(remoteCommand).toContain("node --version >&2 || return 1");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(remoteCommand).toContain('export PNPM_HOME="${PNPM_HOME:-$tool_root/pnpm-home}"');
     expect(remoteCommand).toContain('corepack enable --install-directory "$PNPM_HOME"');
     expect(remoteCommand).toContain("pnpm --version >&2");
@@ -2152,6 +2189,7 @@ describe("scripts/crabbox-wrapper", () => {
     expect(remoteCommand).toContain("openclaw_crabbox_env");
     expect(remoteCommand).not.toContain("export -f env openclaw_crabbox_env");
     expect(remoteCommand).not.toContain('env() { openclaw_crabbox_env "$@"; };');
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
     expect(remoteCommand).toContain("PATH=${OPENCLAW_CRABBOX_BOOTSTRAP_PATH:-$PATH}:${1#PATH=}");
     expect(remoteCommand).toContain("pnpm --version >&2");
     expectGroupedShellCommand(
@@ -2245,6 +2283,7 @@ describe("scripts/crabbox-wrapper", () => {
     expect(result.status).toBe(0);
     expect(remoteCommand).toContain("openclaw_crabbox_bootstrap_macos_js");
     expect(remoteCommand).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'if [ "$openclaw_env_ignore" = "1" ] && [ "$openclaw_env_path_seen" = "0" ]; then openclaw_env_args+=("PATH=${OPENCLAW_CRABBOX_BOOTSTRAP_PATH:-$PATH}"); fi;',
     );
     expectGroupedShellCommand(remoteCommand, "openclaw_crabbox_env -i pnpm --version");
@@ -2644,6 +2683,7 @@ describe("scripts/crabbox-wrapper", () => {
     expect(result.status).toBe(0);
     expect(output.scriptContent).toContain("bun_version=1.3.14");
     expect(output.scriptContent).toContain(
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: migrated from oxlint
       'npm install --global --prefix "$bun_root" --fetch-timeout=120000 --fetch-retries=2 --fetch-retry-mintimeout=2000 --fetch-retry-maxtimeout=15000 "bun@${bun_version}"',
     );
     expect(output.scriptContent).toContain("bun --version >&2 || return 1");

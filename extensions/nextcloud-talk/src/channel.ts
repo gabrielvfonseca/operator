@@ -132,8 +132,7 @@ export const nextcloudTalkPlugin: ChannelPlugin<ResolvedNextcloudTalkAccount> =
               | { ok?: boolean; code?: string; message?: string }
               | undefined;
             if (
-              !probe ||
-              probe.ok !== false ||
+              probe?.ok !== false ||
               probe.code !== "missing_response_feature" ||
               !probe.message
             ) {

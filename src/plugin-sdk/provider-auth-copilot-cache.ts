@@ -92,8 +92,9 @@ export async function resolveCopilotTokenCache(params: {
     };
   }
 
-  const { createCorePluginStateSyncKeyedStore } =
-    await import("../plugin-state/plugin-state-store.js");
+  const { createCorePluginStateSyncKeyedStore } = await import(
+    "../plugin-state/plugin-state-store.js"
+  );
   const store = createCorePluginStateSyncKeyedStore<CachedCopilotToken>({
     ownerId: "core:provider-auth",
     namespace: COPILOT_CACHE_NAMESPACE,

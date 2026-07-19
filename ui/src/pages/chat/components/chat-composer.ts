@@ -447,38 +447,46 @@ function renderChatGoal(
         <span class="agent-chat__goal-objective">${goal.objective}</span>
         <span class="agent-chat__goal-elapsed" ${ref(createGoalElapsedRef(goal))}>${elapsed}</span>
         <span class="agent-chat__goal-actions">
-          ${showActions && actions.onGoalEdit && goal.status !== "complete"
-            ? renderChatGoalActionButton({
-                className: "agent-chat__goal-edit",
-                label: t("chat.goals.edit"),
-                icon: icons.penLine,
-                onClick: () => actions.onGoalEdit?.(goal),
-              })
-            : nothing}
-          ${showActions && goal.status === "active"
-            ? renderChatGoalActionButton({
-                className: "agent-chat__goal-pause",
-                label: t("chat.goals.pause"),
-                icon: icons.pause,
-                onClick: () => actions.onGoalCommand?.("/goal pause"),
-              })
-            : nothing}
-          ${showActions && canResume
-            ? renderChatGoalActionButton({
-                className: "agent-chat__goal-resume",
-                label: t("chat.goals.resume"),
-                icon: icons.play,
-                onClick: () => actions.onGoalCommand?.("/goal resume"),
-              })
-            : nothing}
-          ${showActions
-            ? renderChatGoalActionButton({
-                className: "agent-chat__goal-clear",
-                label: t("chat.goals.clear"),
-                icon: icons.trash,
-                onClick: () => actions.onGoalCommand?.("/goal clear"),
-              })
-            : nothing}
+          ${
+            showActions && actions.onGoalEdit && goal.status !== "complete"
+              ? renderChatGoalActionButton({
+                  className: "agent-chat__goal-edit",
+                  label: t("chat.goals.edit"),
+                  icon: icons.penLine,
+                  onClick: () => actions.onGoalEdit?.(goal),
+                })
+              : nothing
+          }
+          ${
+            showActions && goal.status === "active"
+              ? renderChatGoalActionButton({
+                  className: "agent-chat__goal-pause",
+                  label: t("chat.goals.pause"),
+                  icon: icons.pause,
+                  onClick: () => actions.onGoalCommand?.("/goal pause"),
+                })
+              : nothing
+          }
+          ${
+            showActions && canResume
+              ? renderChatGoalActionButton({
+                  className: "agent-chat__goal-resume",
+                  label: t("chat.goals.resume"),
+                  icon: icons.play,
+                  onClick: () => actions.onGoalCommand?.("/goal resume"),
+                })
+              : nothing
+          }
+          ${
+            showActions
+              ? renderChatGoalActionButton({
+                  className: "agent-chat__goal-clear",
+                  label: t("chat.goals.clear"),
+                  icon: icons.trash,
+                  onClick: () => actions.onGoalCommand?.("/goal clear"),
+                })
+              : nothing
+          }
           <button
             class="agent-chat__goal-action agent-chat__goal-expand"
             type="button"
@@ -490,19 +498,23 @@ function renderChatGoal(
           </button>
         </span>
       </div>
-      ${expanded
-        ? html`
+      ${
+        expanded
+          ? html`
             <div class="agent-chat__goal-detail">
               <div class="agent-chat__goal-detail-objective">${goal.objective}</div>
-              ${goal.lastStatusNote
-                ? html`<div class="agent-chat__goal-detail-note">${goal.lastStatusNote}</div>`
-                : nothing}
+              ${
+                goal.lastStatusNote
+                  ? html`<div class="agent-chat__goal-detail-note">${goal.lastStatusNote}</div>`
+                  : nothing
+              }
               <div class="agent-chat__goal-detail-meta">
                 ${usage ? `${usage} · ${elapsed}` : elapsed}
               </div>
             </div>
           `
-        : nothing}
+          : nothing
+      }
     </div>
   `;
 }
@@ -823,9 +835,9 @@ function renderSlashMenu(
             (arg, i) => html`
               <div
                 id=${getSlashArgOptionId(props.paneId, state.slashMenuCommand?.name ?? "", arg)}
-                class="slash-menu-item ${i === state.slashMenuIndex
-                  ? "slash-menu-item--active"
-                  : ""}"
+                class="slash-menu-item ${
+                  i === state.slashMenuIndex ? "slash-menu-item--active" : ""
+                }"
                 role="option"
                 aria-selected=${i === state.slashMenuIndex}
                 @click=${() => selectSlashArg(arg, props, requestUpdate, true)}
@@ -834,11 +846,13 @@ function renderSlashMenu(
                   requestUpdate();
                 }}
               >
-                ${state.slashMenuCommand?.icon
-                  ? html`<span class="slash-menu-icon"
+                ${
+                  state.slashMenuCommand?.icon
+                    ? html`<span class="slash-menu-icon"
                       >${renderSlashIcon(state.slashMenuCommand.icon)}</span
                     >`
-                  : nothing}
+                    : nothing
+                }
                 <span class="slash-menu-name">${arg}</span>
                 <span class="slash-menu-desc">/${state.slashMenuCommand?.name} ${arg}</span>
               </div>
@@ -881,9 +895,9 @@ function renderSlashMenu(
           ({ cmd, globalIdx }) => html`
             <div
               id=${getSlashCommandOptionId(props.paneId, cmd)}
-              class="slash-menu-item ${globalIdx === state.slashMenuIndex
-                ? "slash-menu-item--active"
-                : ""}"
+              class="slash-menu-item ${
+                globalIdx === state.slashMenuIndex ? "slash-menu-item--active" : ""
+              }"
               role="option"
               aria-selected=${globalIdx === state.slashMenuIndex}
               @click=${() => selectSlashCommand(cmd, props, requestUpdate)}
@@ -892,21 +906,25 @@ function renderSlashMenu(
                 requestUpdate();
               }}
             >
-              ${cmd.icon
-                ? html`<span class="slash-menu-icon">${renderSlashIcon(cmd.icon)}</span>`
-                : nothing}
+              ${
+                cmd.icon
+                  ? html`<span class="slash-menu-icon">${renderSlashIcon(cmd.icon)}</span>`
+                  : nothing
+              }
               <span class="slash-menu-name">/${cmd.name}</span>
               ${cmd.args ? html`<span class="slash-menu-args">${cmd.args}</span>` : nothing}
               <span class="slash-menu-desc">${getSlashCommandDescription(cmd)}</span>
-              ${cmd.argOptions?.length
-                ? html`<span class="slash-menu-badge"
+              ${
+                cmd.argOptions?.length
+                  ? html`<span class="slash-menu-badge"
                     >${t("chat.commands.optionCount", {
                       count: String(cmd.argOptions.length),
                     })}</span
                   >`
-                : cmd.executeLocal && !cmd.args
-                  ? html` <span class="slash-menu-badge">${t("chat.commands.instant")}</span> `
-                  : nothing}
+                  : cmd.executeLocal && !cmd.args
+                    ? html` <span class="slash-menu-badge">${t("chat.commands.instant")}</span> `
+                    : nothing
+              }
             </div>
           `,
         )}
@@ -919,8 +937,9 @@ function renderSlashMenu(
   return html`
     <div id=${listboxId} class="slash-menu" role="listbox" aria-label=${t("chat.commands.menu")}>
       ${sections}
-      ${hiddenCount > 0
-        ? html`<button
+      ${
+        hiddenCount > 0
+          ? html`<button
             class="slash-menu-show-more"
             @click=${(event: Event) => {
               event.preventDefault();
@@ -929,11 +948,14 @@ function renderSlashMenu(
               updateSlashMenu(draft, requestUpdate, props);
             }}
           >
-            ${hiddenCount === 1
-              ? t("chat.commands.showMoreOne")
-              : t("chat.commands.showMoreMany", { count: String(hiddenCount) })}
+            ${
+              hiddenCount === 1
+                ? t("chat.commands.showMoreOne")
+                : t("chat.commands.showMoreMany", { count: String(hiddenCount) })
+            }
           </button>`
-        : nothing}
+          : nothing
+      }
       <div class="slash-menu-footer">
         <kbd>↑↓</kbd> ${t("chat.commands.navigate")} <kbd>Tab</kbd> ${t("chat.commands.fill")}
         <kbd>Enter</kbd> ${t("chat.commands.select")} <kbd>Esc</kbd>
@@ -1006,16 +1028,19 @@ function renderChatQueueItem(item: ChatQueueItem, props: ChatQueueProps) {
       <span class="chat-queue__icon" aria-hidden="true">
         ${failed ? icons.alertTriangle : icons.clock}
       </span>
-      ${steered
-        ? html`<span class="chat-queue__badge chat-queue__badge--steered"
+      ${
+        steered
+          ? html`<span class="chat-queue__badge chat-queue__badge--steered"
             >${t("chat.queue.steered")}</span
           >`
-        : nothing}
+          : nothing
+      }
       ${stateLabel ? html`<span class="chat-queue__badge">${stateLabel}</span>` : nothing}
       <span class="chat-queue__text" title=${text}>${text}</span>
       <span class="chat-queue__actions">
-        ${failed && props.onQueueRetry
-          ? html`
+        ${
+          failed && props.onQueueRetry
+            ? html`
               <button
                 class="chat-queue__retry"
                 type="button"
@@ -1026,9 +1051,11 @@ function renderChatQueueItem(item: ChatQueueItem, props: ChatQueueProps) {
                 <span>${t("chat.queue.retry")}</span>
               </button>
             `
-          : nothing}
-        ${canSteer
-          ? html`
+            : nothing
+        }
+        ${
+          canSteer
+            ? html`
               <button
                 class="chat-queue__steer"
                 type="button"
@@ -1039,10 +1066,12 @@ function renderChatQueueItem(item: ChatQueueItem, props: ChatQueueProps) {
                 <span>${t("chat.queue.steer")}</span>
               </button>
             `
-          : nothing}
-        ${busy
-          ? nothing
-          : html`
+            : nothing
+        }
+        ${
+          busy
+            ? nothing
+            : html`
               <operator-tooltip .content=${t("chat.queue.removeQueuedMessage")}>
                 <button
                   class="chat-queue__remove"
@@ -1053,7 +1082,8 @@ function renderChatQueueItem(item: ChatQueueItem, props: ChatQueueProps) {
                   ${icons.x}
                 </button>
               </operator-tooltip>
-            `}
+            `
+        }
       </span>
       ${item.sendError ? html`<span class="chat-queue__error">${item.sendError}</span>` : nothing}
     </div>
@@ -1405,11 +1435,13 @@ function renderQuotaLimitRow(limit: QuotaLimitSummary) {
       <div class="context-usage__limit-head">
         <span class="context-usage__limit-label">${label}</span>
         <span class="context-usage__limit-meta">
-          ${reset
-            ? html`<span class="context-usage__limit-reset"
+          ${
+            reset
+              ? html`<span class="context-usage__limit-reset"
                 >${t("chat.composer.contextUsage.resets", { time: reset })}</span
               >`
-            : nothing}
+              : nothing
+          }
           <strong>${limit.usedPercent}%</strong>
         </span>
       </div>
@@ -1456,11 +1488,13 @@ function renderQuotaGroup(
         ${icons.externalLink}
       </a>
     </div>
-    ${group.accountEmail
-      ? html`<div class="context-usage__account" data-chat-usage-account="true">
+    ${
+      group.accountEmail
+        ? html`<div class="context-usage__account" data-chat-usage-account="true">
           ${group.accountEmail}
         </div>`
-      : nothing}
+        : nothing
+    }
     <div class="context-usage__limits">
       ${group.windows.map((limit) => renderQuotaLimitRow(limit))}
       ${group.budgets.map((budget) => renderQuotaBudgetRow(budget))}
@@ -1558,8 +1592,9 @@ function renderContextNotice(
           ${percentage ? html`<span class="context-ring__pct">${percentage}</span>` : nothing}
         </summary>
         <section class="context-usage__popover" aria-label=${t("chat.composer.contextUsage.title")}>
-          ${model
-            ? html`
+          ${
+            model
+              ? html`
                 <div class="context-usage__header">
                   <span class="context-usage__title"
                     >${t("chat.composer.contextUsage.contextWindow")}</span
@@ -1579,9 +1614,11 @@ function renderContextNotice(
                   <span style="width: ${model.pct}%"></span>
                 </div>
               `
-            : nothing}
-          ${model
-            ? html`
+              : nothing
+          }
+          ${
+            model
+              ? html`
                 <div class="context-usage__section-label">
                   ${t("chat.composer.contextUsage.latestRunTokens")}
                 </div>
@@ -1594,19 +1631,23 @@ function renderContextNotice(
                     <dt>${t("usage.breakdown.output")}</dt>
                     <dd>${formatStat(model.output)}</dd>
                   </div>
-                  ${!showCosts || model.cost === null
-                    ? nothing
-                    : html`
+                  ${
+                    !showCosts || model.cost === null
+                      ? nothing
+                      : html`
                         <div>
                           <dt>${t("chat.composer.contextUsage.estimatedCost")}</dt>
                           <dd>${formatCost(model.cost)}</dd>
                         </div>
-                      `}
+                      `
+                  }
                 </dl>
               `
-            : nothing}
-          ${showCosts && providerCosts
-            ? html`
+              : nothing
+          }
+          ${
+            showCosts && providerCosts
+              ? html`
                 <div class="context-usage__section-label">${t("usage.breakdown.costByType")}</div>
                 <dl class="context-usage__stats context-usage__stats--cost">
                   ${renderCostStat(t("usage.breakdown.input"), providerCosts.input)}
@@ -1615,37 +1656,43 @@ function renderContextNotice(
                   ${renderCostStat(t("usage.breakdown.cacheWrite"), providerCosts.cacheWrite)}
                 </dl>
               `
-            : nothing}
+              : nothing
+          }
           ${planGroups.map((group) =>
             renderQuotaGroup(group, {
               usageHref,
               showProvider: planGroups.length > 1,
             }),
           )}
-          ${provider
-            ? html`
+          ${
+            provider
+              ? html`
                 <div class="context-usage__model">
                   <span>${t("sessionsView.provider")}:</span>
                   <strong>${provider}</strong>
                 </div>
               `
-            : nothing}
-          ${responseModel
-            ? html`
+              : nothing
+          }
+          ${
+            responseModel
+              ? html`
                 <div class="context-usage__model">
                   <span>${t("sessionsView.model")}:</span>
                   <strong>${responseModel}</strong>
                 </div>
               `
-            : nothing}
+              : nothing
+          }
         </section>
       </details>
-      ${canRenderCompact
-        ? html`
+      ${
+        canRenderCompact
+          ? html`
             <button
-              class="context-ring__action ${options.compactBusy
-                ? "context-ring__action--busy"
-                : ""}"
+              class="context-ring__action ${
+                options.compactBusy ? "context-ring__action--busy" : ""
+              }"
               type="button"
               aria-label=${t("chat.composer.compactRecommendedContext")}
               ?disabled=${compactDisabled}
@@ -1662,7 +1709,8 @@ function renderContextNotice(
               <span>${options.compactBusy ? "Compacting" : "Compact"}</span>
             </button>
           `
-        : nothing}
+          : nothing
+      }
     </div>
   `;
 }
@@ -1727,28 +1775,32 @@ function renderChatPrimaryActions(props: ChatRunControlsProps) {
   // duplicate announcement.
   const voiceErrored = props.voiceStatus === "error";
   return html`
-    ${props.voiceActive && props.onToggleVoice
-      ? html`
+    ${
+      props.voiceActive && props.onToggleVoice
+        ? html`
           <operator-tooltip .content=${t("chat.composer.stopVoiceInput")}>
             <button
-              class="chat-send-btn chat-send-btn--voice-live${voiceErrored
-                ? " chat-send-btn--voice-error"
-                : ""}"
+              class="chat-send-btn chat-send-btn--voice-live${
+                voiceErrored ? " chat-send-btn--voice-error" : ""
+              }"
               @click=${props.onToggleVoice}
               aria-label=${t("chat.composer.stopVoiceInput")}
             >
-              ${voiceErrored
-                ? nothing
-                : renderMicrophoneActivity({
-                    status: props.voiceStatus,
-                    inputLevel: props.voiceInputLevel,
-                  })}
+              ${
+                voiceErrored
+                  ? nothing
+                  : renderMicrophoneActivity({
+                      status: props.voiceStatus,
+                      inputLevel: props.voiceInputLevel,
+                    })
+              }
               <span class="chat-send-btn__voice-stop-glyph">${icons.stop}</span>
             </button>
           </operator-tooltip>
-          ${voiceErrored
-            ? nothing
-            : html`
+          ${
+            voiceErrored
+              ? nothing
+              : html`
                 <span
                   class="agent-chat__sr-only agent-chat__voice-status"
                   role="status"
@@ -1756,13 +1808,15 @@ function renderChatPrimaryActions(props: ChatRunControlsProps) {
                   aria-atomic="true"
                   >${voiceStatusLabel(props.voiceStatus, props.voiceDetail)}</span
                 >
-              `}
+              `
+          }
           ${abortAction}
         `
-      : props.canAbort
-        ? html`
-            ${hasComposedContent
-              ? html`
+        : props.canAbort
+          ? html`
+            ${
+              hasComposedContent
+                ? html`
                   <operator-tooltip .content=${activeRunActionLabel}>
                     <button
                       class="chat-send-btn"
@@ -1775,7 +1829,8 @@ function renderChatPrimaryActions(props: ChatRunControlsProps) {
                     </button>
                   </operator-tooltip>
                 `
-              : nothing}
+                : nothing
+            }
             <operator-tooltip .content=${t("chat.runControls.stop")}>
               <button
                 class="chat-send-btn chat-send-btn--stop"
@@ -1787,8 +1842,8 @@ function renderChatPrimaryActions(props: ChatRunControlsProps) {
               </button>
             </operator-tooltip>
           `
-        : hasComposedContent || !props.onToggleVoice
-          ? html`
+          : hasComposedContent || !props.onToggleVoice
+            ? html`
               <operator-tooltip
                 .content=${props.isBusy ? t("chat.runControls.queue") : t("chat.runControls.send")}
               >
@@ -1796,20 +1851,22 @@ function renderChatPrimaryActions(props: ChatRunControlsProps) {
                   class="chat-send-btn"
                   @click=${storeDraftAndSend}
                   ?disabled=${!props.canSend || props.sending}
-                  aria-label=${props.isBusy
-                    ? t("chat.runControls.queueMessage")
-                    : t("chat.runControls.sendMessage")}
+                  aria-label=${
+                    props.isBusy
+                      ? t("chat.runControls.queueMessage")
+                      : t("chat.runControls.sendMessage")
+                  }
                 >
                   ${icons.arrowUp}
                   <span class="agent-chat__control-label"
-                    >${props.isBusy
-                      ? t("chat.runControls.queue")
-                      : t("chat.runControls.send")}</span
+                    >${
+                      props.isBusy ? t("chat.runControls.queue") : t("chat.runControls.send")
+                    }</span
                   >
                 </button>
               </operator-tooltip>
             `
-          : html`
+            : html`
               <operator-tooltip .content=${t("chat.composer.startVoiceInput")}>
                 <button
                   class="chat-send-btn chat-send-btn--voice"
@@ -1823,7 +1880,8 @@ function renderChatPrimaryActions(props: ChatRunControlsProps) {
                   >
                 </button>
               </operator-tooltip>
-            `}
+            `
+    }
   `;
 }
 
@@ -2167,18 +2225,18 @@ export function renderChatComposer(props: ChatComposerProps) {
       >
         ${slashMenuVisible ? renderSlashMenu(requestUpdate, props, visibleDraft) : nothing}
         ${renderAttachmentPreview(props)}
-        ${props.replyTarget
-          ? html`
+        ${
+          props.replyTarget
+            ? html`
               <div class="chat-reply-preview">
                 <span class="chat-reply-preview__icon">${icons.messageSquare}</span>
                 <span class="chat-reply-preview__label"
                   >Replying to ${props.replyTarget.senderLabel ?? "message"}</span
                 >
                 <span class="chat-reply-preview__text"
-                  >${truncateUtf16Safe(props.replyTarget.text, 120)}${props.replyTarget.text
-                    .length > 120
-                    ? "..."
-                    : ""}</span
+                  >${truncateUtf16Safe(props.replyTarget.text, 120)}${
+                    props.replyTarget.text.length > 120 ? "..." : ""
+                  }</span
                 >
                 <button
                   type="button"
@@ -2191,7 +2249,8 @@ export function renderChatComposer(props: ChatComposerProps) {
                 </button>
               </div>
             `
-          : nothing}
+            : nothing
+        }
         <div class="agent-chat__composer-status-stack">
           ${renderFallbackIndicator(props.fallbackStatus)}
           ${renderCompactionIndicator(props.compactionStatus)}
@@ -2257,13 +2316,15 @@ export function renderChatComposer(props: ChatComposerProps) {
               placeholder=${placeholder}
               rows="1"
             ></textarea>
-            ${tokens
-              ? html`
+            ${
+              tokens
+                ? html`
                   <div class="agent-chat__token-row">
                     <span class="agent-chat__token-count">${tokens}</span>
                   </div>
                 `
-              : nothing}
+                : nothing
+            }
             <span
               id=${slashMenuAnnouncementId}
               class="agent-chat__sr-only"
@@ -2286,20 +2347,24 @@ export function renderChatComposer(props: ChatComposerProps) {
         </div>
 
         <div class="agent-chat__composer-footer">
-          ${composerControls !== nothing
-            ? html`
+          ${
+            composerControls !== nothing
+              ? html`
                 <div class="agent-chat__composer-controls">
-                  ${composerRunStatus?.phase === "interrupted"
-                    ? html`
+                  ${
+                    composerRunStatus?.phase === "interrupted"
+                      ? html`
                         <div class="agent-chat__composer-run-status">
                           ${renderChatRunStatusIndicator(composerRunStatus)}
                         </div>
                       `
-                    : nothing}
+                      : nothing
+                  }
                   ${composerControls}
                 </div>
               `
-            : nothing}
+              : nothing
+          }
           <div class="agent-chat__composer-meta">${contextNotice}</div>
         </div>
       </div>

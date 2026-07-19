@@ -39,11 +39,11 @@ export function resolveMirroredTranscriptText(params: {
   text?: string;
   mediaUrls?: string[];
 }): string | null {
-  const mediaUrls = params.mediaUrls?.filter((url) => url && url.trim()) ?? [];
+  const mediaUrls = params.mediaUrls?.filter((url) => url?.trim()) ?? [];
   if (mediaUrls.length > 0) {
     const names = mediaUrls
       .map((url) => extractFileNameFromMediaUrl(url))
-      .filter((name): name is string => Boolean(name && name.trim()));
+      .filter((name): name is string => Boolean(name?.trim()));
     if (names.length > 0) {
       return names.join(", ");
     }

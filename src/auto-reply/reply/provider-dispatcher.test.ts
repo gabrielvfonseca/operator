@@ -21,8 +21,9 @@ vi.mock("../dispatch.js", () => ({
     hoisted.plainDispatchMock(...args),
 }));
 
-const { dispatchReplyWithBufferedBlockDispatcher, dispatchReplyWithDispatcher } =
-  await import("./provider-dispatcher.js");
+const { dispatchReplyWithBufferedBlockDispatcher, dispatchReplyWithDispatcher } = await import(
+  "./provider-dispatcher.js"
+);
 
 const dispatchResult = {
   queuedFinal: false,

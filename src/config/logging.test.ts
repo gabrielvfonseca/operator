@@ -19,8 +19,9 @@ let formatConfigUpdatedMessage: typeof import("./logging.js").formatConfigUpdate
 let logConfigUpdated: typeof import("./logging.js").logConfigUpdated;
 
 beforeAll(async () => {
-  ({ formatConfigPath, formatConfigUpdatedMessage, logConfigUpdated } =
-    await import("./logging.js"));
+  ({ formatConfigPath, formatConfigUpdatedMessage, logConfigUpdated } = await import(
+    "./logging.js"
+  ));
 });
 
 beforeEach(() => {

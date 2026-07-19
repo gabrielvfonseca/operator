@@ -225,10 +225,10 @@ function isBulkAnnouncementDeletePath(path: string): boolean {
   const segments = decodePathSegments(path);
   return Boolean(
     segments &&
-    segments.length === 4 &&
-    segments[0]?.toLowerCase() === "guilds" &&
-    segments[2]?.toLowerCase() === "announces" &&
-    segments[3]?.toLowerCase() === "all",
+      segments.length === 4 &&
+      segments[0]?.toLowerCase() === "guilds" &&
+      segments[2]?.toLowerCase() === "announces" &&
+      segments[3]?.toLowerCase() === "all",
   );
 }
 
