@@ -1,6 +1,6 @@
 # AGENTS.MD
 
-Telegraph style. Root rules only. Read scoped `AGENTS.md` before subtree work.
+Telegraph style. Root rules only. Read scoped `AGENTS.MD` before subtree work.
 Skills own workflows; root owns hard policy and routing.
 
 ## Start
@@ -20,13 +20,13 @@ Skills own workflows; root owns hard policy and routing.
 - CODEOWNERS: maint/refactor/tests ok. Larger behavior/product/security/ownership: owner ask/review.
 - Product/docs/UI/changelog wording: "plugin/plugins"; `extensions/` is internal.
 - New channel/plugin/app/doc surface: update `.github/labeler.yml` + GH labels.
-- New `AGENTS.md`: add sibling `CLAUDE.md` symlink; edit `AGENTS.md` only.
+- New `AGENTS.MD`: add sibling `CLAUDE.MD` symlink; edit `AGENTS.MD` only.
 
 ## ClawSweeper Review Policy
 
 - Operator-specific review rules live here; generic ClawSweeper prompts stay repo-agnostic.
 - ClawSweeper-owned schema, labels, close reasons, protected-label gates, maintainer-item gates, and mutation rules live in `openclaw/clawsweeper`.
-- Review workers read this full root `AGENTS.md` before judging; no reliance on search snippets, `head`, partial ranges, local excerpts, or truncated copies. Then read every scoped `AGENTS.md` that owns touched paths.
+- Review workers read this full root `AGENTS.MD` before judging; no reliance on search snippets, `head`, partial ranges, local excerpts, or truncated copies. Then read every scoped `AGENTS.MD` that owns touched paths.
 - Optional integrations, providers, channels, skill bundles, MCP surfaces, and service workflows route to plugins, ClawHub, or owner repos when current seams suffice. Keep core items for missing core/plugin APIs, bundled regressions, security/core hardening, or maintainer product decisions.
 - Plugin APIs, provider routing, auth/session state, persisted preferences, config loading, config/default additions, migrations, setup, startup checks, and fallback behavior are compatibility/upgrade-sensitive. Treat config breaks, new config/default surfaces, removed fallbacks, fail-closed changes, stricter validation, or new operator action as merge risk even with green CI when they can affect existing users, upgrades, provider/plugin behavior, or maintainer operations.
 - For PRs that add, remove, or change config/default surfaces with possible compatibility, upgrade, provider/plugin, operator, setup, startup, or fallback impact, ClawSweeper review should emit a `reviewMetrics` entry when practical. The metric should name the count and direction of the changes, such as added, changed, or removed config/default surfaces, and explain why the metric matters before merge. When the metric indicates concrete merge risk, also surface the concern in `risks`, use `mergeRiskLabels` when the risk matches the label rubric, make `bestSolution` name the desired pre-merge state, and ensure `labelJustifications` explain the specific reason rather than restating the label.
@@ -50,7 +50,7 @@ Skills own workflows; root owns hard policy and routing.
 
 - Source docs: `docs/**`; publish repo: `openclaw/docs`; host: `https://docs.operator.ai`.
 - Flow: source -> `docs-sync-publish.yml` -> mirror build -> R2 -> Worker router.
-- Docs AI: `openclaw/ask-molty`; see its `AGENTS.md`.
+- Docs AI: `openclaw/ask-molty`; see its `AGENTS.MD`.
 
 ## Architecture
 
@@ -126,7 +126,7 @@ Skills own workflows; root owns hard policy and routing.
 - Checks in a trusted Codex worktree or linked/sparse checkout: avoid direct local `pnpm check*`; use `node scripts/check-changed.mjs [--staged|-- <files...>]`. It can classify without installed dependencies and delegates heavy or dependency-missing proof before loading package-backed helpers. For untrusted source, do not execute this repository-controlled wrapper locally.
 - Extension tests: `pnpm test:extensions`, `pnpm test extensions`, `pnpm test extensions/<id>`.
 - Typecheck: `tsgo` lanes only (`pnpm tsgo*`, `pnpm check:test-types`); never add `tsc --noEmit`, `typecheck`, `check:types`.
-- Formatting: `oxfmt`, not Prettier. Write paths with `pnpm format <paths>`; no `format:write` script. Checks use repo wrappers (`pnpm format:*`, `scripts/run-oxlint.mjs`; full `pnpm lint:*` only when scope requires).
+- Formatting: `biome`, not Prettier. Write paths with `pnpm format <paths>`; no `format:write` script. Lint+format use `biome check`/`biome format` via repo wrappers (`pnpm format:*`, `pnpm lint:*`; full `pnpm lint:*` only when scope requires).
 - SDK surface gate: `pnpm plugin-sdk:surface:check`; no `plugin-sdk:surface-report` script.
 - Build before push when build output, packaging, lazy/module boundaries, dynamic imports, or published surfaces can change; agent builds default to the selected remote box unless platform-specific proof requires another remote host.
 
@@ -173,9 +173,9 @@ Skills own workflows; root owns hard policy and routing.
 
 ## GitHub / PRs
 
-- Fresh GitHub items: read `CONTRIBUTING.md`, the issue chooser/form, PR template, and `.github/CODEOWNERS`; blank issues are disabled; preserve templates and evidence requirements.
+- Fresh GitHub items: read `CONTRIBUTING.MD`, the issue chooser/form, PR template, and `.github/CODEOWNERS`; blank issues are disabled; preserve templates and evidence requirements.
 - Issue first for bugs, user-facing features, architecture/product decisions, or work needing durable discussion. Bounded maintainer-requested refactor may go direct; agent decides whether an issue adds value. PRs use the template, link context, and keep durable problem/impact/evidence sections.
-- Route support to Discord and security through `SECURITY.md`. Use listed maintainer areas/`CODEOWNERS`; never guess mentions.
+- Route support to Discord and security through `SECURITY.MD`. Use listed maintainer areas/`CODEOWNERS`; never guess mentions.
 - Use `$operator-pr-maintainer` immediately for maintainer-side Operator issue/PR review, triage, duplicates, labels, comments, close, land, or evidence. Contributor PR creation/refresh follows the requested contributor workflow; linked refs alone do not require maintainer archive tooling.
 - Issue/PR start: `git status -sb`; if clean, `git pull --ff-only`; if dirty, yell before pull/rebase.
 - PR refs: `gh pr view/diff` or `gh api`, not web search. Prefer `gitcrawl` for maintainer discovery; missing/stale `gitcrawl` falls through to live `gh`, not contributor setup. Verify live with `gh` before mutation.
@@ -251,7 +251,7 @@ Skills own workflows; root owns hard policy and routing.
 - External boundaries: prefer `zod` or existing schema helpers.
 - Runtime branching: discriminated unions/closed codes over freeform strings. Avoid semantic sentinels (`?? 0`, empty object/string).
 - Cross-function state: when valid combos matter, return a closed mode/result shape. Avoid parallel nullable fields or derived booleans that callers must keep in sync; make impossible states unrepresentable.
-- Formatter-friendly shape: when oxfmt explodes an expression vertically, extract named booleans, payloads, or small helpers. Do not change width or use format-ignore for local compactness.
+- Formatter-friendly shape: when biome format explodes an expression vertically, extract named booleans, payloads, or small helpers. Do not change width or use format-ignore for local compactness.
 - Calls should be boring: complex decisions happen above; call args/object fields are names, literals, or simple property reads.
 - Prefer early returns over nested condition pyramids. Split code into gather -> normalize -> decide -> act.
 - Use named intermediates only for domain meaning or readability; avoid temp-variable soup.
@@ -294,16 +294,16 @@ Skills own workflows; root owns hard policy and routing.
 - Do not run independent `pnpm test`/Vitest commands concurrently in one worktree; Vitest cache races with `ENOTEMPTY`. Group one command or use distinct `OPERATOR_VITEST_FS_MODULE_CACHE_PATH`.
 - Vitest rejects Jest `--runInBand`; use `OPERATOR_VITEST_MAX_WORKERS=1 pnpm test` for serial proof. Test workers max 16.
 - Live: `OPERATOR_LIVE_TEST=1 pnpm test:live`; verbose `OPERATOR_LIVE_TEST_QUIET=0`.
-- Guide: `docs/reference/test.md`.
+- Guide: `docs/reference/TEST.MD`.
 
 ## Docs / Changelog
 
 - Use `$technical-documentation` for docs writing/review. Docs change with behavior/API.
-- Codex harness upgrade (`extensions/codex/package.json` `@openai/codex`): refresh `docs/plugins/codex-harness.md` model snapshot from the new harness `model/list`.
+- Codex harness upgrade (`extensions/codex/package.json` `@openai/codex`): refresh `docs/plugins/CODEX_HARNESS.MD` model snapshot from the new harness `model/list`.
 - Docs final answers: include relevant full `https://docs.operator.ai/...` URL(s). If issue/PR work too, GitHub URL last.
-- `CHANGELOG.md`: release-only. Do not edit for normal PRs, direct `main` fixes, or `ship it`; release generation owns it. Do not ask contributors/agents for changelog edits.
+- `CHANGELOG.MD`: release-only. Do not edit for normal PRs, direct `main` fixes, or `ship it`; release generation owns it. Do not ask contributors/agents for changelog edits.
 - User-facing `fix`/`feat`/`perf`: put release-note context in PR body, squash message, or direct commit: behavior, surface, issue/PR refs, credited human author/reporter.
-- Release generation: derive `CHANGELOG.md` from merged PRs + all direct `main` commits. Entries: active `### Changes`/`### Fixes`, single-line, thank credited humans; never thank bots/forbidden handles: `@openclaw`, `@clawsweeper`, `@codex`, `@steipete`.
+- Release generation: derive `CHANGELOG.MD` from merged PRs + all direct `main` commits. Entries: active `### Changes`/`### Fixes`, single-line, thank credited humans; never thank bots/forbidden handles: `@openclaw`, `@clawsweeper`, `@codex`, `@steipete`.
 
 ## Git
 
@@ -337,9 +337,9 @@ Skills own workflows; root owns hard policy and routing.
 - Backports are optional. Apply only the operator-selected set; when requested without a target, use the newest open `release/` branch.
 - Regular beta/stable flow has two immutable identities:
   - **Code SHA**: version prep plus any optional backports/release fixes, with no release changelog mutation. Full product validation belongs here.
-  - **Release SHA**: a descendant of the green Code SHA whose complete diff is exactly `CHANGELOG.md`. Tag, npm preflight, package/install acceptance, and publish belong here.
+  - **Release SHA**: a descendant of the green Code SHA whose complete diff is exactly `CHANGELOG.MD`. Tag, npm preflight, package/install acceptance, and publish belong here.
 - Never generate the release changelog before the Code SHA has green Full Release Validation. A product/code failure changes the Code SHA and restarts product validation. A workflow/harness/infrastructure failure is fixed in trusted tooling and rerun against the same Code SHA; do not mutate the candidate to satisfy newer tooling.
-- After green Code SHA validation, generate and review `CHANGELOG.md` once. Dispatch Full Release Validation for the Release SHA with evidence reuse enabled; `changelog-only-release-v1` may reuse the Code SHA product evidence only when GitHub independently proves the entire descendant delta is `CHANGELOG.md`. Any other path change requires a new Code SHA and fresh full validation.
+- After green Code SHA validation, generate and review `CHANGELOG.MD` once. Dispatch Full Release Validation for the Release SHA with evidence reuse enabled; `changelog-only-release-v1` may reuse the Code SHA product evidence only when GitHub independently proves the entire descendant delta is `CHANGELOG.MD`. Any other path change requires a new Code SHA and fresh full validation.
 - Release-SHA proof is intentionally narrow: release-note/provenance checks, npm preflight/package bytes, install/update acceptance, and publish readiness. Do not rerun the full product matrix merely because the changelog changed.
 - Pass the successful Release-SHA validation run and npm preflight run into `release:candidate`; do not let the candidate helper dispatch duplicate copies of evidence that already passed.
 - Keep one release operator and one watcher per release identity. Resume partial publish from successful immutable child artifacts/runs; never rebuild or republish an already-published package version.
@@ -365,4 +365,4 @@ Skills own workflows; root owns hard policy and routing.
 - Never edit `node_modules`.
 - Local-only `.agents` ignores: `.git/info/exclude`, not repo `.gitignore`.
 - Provider tool schemas: prefer flat string enum helpers over `Type.Union([Type.Literal(...)])`; some providers reject `anyOf`.
-- External messaging: no token-delta channel messages. Follow `docs/concepts/streaming.md`.
+- External messaging: no token-delta channel messages. Follow `docs/concepts/STREAMING.MD`.

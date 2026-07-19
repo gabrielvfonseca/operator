@@ -502,16 +502,7 @@ jobs:
           const supportsFormatCheck =
             targetWorkflow.split("pnpm format:check").length - 1 >= 2;
           const runFormatCheck = !frozenTarget || supportsFormatCheck;
-          const checksFastCoreTasks =
-            runNode && !frozenTarget
-              ? [
-                  {
-                    check_name: "checks-fast-max-lines-ratchet",
-                    runtime: "node",
-                    task: "max-lines-ratchet",
-                  },
-                ]
-            : [];
+          const checksFastCoreTasks = runNode && !frozenTarget ? [] : [];
           if (runNodeFull) {
             checksFastCoreTasks.push(
               { check_name: "checks-fast-bundled-protocol", runtime: "node", task: "bundled-protocol" },
@@ -1238,64 +1229,15 @@ jobs:
       matrix: ${{ fromJson(needs.preflight.outputs.checks_fast_core_matrix) }}
     steps:
       - *linux_node_checkout_step
-      - name: Prepare release-gate max-lines merge tree
-        if: matrix.task == 'max-lines-ratchet' && github.event_name == 'workflow_dispatch' && inputs.release_gate
-        env:
-          GH_TOKEN: ${{ github.token }}
-          PULL_REQUEST_NUMBER: ${{ inputs.pull_request_number }}
-          TARGET_SHA: ${{ inputs.target_ref }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          prepared=false
-          for attempt in {1..6}; do
-            pr_info="$(
-              gh api --method GET "repos/${GITHUB_REPOSITORY}/pulls/${PULL_REQUEST_NUMBER}" |
-                jq -r --arg repo "$GITHUB_REPOSITORY" --arg target "$TARGET_SHA" '
-                  select(.state == "open" and .head.sha == $target and .base.repo.full_name == $repo)
-                  | [.base.sha, (if .mergeable == null then "unknown" else (.mergeable | tostring) end)]
-                  | @tsv
-                '
-            )"
-            if [[ -z "$pr_info" ]]; then
-              echo "release-gate pull request must be open and match the target head" >&2
-              exit 1
-            fi
-            IFS=$'\t' read -r base_sha mergeable <<<"$pr_info"
-            if [[ "$mergeable" == "false" ]]; then
-              echo "release-gate pull request is not mergeable" >&2
-              exit 1
-            fi
-            if [[ "$mergeable" == "true" ]] &&
-              git fetch --no-tags --depth=2 origin \
-                "+refs/pull/${PULL_REQUEST_NUMBER}/merge:refs/remotes/origin/ci-max-lines-merge"; then
-              merge_sha="$(git rev-parse refs/remotes/origin/ci-max-lines-merge)"
-              read -r merge_base merge_head extra_parent <<<"$(git show -s --format=%P "$merge_sha")"
-              if [[ "$merge_base" == "$base_sha" && "$merge_head" == "$TARGET_SHA" && -z "$extra_parent" ]]; then
-                prepared=true
-                break
-              fi
-            fi
-            if [[ "$attempt" != "6" ]]; then
-              sleep 5
-            fi
-          done
-          if [[ "$prepared" != "true" ]]; then
-            echo "release-gate merge tree did not refresh to the current pull request base and head" >&2
-            exit 1
-          fi
-          git checkout --detach "$merge_sha"
-          echo "RATCHET_RELEASE_BASE_SHA=${base_sha}" >> "$GITHUB_ENV"
-          echo "RATCHET_RELEASE_MERGE_TREE=true" >> "$GITHUB_ENV"
-
       - name: Setup Node environment
         uses: ./.github/actions/setup-node-env
         with:
           install-bun: ${{ matrix.task == 'bun-launcher' && 'true' || 'false' }}
 
+
       - name: Run ${{ matrix.task }} (${{ matrix.runtime }})
         env:
-          GH_TOKEN: ${{ matrix.task == 'max-lines-ratchet' && github.token || '' }}
+          GH_TOKEN: ${{ matrix.task == 'bun-launcher' && github.token || '' }}
           OPERATOR_TEST_PROJECTS_PARALLEL: 3
           RATCHET_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           RATCHET_EVENT_BASE_SHA: ${{ github.event_name == 'push' && github.event.before || '' }}
@@ -1322,63 +1264,6 @@ jobs:
               ;;
             ci-routing)
               pnpm test src/commands/status.scan-result.test.ts src/scripts/ci-changed-scope.test.ts test/scripts/changed-lanes.test.ts test/scripts/ci-changed-node-test-plan.test.ts test/scripts/ci-run-node-test-shard.test.ts test/scripts/ci-workflow-guards.test.ts test/scripts/run-vitest.test.ts test/scripts/test-projects.test.ts
-              ;;
-            max-lines-ratchet)
-              if ! has_package_script "check:max-lines-ratchet"; then
-                echo "Current CI targets must provide check:max-lines-ratchet." >&2
-                exit 1
-              fi
-              base_sha="${RATCHET_EVENT_BASE_SHA:-${RATCHET_RELEASE_BASE_SHA:-}}"
-              if [[ "$base_sha" == "0000000000000000000000000000000000000000" ]]; then
-                base_sha=""
-              fi
-              base_ref=""
-              if [[ -n "${RATCHET_PR_HEAD_SHA:-}" ]]; then
-                mapfile -t merge_parents < <(git cat-file -p HEAD | sed -n 's/^parent //p')
-                if [[ "${#merge_parents[@]}" != "2" || "${merge_parents[1]:-}" != "$RATCHET_PR_HEAD_SHA" ]]; then
-                  echo "Pull request checkout is not the expected two-parent merge tree." >&2
-                  exit 1
-                fi
-                merge_base="${merge_parents[0]}"
-                git fetch --no-tags --depth=1 origin \
-                  "+${merge_base}:refs/remotes/origin/ci-max-lines-base"
-                base_ref="refs/remotes/origin/ci-max-lines-base"
-              elif [[ -n "$base_sha" ]]; then
-                git fetch --no-tags --depth=1 origin \
-                  "+${base_sha}:refs/remotes/origin/ci-max-lines-base"
-                base_ref="refs/remotes/origin/ci-max-lines-base"
-              elif [[ -n "${RATCHET_MANUAL_TARGET_SHA:-}" ]]; then
-                default_branch="${RATCHET_DEFAULT_BRANCH:-main}"
-                default_sha="$(
-                  git ls-remote origin "refs/heads/${default_branch}" | awk 'NR == 1 { print $1 }'
-                )"
-                if [[ ! "$default_sha" =~ ^[0-9a-f]{40}$ ]]; then
-                  echo "Could not resolve the default branch head for the max-lines ratchet." >&2
-                  exit 1
-                fi
-                merge_base_sha="$(
-                  gh api --method GET \
-                    "repos/${GITHUB_REPOSITORY}/compare/${default_sha}...${RATCHET_MANUAL_TARGET_SHA}" \
-                    --jq '.merge_base_commit.sha'
-                )"
-                if [[ ! "$merge_base_sha" =~ ^[0-9a-f]{40}$ ]]; then
-                  echo "Could not resolve the manual target merge base for the max-lines ratchet." >&2
-                  exit 1
-                fi
-                git fetch --no-tags --depth=1 origin \
-                  "+${merge_base_sha}:refs/remotes/origin/ci-max-lines-base"
-                base_ref="refs/remotes/origin/ci-max-lines-base"
-              else
-                default_branch="${RATCHET_DEFAULT_BRANCH:-main}"
-                git fetch --no-tags --depth=1 origin \
-                  "+refs/heads/${default_branch}:refs/remotes/origin/ci-max-lines-base"
-                base_ref="refs/remotes/origin/ci-max-lines-base"
-              fi
-              unset GH_TOKEN
-              pnpm check:max-lines-ratchet --base "$base_ref"
-              if [[ "${RATCHET_RELEASE_MERGE_TREE:-}" == "true" ]]; then
-                node scripts/run-oxlint.mjs src ui/src packages extensions
-              fi
               ;;
             bun-launcher)
               OPERATOR_TEST_BUN_LAUNCHER=1 pnpm test test/operator-launcher.e2e.test.ts

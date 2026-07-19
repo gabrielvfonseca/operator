@@ -153,7 +153,7 @@ For workflow-only or docs/skill-only changes in a Codex worktree:
 node scripts/run-vitest.mjs test/scripts/ci-workflow-guards.test.ts
 node scripts/check-workflows.mjs
 node scripts/docs-list.js
-./node_modules/.bin/oxfmt --check .github/workflows/ci.yml .github/workflows/codeql-critical-quality.yml docs/ci.md test/scripts/ci-workflow-guards.test.ts .agents/skills/operator-ci-limits/SKILL.md .agents/skills/operator-ci-limits/agents/openai.yaml
+pnpm exec biome format --check .github/workflows/ci.yml .github/workflows/codeql-critical-quality.yml docs/ci.md test/scripts/ci-workflow-guards.test.ts .agents/skills/operator-ci-limits/SKILL.md .agents/skills/operator-ci-limits/agents/openai.yaml
 git diff --check
 ```
 

@@ -53,7 +53,7 @@ while IFS= read -r -d '' file; do
 done < <(node "$FILTER_FILES" format -- "${restage_files[@]}")
 
 if [ "${#format_files[@]}" -gt 0 ]; then
-  "$RUN_NODE_TOOL" oxfmt --write --no-error-on-unmatched-pattern "${format_files[@]}"
+  "$RUN_NODE_TOOL" biome format --write --no-errors-on-unmatched "${format_files[@]}"
 fi
 
 if [ "${#restage_files[@]}" -gt 0 ]; then

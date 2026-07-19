@@ -53,7 +53,7 @@ or live-provider Docker proof.
 Run the smallest proof that covers the touched lane:
 
 ```bash
-pnpm exec oxfmt --write <changed files>
+pnpm exec biome format --write <changed files>
 node --check <new .mjs files>
 bash -n <new .sh files>
 node scripts/run-vitest.mjs test/scripts/docker-e2e-plan.test.ts

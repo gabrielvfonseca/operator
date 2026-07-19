@@ -171,7 +171,7 @@ Run the smallest reliable docs checks for the touched surface:
 
 - `pnpm docs:list`
 - `git diff --check -- <touched-files>`
-- Targeted `pnpm exec oxfmt --check --threads=1 <touched-files>`
+- Targeted `pnpm exec biome format --check <touched-files>`
 - `pnpm docs:check-mdx`
 - `pnpm docs:check-links`
 - `pnpm docs:check-i18n-glossary` when link text, navigation, labels, or glossary

@@ -243,8 +243,7 @@ const rootToolingAndWorkspaceDependencies = [
   "dompurify",
   "jscpd",
   "lit",
-  "oxlint",
-  "oxlint-tsgolint",
+  "biome",
   "signal-utils",
 ] as const;
 

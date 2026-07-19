@@ -148,7 +148,7 @@ jobs:
           fi
           pnpm_install_artifacts_ready() {
             test -s "$PNPM_CONFIG_MODULES_DIR/.modules.yaml" &&
-              test -x "$PNPM_CONFIG_MODULES_DIR/.bin/oxfmt" &&
+              test -x "$PNPM_CONFIG_MODULES_DIR/.bin/biome" &&
               test -f "$PNPM_CONFIG_MODULES_DIR/typescript/package.json"
           }
           run_pnpm_install() {

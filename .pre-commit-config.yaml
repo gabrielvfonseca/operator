@@ -78,18 +78,10 @@ repos:
         language: system
         pass_filenames: false
 
-      # oxlint --type-aware src test
-      - id: oxlint
-        name: oxlint
-        entry: scripts/pre-commit/run-node-tool.sh oxlint --type-aware src test
-        language: system
-        pass_filenames: false
-        types_or: [javascript, jsx, ts, tsx]
-
-      # oxfmt --check src test
-      - id: oxfmt
-        name: oxfmt
-        entry: scripts/pre-commit/run-node-tool.sh oxfmt --check src test
+      # biome check src test
+      - id: biome
+        name: biome
+        entry: scripts/pre-commit/run-node-tool.sh biome check src ui/src packages extensions scripts test
         language: system
         pass_filenames: false
         types_or: [javascript, jsx, ts, tsx]
