@@ -8,16 +8,19 @@ import type { ThinkLevel } from "../../auto-reply/thinking.js";
 import { resolveAgentModelFallbackValues } from "../../config/model-input.js";
 import { parseSqliteSessionFileMarker } from "../../config/sessions/sqlite-marker.js";
 import type { OperatorConfig } from "../../config/types.operator.js";
+import {
   createFileBackedCompactionCheckpointStore,
   readSessionLeafStateFromTranscriptAsync,
   resolveCompactionCheckpointTranscriptPosition,
   resolveSessionCompactionCheckpointReason,
   type CapturedCompactionCheckpointSnapshot,
 } from "../../gateway/session-compaction-checkpoints.js";
+import {
   formatActiveNodeContextLabel,
   getActiveNodeContext,
 } from "../../infra/active-node-context.js";
 import { resolveDiagnosticModelContentCapturePolicy } from "../../infra/diagnostic-llm-content.js";
+import {
   createDiagnosticTraceContext,
   freezeDiagnosticTraceContext,
   getActiveDiagnosticTraceContext,
@@ -31,9 +34,11 @@ import { getCurrentPluginMetadataSnapshot } from "../../plugins/current-plugin-m
 import { getGlobalHookRunner } from "../../plugins/hook-runner-global.js";
 import { extractModelCompat } from "../../plugins/provider-model-compat.js";
 import type { ProviderRuntimeModel } from "../../plugins/provider-runtime-model.types.js";
+import {
   prepareProviderRuntimeAuth,
   transformProviderSystemPrompt,
 } from "../../plugins/provider-runtime.js";
+import {
   isCronSessionKey,
   isSubagentSessionKey,
   parseAgentSessionKey,
@@ -43,29 +48,35 @@ import { normalizeMessageChannel } from "../../utils/message-channel.js";
 import { isReasoningTagProvider } from "../../utils/provider-utils.js";
 import { createBundleLspToolRuntime } from "../agent-bundle-lsp-runtime.js";
 import { createBundleMcpToolRuntime } from "../agent-bundle-mcp-tools.js";
+import {
   consumeCompactionSafeguardCancelReason,
   setCompactionSafeguardCancelReason,
 } from "../agent-hooks/compaction-safeguard-runtime.js";
 import { createPreparedEmbeddedAgentSettingsManager } from "../agent-project-settings.js";
 import { isDefaultAgentRuntimeId, normalizeOptionalAgentRuntimeId } from "../agent-runtime-id.js";
+import {
   resolveAgentDir,
   resolveRunModelFallbacksOverride,
   resolveSessionAgentIds,
 } from "../agent-scope.js";
+import {
   applyAgentAutoCompactionGuard,
   applyAgentCompactionSettingsFromConfig,
   isSilentOverflowProneModel,
 } from "../agent-settings.js";
 import { createOperatorCodingTools, resolveProcessToolScopeKey } from "../agent-tools.js";
 import { listActiveProcessSessionReferences } from "../bash-process-references.js";
+import {
   makeBootstrapWarn,
   resolveBootstrapContextForRun,
   resolveContextInjectionMode,
 } from "../bootstrap-files.js";
+import {
   listChannelSupportedActions,
   resolveChannelMessageToolHints,
   resolveChannelReactionGuidance,
 } from "../channel-tools.js";
+import {
   hasMeaningfulConversationContent,
   isRealConversationMessage,
 } from "../compaction-real-conversation.js";
@@ -79,10 +90,12 @@ import { pickFallbackThinkingLevel } from "../embedded-agent-helpers.js";
 import { coerceToFailoverError, describeFailoverError } from "../failover-error.js";
 import { resolveAgentHarnessPolicy } from "../harness/policy.js";
 import { ensureSelectedAgentHarnessPlugin } from "../harness/runtime-plugin.js";
+import {
   selectAgentHarness,
   selectAgentHarnessForPreparedModelProviders,
 } from "../harness/selection.js";
 import { resolveHeartbeatPromptForSystemPrompt } from "../heartbeat-system-prompt.js";
+import {
   applyAuthHeaderOverride,
   applyLocalNoAuthHeaderOverride,
   ensureAuthProfileStore,
@@ -90,6 +103,7 @@ import { resolveHeartbeatPromptForSystemPrompt } from "../heartbeat-system-promp
   MissingProviderAuthError,
   resolveModelAuthMode,
 } from "../model-auth.js";
+import {
   isFallbackSummaryError,
   resolveModelCandidateChain,
   runWithModelFallback,
@@ -99,22 +113,27 @@ import { ensureOperatorModelsJson } from "../models-config.js";
 import { isOpenAIProvider } from "../openai-routing.js";
 import { resolveAgentPromptSurfaceForSessionKey } from "../prompt-surface.js";
 import { applyPreparedRuntimeAuthToModel } from "../provider-request-config.js";
+import {
   protectPreparedProviderRuntimeAuth,
   unwrapSecretSentinelsForProviderEgress,
 } from "../provider-secret-egress.js";
 import { registerProviderStreamForModel } from "../provider-stream.js";
+import {
   applyAgentRunSessionTargetIdentity,
   resolveAgentRunSessionTarget,
 } from "../run-session-target.js";
 import { collectRuntimeChannelCapabilities } from "../runtime-capabilities.js";
 import { buildAgentRuntimePlan } from "../runtime-plan/build.js";
+import {
   providerUsesCredentialScopedModelMetadata,
   resolveReusableRuntimeModelAuth,
 } from "../runtime-plan/credential-scoped-model.js";
 import { materializePreparedRuntimeModel } from "../runtime-plan/materialize-model.js";
+import {
   prepareAgentRuntimeAuth,
   type PreparedAgentRuntimeAuthAttempt,
 } from "../runtime-plan/prepare-auth.js";
+import {
   resolvePreparedRuntimeAuthAttempts,
   resolvePreparedRuntimeModelAuth,
 } from "../runtime-plan/resolve-auth.js";
@@ -125,6 +144,7 @@ import { resolveSandboxContext } from "../sandbox.js";
 import { repairSessionFileIfNeeded } from "../session-file-repair.js";
 import { guardSessionManager } from "../session-tool-result-guard-wrapper.js";
 import { sanitizeToolUseResultPairing } from "../session-transcript-repair.js";
+import {
   acquireSessionWriteLock,
   resolveSessionLockMaxHoldFromTimeout,
   resolveSessionWriteLockOptions,
@@ -132,10 +152,12 @@ import { sanitizeToolUseResultPairing } from "../session-transcript-repair.js";
 import { createAgentSession, estimateTokens, SessionManager } from "../sessions/index.js";
 import { detectRuntimeShell } from "../shell-utils.js";
 import { resolveCandidateThinkingLevel } from "../thinking-runtime.js";
+import {
   filterProviderNormalizableTools,
   filterRuntimeCompatibleTools,
 } from "../tool-schema-projection.js";
 import { logRuntimeToolSchemaQuarantine } from "../tool-schema-quarantine.js";
+import {
   classifyCompactionReason,
   formatUnknownCompactionReasonDetail,
   resolveCompactionFailureReason,
@@ -147,6 +169,7 @@ import type {
 } from "./compact.types.js";
 import { dedupeDuplicateUserMessagesForCompaction } from "./compaction-duplicate-user-messages.js";
 import { buildCompactionHarnessModelProvider } from "./compaction-harness-model-provider.js";
+import {
   asCompactionHookRunner,
   buildBeforeCompactionHookMetrics,
   estimateTokensAfterCompaction,
@@ -154,13 +177,16 @@ import { buildCompactionHarnessModelProvider } from "./compaction-harness-model-
   runBeforeCompactionHooks,
   runPostCompactionSideEffects,
 } from "./compaction-hooks.js";
+import {
   resolveCompactionHarnessRuntime,
   resolveEmbeddedCompactionTarget,
 } from "./compaction-runtime-context.js";
+import {
   compactWithSafetyTimeout,
   resolveCompactionTimeoutMs,
 } from "./compaction-safety-timeout.js";
 import { prepareCompactionSessionAgent } from "./compaction-session-agent.js";
+import {
   type CompactionTranscriptRotation,
   rotateTranscriptAfterCompaction,
   shouldRotateCompactionTranscript,
@@ -180,6 +206,7 @@ import { resolveAttemptSpawnWorkspaceDir } from "./run/attempt.thread-helpers.js
 import { buildEmbeddedSandboxInfo, resolveEmbeddedSandboxInfoExecPolicy } from "./sandbox-info.js";
 import { prewarmSessionFile, trackSessionManagerAccess } from "./session-manager-cache.js";
 import { applySystemPromptToSession, buildEmbeddedSystemPrompt } from "./system-prompt.js";
+import {
   collectAllowedToolNames,
   collectRegisteredToolNames,
   toSessionToolAllowlist,
@@ -187,6 +214,7 @@ import { applySystemPromptToSession, buildEmbeddedSystemPrompt } from "./system-
 import { splitSdkTools } from "./tool-split.js";
 import { readTranscriptFileState } from "./transcript-file-state.js";
 import type { EmbeddedAgentCompactResult } from "./types.js";
+import {
   mapThinkingLevel,
   mapThinkingLevelForProvider,
   normalizeContextTokenBudget,
