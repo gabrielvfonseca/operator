@@ -5,7 +5,7 @@ import { expectDefined } from "@operator/normalization-core";
 import { withTempHome } from "operator/plugin-sdk/test-env";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { writeChannelPairingStateSnapshot } from "../pairing/pairing-store-sqlite.test-helpers.js";
-import { closeOpenClawStateDatabaseForTest } from "../state/operator-state-db.js";
+import { closeOperatorStateDatabaseForTest } from "../state/operator-state-db.js";
 import { loadAndMaybeMigrateDoctorConfig } from "./doctor-config-flow.js";
 import {
   getDoctorConfigInputForTest,
@@ -672,7 +672,7 @@ vi.mock("./doctor/shared/plugin-tool-allowlist-warnings.js", () => ({
 }));
 
 vi.mock("../doctor-plugin-registry.js", () => ({
-  maybeRepairManagedNpmOpenClawPeerLinks: vi.fn(async () => undefined),
+  maybeRepairManagedNpmOperatorPeerLinks: vi.fn(async () => undefined),
   maybeRepairStaleManagedNpmBundledPlugins: vi.fn(() => undefined),
 }));
 
@@ -2740,7 +2740,7 @@ describe("doctor config flow", () => {
       },
       { skipSessionCleanup: true },
     );
-    closeOpenClawStateDatabaseForTest();
+    closeOperatorStateDatabaseForTest();
 
     const cfg = result.cfg as {
       channels: {

@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { AuthProfileFailureReason, AuthProfileStore } from "../agents/auth-profiles/types.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { DoctorPrompter } from "./doctor-prompter.js";
 
 const authProfileMocks = vi.hoisted(() => ({
@@ -98,7 +98,7 @@ describe("noteAuthProfileHealth", () => {
         agents: {
           list: [{ id: "main", default: true, agentDir: mainDir }],
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
     });
 
     expect(authProfileMocks.resolveApiKeyForProfile).not.toHaveBeenCalled();
@@ -134,7 +134,7 @@ describe("noteAuthProfileHealth", () => {
     const findings = await collectAuthProfileHealthFindings({
       cfg: {
         agents: { list: [{ id: "main", default: true, agentDir: mainDir }] },
-      } as OpenClawConfig,
+      } as OperatorConfig,
     });
 
     expect(findings).toEqual([]);
@@ -167,7 +167,7 @@ describe("noteAuthProfileHealth", () => {
     const findings = await collectAuthProfileHealthFindings({
       cfg: {
         agents: { list: [{ id: "main", default: true, agentDir: mainDir }] },
-      } as OpenClawConfig,
+      } as OperatorConfig,
     });
 
     expect(findings.map((finding) => finding.target)).toEqual([
@@ -197,7 +197,7 @@ describe("noteAuthProfileHealth", () => {
     const findings = await collectAuthProfileHealthFindings({
       cfg: {
         agents: { list: [{ id: "main", default: true, agentDir: mainDir }] },
-      } as OpenClawConfig,
+      } as OperatorConfig,
     });
 
     expect(findings).toEqual([
@@ -230,7 +230,7 @@ describe("noteAuthProfileHealth", () => {
         agents: {
           list: [{ id: "main", default: true, agentDir: mainDir }],
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
     });
 
     expect(findings).toEqual([
@@ -269,7 +269,7 @@ describe("noteAuthProfileHealth", () => {
       const findings = await collectAuthProfileHealthFindings({
         cfg: {
           agents: { list: [{ id: "main", default: true, agentDir: mainDir }] },
-        } as OpenClawConfig,
+        } as OperatorConfig,
       });
 
       expect(findings).toEqual([expect.objectContaining({ fixHint: expectedHint })]);
@@ -291,7 +291,7 @@ describe("noteAuthProfileHealth", () => {
     const findings = await collectAuthProfileHealthFindings({
       cfg: {
         agents: { list: [{ id: "main", default: true, agentDir: mainDir }] },
-      } as OpenClawConfig,
+      } as OperatorConfig,
     });
 
     expect(findings).toEqual([
@@ -318,7 +318,7 @@ describe("noteAuthProfileHealth", () => {
         agents: {
           list: [{ id: "main", default: true, agentDir: mainDir }],
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
     });
 
     expect(findings).toEqual([
@@ -359,7 +359,7 @@ describe("noteAuthProfileHealth", () => {
             { id: "coder", agentDir: coderDir },
           ],
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
     });
 
     expect(findings.map((finding) => finding.message)).toEqual([
@@ -369,7 +369,7 @@ describe("noteAuthProfileHealth", () => {
   });
   it("skips external auth profile resolution when no auth source exists", async () => {
     await noteAuthProfileHealth({
-      cfg: { channels: { telegram: { enabled: true } } } as OpenClawConfig,
+      cfg: { channels: { telegram: { enabled: true } } } as OperatorConfig,
       prompter: {} as DoctorPrompter,
       allowKeychainPrompt: false,
     });
@@ -393,7 +393,7 @@ describe("noteAuthProfileHealth", () => {
         agents: {
           list: [{ id: "main", default: true, agentDir: defaultDir }],
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       prompter: {} as DoctorPrompter,
       allowKeychainPrompt: false,
     });
@@ -431,7 +431,7 @@ describe("noteAuthProfileHealth", () => {
             { id: "coder", agentDir: coderDir },
           ],
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       prompter: {
         confirmAutoFix: vi.fn(async () => false),
       } as unknown as DoctorPrompter,
@@ -468,7 +468,7 @@ describe("noteAuthProfileHealth", () => {
             { id: "coder", agentDir: coderDir },
           ],
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       prompter: {
         confirmAutoFix: vi.fn(async () => false),
       } as unknown as DoctorPrompter,
@@ -506,7 +506,7 @@ describe("noteAuthProfileHealth", () => {
             { id: "coder", agentDir: coderDir },
           ],
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       prompter: {
         confirmAutoFix: vi.fn(async () => false),
       } as unknown as DoctorPrompter,
@@ -551,7 +551,7 @@ describe("noteAuthProfileHealth", () => {
         agents: {
           list: [{ id: "main", default: true, agentDir }],
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       prompter: {
         confirmAutoFix: vi.fn(async () => false),
       } as unknown as DoctorPrompter,
@@ -589,7 +589,7 @@ describe("noteAuthProfileHealth", () => {
             { id: "coder", agentDir: coderDir },
           ],
         },
-      } as OpenClawConfig,
+      } as OperatorConfig,
       prompter: {
         confirmAutoFix: vi.fn(async () => true),
       } as unknown as DoctorPrompter,
@@ -641,7 +641,7 @@ describe("noteAuthProfileHealth", () => {
       await noteAuthProfileHealth({
         cfg: {
           agents: { list: [{ id: "main", default: true, agentDir }] },
-        } as OpenClawConfig,
+        } as OperatorConfig,
         prompter: { confirmAutoFix: vi.fn(async () => true) } as unknown as DoctorPrompter,
         allowKeychainPrompt: false,
       });

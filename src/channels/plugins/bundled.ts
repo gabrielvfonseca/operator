@@ -378,7 +378,7 @@ function findMissingModuleCodeInChain(error: unknown): string | undefined {
 function describeBundledChannelLoadError(error: unknown, channelId: string): string {
   const detail = formatErrorMessage(error);
   if (findMissingModuleCodeInChain(error) !== undefined) {
-    return `${detail} (run \`openclaw doctor --fix\` to install missing bundled runtime dependencies for channel ${channelId})`;
+    return `${detail} (run \`operator doctor --fix\` to install missing bundled runtime dependencies for channel ${channelId})`;
   }
   return detail;
 }
@@ -512,7 +512,7 @@ function listBundledChannelPluginIdsForRoot(
 
 function shouldIncludeBundledChannelSetupFeatureForConfig(params: {
   metadata: BundledChannelPluginMetadata;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
 }): boolean {
   if (!params.config) {
     return true;
@@ -553,7 +553,7 @@ function shouldIncludeBundledChannelSetupFeatureForConfig(params: {
 function listBundledChannelPluginIdsForSetupFeature(
   rootScope: BundledChannelRootScope,
   feature: keyof NonNullable<BundledChannelSetupEntryRuntimeContract["features"]>,
-  options: { config?: OpenClawConfig } = {},
+  options: { config?: OperatorConfig } = {},
 ): readonly ChannelId[] {
   const hinted = listBundledChannelMetadata(rootScope)
     .filter(
@@ -871,7 +871,7 @@ export function listBundledChannelSetupPlugins(): readonly ChannelPlugin[] {
 
 export function listBundledChannelLegacySessionSurfaces(
   options: {
-    config?: OpenClawConfig;
+    config?: OperatorConfig;
   } = {},
 ): readonly BundledChannelLegacySessionSurface[] {
   const { rootScope, loadContext } = resolveActiveBundledChannelLoadScope();
@@ -893,7 +893,7 @@ export function listBundledChannelLegacySessionSurfaces(
 
 export function listBundledChannelLegacyStateMigrationDetectors(
   options: {
-    config?: OpenClawConfig;
+    config?: OperatorConfig;
   } = {},
 ): readonly BundledChannelLegacyStateMigrationDetector[] {
   const { rootScope, loadContext } = resolveActiveBundledChannelLoadScope();

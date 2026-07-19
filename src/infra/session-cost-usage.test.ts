@@ -3,7 +3,7 @@ import nodeFs from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OperatorConfig } from "../config/config.js";
 import {
   persistSessionTranscriptTurn,
   upsertSessionEntry,
@@ -147,7 +147,7 @@ describe("session cost usage", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     await withStateDir(root, async () => {
       const summary = await loadCostUsageSummary({ config });
@@ -344,7 +344,7 @@ describe("session cost usage", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     const costSpy = vi.spyOn(usageFormat, "resolveModelCostConfig");
     try {
@@ -451,7 +451,7 @@ describe("session cost usage", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
 
     clearGatewayModelPricingState();
     await withStateDir(root, async () => {
@@ -546,7 +546,7 @@ describe("session cost usage", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as OperatorConfig;
     const expectedCost = 0.0028;
 
     await withStateDir(root, async () => {

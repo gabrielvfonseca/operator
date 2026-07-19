@@ -13,7 +13,7 @@ import {
   type AgentAvatarResolution,
   resolvePublicAgentAvatarSource,
 } from "../agents/identity-avatar.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import { matchRootFileOpenFailure, openRootFileSync } from "../infra/boundary-file-read.js";
 import {
   isPackageProvenControlUiRootSync,
@@ -109,7 +109,7 @@ function buildAssistantMediaContentDisposition(filename: string, mime?: string):
 
 type ControlUiRequestOptions = {
   basePath?: string;
-  config?: OpenClawConfig;
+  config?: OperatorConfig;
   terminalEnabled?: boolean;
   agentId?: string;
   root?: ControlUiRootState;
@@ -525,7 +525,7 @@ export async function handleControlUiAssistantMediaRequest(
   res: ServerResponse,
   opts?: {
     basePath?: string;
-    config?: OpenClawConfig;
+    config?: OperatorConfig;
     agentId?: string;
     auth?: ResolvedGatewayAuth;
     trustedProxies?: string[];
@@ -645,7 +645,7 @@ export async function handleControlUiAvatarRequest(
   res: ServerResponse,
   opts: {
     basePath?: string;
-    config: OpenClawConfig;
+    config: OperatorConfig;
     auth?: ResolvedGatewayAuth;
     trustedProxies?: string[];
     allowRealIpFallback?: boolean;
@@ -828,16 +828,16 @@ const CONTROL_UI_DEFAULT_NAMESPACE_BOOTSTRAP_CONFIG_PATH = `${CONTROL_UI_NAMESPA
   "",
 )}${CONTROL_UI_BOOTSTRAP_CONFIG_PATH}`;
 
-// Single-underscore `/__openclaw` prefix used by the pre-base-path-relative
+// Single-underscore `/__operator` prefix used by the pre-base-path-relative
 // bootstrap endpoint. Before #66946 made the config path base-path-relative,
 // `CONTROL_UI_BOOTSTRAP_CONFIG_PATH` was hard-coded to
-// `/__openclaw/control-ui-config.json`, so current main and the v2026.6.1
+// `/__operator/control-ui-config.json`, so current main and the v2026.6.1
 // release serve and document that exact path under an empty base path.
-const LEGACY_CONTROL_UI_NAMESPACE_PREFIX = "/__openclaw";
+const LEGACY_CONTROL_UI_NAMESPACE_PREFIX = "/__operator";
 
 // The old documented no-base-path bootstrap endpoint
-// (`/__openclaw/control-ui-config.json`, single underscore). It is derived from
-// the legacy `/__openclaw` namespace joined with the canonical config constant
+// (`/__operator/control-ui-config.json`, single underscore). It is derived from
+// the legacy `/__operator` namespace joined with the canonical config constant
 // so it tracks any rename of the config filename. Kept as an empty-base-path
 // compatibility alias so older bundles and clients that fetch the previously
 // documented endpoint keep receiving config after upgrading instead of 404ing.
@@ -849,7 +849,7 @@ const LEGACY_BOOTSTRAP_CONFIG_PATH = `${LEGACY_CONTROL_UI_NAMESPACE_PREFIX}${CON
  * The canonical endpoint is the configured base path joined with the shared
  * bootstrap constant (or the bare constant when no base path is configured).
  * For every base path (configured or empty) we additionally accept the legacy
- * single-underscore suffix `${basePath}/__openclaw/control-ui-config.json` that
+ * single-underscore suffix `${basePath}/__operator/control-ui-config.json` that
  * current main and v2026.6.1 serve and document, so older bundles and clients
  * that still request the pre-#66946 endpoint keep receiving config after an
  * upgrade instead of 404ing. When no base path is configured we further accept
@@ -860,8 +860,8 @@ const LEGACY_BOOTSTRAP_CONFIG_PATH = `${LEGACY_CONTROL_UI_NAMESPACE_PREFIX}${CON
 function matchesControlUiBootstrapConfigPath(pathname: string, basePath: string): boolean {
   // Canonical and legacy suffixes apply under both an empty and a configured
   // base path. `LEGACY_BOOTSTRAP_CONFIG_PATH` already starts with the legacy
-  // `/__openclaw` namespace, so joining it with the base path yields
-  // `${basePath}/__openclaw/control-ui-config.json` (or the bare legacy path
+  // `/__operator` namespace, so joining it with the base path yields
+  // `${basePath}/__operator/control-ui-config.json` (or the bare legacy path
   // when no base path is configured).
   if (
     pathname === `${basePath}${CONTROL_UI_BOOTSTRAP_CONFIG_PATH}` ||

@@ -16,9 +16,9 @@ import {
   type LegacySandboxRegistryMigrationResult,
 } from "../agents/sandbox/registry.js";
 import { formatCliCommand } from "../cli/command-format.js";
-import type { OpenClawConfig } from "../config/types.operator.js";
+import type { OperatorConfig } from "../config/types.operator.js";
 import type { HealthFinding, HealthRepairEffect } from "../flows/health-checks.js";
-import { resolveOperatorPackageRootsSync } from "../infra/openclaw-root.js";
+import { resolveOperatorPackageRootsSync } from "../infra/operator-root.js";
 import { runCommandWithTimeout, runExec } from "../process/exec.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { shortenHomePath } from "../utils.js";
@@ -35,12 +35,12 @@ function resolveSandboxScript(
   scriptRel: string,
   options: { argv1?: string; cwd?: string } = {},
 ): SandboxScriptInfo | null {
-  // Scan every openclaw package root the shared resolver finds (symlinked launcher via realpath,
+  // Scan every operator package root the shared resolver finds (symlinked launcher via realpath,
   // then cwd) and return the first that actually holds the script. The resolver follows npm/pnpm
   // global bins and version-manager links, but a published package root can resolve first and ship
   // without scripts/sandbox-setup.sh (the npm files allowlist drops scripts/); stopping at the
   // first root would then skip a valid source-checkout cwd that still has it.
-  const roots = resolveOpenClawPackageRootsSync({
+  const roots = resolveOperatorPackageRootsSync({
     cwd: options.cwd ?? process.cwd(),
     argv1: options.argv1 ?? process.argv[1],
   });
@@ -121,12 +121,12 @@ async function runCodexBwrapNamespaceProbe(
   }
 }
 
-function codexBwrapNeedsNetworkNamespaceProbe(cfg: OpenClawConfig): boolean {
+function codexBwrapNeedsNetworkNamespaceProbe(cfg: OperatorConfig): boolean {
   const network = cfg.agents?.defaults?.sandbox?.docker?.network?.trim().toLowerCase();
   return network === undefined || network === "" || network === "none";
 }
 
-async function probeCodexBwrapNamespaces(cfg: OpenClawConfig): Promise<CodexBwrapNamespaceProbe> {
+async function probeCodexBwrapNamespaces(cfg: OperatorConfig): Promise<CodexBwrapNamespaceProbe> {
   if (process.platform !== "linux") {
     return { ok: true };
   }
@@ -146,7 +146,7 @@ async function probeCodexBwrapNamespaces(cfg: OpenClawConfig): Promise<CodexBwra
   ]);
 }
 
-async function noteCodexBwrapNamespaceWarning(cfg: OpenClawConfig): Promise<void> {
+async function noteCodexBwrapNamespaceWarning(cfg: OperatorConfig): Promise<void> {
   const probe = await probeCodexBwrapNamespaces(cfg);
   if (probe.ok) {
     return;
@@ -193,22 +193,22 @@ async function dockerImageExists(image: string): Promise<boolean> {
   }
 }
 
-function resolveSandboxDockerImage(cfg: OpenClawConfig): string {
+function resolveSandboxDockerImage(cfg: OperatorConfig): string {
   const image = cfg.agents?.defaults?.sandbox?.docker?.image?.trim();
   return image ? image : DEFAULT_SANDBOX_IMAGE;
 }
 
-function resolveSandboxBackend(cfg: OpenClawConfig): string {
+function resolveSandboxBackend(cfg: OperatorConfig): string {
   const backend = cfg.agents?.defaults?.sandbox?.backend?.trim();
   return backend || "docker";
 }
 
-function resolveSandboxBrowserImage(cfg: OpenClawConfig): string {
+function resolveSandboxBrowserImage(cfg: OperatorConfig): string {
   const image = cfg.agents?.defaults?.sandbox?.browser?.image?.trim();
   return image ? image : DEFAULT_SANDBOX_BROWSER_IMAGE;
 }
 
-function updateSandboxDockerImage(cfg: OpenClawConfig, image: string): OpenClawConfig {
+function updateSandboxDockerImage(cfg: OperatorConfig, image: string): OperatorConfig {
   return {
     ...cfg,
     agents: {
@@ -227,7 +227,7 @@ function updateSandboxDockerImage(cfg: OpenClawConfig, image: string): OpenClawC
   };
 }
 
-function updateSandboxBrowserImage(cfg: OpenClawConfig, image: string): OpenClawConfig {
+function updateSandboxBrowserImage(cfg: OperatorConfig, image: string): OperatorConfig {
   return {
     ...cfg,
     agents: {
@@ -286,10 +286,10 @@ async function handleMissingSandboxImage(
  * support because nested app-server shells rely on host user/network namespace policy.
  */
 export async function maybeRepairSandboxImages(
-  cfg: OpenClawConfig,
+  cfg: OperatorConfig,
   runtime: RuntimeEnv,
   prompter: DoctorPrompter,
-): Promise<OpenClawConfig> {
+): Promise<OperatorConfig> {
   const sandbox = cfg.agents?.defaults?.sandbox;
   const mode = sandbox?.mode ?? "off";
   if (!sandbox || mode === "off") {
@@ -315,7 +315,7 @@ export async function maybeRepairSandboxImages(
       "",
       "Options:",
       "- Install Docker and restart the gateway",
-      "- Disable sandbox mode: openclaw config set agents.defaults.sandbox.mode off",
+      "- Disable sandbox mode: operator config set agents.defaults.sandbox.mode off",
     ];
     note(lines.join("\n"), "Sandbox");
     return cfg;
@@ -409,7 +409,7 @@ export function legacySandboxRegistryInspectionToHealthFinding(
     message: `Legacy sandbox registry file detected.
 ${formatLegacyRegistryInspectionLine(file)}`,
     path: legacySandboxRegistryInspectionSourcePath(file),
-    fixHint: `Run ${formatCliCommand("openclaw doctor --fix")} to migrate valid entries to SQLite.`,
+    fixHint: `Run ${formatCliCommand("operator doctor --fix")} to migrate valid entries to SQLite.`,
   };
 }
 
@@ -441,7 +441,7 @@ export async function maybeRepairSandboxRegistryFiles(prompter: DoctorPrompter):
       [
         "Legacy sandbox registry files detected.",
         ...legacyFiles.map(formatLegacyRegistryInspectionLine),
-        `Run ${formatCliCommand("openclaw doctor --fix")} to migrate them to SQLite.`,
+        `Run ${formatCliCommand("operator doctor --fix")} to migrate them to SQLite.`,
       ].join("\n"),
       "Sandbox",
     );
@@ -458,7 +458,7 @@ export async function maybeRepairSandboxRegistryFiles(prompter: DoctorPrompter):
 }
 
 /** Warns when agent sandbox overrides are ignored because sandbox scope resolves to shared. */
-export function noteSandboxScopeWarnings(cfg: OpenClawConfig) {
+export function noteSandboxScopeWarnings(cfg: OperatorConfig) {
   const globalSandbox = cfg.agents?.defaults?.sandbox;
   const agents = Array.isArray(cfg.agents?.list) ? cfg.agents.list : [];
   const warnings: string[] = [];

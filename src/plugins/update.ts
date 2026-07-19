@@ -10,16 +10,16 @@ import { unscopedPackageName } from "../infra/install-safe-path.js";
 import type { NpmSpecResolution } from "../infra/install-source-utils.js";
 import { createNpmMetadataEnv, resolveNpmSpecMetadata } from "../infra/install-source-utils.js";
 import {
-  compareOpenClawReleaseVersions,
+  compareOperatorReleaseVersions,
   isExactSemverVersion,
-  isOpenClawOrgNpmSpec,
+  isOperatorOrgNpmSpec,
   isPrereleaseSemverVersion,
   isPrereleaseResolutionAllowed,
   parseRegistryNpmSpec,
 } from "../infra/npm-registry-spec.js";
 import {
   expectedIntegrityForUpdate,
-  installedPackageNeedsOpenClawPeerLinkRepair,
+  installedPackageNeedsOperatorPeerLinkRepair,
   readInstalledPackageManifest,
   readInstalledPackagePeerDependencies,
   readInstalledPackageVersion,
@@ -71,7 +71,7 @@ import {
 } from "./official-external-plugin-catalog.js";
 import { resolvePackagePluginApiRange } from "./package-compat.js";
 import { validatePackageExtensionEntriesForInstall } from "./package-entry-resolution.js";
-import { linkOpenClawPeerDependencies } from "./plugin-peer-link.js";
+import { linkOperatorPeerDependencies } from "./plugin-peer-link.js";
 import { resetPluginSlotsToDefaults } from "./slots.js";
 import { setPluginEnabledInConfig } from "./toggle-config.js";
 
@@ -115,7 +115,7 @@ export type PluginUpdateOutcome =
     });
 
 type PluginUpdateSummary = {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   changed: boolean;
   outcomes: PluginUpdateOutcome[];
 };
@@ -139,7 +139,7 @@ type PluginChannelSyncSummary = {
 };
 
 type PluginChannelSyncResult = {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   changed: boolean;
   summary: PluginChannelSyncSummary;
 };
@@ -413,7 +413,7 @@ function expectedIntegrityForNpmUpdate(params: {
 }
 
 function compareNpmSemverForUpdate(left: string, right: string): number {
-  const releaseCmp = compareOpenClawReleaseVersions(left, right);
+  const releaseCmp = compareOperatorReleaseVersions(left, right);
   if (releaseCmp !== null) {
     return releaseCmp;
   }
@@ -580,7 +580,7 @@ async function expectedIntegrityForNpmFallback(params: {
 
 function isNpmMetadataCompatibleWithCurrentHost(metadata: NpmSpecResolution): boolean {
   const hostVersion = resolveCompatibilityHostVersion();
-  const installMetadata = metadata.packageOpenClaw?.install;
+  const installMetadata = metadata.packageOperator?.install;
   const minHostVersionCheck = checkMinHostVersion({
     currentVersion: hostVersion,
     minHostVersion: isRecord(installMetadata) ? installMetadata.minHostVersion : undefined,
@@ -588,7 +588,7 @@ function isNpmMetadataCompatibleWithCurrentHost(metadata: NpmSpecResolution): bo
   if (!minHostVersionCheck.ok) {
     return false;
   }
-  const pluginApiRangeCheck = resolvePackagePluginApiRange(metadata.packageOpenClaw);
+  const pluginApiRangeCheck = resolvePackagePluginApiRange(metadata.packageOperator);
   if (!pluginApiRangeCheck.ok) {
     return false;
   }
@@ -600,7 +600,7 @@ function isNpmMetadataCompatibleWithCurrentHost(metadata: NpmSpecResolution): bo
 }
 
 function isBundledVersionNewer(bundledVersion: string, installedVersion: string): boolean {
-  const releaseCmp = compareOpenClawReleaseVersions(bundledVersion, installedVersion);
+  const releaseCmp = compareOperatorReleaseVersions(bundledVersion, installedVersion);
   if (releaseCmp !== null) {
     return releaseCmp > 0;
   }
@@ -762,7 +762,7 @@ function resolveBridgeInstallRecord(params: {
 }
 
 function isBridgeChannelEnabledByConfig(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   bridge: ExternalizedBundledPluginBridge;
 }): boolean {
   const channels = params.config.channels;
@@ -782,7 +782,7 @@ function isBridgeChannelEnabledByConfig(params: {
 }
 
 function isExternalizedBundledPluginEnabled(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   bridge: ExternalizedBundledPluginBridge;
 }): boolean {
   const normalized = normalizePluginsConfig(params.config.plugins);
@@ -822,7 +822,7 @@ function shouldFallbackClawHubBridgeToNpm(params: {
   result: { ok: false; code?: string };
   npmSpec?: string;
 }): boolean {
-  if (!isOpenClawOrgNpmSpec(params.npmSpec)) {
+  if (!isOperatorOrgNpmSpec(params.npmSpec)) {
     return false;
   }
   return (
@@ -1173,7 +1173,7 @@ function replacePluginIdInList(
   return next;
 }
 
-function migratePluginConfigId(cfg: OpenClawConfig, fromId: string, toId: string): OpenClawConfig {
+function migratePluginConfigId(cfg: OperatorConfig, fromId: string, toId: string): OperatorConfig {
   const plugins = cfg.plugins;
   if (fromId === toId || !plugins) {
     return cfg;
@@ -1247,7 +1247,7 @@ function migratePluginConfigId(cfg: OpenClawConfig, fromId: string, toId: string
   return nextPlugins === plugins ? cfg : { ...cfg, plugins: nextPlugins };
 }
 
-function withoutPluginInstallRecord(cfg: OpenClawConfig, pluginId: string): OpenClawConfig {
+function withoutPluginInstallRecord(cfg: OperatorConfig, pluginId: string): OperatorConfig {
   const installs = cfg.plugins?.installs;
   if (!installs || !Object.hasOwn(installs, pluginId)) {
     return cfg;
@@ -1288,7 +1288,7 @@ function createPluginUpdateIntegrityDriftHandler(params: {
   };
 }
 
-function disablePluginAfterUpdateFailure(config: OpenClawConfig, pluginId: string): OpenClawConfig {
+function disablePluginAfterUpdateFailure(config: OperatorConfig, pluginId: string): OperatorConfig {
   const disabled = setPluginEnabledInConfig(config, pluginId, false, {
     updateChannelConfig: false,
   });
@@ -1303,8 +1303,8 @@ function disablePluginAfterUpdateFailure(config: OpenClawConfig, pluginId: strin
   };
 }
 
-async function repairOpenClawPeerLinksForNpmInstalls(params: {
-  config: OpenClawConfig;
+async function repairOperatorPeerLinksForNpmInstalls(params: {
+  config: OperatorConfig;
   logger: PluginUpdateLogger;
 }): Promise<boolean> {
   let repaired = false;
@@ -1320,12 +1320,12 @@ async function repairOpenClawPeerLinksForNpmInstalls(params: {
       );
     } catch (err) {
       params.logger.warn?.(
-        `Could not repair openclaw peer link for "${pluginId}" due to invalid install path: ${String(err)}`,
+        `Could not repair operator peer link for "${pluginId}" due to invalid install path: ${String(err)}`,
       );
       continue;
     }
 
-    if (!installedPackageNeedsOpenClawPeerLinkRepair(installPath)) {
+    if (!installedPackageNeedsOperatorPeerLinkRepair(installPath)) {
       continue;
     }
 
@@ -1336,7 +1336,7 @@ async function repairOpenClawPeerLinksForNpmInstalls(params: {
 
     try {
       const warnings: string[] = [];
-      const peerLinkRepair = await linkOpenClawPeerDependencies({
+      const peerLinkRepair = await linkOperatorPeerDependencies({
         installedDir: installPath,
         peerDependencies,
         logger: {
@@ -1346,14 +1346,14 @@ async function repairOpenClawPeerLinksForNpmInstalls(params: {
       });
       if (peerLinkRepair.skipped > 0) {
         params.logger.warn?.(
-          `Could not repair openclaw peer link for "${pluginId}" at ${installPath}: ${warnings.join("; ") || "peer link repair was skipped"}`,
+          `Could not repair operator peer link for "${pluginId}" at ${installPath}: ${warnings.join("; ") || "peer link repair was skipped"}`,
         );
         continue;
       }
-      repaired = !installedPackageNeedsOpenClawPeerLinkRepair(installPath) || repaired;
+      repaired = !installedPackageNeedsOperatorPeerLinkRepair(installPath) || repaired;
     } catch (err) {
       params.logger.warn?.(
-        `Could not repair openclaw peer link for "${pluginId}" at ${installPath}: ${String(err)}`,
+        `Could not repair operator peer link for "${pluginId}" at ${installPath}: ${String(err)}`,
       );
     }
   }
@@ -1361,7 +1361,7 @@ async function repairOpenClawPeerLinksForNpmInstalls(params: {
 }
 
 export async function updateNpmInstalledPlugins(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   logger?: PluginUpdateLogger;
   pluginIds?: string[];
   skipIds?: Set<string>;
@@ -1714,7 +1714,7 @@ export async function updateNpmInstalledPlugins(params: {
           currentVersion &&
           !bypassTrustedOfficialUnchangedNpmCheck &&
           isNpmMetadataCompatibleWithCurrentHost(metadataResult.metadata) &&
-          !installedPackageNeedsOpenClawPeerLinkRepair(installPath) &&
+          !installedPackageNeedsOperatorPeerLinkRepair(installPath) &&
           shouldSkipUnchangedNpmInstall({
             currentVersion,
             record,
@@ -2067,7 +2067,7 @@ export async function updateNpmInstalledPlugins(params: {
           newerExactPinnedDefaultLine && effectiveSpec
             ? `${pluginId} is pinned to ${effectiveSpec} (installed ${currentLabel}); ` +
               `registry default resolves to ${newerExactPinnedDefaultLine.version}. ` +
-              `Pass \`openclaw plugins update ${newerExactPinnedDefaultLine.packageName}@latest\` to follow the registry default line.` +
+              `Pass \`operator plugins update ${newerExactPinnedDefaultLine.packageName}@latest\` to follow the registry default line.` +
               channelFallbackSuffix
             : `${pluginId} is up to date (${currentLabel}).${channelFallbackSuffix}`;
         outcomes.push({
@@ -2432,7 +2432,7 @@ export async function updateNpmInstalledPlugins(params: {
 
   if (ranNpmInstaller) {
     changed =
-      (await repairOpenClawPeerLinksForNpmInstalls({
+      (await repairOperatorPeerLinksForNpmInstalls({
         config: next,
         logger,
       })) || changed;
@@ -2442,7 +2442,7 @@ export async function updateNpmInstalledPlugins(params: {
 }
 
 export async function syncPluginsForUpdateChannel(params: {
-  config: OpenClawConfig;
+  config: OperatorConfig;
   channel: UpdateChannel;
   coreVersion?: string;
   workspaceDir?: string;
